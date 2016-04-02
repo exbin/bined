@@ -1,0 +1,115 @@
+// Shared tools build
+
+apply plugin: 'java'
+
+sourceCompatibility = '1.7'
+version = '0.1.0-SNAPSHOT'
+def repositoryName = "xbup-tools-java"
+def libraryUrl = 'http://xbup.exbin.org'
+ext.xbupVersion = '0.2.0-SNAPSHOT'
+ext.frameworkVersion = '0.2.0-SNAPSHOT'
+ext.deltahexVersion = '0.1.0-SNAPSHOT'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    doFirst {
+        options.fork = true
+        options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar"
+        options.bootClasspath += "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
+    }
+}
+
+// Disable tests on build
+check.dependsOn.remove(test)
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier "tests"
+    baseName = "test-${project.archivesBaseName}"
+    from sourceSets.test.output
+}
+
+configurations {
+    tests
+}
+
+artifacts {
+    tests testJar
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+task javadocJar (type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'org.exbin.xbup.tool.xbteditor.XBTEditor'
+    ext.appArgs = '-dev'
+}
+
+def configureExec(task) {
+    task.main = mainClass
+    task.classpath = sourceSets.main.runtimeClasspath
+    if (hasProperty('appArgs')) {
+        task.args appArgs
+    }
+}
+
+task run(type: JavaExec) {
+    task -> configureExec(task)
+}
+
+task debug(type: JavaExec) {
+    task -> configureExec(task)
+    debug = true
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    flatDir {
+        dirs "lib"
+    }
+}
+
+dependencies {
+    compile "org.exbin.dhex:deltahex:${deltahexVersion}"
+    compile "org.exbin.xbup:xbup-core:${xbupVersion}"
+    compile "org.exbin.framework:exbin-framework:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-frame-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-frame:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-menu:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-menu-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-file:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-file-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-editor:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-editor-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-about:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-about-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-undo:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-undo-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-options:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-options-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-editor-text:${frameworkVersion}"
+    compile "ca.psc-consulting.hexedit:hexedit:${frameworkVersion}"
+    compile 'commons-cli:commons-cli:1.2'
+    runtime 'mysql:mysql-connector-java:5.1.30'
+    runtime 'org.eclipse.persistence:javax.persistence:2.1.0'
+    runtime 'org.eclipse.persistence:eclipselink:2.5.1'
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': mainClass,
+            'Class-Path': configurations.runtime.collect {'lib/' + it.getName() }.join(' ')
+        )
+    }
+}
