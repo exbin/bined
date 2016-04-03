@@ -4,8 +4,8 @@ apply plugin: 'java'
 
 sourceCompatibility = '1.7'
 version = '0.1.0-SNAPSHOT'
-def repositoryName = "xbup-tools-java"
-def libraryUrl = 'http://xbup.exbin.org'
+def repositoryName = "deltahex-editor-java"
+def libraryUrl = 'http://dhex.exbin.org'
 ext.xbupVersion = '0.2.0-SNAPSHOT'
 ext.frameworkVersion = '0.2.0-SNAPSHOT'
 ext.deltahexVersion = '0.1.0-SNAPSHOT'
@@ -49,7 +49,7 @@ task javadocJar (type: Jar, dependsOn: javadoc) {
 }
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.xbup.tool.xbteditor.XBTEditor'
+    ext.mainClass = 'org.exbin.dhex.editor.DeltaHexEditor'
     ext.appArgs = '-dev'
 }
 

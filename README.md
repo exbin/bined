@@ -28,4 +28,5 @@ Gradle support plugin website: http://plugins.netbeans.org/plugin/44510/gradle-s
 License
 -------
 
-Main license is: BSD
+Apache License, Version 2.0
+see LICENSE-2.0.txt

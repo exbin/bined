@@ -1,0 +1,7 @@
+.gradle
+.nb-gradle
+build/
+target/
+/release
+*~
+/resources/private/
