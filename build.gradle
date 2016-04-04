@@ -1,10 +1,10 @@
-// Shared tools build
-
+apply plugin: 'base'
+apply plugin: 'distribution'
 apply plugin: 'java'
 
 sourceCompatibility = '1.7'
 version = '0.1.0-SNAPSHOT'
-def repositoryName = "deltahex-editor-java"
+def repositoryName = "deltahex-editor"
 def libraryUrl = 'http://dhex.exbin.org'
 ext.xbupVersion = '0.2.0-SNAPSHOT'
 ext.frameworkVersion = '0.2.0-SNAPSHOT'
@@ -97,11 +97,7 @@ dependencies {
     compile "org.exbin.framework:exbin-framework-gui-options:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-gui-options-api:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-editor-text:${frameworkVersion}"
-    compile "ca.psc-consulting.hexedit:hexedit:${frameworkVersion}"
     compile 'commons-cli:commons-cli:1.2'
-    runtime 'mysql:mysql-connector-java:5.1.30'
-    runtime 'org.eclipse.persistence:javax.persistence:2.1.0'
-    runtime 'org.eclipse.persistence:eclipselink:2.5.1'
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
 
@@ -111,5 +107,46 @@ jar {
             'Main-Class': mainClass,
             'Class-Path': configurations.runtime.collect {'lib/' + it.getName() }.join(' ')
         )
+    }
+}
+
+distributions {
+    main {
+        contents {
+            duplicatesStrategy = 'exclude'
+
+            from project.rootDir
+            include 'LICENSE-2.0'
+//            from 'src/dist'
+//            include 'readme.txt'
+
+//            into('lib') {
+//                from 'lib'
+//            }
+
+            into('') {
+                from project.jar.archivePath
+                include '*'
+                rename { filename -> project.name + ".jar" }
+            }
+            project.plugins.withType(JavaPlugin) {
+                into('lib') {
+                    from project.jar.archivePath
+                    include '*'
+                    from project.configurations.runtime
+                    include '*'
+                }
+            }
+
+//            into('doc') {
+//                from 'doc'
+//                include '**'
+//            }
+//            into('resources') {
+//                from 'resources'
+//                include '**'
+//                exclude 'private'
+//            }
+        }
     }
 }
