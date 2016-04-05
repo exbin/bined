@@ -116,9 +116,10 @@ distributions {
             duplicatesStrategy = 'exclude'
 
             from project.rootDir
-            include 'LICENSE-2.0'
-//            from 'src/dist'
-//            include 'readme.txt'
+            include 'LICENSE-2.0.txt'
+
+            from 'src/dist'
+            include 'readme.txt'
 
 //            into('lib') {
 //                from 'lib'
@@ -129,6 +130,7 @@ distributions {
                 include '*'
                 rename { filename -> project.name + ".jar" }
             }
+
             project.plugins.withType(JavaPlugin) {
                 into('lib') {
                     from project.jar.archivePath
