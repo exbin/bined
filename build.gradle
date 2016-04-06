@@ -80,6 +80,7 @@ repositories {
 
 dependencies {
     compile "org.exbin.dhex:deltahex:${deltahexVersion}"
+    compile "org.exbin.dhex:exbin-framework-deltahex:${deltahexVersion}"
     compile "org.exbin.xbup:xbup-core:${xbupVersion}"
     compile "org.exbin.framework:exbin-framework:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-gui-frame-api:${frameworkVersion}"
