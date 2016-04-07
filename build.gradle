@@ -134,8 +134,6 @@ distributions {
 
             project.plugins.withType(JavaPlugin) {
                 into('lib') {
-                    from project.jar.archivePath
-                    include '*'
                     from project.configurations.runtime
                     include '*'
                 }
