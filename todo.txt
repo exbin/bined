@@ -1,0 +1,5 @@
+- Insertion mode editing
+- Fix rendering artefacts
+- Finish horizontal scrollbar
+- Add fixed bytesPerLine mode
+- Fix selection and mouse position in PREVIEW + line numbers mode
