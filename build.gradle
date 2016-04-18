@@ -121,6 +121,8 @@ distributions {
 
             from 'src/dist'
             include 'readme.txt'
+            include 'deltahex-editor.sh'
+            include 'deltahex-editor.bat'
 
 //            into('lib') {
 //                from 'lib'

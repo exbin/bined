@@ -1,5 +1,12 @@
-- Insertion mode editing
-- Fix rendering artefacts
-- Finish horizontal scrollbar
-- Add fixed bytesPerLine mode
-- Fix selection and mouse position in PREVIEW + line numbers mode
+-  Fix selection corners
+-  Finish vertical scrollbar
+-  Scroll on resize
+-  Draw background box
+
+Ok Selection after file
+Ok Draw visual vertical lines
+Ok Fix ovewrite at the end of file
+Ok Insertion mode editing
+Ok Finish horizontal scrollbar
+Ok Add fixed bytesPerLine mode
+Ok Fix selection and mouse position in PREVIEW + line numbers mode
