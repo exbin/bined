@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.dhex.editor;
+package org.exbin.deltahex.editor;
 
 import java.awt.Dimension;
 import java.util.List;
@@ -26,8 +26,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.exbin.dhex.framework.deltahex.DeltaHexModule;
-import org.exbin.dhex.framework.deltahex.panel.HexPanel;
 import org.exbin.framework.XBBaseApplication;
 import org.exbin.xbup.core.parser.basic.XBHead;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
@@ -40,6 +38,8 @@ import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
+import org.exbin.framework.deltahex.DeltaHexModule;
+import org.exbin.framework.deltahex.panel.HexPanel;
 
 /**
  * The main class of the Delta Hex Editor application.

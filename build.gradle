@@ -5,7 +5,7 @@ apply plugin: 'java'
 sourceCompatibility = '1.7'
 version = '0.1.0-SNAPSHOT'
 def repositoryName = "deltahex-editor"
-def libraryUrl = 'http://dhex.exbin.org'
+def libraryUrl = 'http://deltahex.exbin.org'
 ext.xbupVersion = '0.2.0-SNAPSHOT'
 ext.frameworkVersion = '0.2.0-SNAPSHOT'
 ext.deltahexVersion = '0.1.0-SNAPSHOT'
@@ -49,7 +49,7 @@ task javadocJar (type: Jar, dependsOn: javadoc) {
 }
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.dhex.editor.DeltaHexEditor'
+    ext.mainClass = 'org.exbin.deltahex.editor.DeltaHexEditor'
     ext.appArgs = '-dev'
 }
 
@@ -79,8 +79,8 @@ repositories {
 }
 
 dependencies {
-    compile "org.exbin.dhex:deltahex:${deltahexVersion}"
-    compile "org.exbin.dhex:exbin-framework-deltahex:${deltahexVersion}"
+    compile "org.exbin.deltahex:deltahex:${deltahexVersion}"
+    compile "org.exbin.deltahex:exbin-framework-deltahex:${deltahexVersion}"
     compile "org.exbin.xbup:xbup-core:${xbupVersion}"
     compile "org.exbin.framework:exbin-framework:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-gui-frame-api:${frameworkVersion}"

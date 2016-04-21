@@ -1,8 +1,13 @@
--  Fix selection corners
 -  Finish vertical scrollbar
 -  Scroll on resize
 -  Draw background box
+-  Support for octet-stream clipboard flavor
+-  Support for MAC clipboard shortcuts
 
+Ok Support for clipboard actions
+Ok Selection with Shift click
+Ok Fix editing with upper case
+Ok Fix selection corners
 Ok Selection after file
 Ok Draw visual vertical lines
 Ok Fix ovewrite at the end of file

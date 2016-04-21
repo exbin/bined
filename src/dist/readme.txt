@@ -3,7 +3,7 @@ Delta Hexadecimal Editor
 
 TODO
 
-Homepage: http://dhex.exbin.org  
+Homepage: http://deltahex.exbin.org  
 
 License
 -------
