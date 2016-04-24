@@ -3,6 +3,7 @@
 -  Draw background box
 -  Support for octet-stream clipboard flavor
 -  Support for MAC clipboard shortcuts
+-  Issue with first line rendering in editor
 
 Ok Support for clipboard actions
 Ok Selection with Shift click

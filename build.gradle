@@ -115,6 +115,7 @@ distributions {
     main {
         contents {
             duplicatesStrategy = 'exclude'
+            from jar
 
             from project.rootDir
             include 'LICENSE-2.0.txt'
