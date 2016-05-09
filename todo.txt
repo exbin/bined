@@ -1,10 +1,15 @@
--  Finish vertical scrollbar
--  Scroll on resize
--  Draw background box
 -  Support for octet-stream clipboard flavor
--  Support for MAC clipboard shortcuts
--  Issue with first line rendering in editor
+-  Copy to hexadecimal string
+-  Preview mode with visible control characters
+-  Convert XBLinearUndo to general class with listener instead of document.processSpec
+-  Cache antialising type
 
+Ok Modify decorations for separated flags
+Ok Separate options for scrollbar visibility and type
+Ok Support for MAC clipboard shortcuts
+Ok Issue with first line rendering in editor
+Ok Scroll on resize
+Ok Finish vertical scrollbar
 Ok Support for clipboard actions
 Ok Selection with Shift click
 Ok Fix editing with upper case

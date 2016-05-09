@@ -44,7 +44,7 @@ import org.exbin.framework.deltahex.panel.HexPanel;
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.0 2016/04/06
+ * @version 0.1.0 2016/04/30
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -105,6 +105,7 @@ public class DeltaHexEditor {
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
                 GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
                 GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
+
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
 
                 aboutModule.registerDefaultMenuItem();
@@ -120,6 +121,7 @@ public class DeltaHexEditor {
 
                 undoModule.registerMainMenu();
                 undoModule.registerMainToolBar();
+                undoModule.registerUndoManagerInMainMenu();
 
                 // Register clipboard editing actions
                 menuModule.registerMenuClipboardActions();
@@ -141,6 +143,8 @@ public class DeltaHexEditor {
                 HexPanel hexPanel = (HexPanel) deltaHexModule.getEditorProvider();
                 editorModule.registerEditor("hex", hexPanel);
                 editorModule.registerUndoHandler();
+                undoModule.setUndoHandler(hexPanel.getHexUndoHandler());
+
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
 
