@@ -1,8 +1,12 @@
 -  Support for octet-stream clipboard flavor
+-  Saving colors breaks application
+-  Missing colors from setting
 -  Copy to hexadecimal string
 -  Preview mode with visible control characters
 -  Convert XBLinearUndo to general class with listener instead of document.processSpec
 -  Cache antialising type
+-  Check for updates
+-  Use swing Caret object
 
 Ok Modify decorations for separated flags
 Ok Separate options for scrollbar visibility and type
