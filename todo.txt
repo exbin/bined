@@ -2,12 +2,12 @@
 -  Saving colors breaks application
 -  Missing colors from setting
 -  Copy to hexadecimal string
--  Preview mode with visible control characters
--  Convert XBLinearUndo to general class with listener instead of document.processSpec
 -  Cache antialising type
 -  Check for updates
--  Use swing Caret object
+-  Use Swing Caret object
+-  Fix UTF-16 encoding
 
+Ok Preview mode with visible control characters
 Ok Modify decorations for separated flags
 Ok Separate options for scrollbar visibility and type
 Ok Support for MAC clipboard shortcuts

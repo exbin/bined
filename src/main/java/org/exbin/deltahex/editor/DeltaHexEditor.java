@@ -131,6 +131,7 @@ public class DeltaHexEditor {
 
                 deltaHexModule.registerEditFindMenuActions();
                 deltaHexModule.registerEditFindToolBarActions();
+                deltaHexModule.registerViewNonprintablesMenuActions();
                 deltaHexModule.registerToolsOptionsMenuActions();
                 deltaHexModule.registerOptionsMenuPanels();
                 deltaHexModule.registerWordWrapping();
@@ -147,6 +148,8 @@ public class DeltaHexEditor {
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
                 deltaHexModule.getTextStatusPanel();
+                
+                deltaHexModule.loadFromPreferences(preferences);
 
                 frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
