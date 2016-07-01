@@ -97,6 +97,8 @@ dependencies {
     compile "org.exbin.framework:exbin-framework-gui-undo-api:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-gui-options:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-gui-options-api:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-update:${frameworkVersion}"
+    compile "org.exbin.framework:exbin-framework-gui-update-api:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-editor-text:${frameworkVersion}"
     compile "org.exbin.framework:exbin-framework-deltahex:${frameworkVersion}"
     compile 'commons-cli:commons-cli:1.2'

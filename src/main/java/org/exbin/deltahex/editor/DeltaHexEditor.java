@@ -40,11 +40,12 @@ import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
 import org.exbin.framework.deltahex.panel.HexPanel;
+import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.0 2016/04/30
+ * @version 0.1.0 2016/07/01
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -105,9 +106,11 @@ public class DeltaHexEditor {
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
                 GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
                 GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
+                GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
 
+//                updateModule.registerDefaultMenuItem();
                 aboutModule.registerDefaultMenuItem();
 
                 frameModule.registerExitAction();
@@ -148,7 +151,7 @@ public class DeltaHexEditor {
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
                 deltaHexModule.getTextStatusPanel();
-                
+
                 deltaHexModule.loadFromPreferences(preferences);
 
                 frameHandler.setMainPanel(editorModule.getEditorPanel());

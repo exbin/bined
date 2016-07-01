@@ -1,12 +1,14 @@
+-  Fix licenses for libraries
 -  Support for octet-stream clipboard flavor
 -  Saving colors breaks application
 -  Missing colors from setting
 -  Copy to hexadecimal string
--  Cache antialising type
 -  Check for updates
 -  Use Swing Caret object
 -  Fix UTF-16 encoding
+-  Check undo on opening new file
 
+Ok Cache antialising type
 Ok Preview mode with visible control characters
 Ok Modify decorations for separated flags
 Ok Separate options for scrollbar visibility and type
