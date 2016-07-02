@@ -110,7 +110,7 @@ public class DeltaHexEditor {
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
 
-//                updateModule.registerDefaultMenuItem();
+                updateModule.registerDefaultMenuItem();
                 aboutModule.registerDefaultMenuItem();
 
                 frameModule.registerExitAction();
