@@ -16,6 +16,8 @@
 package org.exbin.deltahex.editor;
 
 import java.awt.Dimension;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -110,6 +112,12 @@ public class DeltaHexEditor {
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
 
+                try {
+                    updateModule.setUpdateUrl(new URL("http://deltahex.exbin.org/update/update_0.1"));
+                    updateModule.setUpdateDownloadUrl(new URL("http://deltahex.exbin.org/?download"));
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(DeltaHexEditor.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 updateModule.registerDefaultMenuItem();
                 aboutModule.registerDefaultMenuItem();
 
