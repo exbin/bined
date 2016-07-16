@@ -113,8 +113,8 @@ public class DeltaHexEditor {
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
 
                 try {
-                    updateModule.setUpdateUrl(new URL("http://deltahex.exbin.org/update/update_0.1"));
-                    updateModule.setUpdateDownloadUrl(new URL("http://deltahex.exbin.org/?download"));
+                    updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
+                    updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(DeltaHexEditor.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -159,12 +159,14 @@ public class DeltaHexEditor {
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
                 deltaHexModule.getTextStatusPanel();
+                updateModule.registerOptionsPanels();
 
                 deltaHexModule.loadFromPreferences(preferences);
 
                 frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameHandler.show();
+                updateModule.checkOnStart(frameHandler.getFrame());
 
                 List fileArgs = cl.getArgList();
                 if (fileArgs.size() > 0) {
