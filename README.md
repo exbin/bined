@@ -41,10 +41,10 @@ command in project folder or gradlew or gradlew.bat scripts to download separate
 
 There are currently manual dependencies which are expected to be deployed in local Maven repository via "gradle publish" command:
 
-https://github.com/exbin/exbin-utils-java
-https://github.com/exbin/deltahex-java
-https://github.com/exbin/xbup-java
-https://github.com/exbin/exbin-framework-java
+https://github.com/exbin/exbin-utils-java  
+https://github.com/exbin/deltahex-java  
+https://github.com/exbin/xbup-java  
+https://github.com/exbin/exbin-framework-java  
 
 License
 -------
