@@ -145,10 +145,14 @@ public class DeltaHexEditor {
                 deltaHexModule.registerViewNonprintablesMenuActions();
                 deltaHexModule.registerToolsOptionsMenuActions();
                 deltaHexModule.registerOptionsMenuPanels();
-                deltaHexModule.registerWordWrapping();
                 deltaHexModule.registerGoToLine();
                 deltaHexModule.registerPropertiesMenu();
                 deltaHexModule.registerPrintMenu();
+                deltaHexModule.registerViewModeMenu();
+                deltaHexModule.registerCodeTypeMenu();
+                deltaHexModule.registerPositionCodeTypeMenu();
+                deltaHexModule.registerHexCharactersCaseHandlerMenu();
+                deltaHexModule.registerWordWrapping();
 
                 ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
                 HexPanel hexPanel = (HexPanel) deltaHexModule.getEditorProvider();
