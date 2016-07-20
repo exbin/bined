@@ -3,18 +3,18 @@
 -  Saving colors breaks application
 -  Missing colors from setting
 -  Copy to hexadecimal string
--  Check for updates
 -  Use Swing Caret object
 -  Fix UTF-16 encoding
 -  Check undo on opening new file
 
+Ok Check for updates
 Ok Cache antialising type
 Ok Preview mode with visible control characters
-Ok Modify decorations for separated flags
+Ok Modify decorations to use separate flags
 Ok Separate options for scrollbar visibility and type
 Ok Support for MAC clipboard shortcuts
-Ok Issue with first line rendering in editor
-Ok Scroll on resize
+Ok Fix issue with first line rendering in editor
+Ok Update scrollbar on resize
 Ok Finish vertical scrollbar
 Ok Support for clipboard actions
 Ok Selection with Shift click
