@@ -3,12 +3,12 @@ apply plugin: 'distribution'
 apply plugin: 'java'
 
 sourceCompatibility = '1.7'
-version = '0.1.0-SNAPSHOT'
+version = '0.1.1-SNAPSHOT'
 def repositoryName = "deltahex-editor"
 def libraryUrl = 'http://deltahex.exbin.org'
 ext.xbupVersion = '0.2.0-SNAPSHOT'
 ext.frameworkVersion = '0.2.0-SNAPSHOT'
-ext.deltahexVersion = '0.1.0-SNAPSHOT'
+ext.deltahexVersion = '0.1.1-SNAPSHOT'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
