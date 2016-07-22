@@ -1,12 +1,13 @@
--  Fix licenses for libraries
 -  Support for octet-stream clipboard flavor
 -  Saving colors breaks application
--  Missing colors from setting
--  Copy to hexadecimal string
--  Use Swing Caret object
--  Fix UTF-16 encoding
+-  Use Swing Caret object / cursor blinking
 -  Check undo on opening new file
+-  Value preview bar with float / string preview
+-  Insert space action
+-  Byte groups and space groups
+-  Fix backspace after paste
 
+Ok Copy to hexadecimal string
 Ok Check for updates
 Ok Cache antialising type
 Ok Preview mode with visible control characters

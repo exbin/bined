@@ -47,7 +47,7 @@ import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.0 2016/07/01
+ * @version 0.1.1 2016/07/22
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -144,6 +144,7 @@ public class DeltaHexEditor {
                 deltaHexModule.registerEditFindToolBarActions();
                 deltaHexModule.registerViewNonprintablesMenuActions();
                 deltaHexModule.registerToolsOptionsMenuActions();
+                deltaHexModule.registerClipboardCodeActions();
                 deltaHexModule.registerOptionsMenuPanels();
                 deltaHexModule.registerGoToLine();
                 deltaHexModule.registerPropertiesMenu();
