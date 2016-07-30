@@ -39,13 +39,6 @@ For project compiling Gradle 2.0 build system is used. You can either download a
 
 command in project folder or gradlew or gradlew.bat scripts to download separate copy of gradle to perform the project build.
 
-There are currently manual dependencies which are expected to be deployed in local Maven repository via "gradle publish" command:
-
-https://github.com/exbin/exbin-utils-java  
-https://github.com/exbin/deltahex-java  
-https://github.com/exbin/xbup-java  
-https://github.com/exbin/exbin-framework-java  
-
 License
 -------
 

@@ -1,159 +1,125 @@
-apply plugin: 'base'
-apply plugin: 'distribution'
-apply plugin: 'java'
-
-sourceCompatibility = '1.7'
 version = '0.1.1-SNAPSHOT'
-def repositoryName = "deltahex-editor"
-def libraryUrl = 'http://deltahex.exbin.org'
-ext.xbupVersion = '0.2.0-SNAPSHOT'
-ext.frameworkVersion = '0.2.0-SNAPSHOT'
-ext.deltahexVersion = '0.1.1-SNAPSHOT'
 
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-    doFirst {
-        options.fork = true
-        options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar"
-        options.bootClasspath += "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
     }
 }
 
-// Disable tests on build
-check.dependsOn.remove(test)
-
-task testJar(type: Jar, dependsOn: testClasses) {
-    classifier "tests"
-    baseName = "test-${project.archivesBaseName}"
-    from sourceSets.test.output
+['base', 'distribution', 'maven-publish', 'at.bxm.svntools'].each {
+    apply plugin: it
 }
 
-configurations {
-    tests
+task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper to the current directory.') {
+    gradleVersion = '2.14'
 }
 
-artifacts {
-    tests testJar
-}
-
-task sourceJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.java
-}
-
-task javadocJar (type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.deltahex.editor.DeltaHexEditor'
-    ext.appArgs = '-dev'
-}
-
-def configureExec(task) {
-    task.main = mainClass
-    task.classpath = sourceSets.main.runtimeClasspath
-    if (hasProperty('appArgs')) {
-        task.args appArgs
-    }
-}
-
-task run(type: JavaExec) {
-    task -> configureExec(task)
-}
-
-task debug(type: JavaExec) {
-    task -> configureExec(task)
-    debug = true
-}
-
-repositories {
-    mavenCentral()
-    mavenLocal()
-    flatDir {
-        dirs "lib"
-    }
-}
-
-dependencies {
-    compile "org.exbin.deltahex:deltahex:${deltahexVersion}"
-    compile "org.exbin.deltahex:deltahex-delta:${deltahexVersion}"
-    compile "org.exbin.xbup:xbup-core:${xbupVersion}"
-    compile "org.exbin.framework:exbin-framework:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-frame-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-frame:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-menu:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-menu-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-file:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-file-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-editor:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-editor-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-about:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-about-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-undo:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-undo-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-options:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-options-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-update:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-update-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-editor-text:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-deltahex:${frameworkVersion}"
-    compile 'commons-cli:commons-cli:1.2'
-    testCompile group: 'junit', name: 'junit', version: '4.10'
-}
-
-jar {
-    manifest {
-        attributes(
-            'Main-Class': mainClass,
-            'Class-Path': configurations.runtime.collect {'lib/' + it.getName() }.join(' ')
-        )
-    }
-}
-
-distributions {
-    main {
-        contents {
-            duplicatesStrategy = 'exclude'
-            from jar
-
-            from project.rootDir
-            include 'LICENSE-2.0.txt'
-
-            from 'src/dist'
-            include 'readme.txt'
-            include 'deltahex-editor.sh'
-            include 'deltahex-editor.bat'
-
-//            into('lib') {
-//                from 'lib'
-//            }
-
-            into('') {
-                from project.jar.archivePath
-                include '*'
-                rename { filename -> project.name + ".jar" }
+task('cleanDeps') << {
+    println "Deleting temporary dependency modules"
+    File depsCheckFile = rootProject.file("deps/dependency.txt")
+    if (depsCheckFile.exists()) {
+        File depsDir = rootProject.file("deps")
+        depsDir.listFiles().each() { childFile ->
+            if (childFile.name != '_placeholder' && childFile.isDirectory()) {
+                project.delete(childFile)
             }
+        }
+    } else {
+        throw new Exception('Invalid dependency path')
+    }
+}
 
-            project.plugins.withType(JavaPlugin) {
-                into('lib') {
-                    from project.configurations.runtime
+if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+    cleanDeps.execute()
+}
+
+subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
+
+def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
+    return tasks.create("svnDownload${moduleName}", at.bxm.gradleplugins.svntools.tasks.SvnExport) {
+        svnUrl = svnUrlValue
+        targetDir = targetDirValue
+    }
+}
+
+if (file('deps/_placeholder').exists()) {
+    // Perform restart for new dependency handling
+    def depsLevel
+    if (project.gradle.startParameter.projectProperties.containsKey('moduleDep')) {
+        depsLevel = project.gradle.startParameter.projectProperties['moduleDep'] + 1
+    } else {
+        depsLevel = 1
+    }
+    def artefactBuild = project.tasks.create([name: "depsRebuild_${depsLevel}", type: GradleBuild])
+    artefactBuild.buildFile = project.file('build.gradle')
+    artefactBuild.tasks = project.gradle.startParameter.taskNames
+
+    def artefactProjectProperties = artefactBuild.startParameter.projectProperties
+    def currentProjectProperties = project.gradle.startParameter.projectProperties
+    artefactProjectProperties << currentProjectProperties
+    artefactProjectProperties << ['moduleDep': depsLevel]
+
+    // Terminate currently invalid tasks
+    // TODO: Fix support for other tasks like distZip
+    subprojects.each { subproject ->
+        if (subproject.tasks.findByPath('assemble') != null) {
+            subproject.tasks['assemble'].setDependsOn([])
+        }
+    }
+    if (project.tasks.findByPath('assemble') != null) {
+        project.tasks['assemble'].setDependsOn([])
+    }
+
+    artefactBuild.execute()
+}
+
+if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+    distributions {
+        main {
+            contents {
+                duplicatesStrategy = 'exclude'
+                from project(':tools:deltahex-editor').jar
+
+                from project.rootDir
+                include 'LICENSE-2.0.txt'
+
+                from 'src/dist'
+                include 'readme.txt'
+                include 'deltahex-editor.sh'
+                include 'deltahex-editor.bat'
+
+                //            into('lib') {
+                //                from 'lib'
+                //            }
+
+                into('') {
+                    from project(':tools:deltahex-editor').jar.archivePath
                     include '*'
+                    rename { filename -> project(':tools:deltahex-editor').name + ".jar" }
                 }
-            }
 
-//            into('doc') {
-//                from 'doc'
-//                include '**'
-//            }
-//            into('resources') {
-//                from 'resources'
-//                include '**'
-//                exclude 'private'
-//            }
+                project(':tools:deltahex-editor').plugins.withType(JavaPlugin) {
+                    into('lib') {
+                        from project(':tools:deltahex-editor').configurations.runtime
+                        include '*'
+                    }
+                }
+
+                //            into('doc') {
+                //                from 'doc'
+                //                include '**'
+                //            }
+                //            into('resources') {
+                //                from 'resources'
+                //                include '**'
+                //                exclude 'private'
+                //            }
+            }
         }
     }
 }
+

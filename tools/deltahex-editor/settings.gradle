@@ -1,0 +1,3 @@
+rootProject.name = 'deltahex-editor'
+
+apply from: '../tools-settings.gradle'

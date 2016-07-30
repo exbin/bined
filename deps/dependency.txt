@@ -1,0 +1,6 @@
+This directory is used for external modules dependecy solving.
+
+If module is not available in local maven repository it is downloaded into this directory and used for building.
+
+It's not recommended to modify modules in this directory as changes will not prevail beyond clean/build.
+

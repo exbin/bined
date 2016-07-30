@@ -1,0 +1,107 @@
+// Shared modules build
+
+version = '0.2.0-SNAPSHOT'
+def repositoryName = "xbup-java"
+def libraryUrl = 'http://xbup.exbin.org'
+
+ext.depsXbupJava = [
+    githubProfile: 'exbin',
+    githubRepo: "${repositoryName}",
+    version: "${version}"
+]
+
+ext.depsExbinUtilsJava = [
+    githubProfile: 'exbin',
+    githubRepo: 'exbin-utils-java',
+    version: '0.1.1-SNAPSHOT'
+]
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
+    }
+}
+
+['java', 'maven-publish', 'at.bxm.svntools'].each {
+    apply plugin: it
+}
+
+sourceCompatibility = '1.7'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    doFirst {
+        options.fork = true
+        options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar"
+        options.bootClasspath += "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
+    }
+}
+
+// Disable tests on build
+check.dependsOn.remove(test)
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier "tests"
+    baseName = "test-${project.archivesBaseName}"
+    from sourceSets.test.output
+}
+
+configurations {
+    tests
+}
+
+artifacts {
+    tests testJar
+}
+
+def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
+    return tasks.create("svnDownload${moduleName}", at.bxm.gradleplugins.svntools.tasks.SvnExport) {
+        svnUrl = svnUrlValue
+        targetDir = targetDirValue
+    }
+}
+
+// Module dependency processing
+// - local maven repository module will be used if available
+// - otherwise module will be download to deps folder
+project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
+    def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
+    if (new File(mavenModuleDir).isDirectory()) {
+        // Use maven package if available
+        return packageName + ':' + moduleName + ':' + ext['deps' + depsName].version
+    }
+
+    def depsDir = rootProject.buildDir.parent + '/deps/'
+    def depModuleDir = depsDir + moduleName
+    if (!new File(depModuleDir).isDirectory()) {
+        // Download module
+        def githubModulePath = 'https://github.com/' + ext['deps' + depsName].githubProfile + '/' + ext['deps' + depsName].githubRepo + '/trunk/modules/' + moduleName
+        println 'Downloading ' + githubModulePath
+
+        createSvnDownloadTask(moduleName, githubModulePath, depModuleDir)
+        tasks["svnDownload${moduleName}"].execute()
+        
+        // Report as placeholder dependency
+        if (!new File(depsDir + "_placeholder").exists()) {
+            new File(depsDir + "_placeholder").mkdir()
+        }
+        return project(':deps')
+    }
+
+    if (new File(depsDir + "_placeholder").exists()) {
+        return project(':deps')
+    }
+
+    return project(':deps:' + moduleName)
+}
+
+project.dependencies.ext.moduleDepPath = { depsName, moduleName ->
+    return ":deps:${moduleName}"
+}
+
