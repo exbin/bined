@@ -78,6 +78,10 @@ if (file('deps/_placeholder').exists()) {
 }
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+    distZip {
+        archiveName project(':tools:deltahex-editor').name + '-' + version + '.zip'
+    }
+
     distributions {
         main {
             contents {

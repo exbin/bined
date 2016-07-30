@@ -59,7 +59,7 @@ dependencies {
 
 def manifestClassPath() {
     try {
-        return (configurations.runtime.collect { '../lib/' + it.getName() }).join(' ')
+        return (configurations.runtime.collect { 'lib/' + it.getName() }).join(' ')
     } catch (Exception) {
         return ""
     }
