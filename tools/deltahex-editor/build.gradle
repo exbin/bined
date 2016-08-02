@@ -1,5 +1,15 @@
 apply from: '../tools.gradle'
 
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
+    }
+}
+
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.exbin.deltahex.editor.DeltaHexEditor'
     ext.appArgs = '-dev'

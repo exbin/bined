@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-['base', 'distribution', 'maven-publish', 'at.bxm.svntools'].each {
+['base', 'distribution', 'maven', 'at.bxm.svntools'].each {
     apply plugin: it
 }
 

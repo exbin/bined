@@ -34,16 +34,6 @@ ext.depsDeltahexJava = [
     version: '0.1.1-SNAPSHOT'
 ]
 
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-    }
-}
-
 ['java', 'distribution', 'maven-publish', 'at.bxm.svntools'].each {
     apply plugin: it
 }
