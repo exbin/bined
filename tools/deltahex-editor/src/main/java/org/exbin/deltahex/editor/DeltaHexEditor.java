@@ -42,12 +42,13 @@ import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
 import org.exbin.framework.deltahex.panel.HexPanel;
+import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.1 2016/07/22
+ * @version 0.1.1 2016/08/13
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -108,6 +109,7 @@ public class DeltaHexEditor {
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
                 GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
                 GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
+                GuiDockingModuleApi dockingModule = moduleRepository.getModuleByInterface(GuiDockingModuleApi.class);
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
@@ -168,7 +170,9 @@ public class DeltaHexEditor {
 
                 deltaHexModule.loadFromPreferences(preferences);
 
-                frameHandler.setMainPanel(editorModule.getEditorPanel());
+                frameHandler.setMainPanel(dockingModule.getDockingPanel());
+                dockingModule.addDockingView(editorModule.getEditorPanel());
+//                frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameHandler.show();
                 updateModule.checkOnStart(frameHandler.getFrame());

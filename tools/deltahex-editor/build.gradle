@@ -41,6 +41,7 @@ repositories {
 }
 
 dependencies {
+    compile 'org.dockingframes:docking-frames-common:1.1.1'
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex')
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-delta')
     compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
@@ -57,6 +58,7 @@ dependencies {
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-about-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-undo')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-undo-api')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-docking')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-options')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-options-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-update')
