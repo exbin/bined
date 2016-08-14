@@ -15,6 +15,7 @@
  */
 package org.exbin.deltahex.editor;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,14 +42,14 @@ import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
-import org.exbin.framework.deltahex.panel.HexPanel;
 import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
+import org.exbin.framework.gui.editor.api.EditorProvider;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.1 2016/08/13
+ * @version 0.1.1 2016/08/14
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -125,6 +126,7 @@ public class DeltaHexEditor {
 
                 frameModule.registerExitAction();
                 frameModule.registerBarsVisibilityActions();
+                Component dockingPanel = dockingModule.getDockingPanel();
 
                 // Register clipboard editing actions
                 fileModule.registerMenuFileHandlingActions();
@@ -158,10 +160,10 @@ public class DeltaHexEditor {
                 deltaHexModule.registerWordWrapping();
 
                 ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
-                HexPanel hexPanel = (HexPanel) deltaHexModule.getEditorProvider();
-                editorModule.registerEditor("hex", hexPanel);
+                EditorProvider editorProvider = deltaHexModule.getEditorProvider();
+                editorModule.registerEditor("hex", editorProvider);
                 editorModule.registerUndoHandler();
-                undoModule.setUndoHandler(hexPanel.getHexUndoHandler());
+                // undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
 
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
@@ -170,9 +172,8 @@ public class DeltaHexEditor {
 
                 deltaHexModule.loadFromPreferences(preferences);
 
-                frameHandler.setMainPanel(dockingModule.getDockingPanel());
-                dockingModule.addDockingView(editorModule.getEditorPanel());
-//                frameHandler.setMainPanel(editorModule.getEditorPanel());
+                frameHandler.setMainPanel(dockingPanel);
+//                 frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameHandler.show();
                 updateModule.checkOnStart(frameHandler.getFrame());
