@@ -95,6 +95,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 include 'readme.txt'
                 include 'deltahex-editor.sh'
                 include 'deltahex-editor.bat'
+                include 'plugins/*'
 
                 //            into('lib') {
                 //                from 'lib'

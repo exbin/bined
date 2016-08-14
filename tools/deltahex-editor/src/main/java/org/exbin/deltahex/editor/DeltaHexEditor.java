@@ -17,6 +17,7 @@ package org.exbin.deltahex.editor;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -101,6 +102,7 @@ public class DeltaHexEditor {
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
                 moduleRepository.addModulesFromManifest(DeltaHexEditor.class);
+                moduleRepository.addModulesFromPath(new File("plugins").toURI());
                 moduleRepository.initModules();
 
                 GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
