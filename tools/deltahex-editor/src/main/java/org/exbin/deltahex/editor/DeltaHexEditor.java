@@ -50,7 +50,7 @@ import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.1 2016/08/14
+ * @version 0.1.1 2016/08/15
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -146,6 +146,7 @@ public class DeltaHexEditor {
 
                 optionsModule.registerMenuAction();
 
+                EditorProvider editorProvider = deltaHexModule.getMultiEditorProvider();
                 deltaHexModule.registerEditFindMenuActions();
                 deltaHexModule.registerEditFindToolBarActions();
                 deltaHexModule.registerViewNonprintablesMenuActions();
@@ -162,7 +163,6 @@ public class DeltaHexEditor {
                 deltaHexModule.registerWordWrapping();
 
                 ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
-                EditorProvider editorProvider = deltaHexModule.getEditorProvider();
                 editorModule.registerEditor("hex", editorProvider);
                 editorModule.registerUndoHandler();
                 // undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
