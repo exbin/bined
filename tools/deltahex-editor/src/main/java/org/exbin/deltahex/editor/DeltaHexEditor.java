@@ -43,8 +43,9 @@ import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
+import org.exbin.framework.deltahex.HexEditorProvider;
 import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
-import org.exbin.framework.gui.editor.api.EditorProvider;
+import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 
 /**
@@ -146,7 +147,7 @@ public class DeltaHexEditor {
 
                 optionsModule.registerMenuAction();
 
-                EditorProvider editorProvider = deltaHexModule.getMultiEditorProvider();
+                HexEditorProvider editorProvider = deltaHexModule.getMultiEditorProvider();
                 deltaHexModule.registerEditFindMenuActions();
                 deltaHexModule.registerEditFindToolBarActions();
                 deltaHexModule.registerViewNonprintablesMenuActions();
@@ -163,9 +164,9 @@ public class DeltaHexEditor {
                 deltaHexModule.registerWordWrapping();
 
                 ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
-                editorModule.registerEditor("hex", editorProvider);
+                editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
                 editorModule.registerUndoHandler();
-                // undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
+                undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
 
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
