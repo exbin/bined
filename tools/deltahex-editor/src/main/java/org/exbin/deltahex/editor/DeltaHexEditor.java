@@ -103,7 +103,7 @@ public class DeltaHexEditor {
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
                 moduleRepository.addModulesFromManifest(DeltaHexEditor.class);
-                moduleRepository.addModulesFromPath(new File("plugins").toURI());
+                moduleRepository.loadModulesFromPath(new File("plugins").toURI());
                 moduleRepository.initModules();
 
                 GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
