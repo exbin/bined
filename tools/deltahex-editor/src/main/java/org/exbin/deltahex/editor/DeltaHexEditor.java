@@ -35,23 +35,23 @@ import org.exbin.xbup.core.parser.basic.XBHead;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
-import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
 import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
 import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
-import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
 import org.exbin.framework.deltahex.HexEditorProvider;
 import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
 import org.exbin.framework.gui.editor.api.MultiEditorProvider;
+import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
+import org.exbin.framework.gui.utils.LanguageUtils;
 
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.1 2016/08/15
+ * @version 0.1.1 2016/08/18
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -73,7 +73,7 @@ public class DeltaHexEditor {
             preferences = null;
         }
         try {
-            bundle = ActionUtils.getResourceBundleByClass(DeltaHexEditor.class);
+            bundle = LanguageUtils.getResourceBundleByClass(DeltaHexEditor.class);
             // Parameters processing
             Options opt = new Options();
             opt.addOption("h", "help", false, bundle.getString("cl_option_help"));
@@ -97,14 +97,14 @@ public class DeltaHexEditor {
 
                 XBBaseApplication app = new XBBaseApplication();
                 app.setAppPreferences(preferences);
-                app.setAppBundle(bundle, ActionUtils.getResourceBaseNameBundleByClass(DeltaHexEditor.class));
-                app.init();
+                app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(DeltaHexEditor.class));
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
                 moduleRepository.addModulesFromManifest(DeltaHexEditor.class);
                 moduleRepository.loadModulesFromPath(new File("plugins").toURI());
                 moduleRepository.initModules();
+                app.init();
 
                 GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
                 GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
@@ -118,6 +118,7 @@ public class DeltaHexEditor {
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
 
+                frameModule.createMainMenu();
                 try {
                     updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
                     updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));

@@ -1,12 +1,13 @@
 -  Support for octet-stream clipboard flavor
 -  Saving colors breaks application
--  Use Swing Caret object / cursor blinking
 -  Check undo on opening new file
 -  Value preview bar with float / string preview
 -  Insert space action
 -  Byte groups and space groups
+-  Line offset with ctrl movements
 -  Fix backspace after paste
 
+Ok Use Swing Caret object / cursor blinking
 Ok Copy to hexadecimal string
 Ok Check for updates
 Ok Cache antialising type
