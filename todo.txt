@@ -1,12 +1,14 @@
 -  Support for octet-stream clipboard flavor
 -  Saving colors breaks application
--  Check undo on opening new file
+-  Fix undo on opening new file
 -  Value preview bar with float / string preview
 -  Insert space action
--  Byte groups and space groups
 -  Line offset with ctrl movements
 -  Fix backspace after paste
+-  Cursor is visible outside scrollbox in XOR mode
+-  Multiselection and multicaret support
 
+Ok Byte groups and space groups
 Ok Use Swing Caret object / cursor blinking
 Ok Copy to hexadecimal string
 Ok Check for updates
