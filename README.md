@@ -21,12 +21,12 @@ Features
 - Support for charset/encoding selection
 - Codes can be also binary, octal or decimal
 - Searching for text / hexadecimal code with matching highlighting
+- Support for huge files
 
 Todo
 ----
 
 - Delta mode - Only changes are stored in memory
-- Support for huge files
 
 Compiling
 ---------

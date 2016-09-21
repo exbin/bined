@@ -130,7 +130,7 @@ public class DeltaHexEditor {
 
                 frameModule.registerExitAction();
                 frameModule.registerBarsVisibilityActions();
-                Component dockingPanel = dockingModule.getDockingPanel();
+//                Component dockingPanel = dockingModule.getDockingPanel();
 
                 // Register clipboard editing actions
                 fileModule.registerMenuFileHandlingActions();
@@ -148,7 +148,8 @@ public class DeltaHexEditor {
 
                 optionsModule.registerMenuAction();
 
-                HexEditorProvider editorProvider = deltaHexModule.getMultiEditorProvider();
+//                HexEditorProvider editorProvider = deltaHexModule.getMultiEditorProvider();
+                HexEditorProvider editorProvider = deltaHexModule.getEditorProvider();
                 deltaHexModule.registerEditFindMenuActions();
                 deltaHexModule.registerEditFindToolBarActions();
                 deltaHexModule.registerViewNonprintablesMenuActions();
@@ -165,7 +166,8 @@ public class DeltaHexEditor {
                 deltaHexModule.registerWordWrapping();
 
                 ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
-                editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
+                editorModule.registerEditor("hex", editorProvider);
+                // editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
                 editorModule.registerUndoHandler();
                 undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
 
@@ -176,8 +178,9 @@ public class DeltaHexEditor {
 
                 deltaHexModule.loadFromPreferences(preferences);
 
-                frameHandler.setMainPanel(dockingPanel);
-//                 frameHandler.setMainPanel(editorModule.getEditorPanel());
+//                frameHandler.setMainPanel(dockingPanel);
+                // Single editor only
+                 frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameHandler.show();
                 updateModule.checkOnStart(frameHandler.getFrame());

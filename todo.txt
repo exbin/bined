@@ -3,11 +3,14 @@
 -  Fix undo on opening new file
 -  Value preview bar with float / string preview
 -  Insert space action
--  Line offset with ctrl movements
 -  Fix backspace after paste
--  Cursor is visible outside scrollbox in XOR mode
 -  Multiselection and multicaret support
+-  Scrollbar down/up buttons in huge file mode
+-  Cursor position on click on line number
+-  Fix delete code area in XBEditor
 
+Ok Line offset with ctrl movements
+Ok Cursor is visible outside scrollbox in XOR mode
 Ok Byte groups and space groups
 Ok Use Swing Caret object / cursor blinking
 Ok Copy to hexadecimal string
