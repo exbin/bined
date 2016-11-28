@@ -6,9 +6,10 @@
 -  Fix backspace after paste
 -  Multiselection and multicaret support
 -  Scrollbar down/up buttons in huge file mode
--  Cursor position on click on line number
 -  Fix delete code area in XBEditor
+-  Add inplace editation mode
 
+Ok Cursor position on click on line number
 Ok Line offset with ctrl movements
 Ok Cursor is visible outside scrollbox in XOR mode
 Ok Byte groups and space groups

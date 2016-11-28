@@ -15,7 +15,6 @@
  */
 package org.exbin.deltahex.editor;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -43,7 +42,6 @@ import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
 import org.exbin.framework.deltahex.HexEditorProvider;
 import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
-import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 import org.exbin.framework.gui.utils.LanguageUtils;
@@ -51,12 +49,11 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.1 2016/08/18
+ * @version 0.1.1 2016/11/28
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
 
-    private static Preferences preferences;
     private static boolean verboseMode = false;
     private static boolean devMode = false;
     private static ResourceBundle bundle;
@@ -67,11 +64,6 @@ public class DeltaHexEditor {
      * @param args arguments
      */
     public static void main(String[] args) {
-        try {
-            preferences = Preferences.userNodeForPackage(DeltaHexEditor.class);
-        } catch (SecurityException ex) {
-            preferences = null;
-        }
         try {
             bundle = LanguageUtils.getResourceBundleByClass(DeltaHexEditor.class);
             // Parameters processing
@@ -96,7 +88,7 @@ public class DeltaHexEditor {
                 }
 
                 XBBaseApplication app = new XBBaseApplication();
-                app.setAppPreferences(preferences);
+                Preferences preferences = app.createPreferences(DeltaHexEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(DeltaHexEditor.class));
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
@@ -180,7 +172,7 @@ public class DeltaHexEditor {
 
 //                frameHandler.setMainPanel(dockingPanel);
                 // Single editor only
-                 frameHandler.setMainPanel(editorModule.getEditorPanel());
+                frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameHandler.show();
                 updateModule.checkOnStart(frameHandler.getFrame());
