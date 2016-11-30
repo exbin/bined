@@ -42,6 +42,7 @@ repositories {
 
 dependencies {
     compile 'org.dockingframes:docking-frames-common:1.1.1'
+    compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-core')
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-swing')
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-delta')
     compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')

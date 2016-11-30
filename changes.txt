@@ -1,5 +1,7 @@
 0.1.1
 - Fixed charset for clipboard copy/paste
+- Fixed issue with Preferences on Windows Vista and newer
+- Fixed issue with window headers for dark themes
 
 0.1.0 (2016-07-20)
 - Released
