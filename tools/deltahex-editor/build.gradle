@@ -15,7 +15,7 @@ buildscript {
 }
 
 ['edu.sc.seis.launch4j'].each {
-    apply plugin: it
+   apply plugin: it
 }
 
 if (!hasProperty('mainClass')) {
