@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
+        classpath "at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration"
     }
 }
 
@@ -77,6 +77,8 @@ if (file('deps/_placeholder').exists()) {
     artefactBuild.execute()
 }
 
+distZip.dependsOn project(':tools:deltahex-editor').tasks['launch4j']
+
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     distZip {
         archiveName project(':tools:deltahex-editor').name + '-' + version + '.zip'
@@ -94,8 +96,11 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 from 'src/dist'
                 include 'readme.txt'
                 include 'deltahex-editor.sh'
-                include 'deltahex-editor.bat'
+//                include 'deltahex-editor.bat'
                 include 'plugins/*'
+                
+                from project(':tools:deltahex-editor').projectDir.absolutePath + '/build/launch4j'
+                include "DeltaHexEditor.exe"
 
                 //            into('lib') {
                 //                from 'lib'
