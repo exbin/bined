@@ -42,6 +42,7 @@ import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
 import org.exbin.framework.deltahex.HexEditorProvider;
 import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
+import org.exbin.framework.gui.frame.api.ApplicationExitListener;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 import org.exbin.framework.gui.utils.LanguageUtils;
@@ -98,7 +99,7 @@ public class DeltaHexEditor {
                 moduleRepository.initModules();
                 app.init();
 
-                GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
+                final GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
                 GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
                 GuiMenuModuleApi menuModule = moduleRepository.getModuleByInterface(GuiMenuModuleApi.class);
                 GuiAboutModuleApi aboutModule = moduleRepository.getModuleByInterface(GuiAboutModuleApi.class);
@@ -157,7 +158,7 @@ public class DeltaHexEditor {
                 deltaHexModule.registerHexCharactersCaseHandlerMenu();
                 deltaHexModule.registerWordWrapping();
 
-                ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
+                final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
                 editorModule.registerEditor("hex", editorProvider);
                 // editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
                 editorModule.registerUndoHandler();
@@ -170,10 +171,19 @@ public class DeltaHexEditor {
 
                 deltaHexModule.loadFromPreferences(preferences);
 
+                frameModule.addExitListener(new ApplicationExitListener() {
+                    @Override
+                    public boolean processExit(ApplicationFrameHandler afh) {
+                        frameModule.saveFramePosition();
+                        return true;
+                    }
+                });
+
 //                frameHandler.setMainPanel(dockingPanel);
                 // Single editor only
                 frameHandler.setMainPanel(editorModule.getEditorPanel());
                 frameHandler.setDefaultSize(new Dimension(600, 400));
+                frameModule.loadFramePosition();
                 frameHandler.show();
                 updateModule.checkOnStart(frameHandler.getFrame());
 

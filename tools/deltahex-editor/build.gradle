@@ -90,7 +90,7 @@ launch4j {
     outfile = "DeltaHexEditor.exe"
     icon = "../../../../images/icon.ico"
     mainClassName = "org.exbin.deltahex.editor.DeltaHexEditor"
-    jar = "../../build/libs/deltahex-editor-0.1.1-SNAPSHOT.jar"
+    jar = "../../build/libs/deltahex-editor-0.1.2-SNAPSHOT.jar"
     copyright = "ExBin Project"
 }
 

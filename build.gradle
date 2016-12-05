@@ -1,4 +1,4 @@
-version = '0.1.1-SNAPSHOT'
+version = '0.1.2-SNAPSHOT'
 
 buildscript {
     repositories {
@@ -92,6 +92,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
 
                 from project.rootDir
                 include 'LICENSE-2.0.txt'
+                include 'changes.txt'
 
                 from 'src/dist'
                 include 'readme.txt'
