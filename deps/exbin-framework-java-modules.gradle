@@ -31,7 +31,7 @@ ext.depsXbupDataJava = [
 ext.depsDeltahexJava = [
     githubProfile: 'exbin',
     githubRepo: 'deltahex-java',
-    version: '0.1.1-SNAPSHOT'
+    version: '0.1.2-SNAPSHOT'
 ]
 
 buildscript {
