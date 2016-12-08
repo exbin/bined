@@ -8,6 +8,7 @@
 -  Scrollbar down/up buttons in huge file mode
 -  Fix delete code area in XBEditor
 -  Add inplace editation mode
+-  https://sourceforge.net/projects/javaclassviewer
 
 Ok Cursor position on click on line number
 Ok Line offset with ctrl movements

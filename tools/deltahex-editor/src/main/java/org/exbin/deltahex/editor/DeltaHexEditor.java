@@ -41,7 +41,9 @@ import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.deltahex.DeltaHexModule;
 import org.exbin.framework.deltahex.HexEditorProvider;
+import org.exbin.framework.deltahex.panel.HexAppearanceOptionsPanel;
 import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
+import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.frame.api.ApplicationExitListener;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
@@ -50,7 +52,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.1 2016/11/28
+ * @version 0.1.2 2016/12/08
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -91,6 +93,8 @@ public class DeltaHexEditor {
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(DeltaHexEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(DeltaHexEditor.class));
+                boolean deltaMode = preferences.getBoolean(HexAppearanceOptionsPanel.PREFERENCES_DELTA_DATA_MODE, false);
+                boolean multiTabMode = preferences.getBoolean(HexAppearanceOptionsPanel.PREFERENCES_MULTITAB_MODE, false);
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
@@ -110,6 +114,7 @@ public class DeltaHexEditor {
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
+                deltaHexModule.setDeltaMode(deltaMode);
 
                 frameModule.createMainMenu();
                 try {
@@ -123,7 +128,6 @@ public class DeltaHexEditor {
 
                 frameModule.registerExitAction();
                 frameModule.registerBarsVisibilityActions();
-//                Component dockingPanel = dockingModule.getDockingPanel();
 
                 // Register clipboard editing actions
                 fileModule.registerMenuFileHandlingActions();
@@ -141,8 +145,13 @@ public class DeltaHexEditor {
 
                 optionsModule.registerMenuAction();
 
-//                HexEditorProvider editorProvider = deltaHexModule.getMultiEditorProvider();
-                HexEditorProvider editorProvider = deltaHexModule.getEditorProvider();
+                HexEditorProvider editorProvider;
+                if (multiTabMode) {
+                    editorProvider = deltaHexModule.getMultiEditorProvider();
+                } else {
+                    editorProvider = deltaHexModule.getEditorProvider();
+                }
+
                 deltaHexModule.registerEditFindMenuActions();
                 deltaHexModule.registerEditFindToolBarActions();
                 deltaHexModule.registerViewNonprintablesMenuActions();
@@ -159,8 +168,12 @@ public class DeltaHexEditor {
                 deltaHexModule.registerWordWrapping();
 
                 final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
-                editorModule.registerEditor("hex", editorProvider);
-                // editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
+                if (multiTabMode) {
+                    editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
+                } else {
+                    editorModule.registerEditor("hex", editorProvider);
+                }
+
                 editorModule.registerUndoHandler();
                 undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
 
@@ -179,9 +192,12 @@ public class DeltaHexEditor {
                     }
                 });
 
-//                frameHandler.setMainPanel(dockingPanel);
-                // Single editor only
-                frameHandler.setMainPanel(editorModule.getEditorPanel());
+                if (multiTabMode) {
+                    frameHandler.setMainPanel(dockingModule.getDockingPanel());
+                } else {
+                    frameHandler.setMainPanel(editorModule.getEditorPanel());
+                }
+
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();
                 frameHandler.show();
