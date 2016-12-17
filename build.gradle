@@ -23,6 +23,9 @@ task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper
     gradleVersion = '2.14'
 }
 
+task('offline') {
+}
+
 task('cleanDeps') << {
     println "Deleting temporary dependency modules"
     File depsCheckFile = rootProject.file("deps/dependency.txt")
@@ -82,7 +85,9 @@ if (file('deps/_placeholder').exists()) {
     artefactBuild.execute()
 }
 
-distZip.dependsOn project(':tools:deltahex-editor').tasks['launch4j']
+if (!gradle.startParameter.taskNames.contains("offline")) {
+    distZip.dependsOn project(':tools:deltahex-editor').tasks['launch4j']
+}
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     distZip {
