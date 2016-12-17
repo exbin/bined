@@ -5,12 +5,17 @@ buildscript {
         mavenLocal()
         jcenter()
     }
-    dependencies {
-        classpath "at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration"
+    if (!gradle.startParameter.taskNames.contains("offline")) {
+        dependencies {
+            classpath "at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration"
+        }
     }
 }
+if (!gradle.startParameter.taskNames.contains("offline")) {
+    apply plugin: 'at.bxm.svntools'
+}
 
-['base', 'distribution', 'maven', 'at.bxm.svntools'].each {
+['base', 'distribution', 'maven'].each {
     apply plugin: it
 }
 
@@ -33,7 +38,7 @@ task('cleanDeps') << {
     }
 }
 
-if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+if (!gradle.startParameter.taskNames.contains("offline") && gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     cleanDeps.execute()
 }
 
@@ -100,8 +105,10 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
 //                include 'deltahex-editor.bat'
                 include 'plugins/*'
                 
-                from project(':tools:deltahex-editor').projectDir.absolutePath + '/build/launch4j'
-                include "DeltaHexEditor.exe"
+                if (!gradle.startParameter.taskNames.contains("offline")) {
+                    from project(':tools:deltahex-editor').projectDir.absolutePath + '/build/launch4j'
+                    include "DeltaHexEditor.exe"
+                }
 
                 //            into('lib') {
                 //                from 'lib'

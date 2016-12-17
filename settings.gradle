@@ -9,7 +9,7 @@ if (placeholder.exists()) {
     placeholder.delete()
 }
 
-if (!gradle.startParameter.taskNames.contains("clean") || gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+if (gradle.startParameter.taskNames.contains("offline") || !gradle.startParameter.taskNames.contains("clean") || gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     File depsDir = file("deps")
     // Include all downloaded dependency modules
     depsDir.listFiles().each() { childFile ->

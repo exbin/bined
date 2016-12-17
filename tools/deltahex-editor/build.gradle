@@ -8,14 +8,18 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-        classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.2"
+    if (!gradle.startParameter.taskNames.contains("offline")) {
+        dependencies {
+            classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
+            classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.2"
+        }
     }
 }
 
-['edu.sc.seis.launch4j'].each {
-   apply plugin: it
+if (!gradle.startParameter.taskNames.contains("offline")) {
+    ['edu.sc.seis.launch4j'].each {
+        apply plugin: it
+    }
 }
 
 if (!hasProperty('mainClass')) {
@@ -86,12 +90,14 @@ def manifestClassPath() {
     }
 }
 
-launch4j {
-    outfile = "DeltaHexEditor.exe"
-    icon = "../../../../images/icon.ico"
-    mainClassName = "org.exbin.deltahex.editor.DeltaHexEditor"
-    jar = "../../build/libs/deltahex-editor-0.1.2-SNAPSHOT.jar"
-    copyright = "ExBin Project"
+if (!gradle.startParameter.taskNames.contains("offline")) {
+    launch4j {
+        outfile = "DeltaHexEditor.exe"
+        icon = "../../../../images/icon.ico"
+        mainClassName = "org.exbin.deltahex.editor.DeltaHexEditor"
+        jar = "../../build/libs/deltahex-editor-0.1.2-SNAPSHOT.jar"
+        copyright = "ExBin Project"
+    }
 }
 
 jar {
