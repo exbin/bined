@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+ROOT = $(CURDIR)/debian/deltahex
+
+override_dh_auto_clean:
+	$(RM) -r lib
+	$(RM) lib *.res deltahex
+
+override_dh_auto_build:
+	gradle offline build
+
+override_dh_auto_install:
+	install -d -m 755 $(ROOT)/usr/bin
+	install -s -m 755 deltahex $(ROOT)/usr/bin
+	install -d -m 755 $(ROOT)/usr/share/applications
+	install -m 755 Install/deb/deltahex.desktop $(ROOT)/usr/share/applications
+	install -d -m 755 $(ROOT)/usr/share/pixmaps
+	install -m 755 deltahex.png $(ROOT)/usr/share/pixmaps
+
+%:
+	dh $@

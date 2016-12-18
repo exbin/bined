@@ -1,0 +1,5 @@
+deltahex (0.1.0-0) precise; urgency=low
+
+  * Original version 0.1.0 packaged with lazdebian
+
+ -- Chronos <robie@centrum.cz>  Sun, 27 Nov 2016 00:51:08 +0100

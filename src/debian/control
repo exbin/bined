@@ -1,0 +1,12 @@
+Source: deltahex
+Maintainer: Chronos <robie@centrum.cz>
+Section: utils
+Priority: optional
+Standards-Version: 0.1.1
+Build-Depends: default-jdk, gradle, debhelper (>= 8)
+
+Package: deltahex
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+Description: Free and open source hexadecimal viewer/editor and component written in Java / Swing.
+HomePage: http://deltahex.exbin.org/

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Delta Hexadecimal Editor
+Comment=Free and open source hexadecimal viewer/editor and component written in Java / Swing.
+Exec=deltahex
+Icon=deltahex
+Terminal=false
+Type=Application
+Categories=GNOME;Application;Utility;
+StartupNotify=true
