@@ -9,6 +9,7 @@
 -  Fix delete code area in XBEditor
 -  Add inplace editation mode
 -  https://sourceforge.net/projects/javaclassviewer
+-  Move cursor after select all
 
 Ok Cursor position on click on line number
 Ok Line offset with ctrl movements
