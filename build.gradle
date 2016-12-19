@@ -20,7 +20,7 @@ if (!gradle.startParameter.taskNames.contains("offline")) {
 }
 
 task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper to the current directory.') {
-    gradleVersion = '2.14'
+    gradleVersion = '3.2'
 }
 
 task('offline') {
