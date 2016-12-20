@@ -30,29 +30,29 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.exbin.framework.XBBaseApplication;
-import org.exbin.xbup.core.parser.basic.XBHead;
+import org.exbin.framework.api.XBApplicationModuleRepository;
+import org.exbin.framework.deltahex.DeltaHexModule;
+import org.exbin.framework.deltahex.HexEditorProvider;
+import org.exbin.framework.deltahex.UndoHandlerWrapper;
+import org.exbin.framework.deltahex.panel.HexAppearanceOptionsPanel;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
+import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
+import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
+import org.exbin.framework.gui.frame.api.ApplicationExitListener;
+import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
 import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
 import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
-import org.exbin.framework.api.XBApplicationModuleRepository;
-import org.exbin.framework.deltahex.DeltaHexModule;
-import org.exbin.framework.deltahex.HexEditorProvider;
-import org.exbin.framework.deltahex.panel.HexAppearanceOptionsPanel;
-import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
-import org.exbin.framework.gui.editor.api.MultiEditorProvider;
-import org.exbin.framework.gui.frame.api.ApplicationExitListener;
-import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 import org.exbin.framework.gui.utils.LanguageUtils;
 
 /**
  * The main class of the Delta Hex Editor application.
  *
- * @version 0.1.2 2016/12/08
+ * @version 0.1.2 2016/12/20
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -82,13 +82,6 @@ public class DeltaHexEditor {
             } else {
                 verboseMode = cl.hasOption("v");
                 devMode = cl.hasOption("dev");
-                Logger logger = Logger.getLogger("");
-                try {
-                    logger.setLevel(Level.ALL);
-                    logger.addHandler(new XBHead.XBLogHandler(verboseMode));
-                } catch (java.security.AccessControlException ex) {
-                    // Ignore it in java webstart
-                }
 
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(DeltaHexEditor.class);
@@ -175,7 +168,7 @@ public class DeltaHexEditor {
                 }
 
                 editorModule.registerUndoHandler();
-                undoModule.setUndoHandler(editorProvider.getHexUndoHandler());
+                undoModule.setUndoHandler(new UndoHandlerWrapper(editorProvider.getHexUndoHandler()));
 
                 deltaHexModule.registerStatusBar();
                 deltaHexModule.registerOptionsPanels();
