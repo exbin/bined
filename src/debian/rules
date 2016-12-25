@@ -10,7 +10,7 @@ override_dh_auto_build:
 	cp ./.gradle-home/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7/* ~/.gradle/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7
 	cp -r ./.m2 ~/
 	unzip ./.gradle-home/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7/gradle-3.2-bin.zip -d ~/.gradle/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7
-	./gradlew offline build
+	./gradlew --offline offline build
 	unzip ./build/distributions/deltahex-editor-*.zip -d ./build/distributions/zip
 	mv ./build/distributions/zip/deltahex-editor-*/* ./build/distributions/.
 
