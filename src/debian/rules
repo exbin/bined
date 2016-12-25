@@ -1,21 +1,29 @@
 #!/usr/bin/make -f
 
-ROOT = $(CURDIR)/debian/deltahex
+ROOT = $(CURDIR)/debian/deltahex-editor
 
 override_dh_auto_clean:
-	$(RM) -r lib
-	$(RM) lib *.res deltahex
+	$(RM) deltahex-editor
 
 override_dh_auto_build:
-	./gradlew offline build --gradle-user-home .gradle-home
+	mkdir -p ~/.gradle/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7
+	cp ./.gradle-home/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7/* ~/.gradle/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7
+	unzip ./.gradle-home/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7/gradle-3.2-bin.zip -d ~/.gradle/wrapper/dists/gradle-3.2-bin/avantb235jk77byagvnd7aog7
+	./gradlew offline build
+	unzip ./build/distributions/deltahex-editor-*.zip -d ./build/distributions/zip
+	mv ./build/distributions/zip/deltahex-editor-*/* ./build/distributions/.
 
 override_dh_auto_install:
 	install -d -m 755 $(ROOT)/usr/bin
-	install -s -m 755 deltahex $(ROOT)/usr/bin
+	install -m 755 debian/deltahex-editor.sh $(ROOT)/usr/bin/deltahex-editor
+	install -d -m 755 $(ROOT)/usr/share/deltahex-editor
+	install -m 755 build/distributions/deltahex-editor.jar $(ROOT)/usr/share/deltahex-editor
 	install -d -m 755 $(ROOT)/usr/share/applications
-	install -m 755 Install/deb/deltahex.desktop $(ROOT)/usr/share/applications
+	install -m 755 debian/deltahex-editor.desktop $(ROOT)/usr/share/applications
 	install -d -m 755 $(ROOT)/usr/share/pixmaps
-	install -m 755 deltahex.png $(ROOT)/usr/share/pixmaps
+	install -m 644 debian/deltahex-editor.png $(ROOT)/usr/share/pixmaps
+	install -d -m 755 $(ROOT)/usr/share/deltahex-editor/lib
+	install -D -m 644 build/distributions/lib/* $(ROOT)/usr/share/deltahex-editor/lib
 
 %:
 	dh $@

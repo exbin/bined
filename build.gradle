@@ -47,6 +47,10 @@ if (!gradle.startParameter.taskNames.contains("offline") && gradle.startParamete
 
 subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
+subprojects {
+    task allDeps(type: DependencyReportTask) {}
+}
+
 def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
     return tasks.create("svnDownload${moduleName}", at.bxm.gradleplugins.svntools.tasks.SvnExport) {
         svnUrl = svnUrlValue

@@ -1,4 +1,4 @@
-deltahex (0.1.0-0) precise; urgency=low
+deltahex-editor (0.1.0-0) precise; urgency=low
 
   * Original version 0.1.0 packaged with lazdebian
 
