@@ -1,6 +1,8 @@
+-  Finish options dialogs with save button
+-  Update colors on Look&Feel change
 -  Support for octet-stream clipboard flavor
+-  Support for file clipboard flavor
 -  Saving colors breaks application
--  Fix undo on opening new file
 -  Value preview bar with float / string preview
 -  Insert space action
 -  Fix backspace after paste
@@ -11,6 +13,8 @@
 -  https://sourceforge.net/projects/javaclassviewer
 -  Move cursor after select all
 
+Ok Fix undo on opening new file
+Ok System laf as default
 Ok Cursor position on click on line number
 Ok Line offset with ctrl movements
 Ok Cursor is visible outside scrollbox in XOR mode

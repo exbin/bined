@@ -86,7 +86,6 @@ public class DeltaHexEditor {
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(DeltaHexEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(DeltaHexEditor.class));
-                boolean deltaMode = preferences.getBoolean(HexAppearanceOptionsPanel.PREFERENCES_DELTA_DATA_MODE, false);
                 boolean multiTabMode = preferences.getBoolean(HexAppearanceOptionsPanel.PREFERENCES_MULTITAB_MODE, false);
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
@@ -107,7 +106,6 @@ public class DeltaHexEditor {
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
-                deltaHexModule.setDeltaMode(deltaMode);
 
                 frameModule.createMainMenu();
                 try {
