@@ -13,7 +13,7 @@ ext.depsDeltahexJava = [
 ext.depsExbinUtilsJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-utils-java',
-    version: '0.1.1-SNAPSHOT'
+    version: '0.1.2-SNAPSHOT'
 ]
 
 ext.depsExbinFrameworkJava = [
