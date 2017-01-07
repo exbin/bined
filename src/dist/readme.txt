@@ -1,7 +1,7 @@
 Delta Hexadecimal Editor
 ========================
 
-Hexadecimal viewer/editor written in Java / Swing.
+Hexadecimal viewer/editor written in Java.
 
 Homepage: http://deltahex.exbin.org  
 
@@ -16,12 +16,8 @@ Features
 - Support for charset/encoding selection
 - Codes can be also binary, octal or decimal
 - Searching for text / hexadecimal code with matching highlighting
-
-Todo
-----
-
-- Delta mode - Only changes are stored in memory
 - Support for huge files
+- Delta mode - Only changes are stored in memory
 
 License
 -------

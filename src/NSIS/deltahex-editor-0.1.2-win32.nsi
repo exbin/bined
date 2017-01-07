@@ -1,11 +1,13 @@
-; deltahex-editor-0.1.1-win32.nsi
+; deltahex-editor-0.1.2-win32.nsi
 !include MUI2.nsh
-!define CLIENT_VERSION "0.1.1"
+!define CLIENT_VERSION "0.1.2"
 !define TITLE "DeltaHex Editor"
-!define FULL_TITLE "DeltaHex Editor - 0.1.1"
+!define FULL_TITLE "DeltaHex Editor - 0.1.2"
 !define CREATOR "ExBin Project"
 ; !define CHANGELOG_FILE "Novinky.txt"
 !define MUI_TEXT_WELCOME_TITLE "!"
+!define MUI_FILE "DeltaHexEditor"
+!define MUI_PRODUCT "DeltaHex Editor"
 
 Var SF_SELORPSEL
 
@@ -14,7 +16,7 @@ Name "DeltaHex Editor Installer"
 Caption "DeltaHex Editor Installer"
 
 ; The file to write
-OutFile "deltahex-editor-0.1.1-win32.exe"
+OutFile "deltahex-editor-0.1.2-win32.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\ExBin Project\DeltaHex"
@@ -83,7 +85,11 @@ Section
 
 SectionEnd
 
-; Optional section (can be disabled by the user)
+; Optional sections (can be disabled by the user)
+Section "Create Desktop Icon" DesktopIcon
+  CreateShortCut "$DESKTOP\${MUI_PRODUCT}.lnk" "$INSTDIR\${MUI_FILE}.exe" ""
+SectionEnd
+
 Section "Start Menu Shortcuts" ShortCut
 
   StrCpy $R0 ${SF_SELECTED}
@@ -91,7 +97,7 @@ Section "Start Menu Shortcuts" ShortCut
   StrCpy $SF_SELORPSEL $R0
 
   CreateDirectory "$SMPROGRAMS\${TITLE}"
-  CreateShortCut "$SMPROGRAMS\${TITLE}\DeltaHex Editor.lnk" "$INSTDIR\DeltaHexEditor.exe" "" "" 0
+  CreateShortCut "$SMPROGRAMS\${TITLE}\DeltaHex Editor.lnk" "$INSTDIR\${MUI_FILE}.exe" "" "" 0
   CreateShortCut "$SMPROGRAMS\${TITLE}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\${TITLE}\Readme.lnk" "$INSTDIR\readme.txt" "" "" 0
 
@@ -121,6 +127,7 @@ Section "Uninstall"
   RMDir /r $INSTDIR\plugins
 
   ; Remove shortcuts, if any
+  Delete "$DESKTOP\${MUI_PRODUCT}.lnk"
   Delete "$SMPROGRAMS\${TITLE}\*.*"
 
   ; Remove directories used
