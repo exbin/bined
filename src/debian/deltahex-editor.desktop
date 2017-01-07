@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Delta Hexadecimal Editor
-Comment=Free and open source hexadecimal viewer/editor and component written in Java / Swing.
+Comment=Free and open source hexadecimal viewer/editor and component written in Java.
 Exec=deltahex-editor
 Icon=deltahex-editor
 Terminal=false

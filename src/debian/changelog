@@ -1,5 +1,24 @@
-deltahex-editor (0.1.0-0) precise; urgency=low
+deltahex-editor (0.1.2) precise; urgency=low
+
+  * 0.1.2 (2017-01-07)
+    - Fixed charset for clipboard copy/paste
+    - Modified status panel to show relative size
+    - Adding charset now support basic filtering
+    - Enabled delta mode, switchable to memory mode
+    - Options panels now have Save button
+
+  * 0.1.1 (2016-12-05)
+    - Added main window position saving
+    - Fixed charset for clipboard copy/paste
+    - Fixed issue with Preferences on Windows Vista and newer
+    - Fixed issue with window headers for dark themes
+    - Added windows executable and NSIS installer
+    - Full cursor shape and cursor blinking
+    - Support for horizontal position offset
+    - Added copy as code and paste from code
+    - Fixed clipboard related IllegalStateException issue
 
   * Original version 0.1.0 packaged with lazdebian
 
  -- Chronos <robie@centrum.cz>  Sun, 27 Nov 2016 00:51:08 +0100
+ -- HajdaM <hajdam@users.sf.net>  Sat, 07 Jan 2017 20:44:28 +0100

@@ -1,4 +1,5 @@
 -  Preferences for netbeans plugin
+-  Appearance setting doesn't work in options dialog and fix Apperance -> Appearance
 -  Update CZ language pack
 -  Update colors on Look&Feel change
 -  Support for octet-stream clipboard flavor

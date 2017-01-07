@@ -1,8 +1,6 @@
 0.1.2 (2017-01-07)
 - Fixed charset for clipboard copy/paste
 - Modified status panel to show relative size
-- Added go-to position dialog
-- Added crude search panel
 - Adding charset now support basic filtering
 - Enabled delta mode, switchable to memory mode
 - Options panels now have Save button
