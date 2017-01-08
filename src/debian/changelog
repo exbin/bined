@@ -1,4 +1,4 @@
-deltahex-editor (0.1.2) precise; urgency=low
+deltahex-editor (0.1.3) precise; urgency=low
 
   * 0.1.2 (2017-01-07)
     - Fixed charset for clipboard copy/paste
