@@ -11,7 +11,7 @@ buildscript {
     if (!gradle.startParameter.taskNames.contains("offline")) {
         dependencies {
             classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-            classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.2"
+            classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:2.4.1"
         }
     }
 }

@@ -1,6 +1,4 @@
--  Preferences for netbeans plugin
 -  Appearance setting doesn't work in options dialog and fix Apperance -> Appearance
--  Update CZ language pack
 -  Update colors on Look&Feel change
 -  Support for octet-stream clipboard flavor
 -  Support for file clipboard flavor
@@ -15,6 +13,8 @@
 -  https://sourceforge.net/projects/javaclassviewer
 -  Move cursor after select all
 
+Ok Update CZ language pack for 0.1.2
+Ok Preferences for netbeans plugin
 Ok Saving colors breaks application
 Ok Finish options dialogs with save button
 Ok Fix undo on opening new file
