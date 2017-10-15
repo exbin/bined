@@ -52,7 +52,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the Delta Hexadecimal Editor application.
  *
- * @version 0.1.2 2017/01/06
+ * @version 0.1.2 2017/10/15
  * @author ExBin Project (http://exbin.org)
  */
 public class DeltaHexEditor {
@@ -146,6 +146,7 @@ public class DeltaHexEditor {
                 deltaHexModule.registerEditFindMenuActions();
                 deltaHexModule.registerEditFindToolBarActions();
                 deltaHexModule.registerViewNonprintablesMenuActions();
+                deltaHexModule.registerViewValuesPanelMenuActions();
                 deltaHexModule.registerToolsOptionsMenuActions();
                 deltaHexModule.registerClipboardCodeActions();
                 deltaHexModule.registerOptionsMenuPanels();
