@@ -1,13 +1,13 @@
 // Shared tools build
 
-version = '0.1.3-SNAPSHOT'
+version = '0.1.3'
 def repositoryName = "deltahex-editor"
 def libraryUrl = 'http://deltahex.exbin.org'
 
 ext.depsDeltahexJava = [
     githubProfile: 'exbin',
     githubRepo: 'deltahex-java',
-    version: '0.1.3-SNAPSHOT'
+    version: '0.1.3'
 ]
 
 ext.depsExbinUtilsJava = [
@@ -25,13 +25,13 @@ ext.depsExbinFrameworkJava = [
 ext.depsXbupJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsXbupDataJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-data-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 buildscript {

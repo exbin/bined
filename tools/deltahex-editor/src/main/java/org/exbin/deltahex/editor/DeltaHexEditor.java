@@ -18,6 +18,7 @@ package org.exbin.deltahex.editor;
 import java.awt.Dimension;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,7 +37,7 @@ import org.exbin.framework.deltahex.HexEditorProvider;
 import org.exbin.framework.deltahex.UndoHandlerWrapper;
 import org.exbin.framework.deltahex.panel.HexAppearanceOptionsPanel;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
-import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
+//import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
@@ -102,7 +103,7 @@ public class DeltaHexEditor {
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
                 GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
                 GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
-                GuiDockingModuleApi dockingModule = moduleRepository.getModuleByInterface(GuiDockingModuleApi.class);
+                //              GuiDockingModuleApi dockingModule = moduleRepository.getModuleByInterface(GuiDockingModuleApi.class);
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
@@ -184,11 +185,11 @@ public class DeltaHexEditor {
                     }
                 });
 
-                if (multiTabMode) {
-                    frameHandler.setMainPanel(dockingModule.getDockingPanel());
-                } else {
-                    frameHandler.setMainPanel(editorModule.getEditorPanel());
-                }
+//                if (multiTabMode) {
+//                    frameHandler.setMainPanel(dockingModule.getDockingPanel());
+//                } else {
+                frameHandler.setMainPanel(editorModule.getEditorPanel());
+//                }
 
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();
@@ -197,7 +198,13 @@ public class DeltaHexEditor {
 
                 List fileArgs = cl.getArgList();
                 if (fileArgs.size() > 0) {
-                    fileModule.loadFromFile((String) fileArgs.get(0));
+                    String filePath = (String) fileArgs.get(0);
+                    try {
+                        URL url = new File(filePath).toURI().toURL();
+                        fileModule.loadFromFile(url.toURI().toASCIIString());
+                    } catch (MalformedURLException | URISyntaxException ex) {
+                        fileModule.loadFromFile(filePath);
+                    }
                 }
             }
         } catch (ParseException | RuntimeException ex) {

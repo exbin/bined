@@ -53,7 +53,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.dockingframes:docking-frames-common:1.1.1'
+//    compile 'org.dockingframes:docking-frames-common:1.1.1'
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-core')
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-swing')
     compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-delta')
@@ -71,7 +71,7 @@ dependencies {
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-about-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-undo')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-undo-api')
-    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-docking')
+//    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-docking')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-component')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-component-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-options')
@@ -97,7 +97,7 @@ if (!gradle.startParameter.taskNames.contains("offline")) {
         outfile = "DeltaHexEditor.exe"
         icon = "../../../../images/icon.ico"
         mainClassName = "org.exbin.deltahex.editor.DeltaHexEditor"
-        jar = "../../build/libs/deltahex-editor-0.1.3-SNAPSHOT.jar"
+        jar = "../../build/libs/deltahex-editor-0.1.3.jar"
         copyright = "ExBin Project"
     }
 }
