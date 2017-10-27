@@ -1,5 +1,3 @@
-version = '0.2.0-SNAPSHOT'
-
 buildscript {
     repositories {
         mavenLocal()
@@ -11,8 +9,16 @@ buildscript {
         }
     }
 }
+
+plugins {
+    id "nebula.ospackage" version "4.5.1"
+}
+
+version = '0.1.3'
+
 if (!gradle.startParameter.taskNames.contains("offline")) {
     apply plugin: 'at.bxm.svntools'
+    apply plugin: "nebula.ospackage"
 }
 
 ['base', 'distribution', 'maven'].each {
@@ -91,6 +97,53 @@ if (file('deps/_placeholder').exists()) {
 
 if (!gradle.startParameter.taskNames.contains("offline")) {
     distZip.dependsOn project(':tools:deltahex-editor').tasks['launch4j']
+}
+
+ospackage {
+    packageName = 'deltahex-editor'
+    version = '0.1.3'
+    release = '0'
+    arch = NOARCH
+    os = LINUX
+    packageGroup = 'Converted/utils'
+    license = 'Apache V2'
+    vendor = 'ExBin Project'
+    description = 'Free and open source hexadecimal viewer/editor and component written in Java.'
+    distribution = 'Linux'
+    url = 'http://deltahex.exbin.org'
+
+    from('src/rpm/deltahex-editor') {
+        into '/usr/bin'
+    }
+
+    from('src/rpm/deltahex-editor.desktop') {
+        into '/usr/share/applications'
+    }
+    
+    from('src/rpm/deltahex-editor.png') {
+        into '/usr/share/pixmaps'
+    }
+    
+    from(project(':tools:deltahex-editor').jar) {
+        rename { filename -> project(':tools:deltahex-editor').name + ".jar" }
+        into '/usr/share/deltahex-editor'
+    }
+
+    project(':tools:deltahex-editor').plugins.withType(JavaPlugin) {
+        from(project(':tools:deltahex-editor').configurations.runtime) {
+            into('/usr/share/deltahex-editor/lib')
+            include '*'
+        }
+    }
+}
+
+buildRpm {
+    requires('jre', '1.7.0', GREATER | EQUAL)
+}
+
+buildDeb {
+    arch = 'all'
+    requires('default-jre', '1.7.0', GREATER | EQUAL)
 }
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
