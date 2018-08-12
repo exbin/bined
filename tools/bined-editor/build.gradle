@@ -23,7 +23,7 @@ if (!gradle.startParameter.taskNames.contains("offline")) {
 }
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.deltahex.editor.DeltaHexEditor'
+    ext.mainClass = 'org.exbin.bined.editor.BinedEditor'
     ext.appArgs = '-dev'
 }
 
@@ -54,9 +54,9 @@ repositories {
 
 dependencies {
 //    compile 'org.dockingframes:docking-frames-common:1.1.1'
-    compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-core')
-    compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-swing')
-    compile moduleDep('DeltahexJava', 'org.exbin.deltahex', 'deltahex-delta')
+    compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-core')
+    compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-swing')
+    compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-delta')
     compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-frame-api')
@@ -79,7 +79,7 @@ dependencies {
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-update')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-update-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor-text')
-    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-deltahex')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-bined')
     compile 'commons-cli:commons-cli:1.2'
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
@@ -94,10 +94,10 @@ def manifestClassPath() {
 
 if (!gradle.startParameter.taskNames.contains("offline")) {
     launch4j {
-        outfile = "DeltaHexEditor.exe"
+        outfile = "Bined.exe"
         icon = "../../../../images/icon.ico"
-        mainClassName = "org.exbin.deltahex.editor.DeltaHexEditor"
-        jar = "../../build/libs/deltahex-editor-0.1.3.jar"
+        mainClassName = "org.exbin.bined.editor.BinedEditor"
+        jar = "../../build/libs/bined-editor-0.2.0-SNAPSHOT.jar"
         copyright = "ExBin Project"
     }
 }

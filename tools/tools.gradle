@@ -1,13 +1,13 @@
 // Shared tools build
 
-version = '0.1.3'
-def repositoryName = "deltahex-editor"
-def libraryUrl = 'http://deltahex.exbin.org'
+version = '0.2.0-SNAPSHOT'
+def repositoryName = "bined-editor"
+def libraryUrl = 'https://bined.exbin.org/editor'
 
-ext.depsDeltahexJava = [
+ext.depsBinedLibJava = [
     githubProfile: 'exbin',
-    githubRepo: 'deltahex-java',
-    version: '0.1.3'
+    githubRepo: 'bined-lib-java',
+    version: '0.2.0-SNAPSHOT'
 ]
 
 ext.depsExbinUtilsJava = [
@@ -54,7 +54,7 @@ if (!gradle.startParameter.taskNames.contains("offline")) {
     apply plugin: it
 }
 
-sourceCompatibility = '1.7'
+sourceCompatibility = '1.8'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -108,7 +108,7 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
     if (gradle.startParameter.taskNames.contains("offline")) {
         return project(':deps:' + moduleName)
     }
-    
+
     def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
     if (new File(mavenModuleDir).isDirectory()) {
         // Use maven package if available
@@ -128,7 +128,7 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
 
         createSvnDownloadTask(moduleName, githubModulePath, depModuleDir)
         tasks["svnDownload${moduleName}"].execute()
-        
+
         // Report as placeholder dependency
         if (!new File(depsDir + "_placeholder").exists()) {
             new File(depsDir + "_placeholder").mkdir()

@@ -1,14 +1,14 @@
-Delta Hexadecimal Editor
-========================
+BinEd - Hexadecimal Editor
+==========================
 
-Hexadecimal viewer/editor written in Java.
+Editor for binary data (hexadecimal viewer/editor) written in Java.
 
-Homepage: http://deltahex.exbin.org  
+Homepage: https://bined.exbin.org/editor  
 
 Screenshot
 ----------
 
-![DeltaHex-Editor Screenshot](images/editor_screenshot.png?raw=true)
+![BinEd-Application Screenshot](images/bined_screenshot.png?raw=true)
 
 Features
 --------
@@ -27,9 +27,9 @@ Features
 Compiling
 ---------
 
-Java Development Kit (JDK) version 7 or later is required to build this project.
+Java Development Kit (JDK) version 8 or later is required to build this project.
 
-For project compiling Gradle 2.0 build system is used. You can either download and install gradle and run
+For project compiling Gradle 4 build system is used. You can either download and install gradle and run
 
   gradle build
 

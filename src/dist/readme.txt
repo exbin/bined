@@ -1,9 +1,9 @@
-Delta Hexadecimal Editor
-========================
+BinEd - Hexadecimal Editor
+==========================
 
 Hexadecimal viewer/editor written in Java.
 
-Homepage: http://deltahex.exbin.org  
+Homepage: https://bined.exbin.org/editor  
 
 Features
 --------

@@ -1,36 +1,36 @@
-; deltahex-editor-0.2.0-SNAPSHOT-win32.nsi
+; bined-editor-0.2.0-SNAPSHOT-win32.nsi
 !include MUI2.nsh
 !define CLIENT_VERSION "0.2.0-SNAPSHOT"
-!define TITLE "DeltaHex Editor"
-!define FULL_TITLE "DeltaHex Editor - 0.2.0-SNAPSHOT"
+!define TITLE "BinEd - Hexadecimal Editor"
+!define FULL_TITLE "BinEd - 0.2.0-SNAPSHOT"
 !define CREATOR "ExBin Project"
 ; !define CHANGELOG_FILE "Novinky.txt"
 !define MUI_TEXT_WELCOME_TITLE "!"
-!define MUI_FILE "DeltaHexEditor"
-!define MUI_PRODUCT "DeltaHex Editor"
+!define MUI_FILE "BinEd"
+!define MUI_PRODUCT "BinEd Hexadecimal Editor"
 
 Var SF_SELORPSEL
 
 ; The name of the installer
-Name "DeltaHex Editor Installer"
-Caption "DeltaHex Editor Installer"
+Name "BinEd Installer"
+Caption "BinEd Installer"
 
 ; The file to write
-OutFile "deltahex-editor-0.2.0-SNAPSHOT-win32.exe"
+OutFile "bined-editor-0.2.0-SNAPSHOT-win32.exe"
 
 ; The default installation directory
-InstallDir "$PROGRAMFILES\ExBin Project\DeltaHex"
+InstallDir "$PROGRAMFILES\ExBin Project\BinEd"
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM "Software\ExBin Project\DeltaHex" "Install_Dir"
+InstallDirRegKey HKLM "Software\ExBin Project\BinEd" "Install_Dir"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
 
 ;--------------------------------
 
-!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of DeltaHex Editor version ${CLIENT_VERSION}.$\r$\n$\r$\nDeltaHex editor is free and open source hexadecimal editor written in Java / Swing.$\r$\n$\r$\n$_CLICK"
+!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of BinEd version ${CLIENT_VERSION}.$\r$\n$\r$\nBinEd is free and open source hexadecimal editor written in Java / Swing.$\r$\n$\r$\n$_CLICK"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "LICENSE-2.0.txt"
 !insertmacro MUI_PAGE_COMPONENTS
@@ -61,8 +61,8 @@ Section
   File "LICENSE-2.0.txt"
   File "readme.txt"
   File "changes.txt"
-  File "DeltaHexEditor.exe"
-  File "deltahex-editor.jar"
+  File "BinEd.exe"
+  File "bined-editor.jar"
 
   SetOutPath $INSTDIR\lib
   File /r lib\*
@@ -77,7 +77,7 @@ Section
   WriteRegStr HKLM "SOFTWARE\${CREATOR}\${TITLE}" "Install_Dir" "$INSTDIR"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CREATOR}\${TITLE}" "DisplayName" "Uninstall DeltaHex Editor"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CREATOR}\${TITLE}" "DisplayName" "Uninstall BinEd"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CREATOR}\${TITLE}" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CREATOR}\${TITLE}" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CREATOR}\${TITLE}" "NoRepair" 1
@@ -97,7 +97,7 @@ Section "Start Menu Shortcuts" ShortCut
   StrCpy $SF_SELORPSEL $R0
 
   CreateDirectory "$SMPROGRAMS\${TITLE}"
-  CreateShortCut "$SMPROGRAMS\${TITLE}\DeltaHex Editor.lnk" "$INSTDIR\${MUI_FILE}.exe" "" "" 0
+  CreateShortCut "$SMPROGRAMS\${TITLE}\BinEd.lnk" "$INSTDIR\${MUI_FILE}.exe" "" "" 0
   CreateShortCut "$SMPROGRAMS\${TITLE}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\${TITLE}\Readme.lnk" "$INSTDIR\readme.txt" "" "" 0
 
@@ -118,8 +118,8 @@ Section "Uninstall"
   Delete $INSTDIR\LICENSE-2.0.txt
   Delete $INSTDIR\changes.txt
   Delete $INSTDIR\uninstall.exe
-  Delete $INSTDIR\DeltaHexEditor.exe
-  Delete $INSTDIR\deltahex-editor.jar
+  Delete $INSTDIR\BinEd.exe
+  Delete $INSTDIR\bined-editor.jar
 
   Delete $INSTDIR\imgs\*
   RMDir $INSTDIR\imgs

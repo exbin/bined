@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.deltahex.editor;
+package org.exbin.bined.editor;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -32,10 +32,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.exbin.framework.XBBaseApplication;
 import org.exbin.framework.api.XBApplicationModuleRepository;
-import org.exbin.framework.deltahex.DeltaHexModule;
-import org.exbin.framework.deltahex.HexEditorProvider;
-import org.exbin.framework.deltahex.UndoHandlerWrapper;
-import org.exbin.framework.deltahex.panel.HexAppearanceOptionsPanel;
+import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.HexEditorProvider;
+import org.exbin.framework.bined.UndoHandlerWrapper;
+import org.exbin.framework.bined.panel.HexAppearanceOptionsPanel;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 //import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
@@ -56,7 +56,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
  * @version 0.1.2 2017/10/15
  * @author ExBin Project (http://exbin.org)
  */
-public class DeltaHexEditor {
+public class BinedEditor {
 
     private static boolean verboseMode = false;
     private static boolean devMode = false;
@@ -69,7 +69,7 @@ public class DeltaHexEditor {
      */
     public static void main(String[] args) {
         try {
-            bundle = LanguageUtils.getResourceBundleByClass(DeltaHexEditor.class);
+            bundle = LanguageUtils.getResourceBundleByClass(BinedEditor.class);
             // Parameters processing
             Options opt = new Options();
             opt.addOption("h", "help", false, bundle.getString("cl_option_help"));
@@ -85,13 +85,13 @@ public class DeltaHexEditor {
                 devMode = cl.hasOption("dev");
 
                 XBBaseApplication app = new XBBaseApplication();
-                Preferences preferences = app.createPreferences(DeltaHexEditor.class);
-                app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(DeltaHexEditor.class));
+                Preferences preferences = app.createPreferences(BinedEditor.class);
+                app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
                 boolean multiTabMode = preferences.getBoolean(HexAppearanceOptionsPanel.PREFERENCES_MULTITAB_MODE, false);
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
-                moduleRepository.addModulesFromManifest(DeltaHexEditor.class);
+                moduleRepository.addModulesFromManifest(BinedEditor.class);
                 moduleRepository.loadModulesFromPath(new File("plugins").toURI());
                 moduleRepository.initModules();
                 app.init();
@@ -106,14 +106,14 @@ public class DeltaHexEditor {
                 //              GuiDockingModuleApi dockingModule = moduleRepository.getModuleByInterface(GuiDockingModuleApi.class);
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
-                DeltaHexModule deltaHexModule = moduleRepository.getModuleByInterface(DeltaHexModule.class);
+                BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
 
                 frameModule.createMainMenu();
                 try {
                     updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
                     updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
                 } catch (MalformedURLException ex) {
-                    Logger.getLogger(DeltaHexEditor.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 updateModule.registerDefaultMenuItem();
                 aboutModule.registerDefaultMenuItem();
@@ -139,26 +139,26 @@ public class DeltaHexEditor {
 
                 HexEditorProvider editorProvider;
                 if (multiTabMode) {
-                    editorProvider = deltaHexModule.getMultiEditorProvider();
+                    editorProvider = binedModule.getMultiEditorProvider();
                 } else {
-                    editorProvider = deltaHexModule.getEditorProvider();
+                    editorProvider = binedModule.getEditorProvider();
                 }
 
-                deltaHexModule.registerEditFindMenuActions();
-                deltaHexModule.registerEditFindToolBarActions();
-                deltaHexModule.registerViewNonprintablesMenuActions();
-                deltaHexModule.registerViewValuesPanelMenuActions();
-                deltaHexModule.registerToolsOptionsMenuActions();
-                deltaHexModule.registerClipboardCodeActions();
-                deltaHexModule.registerOptionsMenuPanels();
-                deltaHexModule.registerGoToLine();
-                deltaHexModule.registerPropertiesMenu();
-                // TODO deltaHexModule.registerPrintMenu();
-                deltaHexModule.registerViewModeMenu();
-                deltaHexModule.registerCodeTypeMenu();
-                deltaHexModule.registerPositionCodeTypeMenu();
-                deltaHexModule.registerHexCharactersCaseHandlerMenu();
-                deltaHexModule.registerWordWrapping();
+                binedModule.registerEditFindMenuActions();
+                binedModule.registerEditFindToolBarActions();
+                binedModule.registerViewNonprintablesMenuActions();
+                binedModule.registerViewValuesPanelMenuActions();
+                binedModule.registerToolsOptionsMenuActions();
+                binedModule.registerClipboardCodeActions();
+                binedModule.registerOptionsMenuPanels();
+                binedModule.registerGoToLine();
+                binedModule.registerPropertiesMenu();
+                // TODO binedModule.registerPrintMenu();
+                binedModule.registerViewModeMenu();
+                binedModule.registerCodeTypeMenu();
+                binedModule.registerPositionCodeTypeMenu();
+                binedModule.registerHexCharactersCaseHandlerMenu();
+                binedModule.registerWordWrapping();
 
                 final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
                 if (multiTabMode) {
@@ -170,12 +170,12 @@ public class DeltaHexEditor {
                 editorModule.registerUndoHandler();
                 undoModule.setUndoHandler(new UndoHandlerWrapper(editorProvider.getHexUndoHandler()));
 
-                deltaHexModule.registerStatusBar();
-                deltaHexModule.registerOptionsPanels();
-                deltaHexModule.getTextStatusPanel();
+                binedModule.registerStatusBar();
+                binedModule.registerOptionsPanels();
+                binedModule.getTextStatusPanel();
                 updateModule.registerOptionsPanels();
 
-                deltaHexModule.loadFromPreferences(preferences);
+                binedModule.loadFromPreferences(preferences);
 
                 frameModule.addExitListener(new ApplicationExitListener() {
                     @Override
@@ -208,7 +208,7 @@ public class DeltaHexEditor {
                 }
             }
         } catch (ParseException | RuntimeException ex) {
-            Logger.getLogger(DeltaHexEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

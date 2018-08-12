@@ -1,8 +1,8 @@
-rootProject.name = 'deltahex-editor-java'
+rootProject.name = 'bined'
 
 include ":deps"
 
-include ":tools:deltahex-editor"
+include ":tools:bined-editor"
 
 File placeholder = file("deps/_placeholder")
 if (placeholder.exists()) {
