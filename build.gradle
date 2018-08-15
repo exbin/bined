@@ -100,7 +100,7 @@ if (!gradle.startParameter.taskNames.contains("offline")) {
 }
 
 ospackage {
-    packageName = 'bined-editor'
+    packageName = 'bined'
     version = '0.2.0'
     release = '0'
     arch = NOARCH
@@ -112,26 +112,30 @@ ospackage {
     distribution = 'Linux'
     url = 'https://bined.exbin.org'
 
-    from('src/rpm/bined-editor') {
+    from('src/ospackage/bined') {
         into '/usr/bin'
     }
 
-    from('src/rpm/bined-editor.desktop') {
+    from('src/ospackage/bined.desktop') {
         into '/usr/share/applications'
     }
-    
-    from('src/rpm/bined-editor.png') {
+
+    from('src/ospackage/bined.png') {
         into '/usr/share/pixmaps'
     }
-    
+
     from(project(':tools:bined-editor').jar) {
-        rename { filename -> project(':tools:bined-editor').name + ".jar" }
-        into '/usr/share/bined-editor'
+        rename { filename -> "bined.jar" }
+        into '/usr/share/bined'
+    }
+
+    from('src/dist/readme.txt') {
+        into '/usr/share/bined'
     }
 
     project(':tools:bined-editor').plugins.withType(JavaPlugin) {
         from(project(':tools:bined-editor').configurations.runtime) {
-            into('/usr/share/bined-editor/lib')
+            into('/usr/share/bined/lib')
             include '*'
         }
     }
@@ -148,7 +152,7 @@ buildDeb {
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     distZip {
-        archiveName project(':tools:bined-editor').name + '-' + version + '.zip'
+        archiveName 'bined-' + version + '.zip'
     }
 
     distributions {
@@ -179,7 +183,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 into('') {
                     from project(':tools:bined-editor').jar.archivePath
                     include '*'
-                    rename { filename -> project(':tools:bined-editor').name + ".jar" }
+                    rename { filename -> "bined.jar" }
                 }
 
                 project(':tools:bined-editor').plugins.withType(JavaPlugin) {
