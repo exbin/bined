@@ -1,4 +1,4 @@
-; bined-editor-0.2.0-SNAPSHOT-win32.nsi
+; bined-0.2.0-SNAPSHOT-win32.nsi
 !include MUI2.nsh
 !define CLIENT_VERSION "0.2.0-SNAPSHOT"
 !define TITLE "BinEd - Hexadecimal Editor"
@@ -16,7 +16,7 @@ Name "BinEd Installer"
 Caption "BinEd Installer"
 
 ; The file to write
-OutFile "bined-editor-0.2.0-SNAPSHOT-win32.exe"
+OutFile "bined-0.2.0-SNAPSHOT-win32.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\ExBin Project\BinEd"
@@ -62,7 +62,7 @@ Section
   File "readme.txt"
   File "changes.txt"
   File "BinEd.exe"
-  File "bined-editor.jar"
+  File "bined.jar"
 
   SetOutPath $INSTDIR\lib
   File /r lib\*
@@ -119,7 +119,7 @@ Section "Uninstall"
   Delete $INSTDIR\changes.txt
   Delete $INSTDIR\uninstall.exe
   Delete $INSTDIR\BinEd.exe
-  Delete $INSTDIR\bined-editor.jar
+  Delete $INSTDIR\bined.jar
 
   Delete $INSTDIR\imgs\*
   RMDir $INSTDIR\imgs
