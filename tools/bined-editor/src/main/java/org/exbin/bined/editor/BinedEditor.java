@@ -33,11 +33,10 @@ import org.apache.commons.cli.ParseException;
 import org.exbin.framework.XBBaseApplication;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.HexEditorProvider;
+import org.exbin.framework.bined.BinaryEditorProvider;
 import org.exbin.framework.bined.UndoHandlerWrapper;
-import org.exbin.framework.bined.panel.HexAppearanceOptionsPanel;
+import org.exbin.framework.bined.panel.BinaryAppearanceOptionsPanel;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
-//import org.exbin.framework.gui.docking.api.GuiDockingModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
@@ -53,7 +52,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the Delta Hexadecimal Editor application.
  *
- * @version 0.1.2 2017/10/15
+ * @version 0.2.0 2018/12/23
  * @author ExBin Project (http://exbin.org)
  */
 public class BinedEditor {
@@ -87,7 +86,7 @@ public class BinedEditor {
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
-                boolean multiTabMode = preferences.getBoolean(HexAppearanceOptionsPanel.PREFERENCES_MULTITAB_MODE, false);
+                boolean multiTabMode = preferences.getBoolean(BinaryAppearanceOptionsPanel.PREFERENCES_MULTITAB_MODE, false);
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
@@ -137,7 +136,7 @@ public class BinedEditor {
 
                 optionsModule.registerMenuAction();
 
-                HexEditorProvider editorProvider;
+                BinaryEditorProvider editorProvider;
                 if (multiTabMode) {
                     editorProvider = binedModule.getMultiEditorProvider();
                 } else {
