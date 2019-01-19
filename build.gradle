@@ -3,10 +3,8 @@ buildscript {
         mavenLocal()
         jcenter()
     }
-    if (!gradle.startParameter.taskNames.contains("offline")) {
-        dependencies {
-            classpath "at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration"
-        }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
     }
 }
 
@@ -16,10 +14,8 @@ plugins {
 
 version = '0.2.0-SNAPSHOT'
 
-if (!gradle.startParameter.taskNames.contains("offline")) {
-    apply plugin: 'at.bxm.svntools'
-    apply plugin: "nebula.ospackage"
-}
+apply plugin: 'at.bxm.svntools'
+apply plugin: "nebula.ospackage"
 
 ['base', 'distribution', 'maven'].each {
     apply plugin: it
@@ -27,9 +23,6 @@ if (!gradle.startParameter.taskNames.contains("offline")) {
 
 task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper to the current directory.') {
     gradleVersion = '4.0'
-}
-
-task('offline') {
 }
 
 task('cleanDeps').doLast {
@@ -47,7 +40,7 @@ task('cleanDeps').doLast {
     }
 }
 
-if (!gradle.startParameter.taskNames.contains("offline") && gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     cleanDeps.execute()
 }
 
@@ -95,9 +88,7 @@ if (file('deps/_placeholder').exists()) {
     artefactBuild.execute()
 }
 
-if (!gradle.startParameter.taskNames.contains("offline")) {
-    distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
-}
+distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
 
 ospackage {
     packageName = 'bined'
@@ -171,10 +162,8 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
 //                include 'bined.bat'
                 include 'plugins/*'
 
-                if (!gradle.startParameter.taskNames.contains("offline")) {
-                    from project(':tools:bined-editor').projectDir.absolutePath + '/build/launch4j'
-                    include "Bined.exe"
-                }
+                from project(':tools:bined-editor').projectDir.absolutePath + '/build/launch4j'
+                include "Bined.exe"
 
                 //            into('lib') {
                 //                from 'lib'

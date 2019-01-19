@@ -39,16 +39,12 @@ buildscript {
         mavenLocal()
         jcenter()
     }
-    if (!gradle.startParameter.taskNames.contains("offline")) {
-        dependencies {
-            classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-        }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
     }
 }
 
-if (!gradle.startParameter.taskNames.contains("offline")) {
-    apply plugin: 'at.bxm.svntools'
-}
+apply plugin: 'at.bxm.svntools'
 
 ['java', 'distribution', 'maven-publish'].each {
     apply plugin: it
@@ -105,10 +101,6 @@ def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
 // - local maven repository module will be used if available
 // - otherwise module will be download to deps folder
 project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
-    if (gradle.startParameter.taskNames.contains("offline")) {
-        return project(':deps:' + moduleName)
-    }
-
     def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
     if (new File(mavenModuleDir).isDirectory()) {
         // Use maven package if available

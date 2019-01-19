@@ -8,18 +8,14 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    if (!gradle.startParameter.taskNames.contains("offline")) {
-        dependencies {
-            classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-            classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:2.4.1"
-        }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
+        classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:2.4.1"
     }
 }
 
-if (!gradle.startParameter.taskNames.contains("offline")) {
-    ['edu.sc.seis.launch4j'].each {
-        apply plugin: it
-    }
+['edu.sc.seis.launch4j'].each {
+    apply plugin: it
 }
 
 if (!hasProperty('mainClass')) {
@@ -92,14 +88,12 @@ def manifestClassPath() {
     }
 }
 
-if (!gradle.startParameter.taskNames.contains("offline")) {
-    launch4j {
-        outfile = "Bined.exe"
-        icon = "../../../../images/icon.ico"
-        mainClassName = "org.exbin.bined.editor.BinedEditor"
-        jar = "../../build/libs/" + project(':tools:bined-editor').name + "-0.2.0-SNAPSHOT.jar"
-        copyright = "ExBin Project"
-    }
+launch4j {
+    outfile = "Bined.exe"
+    icon = "../../../../images/icon.ico"
+    mainClassName = "org.exbin.bined.editor.BinedEditor"
+    jar = "../../build/libs/" + project(':tools:bined-editor').name + "-0.2.0-SNAPSHOT.jar"
+    copyright = "ExBin Project"
 }
 
 jar {
