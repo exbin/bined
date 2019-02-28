@@ -21,28 +21,24 @@ apply plugin: "nebula.ospackage"
     apply plugin: it
 }
 
-task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper to the current directory.') {
-    gradleVersion = '4.0'
-}
-
-task('cleanDeps').doLast {
-    println "Deleting temporary dependency modules"
-    File depsCheckFile = rootProject.file("deps/dependency.txt")
-    if (depsCheckFile.exists()) {
-        File depsDir = rootProject.file("deps")
-        depsDir.listFiles().each() { childFile ->
-            if (childFile.name != '_placeholder' && childFile.isDirectory()) {
-                project.delete(childFile)
+task cleanDeps {
+    if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+        println "Deleting temporary dependency modules"
+        File depsCheckFile = rootProject.file("deps/dependency.txt")
+        if (depsCheckFile.exists()) {
+            File depsDir = rootProject.file("deps")
+            depsDir.listFiles().each() { childFile ->
+                if (childFile.name != '_placeholder' && childFile.isDirectory()) {
+                    project.delete(childFile)
+                }
             }
+        } else {
+            throw new Exception('Invalid dependency path')
         }
-    } else {
-        throw new Exception('Invalid dependency path')
     }
 }
 
-if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
-    cleanDeps.execute()
-}
+clean.dependsOn cleanDeps
 
 subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
