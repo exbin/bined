@@ -2,7 +2,7 @@
 
 version = '0.2.1-SNAPSHOT'
 def repositoryName = "exbin-framework-java"
-def libraryUrl = 'http://framework.exbin.org'
+def libraryUrl = 'https://framework.exbin.org'
 
 ext.depsExbinFrameworkJava = [
     githubProfile: 'exbin',
@@ -65,7 +65,9 @@ tasks.withType(JavaCompile) {
 }
 
 // Disable tests on build
-tasks.withType(Test) {enabled = false}
+if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
+    tasks.withType(Test) {enabled = false}
+}
 
 task testJar(type: Jar, dependsOn: testClasses) {
     classifier "tests"

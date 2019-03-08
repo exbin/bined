@@ -2,7 +2,7 @@
 
 version = '0.2.0-SNAPSHOT'
 def repositoryName = "bined-lib-java"
-def libraryUrl = 'https://deltahex.exbin.org/library'
+def libraryUrl = 'https://bined.exbin.org/library'
 
 ext.depsBinedLibJava = [
     githubProfile: 'exbin',
@@ -53,7 +53,9 @@ tasks.withType(JavaCompile) {
 }
 
 // Disable tests on build
-tasks.withType(Test) {enabled = false}
+if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
+    tasks.withType(Test) {enabled = false}
+}
 
 task testJar(type: Jar, dependsOn: testClasses) {
     classifier "tests"
@@ -94,7 +96,8 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
         println 'Downloading ' + githubModulePath
 
         createSvnDownloadTask(moduleName, githubModulePath, depModuleDir)
-        tasks["svnDownload${moduleName}"].execute()
+//        compileJava.dependsOn "svnDownload${moduleName}"
+//        processResources.dependsOn "svnDownload${moduleName}"
 
         // Report as placeholder dependency
         if (!new File(depsDir + "_placeholder").exists()) {

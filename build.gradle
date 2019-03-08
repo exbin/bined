@@ -81,7 +81,7 @@ if (file('deps/_placeholder').exists()) {
         project.tasks['assemble'].setDependsOn([])
     }
 
-    artefactBuild.execute()
+//    artefactBuild.execute()
 }
 
 distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
