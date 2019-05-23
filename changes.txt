@@ -1,5 +1,7 @@
 0.2.0
+- Renamed to BinEd
 - Updated to newer version of library
+- Support for half-size space
 
 0.1.3 (2017-10-22)
 - Fixed behavior for high precision wheel scrolling
