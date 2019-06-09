@@ -24,18 +24,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.exbin.framework.XBBaseApplication;
+import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinaryEditorProvider;
 import org.exbin.framework.bined.UndoHandlerWrapper;
-import org.exbin.framework.bined.panel.BinaryAppearanceOptionsPanel;
+import org.exbin.framework.bined.preferences.BinaryAppearanceParameters;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.editor.api.MultiEditorProvider;
@@ -52,7 +52,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the Delta Hexadecimal Editor application.
  *
- * @version 0.2.0 2018/12/23
+ * @version 0.2.1 2019/06/09
  * @author ExBin Project (http://exbin.org)
  */
 public class BinedEditor {
@@ -86,7 +86,8 @@ public class BinedEditor {
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
-                boolean multiTabMode = preferences.getBoolean(BinaryAppearanceOptionsPanel.PREFERENCES_MULTITAB_MODE, false);
+                BinaryAppearanceParameters binaryAppearanceParameters = new BinaryAppearanceParameters(preferences);
+                boolean multiTabMode = binaryAppearanceParameters.isMultiTabMode();
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
@@ -176,12 +177,9 @@ public class BinedEditor {
 
                 binedModule.loadFromPreferences(preferences);
 
-                frameModule.addExitListener(new ApplicationExitListener() {
-                    @Override
-                    public boolean processExit(ApplicationFrameHandler afh) {
-                        frameModule.saveFramePosition();
-                        return true;
-                    }
+                frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                    frameModule.saveFramePosition();
+                    return true;
                 });
 
 //                if (multiTabMode) {
