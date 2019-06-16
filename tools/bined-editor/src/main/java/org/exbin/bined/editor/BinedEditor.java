@@ -40,7 +40,6 @@ import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
-import org.exbin.framework.gui.frame.api.ApplicationExitListener;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
 import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
@@ -52,7 +51,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the Delta Hexadecimal Editor application.
  *
- * @version 0.2.1 2019/06/09
+ * @version 0.2.0 2019/06/16
  * @author ExBin Project (http://exbin.org)
  */
 public class BinedEditor {
@@ -168,11 +167,11 @@ public class BinedEditor {
                 }
 
                 editorModule.registerUndoHandler();
-                undoModule.setUndoHandler(new UndoHandlerWrapper(editorProvider.getHexUndoHandler()));
+                undoModule.setUndoHandler(new UndoHandlerWrapper(editorProvider.getBinaryUndoHandler()));
 
                 binedModule.registerStatusBar();
                 binedModule.registerOptionsPanels();
-                binedModule.getTextStatusPanel();
+                binedModule.getBinaryStatusPanel();
                 updateModule.registerOptionsPanels();
 
                 binedModule.loadFromPreferences(preferences);
