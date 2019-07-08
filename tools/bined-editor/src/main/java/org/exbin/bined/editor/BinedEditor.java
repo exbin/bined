@@ -42,6 +42,7 @@ import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
+import org.exbin.framework.gui.link.api.GuiLinkModuleApi;
 import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
 import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
@@ -49,9 +50,9 @@ import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 import org.exbin.framework.gui.utils.LanguageUtils;
 
 /**
- * The main class of the Delta Hexadecimal Editor application.
+ * The main class of the BinEd Hexadecimal Editor application.
  *
- * @version 0.2.0 2019/06/16
+ * @version 0.2.0 2019/07/08
  * @author ExBin Project (http://exbin.org)
  */
 public class BinedEditor {
@@ -99,6 +100,7 @@ public class BinedEditor {
                 GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
                 GuiMenuModuleApi menuModule = moduleRepository.getModuleByInterface(GuiMenuModuleApi.class);
                 GuiAboutModuleApi aboutModule = moduleRepository.getModuleByInterface(GuiAboutModuleApi.class);
+                GuiLinkModuleApi linkModule = moduleRepository.getModuleByInterface(GuiLinkModuleApi.class);
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
                 GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
                 GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
@@ -116,6 +118,12 @@ public class BinedEditor {
                 }
                 updateModule.registerDefaultMenuItem();
                 aboutModule.registerDefaultMenuItem();
+                try {
+                    linkModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                linkModule.registerOnlineHelpMenu();
 
                 frameModule.registerExitAction();
                 frameModule.registerBarsVisibilityActions();
@@ -129,6 +137,7 @@ public class BinedEditor {
                 undoModule.registerMainMenu();
                 undoModule.registerMainToolBar();
                 undoModule.registerUndoManagerInMainMenu();
+                
 
                 // Register clipboard editing actions
                 menuModule.registerMenuClipboardActions();
@@ -157,6 +166,7 @@ public class BinedEditor {
                 binedModule.registerCodeTypeMenu();
                 binedModule.registerPositionCodeTypeMenu();
                 binedModule.registerHexCharactersCaseHandlerMenu();
+                binedModule.registerLayoutMenu();
                 binedModule.registerWordWrapping();
 
                 final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
