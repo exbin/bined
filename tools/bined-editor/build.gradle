@@ -93,7 +93,7 @@ launch4j {
     outfile = "Bined.exe"
     icon = "../../../../images/icon.ico"
     mainClassName = "org.exbin.bined.editor.BinedEditor"
-    jar = "../../build/libs/" + project(':tools:bined-editor').name + "-${version}.jar"
+    jar = "../../build/libs/" + project.name + "-${version}.jar"
     copyright = "ExBin Project"
 }
 

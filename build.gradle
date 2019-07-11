@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id "nebula.ospackage" version "4.5.1"
+    id "nebula.ospackage" version "6.2.1"
 }
 
 version = '0.2.0-SNAPSHOT'
@@ -81,7 +81,7 @@ if (file('deps/_placeholder').exists()) {
         project.tasks['assemble'].setDependsOn([])
     }
 
-//    artefactBuild.execute()
+    //    artefactBuild.execute()
 }
 
 distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
@@ -99,24 +99,24 @@ ospackage {
     distribution = 'Linux'
     url = 'https://bined.exbin.org'
 
-    from('src/ospackage/bined') {
+    from ('src/ospackage/bined') {
         into '/usr/bin'
     }
 
-    from('src/ospackage/bined.desktop') {
+    from ('src/ospackage/bined.desktop') {
         into '/usr/share/applications'
     }
 
-    from('src/ospackage/bined.png') {
+    from ('src/ospackage/bined.png') {
         into '/usr/share/pixmaps'
     }
 
-    from(project(':tools:bined-editor').jar) {
+    from (project(':tools:bined-editor').jar) {
         rename { filename -> "bined.jar" }
         into '/usr/share/bined'
     }
 
-    from('src/dist/readme.txt') {
+    from ('src/dist/readme.txt') {
         into '/usr/share/bined'
     }
 
@@ -129,6 +129,11 @@ ospackage {
 }
 
 buildRpm {
+    from ('src/ospackage/bined.png') {
+        addParentDirs = false
+        into '/usr/share/pixmaps'
+    }
+
     requires('jre', '1.8.0', GREATER | EQUAL)
 }
 
@@ -155,7 +160,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 from 'src/dist'
                 include 'readme.txt'
                 include 'bined.sh'
-//                include 'bined.bat'
+                //                include 'bined.bat'
                 include 'plugins/*'
 
                 from project(':tools:bined-editor').projectDir.absolutePath + '/build/launch4j'
