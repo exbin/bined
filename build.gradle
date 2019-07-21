@@ -88,8 +88,14 @@ distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
 
 ospackage {
     packageName = 'bined'
-    version = '0.2.0'
-    release = '0'
+    if (project.version.endsWith("-SNAPSHOT")) {
+        version = project.version.substring(0, project.version.length() - 9)
+        release = '0'
+        // '0.' + new Date().format('yyyyMMdd') + "dev"
+    } else {
+        version = project.version
+        release = '1'
+    }
     arch = NOARCH
     os = LINUX
     packageGroup = 'Converted/utils'

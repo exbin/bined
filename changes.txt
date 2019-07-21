@@ -8,6 +8,7 @@
 - Context aware popup menu
 - Go-to dialog position to support position from end
 - Go-to dialog position to support different numerical bases
+- Support for ENTER key in preview section
 
 0.1.3 (2017-10-22)
 - Fixed behavior for high precision wheel scrolling

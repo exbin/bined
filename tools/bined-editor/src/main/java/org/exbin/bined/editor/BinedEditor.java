@@ -35,7 +35,7 @@ import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinaryEditorProvider;
 import org.exbin.framework.bined.UndoHandlerWrapper;
-import org.exbin.framework.bined.preferences.BinaryAppearanceParameters;
+import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.editor.api.MultiEditorProvider;
@@ -52,7 +52,7 @@ import org.exbin.framework.gui.utils.LanguageUtils;
 /**
  * The main class of the BinEd Hexadecimal Editor application.
  *
- * @version 0.2.0 2019/07/08
+ * @version 0.2.0 2019/07/21
  * @author ExBin Project (http://exbin.org)
  */
 public class BinedEditor {
@@ -86,7 +86,7 @@ public class BinedEditor {
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
-                BinaryAppearanceParameters binaryAppearanceParameters = new BinaryAppearanceParameters(preferences);
+                BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
                 boolean multiTabMode = binaryAppearanceParameters.isMultiTabMode();
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
@@ -137,7 +137,6 @@ public class BinedEditor {
                 undoModule.registerMainMenu();
                 undoModule.registerMainToolBar();
                 undoModule.registerUndoManagerInMainMenu();
-                
 
                 // Register clipboard editing actions
                 menuModule.registerMenuClipboardActions();
@@ -199,6 +198,7 @@ public class BinedEditor {
 
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();
+                optionsModule.initialLoadFromPreferences();
                 frameHandler.show();
                 updateModule.checkOnStart(frameHandler.getFrame());
 
