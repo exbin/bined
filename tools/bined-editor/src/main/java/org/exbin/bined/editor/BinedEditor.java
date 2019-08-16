@@ -166,7 +166,6 @@ public class BinedEditor {
                 binedModule.registerPositionCodeTypeMenu();
                 binedModule.registerHexCharactersCaseHandlerMenu();
                 binedModule.registerLayoutMenu();
-                binedModule.registerWordWrapping();
 
                 final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
                 if (multiTabMode) {
