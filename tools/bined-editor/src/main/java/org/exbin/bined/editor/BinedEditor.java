@@ -152,7 +152,9 @@ public class BinedEditor {
                 }
 
                 binedModule.registerEditFindMenuActions();
-                binedModule.registerEditFindToolBarActions();
+                binedModule.registerCodeTypeToolBarActions();
+                binedModule.registerShowNonprintablesToolBarActions();
+//                binedModule.registerEditFindToolBarActions();
                 binedModule.registerViewNonprintablesMenuActions();
                 binedModule.registerViewValuesPanelMenuActions();
                 binedModule.registerToolsOptionsMenuActions();
