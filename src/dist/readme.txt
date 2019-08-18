@@ -1,7 +1,7 @@
-BinEd - Hexadecimal Editor
-==========================
+BinEd - Binary/Hexadecimal Editor
+=================================
 
-Hexadecimal viewer/editor written in Java.
+Editor for binary data (hexadecimal viewer/editor) written in Java.
 
 Homepage: https://bined.exbin.org/editor  
 
@@ -15,7 +15,7 @@ Features
 - Support for undo/redo
 - Support for charset/encoding selection
 - Codes can be also binary, octal or decimal
-- Searching for text / hexadecimal code with found matches highlighting
+- Searching for text / hexadecimal code with matching highlighting
 - Support for huge files
 - Delta mode - Only changes are stored in memory
 

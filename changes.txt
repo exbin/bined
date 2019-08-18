@@ -1,4 +1,4 @@
-0.2.0
+0.2.0 (2019-08-18)
 - Renamed to BinEd
 - Updated to newer version of library
 - Support for half-size space

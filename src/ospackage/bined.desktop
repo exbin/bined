@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=BinEd Hexadecimal Editor
+Name=BinEd Binary/Hexadecimal Editor
 Comment=Free and open source hexadecimal viewer/editor and component written in Java.
 Exec=bined
 Icon=bined
