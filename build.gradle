@@ -12,7 +12,7 @@ plugins {
     id "nebula.ospackage" version "6.2.1"
 }
 
-version = '0.2.0'
+version = '0.2.1-SNAPSHOT'
 
 apply plugin: 'at.bxm.svntools'
 apply plugin: "nebula.ospackage"

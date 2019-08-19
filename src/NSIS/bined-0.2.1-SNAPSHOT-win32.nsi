@@ -1,8 +1,8 @@
-; bined-0.2.0-SNAPSHOT-win32.nsi
+; bined-0.2.1-SNAPSHOT-win32.nsi
 !include MUI2.nsh
-!define CLIENT_VERSION "0.2.0-SNAPSHOT"
-!define TITLE "BinEd - Hexadecimal Editor"
-!define FULL_TITLE "BinEd - 0.2.0-SNAPSHOT"
+!define CLIENT_VERSION "0.2.1-SNAPSHOT"
+!define TITLE "BinEd - Binary/Hexadecimal Editor"
+!define FULL_TITLE "BinEd - 0.2.1-SNAPSHOT"
 !define CREATOR "ExBin Project"
 ; !define CHANGELOG_FILE "Novinky.txt"
 !define MUI_TEXT_WELCOME_TITLE "!"
@@ -16,7 +16,7 @@ Name "BinEd Installer"
 Caption "BinEd Installer"
 
 ; The file to write
-OutFile "bined-0.2.0-SNAPSHOT-win32.exe"
+OutFile "bined-0.2.1-SNAPSHOT-win32.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\ExBin Project\BinEd"
