@@ -10,10 +10,10 @@ ext.depsXbupJava = [
     version: "${version}"
 ]
 
-ext.depsExbinUtilsJava = [
+ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
-    githubRepo: 'exbin-utils-java',
-    version: '0.1.3-SNAPSHOT'
+    githubRepo: 'exbin-auxiliary-java',
+    version: '0.2.0-SNAPSHOT'
 ]
 
 buildscript {

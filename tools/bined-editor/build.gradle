@@ -46,14 +46,17 @@ repositories {
     }
     mavenLocal()
     mavenCentral()
+    maven {
+        url 'http://bits.netbeans.org/maven2/'
+    }
 }
 
 dependencies {
 //    compile 'org.dockingframes:docking-frames-common:1.1.1'
     compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-core')
     compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-swing')
-    compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-delta')
     compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
+    compile moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'paged_data-delta')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-frame-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-frame')
