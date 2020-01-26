@@ -28,7 +28,7 @@ task cleanDeps {
         if (depsCheckFile.exists()) {
             File depsDir = rootProject.file("deps")
             depsDir.listFiles().each() { childFile ->
-                if (childFile.name != '_placeholder' && childFile.isDirectory()) {
+                if (childFile.name != '_placeholder' && childFile.isDirectory() && childFile.name != ".gradle") {
                     project.delete(childFile)
                 }
             }

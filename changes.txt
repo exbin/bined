@@ -1,4 +1,6 @@
 0.2.1
+- Display the number of bytes selected
+- Fixed issue with creating new file
 
 0.2.0 (2019-08-18)
 - Renamed to BinEd
