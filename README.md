@@ -13,16 +13,16 @@ Screenshot
 Features
 --------
 
-- Data as hexadecimal codes and text preview
-- Insert and overwrite edit modes
-- Support for selection and clipboard actions
-- Support for showing unprintable/whitespace characters
-- Support for undo/redo
-- Support for charset/encoding selection
-- Codes can be also binary, octal or decimal
-- Searching for text / hexadecimal code with matching highlighting
-- Support for huge files
-- Delta mode - Only changes are stored in memory
+  * Data as hexadecimal codes and text preview
+  * Insert and overwrite edit modes
+  * Support for selection and clipboard actions
+  * Support for showing unprintable/whitespace characters
+  * Support for undo/redo
+  * Support for charset/encoding selection
+  * Codes can be also binary, octal or decimal
+  * Searching for text / hexadecimal code with matching highlighting
+  * Support for huge files
+  * Delta mode - Only changes are stored in memory
 
 Compiling
 ---------
