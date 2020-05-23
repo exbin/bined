@@ -1,10 +1,8 @@
--  Fix UTF-8 en coding as listed in encodings list
 -  Add double triangles after current encoding state visualisation
 -  Add support for different shapes, color and blinking for mirror cursor
 -  Clear selection even when select all and cursor is not moved after for example end key
 -  Use drawString instead of drawChars for preview
 -  Appearance setting doesn't work in options dialog and fix Apperance -> Appearance
--  Update colors on Look&Feel change
 -  Support for octet-stream clipboard flavor
 -  Support for file clipboard flavor
 -  Value preview bar with float / string preview
@@ -18,6 +16,8 @@
 -  https://sourceforge.net/projects/javaclassviewer
 -  Move cursor after select all
 
+Ok Update colors on Look&Feel change
+Ok Fix UTF-8 en coding as listed in encodings list
 Ok Update CZ language pack for 0.1.2
 Ok Preferences for netbeans plugin
 Ok Saving colors breaks application
