@@ -55,7 +55,9 @@ dependencies {
 //    compile 'org.dockingframes:docking-frames-common:1.1.1'
     compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-core')
     compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-swing')
+    compile moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-operation')
     compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-operation')
     compile moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'paged_data-delta')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-frame-api')

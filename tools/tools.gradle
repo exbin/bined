@@ -77,7 +77,7 @@ if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
 
 task testJar(type: Jar, dependsOn: testClasses) {
     classifier "tests"
-    baseName = "test-${project.archivesBaseName}"
+    archiveBaseName = "test-${project.archivesBaseName}"
     from sourceSets.test.output
 }
 
