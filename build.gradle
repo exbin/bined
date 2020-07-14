@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id "nebula.ospackage" version "8.2.0"
+    id "nebula.ospackage" version "8.4.1"
 }
 
 version = '0.2.1-SNAPSHOT'
@@ -17,7 +17,7 @@ version = '0.2.1-SNAPSHOT'
 apply plugin: 'at.bxm.svntools'
 apply plugin: "nebula.ospackage"
 
-['base', 'distribution', 'maven'].each {
+['base', 'distribution', 'maven-publish'].each {
     apply plugin: it
 }
 
@@ -127,7 +127,7 @@ ospackage {
     }
 
     project(':tools:bined-editor').plugins.withType(JavaPlugin) {
-        from(project(':tools:bined-editor').configurations.runtime) {
+        from(project(':tools:bined-editor').configurations.runtimeClasspath) {
             into('/usr/share/bined/lib')
             include '*'
         }
@@ -184,7 +184,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
 
                 project(':tools:bined-editor').plugins.withType(JavaPlugin) {
                     into('lib') {
-                        from project(':tools:bined-editor').configurations.runtime
+                        from project(':tools:bined-editor').configurations.runtimeClasspath
                         include '*'
                     }
                 }

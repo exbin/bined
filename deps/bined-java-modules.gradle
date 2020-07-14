@@ -1,8 +1,8 @@
 // Shared modules build
 
-version = '0.2.1-SNAPSHOT'
-def repositoryName = "xbup-java"
-def libraryUrl = 'http://xbup.exbin.org'
+version = '0.2.0-SNAPSHOT'
+def repositoryName = "bined-java"
+def libraryUrl = 'https://bined.exbin.org/library'
 
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
@@ -10,7 +10,7 @@ ext.depsExbinAuxiliaryJava = [
     version: '0.2.0-SNAPSHOT'
 ]
 
-ext.depsThis = 'XbupJava'
+ext.depsThis = 'BinedJava'
 
 buildscript {
     repositories {
@@ -22,10 +22,9 @@ buildscript {
     }
 }
 
-['java-library', 'maven-publish', 'at.bxm.svntools', 'signing'].each {
+['java-library', 'maven-publish', 'signing', 'at.bxm.svntools'].each {
     apply plugin: it
 }
-import org.gradle.util.VersionNumber
 
 sourceCompatibility = '1.8'
 
@@ -35,14 +34,6 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     doFirst {
         options.fork = true
-        if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
-            if (VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('5.0')) {
-                options.bootstrapClasspath = files("${System.properties['java.home']}/lib/rt.jar", "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar")
-            } else {
-                options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar"
-                options.bootClasspath += "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
-            }
-        }
     }
 }
 
@@ -71,9 +62,6 @@ task sourceJar(type: Jar) {
 }
 
 javadoc {
-    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-        options.addBooleanOption('html5', true)
-    }
 }
 
 task javadocJar (type: Jar, dependsOn: javadoc) {
@@ -93,7 +81,7 @@ def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
 // - otherwise module will be download to deps folder
 project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
     if (depsName == ext.depsThis) {
-        return project(':modules:' + moduleName)
+        return project(":modules:" + moduleName)
     }
 
     def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
@@ -213,6 +201,7 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
                     packaging 'jar'
                     description libraryDescription
                     url libraryUrl
+                    organization 'ExBin Project'
 
                     scm {
                         url "https://github.com/exbin/${repositoryName}"
