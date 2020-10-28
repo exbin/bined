@@ -19,19 +19,19 @@ ext.depsExbinAuxiliaryJava = [
 ext.depsExbinFrameworkJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-framework-java',
-    version: '0.2.1-SNAPSHOT'
+    version: '0.2.2-SNAPSHOT'
 ]
 
 ext.depsXbupJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-java',
-    version: '0.2.1-SNAPSHOT'
+    version: '0.2.2-SNAPSHOT'
 ]
 
 ext.depsXbupDataJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-data-java',
-    version: '0.2.1-SNAPSHOT'
+    version: '0.2.2-SNAPSHOT'
 ]
 
 buildscript {
