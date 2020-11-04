@@ -43,7 +43,7 @@ import org.exbin.framework.gui.file.api.GuiFileModuleApi;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
 import org.exbin.framework.gui.link.api.GuiLinkModuleApi;
-import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
+import org.exbin.framework.gui.action.api.GuiActionModuleApi;
 import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
@@ -98,7 +98,7 @@ public class BinedEditor {
 
                 final GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
                 GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
-                GuiMenuModuleApi menuModule = moduleRepository.getModuleByInterface(GuiMenuModuleApi.class);
+                GuiActionModuleApi actionModule = moduleRepository.getModuleByInterface(GuiActionModuleApi.class);
                 GuiAboutModuleApi aboutModule = moduleRepository.getModuleByInterface(GuiAboutModuleApi.class);
                 GuiLinkModuleApi linkModule = moduleRepository.getModuleByInterface(GuiLinkModuleApi.class);
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
@@ -139,8 +139,8 @@ public class BinedEditor {
                 undoModule.registerUndoManagerInMainMenu();
 
                 // Register clipboard editing actions
-                menuModule.registerMenuClipboardActions();
-                menuModule.registerToolBarClipboardActions();
+                actionModule.registerMenuClipboardActions();
+                actionModule.registerToolBarClipboardActions();
 
                 optionsModule.registerMenuAction();
 
