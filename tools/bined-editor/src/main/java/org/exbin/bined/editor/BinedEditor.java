@@ -87,7 +87,7 @@ public class BinedEditor {
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
                 BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
-                boolean multiTabMode = true; //binaryAppearanceParameters.isMultiTabMode();
+                boolean multiTabMode = false; //binaryAppearanceParameters.isMultiTabMode();
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
