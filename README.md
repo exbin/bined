@@ -35,7 +35,7 @@ For project compiling Gradle 4 build system is used. You can either download and
 
 command in project folder or gradlew or gradlew.bat scripts to download separate copy of gradle to perform the project build.
 
-Currently it might be necessary to use local Maven - Manually download all dependecies from GitHub (clone repositories from github.com/exbin - see. deps directory for names) and run "gradle publish" on each of them.
+Currently it might be necessary to use local Maven - Manually download all dependencies from GitHub (clone repositories from github.com/exbin - see. deps directory for names) and run "gradle publish" on each of them.
 
 License
 -------
