@@ -160,7 +160,8 @@ public class BinedEditor {
                 binedModule.registerToolsOptionsMenuActions();
                 binedModule.registerClipboardCodeActions();
                 binedModule.registerOptionsMenuPanels();
-                binedModule.registerGoToLine();
+                binedModule.registerGoToPosition();
+                binedModule.registerInsertDataAction();
                 binedModule.registerPropertiesMenu();
                 // TODO binedModule.registerPrintMenu();
                 binedModule.registerViewModeMenu();
