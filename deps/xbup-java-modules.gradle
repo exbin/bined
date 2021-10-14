@@ -7,7 +7,7 @@ def libraryUrl = 'https://xbup.exbin.org'
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-auxiliary-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsThis = 'XbupJava'
@@ -163,7 +163,7 @@ publishing {
                     licenses {
                         license {
                             name 'Apache License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                             distribution 'repo'
                         }
                     }
@@ -222,7 +222,7 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
                     licenses {
                         license {
                             name 'Apache License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                             distribution 'repo'
                         }
                     }

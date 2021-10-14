@@ -1,10 +1,12 @@
 0.2.1
 - New app icon
-- Display the number of bytes selected
-- Fixed issue with creating new file
+- Support for multiple files / tabs
 - Added string field in values panel (issue #8)
 - Added templates for profiles
 - Added insert data dialog
+- Added files compare dialog
+- Display the number of bytes selected
+- Fixed issue with creating new file
 
 0.2.0 (2019-08-18)
 - Renamed to BinEd

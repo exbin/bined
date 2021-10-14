@@ -1,13 +1,13 @@
 // Shared modules build
 
-version = '0.2.0-SNAPSHOT'
+version = '0.2.1-SNAPSHOT'
 def repositoryName = "bined-java"
 def libraryUrl = 'https://bined.exbin.org/library'
 
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-auxiliary-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.0'
 ]
 
 ext.depsThis = 'BinedJava'
@@ -184,9 +184,9 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
     uploadArchives {
         repositories {
             mavenDeployer {
-                beforeDeployment {
-                    MavenDeployment deployment -> signing.signPom(deployment)
-                }
+//                beforeDeployment {
+//                    MavenDeployment deployment -> signing.signPom(deployment)
+//                }
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: ossrhUsername, password: ossrhPassword)

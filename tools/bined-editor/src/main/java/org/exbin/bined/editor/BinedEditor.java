@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -33,8 +34,6 @@ import org.exbin.framework.XBBaseApplication;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.BinaryEditorProvider;
-import org.exbin.framework.bined.UndoHandlerWrapper;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
@@ -48,14 +47,20 @@ import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
 import org.exbin.framework.gui.utils.LanguageUtils;
+import org.exbin.framework.gui.editor.api.EditorProvider;
+import org.exbin.framework.gui.editor.api.EditorProviderVariant;
+import org.exbin.framework.gui.undo.api.UndoFileHandler;
 
 /**
  * The main class of the BinEd Hexadecimal Editor application.
  *
- * @version 0.2.0 2019/07/21
+ * @version 0.2.1 2021/10/14
  * @author ExBin Project (http://exbin.org)
  */
+@ParametersAreNonnullByDefault
 public class BinedEditor {
+
+    private static final String BINARY_PLUGIN_ID = "binary";
 
     private static boolean verboseMode = false;
     private static boolean devMode = false;
@@ -87,7 +92,9 @@ public class BinedEditor {
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
                 BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
-                boolean multiTabMode = false; //binaryAppearanceParameters.isMultiTabMode();
+                boolean multiTabMode = binaryAppearanceParameters.isMultiTabMode();
+                // TODO remove override
+                multiTabMode = true;
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
@@ -104,10 +111,17 @@ public class BinedEditor {
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
                 GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
                 GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
-                //              GuiDockingModuleApi dockingModule = moduleRepository.getModuleByInterface(GuiDockingModuleApi.class);
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
+                binedModule.initEditorProvider(multiTabMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
+                EditorProvider editorProvider = binedModule.getEditorProvider();
+
+                if (multiTabMode) {
+                    editorModule.registerMultiEditor(BINARY_PLUGIN_ID, (MultiEditorProvider) editorProvider);
+                } else {
+                    editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
+                }
 
                 frameModule.createMainMenu();
                 try {
@@ -130,8 +144,12 @@ public class BinedEditor {
 
                 // Register clipboard editing actions
                 fileModule.registerMenuFileHandlingActions();
+                if (multiTabMode) {
+                    editorModule.registerMenuFileCloseActions();
+                }
+
                 fileModule.registerToolBarFileHandlingActions();
-                fileModule.registerLastOpenedMenuActions();
+                fileModule.registerRecenFilesMenuActions();
                 fileModule.registerCloseListener();
 
                 undoModule.registerMainMenu();
@@ -144,18 +162,11 @@ public class BinedEditor {
 
                 optionsModule.registerMenuAction();
 
-                BinaryEditorProvider editorProvider;
-                if (multiTabMode) {
-                    editorProvider = binedModule.getMultiEditorProvider();
-                } else {
-                    editorProvider = binedModule.getEditorProvider();
-                }
-
                 binedModule.registerEditFindMenuActions();
                 binedModule.registerCodeTypeToolBarActions();
-                binedModule.registerShowNonprintablesToolBarActions();
+                binedModule.registerShowUnprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
-                binedModule.registerViewNonprintablesMenuActions();
+                binedModule.registerViewUnprintablesMenuActions();
                 binedModule.registerViewValuesPanelMenuActions();
                 binedModule.registerToolsOptionsMenuActions();
                 binedModule.registerClipboardCodeActions();
@@ -171,14 +182,10 @@ public class BinedEditor {
                 binedModule.registerLayoutMenu();
 
                 final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
-                if (multiTabMode) {
-                    editorModule.registerMultiEditor("hex", (MultiEditorProvider) editorProvider);
-                } else {
-                    editorModule.registerEditor("hex", editorProvider);
-                }
+//                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
+                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
                 editorModule.registerUndoHandler();
-                undoModule.setUndoHandler(new UndoHandlerWrapper(editorProvider.getBinaryUndoHandler()));
 
                 binedModule.registerStatusBar();
                 binedModule.registerOptionsPanels();
@@ -192,11 +199,7 @@ public class BinedEditor {
                     return true;
                 });
 
-//                if (multiTabMode) {
-//                    frameHandler.setMainPanel(dockingModule.getDockingPanel());
-//                } else {
-                frameHandler.setMainPanel(editorModule.getEditorPanel());
-//                }
+                frameHandler.setMainPanel(editorModule.getEditorComponent());
 
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();

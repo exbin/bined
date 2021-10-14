@@ -1,12 +1,12 @@
 // Shared modules build
 
-version = '0.2.0-SNAPSHOT'
+version = '0.2.1-SNAPSHOT'
 def repositoryName = "exbin-auxiliary-java"
 def libraryUrl = 'https://exbin.org'
 
 ext.depsThis = 'ExbinAuxiliaryJava'
 
-['java-library', 'maven-publish', 'signing'].each {
+['java-library', 'maven-publish', 'maven', 'signing'].each {
     apply plugin: it
 }
 import org.gradle.util.VersionNumber
@@ -37,7 +37,11 @@ if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
 
 task testJar(type: Jar, dependsOn: testClasses) {
     classifier "tests"
-    archiveBaseName = "test-${project.archivesBaseName}"
+    if (VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('5.0')) {
+    	archiveBaseName = "test-${project.archivesBaseName}"
+    } else {
+    	archiveName = "test-${project.archivesBaseName}"
+    }
     from sourceSets.test.output
 }
 
