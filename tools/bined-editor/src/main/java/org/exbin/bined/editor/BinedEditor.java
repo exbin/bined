@@ -37,7 +37,6 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
 import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
-import org.exbin.framework.gui.editor.api.MultiEditorProvider;
 import org.exbin.framework.gui.file.api.GuiFileModuleApi;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
@@ -92,9 +91,7 @@ public class BinedEditor {
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
                 BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
-                boolean multiTabMode = binaryAppearanceParameters.isMultiTabMode();
-                // TODO remove override
-                multiTabMode = true;
+                boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
@@ -114,14 +111,9 @@ public class BinedEditor {
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
-                binedModule.initEditorProvider(multiTabMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
+                binedModule.initEditorProvider(multiFileMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
                 EditorProvider editorProvider = binedModule.getEditorProvider();
-
-                if (multiTabMode) {
-                    editorModule.registerMultiEditor(BINARY_PLUGIN_ID, (MultiEditorProvider) editorProvider);
-                } else {
-                    editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
-                }
+                editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
 
                 frameModule.createMainMenu();
                 try {
@@ -142,9 +134,8 @@ public class BinedEditor {
                 frameModule.registerExitAction();
                 frameModule.registerBarsVisibilityActions();
 
-                // Register clipboard editing actions
                 fileModule.registerMenuFileHandlingActions();
-                if (multiTabMode) {
+                if (multiFileMode) {
                     editorModule.registerMenuFileCloseActions();
                 }
 
@@ -157,6 +148,7 @@ public class BinedEditor {
                 undoModule.registerUndoManagerInMainMenu();
 
                 // Register clipboard editing actions
+                actionModule.registerClipboardTextActions();
                 actionModule.registerMenuClipboardActions();
                 actionModule.registerToolBarClipboardActions();
 
