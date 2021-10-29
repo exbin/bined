@@ -18,7 +18,6 @@ package org.exbin.bined.editor;
 import java.awt.Dimension;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +27,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.exbin.framework.XBBaseApplication;
@@ -53,7 +54,7 @@ import org.exbin.framework.gui.undo.api.UndoFileHandler;
 /**
  * The main class of the BinEd Hexadecimal Editor application.
  *
- * @version 0.2.1 2021/10/14
+ * @version 0.2.1 2021/10/29
  * @author ExBin Project (http://exbin.org)
  */
 @ParametersAreNonnullByDefault
@@ -61,9 +62,13 @@ public class BinedEditor {
 
     private static final String BINARY_PLUGIN_ID = "binary";
 
-    private static boolean verboseMode = false;
-    private static boolean devMode = false;
-    private static ResourceBundle bundle;
+    private static final String OPTION_HELP = "h";
+    private static final String OPTION_VERBOSE = "v";
+    private static final String OPTION_DEV = "dev";
+    private static final String OPTION_SINGLE_FILE = "single_file";
+    private static final String OPTION_MULTI_FILE = "multi_file";
+
+    private static final ResourceBundle bundle = LanguageUtils.getResourceBundleByClass(BinedEditor.class);
 
     /**
      * Main method launching the application.
@@ -72,26 +77,29 @@ public class BinedEditor {
      */
     public static void main(String[] args) {
         try {
-            bundle = LanguageUtils.getResourceBundleByClass(BinedEditor.class);
             // Parameters processing
             Options opt = new Options();
-            opt.addOption("h", "help", false, bundle.getString("cl_option_help"));
-            opt.addOption("v", false, bundle.getString("cl_option_verbose"));
-            opt.addOption("dev", false, bundle.getString("cl_option_dev"));
+            opt.addOption(OPTION_HELP, "help", false, bundle.getString("cl_option_help"));
+            opt.addOption(OPTION_VERBOSE, false, bundle.getString("cl_option_verbose"));
+            opt.addOption(OPTION_DEV, false, bundle.getString("cl_option_dev"));
+            OptionGroup editorProviderType = new OptionGroup();
+            editorProviderType.addOption(new Option(OPTION_SINGLE_FILE, bundle.getString("cl_option_single_file")));
+            editorProviderType.addOption(new Option(OPTION_MULTI_FILE, bundle.getString("cl_option_multi_file")));
+            opt.addOptionGroup(editorProviderType);
             BasicParser parser = new BasicParser();
             CommandLine cl = parser.parse(opt, args);
-            if (cl.hasOption('h')) {
+            if (cl.hasOption(OPTION_HELP)) {
                 HelpFormatter f = new HelpFormatter();
                 f.printHelp(bundle.getString("cl_syntax"), opt);
             } else {
-                verboseMode = cl.hasOption("v");
-                devMode = cl.hasOption("dev");
+                boolean verboseMode = cl.hasOption(OPTION_VERBOSE);
+                boolean devMode = cl.hasOption(OPTION_DEV);
+                String editorProvideType = editorProviderType.getSelected();
 
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
                 BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
-                boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
@@ -111,7 +119,11 @@ public class BinedEditor {
                 GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
 
                 BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
-                binedModule.initEditorProvider(multiFileMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
+                boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
+                EditorProviderVariant editorProviderVariant = editorProvideType != null
+                        ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)
+                        : (multiFileMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
+                binedModule.initEditorProvider(editorProviderVariant);
                 EditorProvider editorProvider = binedModule.getEditorProvider();
                 editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
 
@@ -135,7 +147,7 @@ public class BinedEditor {
                 frameModule.registerBarsVisibilityActions();
 
                 fileModule.registerMenuFileHandlingActions();
-                if (multiFileMode) {
+                if (editorProviderVariant == EditorProviderVariant.MULTI) {
                     editorModule.registerMenuFileCloseActions();
                 }
 
@@ -196,19 +208,21 @@ public class BinedEditor {
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();
                 optionsModule.initialLoadFromPreferences();
-                frameHandler.show();
-                updateModule.checkOnStart(frameHandler.getFrame());
+                frameHandler.showFrame();
 
+                String filePath = null;
                 List fileArgs = cl.getArgList();
                 if (fileArgs.size() > 0) {
-                    String filePath = (String) fileArgs.get(0);
-                    try {
-                        URL url = new File(filePath).toURI().toURL();
-                        fileModule.loadFromFile(url.toURI().toASCIIString());
-                    } catch (MalformedURLException | URISyntaxException ex) {
-                        fileModule.loadFromFile(filePath);
-                    }
+                    filePath = (String) fileArgs.get(0);
                 }
+
+                if (filePath == null) {
+                    binedModule.start();
+                } else {
+                    binedModule.startWithFile(filePath);
+                }
+
+                updateModule.checkOnStart(frameHandler.getFrame());
             }
         } catch (ParseException | RuntimeException ex) {
             Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);

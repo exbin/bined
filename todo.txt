@@ -1,21 +1,23 @@
 -  Add double triangles after current encoding state visualisation
 -  Add support for different shapes, color and blinking for mirror cursor
 -  Clear selection even when select all and cursor is not moved after for example end key
--  Use drawString instead of drawChars for preview
 -  Appearance setting doesn't work in options dialog and fix Apperance -> Appearance
 -  Support for octet-stream clipboard flavor
 -  Support for file clipboard flavor
 -  Value preview bar with float / string preview
--  Insert space action
 -  Editor for selection range
--  Fix backspace after paste
 -  Multiselection and multicaret support
--  Scrollbar down/up buttons in huge file mode
 -  Fix delete code area in XBEditor
--  Add inplace editation mode
 -  https://sourceforge.net/projects/javaclassviewer
 -  Move cursor after select all
+-  Clear selection on HOME/END key
+-  Fix copy-on-write after double insert
 
+Ok Add inplace editation mode
+Ok Scrollbar down/up buttons in huge file mode
+Ok Fix backspace after paste
+Ok Insert space action
+Ok Use drawString instead of drawChars for preview
 Ok Update colors on Look&Feel change
 Ok Fix UTF-8 en coding as listed in encodings list
 Ok Update CZ language pack for 0.1.2
