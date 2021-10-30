@@ -226,6 +226,7 @@ public class BinedEditor {
             }
         } catch (ParseException | RuntimeException ex) {
             Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
         }
     }
 }
