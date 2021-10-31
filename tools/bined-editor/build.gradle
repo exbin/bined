@@ -1,22 +1,17 @@
+plugins {
+    id 'java'
+    id 'distribution'
+    id 'maven-publish'
+    id 'edu.sc.seis.launch4j' version '2.5.1'
+}
+
+//dependencyManagement {
+//	imports {
+//        classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:2.5.1'
+//    }
+//}
+
 apply from: '../tools.gradle'
-
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-        classpath "gradle.plugin.edu.sc.seis.gradle:launch4j:2.4.1"
-    }
-}
-
-['edu.sc.seis.launch4j'].each {
-    apply plugin: it
-}
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.exbin.bined.editor.BinedEditor'
@@ -52,7 +47,7 @@ repositories {
 }
 
 dependencies {
-//    implementation 'org.dockingframes:docking-frames-common:1.1.1'
+    //    implementation 'org.dockingframes:docking-frames-common:1.1.1'
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-core')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-swing')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-operation')
@@ -75,7 +70,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-about-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-undo')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-undo-api')
-//    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-docking')
+    //    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-docking')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-component')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-component-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-options')
@@ -102,7 +97,7 @@ launch4j {
     outfile = "Bined.exe"
     icon = "../../../../images/icon.ico"
     mainClassName = "org.exbin.bined.editor.BinedEditor"
-    jar = "../../build/libs/" + project.name + "-${version}.jar"
+    //    jar = "../../build/libs/" + project.name + "-${version}.jar"
     copyright = "ExBin Project"
 }
 
@@ -114,4 +109,3 @@ jar {
         )
     }
 }
-

@@ -1,4 +1,4 @@
-0.2.1
+0.2.1 (2021-10-31)
 - New app icon
 - Support for multiple files / tabs
 - Added string field in values panel (issue #8)

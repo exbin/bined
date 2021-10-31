@@ -1,3 +1,10 @@
+pluginManagement {
+    repositories {
+    	maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local/" }
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = 'bined-editor'
 
 apply from: '../tools-settings.gradle'

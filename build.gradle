@@ -1,25 +1,12 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-    }
-}
-
 plugins {
+    id 'base'
+    id 'distribution'
+    id 'maven-publish'
     id "nebula.ospackage" version "8.4.1"
+    id 'at.bxm.svntools' version '2.2'
 }
 
-version = '0.2.1-SNAPSHOT'
-
-apply plugin: 'at.bxm.svntools'
-apply plugin: "nebula.ospackage"
-
-['base', 'distribution', 'maven-publish'].each {
-    apply plugin: it
-}
+version = '0.2.1'
 
 task cleanDeps {
     if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
