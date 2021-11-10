@@ -18,15 +18,13 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:2.2")
     }
 }
 
-['java-library', 'maven-publish', 'signing', 'at.bxm.svntools'].each {
-    apply plugin: it
-}
-
 sourceCompatibility = '1.8'
+
+targetCompatibility = '1.8'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -184,9 +182,9 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
     uploadArchives {
         repositories {
             mavenDeployer {
-//                beforeDeployment {
-//                    MavenDeployment deployment -> signing.signPom(deployment)
-//                }
+                //                beforeDeployment {
+                //                    MavenDeployment deployment -> signing.signPom(deployment)
+                //                }
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: ossrhUsername, password: ossrhPassword)

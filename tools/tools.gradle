@@ -34,6 +34,20 @@ ext.depsXbupDataJava = [
     version: '0.2.2-SNAPSHOT'
 ]
 
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:2.2")
+    }
+}
+
+['at.bxm.svntools'].each {
+    apply plugin: it
+}
+
 import org.gradle.util.VersionNumber
 
 sourceCompatibility = '1.8'

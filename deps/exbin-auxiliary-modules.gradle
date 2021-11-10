@@ -6,12 +6,11 @@ def libraryUrl = 'https://exbin.org'
 
 ext.depsThis = 'ExbinAuxiliaryJava'
 
-['java-library', 'maven-publish', 'maven', 'signing'].each {
-    apply plugin: it
-}
 import org.gradle.util.VersionNumber
 
 sourceCompatibility = '1.8'
+
+targetCompatibility = '1.8'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -177,9 +176,9 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
     uploadArchives {
         repositories {
             mavenDeployer {
-                beforeDeployment {
-                    MavenDeployment deployment -> signing.signPom(deployment)
-                }
+//                beforeDeployment {
+//                    MavenDeployment deployment -> signing.signPom(deployment)
+//                }
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: ossrhUsername, password: ossrhPassword)

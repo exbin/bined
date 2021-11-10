@@ -1,3 +1,6 @@
+0.2.2
+- 
+
 0.2.1 (2021-10-31)
 - New app icon
 - Support for multiple files / tabs

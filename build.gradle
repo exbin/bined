@@ -6,7 +6,7 @@ plugins {
     id 'at.bxm.svntools' version '2.2'
 }
 
-version = '0.2.1'
+version = '0.2.2-SNAPSHOT'
 
 task cleanDeps {
     if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
