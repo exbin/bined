@@ -4,7 +4,7 @@ include ":deps"
 
 include ":tools:bined-editor"
 
-File placeholder = file("deps/_placeholder")
+File placeholder = file("deps/.downloaded")
 if (placeholder.exists()) {
     placeholder.delete()
 }
@@ -19,3 +19,8 @@ if (!gradle.startParameter.taskNames.contains("clean") || gradle.startParameter.
     }
 }
 
+gradle.allprojects {
+  ext {
+    depsRoot = 'Bined'
+  }
+}

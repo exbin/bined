@@ -2,11 +2,20 @@
 
 version = '0.2.1-SNAPSHOT'
 def repositoryName = "exbin-auxiliary-java"
+def githubProfile = 'exbin'
 def libraryUrl = 'https://exbin.org'
 
 ext.depsThis = 'ExbinAuxiliaryJava'
 
+ext.depsExbinAuxiliaryJava = [
+    githubProfile: githubProfile,
+    githubRepo   : repositoryName,
+    version      : version
+]
+
 import org.gradle.util.VersionNumber
+
+apply from: '../deps_processing.gradle'
 
 sourceCompatibility = '1.8'
 
@@ -68,56 +77,6 @@ task javadocJar (type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-// Module dependency processing
-// - local maven repository module will be used if available
-// - otherwise module will be download to deps folder
-project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
-    if (depsName == ext.depsThis) {
-        return project(":modules:" + moduleName)
-    }
-
-    def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
-    if (new File(mavenModuleDir).isDirectory()) {
-        // Use maven package if available
-        return packageName + ':' + moduleName + ':' + ext['deps' + depsName].version
-    }
-
-    def depsDir = rootProject.buildDir.parent + '/deps/'
-    if (gradle.startParameter.taskNames == ['clean']) {
-        return project(':deps')
-    }
-
-    def depModuleDir = depsDir + moduleName
-    if (!new File(depModuleDir).isDirectory()) {
-        // Download module
-        def githubModulePath = 'https://github.com/' + ext['deps' + depsName].githubProfile + '/' + ext['deps' + depsName].githubRepo + '/trunk/modules/' + moduleName
-        println 'Downloading ' + githubModulePath
-
-        createSvnDownloadTask(moduleName, githubModulePath, depModuleDir)
-        tasks["svnDownload${moduleName}"].execute()
-
-        // Report as placeholder dependency
-        if (!new File(depsDir + "_placeholder").exists()) {
-            new File(depsDir + "_placeholder").mkdir()
-        }
-        return project(':deps')
-    }
-
-    if (new File(depsDir + "_placeholder").exists()) {
-        return project(':deps')
-    }
-
-    return project(':deps:' + moduleName)
-}
-
-project.dependencies.ext.moduleDepPath = { depsName, moduleName ->
-    if (depsName == ext.depsThis) {
-        return ":modules:${moduleName}"
-    }
-
-    return ":deps:${moduleName}"
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
@@ -136,9 +95,9 @@ publishing {
                     description libraryDescription
                     url libraryUrl
                     scm {
-                        url "https://github.com/exbin/${repositoryName}"
-                        connection "cm:git:git://github.com/exbin/${repositoryName}.git"
-                        developerConnection "scm:git:git@github.com:exbin/${repositoryName}.git"
+                        url "https://github.com/${githubProfile}/${repositoryName}"
+                        connection "cm:git:git://github.com/${githubProfile}/${repositoryName}.git"
+                        developerConnection "scm:git:git@github.com:${githubProfile}/${repositoryName}.git"
                     }
                     licenses {
                         license {
@@ -196,9 +155,9 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
                     organization 'ExBin Project'
 
                     scm {
-                        url "https://github.com/exbin/${repositoryName}"
-                        connection "cm:git:git://github.com/exbin/${repositoryName}.git"
-                        developerConnection "scm:git:git@github.com:exbin/${repositoryName}.git"
+                        url "https://github.com/${githubProfile}/${repositoryName}"
+                        connection "cm:git:git://github.com/${githubProfile}/${repositoryName}.git"
+                        developerConnection "scm:git:git@github.com:${githubProfile}/${repositoryName}.git"
                     }
                     licenses {
                         license {
@@ -219,4 +178,3 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
         }
     }
 }
-

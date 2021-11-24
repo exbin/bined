@@ -1,9 +1,20 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "at.bxm.gradleplugins:gradle-svntools-plugin:2.2"
+        classpath "org.tmatesoft.svnkit:svnkit:1.10.1"
+    }
+}
+
 plugins {
     id 'base'
     id 'distribution'
     id 'maven-publish'
     id "nebula.ospackage" version "8.4.1"
-    id 'at.bxm.svntools' version '2.2'
 }
 
 version = '0.2.2-SNAPSHOT'
@@ -15,7 +26,7 @@ task cleanDeps {
         if (depsCheckFile.exists()) {
             File depsDir = rootProject.file("deps")
             depsDir.listFiles().each() { childFile ->
-                if (childFile.name != '_placeholder' && childFile.isDirectory() && childFile.name != ".gradle") {
+                if (childFile.isDirectory() && childFile.name != ".gradle") {
                     project.delete(childFile)
                 }
             }
@@ -33,42 +44,40 @@ subprojects {
     task allDeps(type: DependencyReportTask) {}
 }
 
-def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
-    return tasks.create("svnDownload${moduleName}", at.bxm.gradleplugins.svntools.tasks.SvnExport) {
-        svnUrl = svnUrlValue
-        targetDir = targetDirValue
-    }
-}
-
-if (file('deps/_placeholder').exists()) {
-    // Perform restart for new dependency handling
+if (file('deps/.downloaded').exists()) {
+	file('deps/.downloaded').delete()
+    // Performs another build task for new dependency handling
     def depsLevel
     if (project.gradle.startParameter.projectProperties.containsKey('moduleDep')) {
         depsLevel = project.gradle.startParameter.projectProperties['moduleDep'] + 1
     } else {
         depsLevel = 1
+        println "Due to dependecy download(s) gradle build must be executed again after finishing"
     }
     def artefactBuild = project.tasks.create([name: "depsRebuild_${depsLevel}", type: GradleBuild])
-    artefactBuild.buildFile = project.file('build.gradle')
     artefactBuild.tasks = project.gradle.startParameter.taskNames
+    artefactBuild.setDependsOn(project.tasks['assemble'].dependsOn)
 
     def artefactProjectProperties = artefactBuild.startParameter.projectProperties
     def currentProjectProperties = project.gradle.startParameter.projectProperties
     artefactProjectProperties << currentProjectProperties
     artefactProjectProperties << ['moduleDep': depsLevel]
-
+    
     // Terminate currently invalid tasks
     // TODO: Fix support for other tasks like distZip
     subprojects.each { subproject ->
-        if (subproject.tasks.findByPath('assemble') != null) {
-            subproject.tasks['assemble'].setDependsOn([])
+        if (subproject.tasks.findByPath('compileJava') != null) {
+            subproject.tasks['compileJava'].setEnabled(false)
+        }
+        if (subproject.tasks.findByPath('compileTestJava') != null) {
+            subproject.tasks['compileTestJava'].setEnabled(false)
+        }
+        if (subproject.tasks.findByPath('javadoc') != null) {
+            subproject.tasks['javadoc'].setEnabled(false)
         }
     }
-    if (project.tasks.findByPath('assemble') != null) {
-        project.tasks['assemble'].setDependsOn([])
-    }
 
-    //    artefactBuild.execute()
+    assemble.dependsOn("depsRebuild_${depsLevel}")
 }
 
 distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
@@ -137,7 +146,7 @@ buildDeb {
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     distZip {
-        archiveName 'bined-' + version + '.zip'
+        archiveFileName = 'bined-' + version + '.zip'
     }
 
     distributions {

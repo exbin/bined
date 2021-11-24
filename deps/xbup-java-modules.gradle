@@ -2,27 +2,26 @@
 
 version = '0.2.2-SNAPSHOT'
 def repositoryName = "xbup-java"
+def githubProfile = 'exbin'
 def libraryUrl = 'https://xbup.exbin.org'
-
-ext.depsExbinAuxiliaryJava = [
-    githubProfile: 'exbin',
-    githubRepo: 'exbin-auxiliary-java',
-    version: '0.2.1-SNAPSHOT'
-]
 
 ext.depsThis = 'XbupJava'
 
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:2.2")
-    }
-}
+ext.depsXbupJava = [
+    githubProfile: githubProfile,
+    githubRepo   : repositoryName,
+    version      : version
+]
+
+ext.depsExbinAuxiliaryJava = [
+    githubProfile: 'exbin',
+    githubRepo   : 'exbin-auxiliary-java',
+    version      : '0.2.1-SNAPSHOT'
+]
 
 import org.gradle.util.VersionNumber
+
+apply from: '../deps_processing.gradle'
 
 sourceCompatibility = '1.8'
 
@@ -46,8 +45,8 @@ tasks.withType(JavaCompile) {
 }
 
 // Disable tests on build
-if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
-    tasks.withType(Test) {enabled = false}
+if (!gradle.startParameter.taskNames.any { it.endsWith("test") }) {
+    tasks.withType(Test) { enabled = false }
 }
 
 task testJar(type: Jar, dependsOn: testClasses) {
@@ -75,66 +74,9 @@ javadoc {
     }
 }
 
-task javadocJar (type: Jar, dependsOn: javadoc) {
+task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
-}
-
-def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
-    return tasks.create("svnDownload${moduleName}", at.bxm.gradleplugins.svntools.tasks.SvnExport) {
-        svnUrl = svnUrlValue
-        targetDir = targetDirValue
-    }
-}
-
-// Module dependency processing
-// - local maven repository module will be used if available
-// - otherwise module will be download to deps folder
-project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
-    if (depsName == ext.depsThis) {
-        return project(':modules:' + moduleName)
-    }
-
-    def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
-    if (new File(mavenModuleDir).isDirectory()) {
-        // Use maven package if available
-        return packageName + ':' + moduleName + ':' + ext['deps' + depsName].version
-    }
-
-    def depsDir = rootProject.buildDir.parent + '/deps/'
-    if (gradle.startParameter.taskNames == ['clean']) {
-        return project(':deps')
-    }
-
-    def depModuleDir = depsDir + moduleName
-    if (!new File(depModuleDir).isDirectory()) {
-        // Download module
-        def githubModulePath = 'https://github.com/' + ext['deps' + depsName].githubProfile + '/' + ext['deps' + depsName].githubRepo + '/trunk/modules/' + moduleName
-        println 'Downloading ' + githubModulePath
-
-        createSvnDownloadTask(moduleName, githubModulePath, depModuleDir)
-        tasks["svnDownload${moduleName}"].execute()
-
-        // Report as placeholder dependency
-        if (!new File(depsDir + "_placeholder").exists()) {
-            new File(depsDir + "_placeholder").mkdir()
-        }
-        return project(':deps')
-    }
-
-    if (new File(depsDir + "_placeholder").exists()) {
-        return project(':deps')
-    }
-
-    return project(':deps:' + moduleName)
-}
-
-project.dependencies.ext.moduleDepPath = { depsName, moduleName ->
-    if (depsName == ext.depsThis) {
-        return ":modules:${moduleName}"
-    }
-
-    return ":deps:${moduleName}"
 }
 
 publishing {
@@ -144,7 +86,7 @@ publishing {
             artifact sourceJar {
                 classifier 'sources'
             }
-            artifact (javadocJar) {
+            artifact(javadocJar) {
                 classifier = 'javadoc'
             }
 
@@ -155,9 +97,9 @@ publishing {
                     description libraryDescription
                     url libraryUrl
                     scm {
-                        url "https://github.com/exbin/${repositoryName}"
-                        connection "cm:git:git://github.com/exbin/${repositoryName}.git"
-                        developerConnection "scm:git:git@github.com:exbin/${repositoryName}.git"
+                        url "https://github.com/${githubProfile}/${repositoryName}"
+                        connection "cm:git:git://github.com/${githubProfile}/${repositoryName}.git"
+                        developerConnection "scm:git:git@github.com:${githubProfile}/${repositoryName}.git"
                     }
                     licenses {
                         license {
@@ -214,9 +156,9 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
                     url libraryUrl
 
                     scm {
-                        url "https://github.com/exbin/${repositoryName}"
-                        connection "cm:git:git://github.com/exbin/${repositoryName}.git"
-                        developerConnection "scm:git:git@github.com:exbin/${repositoryName}.git"
+                        url "https://github.com/${githubProfile}/${repositoryName}"
+                        connection "cm:git:git://github.com/${githubProfile}/${repositoryName}.git"
+                        developerConnection "scm:git:git@github.com:${githubProfile}/${repositoryName}.git"
                     }
                     licenses {
                         license {
@@ -237,4 +179,3 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
         }
     }
 }
-

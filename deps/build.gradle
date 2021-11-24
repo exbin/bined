@@ -1,0 +1,5 @@
+// Dummy dependency project
+
+plugins {
+    id 'base'
+}
