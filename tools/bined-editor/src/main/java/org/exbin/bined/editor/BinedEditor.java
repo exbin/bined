@@ -36,20 +36,20 @@ import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
-import org.exbin.framework.gui.about.api.GuiAboutModuleApi;
-import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
-import org.exbin.framework.gui.file.api.GuiFileModuleApi;
-import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
-import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
-import org.exbin.framework.gui.link.api.GuiLinkModuleApi;
-import org.exbin.framework.gui.action.api.GuiActionModuleApi;
-import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
-import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
-import org.exbin.framework.gui.update.api.GuiUpdateModuleApi;
-import org.exbin.framework.gui.utils.LanguageUtils;
-import org.exbin.framework.gui.editor.api.EditorProvider;
-import org.exbin.framework.gui.editor.api.EditorProviderVariant;
-import org.exbin.framework.gui.undo.api.UndoFileHandler;
+import org.exbin.framework.about.api.AboutModuleApi;
+import org.exbin.framework.editor.api.EditorModuleApi;
+import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.frame.api.ApplicationFrameHandler;
+import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.link.api.LinkModuleApi;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.options.api.OptionsModuleApi;
+import org.exbin.framework.undo.api.UndoModuleApi;
+import org.exbin.framework.update.api.UpdateModuleApi;
+import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.undo.api.UndoFileHandler;
 
 /**
  * The main class of the BinEd Hexadecimal Editor application.
@@ -108,15 +108,15 @@ public class BinedEditor {
                 moduleRepository.initModules();
                 app.init();
 
-                final GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
-                GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
-                GuiActionModuleApi actionModule = moduleRepository.getModuleByInterface(GuiActionModuleApi.class);
-                GuiAboutModuleApi aboutModule = moduleRepository.getModuleByInterface(GuiAboutModuleApi.class);
-                GuiLinkModuleApi linkModule = moduleRepository.getModuleByInterface(GuiLinkModuleApi.class);
-                GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
-                GuiFileModuleApi fileModule = moduleRepository.getModuleByInterface(GuiFileModuleApi.class);
-                GuiOptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(GuiOptionsModuleApi.class);
-                GuiUpdateModuleApi updateModule = moduleRepository.getModuleByInterface(GuiUpdateModuleApi.class);
+                final FrameModuleApi frameModule = moduleRepository.getModuleByInterface(FrameModuleApi.class);
+                EditorModuleApi editorModule = moduleRepository.getModuleByInterface(EditorModuleApi.class);
+                ActionModuleApi actionModule = moduleRepository.getModuleByInterface(ActionModuleApi.class);
+                AboutModuleApi aboutModule = moduleRepository.getModuleByInterface(AboutModuleApi.class);
+                LinkModuleApi linkModule = moduleRepository.getModuleByInterface(LinkModuleApi.class);
+                UndoModuleApi undoModule = moduleRepository.getModuleByInterface(UndoModuleApi.class);
+                FileModuleApi fileModule = moduleRepository.getModuleByInterface(FileModuleApi.class);
+                OptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(OptionsModuleApi.class);
+                UpdateModuleApi updateModule = moduleRepository.getModuleByInterface(UpdateModuleApi.class);
 
                 BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
                 boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();

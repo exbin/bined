@@ -53,7 +53,7 @@ def fetchModule(String svnUrl, targetDir, Long revision) {
 // - local maven repository module will be used if available
 // - otherwise module will be download to deps directory
 project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
-    if (ext.has('depsRoot') && depsName == ext.depsRoot) {
+    if ((ext.has('depsRoot') && depsName == ext.depsRoot) || depsName == ext.depsThis) {
         return project(':modules:' + moduleName)
     }
 
