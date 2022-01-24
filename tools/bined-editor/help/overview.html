@@ -1,0 +1,265 @@
+<html>
+<body>
+
+<h1 id="user-manual-for-bined-editor">User Manual for BinEd Editor</h1>
+<p>BinEd is free and open source hexadecimal stand-alone viewer/editor written in Java.</p>
+<p style="color: red; font-weight: bold;">Manual is under construction!</p>
+<p>See. <a href="https://github.com/exbin/bined/wiki">https://github.com/exbin/bined/wiki</a> for sources or to fix errors</p>
+<p>Example look of the application&#39;s GUI</p>
+<p><img src="images/editor_screenshot.png" alt="Editor Screenshot"></p>
+<h1 id="features">Features</h1>
+<ul>
+<li>Data as hexadecimal codes and text preview</li>
+<li>Insert and overwrite edit modes</li>
+<li>Support for selection and clipboard actions</li>
+<li>Support for showing unprintable/whitespace characters</li>
+<li>Support for undo/redo</li>
+<li>Support for charset/encoding selection</li>
+<li>Codes can be also binary, octal or decimal</li>
+<li>Searching for text / hexadecimal code with matching highlighting</li>
+<li>Support for huge files</li>
+<li>Delta mode - Only changes are stored in memory</li>
+</ul>
+<h1 id="how-to-use">How to Use</h1>
+<p>BinEd is available in multiple variants including plugins for other applications.</p>
+<p>This manual describes stand-alone editor application. For other variants please visit project&#39;s website:</p>
+<p><a href="https://bined.exbin.org">https://bined.exbin.org</a></p>
+<h2 id="requirements">Requirements</h2>
+<p>Application can be executed on any platform supported by Java 8, including Microsoft Windows, Mac OS / Mac OSX, variants of Linux or BSD and application should have the same minimum requirements as Java. It might be also ok to use any newer version of the Java.</p>
+<p>For instruction on how to install Java on your operating system please search on Internet or visit:</p>
+<p><a href="https://java.com">https://java.com</a></p>
+<h2 id="downloading">Downloading</h2>
+<p>Application is available on the project&#39;s website:</p>
+<p><a href="https://bined.exbin.org/editor">https://bined.exbin.org/editor</a></p>
+<p>To get the file scroll to Downloads section. Please use stable version if you prefer more stable and less problematic application.</p>
+<p>For Windows there is currently only installer for x86 32-bit architecture available - after installation it can be used with either 32-bit or 64-bit Java.</p>
+<p>For some Linux variants there are Debian and RPM packages available.</p>
+<p>For other operating systems please use general ZIP variant / file. It can be also used for Linux or Windows if preferred.</p>
+<h2 id="installation">Installation</h2>
+<p>Installation package for Windows is typical wizard dialog (created with Nullsoft NSIS tool).</p>
+<p><img src="images/bined_windows_installer.png" alt="Main Window"></p>
+<p>It will also create shortcuts in start menu in ExBin Project folder.</p>
+<p><img src="images/bined_windows_installer-2.png" alt="Main Window"></p>
+<p>Specify in which directory you want to install the application or use default.</p>
+<p><img src="images/bined_windows_installer-3.png" alt="Main Window"></p>
+<p>Installation on Linux depends on the variant of the system. Some systems allow to perform the installation with simple execution of the downloaded file.</p>
+<p>Alternatively you might need to use shell commands: </p>
+<p>For Debian-based systems command might be:</p>
+<pre><code><span class="hljs-attribute">sudo</span> dpkg -i bined_<span class="hljs-regexp">*.deb</span>
+</code></pre><p>For RPM-based systems command might be:</p>
+<pre><code><span class="hljs-attribute">sudo</span> rpm -i bined-<span class="hljs-regexp">*.rpm</span>
+</code></pre><p>For the general ZIP variant you&#39;ll need to extract content of the file into directory of your choice. This action is different on various operating systems - please search on the Internet for instructions on how to do this step on your operating system.</p>
+<h2 id="executing-the-application">Executing the Application</h2>
+<p>To start the application directly, there are multiple options. See the directory where your application is installed.</p>
+<p>You can start &quot;bined.exe&quot; on MS Windows systems or on systems with Windows emulation (for example via Wine) installed.</p>
+<p>&quot;bined.sh&quot; is a simple script which should work on Linux or Mac OSX systems. It might be necessary to assign execution bit on the file (for example via &quot;chmod +x bined.sh&quot; command).</p>
+<p>On some systems it might be also possible to execute &quot;bined.jar&quot; depending on how and which variant of the Java is installed.</p>
+<p>Application can be also started via command line, but this might also depend on the operating system, Java version and whether are Java tool applications setup for direct execution.</p>
+<pre><code><span class="hljs-keyword">java </span>-<span class="hljs-keyword">jar </span><span class="hljs-keyword">bined.jar</span>
+</code></pre><p>Application also accepts few command line parameters, like for opening specific file on start. Try &quot;--help&quot; parameter to see available commands. </p>
+<h1 id="main-window">Main Window</h1>
+<p>BinEd is desktop application with typical layout.</p>
+<p><img src="images/main_window.png" alt="Main Window"></p>
+<p>Application consists of (from top to bottom):</p>
+<ul>
+<li>Window header with icon, application name and optionally name of the currently opened file</li>
+<li>Main menu strip with menu items for working with file, data editing, view options, tools and application help</li>
+<li>Toolbar strip with quick action buttons, optionally with captions</li>
+<li>Optionally tab strip with currently opened files</li>
+<li>Main data area, optionally with content parsing panel on right side</li>
+<li>Optionally status bar showing currently selected encoding, cursor position and other states</li>
+</ul>
+<h2 id="menu">Menu</h2>
+<p>Main menu provides main access to available actions.</p>
+<p><img src="images/file_menu.png" alt="File Menu"></p>
+<p>File menu contains actions to handle basic work with files:</p>
+<ul>
+<li>Opening, closing and saving files</li>
+<li>List of recently used files</li>
+</ul>
+<h2 id="toolbar">Toolbar</h2>
+<p>Toolbar provides access to some of typically used actions.</p>
+<ul>
+<li>You can toggle code type between binary, octal, decimal and hexadecimal</li>
+<li>You can toggle visibility of unprintable characters</li>
+</ul>
+<h2 id="code-area">Code Area</h2>
+<p>In basic mode, data are shown as matrix of numeric codes and also as regular text at the same time.</p>
+<p>Optionally there is header, which represents position offset for the particular code on the given column.</p>
+<p>Row starts optionally by row position. Row position can be represented by numbers in octal, decimal or hexadecimal base independent on code base.</p>
+<p>Popup menu is available with actions which depends on which section of the code area was clicked on.</p>
+<h2 id="parsing-panel">Parsing Panel</h2>
+<p>Content parsing panel provides analysis of the data at the cursor position. Parsing panel can be shown/hidden with:</p>
+<pre><code><span class="hljs-keyword">Menu</span> / View / <span class="hljs-keyword">Show</span> Parsing <span class="hljs-keyword">Panel</span>
+</code></pre><p>Currently, only simple list of values is available. Values are updated when cursor in code area is moved.</p>
+<p>It&#39;s possible to edit the values and overwrite content of the document on the cursor position with ENTER key.</p>
+<p>Values panel supports options for big and little endian - this affects order of bytes for multibyte values.
+Support for signed and unsigned variants of some values - first bit is typically used for negativity sign.</p>
+<h2 id="status-bar">Status Bar</h2>
+<p>Status bar is bottom section of the main window.</p>
+<p><img src="images/status_bar.png" alt="Status Bar"></p>
+<p>It has following 5 sections - from left to right.</p>
+<h3 id="current-encoding">Current Encoding</h3>
+<p>Left click cycles throw set list of encodings.</p>
+<p>Popup menu provides ability to select specific encoding from the list or to manage it.</p>
+<h3 id="document-size">Document Size</h3>
+<p>Shows document size in specific code type and in brackets difference to size of the saved document.</p>
+<p>If there is selection active in the document then it shows size of the selection to size of the document.</p>
+<p>Tooltip shows document size in all three code types.</p>
+<p>Popup menu allows selecting code type or to copy the value.</p>
+<h3 id="cursor-position">Cursor Position</h3>
+<p>Shows current position of the cursor in the document as position in the document and position in the code.</p>
+<p>If there is selection active in the document then it shows start and end position of the selection.</p>
+<p>Tooltip shows cursor position in all three code types.</p>
+<p>Popup menu allows selecting code type or to copy the value.</p>
+<h3 id="memory-mode">Memory Mode</h3>
+<p>Shows currently used memory mode.</p>
+<p>Modes are:</p>
+<ul>
+<li>Delta Memory Mode</li>
+<li>RAM Memory Mode</li>
+</ul>
+<p>Tooltip shows full name of the memory mode.</p>
+<p>Popup menu allows switching memory mode. This will close the document and reopen it in selected mode.</p>
+<h3 id="edit-mode">Edit Mode</h3>
+<p>Following edit modes are supported:</p>
+<ul>
+<li>RO - Document is in read-only mode and cannot be edited</li>
+<li>INS - In insert mode edit operation inserts data to current cursor position</li>
+<li>OVR - In overwrite mode edit operations replaces data at the current cursor position</li>
+</ul>
+<p>It&#39;s possible to switch between insert and overwrite with single click on the status bar or with INSERT key</p>
+<h1 id="editing-file">Editing File</h1>
+<p>To create new file use:</p>
+<pre><code>Menu <span class="hljs-regexp">/ File /</span> <span class="hljs-keyword">New</span>
+</code></pre><p>To edit file use:</p>
+<pre><code><span class="hljs-keyword">Menu</span> / <span class="hljs-keyword">File</span> / <span class="hljs-keyword">Open</span>
+</code></pre><p>File is show as code area as a sequence of codes and preview characters:</p>
+<p>You can edit numerical codes, or you can edit preview characters via keyboard or using available actions.</p>
+<p>When done with editing operations, save file:</p>
+<pre><code><span class="hljs-keyword">Menu</span> / <span class="hljs-keyword">File</span> / <span class="hljs-keyword">Save</span>
+</code></pre><h2 id="undo-support">Undo support</h2>
+<p>If changes you made to the file is not what you wanted to do, you can revert some number of last edit actions you performed.</p>
+<p>TODO</p>
+<h1 id="tools">Tools</h1>
+<h2 id="go-to-position">Go to Position</h2>
+<p>Use this action to move cursor to specific position:</p>
+<pre><code>Menu / Edit / Go <span class="hljs-keyword">To</span>
+</code></pre><p><img src="images/go_to_dialog.png" alt="Go To Dialog"></p>
+<p>You can specify position relative to current position, start or end of the document.
+Position can be specified in octal, decimal or hexadecimal base.</p>
+<h2 id="find-or-replace-data">Find or Replace Data</h2>
+<p>Use this action to find specific text or sequence of codes:</p>
+<pre><code><span class="hljs-keyword">Menu</span> / Edit / <span class="hljs-keyword">Find</span>
+<span class="hljs-keyword">Menu</span> / Edit / <span class="hljs-keyword">Replace</span>
+</code></pre><p>This will open quick search bar:</p>
+<p><img src="images/search_bar.png" alt="Find Text Dialog"></p>
+<p>You can enter searched text or data and toggle match case and highlighting mode buttons.</p>
+<p>You can switch between multiple matches if found.</p>
+<p>Options button opens dialog with additional options:</p>
+<p><img src="images/find_text_dialog.png" alt="Find Text Dialog"></p>
+<h2 id="insert-data-action">Insert Data Action</h2>
+<p>Use this action to insert data to current position:</p>
+<pre><code><span class="hljs-keyword">Menu</span> / Edit / <span class="hljs-keyword">Insert</span> Data
+</code></pre><p>Data will be inserted or will replace previous data depending on the current edit mode.</p>
+<p><img src="images/insert_data_dialog.png" alt="Insert Data Dialog"></p>
+<p>Length can be specified in octal, decimal or hexadecimal base.</p>
+<h2 id="compare-files-action">Compare Files Action</h2>
+<p>Use this action to compare content of two files:</p>
+<pre><code>Menu <span class="hljs-regexp">/ Tools /</span> Compare Files
+</code></pre><p><img src="images/compare_files_dialog.png" alt="Insert Data Dialog"></p>
+<h1 id="view-options">View Options</h1>
+<h2 id="view-modes">View modes</h2>
+<ul>
+<li>Code Matrix - Show matrix of codes representing data of the file</li>
+<li>Text Preview - Show textual characters representing data using currently selected encoding</li>
+<li>Dual - Show both code matrix and text preview next to each other (default)</li>
+</ul>
+<h2 id="code-type">Code Type</h2>
+<ul>
+<li>Binary - shows data as numbers of the base 2. This mode is useful to show actual bits of the data. Values are in range 0 - 11111111</li>
+<li>Decimal - Shows each data byte as decimal value in the range 0 - 255 in typical form which most people are used to</li>
+<li>Octal - Each byte is represented as three values of the base 8, therefore in range 0 - 377. Each figure represents up to 3 bits</li>
+<li>Hexadecimal - Most commonly used form for technical purposes as each byte is represented as two figures of base 16. Value 10 to 15 are shown as alphabet letters A to F which can be optionally of lower or upper case. Each figure represent 4 bits</li>
+</ul>
+<h2 id="position-code-type">Position Code Type</h2>
+<p>In left side of the code area there are shown position in the file. It&#39;s possible to choose code type for this position as octal, decimal or hexadecimal.</p>
+<h2 id="hex-characters-case">Hex Characters Case</h2>
+<p>In hex code type codes above 10 are shown as characters A to F. You can choose if this codes will be upper or lower case.</p>
+<h2 id="show-unprintable-characters">Show Unprintable Characters</h2>
+<p>Some characters don&#39;t have visual representation in the preview section. For example characters like:</p>
+<ul>
+<li>Space characters</li>
+<li>Tabulator character</li>
+<li>Carriage return / new line characters</li>
+</ul>
+<p>This provides option to print substitute characters with different color instead to better visualize this particular characters.</p>
+<h2 id="code-colorization">Code Colorization</h2>
+<p>This option provides ability to print some codes with different colors.</p>
+<p>Currently, only single mode is available:</p>
+<ul>
+<li>Control codes: 00h to 1Fh</li>
+<li>Upper codes: 80h to FFh</li>
+</ul>
+<h2 id="choose-font">Choose Font</h2>
+<p>You can change font used in code area.</p>
+<pre><code><span class="hljs-keyword">Menu</span> / Tools / <span class="hljs-keyword">Set</span> <span class="hljs-keyword">Font</span>
+
+<span class="hljs-keyword">Options</span> / <span class="hljs-keyword">Appearance</span> / <span class="hljs-keyword">Text</span> <span class="hljs-keyword">Font</span>
+</code></pre><p><img src="images/select_font_dialog.png" alt="Select Font Dialog"></p>
+<p>You can select specific family of the font, size in pixels, style parameters like bold and italic.</p>
+<p>In preview section you can see how the selected font will look, or you can enter other text of your choice there.</p>
+<h2 id="encoding">Encoding</h2>
+<p>Text preview section is showing data decoded to textual characters according to currently selected encoding. Method of conversion between RAW data and characters is described in so called encoding. Java supports universal UNICODE encodings as well as various ISO and platform specific encodings often tailored for specific country/language.</p>
+<p>Encodings can be either fixed where single numeric code is represented as single character. Some encodings like for example UTF-8 uses codes with different length of codes to represent characters. Each character in textual preview section is decoded from particular position, therefore characters longer than single byte will overlap.</p>
+<p>User can set list of encodings available for quick switching in encodings manager dialog.</p>
+<p><img src="images/manage_encodings_dialog.png" alt="Manage Encodings Dialog"></p>
+<p>It&#39;s possible to move/reorder encodings in the list and add another encoding.</p>
+<p><img src="images/add_encodings_dialog.png" alt="Add Encodins Dialog"></p>
+<p>Encodings can be filtered by name and/or country code.</p>
+<p>Active encoding can be either selected by popup menu or cycled through by single click in the status bar.</p>
+<h1 id="options-dialog">Options Dialog</h1>
+<p><img src="images/options_dialog.png" alt="Options Dialog"></p>
+<h2 id="code-area">Code Area</h2>
+<p>Code area options allows setting various options related to code area.</p>
+<p><img src="images/code_area_options.png" alt="Code Area Options"></p>
+<p>Maximum bytes per row allows setting how many codes / preview characters will be visible on the page. </p>
+<p>In default mode (16) code area always shows 16 codes per row.</p>
+<p>Alternative mode is to use (0) in which code area will fit as many codes per page to fit visible area.</p>
+<p>Row position length parameters allows setting of behavior of row position codes. </p>
+<p>In default mode (0, 0) row positions will have as many digits as needed for current size of the document.</p>
+<h2 id="layout">Layout</h2>
+<p>Multiple layout profiles are supported. You can define your own or use one from templates.</p>
+<p><img src="images/layout_profiles_options.png" alt="Layout Profiles Options"></p>
+<p>Layout options specify positions of the printed data. Primary capability is to specify size and frequency of spacing between characters.</p>
+<p><img src="images/add_layout_dialog.png" alt="Add Layout Profile"></p>
+<h2 id="decorations">Decorations</h2>
+<p>Multiple decoration profiles are supported. You can define your own or use one from templates.</p>
+<p><img src="images/theme_profiles_options.png" alt="Theme Profiles Options"></p>
+<p>Decoration options allow specifying additional cosmetic entities, namely lines and shapes.</p>
+<p><img src="images/add_theme_dialog.png" alt="Add Theme Profile"></p>
+<h2 id="colors">Colors</h2>
+<p>Multiple color profiles are supported. You can define your own or use one from templates. </p>
+<p><img src="images/colors_profiles_options.png" alt="Colors Profiles Options"></p>
+<p>It is possible to specify colors of text, background, decorations and make it specific for areas like selection or found matches.
+If color is not specified, default color from current Look and Feel is used.</p>
+<p><img src="images/add_colors_dialog.png" alt="Add Colors Profile"></p>
+<h1 id="help">Help</h1>
+<p>Help for the application is available on the project&#39;s website and current version is also included with the application.</p>
+<h2 id="check-for-updates">Check for Updates</h2>
+<p>It&#39;s possible to check if newer version of the stable version of the application is available.</p>
+<pre><code>Menu / <span class="hljs-keyword">Help</span> / <span class="hljs-keyword">Check</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">Update</span>
+</code></pre><p>Check is performed automatically at the start of the application unless disabled in options:</p>
+<pre><code>Options / <span class="hljs-keyword">Start</span> : <span class="hljs-keyword">Check</span> <span class="hljs-keyword">for</span> available updates <span class="hljs-keyword">on</span> application <span class="hljs-keyword">start</span>
+</code></pre><p><img src="images/check_for_update_dialog.png" alt="Check for Update Dialog"></p>
+<p>Press download button to be redirected to download page in the browser.</p>
+<p>Automatic update is currently not supported.</p>
+<h2 id="about-dialog">About dialog</h2>
+<p>You can show basic information about application with:</p>
+<pre><code>Menu / <span class="hljs-keyword">Help</span> / <span class="hljs-keyword">About</span>
+</code></pre><p><img src="images/about_dialog.png" alt="About Dialog"></p>
+<h2 id="license">License</h2>
+<p>Project uses Apache License 2.0, see:</p>
+<p><a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+</body></html>

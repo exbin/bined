@@ -185,6 +185,11 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                     }
                 }
 
+                into('help') {
+                    from 'tools/bined-editor/help'
+                    include '**'
+                }
+                
                 //            into('doc') {
                 //                from 'doc'
                 //                include '**'

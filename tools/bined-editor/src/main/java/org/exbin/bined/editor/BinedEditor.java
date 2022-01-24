@@ -49,6 +49,7 @@ import org.exbin.framework.update.api.UpdateModuleApi;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.undo.api.UndoFileHandler;
 
 /**
@@ -112,6 +113,7 @@ public class BinedEditor {
                 EditorModuleApi editorModule = moduleRepository.getModuleByInterface(EditorModuleApi.class);
                 ActionModuleApi actionModule = moduleRepository.getModuleByInterface(ActionModuleApi.class);
                 AboutModuleApi aboutModule = moduleRepository.getModuleByInterface(AboutModuleApi.class);
+                HelpModuleApi helpModule = moduleRepository.getModuleByInterface(HelpModuleApi.class);
                 LinkModuleApi linkModule = moduleRepository.getModuleByInterface(LinkModuleApi.class);
                 UndoModuleApi undoModule = moduleRepository.getModuleByInterface(UndoModuleApi.class);
                 FileModuleApi fileModule = moduleRepository.getModuleByInterface(FileModuleApi.class);
@@ -135,6 +137,7 @@ public class BinedEditor {
                     Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 updateModule.registerDefaultMenuItem();
+                helpModule.registerMainMenu();
                 aboutModule.registerDefaultMenuItem();
                 try {
                     linkModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
@@ -212,7 +215,7 @@ public class BinedEditor {
 
                 String filePath = null;
                 List fileArgs = cl.getArgList();
-                if (fileArgs.size() > 0) {
+                if (!fileArgs.isEmpty()) {
                     filePath = (String) fileArgs.get(0);
                 }
 
