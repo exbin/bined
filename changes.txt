@@ -1,5 +1,6 @@
 0.2.2
-- 
+- Added off-line help
+- Added edit selection dialog
 
 0.2.1 (2021-10-31)
 - New app icon

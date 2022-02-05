@@ -41,16 +41,16 @@ import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
-import org.exbin.framework.link.api.LinkModuleApi;
+import org.exbin.framework.help.online.api.HelpOnlineModuleApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.undo.api.UndoModuleApi;
+import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.update.api.UpdateModuleApi;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.help.api.HelpModuleApi;
-import org.exbin.framework.undo.api.UndoFileHandler;
+import org.exbin.framework.operation.undo.api.UndoFileHandler;
 
 /**
  * The main class of the BinEd Hexadecimal Editor application.
@@ -114,8 +114,8 @@ public class BinedEditor {
                 ActionModuleApi actionModule = moduleRepository.getModuleByInterface(ActionModuleApi.class);
                 AboutModuleApi aboutModule = moduleRepository.getModuleByInterface(AboutModuleApi.class);
                 HelpModuleApi helpModule = moduleRepository.getModuleByInterface(HelpModuleApi.class);
-                LinkModuleApi linkModule = moduleRepository.getModuleByInterface(LinkModuleApi.class);
-                UndoModuleApi undoModule = moduleRepository.getModuleByInterface(UndoModuleApi.class);
+                HelpOnlineModuleApi helpOnlineModule = moduleRepository.getModuleByInterface(HelpOnlineModuleApi.class);
+                OperationUndoModuleApi undoModule = moduleRepository.getModuleByInterface(OperationUndoModuleApi.class);
                 FileModuleApi fileModule = moduleRepository.getModuleByInterface(FileModuleApi.class);
                 OptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(OptionsModuleApi.class);
                 UpdateModuleApi updateModule = moduleRepository.getModuleByInterface(UpdateModuleApi.class);
@@ -140,11 +140,11 @@ public class BinedEditor {
                 helpModule.registerMainMenu();
                 aboutModule.registerDefaultMenuItem();
                 try {
-                    linkModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
+                    helpOnlineModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                linkModule.registerOnlineHelpMenu();
+                helpOnlineModule.registerOnlineHelpMenu();
 
                 frameModule.registerExitAction();
                 frameModule.registerBarsVisibilityActions();
