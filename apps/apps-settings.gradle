@@ -1,4 +1,4 @@
-// Shared tools build settings
+// Shared apps build settings
 
 def modifyPath(project) {
     def rootProjectDir = rootProject.projectDir.parentFile.parent

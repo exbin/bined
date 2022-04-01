@@ -11,7 +11,7 @@ plugins {
 //    }
 //}
 
-apply from: '../tools.gradle'
+apply from: '../apps.gradle'
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.exbin.bined.editor.BinedEditor'

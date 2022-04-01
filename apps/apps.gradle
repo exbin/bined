@@ -1,4 +1,4 @@
-// Shared tools build
+// Shared apps build
 
 version = '0.2.0-SNAPSHOT'
 def repositoryName = "bined-editor"

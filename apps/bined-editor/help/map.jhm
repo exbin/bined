@@ -4,6 +4,6 @@
          "http://java.sun.com/javase/technologies/desktop/javahelp/map_1_0.dtd">
 
 <map version="1.0">
-	<mapID target="top" url="overview.html" />
-        <mapID target="overview" url="overview.html" />
+	<mapID target="top" url="manual.html" />
+        <mapID target="manual" url="manual.html" />
 </map>

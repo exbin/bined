@@ -80,7 +80,7 @@ if (file('deps/.downloaded').exists()) {
     assemble.dependsOn("depsRebuild_${depsLevel}")
 }
 
-distZip.dependsOn project(':tools:bined-editor').tasks['launch4j']
+distZip.dependsOn project(':apps:bined-editor').tasks['launch4j']
 
 ospackage {
     packageName = 'bined'
@@ -113,7 +113,7 @@ ospackage {
         into '/usr/share/pixmaps'
     }
 
-    from (project(':tools:bined-editor').jar) {
+    from (project(':apps:bined-editor').jar) {
         rename { filename -> "bined.jar" }
         into '/usr/share/bined'
     }
@@ -122,8 +122,8 @@ ospackage {
         into '/usr/share/bined'
     }
 
-    project(':tools:bined-editor').plugins.withType(JavaPlugin) {
-        from(project(':tools:bined-editor').configurations.runtimeClasspath) {
+    project(':apps:bined-editor').plugins.withType(JavaPlugin) {
+        from(project(':apps:bined-editor').configurations.runtimeClasspath) {
             into('/usr/share/bined/lib')
             include '*'
         }
@@ -153,7 +153,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
         main {
             contents {
                 duplicatesStrategy = 'exclude'
-                from project(':tools:bined-editor').jar
+                from project(':apps:bined-editor').jar
 
                 from project.rootDir
                 include 'LICENSE-2.0.txt'
@@ -165,7 +165,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 //                include 'bined.bat'
                 include 'plugins/*'
 
-                from project(':tools:bined-editor').projectDir.absolutePath + '/build/launch4j'
+                from project(':apps:bined-editor').projectDir.absolutePath + '/build/launch4j'
                 include "Bined.exe"
 
                 //            into('lib') {
@@ -173,20 +173,20 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 //            }
 
                 into('') {
-                    from project(':tools:bined-editor').jar.archivePath
+                    from project(':apps:bined-editor').jar.archivePath
                     include '*'
                     rename { filename -> "bined.jar" }
                 }
 
-                project(':tools:bined-editor').plugins.withType(JavaPlugin) {
+                project(':apps:bined-editor').plugins.withType(JavaPlugin) {
                     into('lib') {
-                        from project(':tools:bined-editor').configurations.runtimeClasspath
+                        from project(':apps:bined-editor').configurations.runtimeClasspath
                         include '*'
                     }
                 }
 
                 into('help') {
-                    from 'tools/bined-editor/help'
+                    from 'apps/bined-editor/help'
                     include '**'
                 }
                 

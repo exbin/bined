@@ -2,7 +2,7 @@ rootProject.name = 'bined'
 
 include ":deps"
 
-include ":tools:bined-editor"
+include ":apps:bined-editor"
 
 File placeholder = file("deps/.downloaded")
 if (placeholder.exists()) {

@@ -7,4 +7,4 @@ pluginManagement {
 
 rootProject.name = 'bined-editor'
 
-apply from: '../tools-settings.gradle'
+apply from: '../apps-settings.gradle'

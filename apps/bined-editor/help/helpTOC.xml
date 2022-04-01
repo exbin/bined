@@ -4,6 +4,6 @@
 	  "../dtd/toc_2_0.dtd">
 <toc version="2.0">
 	<tocitem text="Help" image="toplevelfolder">
-		<tocitem text="Project's Overview" target="overview"/>
+		<tocitem text="Manual" target="manual"/>
 	</tocitem>
 </toc>
