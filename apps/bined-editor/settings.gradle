@@ -7,4 +7,8 @@ pluginManagement {
 
 rootProject.name = 'bined-editor'
 
+if (rootProject.path == ':') {
+    include ':modules:exbin-framework-bined'
+}
+
 apply from: '../apps-settings.gradle'

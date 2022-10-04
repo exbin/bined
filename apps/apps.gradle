@@ -1,8 +1,10 @@
 // Shared apps build
 
 version = '0.2.0-SNAPSHOT'
-def repositoryName = "bined-editor"
+def repositoryName = "bined"
 def libraryUrl = 'https://bined.exbin.org/editor'
+
+ext.depsThis = 'Bined'
 
 ext.depsBinedLibJava = [
     githubProfile: 'exbin',

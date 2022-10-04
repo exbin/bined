@@ -13,6 +13,8 @@ plugins {
 
 apply from: '../apps.gradle'
 
+ext.depsRoot = 'Bined'
+
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.exbin.bined.editor.BinedEditor'
     ext.appArgs = '-dev'
@@ -81,7 +83,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-help')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-help-online')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor-text')
-    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-bined')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined')
     implementation 'commons-cli:commons-cli:1.2'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group: 'junit', name: 'junit', version: '4.10'

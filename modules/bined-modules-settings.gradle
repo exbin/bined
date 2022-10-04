@@ -1,0 +1,13 @@
+// Shared modules build settings
+
+def modifyPath(project) {
+    def rootProjectDir = rootProject.projectDir.parentFile.parent
+    project.children.each { p ->
+        p.projectDir = new File(rootProjectDir + p.projectDir.path.substring(rootProject.projectDir.path.length(), p.projectDir.path.length()))
+        modifyPath(p)
+    }
+}
+
+if (rootProject.path == ':') {
+    modifyPath(rootProject)
+}
