@@ -1,7 +1,7 @@
 <html>
 <body>
 
-<h1 id="user-manual-for-bined-editor">User Manual for BinEd Editor</h1>
+<h1 id="user-manual-for-bined">User Manual for BinEd Editor</h1>
 <p>BinEd is free and open source hexadecimal stand-alone viewer/editor written in Java.</p>
 <p style="color: red; font-weight: bold;">Manual is under construction!</p>
 <p>See. <a class="urlextern"  href="https://github.com/exbin/bined/wiki">https://github.com/exbin/bined/wiki</a> for sources or to fix errors</p>
@@ -24,25 +24,23 @@
 <p>BinEd is available in multiple variants including plugins for other applications.</p>
 <p>This manual describes stand-alone editor application. For other variants please visit project&#39;s website:</p>
 <p><a class="urlextern"  href="https://bined.exbin.org">https://bined.exbin.org</a></p>
-<p>All</p>
 <h2 id="requirements">Requirements</h2>
 <p>Application can be executed on any platform supported by Java 8, including Microsoft Windows, macOS, variants of Linux or BSD and application should have the same minimum requirements as Java. It might be also ok to use any newer version of the Java.</p>
 <p>For instruction on how to install Java on your operating system please search on Internet or visit:</p>
 <p><a class="urlextern"  href="https://java.com">https://java.com</a></p>
-<h2 id="downloading">Downloading</h2>
-<p>Application is available on the project&#39;s website:</p>
+<h2 id="installation">Installation</h2>
+<p>Application is available for download on the project&#39;s website:</p>
 <p><a class="urlextern"  href="https://bined.exbin.org/editor">https://bined.exbin.org/editor</a></p>
-<p>To get the file scroll to Downloads section. Please use stable version if you prefer more stable and less problematic application.</p>
+<p>To get the file scroll down to the Downloads section. Please use stable version if you prefer more stable and less problematic application.</p>
 <p>For Windows there is currently only installer for x86 32-bit architecture available - after installation it can be used with either 32-bit or 64-bit Java.</p>
 <p>For some Linux variants there are Debian and RPM packages available.</p>
 <p>For other operating systems please use general ZIP variant / file. It can be also used for Linux or Windows if preferred.</p>
-<h2 id="installation">Installation</h2>
 <p>Installation package for Windows is typical wizard dialog (created with Nullsoft NSIS tool).</p>
-<center><img src="images/bined_windows_installer.png" title="Installer" alt="Installer" /></center>
+<center><img src="images/bined_windows_installer.png" title="Installer - Step 1" alt="Installer - Step 1" /></center>
 <p>It will also create shortcuts in start menu in ExBin Project folder.</p>
-<center><img src="images/bined_windows_installer-2.png" title="Installer" alt="Installer" /></center>
+<center><img src="images/bined_windows_installer-2.png" title="Installer - Step 2" alt="Installer - Step 2" /></center>
 <p>Specify in which directory you want to install the application or use default.</p>
-<center><img src="images/bined_windows_installer-3.png" title="Installer" alt="Installer" /></center>
+<center><img src="images/bined_windows_installer-3.png" title="Installer - Step 3" alt="Installer - Step 3" /></center>
 <p>Installation on Linux depends on the variant of the system. Some systems allow to perform the installation with simple execution of the downloaded file.</p>
 <p>Alternatively you might need to use shell commands: </p>
 <p>For Debian-based systems command might be:</p>
@@ -109,7 +107,8 @@
 <p>Row starts optionally by row position. Row position can be represented by numbers in octal, decimal or hexadecimal base independent on code base.</p>
 <p>Popup menu is available with actions which depends on which section of the code area was clicked on.</p>
 <h2 id="parsing-panel">Parsing Panel</h2>
-<p>Content parsing panel provides analysis of the data at the cursor position. Parsing panel can be shown/hidden with:</p>
+<p>Content parsing panel provides analysis of the data at the cursor position.</p>
+<p>Parsing panel can be shown/hidden with:</p>
 <pre><code>Menu / View / Show Parsing Panel</code></pre>
 <p>Currently, only simple list of values is available. Values are updated when cursor in code area is moved.</p>
 <p>It&#39;s possible to edit the values and overwrite content of the document on the cursor position with ENTER key.</p>
@@ -154,10 +153,19 @@
 <pre><code>Menu / File / New</code></pre>
 <p>To edit existing file use:</p>
 <pre><code>Menu / File / Open</code></pre>
-<p>File is show in code area as a sequence of codes and preview characters:</p>
+<p>File is show in code area as a sequence of codes and preview characters.</p>
 <p>You can edit numerical codes, or you can edit preview characters via keyboard or using available actions.</p>
+<p>You can select specific range of data with using mouse while holding left button or holding SHIFT button while moving in code area.</p>
 <p>When done with editing operations, save file:</p>
 <pre><code>Menu / File / Save</code></pre>
+<h2 id="edit-mode">Edit Mode</h2>
+<p>Two modes are supported:</p>
+<ul>
+<li>Insert mode</li>
+<li>Overwrite mode</li>
+</ul>
+<p>In insert mode entering new codes or charaters inserts space at the current cursor position to insert new data. Inserting data from clipboard inserts this data at the current position (making additional space).</p>
+<p>In overwrite mode data are replaced at the current cursor position. Inserting data from clipboards replaces data at the current position and only extends file if not enough space is available.</p>
 <h2 id="undo-support">Undo Support</h2>
 <p>If changes you made to the file is not what you wanted to do, you can revert some number of last edit operations you performed.</p>
 <ul>
@@ -170,9 +178,15 @@
 <pre><code>Menu / Edit / Go To</code></pre>
 <center><img src="images/go_to_dialog.png" title="Go To Dialog" alt="Go To Dialog" /></center>
 <p>You can specify position relative to current position, start or end of the document.Position can be specified in octal, decimal or hexadecimal base.</p>
+<h2 id="edit-selection">Edit Selection</h2>
+<p>Use this action to specify exact selection range:</p>
+<pre><code>Menu / Edit / Edit Selection</code></pre>
+<center><img src="images/edit_selection_dialog.png" title="Edit Selection Dialog" alt="Edit Selection Dialog" /></center>
+<p>You can specify position relative to current position, start or end of the document.Position can be specified in octal, decimal or hexadecimal base.</p>
 <h2 id="find-or-replace-data">Find or Replace Data</h2>
 <p>Use this action to find specific text or sequence of codes:</p>
-<pre><code>Menu / Edit / FindMenu / Edit / Replace</code></pre>
+<pre><code>Menu / Edit / Find
+Menu / Edit / Replace</code></pre>
 <p>This will open quick search bar:</p>
 <center><img src="images/search_bar.png" title="Find Text Dialog" alt="Find Text Dialog" /></center>
 <p>You can enter searched text or data and toggle match case and highlighting mode buttons.</p>
@@ -227,7 +241,7 @@
 </ul>
 <h2 id="choose-font">Choose Font</h2>
 <p>You can change font used in code area.</p>
-<pre><code>Menu / Tools / Set Font</code></pre>
+<p>	Menu / Tools / Set Font</p>
 <pre><code>Options / Appearance / Text Font</code></pre>
 <center><img src="images/select_font_dialog.png" title="Select Font Dialog" alt="Select Font Dialog" /></center>
 <p>You can select specific family of the font, size in pixels, style parameters like bold and italic.</p>
@@ -284,8 +298,8 @@
 <p>You can show basic information about application with:</p>
 <pre><code>Menu / Help / About</code></pre>
 <center><img src="images/about_dialog.png" title="About Dialog" alt="About Dialog" /></center>
-<h1 id="participate-on-development">Participate on Development</h1>
-<p>As the project is free and open source, you can participate on the development in many ways:</p>
+<h1 id="participate-in-the-development">Participate in the Development</h1>
+<p>As the project is free and open source, you can participate in the development in many ways:</p>
 <ul>
 <li>Modify this <a class="urlextern"  href="https://github.com/exbin/bined/wiki">manual / wiki page</a></li>
 <li>Report <a class="urlextern"  href="https://github.com/exbin/bined/issues/new?labels=bug">an issue</a> or <a class="urlextern"  href="https://github.com/exbin/bined/issues/new?labels=enhancement">suggest a feature</a> on GitHub</li>
