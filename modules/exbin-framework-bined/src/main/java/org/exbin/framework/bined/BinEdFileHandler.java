@@ -124,7 +124,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                     oldData.dispose();
                 }
             } else {
-                try (FileInputStream fileStream = new FileInputStream(file)) {
+                try ( FileInputStream fileStream = new FileInputStream(file)) {
                     BinaryData data = componentPanel.getContentData();
                     if (!(data instanceof XBData)) {
                         data = new XBData();
@@ -165,7 +165,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                 segmentsRepository.saveDocument(document);
                 this.fileUri = fileUri;
             } else {
-                try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                try ( FileOutputStream outputStream = new FileOutputStream(file)) {
                     Objects.requireNonNull(contentData).saveToStream(outputStream);
                     this.fileUri = fileUri;
                 }
@@ -283,7 +283,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
             }
         } else {
             File file = new File(fileUri);
-            try (OutputStream stream = new FileOutputStream(file)) {
+            try ( OutputStream stream = new FileOutputStream(file)) {
                 BinaryData contentData = codeArea.getContentData();
                 if (contentData != null) {
                     contentData.saveToStream(stream);
