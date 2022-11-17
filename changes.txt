@@ -1,11 +1,12 @@
 0.2.2
-- Added off-line help
+- Added off-line help/manual
 - Added edit selection dialog
+- Added support for files drag&drop (issue #7)
 
 0.2.1 (2021-10-31)
 - New app icon
 - Support for multiple files / tabs
-- Added string field in values panel (issue #8)
+- Added string field in values panel
 - Added templates for profiles
 - Added insert data dialog
 - Added files compare dialog
