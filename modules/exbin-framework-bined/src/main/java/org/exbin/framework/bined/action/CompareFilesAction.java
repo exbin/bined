@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,8 +52,7 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 /**
  * Compare files action.
  *
- * @version 0.2.1 2021/10/25
- * @author ExBin Project (http://exbin.org)
+ * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CompareFilesAction extends AbstractAction {
@@ -81,7 +80,7 @@ public class CompareFilesAction extends AbstractAction {
         final CompareFilesPanel compareFilesPanel = new CompareFilesPanel();
         ResourceBundle panelResourceBundle = compareFilesPanel.getResourceBundle();
         CloseControlPanel controlPanel = new CloseControlPanel(panelResourceBundle);
-        
+
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);
         frameModule.setDialogTitle(dialog, panelResourceBundle);

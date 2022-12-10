@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,8 +32,7 @@ import org.exbin.framework.file.api.FileHandler;
 /**
  * Show unprintables actions.
  *
- * @version 0.2.1 2021/10/12
- * @author ExBin Project (http://exbin.org)
+ * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ShowUnprintablesActions implements FileDependentAction {
@@ -61,18 +60,18 @@ public class ShowUnprintablesActions implements FileDependentAction {
     public void updateForActiveFile() {
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         Boolean showUnprintables = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea().isShowUnprintables() : null;
-        
+
         if (viewUnprintablesAction != null) {
             viewUnprintablesAction.setEnabled(activeFile.isPresent());
             if (showUnprintables != null) {
                 viewUnprintablesAction.putValue(Action.SELECTED_KEY, showUnprintables);
-            }    
+            }
         }
         if (viewUnprintablesToolbarAction != null) {
             viewUnprintablesToolbarAction.setEnabled(activeFile.isPresent());
             if (showUnprintables != null) {
                 viewUnprintablesToolbarAction.putValue(Action.SELECTED_KEY, showUnprintables);
-            }    
+            }
         }
     }
 
