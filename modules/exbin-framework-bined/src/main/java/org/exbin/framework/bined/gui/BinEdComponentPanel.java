@@ -63,7 +63,8 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setPainter(new ExtendedHighlightNonAsciiCodeAreaPainter(codeArea));
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler);
+        // TODO: Use empty undo handler instead
+        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new CodeAreaUndoHandler(codeArea));
         codeArea.setCommandHandler(commandHandler);
 
         add(codeArea);
@@ -73,7 +74,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         binarySearchPanel.setClosePanelListener(this::hideSearchPanel);
 
         valuesPanel = new ValuesPanel();
-        valuesPanel.setCodeArea(codeArea, undoHandler);
+        valuesPanel.setCodeArea(codeArea, null);
         valuesPanelScrollPane = new JScrollPane(valuesPanel);
         valuesPanelScrollPane.setBorder(null);
         setShowParsingPanel(true);
@@ -174,7 +175,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     public void setUndoHandler(CodeAreaUndoHandler undoHandler) {
         this.undoHandler = undoHandler;
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler);
+        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler == null ? new CodeAreaUndoHandler(codeArea) : undoHandler);
         codeArea.setCommandHandler(commandHandler);
         if (valuesPanel != null) {
             valuesPanel.setCodeArea(codeArea, undoHandler);
