@@ -365,7 +365,7 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerStatusBar() {
         binaryStatusPanel = new BinaryStatusPanel();
-        binaryStatusPanel.setControlHandler(new BinaryStatusPanel.StatusControlHandler() {
+        binaryStatusPanel.setStatusControlHandler(new BinaryStatusPanel.StatusControlHandler() {
             @Override
             public void changeEditOperation(EditOperation editOperation) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();

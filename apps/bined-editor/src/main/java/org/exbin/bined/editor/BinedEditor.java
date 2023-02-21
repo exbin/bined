@@ -99,13 +99,13 @@ public class BinedEditor {
                 XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
-                BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
                 moduleRepository.addModulesFromManifest(BinedEditor.class);
                 moduleRepository.loadModulesFromPath(new File("plugins").toURI());
                 moduleRepository.initModules();
+                Thread.currentThread().setContextClassLoader(moduleRepository.getContextClassLoader());
                 app.init();
 
                 final FrameModuleApi frameModule = moduleRepository.getModuleByInterface(FrameModuleApi.class);
@@ -120,6 +120,7 @@ public class BinedEditor {
                 UpdateModuleApi updateModule = moduleRepository.getModuleByInterface(UpdateModuleApi.class);
 
                 BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
+                BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
                 boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
                 EditorProviderVariant editorProviderVariant = editorProvideType != null
                         ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)
