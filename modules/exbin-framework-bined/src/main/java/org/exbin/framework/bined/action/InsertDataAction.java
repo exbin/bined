@@ -17,10 +17,10 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,9 +29,12 @@ import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.EditOperation;
+import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.basic.CodeArea;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.XBFrameworkUtils;
 import org.exbin.framework.api.XBApplication;
@@ -46,11 +49,7 @@ import org.exbin.framework.utils.WindowUtils.DialogWrapper;
 import org.exbin.framework.utils.handler.DefaultControlHandler;
 import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -59,21 +58,21 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class InsertDataAction extends AbstractAction implements FileDependentAction {
+public class InsertDataAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "insertDataAction";
 
-    private EditorProvider editorProvider;
     private XBApplication application;
     private ResourceBundle resourceBundle;
+    private CodeAreaCore codeArea;
+    private CodeAreaUndoHandler undoHandler;
 
     public InsertDataAction() {
 
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -82,27 +81,23 @@ public class InsertDataAction extends AbstractAction implements FileDependentAct
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        setEnabled(activeFile.isPresent());
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        setEnabled(codeArea != null);
+    }
+
+    public void updateForActiveUndoHandler(@Nullable CodeAreaUndoHandler undoHandler) {
+        this.undoHandler = undoHandler;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-        CodeAreaUndoHandler undoHandler = ((BinEdFileHandler) activeFile.get()).getCodeAreaUndoHandler();
-
         final EditableBinaryData sampleBinaryData = new ByteArrayEditableData();
         final InsertDataPanel insertDataPanel = new InsertDataPanel();
         DefaultControlPanel controlPanel = new DefaultControlPanel(insertDataPanel.getResourceBundle());
         JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, editorProvider.getEditorComponent(), "", Dialog.ModalityType.APPLICATION_MODAL);
+        final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         insertDataPanel.setController(() -> {
             BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
             final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
@@ -142,16 +137,16 @@ public class InsertDataAction extends AbstractAction implements FileDependentAct
                 insertDataPanel.acceptInput();
                 long dataLength = insertDataPanel.getDataLength();
                 InsertDataOperation.FillWithType fillWithType = insertDataPanel.getFillWithType();
-                EditOperation activeOperation = codeArea.getActiveOperation();
+                EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((ExtCodeArea) codeArea).getActiveOperation();
                 CodeAreaCommand command;
                 switch (activeOperation) {
                     case INSERT: {
-                        InsertDataOperation operation = new InsertDataOperation(codeArea, codeArea.getDataPosition(), dataLength, fillWithType, sampleBinaryData);
+                        InsertDataOperation operation = new InsertDataOperation(codeArea, ((CaretCapable) codeArea).getDataPosition(), dataLength, fillWithType, sampleBinaryData);
                         command = new InsertDataOperation.InsertDataCommand(operation);
                         break;
                     }
                     case OVERWRITE: {
-                        ReplaceDataOperation operation = new ReplaceDataOperation(codeArea, codeArea.getDataPosition(), dataLength, fillWithType, sampleBinaryData);
+                        ReplaceDataOperation operation = new ReplaceDataOperation(codeArea, ((CaretCapable) codeArea).getDataPosition(), dataLength, fillWithType, sampleBinaryData);
                         command = new ReplaceDataOperation.ReplaceDataCommand(operation);
                         break;
                     }
@@ -169,6 +164,6 @@ public class InsertDataAction extends AbstractAction implements FileDependentAct
             dialog.dispose();
         });
         SwingUtilities.invokeLater(insertDataPanel::initFocus);
-        dialog.showCentered(editorProvider.getEditorComponent());
+        dialog.showCentered(codeArea);
     }
 }

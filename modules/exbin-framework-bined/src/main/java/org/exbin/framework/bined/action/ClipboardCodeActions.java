@@ -17,20 +17,16 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * Clipboard code actions.
@@ -38,12 +34,12 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ClipboardCodeActions implements FileDependentAction {
+public class ClipboardCodeActions implements CodeAreaAction {
 
     public static final String COPY_AS_CODE_ACTION_ID = "copyAsCodeAction";
     public static final String PASTE_FROM_CODE_ACTION_ID = "pasteFromCodeAction";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
@@ -53,19 +49,17 @@ public class ClipboardCodeActions implements FileDependentAction {
     public ClipboardCodeActions() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
         boolean hasSelection = false;
         boolean canPaste = false;
-        if (activeFile.isPresent()) {
-            ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+        if (codeArea != null) {
             hasSelection = codeArea.hasSelection();
             canPaste = codeArea.canPaste();
         }
@@ -83,12 +77,8 @@ public class ClipboardCodeActions implements FileDependentAction {
             copyAsCodeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (!activeFile.isPresent()) {
-                        throw new IllegalStateException();
-                    }
                     // TODO move out of code area
-                    ((BinEdFileHandler) activeFile.get()).getCodeArea().copyAsCode();
+                    codeArea.copyAsCode();
                 }
             };
             ActionUtils.setupAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
@@ -102,13 +92,9 @@ public class ClipboardCodeActions implements FileDependentAction {
             pasteFromCodeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (!activeFile.isPresent()) {
-                        throw new IllegalStateException();
-                    }
                     // TODO move out of code area
                     try {
-                        ((BinEdFileHandler) activeFile.get()).getCodeArea().pasteFromCode();
+                        codeArea.pasteFromCode();
                     } catch (IllegalArgumentException ex) {
                         JOptionPane.showMessageDialog((Component) e.getSource(), ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
                     }

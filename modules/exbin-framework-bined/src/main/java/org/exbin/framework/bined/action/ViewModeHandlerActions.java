@@ -16,21 +16,17 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.basic.CodeAreaViewMode;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.capability.ViewModeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.bined.BinEdEditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * View mode actions.
@@ -38,7 +34,7 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ViewModeHandlerActions implements FileDependentAction {
+public class ViewModeHandlerActions implements CodeAreaAction {
 
     public static final String DUAL_VIEW_MODE_ACTION_ID = "dualViewModeAction";
     public static final String CODE_MATRIX_VIEW_MODE_ACTION_ID = "codeMatrixViewModeAction";
@@ -46,7 +42,7 @@ public class ViewModeHandlerActions implements FileDependentAction {
 
     public static final String VIEW_MODE_RADIO_GROUP_ID = "viewModeRadioGroup";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
@@ -59,30 +55,30 @@ public class ViewModeHandlerActions implements FileDependentAction {
     public ViewModeHandlerActions() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        CodeAreaViewMode viewMode = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea().getViewMode() : null;
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        CodeAreaViewMode viewMode = codeArea != null ? ((ViewModeCapable) codeArea).getViewMode() : null;
+
         if (dualModeAction != null) {
-            dualModeAction.setEnabled(activeFile.isPresent());
+            dualModeAction.setEnabled(codeArea != null);
             if (viewMode == CodeAreaViewMode.DUAL) {
                 dualModeAction.putValue(Action.SELECTED_KEY, true);
             }
         }
         if (codeMatrixModeAction != null) {
-            codeMatrixModeAction.setEnabled(activeFile.isPresent());
+            codeMatrixModeAction.setEnabled(codeArea != null);
             if (viewMode == CodeAreaViewMode.CODE_MATRIX) {
                 codeMatrixModeAction.putValue(Action.SELECTED_KEY, true);
             }
         }
         if (textPreviewModeAction != null) {
-            textPreviewModeAction.setEnabled(activeFile.isPresent());
+            textPreviewModeAction.setEnabled(codeArea != null);
             if (viewMode == CodeAreaViewMode.TEXT_PREVIEW) {
                 textPreviewModeAction.putValue(Action.SELECTED_KEY, true);
             }
@@ -91,13 +87,7 @@ public class ViewModeHandlerActions implements FileDependentAction {
 
     public void setViewMode(CodeAreaViewMode viewMode) {
         this.viewMode = viewMode;
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-        codeArea.setViewMode(viewMode);
+        ((ViewModeCapable) codeArea).setViewMode(viewMode);
     }
 
     @Nonnull
@@ -106,9 +96,7 @@ public class ViewModeHandlerActions implements FileDependentAction {
             dualModeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setViewMode(CodeAreaViewMode.DUAL);
-                    }
+                    setViewMode(CodeAreaViewMode.DUAL);
                 }
             };
             ActionUtils.setupAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
@@ -125,9 +113,7 @@ public class ViewModeHandlerActions implements FileDependentAction {
             codeMatrixModeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setViewMode(CodeAreaViewMode.CODE_MATRIX);
-                    }
+                    setViewMode(CodeAreaViewMode.CODE_MATRIX);
                 }
             };
             ActionUtils.setupAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
@@ -145,9 +131,7 @@ public class ViewModeHandlerActions implements FileDependentAction {
             textPreviewModeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-                    }
+                    setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
                 }
             };
             ActionUtils.setupAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);

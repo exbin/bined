@@ -16,20 +16,17 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
+import org.exbin.bined.capability.CodeCharactersCaseCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.BinEdEditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * Hex characters case handler.
@@ -37,13 +34,13 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class HexCharactersCaseActions implements FileDependentAction {
+public class HexCharactersCaseActions implements CodeAreaAction {
 
     public static final String UPPER_HEX_CHARACTERS_ACTION_ID = "upperHexCharactersAction";
     public static final String LOWER_HEX_CHARACTERS_ACTION_ID = "lowerHexCharactersAction";
     public static final String HEX_CHARACTERS_CASE_RADIO_GROUP_ID = "hexCharactersCaseRadioGroup";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
@@ -55,25 +52,24 @@ public class HexCharactersCaseActions implements FileDependentAction {
     public HexCharactersCaseActions() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        CodeCharactersCase codeCharactersCase = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea().getCodeCharactersCase() : null;
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        CodeCharactersCase codeCharactersCase = codeArea != null ? ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase() : null;
 
         if (upperHexCharsAction != null) {
-            upperHexCharsAction.setEnabled(activeFile.isPresent());
+            upperHexCharsAction.setEnabled(codeArea != null);
             if (codeCharactersCase == CodeCharactersCase.UPPER) {
                 upperHexCharsAction.putValue(Action.SELECTED_KEY, true);
             }
         }
         if (lowerHexCharsAction != null) {
-            lowerHexCharsAction.setEnabled(activeFile.isPresent());
+            lowerHexCharsAction.setEnabled(codeArea != null);
             if (codeCharactersCase == CodeCharactersCase.LOWER) {
                 lowerHexCharsAction.putValue(Action.SELECTED_KEY, true);
             }
@@ -83,12 +79,7 @@ public class HexCharactersCaseActions implements FileDependentAction {
     public void setHexCharactersCase(CodeCharactersCase hexCharactersCase) {
         this.hexCharactersCase = hexCharactersCase;
 
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ((BinEdFileHandler) activeFile.get()).getCodeArea().setCodeCharactersCase(hexCharactersCase);
+        ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(hexCharactersCase);
     }
 
     @Nonnull
@@ -97,9 +88,7 @@ public class HexCharactersCaseActions implements FileDependentAction {
             upperHexCharsAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setHexCharactersCase(CodeCharactersCase.UPPER);
-                    }
+                    setHexCharactersCase(CodeCharactersCase.UPPER);
                 }
             };
             ActionUtils.setupAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
@@ -116,9 +105,7 @@ public class HexCharactersCaseActions implements FileDependentAction {
             lowerHexCharsAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setHexCharactersCase(CodeCharactersCase.LOWER);
-                    }
+                    setHexCharactersCase(CodeCharactersCase.LOWER);
                 }
             };
             ActionUtils.setupAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);

@@ -21,20 +21,16 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * Print action.
@@ -42,20 +38,19 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PrintAction extends AbstractAction implements FileDependentAction {
+public class PrintAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "printAction";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public PrintAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -64,19 +59,13 @@ public class PrintAction extends AbstractAction implements FileDependentAction {
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        setEnabled(activeFile.isPresent());
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        setEnabled(codeArea != null);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
         PrinterJob job = PrinterJob.getPrinterJob();
         if (job.printDialog()) {
             try {

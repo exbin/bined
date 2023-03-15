@@ -18,9 +18,9 @@ package org.exbin.framework.bined.action;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -28,13 +28,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.CodeType;
+import org.exbin.bined.capability.CodeTypeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.BinEdEditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * Code type handler.
@@ -42,7 +39,7 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeTypeActions implements FileDependentAction {
+public class CodeTypeActions implements CodeAreaAction {
 
     public static final String BINARY_CODE_TYPE_ACTION_ID = "binaryCodeTypeAction";
     public static final String OCTAL_CODE_TYPE_ACTION_ID = "octalCodeTypeAction";
@@ -52,7 +49,7 @@ public class CodeTypeActions implements FileDependentAction {
 
     public static final String CODE_TYPE_RADIO_GROUP_ID = "codeTypeRadioGroup";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
@@ -67,34 +64,33 @@ public class CodeTypeActions implements FileDependentAction {
     public CodeTypeActions() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        CodeType activeCodeType = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea().getCodeType() : null;
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        CodeType activeCodeType = codeArea != null ? ((CodeTypeCapable) codeArea).getCodeType() : null;
         if (activeCodeType != null) {
             setCodeType(activeCodeType);
         }
 
         if (binaryCodeTypeAction != null) {
-            binaryCodeTypeAction.setEnabled(activeFile.isPresent());
+            binaryCodeTypeAction.setEnabled(codeArea != null);
         }
         if (octalCodeTypeAction != null) {
-            octalCodeTypeAction.setEnabled(activeFile.isPresent());
+            octalCodeTypeAction.setEnabled(codeArea != null);
         }
         if (decimalCodeTypeAction != null) {
-            decimalCodeTypeAction.setEnabled(activeFile.isPresent());
+            decimalCodeTypeAction.setEnabled(codeArea != null);
         }
         if (hexadecimalCodeTypeAction != null) {
-            hexadecimalCodeTypeAction.setEnabled(activeFile.isPresent());
+            hexadecimalCodeTypeAction.setEnabled(codeArea != null);
         }
         if (cycleCodeTypesAction != null) {
-            cycleCodeTypesAction.setEnabled(activeFile.isPresent());
+            cycleCodeTypesAction.setEnabled(codeArea != null);
         }
     }
 
@@ -120,12 +116,7 @@ public class CodeTypeActions implements FileDependentAction {
             default:
                 throw CodeAreaUtils.getInvalidTypeException(codeType);
         }
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ((BinEdFileHandler) activeFile.get()).getCodeArea().setCodeType(codeType);
+        ((CodeTypeCapable) codeArea).setCodeType(codeType);
         updateCycleButtonName();
     }
 
@@ -141,9 +132,7 @@ public class CodeTypeActions implements FileDependentAction {
             binaryCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(CodeType.BINARY);
-                    }
+                    setCodeType(CodeType.BINARY);
                 }
             };
             ActionUtils.setupAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
@@ -161,9 +150,7 @@ public class CodeTypeActions implements FileDependentAction {
             octalCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(CodeType.OCTAL);
-                    }
+                    setCodeType(CodeType.OCTAL);
                 }
             };
             ActionUtils.setupAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
@@ -180,9 +167,7 @@ public class CodeTypeActions implements FileDependentAction {
             decimalCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(CodeType.DECIMAL);
-                    }
+                    setCodeType(CodeType.DECIMAL);
                 }
             };
             ActionUtils.setupAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
@@ -200,9 +185,7 @@ public class CodeTypeActions implements FileDependentAction {
             hexadecimalCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(CodeType.HEXADECIMAL);
-                    }
+                    setCodeType(CodeType.HEXADECIMAL);
                 }
             };
             ActionUtils.setupAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
@@ -220,12 +203,10 @@ public class CodeTypeActions implements FileDependentAction {
             cycleCodeTypesAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        int codeTypePos = codeType.ordinal();
-                        CodeType[] values = CodeType.values();
-                        CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
-                        setCodeType(next);
-                    }
+                    int codeTypePos = codeType.ordinal();
+                    CodeType[] values = CodeType.values();
+                    CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
+                    setCodeType(next);
                 }
             };
             ActionUtils.setupAction(cycleCodeTypesAction, resourceBundle, CYCLE_CODE_TYPES_ACTION_ID);

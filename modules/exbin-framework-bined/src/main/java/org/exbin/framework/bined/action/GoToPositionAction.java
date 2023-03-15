@@ -17,13 +17,15 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.SwingUtilities;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.ScrollingCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.GoToBinaryPanel;
 import org.exbin.framework.utils.ActionUtils;
@@ -32,10 +34,6 @@ import org.exbin.framework.utils.WindowUtils.DialogWrapper;
 import org.exbin.framework.utils.handler.DefaultControlHandler;
 import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -44,20 +42,19 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class GoToPositionAction extends AbstractAction implements FileDependentAction {
+public class GoToPositionAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "goToPositionAction";
 
-    private EditorProvider editorProvider;
     private XBApplication application;
     private ResourceBundle resourceBundle;
+    private CodeAreaCore codeArea;
 
     public GoToPositionAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -66,38 +63,32 @@ public class GoToPositionAction extends AbstractAction implements FileDependentA
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        setEnabled(activeFile.isPresent());
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        setEnabled(codeArea != null);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
         final GoToBinaryPanel goToPanel = new GoToBinaryPanel();
-        goToPanel.setCursorPosition(codeArea.getDataPosition());
+        goToPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         goToPanel.setMaxPosition(codeArea.getDataSize());
         DefaultControlPanel controlPanel = new DefaultControlPanel(goToPanel.getResourceBundle());
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, goToPanel, controlPanel);
+        final DialogWrapper dialog = frameModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, goToPanel, controlPanel);
         WindowUtils.addHeaderPanel(dialog.getWindow(), goToPanel.getClass(), goToPanel.getResourceBundle());
         frameModule.setDialogTitle(dialog, goToPanel.getResourceBundle());
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
                 goToPanel.acceptInput();
-                codeArea.setCaretPosition(goToPanel.getTargetPosition());
-                codeArea.revealCursor();
+                ((CaretCapable) codeArea).setCaretPosition(goToPanel.getTargetPosition());
+                ((ScrollingCapable) codeArea).revealCursor();
             }
 
             dialog.close();
             dialog.dispose();
         });
         SwingUtilities.invokeLater(goToPanel::initFocus);
-        dialog.showCentered(editorProvider.getEditorComponent());
+        dialog.showCentered(codeArea);
     }
 }

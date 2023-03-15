@@ -16,19 +16,16 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.extended.capability.LayoutProfileCapable;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * Show row position action.
@@ -36,20 +33,19 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ShowRowPositionAction extends AbstractAction implements FileDependentAction {
+public class ShowRowPositionAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "showRowPositionAction";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public ShowRowPositionAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -57,25 +53,19 @@ public class ShowRowPositionAction extends AbstractAction implements FileDepende
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        setEnabled(activeFile.isPresent());
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        setEnabled(codeArea != null);
 
-        if (activeFile.isPresent()) {
-            putValue(Action.SELECTED_KEY, ((BinEdFileHandler) activeFile.get()).getCodeArea().getLayoutProfile().isShowRowPosition());
+        if (codeArea != null) {
+            putValue(Action.SELECTED_KEY, ((LayoutProfileCapable) codeArea).getLayoutProfile().isShowRowPosition());
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-        ExtendedCodeAreaLayoutProfile layoutProfile = codeArea.getLayoutProfile();
-        layoutProfile.setShowRowPosition(!codeArea.getLayoutProfile().isShowRowPosition());
-        codeArea.setLayoutProfile(layoutProfile);
+        ExtendedCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
+        layoutProfile.setShowRowPosition(!layoutProfile.isShowRowPosition());
+        ((LayoutProfileCapable) codeArea).setLayoutProfile(layoutProfile);
     }
 }

@@ -16,21 +16,17 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.extended.capability.PositionCodeTypeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.BinEdEditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileDependentAction;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * Position code type actions.
@@ -38,7 +34,7 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PositionCodeTypeActions implements FileDependentAction {
+public class PositionCodeTypeActions implements CodeAreaAction {
 
     public static final String OCTAL_POSITION_CODE_TYPE_ACTION_ID = "octalPositionCodeTypeAction";
     public static final String DECIMAL_POSITION_CODE_TYPE_ACTION_ID = "decimalPositionCodeTypeAction";
@@ -46,7 +42,7 @@ public class PositionCodeTypeActions implements FileDependentAction {
 
     public static final String POSITION_CODE_TYPE_RADIO_GROUP_ID = "positionCodeTypeRadioGroup";
 
-    private EditorProvider editorProvider;
+    private CodeAreaCore codeArea;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
@@ -59,34 +55,33 @@ public class PositionCodeTypeActions implements FileDependentAction {
     public PositionCodeTypeActions() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
     }
 
     @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        PositionCodeType activePositionCodeType = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea().getPositionCodeType() : null;
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        PositionCodeType activePositionCodeType = codeArea != null ? ((PositionCodeTypeCapable) codeArea).getPositionCodeType() : null;
         if (activePositionCodeType != null) {
             positionCodeType = activePositionCodeType;
         }
 
         if (octalPositionCodeTypeAction != null) {
-            octalPositionCodeTypeAction.setEnabled(activeFile.isPresent());
+            octalPositionCodeTypeAction.setEnabled(codeArea != null);
             if (activePositionCodeType == PositionCodeType.OCTAL) {
                 octalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, true);
             }
         }
         if (decimalPositionCodeTypeAction != null) {
-            decimalPositionCodeTypeAction.setEnabled(activeFile.isPresent());
+            decimalPositionCodeTypeAction.setEnabled(codeArea != null);
             if (activePositionCodeType == PositionCodeType.DECIMAL) {
                 decimalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, true);
             }
         }
         if (hexadecimalPositionCodeTypeAction != null) {
-            hexadecimalPositionCodeTypeAction.setEnabled(activeFile.isPresent());
+            hexadecimalPositionCodeTypeAction.setEnabled(codeArea != null);
             if (activePositionCodeType == PositionCodeType.HEXADECIMAL) {
                 hexadecimalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, true);
             }
@@ -95,13 +90,7 @@ public class PositionCodeTypeActions implements FileDependentAction {
 
     public void setCodeType(PositionCodeType codeType) {
         this.positionCodeType = codeType;
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-        codeArea.setPositionCodeType(codeType);
+        ((PositionCodeTypeCapable) codeArea).setPositionCodeType(codeType);
     }
 
     @Nonnull
@@ -110,9 +99,7 @@ public class PositionCodeTypeActions implements FileDependentAction {
             octalPositionCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(PositionCodeType.OCTAL);
-                    }
+                    setCodeType(PositionCodeType.OCTAL);
                 }
             };
             ActionUtils.setupAction(octalPositionCodeTypeAction, resourceBundle, OCTAL_POSITION_CODE_TYPE_ACTION_ID);
@@ -130,9 +117,7 @@ public class PositionCodeTypeActions implements FileDependentAction {
             decimalPositionCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(PositionCodeType.DECIMAL);
-                    }
+                    setCodeType(PositionCodeType.DECIMAL);
                 }
             };
             ActionUtils.setupAction(decimalPositionCodeTypeAction, resourceBundle, DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
@@ -149,9 +134,7 @@ public class PositionCodeTypeActions implements FileDependentAction {
             hexadecimalPositionCodeTypeAction = new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (editorProvider instanceof BinEdEditorProvider) {
-                        setCodeType(PositionCodeType.HEXADECIMAL);
-                    }
+                    setCodeType(PositionCodeType.HEXADECIMAL);
                 }
             };
             ActionUtils.setupAction(hexadecimalPositionCodeTypeAction, resourceBundle, HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
