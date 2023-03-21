@@ -73,7 +73,6 @@ import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
@@ -305,7 +304,9 @@ public class BinedModule implements XBApplicationModule {
             ((BinaryMultiEditorProvider) editorProvider).setCodeAreaPopupMenuHandler(createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR));
 
             ((MultiEditorProvider) editorProvider).addActiveFileChangeListener(e -> {
-                updateActionStatus();
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                CodeAreaCore codeArea = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea() : null;
+                updateActionStatus(codeArea);
             });
             ((BinaryMultiEditorProvider) editorProvider).setClipboardActionsUpdateListener(() -> {
                 updateClipboardActionStatus();
@@ -327,7 +328,7 @@ public class BinedModule implements XBApplicationModule {
         ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
     }
 
-    public void updateActionStatus() {
+    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
         EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
         editorModule.updateActionStatus();
         FileDependentAction[] fileDepActions = new FileDependentAction[]{
@@ -347,18 +348,10 @@ public class BinedModule implements XBApplicationModule {
             showRowPositionAction, showUnprintablesActions,
             clipboardCodeActions, printAction
         };
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        CodeAreaCore codeArea = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea() : null;
         for (CodeAreaAction codeAreaAction : codeAreaActions) {
             if (codeAreaAction != null) {
                 codeAreaAction.updateForActiveCodeArea(codeArea);
             }
-        }
-
-        CodeAreaUndoHandler undoHandler = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeAreaUndoHandler() : null;
-        insertDataAction.updateForActiveUndoHandler(undoHandler);
-        if (insertDataAction != null) {
-            insertDataAction.updateForActiveUndoHandler(undoHandler);
         }
 
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
@@ -1943,7 +1936,7 @@ public class BinedModule implements XBApplicationModule {
             popupMenu.add(optionsMenuItem);
         }
 
-        updateActionStatus();
+        updateActionStatus(codeArea);
         return popupMenu;
     }
 

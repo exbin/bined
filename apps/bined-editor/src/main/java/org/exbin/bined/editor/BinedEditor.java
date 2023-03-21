@@ -96,7 +96,7 @@ public class BinedEditor {
                 boolean devMode = cl.hasOption(OPTION_DEV);
                 String editorProvideType = editorProviderType.getSelected();
 
-                XBBaseApplication app = new XBBaseApplication();
+                final XBBaseApplication app = new XBBaseApplication();
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
 
@@ -108,124 +108,126 @@ public class BinedEditor {
                 Thread.currentThread().setContextClassLoader(moduleRepository.getContextClassLoader());
                 app.init();
 
-                final FrameModuleApi frameModule = moduleRepository.getModuleByInterface(FrameModuleApi.class);
-                EditorModuleApi editorModule = moduleRepository.getModuleByInterface(EditorModuleApi.class);
-                ActionModuleApi actionModule = moduleRepository.getModuleByInterface(ActionModuleApi.class);
-                AboutModuleApi aboutModule = moduleRepository.getModuleByInterface(AboutModuleApi.class);
-                HelpModuleApi helpModule = moduleRepository.getModuleByInterface(HelpModuleApi.class);
-                HelpOnlineModuleApi helpOnlineModule = moduleRepository.getModuleByInterface(HelpOnlineModuleApi.class);
-                OperationUndoModuleApi undoModule = moduleRepository.getModuleByInterface(OperationUndoModuleApi.class);
-                FileModuleApi fileModule = moduleRepository.getModuleByInterface(FileModuleApi.class);
-                OptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(OptionsModuleApi.class);
-                UpdateModuleApi updateModule = moduleRepository.getModuleByInterface(UpdateModuleApi.class);
+                app.run(() -> {
+                    final FrameModuleApi frameModule = moduleRepository.getModuleByInterface(FrameModuleApi.class);
+                    EditorModuleApi editorModule = moduleRepository.getModuleByInterface(EditorModuleApi.class);
+                    ActionModuleApi actionModule = moduleRepository.getModuleByInterface(ActionModuleApi.class);
+                    AboutModuleApi aboutModule = moduleRepository.getModuleByInterface(AboutModuleApi.class);
+                    HelpModuleApi helpModule = moduleRepository.getModuleByInterface(HelpModuleApi.class);
+                    HelpOnlineModuleApi helpOnlineModule = moduleRepository.getModuleByInterface(HelpOnlineModuleApi.class);
+                    OperationUndoModuleApi undoModule = moduleRepository.getModuleByInterface(OperationUndoModuleApi.class);
+                    FileModuleApi fileModule = moduleRepository.getModuleByInterface(FileModuleApi.class);
+                    OptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(OptionsModuleApi.class);
+                    UpdateModuleApi updateModule = moduleRepository.getModuleByInterface(UpdateModuleApi.class);
 
-                BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
-                BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
-                boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
-                EditorProviderVariant editorProviderVariant = editorProvideType != null
-                        ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)
-                        : (multiFileMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
-                binedModule.initEditorProvider(editorProviderVariant);
-                EditorProvider editorProvider = binedModule.getEditorProvider();
-                editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
+                    BinedModule binedModule = moduleRepository.getModuleByInterface(BinedModule.class);
+                    BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
+                    boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
+                    EditorProviderVariant editorProviderVariant = editorProvideType != null
+                            ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)
+                            : (multiFileMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
+                    binedModule.initEditorProvider(editorProviderVariant);
+                    EditorProvider editorProvider = binedModule.getEditorProvider();
+                    editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
 
-                frameModule.createMainMenu();
-                try {
-                    updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
-                    updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                updateModule.registerDefaultMenuItem();
-                helpModule.registerMainMenu();
-                aboutModule.registerDefaultMenuItem();
-                try {
-                    helpOnlineModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                helpOnlineModule.registerOnlineHelpMenu();
+                    frameModule.createMainMenu();
+                    try {
+                        updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
+                        updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    updateModule.registerDefaultMenuItem();
+                    helpModule.registerMainMenu();
+                    aboutModule.registerDefaultMenuItem();
+                    try {
+                        helpOnlineModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    helpOnlineModule.registerOnlineHelpMenu();
 
-                frameModule.registerExitAction();
-                frameModule.registerBarsVisibilityActions();
+                    frameModule.registerExitAction();
+                    frameModule.registerBarsVisibilityActions();
 
-                fileModule.registerMenuFileHandlingActions();
-                if (editorProviderVariant == EditorProviderVariant.MULTI) {
-                    editorModule.registerMenuFileCloseActions();
-                }
+                    fileModule.registerMenuFileHandlingActions();
+                    if (editorProviderVariant == EditorProviderVariant.MULTI) {
+                        editorModule.registerMenuFileCloseActions();
+                    }
 
-                fileModule.registerToolBarFileHandlingActions();
-                fileModule.registerRecenFilesMenuActions();
-                fileModule.registerCloseListener();
+                    fileModule.registerToolBarFileHandlingActions();
+                    fileModule.registerRecenFilesMenuActions();
+                    fileModule.registerCloseListener();
 
-                undoModule.registerMainMenu();
-                undoModule.registerMainToolBar();
-                undoModule.registerUndoManagerInMainMenu();
+                    undoModule.registerMainMenu();
+                    undoModule.registerMainToolBar();
+                    undoModule.registerUndoManagerInMainMenu();
 
-                // Register clipboard editing actions
-                actionModule.registerClipboardTextActions();
-                actionModule.registerMenuClipboardActions();
-                actionModule.registerToolBarClipboardActions();
+                    // Register clipboard editing actions
+                    actionModule.registerClipboardTextActions();
+                    actionModule.registerMenuClipboardActions();
+                    actionModule.registerToolBarClipboardActions();
 
-                optionsModule.registerMenuAction();
+                    optionsModule.registerMenuAction();
 
-                binedModule.registerEditFindMenuActions();
-                binedModule.registerCodeTypeToolBarActions();
-                binedModule.registerShowUnprintablesToolBarActions();
+                    binedModule.registerEditFindMenuActions();
+                    binedModule.registerCodeTypeToolBarActions();
+                    binedModule.registerShowUnprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
-                binedModule.registerViewUnprintablesMenuActions();
-                binedModule.registerViewValuesPanelMenuActions();
-                binedModule.registerToolsOptionsMenuActions();
-                binedModule.registerClipboardCodeActions();
-                binedModule.registerOptionsMenuPanels();
-                binedModule.registerGoToPosition();
-                binedModule.registerInsertDataAction();
-                binedModule.registerPropertiesMenu();
-                // TODO binedModule.registerPrintMenu();
-                binedModule.registerViewModeMenu();
-                binedModule.registerCodeTypeMenu();
-                binedModule.registerPositionCodeTypeMenu();
-                binedModule.registerHexCharactersCaseHandlerMenu();
-                binedModule.registerLayoutMenu();
+                    binedModule.registerViewUnprintablesMenuActions();
+                    binedModule.registerViewValuesPanelMenuActions();
+                    binedModule.registerToolsOptionsMenuActions();
+                    binedModule.registerClipboardCodeActions();
+                    binedModule.registerOptionsMenuPanels();
+                    binedModule.registerGoToPosition();
+                    binedModule.registerInsertDataAction();
+                    binedModule.registerPropertiesMenu();
+                    // TODO binedModule.registerPrintMenu();
+                    binedModule.registerViewModeMenu();
+                    binedModule.registerCodeTypeMenu();
+                    binedModule.registerPositionCodeTypeMenu();
+                    binedModule.registerHexCharactersCaseHandlerMenu();
+                    binedModule.registerLayoutMenu();
 
-                final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
+                    final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
-                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-                editorModule.registerUndoHandler();
+                    undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
+                    editorModule.registerUndoHandler();
 
-                binedModule.registerStatusBar();
-                binedModule.registerOptionsPanels();
-                binedModule.getBinaryStatusPanel();
-                updateModule.registerOptionsPanels();
+                    binedModule.registerStatusBar();
+                    binedModule.registerOptionsPanels();
+                    binedModule.getBinaryStatusPanel();
+                    updateModule.registerOptionsPanels();
 
-                binedModule.loadFromPreferences(preferences);
+                    binedModule.loadFromPreferences(preferences);
 
-                frameModule.addExitListener((ApplicationFrameHandler afh) -> {
-                    frameModule.saveFramePosition();
-                    return true;
+                    frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                        frameModule.saveFramePosition();
+                        return true;
+                    });
+
+                    frameHandler.setMainPanel(editorModule.getEditorComponent());
+
+                    frameHandler.setDefaultSize(new Dimension(600, 400));
+                    frameModule.loadFramePosition();
+                    optionsModule.initialLoadFromPreferences();
+                    frameHandler.showFrame();
+
+                    String filePath = null;
+                    List fileArgs = cl.getArgList();
+                    if (!fileArgs.isEmpty()) {
+                        filePath = (String) fileArgs.get(0);
+                    }
+
+                    if (filePath == null) {
+                        binedModule.start();
+                    } else {
+                        binedModule.startWithFile(filePath);
+                    }
+
+                    updateModule.checkOnStart(frameHandler.getFrame());
                 });
-
-                frameHandler.setMainPanel(editorModule.getEditorComponent());
-
-                frameHandler.setDefaultSize(new Dimension(600, 400));
-                frameModule.loadFramePosition();
-                optionsModule.initialLoadFromPreferences();
-                frameHandler.showFrame();
-
-                String filePath = null;
-                List fileArgs = cl.getArgList();
-                if (!fileArgs.isEmpty()) {
-                    filePath = (String) fileArgs.get(0);
-                }
-
-                if (filePath == null) {
-                    binedModule.start();
-                } else {
-                    binedModule.startWithFile(filePath);
-                }
-
-                updateModule.checkOnStart(frameHandler.getFrame());
             }
         } catch (ParseException | RuntimeException ex) {
             Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-framework-bined-makro'
+
+apply from: '../bined-modules-settings.gradle'

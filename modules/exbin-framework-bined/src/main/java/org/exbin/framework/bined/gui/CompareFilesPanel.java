@@ -336,10 +336,12 @@ public class CompareFilesPanel extends javax.swing.JPanel {
             this.data = data;
         }
 
+        @Nonnull
         public String getName() {
             return name;
         }
 
+        @Nonnull
         public BinaryData getData() {
             return data;
         }

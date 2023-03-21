@@ -151,6 +151,7 @@ public class InsertDataOperation extends CodeAreaOperation {
             this.operation = operation;
         }
 
+        @Nonnull
         @Override
         public CodeAreaCommandType getType() {
             return CodeAreaCommandType.DATA_INSERTED;

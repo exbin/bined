@@ -31,7 +31,7 @@ import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.BinaryDataOperationException;
-import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.basic.CodeArea;
@@ -65,7 +65,6 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
     private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
-    private CodeAreaUndoHandler undoHandler;
 
     public InsertDataAction() {
 
@@ -84,10 +83,6 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
     public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
         this.codeArea = codeArea;
         setEnabled(codeArea != null);
-    }
-
-    public void updateForActiveUndoHandler(@Nullable CodeAreaUndoHandler undoHandler) {
-        this.undoHandler = undoHandler;
     }
 
     @Override
@@ -154,7 +149,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
                         throw XBFrameworkUtils.getInvalidTypeException(activeOperation);
                 }
                 try {
-                    undoHandler.execute(command);
+                    ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
                 } catch (BinaryDataOperationException ex) {
                     Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
                 }

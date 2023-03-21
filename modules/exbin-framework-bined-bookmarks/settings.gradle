@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-framework-bined-bookmarks'
+
+apply from: '../bined-modules-settings.gradle'

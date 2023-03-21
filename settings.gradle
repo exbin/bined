@@ -3,6 +3,7 @@ rootProject.name = 'bined'
 include ":deps"
 
 include ":modules:exbin-framework-bined"
+include ":modules:exbin-framework-bined-bookmarks"
 include ":apps:bined-editor"
 
 File placeholder = file("deps/.downloaded")

@@ -9,6 +9,7 @@ rootProject.name = 'bined-editor'
 
 if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-bookmarks'
 }
 
 apply from: '../apps-settings.gradle'

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.operation.BinaryDataOperationException;
@@ -69,6 +70,12 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
         return operations.isEmpty();
     }
 
+    /**
+     *
+     * @param executionType
+     * @return
+     */
+    @Nullable
     @Override
     protected CodeAreaOperation execute(ExecutionType executionType) {
         CompoundCodeAreaOperation compoundUndoOperation = null;
