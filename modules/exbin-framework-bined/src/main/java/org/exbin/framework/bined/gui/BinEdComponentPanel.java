@@ -25,13 +25,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import org.exbin.bined.capability.RowWrappingCapable;
 import org.exbin.bined.RowWrappingMode;
-import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.service.impl.BinarySearchServiceImpl;
 
@@ -60,7 +60,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     private void init() {
         codeArea = new ExtCodeArea();
-        codeArea.setPainter(new ExtendedHighlightNonAsciiCodeAreaPainter(codeArea));
+        codeArea.setPainter(new BinEdCodeAreaPainter(codeArea));
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
         // TODO: Use empty undo handler instead
