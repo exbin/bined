@@ -498,22 +498,6 @@ public class BinedModule implements XBApplicationModule {
         };
         optionsModule.extendAppearanceOptionsPage(binaryAppearanceOptionsPage);
 
-        TextEncodingService textEncodingService = new TextEncodingServiceImpl();
-        textEncodingService.setEncodingChangeListener(new TextEncodingService.EncodingChangeListener() {
-            @Override
-            public void encodingListChanged() {
-                getEncodingsHandler().rebuildEncodings();
-            }
-
-            @Override
-            public void selectedEncodingChanged() {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    ((BinEdFileHandler) activeFile.get()).setCharset(Charset.forName(textEncodingService.getSelectedEncoding()));
-                }
-            }
-        });
-
         textEncodingOptionsPage = new DefaultOptionsPage<TextEncodingOptionsImpl>() {
             private TextEncodingOptionsPanel panel;
 
@@ -521,7 +505,8 @@ public class BinedModule implements XBApplicationModule {
             public OptionsCapable<TextEncodingOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new TextEncodingOptionsPanel();
-                    panel.setTextEncodingService(textEncodingService);
+                    getEncodingsHandler();
+                    panel.setTextEncodingService(encodingsHandler.getTextEncodingService());
                     panel.setAddEncodingsOperation((List<String> usedEncodings) -> {
                         final List<String> result = new ArrayList<>();
                         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
@@ -570,8 +555,8 @@ public class BinedModule implements XBApplicationModule {
 
             @Override
             public void applyPreferencesChanges(TextEncodingOptionsImpl options) {
-                textEncodingService.setSelectedEncoding(options.getSelectedEncoding());
-                textEncodingService.setEncodings(options.getEncodings());
+                encodingsHandler.setSelectedEncoding(options.getSelectedEncoding());
+                encodingsHandler.setEncodings(options.getEncodings());
             }
         };
         optionsModule.addOptionsPage(textEncodingOptionsPage);
@@ -1563,6 +1548,21 @@ public class BinedModule implements XBApplicationModule {
                 encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
             }
             encodingsHandler.init();
+
+            encodingsHandler.setEncodingChangeListener(new TextEncodingService.EncodingChangeListener() {
+                @Override
+                public void encodingListChanged() {
+                    encodingsHandler.rebuildEncodings();
+                }
+
+                @Override
+                public void selectedEncodingChanged() {
+                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                    if (activeFile.isPresent()) {
+                        ((BinEdFileHandler) activeFile.get()).setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
+                    }
+                }
+            });
         }
 
         return encodingsHandler;

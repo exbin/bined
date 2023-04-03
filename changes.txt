@@ -2,6 +2,7 @@
 - Added off-line help/manual
 - Added edit selection dialog
 - Added support for files drag&drop (issue #7)
+- Fixed issue with switching charsets
 
 0.2.1 (2021-10-31)
 - New app icon
