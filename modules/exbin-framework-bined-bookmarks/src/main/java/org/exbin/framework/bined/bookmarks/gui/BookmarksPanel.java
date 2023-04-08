@@ -17,7 +17,9 @@ package org.exbin.framework.bined.bookmarks.gui;
 
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.bookmarks.model.BookmarksTableModel;
 import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Bookmarks panel.
@@ -28,6 +30,7 @@ import org.exbin.framework.utils.LanguageUtils;
 public class BookmarksPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksPanel.class);
+    private final BookmarksTableModel bookmarksTableModel = new BookmarksTableModel();
 
     public BookmarksPanel() {
         initComponents();
@@ -98,11 +101,11 @@ public class BookmarksPanel extends javax.swing.JPanel {
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(upButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(upButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE))
                 .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
@@ -123,17 +126,7 @@ public class BookmarksPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        table.setModel(bookmarksTableModel);
         scrollPane.setViewportView(table);
 
         javax.swing.GroupLayout listPanelLayout = new javax.swing.GroupLayout(listPanel);
@@ -179,6 +172,15 @@ public class BookmarksPanel extends javax.swing.JPanel {
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
 
     }//GEN-LAST:event_selectAllButtonActionPerformed
+
+    /**
+     * Test method for this panel.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        WindowUtils.invokeDialog(new BookmarksPanel());
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

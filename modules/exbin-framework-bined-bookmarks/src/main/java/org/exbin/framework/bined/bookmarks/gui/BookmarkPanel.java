@@ -18,6 +18,7 @@ package org.exbin.framework.bined.bookmarks.gui;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Bookmark panel.
@@ -43,8 +44,20 @@ public class BookmarkPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         startPositionLabel = new javax.swing.JLabel();
+        startPositionSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
+        endPositionLabel = new javax.swing.JLabel();
+        endPositionSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
+        lengthLabel = new javax.swing.JLabel();
+        lengthSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
+        editPositionButton = new javax.swing.JButton();
 
         startPositionLabel.setText("Start Position");
+
+        endPositionLabel.setText("End Position");
+
+        lengthLabel.setText("Length");
+
+        editPositionButton.setText("Edit Position...");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -52,20 +65,57 @@ public class BookmarkPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(startPositionLabel)
-                .addContainerGap(655, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(startPositionSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                    .addComponent(endPositionSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lengthSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(startPositionLabel)
+                            .addComponent(endPositionLabel)
+                            .addComponent(lengthLabel)
+                            .addComponent(editPositionButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(startPositionLabel)
-                .addContainerGap(449, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(startPositionSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(endPositionLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(endPositionSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lengthLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lengthSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(editPositionButton)
+                .addContainerGap(222, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Test method for this panel.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        WindowUtils.invokeDialog(new BookmarkPanel());
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton editPositionButton;
+    private javax.swing.JLabel endPositionLabel;
+    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel endPositionSwitchableSpinnerPanel;
+    private javax.swing.JLabel lengthLabel;
+    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel lengthSwitchableSpinnerPanel;
     private javax.swing.JLabel startPositionLabel;
+    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel startPositionSwitchableSpinnerPanel;
     // End of variables declaration//GEN-END:variables
 }
