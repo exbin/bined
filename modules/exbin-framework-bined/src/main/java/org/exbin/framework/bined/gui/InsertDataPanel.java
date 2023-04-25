@@ -59,7 +59,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
 
         fillWithbuttonGroup = new javax.swing.ButtonGroup();
         sizeLabel = new javax.swing.JLabel();
-        sizePanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
+        sizeBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
         fillWithLabel = new javax.swing.JLabel();
         emptyRadioButton = new javax.swing.JRadioButton();
         spaceRadioButton = new javax.swing.JRadioButton();
@@ -104,7 +104,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sizePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                            .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                             .addComponent(emptyRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(randomRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
@@ -122,7 +122,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(sizeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fillWithLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -182,19 +182,19 @@ public class InsertDataPanel extends javax.swing.JPanel {
     }
 
     public long getDataLength() {
-        return sizePanel.getValue();
+        return sizeBaseSwitchableSpinnerPanel.getValue();
     }
 
     public void setDataLength(long dataLength) {
-        sizePanel.setValue(dataLength);
+        sizeBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
 
     public void initFocus() {
-        sizePanel.initFocus();
+        sizeBaseSwitchableSpinnerPanel.initFocus();
     }
 
     public void acceptInput() {
-        sizePanel.acceptInput();
+        sizeBaseSwitchableSpinnerPanel.acceptInput();
     }
 
     /**
@@ -213,8 +213,8 @@ public class InsertDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton randomRadioButton;
     private javax.swing.JButton sampleDataButton;
     private javax.swing.JRadioButton sampleRadioButton;
+    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel sizeBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel sizeLabel;
-    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel sizePanel;
     private javax.swing.JRadioButton spaceRadioButton;
     // End of variables declaration//GEN-END:variables
 

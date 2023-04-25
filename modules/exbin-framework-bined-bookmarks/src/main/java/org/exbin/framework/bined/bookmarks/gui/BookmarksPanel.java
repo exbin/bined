@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.bookmarks.gui;
 
 import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.bookmarks.model.BookmarksTableModel;
 import org.exbin.framework.utils.LanguageUtils;
@@ -34,6 +35,11 @@ public class BookmarksPanel extends javax.swing.JPanel {
 
     public BookmarksPanel() {
         initComponents();
+    }
+
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
     }
 
     /**

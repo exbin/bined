@@ -19,6 +19,7 @@ import org.exbin.framework.bined.SearchCondition;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -52,6 +53,11 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,10 +82,12 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+    @Nonnull
     public String getMultilineText() {
         return textArea.getText();
     }
 
+    @Nonnull
     public SearchCondition getCondition() {
         if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
             condition.setSearchText(textArea.getText());
@@ -123,7 +131,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
     private void attachPopupMenu() {
         codeArea.setComponentPopupMenu(new JPopupMenu() {
             @Override
-            public void show(Component invoker, int x, int y) {
+            public void show(@Nonnull Component invoker, int x, int y) {
                 int clickedX = x;
                 int clickedY = y;
                 if (invoker instanceof JViewport) {
@@ -141,9 +149,5 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
         if (condition.getSearchMode() == SearchCondition.SearchMode.BINARY) {
             codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
         }
-    }
-
-    public ResourceBundle getResourceBundle() {
-        return resourceBundle;
     }
 }

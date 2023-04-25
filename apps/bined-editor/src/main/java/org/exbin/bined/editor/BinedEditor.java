@@ -35,6 +35,8 @@ import org.exbin.framework.XBBaseApplication;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
+import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.about.api.AboutModuleApi;
 import org.exbin.framework.editor.api.EditorModuleApi;
@@ -130,6 +132,12 @@ public class BinedEditor {
                     EditorProvider editorProvider = binedModule.getEditorProvider();
                     editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
 
+                    BinedCompareModule binedCompareModule = moduleRepository.getModuleByInterface(BinedCompareModule.class);
+                    binedCompareModule.setEditorProvider(editorProvider);
+                    
+                    BinedBookmarksModule binedBookmarksModule = moduleRepository.getModuleByInterface(BinedBookmarksModule.class);
+                    binedBookmarksModule.setEditorProvider(editorProvider);
+
                     frameModule.createMainMenu();
                     try {
                         updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
@@ -174,9 +182,11 @@ public class BinedEditor {
                     binedModule.registerCodeTypeToolBarActions();
                     binedModule.registerShowUnprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
+                    binedBookmarksModule.registerEditMenuActions();
                     binedModule.registerViewUnprintablesMenuActions();
                     binedModule.registerViewValuesPanelMenuActions();
                     binedModule.registerToolsOptionsMenuActions();
+                    binedCompareModule.registerToolsOptionsMenuActions();
                     binedModule.registerClipboardCodeActions();
                     binedModule.registerOptionsMenuPanels();
                     binedModule.registerGoToPosition();

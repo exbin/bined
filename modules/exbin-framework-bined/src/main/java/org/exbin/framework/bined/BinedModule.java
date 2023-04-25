@@ -85,7 +85,6 @@ import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
-import org.exbin.framework.bined.action.CompareFilesAction;
 import org.exbin.framework.bined.action.InsertDataAction;
 import org.exbin.framework.bined.action.ShowHeaderAction;
 import org.exbin.framework.bined.options.impl.BinaryAppearanceOptionsImpl;
@@ -150,7 +149,6 @@ import org.exbin.framework.editor.text.options.impl.TextEncodingOptionsImpl;
 import org.exbin.framework.editor.text.options.impl.TextFontOptionsImpl;
 import org.exbin.framework.editor.text.service.TextEncodingService;
 import org.exbin.framework.editor.text.service.TextFontService;
-import org.exbin.framework.editor.text.service.impl.TextEncodingServiceImpl;
 import org.exbin.framework.options.api.OptionsCapable;
 import org.exbin.framework.bined.service.EditorOptionsService;
 import org.exbin.framework.options.api.DefaultOptionsPage;
@@ -224,7 +222,6 @@ public class BinedModule implements XBApplicationModule {
     private PositionCodeTypeActions positionCodeTypeActions;
     private HexCharactersCaseActions hexCharactersCaseActions;
     private ClipboardCodeActions clipboardCodeActions;
-    private CompareFilesAction compareFilesAction;
     private EncodingsHandler encodingsHandler;
 
     public BinedModule() {
@@ -1580,17 +1577,6 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public AbstractAction getCompareFilesAction() {
-        if (compareFilesAction == null) {
-            ensureSetup();
-            compareFilesAction = new CompareFilesAction();
-            compareFilesAction.setup(application, editorProvider, resourceBundle);
-        }
-
-        return compareFilesAction;
-    }
-
-    @Nonnull
     public ViewModeHandlerActions getViewModeActions() {
         if (viewModeActions == null) {
             ensureSetup();
@@ -1691,7 +1677,6 @@ public class BinedModule implements XBApplicationModule {
     public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getCodeAreaFontAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getCompareFilesAction(), new MenuPosition(PositionMode.TOP));
     }
 
     public void registerClipboardCodeActions() {

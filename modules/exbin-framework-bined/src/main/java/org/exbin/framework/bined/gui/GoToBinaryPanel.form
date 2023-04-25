@@ -90,7 +90,7 @@
                       <Component id="fromCursorRadioButton" max="32767" attributes="0"/>
                       <Component id="fromEndRadioButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="fromStartRadioButton" alignment="0" max="32767" attributes="0"/>
-                      <Component id="baseSwitchableSpinnerPanel" alignment="0" pref="400" max="32767" attributes="0"/>
+                      <Component id="positionBaseSwitchableSpinnerPanel" alignment="0" pref="400" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="positionLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -111,7 +111,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="positionLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="baseSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
+                  <Component id="positionBaseSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -165,7 +165,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="baseSwitchableSpinnerPanel">
+        <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="positionBaseSwitchableSpinnerPanel">
         </Component>
       </SubComponents>
     </Container>

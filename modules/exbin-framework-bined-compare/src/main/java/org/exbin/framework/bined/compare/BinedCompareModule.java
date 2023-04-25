@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.bookmarks;
+package org.exbin.framework.bined.compare;
 
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -26,7 +26,7 @@ import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
-import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
+import org.exbin.framework.bined.compare.action.CompareFilesAction;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -34,23 +34,23 @@ import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
- * Binary data editor module.
+ * Binary editor compare module.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedBookmarksModule implements XBApplicationModule {
+public class BinedCompareModule implements XBApplicationModule {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedBookmarksModule.class);
+    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedCompareModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
     private XBApplication application;
     private EditorProvider editorProvider;
 
-    private ManageBookmarksAction manageBookmarksAction;
+    private CompareFilesAction compareFilesAction;
 
-    public BinedBookmarksModule() {
+    public BinedCompareModule() {
     }
 
     @Override
@@ -69,29 +69,29 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public void unregisterModule(String moduleId) {
     }
 
-    public void registerEditMenuActions() {
+    public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getManageBookmarksAction(), new MenuPosition(PositionMode.BOTTOM));
-    }
-
-    @Nonnull
-    public AbstractAction getManageBookmarksAction() {
-        if (manageBookmarksAction == null) {
-            ensureSetup();
-            manageBookmarksAction = new ManageBookmarksAction();
-            manageBookmarksAction.setup(application, editorProvider, resourceBundle);
-        }
-
-        return manageBookmarksAction;
+        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getCompareFilesAction(), new MenuPosition(PositionMode.TOP));
     }
 
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedBookmarksModule.class);
+            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedCompareModule.class);
         }
 
         return resourceBundle;
+    }
+
+    @Nonnull
+    public AbstractAction getCompareFilesAction() {
+        if (compareFilesAction == null) {
+            ensureSetup();
+            compareFilesAction = new CompareFilesAction();
+            compareFilesAction.setup(application, editorProvider, resourceBundle);
+        }
+
+        return compareFilesAction;
     }
 
     @Nonnull

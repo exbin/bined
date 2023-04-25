@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.gui;
+package org.exbin.framework.bined.compare.gui;
 
 import java.awt.Component;
 import java.awt.event.ItemEvent;
@@ -258,7 +258,6 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         );
 
         add(optionsPanel, java.awt.BorderLayout.PAGE_START);
-
         add(codeAreaDiffPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 

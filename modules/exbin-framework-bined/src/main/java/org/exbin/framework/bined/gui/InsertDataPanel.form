@@ -30,7 +30,7 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="sizePanel" pref="403" max="32767" attributes="0"/>
+                          <Component id="sizeBaseSwitchableSpinnerPanel" pref="403" max="32767" attributes="0"/>
                           <Component id="emptyRadioButton" alignment="0" max="32767" attributes="0"/>
                           <Component id="randomRadioButton" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
@@ -55,7 +55,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="sizeLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="sizePanel" min="-2" max="-2" attributes="0"/>
+              <Component id="sizeBaseSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="fillWithLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -81,7 +81,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="sizePanel">
+    <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="sizeBaseSwitchableSpinnerPanel">
     </Component>
     <Component class="javax.swing.JLabel" name="fillWithLabel">
       <Properties>

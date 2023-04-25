@@ -4,6 +4,8 @@ include ":deps"
 
 include ":modules:exbin-framework-bined"
 include ":modules:exbin-framework-bined-bookmarks"
+include ":modules:exbin-framework-bined-compare"
+include ":modules:exbin-framework-bined-makro"
 include ":apps:bined-editor"
 
 File placeholder = file("deps/.downloaded")

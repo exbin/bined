@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.action;
+package org.exbin.framework.bined.compare.action;
 
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -35,7 +35,7 @@ import javax.swing.AbstractAction;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.PagedData;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.gui.CompareFilesPanel;
+import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.CloseControlPanel;
