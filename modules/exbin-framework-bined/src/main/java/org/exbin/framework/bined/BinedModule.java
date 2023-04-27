@@ -27,7 +27,6 @@ import org.exbin.framework.bined.action.ShowUnprintablesActions;
 import org.exbin.framework.bined.action.RowWrappingAction;
 import org.exbin.framework.bined.action.PropertiesAction;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.bined.action.FindReplaceActions;
 import org.exbin.framework.bined.action.HexCharactersCaseActions;
 import org.exbin.framework.bined.action.PositionCodeTypeActions;
 import java.awt.Component;
@@ -85,7 +84,6 @@ import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
-import org.exbin.framework.bined.action.InsertDataAction;
 import org.exbin.framework.bined.action.ShowHeaderAction;
 import org.exbin.framework.bined.options.impl.BinaryAppearanceOptionsImpl;
 import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
@@ -182,10 +180,8 @@ public class BinedModule implements XBApplicationModule {
     public static final String POSITION_CODE_TYPE_SUBMENU_ID = MODULE_ID + ".positionCodeTypeSubMenu";
     public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
 
-    private static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
     private static final String VIEW_UNPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewUnprintablesMenuGroup";
     private static final String VIEW_PARSING_PANEL_MENU_GROUP_ID = MODULE_ID + ".viewParsingPanelMenuGroup";
-    private static final String EDIT_FIND_TOOL_BAR_GROUP_ID = MODULE_ID + ".editFindToolBarGroup";
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
@@ -195,6 +191,8 @@ public class BinedModule implements XBApplicationModule {
     private XBApplication application;
     private EditorProvider editorProvider;
     private BinaryStatusPanel binaryStatusPanel;
+    private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
+
     private DefaultOptionsPage<TextEncodingOptionsImpl> textEncodingOptionsPage;
     private DefaultOptionsPage<TextFontOptionsImpl> textFontOptionsPage;
     private DefaultOptionsPage<BinaryAppearanceOptionsImpl> binaryAppearanceOptionsPage;
@@ -205,7 +203,6 @@ public class BinedModule implements XBApplicationModule {
     private DefaultOptionsPage<CodeAreaLayoutOptionsImpl> layoutProfilesOptionsPage;
     private DefaultOptionsPage<CodeAreaColorOptionsImpl> colorProfilesOptionsPage;
 
-    private FindReplaceActions findReplaceActions;
     private ShowUnprintablesActions showUnprintablesActions;
     private ShowParsingPanelAction showParsingPanelAction;
     private CodeAreaFontAction codeAreaFontAction;
@@ -217,7 +214,6 @@ public class BinedModule implements XBApplicationModule {
     private ViewModeHandlerActions viewModeActions;
     private ShowRowPositionAction showRowPositionAction;
     private ShowHeaderAction showHeaderAction;
-    private InsertDataAction insertDataAction;
     private CodeTypeActions codeTypeActions;
     private PositionCodeTypeActions positionCodeTypeActions;
     private HexCharactersCaseActions hexCharactersCaseActions;
@@ -271,6 +267,11 @@ public class BinedModule implements XBApplicationModule {
             BinEdFileHandler editorFile = new BinEdFileHandler();
             editorFile.setApplication(application);
             editorFile.setSegmentsRepository(new SegmentsRepository());
+            BinEdComponentPanel componentPanel = editorFile.getComponent();
+            for (BinEdFileExtension extension : binEdComponentExtensions) {
+                BinEdComponentPanel.BinEdComponentExtension componentExtension = extension.createComponentExtension(componentPanel);
+                componentPanel.addComponentExtension(componentExtension);
+            }
             EditorPreferences editorPreferences = new EditorPreferences(application.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             editorFile.setNewData(fileHandlingMode);
@@ -329,8 +330,7 @@ public class BinedModule implements XBApplicationModule {
         EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
         editorModule.updateActionStatus();
         FileDependentAction[] fileDepActions = new FileDependentAction[]{
-            findReplaceActions, showParsingPanelAction, codeAreaFontAction,
-            propertiesAction
+            showParsingPanelAction, codeAreaFontAction, propertiesAction
         };
         for (FileDependentAction fileDepAction : fileDepActions) {
             if (fileDepAction != null) {
@@ -339,7 +339,7 @@ public class BinedModule implements XBApplicationModule {
         }
 
         CodeAreaAction[] codeAreaActions = new CodeAreaAction[]{
-            goToPositionAction, editSelectionAction, insertDataAction,
+            goToPositionAction, editSelectionAction,
             hexCharactersCaseActions, codeTypeActions, positionCodeTypeActions,
             rowWrappingAction, viewModeActions, showHeaderAction,
             showRowPositionAction, showUnprintablesActions,
@@ -1404,11 +1404,6 @@ public class BinedModule implements XBApplicationModule {
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getEditSelectionAction(), new MenuPosition(PositionMode.BOTTOM));
     }
 
-    public void registerInsertDataAction() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(PositionMode.BOTTOM));
-    }
-
     @Nullable
     public BinaryStatusPanel getBinaryStatusPanel() {
         return binaryStatusPanel;
@@ -1437,17 +1432,6 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    private AbstractAction getInsertDataAction() {
-        if (insertDataAction == null) {
-            ensureSetup();
-            insertDataAction = new InsertDataAction();
-            insertDataAction.setup(application, resourceBundle);
-        }
-
-        return insertDataAction;
-    }
-
-    @Nonnull
     public AbstractAction getRowWrappingAction() {
         if (rowWrappingAction == null) {
             ensureSetup();
@@ -1456,17 +1440,6 @@ public class BinedModule implements XBApplicationModule {
         }
 
         return rowWrappingAction;
-    }
-
-    @Nonnull
-    public FindReplaceActions getFindReplaceActions() {
-        if (findReplaceActions == null) {
-            ensureSetup();
-            findReplaceActions = new FindReplaceActions();
-            findReplaceActions.setup(application, editorProvider, resourceBundle);
-        }
-
-        return findReplaceActions;
     }
 
     @Nonnull
@@ -1631,22 +1604,6 @@ public class BinedModule implements XBApplicationModule {
         return clipboardCodeActions;
     }
 
-    public void registerEditFindMenuActions() {
-        getFindReplaceActions();
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuGroup(FrameModuleApi.EDIT_MENU_ID, new MenuGroup(EDIT_FIND_MENU_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAgainAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditReplaceAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
-    }
-
-    public void registerEditFindToolBarActions() {
-        getFindReplaceActions();
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerToolBarGroup(FrameModuleApi.MAIN_TOOL_BAR_ID, new ToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
-        actionModule.registerToolBarItem(FrameModuleApi.MAIN_TOOL_BAR_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new ToolBarPosition(EDIT_FIND_TOOL_BAR_GROUP_ID));
-    }
-
     public void registerCodeTypeToolBarActions() {
         getCodeTypeActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
@@ -1754,6 +1711,10 @@ public class BinedModule implements XBApplicationModule {
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
         URI uri = new File(filePath).toURI();
         fileModule.loadFromFile(uri.toASCIIString());
+    }
+
+    public void addBinEdComponentExtension(BinEdFileExtension extension) {
+        binEdComponentExtensions.add(extension);
     }
 
     @Nonnull
@@ -1879,23 +1840,10 @@ public class BinedModule implements XBApplicationModule {
                 popupMenu.add(editSelectionMenuItem);
 
                 if (variant != PopupMenuVariant.BASIC) {
-                    popupMenu.addSeparator();
-                    JMenuItem insertDataMenuItem = createInsertDataMenuItem();
-                    popupMenu.add(insertDataMenuItem);
-
                     JMenuItem goToMenuItem = createGoToMenuItem();
                     popupMenu.add(goToMenuItem);
                 }
-
-                if (variant == PopupMenuVariant.EDITOR) {
-                    final JMenuItem findMenuItem = ActionUtils.actionToMenuItem(getFindReplaceActions().getEditFindAction());
-                    popupMenu.add(findMenuItem);
-
-                    final JMenuItem replaceMenuItem = ActionUtils.actionToMenuItem(getFindReplaceActions().getEditReplaceAction());
-                    popupMenu.add(replaceMenuItem);
-                }
             }
-
         }
 
         if (variant == PopupMenuVariant.EDITOR) {
@@ -1921,6 +1869,10 @@ public class BinedModule implements XBApplicationModule {
             popupMenu.add(optionsMenuItem);
         }
 
+        for (BinEdFileExtension extension : binEdComponentExtensions) {
+            extension.onPopupMenuCreation(popupMenu, codeArea, menuPostfix, variant, x, y);
+        }
+
         updateActionStatus(codeArea);
         return popupMenu;
     }
@@ -1942,11 +1894,6 @@ public class BinedModule implements XBApplicationModule {
     @Nonnull
     private JMenuItem createEditSelectionMenuItem() {
         return ActionUtils.actionToMenuItem(getEditSelectionAction());
-    }
-
-    @Nonnull
-    private JMenuItem createInsertDataMenuItem() {
-        return ActionUtils.actionToMenuItem(getInsertDataAction());
     }
 
     @Nonnull
@@ -2102,6 +2049,14 @@ public class BinedModule implements XBApplicationModule {
                 return SwingUtilities.getDeepestComponentAt(e.getComponent(), e.getX(), e.getY());
             }
         });
+    }
+
+    @ParametersAreNonnullByDefault
+    public interface BinEdFileExtension {
+
+        BinEdComponentPanel.BinEdComponentExtension createComponentExtension(BinEdComponentPanel component);
+
+        void onPopupMenuCreation(final JPopupMenu popupMenu, final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y);
     }
 
     public enum PopupMenuVariant {

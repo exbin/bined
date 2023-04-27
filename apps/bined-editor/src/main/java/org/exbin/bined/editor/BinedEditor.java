@@ -35,8 +35,10 @@ import org.exbin.framework.XBBaseApplication;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
+import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.about.api.AboutModuleApi;
 import org.exbin.framework.editor.api.EditorModuleApi;
@@ -131,6 +133,12 @@ public class BinedEditor {
                     binedModule.initEditorProvider(editorProviderVariant);
                     EditorProvider editorProvider = binedModule.getEditorProvider();
                     editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
+
+                    BinedSearchModule binedSearchModule = moduleRepository.getModuleByInterface(BinedSearchModule.class);
+                    binedSearchModule.setEditorProvider(editorProvider);
+
+                    BinedBlockEditModule binedBlockEditModule = moduleRepository.getModuleByInterface(BinedBlockEditModule.class);
+                    binedBlockEditModule.setEditorProvider(editorProvider);
 
                     BinedCompareModule binedCompareModule = moduleRepository.getModuleByInterface(BinedCompareModule.class);
                     binedCompareModule.setEditorProvider(editorProvider);

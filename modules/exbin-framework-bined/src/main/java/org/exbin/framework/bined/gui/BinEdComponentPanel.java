@@ -15,14 +15,14 @@
  */
 package org.exbin.framework.bined.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import org.exbin.bined.capability.RowWrappingCapable;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
@@ -33,7 +33,6 @@ import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.bined.service.impl.BinarySearchServiceImpl;
 
 /**
  * Binary editor component panel.
@@ -45,13 +44,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     private ExtCodeArea codeArea;
     private CodeAreaUndoHandler undoHandler;
-
-    private BinarySearchPanel binarySearchPanel;
-    private boolean binarySearchPanelVisible = false;
-    private ValuesPanel valuesPanel;
-    private boolean parsingPanelVisible = false;
-
-    private JScrollPane valuesPanelScrollPane;
+    private List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
 
     public BinEdComponentPanel() {
         initComponents();
@@ -68,60 +61,10 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setCommandHandler(commandHandler);
 
         add(codeArea);
-
-        binarySearchPanel = new BinarySearchPanel();
-        binarySearchPanel.setBinarySearchService(new BinarySearchServiceImpl(codeArea));
-        binarySearchPanel.setClosePanelListener(this::hideSearchPanel);
-
-        valuesPanel = new ValuesPanel();
-        valuesPanel.setCodeArea(codeArea, null);
-        valuesPanelScrollPane = new JScrollPane(valuesPanel);
-        valuesPanelScrollPane.setBorder(null);
-        setShowParsingPanel(true);
     }
 
     public void setApplication(XBApplication application) {
         binarySearchPanel.setApplication(application);
-    }
-
-    public void showSearchPanel(boolean replace) {
-        if (!binarySearchPanelVisible) {
-            add(binarySearchPanel, BorderLayout.SOUTH);
-            revalidate();
-            binarySearchPanelVisible = true;
-            binarySearchPanel.requestSearchFocus();
-        }
-        binarySearchPanel.switchReplaceMode(replace);
-    }
-
-    public void hideSearchPanel() {
-        if (binarySearchPanelVisible) {
-            binarySearchPanel.cancelSearch();
-            binarySearchPanel.clearSearch();
-            BinEdComponentPanel.this.remove(binarySearchPanel);
-            BinEdComponentPanel.this.revalidate();
-            binarySearchPanelVisible = false;
-        }
-    }
-
-    public void setShowParsingPanel(boolean show) {
-        if (parsingPanelVisible != show) {
-            if (show) {
-                add(valuesPanelScrollPane, BorderLayout.EAST);
-                revalidate();
-                parsingPanelVisible = true;
-                valuesPanel.enableUpdate();
-            } else {
-                valuesPanel.disableUpdate();
-                BinEdComponentPanel.this.remove(valuesPanelScrollPane);
-                BinEdComponentPanel.this.revalidate();
-                parsingPanelVisible = false;
-            }
-        }
-    }
-
-    public boolean isShowParsingPanel() {
-        return parsingPanelVisible;
     }
 
     @Nonnull
@@ -134,14 +77,19 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         return ((RowWrappingCapable) codeArea).getRowWrapping() == RowWrappingMode.WRAPPING;
     }
 
-    public void findAgain() {
-        // TODO hexSearchPanel.f
+    public void notifyDataChanged() {
+        for (BinEdComponentExtension extension: componentExtensions) {
+            extension.onDataChange();
+        }
     }
 
-    public void notifyDataChanged() {
-        if (binarySearchPanelVisible) {
-            binarySearchPanel.dataChanged();
-        }
+    public void addComponentExtension(BinEdComponentExtension extension) {
+        componentExtensions.add(extension);
+    }
+
+    @Nonnull
+    public List<BinEdComponentExtension> getComponentExtensions() {
+        return componentExtensions;
     }
 
     /**
@@ -207,5 +155,15 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     public void removeBinaryAreaFocusListener(FocusListener focusListener) {
         codeArea.removeFocusListener(focusListener);
+    }
+
+    @ParametersAreNonnullByDefault
+    public interface BinEdComponentExtension {
+
+        void onCreate(BinEdComponentPanel componentPanel);
+
+        void onDataChange();
+
+        void onClose();
     }
 }

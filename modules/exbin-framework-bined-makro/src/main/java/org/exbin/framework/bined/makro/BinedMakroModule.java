@@ -27,7 +27,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 
 /**
- * Binary data editor module.
+ * Binary editor makro support module.
  *
  * @author ExBin Project (https://exbin.org)
  */
