@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.search;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -80,10 +81,12 @@ public class BinedSearchModule implements XBApplicationModule {
         this.editorProvider = editorProvider;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binedModule.addActionStatusUpdateListener(this::updateActionStatus);
         binedModule.addBinEdComponentExtension(new BinedModule.BinEdFileExtension() {
+            @Nonnull
             @Override
-            public BinEdComponentPanel.BinEdComponentExtension createComponentExtension(BinEdComponentPanel component) {
-                return new BinEdComponentSearch();
+            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                return Optional.of(new BinEdComponentSearch());
             }
 
             @Override

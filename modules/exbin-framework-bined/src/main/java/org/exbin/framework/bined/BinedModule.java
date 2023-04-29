@@ -18,7 +18,6 @@ package org.exbin.framework.bined;
 import org.exbin.framework.bined.action.ShowRowPositionAction;
 import org.exbin.framework.bined.action.ClipboardCodeActions;
 import org.exbin.framework.bined.action.GoToPositionAction;
-import org.exbin.framework.bined.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.action.CodeTypeActions;
 import org.exbin.framework.bined.action.CodeAreaFontAction;
 import org.exbin.framework.bined.action.ViewModeHandlerActions;
@@ -181,7 +180,6 @@ public class BinedModule implements XBApplicationModule {
     public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
 
     private static final String VIEW_UNPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewUnprintablesMenuGroup";
-    private static final String VIEW_PARSING_PANEL_MENU_GROUP_ID = MODULE_ID + ".viewParsingPanelMenuGroup";
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
@@ -192,6 +190,7 @@ public class BinedModule implements XBApplicationModule {
     private EditorProvider editorProvider;
     private BinaryStatusPanel binaryStatusPanel;
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
+    private final List<ActionStatusUpdateListener> actionStatusUpdateListeners = new ArrayList<>();
 
     private DefaultOptionsPage<TextEncodingOptionsImpl> textEncodingOptionsPage;
     private DefaultOptionsPage<TextFontOptionsImpl> textFontOptionsPage;
@@ -204,7 +203,6 @@ public class BinedModule implements XBApplicationModule {
     private DefaultOptionsPage<CodeAreaColorOptionsImpl> colorProfilesOptionsPage;
 
     private ShowUnprintablesActions showUnprintablesActions;
-    private ShowParsingPanelAction showParsingPanelAction;
     private CodeAreaFontAction codeAreaFontAction;
     private RowWrappingAction rowWrappingAction;
     private GoToPositionAction goToPositionAction;
@@ -268,22 +266,24 @@ public class BinedModule implements XBApplicationModule {
             editorFile.setApplication(application);
             editorFile.setSegmentsRepository(new SegmentsRepository());
             BinEdComponentPanel componentPanel = editorFile.getComponent();
-            for (BinEdFileExtension extension : binEdComponentExtensions) {
-                BinEdComponentPanel.BinEdComponentExtension componentExtension = extension.createComponentExtension(componentPanel);
-                componentPanel.addComponentExtension(componentExtension);
+            for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
+                Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
+                componentExtension.ifPresent((extension) -> {
+                    extension.setApplication(application);
+                    extension.onCreate(componentPanel);
+                    componentPanel.addComponentExtension(extension);
+                });
             }
             EditorPreferences editorPreferences = new EditorPreferences(application.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             editorFile.setNewData(fileHandlingMode);
             initFileHandler(editorFile);
-            BinEdComponentPanel panel = (BinEdComponentPanel) editorFile.getComponent();
             editorProvider = new BinaryEditorProvider(application, editorFile);
             FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
             fileModule.setFileOperations(editorProvider);
 
-            panel.setApplication(application);
-            panel.setPopupMenu(createPopupMenu(editorFile.getId(), editorFile.getComponent().getCodeArea()));
-            panel.setCodeAreaPopupMenuHandler(createCodeAreaPopupMenuHandler(PopupMenuVariant.NORMAL));
+            componentPanel.setApplication(application);
+            componentPanel.setPopupMenu(createPopupMenu(editorFile.getId(), editorFile.getComponent().getCodeArea()));
         }
 
         return editorProvider;
@@ -330,7 +330,7 @@ public class BinedModule implements XBApplicationModule {
         EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
         editorModule.updateActionStatus();
         FileDependentAction[] fileDepActions = new FileDependentAction[]{
-            showParsingPanelAction, codeAreaFontAction, propertiesAction
+            codeAreaFontAction, propertiesAction
         };
         for (FileDependentAction fileDepAction : fileDepActions) {
             if (fileDepAction != null) {
@@ -349,6 +349,10 @@ public class BinedModule implements XBApplicationModule {
             if (codeAreaAction != null) {
                 codeAreaAction.updateForActiveCodeArea(codeArea);
             }
+        }
+        
+        for (ActionStatusUpdateListener listener : actionStatusUpdateListeners) {
+            listener.updateActionStatus(codeArea);
         }
 
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
@@ -1454,17 +1458,6 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public ShowParsingPanelAction getShowParsingPanelAction() {
-        if (showParsingPanelAction == null) {
-            ensureSetup();
-            showParsingPanelAction = new ShowParsingPanelAction();
-            showParsingPanelAction.setup(application, editorProvider, resourceBundle);
-        }
-
-        return showParsingPanelAction;
-    }
-
-    @Nonnull
     public CodeAreaFontAction getCodeAreaFontAction() {
         if (codeAreaFontAction == null) {
             ensureSetup();
@@ -1625,12 +1618,6 @@ public class BinedModule implements XBApplicationModule {
         actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, showUnprintablesActions.getViewUnprintablesAction(), new MenuPosition(VIEW_UNPRINTABLES_MENU_GROUP_ID));
     }
 
-    public void registerViewValuesPanelMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuGroup(FrameModuleApi.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
-    }
-
     public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getCodeAreaFontAction(), new MenuPosition(PositionMode.TOP));
@@ -1715,6 +1702,10 @@ public class BinedModule implements XBApplicationModule {
 
     public void addBinEdComponentExtension(BinEdFileExtension extension) {
         binEdComponentExtensions.add(extension);
+    }
+    
+    public void addActionStatusUpdateListener(ActionStatusUpdateListener listener) {
+        actionStatusUpdateListeners.add(listener);
     }
 
     @Nonnull
@@ -2051,12 +2042,24 @@ public class BinedModule implements XBApplicationModule {
         });
     }
 
+    @Nonnull
+    public Iterable<BinEdFileExtension> getBinEdComponentExtensions() {
+        return binEdComponentExtensions;
+    }
+
     @ParametersAreNonnullByDefault
     public interface BinEdFileExtension {
 
-        BinEdComponentPanel.BinEdComponentExtension createComponentExtension(BinEdComponentPanel component);
+        @Nonnull
+        Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
 
         void onPopupMenuCreation(final JPopupMenu popupMenu, final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y);
+    }
+
+    @ParametersAreNonnullByDefault
+    public interface ActionStatusUpdateListener {
+
+        void updateActionStatus(CodeAreaCore codeArea);
     }
 
     public enum PopupMenuVariant {

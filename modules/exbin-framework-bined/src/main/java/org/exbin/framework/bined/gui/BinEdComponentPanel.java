@@ -29,7 +29,6 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.utils.WindowUtils;
@@ -64,7 +63,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     public void setApplication(XBApplication application) {
-        binarySearchPanel.setApplication(application);
     }
 
     @Nonnull
@@ -78,18 +76,32 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     public void notifyDataChanged() {
-        for (BinEdComponentExtension extension: componentExtensions) {
+        for (BinEdComponentExtension extension : componentExtensions) {
             extension.onDataChange();
         }
     }
 
     public void addComponentExtension(BinEdComponentExtension extension) {
         componentExtensions.add(extension);
+        if (undoHandler != null) {
+            extension.onUndoHandlerChange();
+        }
     }
 
     @Nonnull
     public List<BinEdComponentExtension> getComponentExtensions() {
         return componentExtensions;
+    }
+
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
+        for (BinEdComponentExtension extension : componentExtensions) {
+            if (clazz.isInstance(extension)) {
+                return (T) extension;
+            }
+        }
+        throw new IllegalStateException();
     }
 
     /**
@@ -125,8 +137,9 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         this.undoHandler = undoHandler;
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler == null ? new CodeAreaUndoHandler(codeArea) : undoHandler);
         codeArea.setCommandHandler(commandHandler);
-        if (valuesPanel != null) {
-            valuesPanel.setCodeArea(codeArea, undoHandler);
+
+        for (BinEdComponentExtension extension : componentExtensions) {
+            extension.onUndoHandlerChange();
         }
         // TODO set ENTER KEY mode in apply options
 
@@ -134,10 +147,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     public void setPopupMenu(JPopupMenu menu) {
         codeArea.setComponentPopupMenu(menu);
-    }
-
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        binarySearchPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
     }
 
     @Nullable
@@ -160,10 +169,14 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     @ParametersAreNonnullByDefault
     public interface BinEdComponentExtension {
 
+        void setApplication(XBApplication application);
+
         void onCreate(BinEdComponentPanel componentPanel);
 
         void onDataChange();
 
         void onClose();
+
+        public void onUndoHandlerChange();
     }
 }

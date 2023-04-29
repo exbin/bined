@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.blockedit;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -74,10 +75,12 @@ public class BinedBlockEditModule implements XBApplicationModule {
         this.editorProvider = editorProvider;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binedModule.addActionStatusUpdateListener(this::updateActionStatus);
         binedModule.addBinEdComponentExtension(new BinedModule.BinEdFileExtension() {
+            @Nonnull
             @Override
-            public BinEdComponentPanel.BinEdComponentExtension createComponentExtension(BinEdComponentPanel component) {
-                return null;
+            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                return Optional.empty();
             }
 
             @Override

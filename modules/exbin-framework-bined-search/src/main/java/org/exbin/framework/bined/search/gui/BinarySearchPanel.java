@@ -439,7 +439,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findToolBar.add(nextButton);
 
-        matchCaseToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/resources/icons/case_sensitive.gif"))); // NOI18N
+        matchCaseToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/case_sensitive.gif"))); // NOI18N
         matchCaseToggleButton.setSelected(true);
         matchCaseToggleButton.setToolTipText(resourceBundle.getString("matchCaseToggleButton.toolTipText")); // NOI18N
         matchCaseToggleButton.setFocusable(false);

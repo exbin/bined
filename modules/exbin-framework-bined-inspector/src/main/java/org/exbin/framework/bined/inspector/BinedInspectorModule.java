@@ -15,22 +15,31 @@
  */
 package org.exbin.framework.bined.inspector;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import org.exbin.bined.basic.BasicCodeAreaZone;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.MenuGroup;
+import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.PositionMode;
+import org.exbin.framework.action.api.SeparationMode;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor data inspector module.
@@ -42,10 +51,14 @@ public class BinedInspectorModule implements XBApplicationModule {
 
     public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedInspectorModule.class);
 
+    private static final String VIEW_PARSING_PANEL_MENU_GROUP_ID = MODULE_ID + ".viewParsingPanelMenuGroup";
+
     private java.util.ResourceBundle resourceBundle = null;
 
     private XBApplication application;
     private EditorProvider editorProvider;
+
+    private ShowParsingPanelAction showParsingPanelAction;
 
     public BinedInspectorModule() {
     }
@@ -63,9 +76,10 @@ public class BinedInspectorModule implements XBApplicationModule {
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         binedModule.addBinEdComponentExtension(new BinedModule.BinEdFileExtension() {
+            @Nonnull
             @Override
-            public BinEdComponentPanel.BinEdComponentExtension createComponentExtension(BinEdComponentPanel component) {
-                return new BinEdComponentInspector();
+            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                return Optional.of(new BinEdComponentInspector());
             }
 
             @Override
@@ -78,6 +92,12 @@ public class BinedInspectorModule implements XBApplicationModule {
     public void unregisterModule(String moduleId) {
     }
 
+    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
+        if (showParsingPanelAction != null) {
+            showParsingPanelAction.updateForActiveFile();
+        }
+    }
+
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
@@ -85,5 +105,37 @@ public class BinedInspectorModule implements XBApplicationModule {
         }
 
         return resourceBundle;
+    }
+
+    @Nonnull
+    public EditorProvider getEditorProvider() {
+        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
+    }
+
+    private void ensureSetup() {
+        if (editorProvider == null) {
+            getEditorProvider();
+        }
+
+        if (resourceBundle == null) {
+            getResourceBundle();
+        }
+    }
+
+    @Nonnull
+    public ShowParsingPanelAction getShowParsingPanelAction() {
+        if (showParsingPanelAction == null) {
+            ensureSetup();
+            showParsingPanelAction = new ShowParsingPanelAction();
+            showParsingPanelAction.setup(application, editorProvider, resourceBundle);
+        }
+
+        return showParsingPanelAction;
+    }
+
+    public void registerViewValuesPanelMenuActions() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuGroup(FrameModuleApi.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 }

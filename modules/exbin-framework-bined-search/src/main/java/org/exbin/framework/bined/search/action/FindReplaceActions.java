@@ -27,6 +27,7 @@ import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 
@@ -85,7 +86,8 @@ public class FindReplaceActions implements FileDependentAction {
                     }
 
                     BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
-                    activePanel.showSearchPanel(false);
+                    BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                    componentExtension.showSearchPanel(false);
                 }
             };
             ActionUtils.setupAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
@@ -129,7 +131,8 @@ public class FindReplaceActions implements FileDependentAction {
                     }
 
                     BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
-                    activePanel.showSearchPanel(true);
+                    BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                    componentExtension.showSearchPanel(true);
                 }
             };
             ActionUtils.setupAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);

@@ -38,6 +38,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
+import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.about.api.AboutModuleApi;
@@ -146,6 +147,9 @@ public class BinedEditor {
                     BinedBookmarksModule binedBookmarksModule = moduleRepository.getModuleByInterface(BinedBookmarksModule.class);
                     binedBookmarksModule.setEditorProvider(editorProvider);
 
+                    BinedInspectorModule binedInspectorModule = moduleRepository.getModuleByInterface(BinedInspectorModule.class);
+                    binedInspectorModule.setEditorProvider(editorProvider);
+
                     frameModule.createMainMenu();
                     try {
                         updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
@@ -186,19 +190,19 @@ public class BinedEditor {
 
                     optionsModule.registerMenuAction();
 
-                    binedModule.registerEditFindMenuActions();
+                    binedSearchModule.registerEditFindMenuActions();
                     binedModule.registerCodeTypeToolBarActions();
                     binedModule.registerShowUnprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
                     binedBookmarksModule.registerEditMenuActions();
                     binedModule.registerViewUnprintablesMenuActions();
-                    binedModule.registerViewValuesPanelMenuActions();
+                    binedInspectorModule.registerViewValuesPanelMenuActions();
                     binedModule.registerToolsOptionsMenuActions();
                     binedCompareModule.registerToolsOptionsMenuActions();
                     binedModule.registerClipboardCodeActions();
                     binedModule.registerOptionsMenuPanels();
                     binedModule.registerGoToPosition();
-                    binedModule.registerInsertDataAction();
+                    binedBlockEditModule.registerInsertDataAction();
                     binedModule.registerPropertiesMenu();
                     // TODO binedModule.registerPrintMenu();
                     binedModule.registerViewModeMenu();

@@ -78,6 +78,7 @@ import org.exbin.xbup.operation.Command;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 
@@ -215,6 +216,18 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Nonnull
     private BinEdFileHandler createFileHandler(int id) {
         BinEdFileHandler fileHandler = new BinEdFileHandler(id);
+
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinEdComponentPanel componentPanel = fileHandler.getComponent();
+        for (BinedModule.BinEdFileExtension fileExtension : binedModule.getBinEdComponentExtensions()) {
+            Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
+            componentExtension.ifPresent((extension) -> {
+                extension.setApplication(application);
+                extension.onCreate(componentPanel);
+                componentPanel.addComponentExtension(extension);
+            });
+        }
+
         fileHandler.setApplication(application);
         fileHandler.setSegmentsRepository(segmentsRepository);
         fileHandler.setNewData(defaultFileHandlingMode);
@@ -266,11 +279,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             }
         });
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        CodeAreaPopupMenuHandler normalCodeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL);
         binedModule.initFileHandler(fileHandler);
         attachFilePopupMenu(fileHandler);
-        fileHandler.getComponent().setCodeAreaPopupMenuHandler(normalCodeAreaPopupMenuHandler);
 
         return fileHandler;
     }

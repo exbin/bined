@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.action;
+package org.exbin.framework.bined.inspector.action;
 
 import java.awt.event.ActionEvent;
 import java.util.Optional;
@@ -26,6 +26,7 @@ import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.bined.inspector.BinEdComponentInspector;
 import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 
@@ -58,7 +59,12 @@ public class ShowParsingPanelAction extends AbstractAction implements FileDepend
     @Override
     public void updateForActiveFile() {
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        Boolean showParsingPanel = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getComponent().isShowParsingPanel() : null;
+        Boolean showParsingPanel = null;
+        if (activeFile.isPresent()) {
+            BinEdComponentPanel component = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+            showParsingPanel = componentExtension.isShowParsingPanel();
+        }
         setEnabled(activeFile.isPresent());
         if (showParsingPanel != null) {
             putValue(Action.SELECTED_KEY, showParsingPanel);
@@ -73,7 +79,8 @@ public class ShowParsingPanelAction extends AbstractAction implements FileDepend
         }
 
         BinEdComponentPanel component = ((BinEdFileHandler) activeFile.get()).getComponent();
-        setShowValuesPanel(!component.isShowParsingPanel());
+        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+        setShowValuesPanel(!componentExtension.isShowParsingPanel());
     }
 
     public void setShowValuesPanel(boolean show) {
@@ -83,7 +90,8 @@ public class ShowParsingPanelAction extends AbstractAction implements FileDepend
         }
 
         BinEdComponentPanel component = ((BinEdFileHandler) activeFile.get()).getComponent();
-        component.setShowParsingPanel(show);
+        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+        componentExtension.setShowParsingPanel(show);
         putValue(Action.SELECTED_KEY, show);
     }
 }

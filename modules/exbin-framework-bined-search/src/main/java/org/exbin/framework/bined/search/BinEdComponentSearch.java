@@ -18,7 +18,10 @@ package org.exbin.framework.bined.search;
 import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
 
@@ -31,17 +34,21 @@ import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
 public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentExtension {
 
     private BinEdComponentPanel componentPanel;
-    private BinarySearchPanel binarySearchPanel;
+    private BinarySearchPanel binarySearchPanel = new BinarySearchPanel();
     private boolean binarySearchPanelVisible = false;
+    private XBApplication application;
 
     @Override
     public void onCreate(BinEdComponentPanel componentPanel) {
         this.componentPanel = componentPanel;
         ExtCodeArea codeArea = componentPanel.getCodeArea();
 
-        binarySearchPanel = new BinarySearchPanel();
         binarySearchPanel.setBinarySearchService(new BinarySearchServiceImpl(codeArea));
         binarySearchPanel.setClosePanelListener(this::hideSearchPanel);
+
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+
+        binarySearchPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
     }
 
     @Override
@@ -52,8 +59,11 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
     }
 
     @Override
+    public void onUndoHandlerChange() {
+    }
+
+    @Override
     public void onClose() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void showSearchPanel(boolean replace) {
@@ -74,5 +84,15 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
             componentPanel.revalidate();
             binarySearchPanelVisible = false;
         }
+    }
+
+    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
+        binarySearchPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
+    }
+
+    @Override
+    public void setApplication(XBApplication application) {
+        this.application = application;
+        binarySearchPanel.setApplication(application);
     }
 }

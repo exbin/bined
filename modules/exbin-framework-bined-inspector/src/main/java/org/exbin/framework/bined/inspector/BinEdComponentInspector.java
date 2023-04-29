@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.ValuesPanel;
 
@@ -49,12 +50,22 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     }
 
     @Override
+    public void setApplication(XBApplication application) {
+    }
+
+    @Override
     public void onDataChange() {
     }
 
     @Override
+    public void onUndoHandlerChange() {
+        if (valuesPanel != null) {
+            valuesPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoHandler());
+        }
+    }
+
+    @Override
     public void onClose() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setShowParsingPanel(boolean show) {
@@ -76,5 +87,4 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public boolean isShowParsingPanel() {
         return parsingPanelVisible;
     }
-
 }
