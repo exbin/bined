@@ -16,6 +16,8 @@
 package org.exbin.framework.bined;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
@@ -32,16 +34,36 @@ import org.exbin.bined.swing.CodeAreaCore;
 @ParametersAreNonnullByDefault
 public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPainter {
 
+    private final List<CodeAreaPositionColorModifier> colorModifiers = new ArrayList<>();
+
     public BinEdCodeAreaPainter(CodeAreaCore codeArea) {
         super(codeArea);
+    }
+
+    public void addColorModifier(CodeAreaPositionColorModifier colorModifier) {
+        colorModifiers.add(colorModifier);
+    }
+
+    public void removeColorModifier(CodeAreaPositionColorModifier colorModifier) {
+        colorModifiers.remove(colorModifier);
     }
 
     @Nullable
     @Override
     public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
+        CodeAreaSelection selectionHandler = ((SelectionCapable) codeArea).getSelectionHandler();
+        boolean inSelection = selectionHandler.isInSelection(rowDataPosition + byteOnRow);
+
+        if (!inSelection) {
+            for (CodeAreaPositionColorModifier colorModifier : colorModifiers) {
+                Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
+                if (positionBackgroundColor != null) {
+                    return positionBackgroundColor;
+                }
+            }
+        }
+
         Color color = super.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
-//        CodeAreaSelection selectionHandler = ((SelectionCapable) codeArea).getSelectionHandler();
-//        boolean inSelection = selectionHandler.isInSelection(rowDataPosition + byteOnRow);
 //        if (color == null || inSelection) {
 //            long dataPosition = rowDataPosition + byteOnRow;
 //            if (dataPosition > 100 && dataPosition < 300) {
@@ -61,6 +83,27 @@ public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPaint
     @Nullable
     @Override
     public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
+        CodeAreaSelection selectionHandler = ((SelectionCapable) codeArea).getSelectionHandler();
+        boolean inSelection = selectionHandler.isInSelection(rowDataPosition + byteOnRow);
+
+        if (!inSelection) {
+            for (CodeAreaPositionColorModifier colorModifier : colorModifiers) {
+                Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
+                if (positionTextColor != null) {
+                    return positionTextColor;
+                }
+            }
+        }
+
         return super.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
+    }
+
+    public interface CodeAreaPositionColorModifier {
+
+        @Nullable
+        Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables);
+
+        @Nullable
+        Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables);
     }
 }

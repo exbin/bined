@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.bookmarks.model;
 
 import java.awt.Color;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -46,6 +47,7 @@ public class BookmarkRecord {
         this.length = length;
     }
 
+    @Nonnull
     public Color getColor() {
         return color;
     }

@@ -18,6 +18,7 @@ package org.exbin.framework.bined.bookmarks.model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.table.AbstractTableModel;
 import org.exbin.framework.utils.LanguageUtils;
@@ -78,6 +79,7 @@ public class BookmarksTableModel extends AbstractTableModel {
         return columnsEditable[columnIndex];
     }
 
+    @Nullable
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         BookmarkRecord record = records.get(rowIndex);
