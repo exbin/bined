@@ -38,13 +38,13 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-frame-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor-api')
-    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-file-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-action-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-operation-undo-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-options-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-utils')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor-text')
+//    implementation 'com.google.guava:guava:31.1-jre'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group : 'junit', name: 'junit', version: '4.10'
 }

@@ -218,18 +218,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         BinEdFileHandler fileHandler = new BinEdFileHandler(id);
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        BinEdComponentPanel componentPanel = fileHandler.getComponent();
-        for (BinedModule.BinEdFileExtension fileExtension : binedModule.getBinEdComponentExtensions()) {
-            Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
-            componentExtension.ifPresent((extension) -> {
-                extension.setApplication(application);
-                extension.onCreate(componentPanel);
-                componentPanel.addComponentExtension(extension);
-            });
-        }
+        binedModule.initFileHandler(fileHandler);
 
-        fileHandler.setApplication(application);
-        fileHandler.setSegmentsRepository(segmentsRepository);
         fileHandler.setNewData(defaultFileHandlingMode);
         fileHandler.getUndoHandler().addUndoUpdateListener(new XBUndoUpdateListener() {
             @Override
@@ -279,7 +269,6 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             }
         });
 
-        binedModule.initFileHandler(fileHandler);
         attachFilePopupMenu(fileHandler);
 
         return fileHandler;

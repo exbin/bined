@@ -73,6 +73,7 @@ import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAre
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
@@ -191,6 +192,8 @@ public class BinedModule implements XBApplicationModule {
     private BinaryStatusPanel binaryStatusPanel;
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
     private final List<ActionStatusUpdateListener> actionStatusUpdateListeners = new ArrayList<>();
+    private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
+    private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
 
     private DefaultOptionsPage<TextEncodingOptionsImpl> textEncodingOptionsPage;
     private DefaultOptionsPage<TextFontOptionsImpl> textFontOptionsPage;
@@ -263,26 +266,17 @@ public class BinedModule implements XBApplicationModule {
         if (editorProvider == null) {
 
             BinEdFileHandler editorFile = new BinEdFileHandler();
-            editorFile.setApplication(application);
-            editorFile.setSegmentsRepository(new SegmentsRepository());
-            BinEdComponentPanel componentPanel = editorFile.getComponent();
-            for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
-                Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
-                componentExtension.ifPresent((extension) -> {
-                    extension.setApplication(application);
-                    extension.onCreate(componentPanel);
-                    componentPanel.addComponentExtension(extension);
-                });
-            }
+            initFileHandler(editorFile);
+
             EditorPreferences editorPreferences = new EditorPreferences(application.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             editorFile.setNewData(fileHandlingMode);
-            initFileHandler(editorFile);
+
             editorProvider = new BinaryEditorProvider(application, editorFile);
             FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
             fileModule.setFileOperations(editorProvider);
 
-            componentPanel.setApplication(application);
+            BinEdComponentPanel componentPanel = editorFile.getComponent();
             componentPanel.setPopupMenu(createPopupMenu(editorFile.getId(), editorFile.getComponent().getCodeArea()));
         }
 
@@ -316,6 +310,27 @@ public class BinedModule implements XBApplicationModule {
     }
 
     public void initFileHandler(BinEdFileHandler fileHandler) {
+        fileHandler.setApplication(application);
+        fileHandler.setSegmentsRepository(new SegmentsRepository());
+        BinEdComponentPanel componentPanel = fileHandler.getComponent();
+
+        for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
+            Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
+            componentExtension.ifPresent((extension) -> {
+                extension.setApplication(application);
+                extension.onCreate(componentPanel);
+                componentPanel.addComponentExtension(extension);
+            });
+        }
+        
+        BinEdCodeAreaPainter painter = (BinEdCodeAreaPainter) componentPanel.getCodeArea().getPainter();
+        for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPriorityPositionColorModifiers) {
+            painter.addPriorityColorModifier(modifier);
+        }
+        for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPositionColorModifiers) {
+            painter.addColorModifier(modifier);
+        }
+
         Preferences preferences = application.getAppPreferences();
         String encoding = new BinaryEditorPreferences(preferences).getEncodingPreferences().getSelectedEncoding();
         if (!encoding.isEmpty()) {
@@ -324,6 +339,22 @@ public class BinedModule implements XBApplicationModule {
         TextFontPreferences textFontPreferences = new BinaryEditorPreferences(preferences).getFontPreferences();
         ExtCodeArea codeArea = fileHandler.getCodeArea();
         ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
+    }
+
+    public void addPainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+        painterPositionColorModifiers.add(modifier);
+    }
+
+    public void removePainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+        painterPositionColorModifiers.remove(modifier);
+    }
+
+    public void addPainterPriorityColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+        painterPriorityPositionColorModifiers.add(modifier);
+    }
+
+    public void removePainterPriorityColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+        painterPriorityPositionColorModifiers.remove(modifier);
     }
 
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
@@ -350,7 +381,7 @@ public class BinedModule implements XBApplicationModule {
                 codeAreaAction.updateForActiveCodeArea(codeArea);
             }
         }
-        
+
         for (ActionStatusUpdateListener listener : actionStatusUpdateListeners) {
             listener.updateActionStatus(codeArea);
         }
@@ -1703,7 +1734,7 @@ public class BinedModule implements XBApplicationModule {
     public void addBinEdComponentExtension(BinEdFileExtension extension) {
         binEdComponentExtensions.add(extension);
     }
-    
+
     public void addActionStatusUpdateListener(ActionStatusUpdateListener listener) {
         actionStatusUpdateListeners.add(listener);
     }

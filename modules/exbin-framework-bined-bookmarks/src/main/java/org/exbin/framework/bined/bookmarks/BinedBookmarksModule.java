@@ -17,6 +17,7 @@ package org.exbin.framework.bined.bookmarks;
 
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -26,7 +27,10 @@ import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
+import org.exbin.framework.bined.bookmarks.model.BookmarkRange;
+import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -49,6 +53,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
     private EditorProvider editorProvider;
 
     private ManageBookmarksAction manageBookmarksAction;
+    private final TreeMap<BookmarkRange, BookmarkRecord> bookmarkRecords = new TreeMap<>();
 
     public BinedBookmarksModule() {
     }
@@ -63,6 +68,9 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
+
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binedModule.addPainterColorModifier(new BookmarksPositionColorModifier(bookmarkRecords));
     }
 
     @Override
