@@ -15,9 +15,11 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -29,7 +31,6 @@ import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
-import org.exbin.framework.bined.bookmarks.model.BookmarkRange;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
@@ -53,9 +54,13 @@ public class BinedBookmarksModule implements XBApplicationModule {
     private EditorProvider editorProvider;
 
     private ManageBookmarksAction manageBookmarksAction;
-    private final TreeMap<BookmarkRange, BookmarkRecord> bookmarkRecords = new TreeMap<>();
+    private final List<BookmarkRecord> bookmarkRecords = new ArrayList<>();
+    private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
     public BinedBookmarksModule() {
+        bookmarkRecords.add(new BookmarkRecord(3, 5, Color.RED));
+        bookmarkRecords.add(new BookmarkRecord(10, 20, Color.BLUE));
+        bookmarkRecords.add(new BookmarkRecord(15, 3, Color.GREEN));
     }
 
     @Override
@@ -70,7 +75,8 @@ public class BinedBookmarksModule implements XBApplicationModule {
         this.editorProvider = editorProvider;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        binedModule.addPainterColorModifier(new BookmarksPositionColorModifier(bookmarkRecords));
+        bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
+        binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
     }
 
     @Override
@@ -105,6 +111,17 @@ public class BinedBookmarksModule implements XBApplicationModule {
     @Nonnull
     public EditorProvider getEditorProvider() {
         return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
+    }
+
+    @Nonnull
+    public List<BookmarkRecord> getBookmarkRecords() {
+        return bookmarkRecords;
+    }
+
+    public void setBookmarkRecords(List<BookmarkRecord> records) {
+        bookmarkRecords.clear();
+        bookmarkRecords.addAll(records);
+        bookmarksPositionColorModifier.notifyBookmarksChanged();
     }
 
     private void ensureSetup() {

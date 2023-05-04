@@ -31,6 +31,12 @@ public class BookmarkRecord {
     private long length;
     private Color color;
 
+    public BookmarkRecord(long startPosition, long length, Color color) {
+        this.startPosition = startPosition;
+        this.length = length;
+        this.color = color;
+    }
+
     public long getStartPosition() {
         return startPosition;
     }

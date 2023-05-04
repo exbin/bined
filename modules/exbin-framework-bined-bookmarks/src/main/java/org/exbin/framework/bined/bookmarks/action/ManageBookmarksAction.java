@@ -18,7 +18,8 @@ package org.exbin.framework.bined.bookmarks.action;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -26,9 +27,9 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.bookmarks.gui.BookmarksPanel;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
+import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
+import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
@@ -60,7 +61,8 @@ public class ManageBookmarksAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final BookmarksPanel bookmarksPanel = new BookmarksPanel();
+        BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
+        final BookmarksManagerPanel bookmarksPanel = new BookmarksManagerPanel();
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
@@ -72,6 +74,8 @@ public class ManageBookmarksAction extends AbstractAction {
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
+                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
+                    bookmarksModule.setBookmarkRecords(bookmarkRecords);
                     break;
                 }
                 case CANCEL: {
@@ -80,9 +84,8 @@ public class ManageBookmarksAction extends AbstractAction {
                 }
             }
         });
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        bookmarksPanel.setBookmarkRecords(new ArrayList<>(bookmarksModule.getBookmarkRecords()));
         dialog.showCentered(editorProvider.getEditorComponent());
     }
 }

@@ -52,6 +52,16 @@ public class BookmarksTableModel extends AbstractTableModel {
         records = new ArrayList<>();
     }
 
+    @Nonnull
+    public List<BookmarkRecord> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<BookmarkRecord> records) {
+        this.records = records;
+        fireDataChanged();
+    }
+
     @Override
     public int getRowCount() {
         return records.size();

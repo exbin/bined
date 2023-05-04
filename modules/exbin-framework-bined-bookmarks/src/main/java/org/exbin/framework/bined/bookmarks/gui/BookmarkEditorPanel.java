@@ -26,11 +26,11 @@ import org.exbin.framework.utils.WindowUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BookmarkPanel extends javax.swing.JPanel {
+public class BookmarkEditorPanel extends javax.swing.JPanel {
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarkPanel.class);
+    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarkEditorPanel.class);
 
-    public BookmarkPanel() {
+    public BookmarkEditorPanel() {
         initComponents();
     }
 
@@ -105,7 +105,7 @@ public class BookmarkPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BookmarkPanel());
+        WindowUtils.invokeDialog(new BookmarkEditorPanel());
     }
 
 

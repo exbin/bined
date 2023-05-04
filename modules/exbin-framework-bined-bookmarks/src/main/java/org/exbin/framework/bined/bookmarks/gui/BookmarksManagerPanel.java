@@ -15,9 +15,12 @@
  */
 package org.exbin.framework.bined.bookmarks.gui;
 
+import java.awt.BorderLayout;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.model.BookmarksTableModel;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -28,13 +31,18 @@ import org.exbin.framework.utils.WindowUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BookmarksPanel extends javax.swing.JPanel {
+public class BookmarksManagerPanel extends javax.swing.JPanel {
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksPanel.class);
+    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksManagerPanel.class);
     private final BookmarksTableModel bookmarksTableModel = new BookmarksTableModel();
 
-    public BookmarksPanel() {
+    public BookmarksManagerPanel() {
         initComponents();
+        init();
+    }
+
+    private void init() {
+        add(controlPanel, BorderLayout.EAST);
     }
 
     @Nonnull
@@ -107,11 +115,11 @@ public class BookmarksPanel extends javax.swing.JPanel {
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(upButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE))
+                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(upButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
                 .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
@@ -185,7 +193,16 @@ public class BookmarksPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BookmarksPanel());
+        WindowUtils.invokeDialog(new BookmarksManagerPanel());
+    }
+
+    @Nonnull
+    public List<BookmarkRecord> getBookmarkRecords() {
+        return bookmarksTableModel.getRecords();
+    }
+
+    public void setBookmarkRecords(List<BookmarkRecord> bookmarkRecords) {
+        bookmarksTableModel.setRecords(bookmarkRecords);
     }
 
 

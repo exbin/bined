@@ -16,13 +16,11 @@
 package org.exbin.framework.bined.bookmarks;
 
 import java.awt.Color;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
-import org.exbin.framework.bined.bookmarks.model.BookmarkRange;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 
 /**
@@ -33,9 +31,10 @@ import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 @ParametersAreNonnullByDefault
 public class BookmarksPositionColorModifier implements BinEdCodeAreaPainter.PositionColorModifier {
 
-    private final TreeMap<BookmarkRange, BookmarkRecord> records;
+    private final List<BookmarkRecord> records;
+    private final ColorCache colorCache = new ColorCache();
 
-    public BookmarksPositionColorModifier(TreeMap<BookmarkRange, BookmarkRecord> records) {
+    public BookmarksPositionColorModifier(List<BookmarkRecord> records) {
         this.records = records;
     }
 
@@ -43,15 +42,57 @@ public class BookmarksPositionColorModifier implements BinEdCodeAreaPainter.Posi
     @Override
     public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
         long dataPosition = rowDataPosition + byteOnRow;
-        // TODO
-        // Map.Entry<BookmarkRange, BookmarkRecord> entry = records.floorEntry(new BookmarkRange(dataPosition));
-        // if (entry != null && entry.getKey().getEnd())
-        return null;
+        if (colorCache.start < 0 || colorCache.start > dataPosition || (colorCache.end >= 0 && colorCache.end < dataPosition)) {
+            colorCache.fullRange();
+            for (BookmarkRecord record : records) {
+                long startPosition = record.getStartPosition();
+                long endPosition = startPosition + record.getLength();
+                if (startPosition <= dataPosition && endPosition >= dataPosition) {
+                    colorCache.start = startPosition;
+                    colorCache.end = endPosition;
+                    colorCache.color = record.getColor();
+                } else if (startPosition > dataPosition && startPosition > colorCache.start && (startPosition <= colorCache.end || colorCache.end == -1)) {
+                    colorCache.end = startPosition - 1;
+                } else if (endPosition < dataPosition && endPosition >= colorCache.start && (endPosition <= colorCache.end || colorCache.end == -1)) {
+                    colorCache.start = endPosition + 1;
+                }
+            }
+        }
+
+        return colorCache.color;
     }
 
     @Nullable
     @Override
     public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
         return null;
+    }
+
+    public void notifyBookmarksChanged() {
+        colorCache.clear();
+    }
+
+    private static class ColorCache {
+
+        long start;
+        long end;
+        @Nullable
+        Color color;
+
+        public ColorCache() {
+            clear();
+        }
+
+        private void clear() {
+            start = -1;
+            end = -1;
+            color = null;
+        }
+
+        private void fullRange() {
+            start = 0;
+            end = -1;
+            color = null;
+        }
     }
 }
