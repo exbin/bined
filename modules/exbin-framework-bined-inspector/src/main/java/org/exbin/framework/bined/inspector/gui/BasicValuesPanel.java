@@ -53,7 +53,7 @@ import org.exbin.bined.capability.EditModeCapable;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ValuesPanel extends javax.swing.JPanel {
+public class BasicValuesPanel extends javax.swing.JPanel {
 
     public static final int UBYTE_MAX_VALUE = 255;
     public static final int SWORD_MIN_VALUE = -32768;
@@ -65,7 +65,7 @@ public class ValuesPanel extends javax.swing.JPanel {
     public static final String VALUE_OUT_OF_RANGE = "Value is out of range";
     public static int CACHE_SIZE = 250;
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ValuesPanel.class);
+    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BasicValuesPanel.class);
     private ExtCodeArea codeArea;
     private BinaryDataUndoHandler undoHandler;
     private long dataPosition;
@@ -77,7 +77,7 @@ public class ValuesPanel extends javax.swing.JPanel {
     private final ByteBuffer byteBuffer = ByteBuffer.wrap(valuesCache);
     private final ValuesUpdater valuesUpdater = new ValuesUpdater();
 
-    public ValuesPanel() {
+    public BasicValuesPanel() {
         initComponents();
     }
 
@@ -696,7 +696,7 @@ public class ValuesPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ValuesPanel());
+        WindowUtils.invokeDialog(new BasicValuesPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -822,7 +822,7 @@ public class ValuesPanel extends javax.swing.JPanel {
                 try {
                     undoHandler.execute(insertCommand);
                 } catch (BinaryDataOperationException ex) {
-                    Logger.getLogger(ValuesPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BasicValuesPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         } else {
@@ -842,7 +842,7 @@ public class ValuesPanel extends javax.swing.JPanel {
                 try {
                     undoHandler.execute(command);
                 } catch (BinaryDataOperationException ex) {
-                    Logger.getLogger(ValuesPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BasicValuesPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

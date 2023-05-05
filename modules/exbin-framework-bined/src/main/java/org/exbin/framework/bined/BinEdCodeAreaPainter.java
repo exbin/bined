@@ -63,14 +63,14 @@ public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPaint
         CodeAreaSelection selectionHandler = ((SelectionCapable) codeArea).getSelectionHandler();
         boolean inSelection = selectionHandler.isInSelection(rowDataPosition + byteOnRow);
 
-        if (!inSelection) {
-            for (PositionColorModifier colorModifier : priorityColorModifiers) {
-                Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
-                if (positionBackgroundColor != null) {
-                    return positionBackgroundColor;
-                }
+        for (PositionColorModifier colorModifier : priorityColorModifiers) {
+            Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
+            if (positionBackgroundColor != null) {
+                return positionBackgroundColor;
             }
+        }
 
+        if (!inSelection) {
             for (PositionColorModifier colorModifier : colorModifiers) {
                 Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
                 if (positionBackgroundColor != null) {
@@ -102,14 +102,14 @@ public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPaint
         CodeAreaSelection selectionHandler = ((SelectionCapable) codeArea).getSelectionHandler();
         boolean inSelection = selectionHandler.isInSelection(rowDataPosition + byteOnRow);
 
-        if (!inSelection) {
-            for (PositionColorModifier colorModifier : priorityColorModifiers) {
-                Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
-                if (positionTextColor != null) {
-                    return positionTextColor;
-                }
+        for (PositionColorModifier colorModifier : priorityColorModifiers) {
+            Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
+            if (positionTextColor != null) {
+                return positionTextColor;
             }
+        }
 
+        if (!inSelection) {
             for (PositionColorModifier colorModifier : colorModifiers) {
                 Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
                 if (positionTextColor != null) {

@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.inspector.gui.ValuesPanel;
+import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 
 /**
  * BinEd component data inspector.
@@ -32,7 +32,7 @@ import org.exbin.framework.bined.inspector.gui.ValuesPanel;
 public class BinEdComponentInspector implements BinEdComponentPanel.BinEdComponentExtension {
 
     private BinEdComponentPanel componentPanel;
-    private ValuesPanel valuesPanel;
+    private BasicValuesPanel valuesPanel;
     private boolean parsingPanelVisible = false;
 
     private JScrollPane valuesPanelScrollPane;
@@ -42,7 +42,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
         this.componentPanel = componentPanel;
         ExtCodeArea codeArea = componentPanel.getCodeArea();
 
-        valuesPanel = new ValuesPanel();
+        valuesPanel = new BasicValuesPanel();
         valuesPanel.setCodeArea(codeArea, null);
         valuesPanelScrollPane = new JScrollPane(valuesPanel);
         valuesPanelScrollPane.setBorder(null);
