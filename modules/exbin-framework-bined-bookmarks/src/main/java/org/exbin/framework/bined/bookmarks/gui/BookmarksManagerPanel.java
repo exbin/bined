@@ -26,7 +26,7 @@ import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
- * Bookmarks panel.
+ * Bookmarks manager panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -217,4 +217,8 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTable table;
     private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables
+
+    public interface Control {
+        
+    }
 }

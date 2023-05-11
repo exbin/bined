@@ -73,7 +73,6 @@ import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAre
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
@@ -873,6 +872,7 @@ public class BinedModule implements XBApplicationModule {
 
         themeProfilesOptionsPage = new DefaultOptionsPage<CodeAreaThemeOptionsImpl>() {
 
+            @Nonnull
             @Override
             public OptionsCapable<CodeAreaThemeOptionsImpl> createPanel() {
                 ThemeProfilesOptionsPanel panel = new ThemeProfilesOptionsPanel();

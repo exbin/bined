@@ -80,7 +80,7 @@ public interface BinarySearchService {
 
         public void next() {
             if (matchPosition == matchesCount - 1) {
-                throw new IllegalStateException("Cannot step next on last match");
+                throw new IllegalStateException("Cannot find next on last match");
             }
 
             matchPosition++;
@@ -88,7 +88,7 @@ public interface BinarySearchService {
 
         public void prev() {
             if (matchPosition == 0) {
-                throw new IllegalStateException("Cannot step previous on first match");
+                throw new IllegalStateException("Cannot find previous on first match");
             }
 
             matchPosition--;
