@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.bookmarks.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -43,6 +44,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
 
     private void init() {
         add(controlPanel, BorderLayout.EAST);
+        table.setDefaultRenderer(Color.class, new BookmarksManagerCellTableRenderer());
     }
 
     @Nonnull

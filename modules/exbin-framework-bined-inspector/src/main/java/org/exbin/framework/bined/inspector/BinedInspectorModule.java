@@ -75,6 +75,7 @@ public class BinedInspectorModule implements XBApplicationModule {
         this.editorProvider = editorProvider;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binedModule.addActionStatusUpdateListener(this::updateActionStatus);
         binedModule.addBinEdComponentExtension(new BinedModule.BinEdFileExtension() {
             @Nonnull
             @Override
