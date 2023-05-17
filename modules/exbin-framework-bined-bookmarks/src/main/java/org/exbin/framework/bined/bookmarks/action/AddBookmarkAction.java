@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.bookmarks.action;
 
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -23,9 +24,12 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
+import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.utils.gui.DefaultControlPanel;
 
 /**
- * Manage bookmarks action.
+ * Add bookmark record action.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -52,29 +56,26 @@ public class AddBookmarkAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
         final BookmarkEditorPanel bookmarksPanel = new BookmarkEditorPanel();
-//        ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
-//        DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
-//
-//        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-//        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
-//        frameModule.setDialogTitle(dialog, panelResourceBundle);
-//        Dimension preferredSize = dialog.getWindow().getPreferredSize();
-//        dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
-//        controlPanel.setHandler((actionType) -> {
-//            switch (actionType) {
-//                case OK: {
+        ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
+        DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
+
+        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        controlPanel.setHandler((actionType) -> {
+            switch (actionType) {
+                case OK: {
 //                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
 //                    bookmarksModule.setBookmarkRecords(bookmarkRecords);
-//                    break;
-//                }
-//                case CANCEL: {
-//                    dialog.close();
-//                    break;
-//                }
-//            }
-//        });
-//
-//        bookmarksPanel.setBookmarkRecords(new ArrayList<>(bookmarksModule.getBookmarkRecords()));
-//        dialog.showCentered(editorProvider.getEditorComponent());
+                    break;
+                }
+                case CANCEL: {
+                    dialog.close();
+                    break;
+                }
+            }
+        });
+
+        dialog.showCentered(frameModule.getFrame());
     }
 }

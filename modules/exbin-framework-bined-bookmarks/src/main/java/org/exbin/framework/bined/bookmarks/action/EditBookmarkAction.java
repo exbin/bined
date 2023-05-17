@@ -16,44 +16,36 @@
 package org.exbin.framework.bined.bookmarks.action;
 
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
-import org.exbin.framework.bined.bookmarks.BookmarksManager;
-import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
-import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
+import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
 /**
- * Manage bookmarks action.
+ * Edit bookmark record action.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ManageBookmarksAction extends AbstractAction {
+public class EditBookmarkAction extends AbstractAction {
 
-    public static final String ACTION_ID = "manageBookmarksAction";
+    public static final String ACTION_ID = "editBookmarkAction";
 
-    private EditorProvider editorProvider;
     private XBApplication application;
     private ResourceBundle resourceBundle;
 
-    public ManageBookmarksAction() {
+    public EditBookmarkAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -63,22 +55,18 @@ public class ManageBookmarksAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
-        BookmarksManager bookmarksManager = new BookmarksManager();
-        bookmarksManager.setApplication(application);
-        final BookmarksManagerPanel bookmarksPanel = bookmarksManager.getBookmarksManagerPanel();
+        final BookmarkEditorPanel bookmarksPanel = new BookmarkEditorPanel();
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
         frameModule.setDialogTitle(dialog, panelResourceBundle);
-        Dimension preferredSize = dialog.getWindow().getPreferredSize();
-        dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
-                    bookmarksModule.setBookmarkRecords(bookmarkRecords);
+//                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
+//                    bookmarksModule.setBookmarkRecords(bookmarkRecords);
                     break;
                 }
                 case CANCEL: {
@@ -88,7 +76,6 @@ public class ManageBookmarksAction extends AbstractAction {
             }
         });
 
-        bookmarksPanel.setBookmarkRecords(new ArrayList<>(bookmarksModule.getBookmarkRecords()));
-        dialog.showCentered(editorProvider.getEditorComponent());
+        dialog.showCentered(frameModule.getFrame());
     }
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JTable;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.model.BookmarksTableModel;
 import org.exbin.framework.utils.LanguageUtils;
@@ -36,6 +37,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksManagerPanel.class);
     private final BookmarksTableModel bookmarksTableModel = new BookmarksTableModel();
+    private Control control = null;
 
     public BookmarksManagerPanel() {
         initComponents();
@@ -45,11 +47,24 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     private void init() {
         add(controlPanel, BorderLayout.EAST);
         table.setDefaultRenderer(Color.class, new BookmarksManagerCellTableRenderer());
+        table.getSelectionModel().addListSelectionListener((e) -> {
+            int rowCount = table.getRowCount();
+            int selectedRows = table.getSelectedRowCount();
+            editButton.setEnabled(selectedRows == 1);
+            removeButton.setEnabled(selectedRows > 0);
+            selectAllButton.setEnabled(rowCount > 0);
+            upButton.setEnabled(selectedRows > 0 && table.getSelectionModel().getMinSelectionIndex() > 0);
+            downButton.setEnabled(selectedRows > 0 && table.getSelectionModel().getMaxSelectionIndex() < rowCount - 1);
+        });
     }
 
     @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
+    }
+
+    public void setControl(Control control) {
+        this.control = control;
     }
 
     /**
@@ -63,6 +78,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
 
         controlPanel = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
+        editButton = new javax.swing.JButton();
         upButton = new javax.swing.JButton();
         downButton = new javax.swing.JButton();
         selectAllButton = new javax.swing.JButton();
@@ -75,6 +91,14 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
+            }
+        });
+
+        editButton.setText(resourceBundle.getString("editButton.text")); // NOI18N
+        editButton.setEnabled(false);
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
             }
         });
 
@@ -121,7 +145,8 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
                     .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                     .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                     .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(upButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                    .addComponent(upButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
                 .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
@@ -130,6 +155,8 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(addButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(editButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(upButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(downButton)
@@ -170,24 +197,28 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
-
+        control.moveUp();
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
-
+        control.moveDown();
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-
+        control.appRecord();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-
+        control.removeRecord();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
-
+        control.selectAll();
     }//GEN-LAST:event_selectAllButtonActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        control.editRecord();
+    }//GEN-LAST:event_editButtonActionPerformed
 
     /**
      * Test method for this panel.
@@ -207,11 +238,16 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
         bookmarksTableModel.setRecords(bookmarkRecords);
     }
 
+    @Nonnull
+    public JTable getTable() {
+        return table;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JPanel controlPanel;
     private javax.swing.JButton downButton;
+    private javax.swing.JButton editButton;
     private javax.swing.JPanel listPanel;
     private javax.swing.JButton removeButton;
     private javax.swing.JScrollPane scrollPane;
@@ -221,6 +257,17 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public interface Control {
-        
+
+        void appRecord();
+
+        void editRecord();
+
+        void removeRecord();
+
+        void selectAll();
+
+        void moveUp();
+
+        void moveDown();
     }
 }
