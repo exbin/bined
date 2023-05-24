@@ -33,12 +33,20 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class ColorCellPanel extends javax.swing.JPanel {
 
-    private final ColorHandler colorHandler;
+    private ColorHandler colorHandler;
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ColorCellPanel.class);
 
-    public ColorCellPanel(ColorHandler colorHandler) {
+    public ColorCellPanel() {
         initComponents();
+    }
+
+    public ColorCellPanel(ColorHandler colorHandler) {
+        this();
+        ColorCellPanel.this.setColorHandler(colorHandler);
+    }
+
+    public void setColorHandler(ColorHandler colorHandler) {
         this.colorHandler = colorHandler;
         setColor(colorHandler.getColor());
     }
@@ -87,15 +95,15 @@ public class ColorCellPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(colorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addComponent(colorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(colorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(clearButton))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(colorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+            .addComponent(colorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(colorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
@@ -125,18 +133,7 @@ public class ColorCellPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ColorCellPanel(new ColorHandler() {
-            @Nullable
-            @Override
-            public Color getColor() {
-                return Color.BLACK;
-            }
-
-            @Override
-            public void setColor(@Nullable Color color) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        }));
+        WindowUtils.invokeDialog(new ColorCellPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

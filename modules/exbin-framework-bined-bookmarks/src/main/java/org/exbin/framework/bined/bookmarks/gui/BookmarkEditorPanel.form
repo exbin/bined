@@ -19,7 +19,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="startPositionSwitchableSpinnerPanel" alignment="0" pref="496" max="32767" attributes="0"/>
+                  <Component id="startPositionSwitchableSpinnerPanel" alignment="0" max="32767" attributes="0"/>
                   <Component id="endPositionSwitchableSpinnerPanel" alignment="0" max="32767" attributes="0"/>
                   <Component id="lengthSwitchableSpinnerPanel" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
@@ -27,10 +27,11 @@
                           <Component id="startPositionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="endPositionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lengthLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="editPositionButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="colorCellPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -51,9 +52,11 @@
               <Component id="lengthLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lengthSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="colorLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="editPositionButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="222" max="32767" attributes="0"/>
+              <Component id="colorCellPanel" min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -80,10 +83,12 @@
     </Component>
     <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="lengthSwitchableSpinnerPanel">
     </Component>
-    <Component class="javax.swing.JButton" name="editPositionButton">
+    <Component class="javax.swing.JLabel" name="colorLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Edit Position..."/>
+        <Property name="text" type="java.lang.String" value="Color"/>
       </Properties>
+    </Component>
+    <Component class="org.exbin.framework.bined.options.gui.ColorCellPanel" name="colorCellPanel">
     </Component>
   </SubComponents>
 </Form>

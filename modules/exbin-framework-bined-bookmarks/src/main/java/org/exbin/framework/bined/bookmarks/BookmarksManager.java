@@ -22,6 +22,7 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
+import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.utils.LanguageUtils;
 
 /**
@@ -45,12 +46,14 @@ public class BookmarksManager {
         bookmarksManagerPanel = new BookmarksManagerPanel();
         bookmarksManagerPanel.setControl(new BookmarksManagerPanel.Control() {
             @Override
-            public void appRecord() {
+            public void addRecord() {
                 addBookmarkAction.actionPerformed(null);
             }
 
             @Override
             public void editRecord() {
+                BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
+                editBookmarkAction.setBookmarkRecord(selectedRecord);
                 editBookmarkAction.actionPerformed(null);
             }
 

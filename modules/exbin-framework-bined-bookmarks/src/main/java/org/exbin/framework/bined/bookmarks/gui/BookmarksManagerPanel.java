@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JTable;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
@@ -205,7 +206,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        control.appRecord();
+        control.addRecord();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
@@ -237,6 +238,12 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     public void setBookmarkRecords(List<BookmarkRecord> bookmarkRecords) {
         bookmarksTableModel.setRecords(bookmarkRecords);
     }
+    
+    @Nullable
+    public BookmarkRecord getSelectedRecord() {
+        int selectedRow = table.getSelectedRow();
+        return selectedRow >= 0 ? bookmarksTableModel.getRecords().get(selectedRow) : null;
+    }
 
     @Nonnull
     public JTable getTable() {
@@ -258,7 +265,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
 
     public interface Control {
 
-        void appRecord();
+        void addRecord();
 
         void editRecord();
 

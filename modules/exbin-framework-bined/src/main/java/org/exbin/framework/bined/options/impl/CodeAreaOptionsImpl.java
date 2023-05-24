@@ -29,6 +29,7 @@ import org.exbin.bined.capability.ViewModeCapable;
 import org.exbin.bined.extended.capability.PositionCodeTypeCapable;
 import org.exbin.bined.extended.capability.ShowUnprintablesCapable;
 import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
+import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.bined.preferences.CodeAreaPreferences;
 import org.exbin.framework.options.api.OptionsData;
@@ -189,7 +190,10 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
         codeAreaOptions.setCodeCharactersCase(((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase());
         codeAreaOptions.setPositionCodeType(((PositionCodeTypeCapable) codeArea).getPositionCodeType());
         codeAreaOptions.setViewMode(((ViewModeCapable) codeArea).getViewMode());
-        codeAreaOptions.setCodeColorization(((ExtendedHighlightNonAsciiCodeAreaPainter) codeArea.getPainter()).isNonAsciiHighlightingEnabled());
+        CodeAreaPainter painter = codeArea.getPainter();
+        if (painter instanceof ExtendedHighlightNonAsciiCodeAreaPainter) {
+            codeAreaOptions.setCodeColorization(((ExtendedHighlightNonAsciiCodeAreaPainter) painter).isNonAsciiHighlightingEnabled());
+        }
         codeAreaOptions.setRowWrappingMode(codeArea.getRowWrapping());
         codeAreaOptions.setMaxBytesPerRow(codeArea.getMaxBytesPerRow());
         codeAreaOptions.setMinRowPositionLength(codeArea.getMinRowPositionLength());
@@ -202,7 +206,10 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
         ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeAreaOptions.getCodeCharactersCase());
         ((PositionCodeTypeCapable) codeArea).setPositionCodeType(codeAreaOptions.getPositionCodeType());
         ((ViewModeCapable) codeArea).setViewMode(codeAreaOptions.getViewMode());
-        ((ExtendedHighlightNonAsciiCodeAreaPainter) codeArea.getPainter()).setNonAsciiHighlightingEnabled(codeAreaOptions.isCodeColorization());
+        CodeAreaPainter painter = codeArea.getPainter();
+        if (painter instanceof ExtendedHighlightNonAsciiCodeAreaPainter) {
+            ((ExtendedHighlightNonAsciiCodeAreaPainter) painter).setNonAsciiHighlightingEnabled(codeAreaOptions.isCodeColorization());
+        }
         codeArea.setRowWrapping(codeAreaOptions.getRowWrappingMode());
         codeArea.setMaxBytesPerRow(codeAreaOptions.getMaxBytesPerRow());
         codeArea.setMinRowPositionLength(codeAreaOptions.getMinRowPositionLength());
