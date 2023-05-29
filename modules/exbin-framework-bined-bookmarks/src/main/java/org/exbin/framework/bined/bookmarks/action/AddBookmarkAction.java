@@ -17,13 +17,16 @@ package org.exbin.framework.bined.bookmarks.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
+import org.exbin.framework.bined.bookmarks.BookmarksManager;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
+import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
@@ -55,6 +58,7 @@ public class AddBookmarkAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
+        BookmarksManager bookmarksManager = bookmarksModule.getBookmarksManager();
         final BookmarkEditorPanel bookmarksPanel = new BookmarkEditorPanel();
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
@@ -65,8 +69,9 @@ public class AddBookmarkAction extends AbstractAction {
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-//                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
-//                    bookmarksModule.setBookmarkRecords(bookmarkRecords);
+                    List<BookmarkRecord> bookmarkRecords = bookmarksManager.getBookmarkRecords();
+                    bookmarkRecords.add(bookmarksPanel.getBookmarkRecord());
+                    bookmarksManager.setBookmarkRecords(bookmarkRecords);
                     break;
                 }
                 case CANCEL: {

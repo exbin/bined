@@ -15,10 +15,14 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
@@ -35,6 +39,9 @@ public class BookmarksManager {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksManager.class);
 
+    private final List<BookmarkRecord> bookmarkRecords = new ArrayList<>();
+    private BookmarksPositionColorModifier bookmarksPositionColorModifier;
+
     private final BookmarksManagerPanel bookmarksManagerPanel;
     private XBApplication application;
 
@@ -43,6 +50,10 @@ public class BookmarksManager {
 //    private DeleteBookmarkAction deleteBookmarkAction = new DeleteBookmarkAction();
 
     public BookmarksManager() {
+        bookmarkRecords.add(new BookmarkRecord(3, 5, Color.RED));
+        bookmarkRecords.add(new BookmarkRecord(10, 20, Color.BLUE));
+        bookmarkRecords.add(new BookmarkRecord(15, 3, Color.GREEN));
+
         bookmarksManagerPanel = new BookmarksManagerPanel();
         bookmarksManagerPanel.setControl(new BookmarksManagerPanel.Control() {
             @Override
@@ -84,6 +95,23 @@ public class BookmarksManager {
 
         addBookmarkAction.setup(application, resourceBundle);
         editBookmarkAction.setup(application, resourceBundle);
+    }
+    
+    public void init() {
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
+        binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
+    }
+
+    @Nonnull
+    public List<BookmarkRecord> getBookmarkRecords() {
+        return bookmarkRecords;
+    }
+
+    public void setBookmarkRecords(List<BookmarkRecord> records) {
+        bookmarkRecords.clear();
+        bookmarkRecords.addAll(records);
+        bookmarksPositionColorModifier.notifyBookmarksChanged();
     }
 
     @Nonnull

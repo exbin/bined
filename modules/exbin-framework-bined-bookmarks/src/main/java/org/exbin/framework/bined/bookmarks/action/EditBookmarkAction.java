@@ -18,7 +18,7 @@ package org.exbin.framework.bined.bookmarks.action;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
@@ -55,12 +55,12 @@ public class EditBookmarkAction extends AbstractAction {
         putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
-    @Nullable
+    @Nonnull
     public BookmarkRecord getBookmarkRecord() {
         return bookmarkRecord;
     }
 
-    public void setBookmarkRecord(@Nullable BookmarkRecord bookmarkRecord) {
+    public void setBookmarkRecord(BookmarkRecord bookmarkRecord) {
         this.bookmarkRecord = bookmarkRecord;
     }
 
@@ -69,7 +69,7 @@ public class EditBookmarkAction extends AbstractAction {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
         final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();
         if (bookmarkRecord != null) {
-            bookmarkEditorPanel.setBookmarkRecord(bookmarkRecord);
+            bookmarkEditorPanel.setBookmarkRecord(new BookmarkRecord(bookmarkRecord));
         }
         ResourceBundle panelResourceBundle = bookmarkEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
@@ -80,7 +80,7 @@ public class EditBookmarkAction extends AbstractAction {
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-                    bookmarkRecord = bookmarkEditorPanel.getBookmarkRecord();
+                    bookmarkRecord.setRecord(bookmarkEditorPanel.getBookmarkRecord());
                     break;
                 }
                 case CANCEL: {

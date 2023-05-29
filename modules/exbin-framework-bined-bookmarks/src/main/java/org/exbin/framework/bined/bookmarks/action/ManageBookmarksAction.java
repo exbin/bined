@@ -63,9 +63,9 @@ public class ManageBookmarksAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
-        BookmarksManager bookmarksManager = new BookmarksManager();
-        bookmarksManager.setApplication(application);
+        BookmarksManager bookmarksManager = bookmarksModule.getBookmarksManager();
         final BookmarksManagerPanel bookmarksPanel = bookmarksManager.getBookmarksManagerPanel();
+        bookmarksPanel.setBookmarkRecords(new ArrayList<BookmarkRecord>(bookmarksManager.getBookmarkRecords()));
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
@@ -77,8 +77,8 @@ public class ManageBookmarksAction extends AbstractAction {
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
-                    bookmarksModule.setBookmarkRecords(bookmarkRecords);
+                    List<BookmarkRecord> bookmarkRecords = bookmarksManager.getBookmarkRecords();
+                    bookmarksManager.setBookmarkRecords(bookmarkRecords);
                     break;
                 }
                 case CANCEL: {
@@ -88,7 +88,6 @@ public class ManageBookmarksAction extends AbstractAction {
             }
         });
 
-        bookmarksPanel.setBookmarkRecords(new ArrayList<>(bookmarksModule.getBookmarkRecords()));
         dialog.showCentered(editorProvider.getEditorComponent());
     }
 }

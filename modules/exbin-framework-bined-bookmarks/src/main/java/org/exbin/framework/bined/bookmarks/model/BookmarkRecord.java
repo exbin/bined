@@ -37,6 +37,21 @@ public class BookmarkRecord {
         this.color = color;
     }
 
+    /**
+     * Copy constructor.
+     *
+     * @param record record
+     */
+    public BookmarkRecord(BookmarkRecord record) {
+        BookmarkRecord.this.setRecord(record);
+    }
+    
+    public void setRecord(BookmarkRecord record) {
+        startPosition = record.startPosition;
+        length = record.length;
+        color = record.color;
+    }
+
     public long getStartPosition() {
         return startPosition;
     }
