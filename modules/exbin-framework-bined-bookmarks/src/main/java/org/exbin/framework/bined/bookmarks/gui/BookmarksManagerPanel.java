@@ -237,8 +237,21 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
 
     public void setBookmarkRecords(List<BookmarkRecord> bookmarkRecords) {
         bookmarksTableModel.setRecords(bookmarkRecords);
+        bookmarksTableModel.fireTableDataChanged();
+        table.repaint();
     }
-    
+
+    public void updateBookmarkRecords(List<BookmarkRecord> bookmarkRecords) {
+        bookmarksTableModel.setRecords(bookmarkRecords);
+        bookmarksTableModel.fireDataChanged();
+        table.repaint();
+    }
+
+    public void updateRecord(BookmarkRecord bookmarkRecord, int index) {
+        bookmarksTableModel.updateRecord(bookmarkRecord, index);
+        table.repaint();
+    }
+
     @Nullable
     public BookmarkRecord getSelectedRecord() {
         int selectedRow = table.getSelectedRow();

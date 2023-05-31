@@ -54,7 +54,7 @@ import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 public class FindBinaryPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(FindBinaryPanel.class);
-    public static final String POPUP_MENU_POSTFIX = ".searchFindHexPanel";
+    public static final String POPUP_MENU_POSTFIX = ".searchFindBinaryPanel";
 
     private final ExtCodeArea findCodeArea = new ExtCodeArea();
     private BinarySearchComboBoxPanel findComboBoxEditorComponent;

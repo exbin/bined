@@ -18,12 +18,11 @@ package org.exbin.framework.bined.bookmarks.action;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -55,22 +54,19 @@ public class EditBookmarkAction extends AbstractAction {
         putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
-    @Nonnull
+    @Nullable
     public BookmarkRecord getBookmarkRecord() {
         return bookmarkRecord;
     }
 
-    public void setBookmarkRecord(BookmarkRecord bookmarkRecord) {
+    public void setBookmarkRecord(@Nullable BookmarkRecord bookmarkRecord) {
         this.bookmarkRecord = bookmarkRecord;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
         final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();
-        if (bookmarkRecord != null) {
-            bookmarkEditorPanel.setBookmarkRecord(new BookmarkRecord(bookmarkRecord));
-        }
+        bookmarkEditorPanel.setBookmarkRecord(bookmarkRecord);
         ResourceBundle panelResourceBundle = bookmarkEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
@@ -81,10 +77,12 @@ public class EditBookmarkAction extends AbstractAction {
             switch (actionType) {
                 case OK: {
                     bookmarkRecord.setRecord(bookmarkEditorPanel.getBookmarkRecord());
+                    dialog.close();
                     break;
                 }
                 case CANCEL: {
                     dialog.close();
+                    bookmarkRecord = null;
                     break;
                 }
             }

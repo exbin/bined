@@ -65,7 +65,11 @@ public class ManageBookmarksAction extends AbstractAction {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
         BookmarksManager bookmarksManager = bookmarksModule.getBookmarksManager();
         final BookmarksManagerPanel bookmarksPanel = bookmarksManager.getBookmarksManagerPanel();
-        bookmarksPanel.setBookmarkRecords(new ArrayList<BookmarkRecord>(bookmarksManager.getBookmarkRecords()));
+        List<BookmarkRecord> records = new ArrayList<>();
+        for (BookmarkRecord record : bookmarksManager.getBookmarkRecords()) {
+            records.add(new BookmarkRecord(record));
+        }
+        bookmarksPanel.setBookmarkRecords(records);
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
@@ -77,8 +81,9 @@ public class ManageBookmarksAction extends AbstractAction {
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-                    List<BookmarkRecord> bookmarkRecords = bookmarksManager.getBookmarkRecords();
+                    List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();
                     bookmarksManager.setBookmarkRecords(bookmarkRecords);
+                    dialog.close();
                     break;
                 }
                 case CANCEL: {

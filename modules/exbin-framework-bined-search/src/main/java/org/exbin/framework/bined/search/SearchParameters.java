@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * Parameters for action to search for occurences of text or data.
+ * Parameters for action to search for occurrences of text or data.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -93,10 +93,6 @@ public class SearchParameters {
         matchCase = searchParameters.isMatchCase();
         multipleMatches = searchParameters.isMultipleMatches();
         searchDirection = searchParameters.getSearchDirection();
-    }
-
-    public enum SearchMode {
-        TEXT, BINARY
     }
 
     public enum SearchDirection {

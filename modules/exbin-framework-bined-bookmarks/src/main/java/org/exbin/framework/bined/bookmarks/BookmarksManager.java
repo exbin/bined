@@ -17,10 +17,13 @@ package org.exbin.framework.bined.bookmarks;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
@@ -47,7 +50,6 @@ public class BookmarksManager {
 
     private AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
     private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
-//    private DeleteBookmarkAction deleteBookmarkAction = new DeleteBookmarkAction();
 
     public BookmarksManager() {
         bookmarkRecords.add(new BookmarkRecord(3, 5, Color.RED));
@@ -59,18 +61,35 @@ public class BookmarksManager {
             @Override
             public void addRecord() {
                 addBookmarkAction.actionPerformed(null);
+                BookmarkRecord bookmarkRecord = addBookmarkAction.getBookmarkRecord();
+                if (bookmarkRecord != null) {
+                    List<BookmarkRecord> records = bookmarksManagerPanel.getBookmarkRecords();
+                    records.add(bookmarkRecord);
+                    bookmarksManagerPanel.setBookmarkRecords(records);
+                }
             }
 
             @Override
             public void editRecord() {
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
-                editBookmarkAction.setBookmarkRecord(selectedRecord);
+                int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();
+                editBookmarkAction.setBookmarkRecord(new BookmarkRecord(selectedRecord));
                 editBookmarkAction.actionPerformed(null);
+                BookmarkRecord bookmarkRecord = editBookmarkAction.getBookmarkRecord();
+                if (bookmarkRecord != null) {
+                    bookmarksManagerPanel.updateRecord(bookmarkRecord, selectedRow);                
+                }
             }
 
             @Override
             public void removeRecord() {
-                throw new UnsupportedOperationException("Not supported yet.");
+                int[] selectedRows = bookmarksManagerPanel.getTable().getSelectedRows();
+                Arrays.sort(selectedRows);
+                List<BookmarkRecord> records = bookmarksManagerPanel.getBookmarkRecords();
+                for (int i = selectedRows.length - 1; i >= 0; i--) {
+                    records.remove(selectedRows[i]);
+                }
+                bookmarksManagerPanel.setBookmarkRecords(records);
             }
 
             @Override
@@ -80,12 +99,36 @@ public class BookmarksManager {
 
             @Override
             public void moveUp() {
-                throw new UnsupportedOperationException("Not supported yet.");
+                JTable table = bookmarksManagerPanel.getTable();
+                int[] selectedRows = table.getSelectedRows();
+                Arrays.sort(selectedRows);
+                List<BookmarkRecord> records = bookmarksManagerPanel.getBookmarkRecords();
+                ListSelectionModel selectionModel = table.getSelectionModel();
+                for (int i = 0; i < selectedRows.length; i++) {
+                    int index = selectedRows[i];
+                    selectionModel.removeSelectionInterval(index, index);
+                    BookmarkRecord movedRecord = records.remove(index - 1);
+                    records.add(index, movedRecord);
+                    table.addRowSelectionInterval(index - 1, index - 1);
+                }
+                bookmarksManagerPanel.updateBookmarkRecords(records);
             }
 
             @Override
             public void moveDown() {
-                throw new UnsupportedOperationException("Not supported yet.");
+                JTable table = bookmarksManagerPanel.getTable();
+                int[] selectedRows = table.getSelectedRows();
+                Arrays.sort(selectedRows);
+                List<BookmarkRecord> records = bookmarksManagerPanel.getBookmarkRecords();
+                ListSelectionModel selectionModel = table.getSelectionModel();
+                for (int i = selectedRows.length - 1; i >= 0; i--) {
+                    int index = selectedRows[i];
+                    selectionModel.removeSelectionInterval(index, index);
+                    BookmarkRecord movedRecord = records.remove(index);
+                    records.add(index + 1, movedRecord);
+                    table.addRowSelectionInterval(index + 1, index + 1);
+                }
+                bookmarksManagerPanel.updateBookmarkRecords(records);
             }
         });
     }
@@ -96,7 +139,7 @@ public class BookmarksManager {
         addBookmarkAction.setup(application, resourceBundle);
         editBookmarkAction.setup(application, resourceBundle);
     }
-    
+
     public void init() {
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);

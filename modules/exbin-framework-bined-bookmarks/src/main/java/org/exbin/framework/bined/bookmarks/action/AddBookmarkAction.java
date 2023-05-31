@@ -19,6 +19,7 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
@@ -43,6 +44,7 @@ public class AddBookmarkAction extends AbstractAction {
 
     private XBApplication application;
     private ResourceBundle resourceBundle;
+    private BookmarkRecord bookmarkRecord = null;
 
     public AddBookmarkAction() {
     }
@@ -55,26 +57,30 @@ public class AddBookmarkAction extends AbstractAction {
         putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
+    @Nullable
+    public BookmarkRecord getBookmarkRecord() {
+        return bookmarkRecord;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
-        BookmarksManager bookmarksManager = bookmarksModule.getBookmarksManager();
-        final BookmarkEditorPanel bookmarksPanel = new BookmarkEditorPanel();
-        ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
+        final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();
+        bookmarkEditorPanel.setBookmarkRecord(new BookmarkRecord());
+        ResourceBundle panelResourceBundle = bookmarkEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
         frameModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-                    List<BookmarkRecord> bookmarkRecords = bookmarksManager.getBookmarkRecords();
-                    bookmarkRecords.add(bookmarksPanel.getBookmarkRecord());
-                    bookmarksManager.setBookmarkRecords(bookmarkRecords);
+                    bookmarkRecord = bookmarkEditorPanel.getBookmarkRecord();
+                    dialog.close();
                     break;
                 }
                 case CANCEL: {
+                    bookmarkRecord = null;
                     dialog.close();
                     break;
                 }

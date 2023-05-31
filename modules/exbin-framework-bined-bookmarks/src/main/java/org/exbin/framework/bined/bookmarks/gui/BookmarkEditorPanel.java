@@ -34,20 +34,20 @@ import org.exbin.framework.utils.WindowUtils;
 public class BookmarkEditorPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarkEditorPanel.class);
-    
+
     private BookmarkRecord bookmarkRecord = null;
     private ColorCellPanel.ColorHandler colorHandler = new ColorCellPanel.ColorHandler() {
-            @Nullable
-            @Override
-            public Color getColor() {
+        @Nullable
+        @Override
+        public Color getColor() {
                 return (bookmarkRecord == null) ? null : bookmarkRecord.getColor();
-            }
+        }
 
-            @Override
-            public void setColor(@Nullable Color color) {
-                bookmarkRecord.setColor(color);
-            }
-        };
+        @Override
+        public void setColor(@Nullable Color color) {
+            bookmarkRecord.setColor(color);
+        }
+    };
 
     public BookmarkEditorPanel() {
         initComponents();

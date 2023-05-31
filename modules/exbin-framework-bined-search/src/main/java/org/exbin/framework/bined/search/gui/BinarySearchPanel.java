@@ -219,6 +219,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 }
             }
 
+            @Nonnull
             @Override
             public Object getItem() {
                 return findComboBoxEditorComponent.getItem();
@@ -300,6 +301,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 }
             }
 
+            @Nonnull
             @Override
             public Object getItem() {
                 return replaceComboBoxEditorComponent.getItem();

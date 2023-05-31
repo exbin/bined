@@ -61,6 +61,11 @@ public class BookmarksTableModel extends AbstractTableModel {
         this.records = records;
         fireDataChanged();
     }
+    
+    public void updateRecord(BookmarkRecord record, int index) {
+        records.set(index, record);
+        fireTableRowsUpdated(index, index);
+    }
 
     @Override
     public int getRowCount() {

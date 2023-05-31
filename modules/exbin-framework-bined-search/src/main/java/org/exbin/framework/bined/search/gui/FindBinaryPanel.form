@@ -20,7 +20,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="&lt;findPanel.border.title&gt;">
+            <TitledBorder title="Find">
               <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/search/gui/resources/FindBinaryPanel.properties" key="findPanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
@@ -157,7 +157,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="&lt;replacePanel.border.title&gt;">
+            <TitledBorder title="Replace">
               <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/search/gui/resources/FindBinaryPanel.properties" key="replacePanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
