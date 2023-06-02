@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.SwingUtilities;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.options.gui.ColorCellPanel;
 import org.exbin.framework.utils.LanguageUtils;
@@ -35,17 +36,19 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarkEditorPanel.class);
 
-    private BookmarkRecord bookmarkRecord = null;
+    private Color color = null;
+    private volatile boolean spinnerUpdate = false;
+
     private ColorCellPanel.ColorHandler colorHandler = new ColorCellPanel.ColorHandler() {
         @Nullable
         @Override
         public Color getColor() {
-                return (bookmarkRecord == null) ? null : bookmarkRecord.getColor();
+            return color;
         }
 
         @Override
         public void setColor(@Nullable Color color) {
-            bookmarkRecord.setColor(color);
+            BookmarkEditorPanel.this.color = color;
         }
     };
 
@@ -56,16 +59,62 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
 
     private void init() {
         colorCellPanel.setColorHandler(colorHandler);
+        startPositionSwitchableSpinnerPanel.setMinimum(0);
+        startPositionSwitchableSpinnerPanel.addChangeListener((e) -> {
+            if (spinnerUpdate) {
+                return;
+            }
+
+            long startPosition = startPositionSwitchableSpinnerPanel.getValue();
+            long length = lengthSwitchableSpinnerPanel.getValue();
+            SwingUtilities.invokeLater(() -> {
+                spinnerUpdate = true;
+                endPositionSwitchableSpinnerPanel.setMinimum(startPosition);
+                endPositionSwitchableSpinnerPanel.setValue(startPosition + length);
+                spinnerUpdate = false;
+            });
+        });
+        endPositionSwitchableSpinnerPanel.addChangeListener((e) -> {
+            if (spinnerUpdate) {
+                return;
+            }
+
+            long startPosition = startPositionSwitchableSpinnerPanel.getValue();
+            long endPosition = endPositionSwitchableSpinnerPanel.getValue();
+            SwingUtilities.invokeLater(() -> {
+                spinnerUpdate = true;
+                lengthSwitchableSpinnerPanel.setValue(endPosition - startPosition);
+                spinnerUpdate = false;
+            });
+        });
+        lengthSwitchableSpinnerPanel.setMinimum(0);
+        lengthSwitchableSpinnerPanel.addChangeListener((e) -> {
+            if (spinnerUpdate) {
+                return;
+            }
+
+            long startPosition = startPositionSwitchableSpinnerPanel.getValue();
+            long length = lengthSwitchableSpinnerPanel.getValue();
+            SwingUtilities.invokeLater(() -> {
+                spinnerUpdate = true;
+                endPositionSwitchableSpinnerPanel.setValue(startPosition + length);
+                spinnerUpdate = false;
+            });
+        });
     }
 
     @Nonnull
     public BookmarkRecord getBookmarkRecord() {
-        return bookmarkRecord;
+        return new BookmarkRecord(
+                startPositionSwitchableSpinnerPanel.getValue(),
+                lengthSwitchableSpinnerPanel.getValue(),
+                color
+        );
     }
 
     public void setBookmarkRecord(BookmarkRecord bookmarkRecord) {
-        this.bookmarkRecord = bookmarkRecord;
         startPositionSwitchableSpinnerPanel.setValue(bookmarkRecord.getStartPosition());
+        endPositionSwitchableSpinnerPanel.setMinimum(bookmarkRecord.getStartPosition());
         endPositionSwitchableSpinnerPanel.setValue(bookmarkRecord.getStartPosition() + bookmarkRecord.getLength());
         lengthSwitchableSpinnerPanel.setValue(bookmarkRecord.getLength());
         colorCellPanel.setColorHandler(colorHandler);

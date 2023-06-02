@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
-import javax.swing.border.EtchedBorder;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -34,6 +33,7 @@ import org.exbin.framework.utils.WindowUtils;
 public class ColorCellPanel extends javax.swing.JPanel {
 
     private ColorHandler colorHandler;
+    private boolean colorNullable = true;
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ColorCellPanel.class);
 
@@ -52,8 +52,17 @@ public class ColorCellPanel extends javax.swing.JPanel {
     }
 
     private void setColor(@Nullable Color color) {
-        colorLabel.setBorder(color == null ? null : new EtchedBorder());
+        colorLabel.setBorder(color == null ? javax.swing.BorderFactory.createEtchedBorder() : javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         colorLabel.setBackground(color);
+    }
+
+    public boolean isColorNullable() {
+        return colorNullable;
+    }
+
+    public void setColorNullable(boolean colorNullable) {
+        this.colorNullable = colorNullable;
+        clearButton.setVisible(colorNullable);
     }
 
     /**
