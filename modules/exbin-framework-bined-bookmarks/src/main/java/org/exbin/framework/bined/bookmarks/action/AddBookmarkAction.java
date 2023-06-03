@@ -17,15 +17,12 @@ package org.exbin.framework.bined.bookmarks.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
-import org.exbin.framework.bined.bookmarks.BookmarksManager;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -76,15 +73,14 @@ public class AddBookmarkAction extends AbstractAction {
             switch (actionType) {
                 case OK: {
                     bookmarkRecord = bookmarkEditorPanel.getBookmarkRecord();
-                    dialog.close();
                     break;
                 }
                 case CANCEL: {
                     bookmarkRecord = null;
-                    dialog.close();
                     break;
                 }
             }
+            dialog.close();
         });
 
         dialog.showCentered(frameModule.getFrame());

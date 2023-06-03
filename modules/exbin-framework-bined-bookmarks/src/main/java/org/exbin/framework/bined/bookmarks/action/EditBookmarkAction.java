@@ -77,15 +77,14 @@ public class EditBookmarkAction extends AbstractAction {
             switch (actionType) {
                 case OK: {
                     bookmarkRecord.setRecord(bookmarkEditorPanel.getBookmarkRecord());
-                    dialog.close();
                     break;
                 }
                 case CANCEL: {
-                    dialog.close();
                     bookmarkRecord = null;
                     break;
                 }
             }
+            dialog.close();
         });
 
         dialog.showCentered(frameModule.getFrame());

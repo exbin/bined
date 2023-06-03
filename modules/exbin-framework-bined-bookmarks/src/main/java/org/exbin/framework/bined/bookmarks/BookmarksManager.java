@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,12 +23,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
+import org.exbin.framework.bined.bookmarks.preferences.BookmarkPreferences;
 import org.exbin.framework.utils.LanguageUtils;
 
 /**
@@ -43,6 +44,7 @@ public class BookmarksManager {
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksManager.class);
 
     private final List<BookmarkRecord> bookmarkRecords = new ArrayList<>();
+    private BookmarkPreferences bookmarkPreferences;
     private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
     private final BookmarksManagerPanel bookmarksManagerPanel;
@@ -52,10 +54,6 @@ public class BookmarksManager {
     private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
 
     public BookmarksManager() {
-        bookmarkRecords.add(new BookmarkRecord(3, 5, Color.RED));
-        bookmarkRecords.add(new BookmarkRecord(10, 20, Color.BLUE));
-        bookmarkRecords.add(new BookmarkRecord(15, 3, Color.GREEN));
-
         bookmarksManagerPanel = new BookmarksManagerPanel();
         bookmarksManagerPanel.setControl(new BookmarksManagerPanel.Control() {
             @Override
@@ -77,7 +75,7 @@ public class BookmarksManager {
                 editBookmarkAction.actionPerformed(null);
                 BookmarkRecord bookmarkRecord = editBookmarkAction.getBookmarkRecord();
                 if (bookmarkRecord != null) {
-                    bookmarksManagerPanel.updateRecord(bookmarkRecord, selectedRow);                
+                    bookmarksManagerPanel.updateRecord(bookmarkRecord, selectedRow);
                 }
             }
 
@@ -142,8 +140,28 @@ public class BookmarksManager {
 
     public void init() {
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+
+        Preferences preferences = application.getAppPreferences();
+        bookmarkPreferences = new BookmarkPreferences(preferences);
+        loadBookmarkRecords();
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
         binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
+    }
+
+    private void loadBookmarkRecords() {
+        int bookmarksCount = bookmarkPreferences.getBookmarksCount();
+        for (int i = 0; i < bookmarksCount; i++) {
+            BookmarkRecord bookmarkRecord = bookmarkPreferences.getBookmarkRecord(i);
+            bookmarkRecords.add(bookmarkRecord);
+        }
+    }
+
+    private void saveBookmarkRecords() {
+        int bookmarksCount = bookmarkRecords.size();
+        bookmarkPreferences.setBookmarksCount(bookmarksCount);
+        for (int i = 0; i < bookmarksCount; i++) {
+            bookmarkPreferences.setBookmarkRecord(i, bookmarkRecords.get(i));
+        }
     }
 
     @Nonnull
@@ -154,6 +172,7 @@ public class BookmarksManager {
     public void setBookmarkRecords(List<BookmarkRecord> records) {
         bookmarkRecords.clear();
         bookmarkRecords.addAll(records);
+        saveBookmarkRecords();
         bookmarksPositionColorModifier.notifyBookmarksChanged();
     }
 

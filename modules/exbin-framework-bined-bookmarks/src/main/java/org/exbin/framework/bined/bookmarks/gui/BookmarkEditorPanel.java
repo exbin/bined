@@ -58,6 +58,7 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
     }
 
     private void init() {
+        colorCellPanel.setColorNullable(false);
         colorCellPanel.setColorHandler(colorHandler);
         startPositionSwitchableSpinnerPanel.setMinimum(0);
         startPositionSwitchableSpinnerPanel.addChangeListener((e) -> {
@@ -117,6 +118,7 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
         endPositionSwitchableSpinnerPanel.setMinimum(bookmarkRecord.getStartPosition());
         endPositionSwitchableSpinnerPanel.setValue(bookmarkRecord.getStartPosition() + bookmarkRecord.getLength());
         lengthSwitchableSpinnerPanel.setValue(bookmarkRecord.getLength());
+        color = bookmarkRecord.getColor();
         colorCellPanel.setColorHandler(colorHandler);
     }
 
