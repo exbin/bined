@@ -524,7 +524,6 @@ public class BinedModule implements XBApplicationModule {
             @Override
             public void applyPreferencesChanges(BinaryAppearanceOptionsImpl options) {
                 binaryAppearanceService.setWordWrapMode(options.isLineWrapping());
-                binaryAppearanceService.setShowParsingPanel(options.isShowParsingPanel());
             }
         };
         optionsModule.extendAppearanceOptionsPage(binaryAppearanceOptionsPage);
@@ -717,11 +716,6 @@ public class BinedModule implements XBApplicationModule {
             }
 
             @Override
-            public void setShowValuesPanel(boolean showValuesPanel) {
-                binaryAppearanceService.setShowParsingPanel(showValuesPanel);
-            }
-
-            @Override
             public void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (activeFile.isPresent()) {
@@ -769,7 +763,6 @@ public class BinedModule implements XBApplicationModule {
             @Override
             public void applyPreferencesChanges(EditorOptionsImpl options) {
                 editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
-                editorOptionsService.setShowValuesPanel(options.isShowValuesPanel());
                 editorOptionsService.setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
             }
         };

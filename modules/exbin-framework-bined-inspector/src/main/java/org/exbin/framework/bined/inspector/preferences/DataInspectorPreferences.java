@@ -13,41 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.preferences;
+package org.exbin.framework.bined.inspector.preferences;
 
 import org.exbin.framework.api.Preferences;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * Binary appearance preferences.
+ * Data inspector preferences.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryAppearancePreferences {
+public class DataInspectorPreferences {
 
-    public static final String PREFERENCES_TEXT_WORD_WRAPPING = "textAppearance.wordWrap";
-    public static final String PREFERENCES_MULTIFILE_MODE = "multiFileMode";
+    public static final String PREFERENCES_SHOW_PARSING_PANEL = "showValuesPanel";
 
     private final Preferences preferences;
 
-    public BinaryAppearancePreferences(Preferences preferences) {
+    public DataInspectorPreferences(Preferences preferences) {
         this.preferences = preferences;
     }
 
-    public boolean isLineWrapping() {
-        return preferences.getBoolean(PREFERENCES_TEXT_WORD_WRAPPING, false);
+    public boolean isShowParsingPanel() {
+        return preferences.getBoolean(PREFERENCES_SHOW_PARSING_PANEL, true);
     }
 
-    public boolean isMultiFileMode() {
-        return preferences.getBoolean(PREFERENCES_MULTIFILE_MODE, true);
-    }
-
-    public void setLineWrapping(boolean wrapping) {
-        preferences.putBoolean(PREFERENCES_TEXT_WORD_WRAPPING, wrapping);
-    }
-
-    public void setMultiFileMode(boolean mode) {
-        preferences.putBoolean(PREFERENCES_MULTIFILE_MODE, mode);
+    public void setShowParsingPanel(boolean show) {
+        preferences.putBoolean(PREFERENCES_SHOW_PARSING_PANEL, show);
     }
 }

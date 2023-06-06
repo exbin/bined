@@ -13,29 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.service;
+package org.exbin.framework.bined.inspector.options;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * Appearance service interface.
+ * Binary component appearance options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinaryAppearanceService {
+public interface DataInspectorOptions {
 
-    /**
-     * Returns text word wrapping mode.
-     *
-     * @return wrapping mode
-     */
-    boolean getWordWrapMode();
+    boolean isShowParsingPanel();
 
-    /**
-     * Sets text word wrapping mode.
-     *
-     * @param mode word wrapping mode
-     */
-    void setWordWrapMode(boolean mode);
+    void setShowParsingPanel(boolean showParsingPanel);
 }

@@ -146,7 +146,7 @@ public class BinaryEditorPreferences {
         codeAreaPreferences.setCodeColorization(legacyPreferences.isCodeColorization());
 
         editorPreferences.setFileHandlingMode(legacyPreferences.isDeltaMemoryMode() ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY);
-        editorPreferences.setShowValuesPanel(legacyPreferences.isShowValuesPanel());
+        // editorPreferences.setShowValuesPanel(legacyPreferences.isShowValuesPanel());
 
         List<String> layoutProfiles = new ArrayList<>();
         layoutProfiles.add("Imported profile");

@@ -48,10 +48,4 @@ public class BinaryAppearanceServiceImpl implements BinaryAppearanceService {
 
         binedModule.getRowWrappingAction().putValue(Action.SELECTED_KEY, mode);
     }
-
-    @Override
-    public void setShowParsingPanel(boolean showValuesPanel) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        // binedModule.getShowParsingPanelAction().setShowValuesPanel(showValuesPanel);
-    }
 }

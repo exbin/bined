@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.options.gui;
+package org.exbin.framework.bined.inspector.options.gui;
 
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.options.impl.BinaryAppearanceOptionsImpl;
+import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsCapable;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 
 /**
- * Binary viewer/editor appearance options panel.
+ * Data inspector options panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements OptionsCapable<BinaryAppearanceOptionsImpl> {
+public class DataInspectorOptionsPanel extends javax.swing.JPanel implements OptionsCapable<DataInspectorOptionsImpl> {
 
     private OptionsModifiedListener optionsModifiedListener;
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinaryAppearanceOptionsPanel.class);
+    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(DataInspectorOptionsPanel.class);
 
-    public BinaryAppearanceOptionsPanel() {
+    public DataInspectorOptionsPanel() {
         initComponents();
     }
 
@@ -46,13 +46,13 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
     }
 
     @Override
-    public void loadFromOptions(BinaryAppearanceOptionsImpl options) {
-        multiFileModeCheckBox.setSelected(options.isMultiFileMode());
+    public void loadFromOptions(DataInspectorOptionsImpl options) {
+        showParsingPanelCheckBox.setSelected(options.isShowParsingPanel());
     }
 
     @Override
-    public void saveToOptions(BinaryAppearanceOptionsImpl options) {
-        options.setMultiFileMode(multiFileModeCheckBox.isSelected());
+    public void saveToOptions(DataInspectorOptionsImpl options) {
+        options.setShowParsingPanel(showParsingPanelCheckBox.isSelected());
     }
 
     /**
@@ -64,13 +64,13 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        multiFileModeCheckBox = new javax.swing.JCheckBox();
+        showParsingPanelCheckBox = new javax.swing.JCheckBox();
 
         setName("Form"); // NOI18N
 
-        multiFileModeCheckBox.setSelected(true);
-        multiFileModeCheckBox.setText(resourceBundle.getString("multiFileModeCheckBox.text")); // NOI18N
-        multiFileModeCheckBox.setName("multiFileModeCheckBox"); // NOI18N
+        showParsingPanelCheckBox.setSelected(true);
+        showParsingPanelCheckBox.setText(resourceBundle.getString("showParsingPanelCheckBox.text")); // NOI18N
+        showParsingPanelCheckBox.setName("showParsingPanelCheckBox"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -78,14 +78,14 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(multiFileModeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addComponent(showParsingPanelCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(multiFileModeCheckBox)
+                .addComponent(showParsingPanelCheckBox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -96,11 +96,11 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinaryAppearanceOptionsPanel());
+        WindowUtils.invokeDialog(new DataInspectorOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox multiFileModeCheckBox;
+    private javax.swing.JCheckBox showParsingPanelCheckBox;
     // End of variables declaration//GEN-END:variables
 
     private void setModified(boolean modified) {

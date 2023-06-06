@@ -29,7 +29,5 @@ public interface EditorOptionsService {
 
     void setFileHandlingMode(FileHandlingMode fileHandlingMode);
 
-    void setShowValuesPanel(boolean isShowValuesPanel);
-
     void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode);
 }

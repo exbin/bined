@@ -220,6 +220,7 @@ public class BinedEditor {
                     binedModule.registerStatusBar();
                     binedModule.registerOptionsPanels();
                     binedModule.getBinaryStatusPanel();
+                    binedInspectorModule.registerOptionsPanels();
                     updateModule.registerOptionsPanels();
 
                     binedModule.loadFromPreferences(preferences);

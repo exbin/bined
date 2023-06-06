@@ -29,17 +29,24 @@ import org.exbin.framework.action.api.MenuGroup;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.action.api.SeparationMode;
+import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
+import org.exbin.framework.bined.inspector.options.gui.DataInspectorOptionsPanel;
+import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
+import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.options.api.DefaultOptionsPage;
+import org.exbin.framework.options.api.OptionsCapable;
+import org.exbin.framework.options.api.OptionsModuleApi;
 
 /**
  * Binary editor data inspector module.
@@ -59,6 +66,8 @@ public class BinedInspectorModule implements XBApplicationModule {
     private EditorProvider editorProvider;
 
     private ShowParsingPanelAction showParsingPanelAction;
+
+    private DefaultOptionsPage<DataInspectorOptionsImpl> dataInspectorOptionsPage;
 
     public BinedInspectorModule() {
     }
@@ -138,5 +147,52 @@ public class BinedInspectorModule implements XBApplicationModule {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuGroup(FrameModuleApi.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
         actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
+    }
+
+    public void registerOptionsPanels() {
+        OptionsModuleApi optionsModule = application.getModuleRepository().getModuleByInterface(OptionsModuleApi.class);
+
+        dataInspectorOptionsPage = new DefaultOptionsPage<DataInspectorOptionsImpl>() {
+
+            private DataInspectorOptionsPanel panel;
+
+            @Nonnull
+            @Override
+            public OptionsCapable<DataInspectorOptionsImpl> createPanel() {
+                if (panel == null) {
+                    panel = new DataInspectorOptionsPanel();
+                }
+
+                return panel;
+            }
+
+            @Nonnull
+            @Override
+            public ResourceBundle getResourceBundle() {
+                return LanguageUtils.getResourceBundleByClass(DataInspectorOptionsPanel.class);
+            }
+
+            @Nonnull
+            @Override
+            public DataInspectorOptionsImpl createOptions() {
+                return new DataInspectorOptionsImpl();
+            }
+
+            @Override
+            public void loadFromPreferences(Preferences preferences, DataInspectorOptionsImpl options) {
+                options.loadFromPreferences(new DataInspectorPreferences(preferences));
+            }
+
+            @Override
+            public void saveToPreferences(Preferences preferences, DataInspectorOptionsImpl options) {
+                options.saveToPreferences(new DataInspectorPreferences(preferences));
+            }
+
+            @Override
+            public void applyPreferencesChanges(DataInspectorOptionsImpl options) {
+                getShowParsingPanelAction().setShowValuesPanel(options.isShowParsingPanel());
+            }
+        };
+        optionsModule.addOptionsPage(dataInspectorOptionsPage);
     }
 }
