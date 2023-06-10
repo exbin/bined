@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'distribution'
     id 'maven-publish'
-    id 'edu.sc.seis.launch4j' version '2.5.1'
+    id 'edu.sc.seis.launch4j' version '2.5.4'
 }
 
 //dependencyManagement {
@@ -104,9 +104,14 @@ def manifestClassPath() {
 
 launch4j {
     outfile = "Bined.exe"
-    icon = "../../../../images/icon.ico"
-    mainClassName = "org.exbin.bined.editor.BinedEditor"
+    mainClassName = project.mainClass
     //    jar = "../../build/libs/" + project.name + "-${version}.jar"
+
+    productName = "BinEd"
+    companyName = "ExBin Project"
+    version = (project.version.endsWith("-SNAPSHOT") ? project.version.substring(0, project.version.length() - 9) : project.version)
+    textVersion = project.version
+    icon = "../../../../images/icon.ico"
     copyright = "ExBin Project"
 }
 

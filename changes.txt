@@ -1,4 +1,5 @@
 0.2.2
+- Added support for bookmarks
 - Added off-line help/manual
 - Added edit selection dialog
 - Added support for files drag&drop (issue #7)
