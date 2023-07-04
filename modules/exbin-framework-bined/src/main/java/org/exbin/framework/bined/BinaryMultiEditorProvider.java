@@ -78,7 +78,6 @@ import org.exbin.xbup.operation.Command;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 
@@ -107,7 +106,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     private BinaryStatusApi binaryStatus;
     private TextEncodingStatusApi textEncodingStatusApi;
     private MultiEditorUndoHandler undoHandler = new MultiEditorUndoHandler();
-    private Optional<FileHandler> activeFileCache = Optional.empty();
+    private FileHandler activeFileCache = null;
     @Nullable
     private File lastUsedDirectory;
 
@@ -172,7 +171,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Nonnull
     @Override
     public Optional<FileHandler> getActiveFile() {
-        return activeFileCache;
+        return Optional.ofNullable(activeFileCache);
     }
 
     @Nonnull
@@ -193,8 +192,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Nonnull
     @Override
     public String getWindowTitle(String parentTitle) {
-        FileHandler activeFile = multiEditorPanel.getActiveFile();
-        return activeFile == null ? "" : ((BinEdFileHandler) activeFile).getWindowTitle(parentTitle);
+        Optional<FileHandler> activeFile = multiEditorPanel.getActiveFile();
+        return activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getWindowTitle(parentTitle) : "";
     }
 
     @Override
@@ -241,8 +240,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         codeArea.setCommandHandler(commandHandler);
 
         codeArea.addDataChangedListener(() -> {
-            if (fileHandler == activeFileCache.orElse(null)) {
-                ((BinEdFileHandler) activeFileCache.get()).getComponent().notifyDataChanged();
+            if (fileHandler == activeFileCache) {
+                ((BinEdFileHandler) activeFileCache).getComponent().notifyDataChanged();
                 if (editorModificationListener != null) {
                     editorModificationListener.modified();
                 }
@@ -251,20 +250,20 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         });
 
         codeArea.addSelectionChangedListener(() -> {
-            if (fileHandler == activeFileCache.orElse(null)) {
+            if (fileHandler == activeFileCache) {
                 updateCurrentSelectionRange();
                 updateClipboardActionsStatus();
             }
         });
 
         codeArea.addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
-            if (fileHandler == activeFileCache.orElse(null)) {
+            if (fileHandler == activeFileCache) {
                 updateCurrentCaretPosition();
             }
         });
 
         codeArea.addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
-            if (fileHandler == activeFileCache.orElse(null) && binaryStatus != null) {
+            if (fileHandler == activeFileCache && binaryStatus != null) {
                 binaryStatus.setEditMode(mode, operation);
             }
         });
@@ -297,12 +296,12 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public void saveFile() {
-        FileHandler activeFile = multiEditorPanel.getActiveFile();
-        if (activeFile == null) {
+        Optional<FileHandler> activeFile = multiEditorPanel.getActiveFile();
+        if (!activeFile.isPresent()) {
             throw new IllegalStateException();
         }
 
-        saveFile(activeFile);
+        saveFile(activeFile.get());
     }
 
     @Override
@@ -316,12 +315,12 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public void saveAsFile() {
-        FileHandler activeFile = multiEditorPanel.getActiveFile();
-        if (activeFile == null) {
+        Optional<FileHandler> activeFile = multiEditorPanel.getActiveFile();
+        if (!activeFile.isPresent()) {
             throw new IllegalStateException();
         }
 
-        saveAsFile(activeFile);
+        saveAsFile(activeFile.get());
     }
 
     @Override
@@ -332,11 +331,12 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public boolean canSave() {
-        FileHandler activeFile = multiEditorPanel.getActiveFile();
-        if (activeFile == null) {
+        Optional<FileHandler> optActiveFile = multiEditorPanel.getActiveFile();
+        if (!optActiveFile.isPresent()) {
             return false;
         }
 
+        FileHandler activeFile = optActiveFile.get();
         return ((BinEdFileHandler) activeFile).isSaveSupported() && ((BinEdFileHandler) activeFile).isEditable();
     }
 
@@ -358,8 +358,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     }
 
     private void activeFileChanged() {
-        FileHandler activeFile = multiEditorPanel.getActiveFile();
-        activeFileCache = Optional.ofNullable(activeFile);
+        FileHandler activeFile = multiEditorPanel.getActiveFile().orElse(null);
+        activeFileCache = activeFile;
         undoHandler.setActiveFile(activeFile);
 
         for (ActiveFileChangeListener listener : activeFileChangeListeners) {
@@ -444,11 +444,11 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public void closeFile() {
-        if (!activeFileCache.isPresent()) {
+        if (activeFileCache == null) {
             throw new IllegalStateException();
         }
 
-        closeFile(activeFileCache.get());
+        closeFile(activeFileCache);
     }
 
     @Override

@@ -157,11 +157,14 @@ import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.bined.action.ClipboardContentAction;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.action.EditSelectionAction;
+import org.exbin.framework.bined.gui.ClipboardContentPanel;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.utils.gui.CloseControlPanel;
 
 /**
  * Binary data editor module.
@@ -210,6 +213,7 @@ public class BinedModule implements XBApplicationModule {
     private GoToPositionAction goToPositionAction;
     private EditSelectionAction editSelectionAction;
     private PropertiesAction propertiesAction;
+    private ClipboardContentAction clipboardContentAction;
     private PrintAction printAction;
     private ViewModeHandlerActions viewModeActions;
     private ShowRowPositionAction showRowPositionAction;
@@ -1556,6 +1560,16 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
+    public ClipboardContentAction getClipboardContentAction() {
+        if (clipboardContentAction == null) {
+            ensureSetup();
+            clipboardContentAction = new ClipboardContentAction();
+            clipboardContentAction.setup(application, resourceBundle);
+        }
+        return clipboardContentAction;
+    }
+
+    @Nonnull
     public AbstractAction getPrintAction() {
         if (printAction == null) {
             ensureSetup();
@@ -1658,6 +1672,12 @@ public class BinedModule implements XBApplicationModule {
         getPropertiesAction();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.FILE_MENU_ID, MODULE_ID, getPropertiesAction(), new MenuPosition(PositionMode.BOTTOM));
+    }
+
+    public void registerClipboardContentMenu() {
+        getClipboardContentAction();
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.BOTTOM));
     }
 
     public void registerPrintMenu() {
