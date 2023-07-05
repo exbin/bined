@@ -17,6 +17,8 @@ package org.exbin.framework.bined.gui;
 
 import java.awt.datatransfer.DataFlavor;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.border.BevelBorder;
+import org.exbin.framework.bined.CliboardFlavorBinaryData;
 import org.exbin.framework.utils.ClipboardUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -36,7 +38,23 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     }
     
     private void init() {
+        codeArea.setBorder(new BevelBorder(BevelBorder.LOWERED));
         flavorsList.setModel(new DataFlavorsListModel());
+        flavorsList.addListSelectionListener((e) -> {
+            int selectedIndex = flavorsList.getSelectedIndex();
+            if (selectedIndex >= 0) {
+                DataFlavor dataFlavor = dataFlavors[selectedIndex];
+                presentableNameTextField.setText(dataFlavor.getHumanPresentableName());
+                stringTypeTextField.setText(dataFlavor.toString());
+                mimeTypeTextField.setText(dataFlavor.getMimeType());
+                primaryMimeTypeTextField.setText(dataFlavor.getPrimaryType());
+                subMimeTypeTextField.setText(dataFlavor.getSubType());
+                defaultClassNameTextField.setText(dataFlavor.getDefaultRepresentationClassAsString());
+                // TODO codeArea.setContentData(new CliboardFlavorBinaryData(dataFlavor));
+            } else {
+                
+            }
+        });
     }
     
     public void loadFromClipboard() {
@@ -57,23 +75,139 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         flavorsScrollPane = new javax.swing.JScrollPane();
         flavorsList = new javax.swing.JList<>();
         flavorContentPanel = new javax.swing.JPanel();
+        flavorPanel = new javax.swing.JPanel();
+        presentableNameLabel = new javax.swing.JLabel();
+        presentableNameTextField = new javax.swing.JTextField();
+        stringTypeLabel = new javax.swing.JLabel();
+        stringTypeTextField = new javax.swing.JTextField();
+        mimeTypeLabel = new javax.swing.JLabel();
+        mimeTypeTextField = new javax.swing.JTextField();
+        primaryMimeTypeLabel = new javax.swing.JLabel();
+        primaryMimeTypeTextField = new javax.swing.JTextField();
+        subMimeTypeLabel = new javax.swing.JLabel();
+        subMimeTypeTextField = new javax.swing.JTextField();
+        defaultClassNameLabel = new javax.swing.JLabel();
+        defaultClassNameTextField = new javax.swing.JTextField();
+        dataLabel = new javax.swing.JLabel();
+        codeArea = new org.exbin.bined.swing.basic.CodeArea();
 
         availableFlavorsLabel.setText("Available Flavors");
 
         flavorsScrollPane.setViewportView(flavorsList);
 
         flavorContentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Content"));
+        flavorContentPanel.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout flavorContentPanelLayout = new javax.swing.GroupLayout(flavorContentPanel);
-        flavorContentPanel.setLayout(flavorContentPanelLayout);
-        flavorContentPanelLayout.setHorizontalGroup(
-            flavorContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 619, Short.MAX_VALUE)
+        presentableNameLabel.setText("String Type");
+
+        presentableNameTextField.setEditable(false);
+        presentableNameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presentableNameTextFieldActionPerformed(evt);
+            }
+        });
+
+        stringTypeLabel.setText("String Type");
+
+        stringTypeTextField.setEditable(false);
+        stringTypeTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stringTypeTextFieldActionPerformed(evt);
+            }
+        });
+
+        mimeTypeLabel.setText("MIME Type");
+
+        mimeTypeTextField.setEditable(false);
+
+        primaryMimeTypeLabel.setText("Primary Type");
+
+        primaryMimeTypeTextField.setEditable(false);
+
+        subMimeTypeLabel.setText("Sub Type");
+
+        subMimeTypeTextField.setEditable(false);
+
+        defaultClassNameLabel.setText("Default Class Name");
+        defaultClassNameLabel.setToolTipText("");
+
+        defaultClassNameTextField.setEditable(false);
+        defaultClassNameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultClassNameTextFieldActionPerformed(evt);
+            }
+        });
+
+        dataLabel.setText("Data");
+
+        javax.swing.GroupLayout flavorPanelLayout = new javax.swing.GroupLayout(flavorPanel);
+        flavorPanel.setLayout(flavorPanelLayout);
+        flavorPanelLayout.setHorizontalGroup(
+            flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, flavorPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(codeArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(presentableNameTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stringTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mimeTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
+                        .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(primaryMimeTypeLabel)
+                            .addComponent(primaryMimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(flavorPanelLayout.createSequentialGroup()
+                                .addComponent(subMimeTypeLabel)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(subMimeTypeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)))
+                    .addComponent(defaultClassNameTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
+                        .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(presentableNameLabel)
+                            .addComponent(stringTypeLabel)
+                            .addComponent(mimeTypeLabel)
+                            .addComponent(defaultClassNameLabel)
+                            .addComponent(dataLabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-        flavorContentPanelLayout.setVerticalGroup(
-            flavorContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        flavorPanelLayout.setVerticalGroup(
+            flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(flavorPanelLayout.createSequentialGroup()
+                .addComponent(presentableNameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(presentableNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(stringTypeLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stringTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                        .addComponent(mimeTypeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(primaryMimeTypeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(primaryMimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                        .addComponent(subMimeTypeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(subMimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(defaultClassNameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(defaultClassNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(dataLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(codeArea, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        flavorContentPanel.add(flavorPanel, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -97,10 +231,22 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(availableFlavorsLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(flavorsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)))
+                        .addComponent(flavorsScrollPane)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void defaultClassNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultClassNameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_defaultClassNameTextFieldActionPerformed
+
+    private void stringTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stringTypeTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stringTypeTextFieldActionPerformed
+
+    private void presentableNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentableNameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_presentableNameTextFieldActionPerformed
 
     /**
      * Test method for this panel.
@@ -111,11 +257,25 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         WindowUtils.invokeDialog(new ClipboardContentPanel());
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel availableFlavorsLabel;
+    private org.exbin.bined.swing.basic.CodeArea codeArea;
+    private javax.swing.JLabel dataLabel;
+    private javax.swing.JLabel defaultClassNameLabel;
+    private javax.swing.JTextField defaultClassNameTextField;
     private javax.swing.JPanel flavorContentPanel;
+    private javax.swing.JPanel flavorPanel;
     private javax.swing.JList<String> flavorsList;
     private javax.swing.JScrollPane flavorsScrollPane;
+    private javax.swing.JLabel mimeTypeLabel;
+    private javax.swing.JTextField mimeTypeTextField;
+    private javax.swing.JLabel presentableNameLabel;
+    private javax.swing.JTextField presentableNameTextField;
+    private javax.swing.JLabel primaryMimeTypeLabel;
+    private javax.swing.JTextField primaryMimeTypeTextField;
+    private javax.swing.JLabel stringTypeLabel;
+    private javax.swing.JTextField stringTypeTextField;
+    private javax.swing.JLabel subMimeTypeLabel;
+    private javax.swing.JTextField subMimeTypeTextField;
     // End of variables declaration//GEN-END:variables
 }
