@@ -40,6 +40,13 @@ public class DataFlavorsListModel extends AbstractListModel<String> {
 
     @Override
     public String getElementAt(int index) {
-        return dataFlavors[index].getHumanPresentableName();
+        DataFlavor dataFlavor = dataFlavors[index];
+        String humanPresentableName = dataFlavor.getHumanPresentableName();
+        String mimeType = dataFlavor.getMimeType();
+        if (mimeType.startsWith(humanPresentableName)) {
+            return mimeType;
+        }
+            
+        return humanPresentableName;
     }
 }

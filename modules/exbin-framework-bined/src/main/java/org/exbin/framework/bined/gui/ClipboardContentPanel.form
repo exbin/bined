@@ -86,10 +86,10 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="codeArea" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="dataCodeArea" alignment="1" max="32767" attributes="0"/>
                           <Component id="presentableNameTextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="stringTypeTextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="mimeTypeTextField" alignment="0" max="32767" attributes="0"/>
@@ -107,17 +107,18 @@
                                   <Component id="subMimeTypeTextField" pref="429" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="defaultClassNameTextField" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Component id="representationClassTextField" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="presentableNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="stringTypeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="mimeTypeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="defaultClassNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="representationClassLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="dataLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="dataComboBox" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -151,13 +152,15 @@
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="defaultClassNameLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="representationClassLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="defaultClassNameTextField" min="-2" max="-2" attributes="0"/>
+                      <Component id="representationClassTextField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="dataLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="codeArea" pref="290" max="32767" attributes="0"/>
+                      <Component id="dataComboBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="dataCodeArea" pref="261" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -173,9 +176,6 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="presentableNameTextFieldActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="stringTypeLabel">
               <Properties>
@@ -186,9 +186,6 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stringTypeTextFieldActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="mimeTypeLabel">
               <Properties>
@@ -220,26 +217,28 @@
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="defaultClassNameLabel">
+            <Component class="javax.swing.JLabel" name="representationClassLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Default Class Name"/>
+                <Property name="text" type="java.lang.String" value="Representation Class"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="defaultClassNameTextField">
+            <Component class="javax.swing.JTextField" name="representationClassTextField">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="defaultClassNameTextFieldActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="dataLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Data"/>
               </Properties>
             </Component>
-            <Component class="org.exbin.bined.swing.basic.CodeArea" name="codeArea">
+            <Component class="javax.swing.JComboBox" name="dataComboBox">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+            <Component class="org.exbin.bined.swing.basic.CodeArea" name="dataCodeArea">
             </Component>
           </SubComponents>
         </Container>

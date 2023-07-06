@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined;
+package org.exbin.framework.bined.data.source;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -42,7 +42,7 @@ public class CliboardFlavorBinaryData implements BinaryData {
 	public static final String BROKEN_DATA_SOURCE = "Broken data source";
     public static final int PAGE_SIZE = 4096;
 
-    private final DataFlavor dataFlavor;
+    private DataFlavor dataFlavor;
     private long dataSize = 0;
 
     private InputStream cacheInputStream = null;
@@ -50,9 +50,15 @@ public class CliboardFlavorBinaryData implements BinaryData {
     private final DataPage[] cachePages = new DataPage[] { new DataPage(), new DataPage() };
     private int nextCachePage = 0;
 
-    public CliboardFlavorBinaryData(DataFlavor dataFlavor) {
+    public CliboardFlavorBinaryData() {
+    }
+    
+    public void setDataFlavor(DataFlavor dataFlavor) throws ClassNotFoundException, UnsupportedFlavorException {
         this.dataFlavor = dataFlavor;
-        
+        if (!ClipboardUtils.getClipboard().isDataFlavorAvailable(dataFlavor)) {
+            throw new UnsupportedFlavorException(dataFlavor);
+        }
+
         InputStream inputStream = getDataInputStream();
         dataSize = 0;
         do {
@@ -69,6 +75,10 @@ public class CliboardFlavorBinaryData implements BinaryData {
             }
             dataSize += skipped;
         } while (dataSize > 0);
+    }
+
+    public void convertDataFlavor(DataFlavor sourceFlavor) throws ClassNotFoundException, UnsupportedFlavorException {
+        setDataFlavor(new DataFlavor(sourceFlavor.getPrimaryType() + "/" + sourceFlavor.getSubType() + ";class=java.io.InputStream"));
     }
 
     @Override
@@ -99,7 +109,13 @@ public class CliboardFlavorBinaryData implements BinaryData {
     @Nonnull
     @Override
     public BinaryData copy() {
-        return new CliboardFlavorBinaryData(dataFlavor);
+        CliboardFlavorBinaryData copy = new CliboardFlavorBinaryData();
+        try {
+            copy.convertDataFlavor(dataFlavor);
+        } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
+            Logger.getLogger(CliboardFlavorBinaryData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return copy;
     }
 
     @Nonnull
