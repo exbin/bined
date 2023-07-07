@@ -27,7 +27,7 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.gui.GoToBinaryPanel;
+import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.WindowUtils.DialogWrapper;
@@ -70,7 +70,7 @@ public class GoToPositionAction extends AbstractAction implements CodeAreaAction
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final GoToBinaryPanel goToPanel = new GoToBinaryPanel();
+        final GoToPositionPanel goToPanel = new GoToPositionPanel();
         goToPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         goToPanel.setMaxPosition(codeArea.getDataSize());
         DefaultControlPanel controlPanel = new DefaultControlPanel(goToPanel.getResourceBundle());

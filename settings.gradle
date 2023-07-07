@@ -9,6 +9,7 @@ include ":modules:exbin-framework-bined-makro"
 include ":modules:exbin-framework-bined-search"
 include ":modules:exbin-framework-bined-block-edit"
 include ":modules:exbin-framework-bined-inspector"
+include ":modules:exbin-framework-bined-clipboard"
 include ":apps:bined-editor"
 
 File placeholder = file("deps/.downloaded")

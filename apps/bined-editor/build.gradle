@@ -89,6 +89,7 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-compare')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-bookmarks')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-inspector')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-clipboard')
     implementation 'commons-cli:commons-cli:1.2'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group: 'junit', name: 'junit', version: '4.10'

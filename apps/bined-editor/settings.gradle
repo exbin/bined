@@ -14,6 +14,7 @@ if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined-bookmarks'
     include ':modules:exbin-framework-bined-compare'
     include ':modules:exbin-framework-bined-inspector'
+    include ':modules:exbin-framework-bined-clipboard'
 }
 
 apply from: '../apps-settings.gradle'
