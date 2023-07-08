@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.clipboard.gui;
 
+import java.awt.BorderLayout;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -30,6 +31,8 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.framework.bined.clipboard.data.source.CliboardFlavorBinaryData;
@@ -50,19 +53,20 @@ import org.exbin.framework.utils.WindowUtils;
  */
 @ParametersAreNonnullByDefault
 public class ClipboardContentPanel extends javax.swing.JPanel {
-    
+
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ClipboardContentPanel.class);
 
     private DataFlavor[] dataFlavors;
     private final DefaultComboBoxModel<String> dataListModel = new DefaultComboBoxModel<>();
-    private final List<BinaryData> dataListBinaryData = new ArrayList<>();
+    private final List<Object> dataContents = new ArrayList<>();
     private final ObjectValueConvertor objectValueConvertor = new ObjectValueConvertor();
+    private JComponent currentDataComponent = null;
 
     public ClipboardContentPanel() {
         initComponents();
         init();
     }
-    
+
     private void init() {
         dataCodeArea.setBorder(new BevelBorder(BevelBorder.LOWERED));
         flavorsList.setModel(new DataFlavorsListModel());
@@ -76,32 +80,33 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 primaryMimeTypeTextField.setText(dataFlavor.getPrimaryType());
                 subMimeTypeTextField.setText(dataFlavor.getSubType());
                 representationClassTextField.setText(dataFlavor.getRepresentationClass().getCanonicalName());
-                
+
                 dataListModel.removeAllElements();
-                dataListBinaryData.clear();
+                dataContents.clear();
                 dataCodeArea.setContentData(null);
 
+                Clipboard clipboard = ClipboardUtils.getClipboard();
                 try {
-                    Clipboard clipboard = ClipboardUtils.getClipboard();
                     Object data = clipboard.getData(dataFlavor);
                     Optional<BinaryData> convBinaryData = objectValueConvertor.process(data);
-                    BinaryData binaryData = null;
+                    Object contentData = null;
                     if (convBinaryData.isPresent()) {
-                        binaryData = convBinaryData.get();
+                        contentData = convBinaryData.get();
                     } else {
                         if (data instanceof InputStream) {
                             try {
                                 CliboardFlavorBinaryData cliboardFlavorBinaryData = new CliboardFlavorBinaryData();
                                 cliboardFlavorBinaryData.setDataFlavor(dataFlavor);
-                                binaryData = cliboardFlavorBinaryData;
+                                contentData = cliboardFlavorBinaryData;
                             } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
                             }
-                        } if (data instanceof ByteBuffer) {
-                            binaryData = new PageProviderBinaryData(new ByteBufferPageProvider((ByteBuffer) data));
-                        } if (data instanceof CharBuffer) {
-                            binaryData = new PageProviderBinaryData(new CharBufferPageProvider((CharBuffer) data));
-                        } if (data instanceof Reader) {
-                            binaryData = new PageProviderBinaryData(new ReaderPageProvider(() -> {
+                        }
+                        if (data instanceof ByteBuffer) {
+                            contentData = new PageProviderBinaryData(new ByteBufferPageProvider((ByteBuffer) data));
+                        } else if (data instanceof CharBuffer) {
+                            contentData = new PageProviderBinaryData(new CharBufferPageProvider((CharBuffer) data));
+                        } else if (data instanceof Reader) {
+                            contentData = new PageProviderBinaryData(new ReaderPageProvider(() -> {
                                 try {
                                     return (Reader) clipboard.getData(dataFlavor);
                                 } catch (UnsupportedFlavorException | IOException ex) {
@@ -110,34 +115,82 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                             }));
                         }
                     }
-                    
-                    if (binaryData != null && data != null) {
-                        dataListBinaryData.add(binaryData);
-                        dataListModel.addElement("From class: " + data.getClass().getCanonicalName());
+
+                    if (contentData != null && data != null) {
+                        dataContents.add(contentData);
+                        dataListModel.addElement("Binary data from class: " + data.getClass().getCanonicalName());
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                 }
-                    
-                if (dataListBinaryData.isEmpty()) {
+                
+                try {
+                    Object data = clipboard.getData(dataFlavor);
+                    if (data instanceof List<?>) {
+                        dataContents.add(data);
+                        dataListModel.addElement("List from: " + data.getClass().getCanonicalName());
+                    } else if (data instanceof String) {
+                        dataContents.add(data);
+                        dataListModel.addElement("Text from: " + data.getClass().getCanonicalName());
+                    }
+                } catch (UnsupportedFlavorException | IOException ex) {
+                }
+
+                if (dataContents.isEmpty()) {
                     CliboardFlavorBinaryData binaryData = new CliboardFlavorBinaryData();
                     try {
                         binaryData.convertDataFlavor(dataFlavor);
-                        dataListBinaryData.add(binaryData);
+                        dataContents.add(binaryData);
                         dataListModel.addElement("Requested conversion to: InputStream");
                     } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
                     }
                 }
-
-                if (!dataListBinaryData.isEmpty()) {
-                    dataCodeArea.setContentData(dataListBinaryData.get(0));
-                }
             } else {
-                
+                presentableNameTextField.setText("");
+                stringTypeTextField.setText("");
+                mimeTypeTextField.setText("");
+                primaryMimeTypeTextField.setText("");
+                subMimeTypeTextField.setText("");
+                representationClassTextField.setText("");
+
+                dataListModel.removeAllElements();
+                dataContents.clear();
             }
         });
         dataComboBox.setModel(dataListModel);
+        dataComboBox.addItemListener((e) -> {
+            if (currentDataComponent != null) {
+                dataContentPanel.remove(currentDataComponent);
+                currentDataComponent = null;
+            }
+            
+            int selectedIndex = dataComboBox.getSelectedIndex();
+            if (selectedIndex >= 0) {
+                Object dataComponent = dataContents.get(selectedIndex);
+                if (dataComponent instanceof BinaryData) {
+                    dataCodeArea.setContentData((BinaryData) dataComponent);
+                    currentDataComponent = dataCodeArea;
+                } else if (dataComponent instanceof List<?>) {
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
+                    listModel.addAll((List<String>) dataComponent);
+                    dataList.setModel(listModel);
+                    currentDataComponent = dataListScrollPane;
+                } else if (dataComponent instanceof String) {
+                    textDataTextArea.setText((String) dataComponent);
+                    currentDataComponent = textDataScrollPane;
+                }
+            }
+
+            if (currentDataComponent == null) {
+                currentDataComponent = noFlavorSelectedLabel;
+            }
+
+            dataContentPanel.add(currentDataComponent, BorderLayout.CENTER);
+            dataContentPanel.revalidate();
+            dataContentPanel.repaint();
+        });
+        currentDataComponent = noFlavorSelectedLabel;
     }
-    
+
     public void loadFromClipboard() {
         dataFlavors = ClipboardUtils.getClipboard().getAvailableDataFlavors();
         ((DataFlavorsListModel) flavorsList.getModel()).setDataFlavors(dataFlavors);
@@ -157,6 +210,11 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dataCodeArea = new org.exbin.bined.swing.basic.CodeArea();
+        dataListScrollPane = new javax.swing.JScrollPane();
+        dataList = new javax.swing.JList<>();
+        textDataScrollPane = new javax.swing.JScrollPane();
+        textDataTextArea = new javax.swing.JTextArea();
         availableFlavorsLabel = new javax.swing.JLabel();
         flavorsScrollPane = new javax.swing.JScrollPane();
         flavorsList = new javax.swing.JList<>();
@@ -176,16 +234,28 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         representationClassTextField = new javax.swing.JTextField();
         dataLabel = new javax.swing.JLabel();
         dataComboBox = new javax.swing.JComboBox<>();
-        dataCodeArea = new org.exbin.bined.swing.basic.CodeArea();
+        dataContentPanel = new javax.swing.JPanel();
+        noFlavorSelectedLabel = new javax.swing.JLabel();
+
+        dataList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        dataListScrollPane.setViewportView(dataList);
+
+        textDataTextArea.setEditable(false);
+        textDataScrollPane.setViewportView(textDataTextArea);
 
         availableFlavorsLabel.setText("Available Flavors");
 
+        flavorsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         flavorsScrollPane.setViewportView(flavorsList);
 
         flavorContentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Content"));
         flavorContentPanel.setLayout(new java.awt.BorderLayout());
 
-        presentableNameLabel.setText("String Type");
+        presentableNameLabel.setText("Presentable Name");
 
         presentableNameTextField.setEditable(false);
 
@@ -212,18 +282,24 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
         dataLabel.setText("Data");
 
+        dataContentPanel.setLayout(new java.awt.BorderLayout());
+
+        noFlavorSelectedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        noFlavorSelectedLabel.setText("No data representation selected");
+        dataContentPanel.add(noFlavorSelectedLabel, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout flavorPanelLayout = new javax.swing.GroupLayout(flavorPanel);
         flavorPanel.setLayout(flavorPanelLayout);
         flavorPanelLayout.setHorizontalGroup(
             flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(flavorPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, flavorPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dataCodeArea, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(presentableNameTextField)
-                    .addComponent(stringTypeTextField)
-                    .addComponent(mimeTypeTextField)
-                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(dataContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(presentableNameTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stringTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mimeTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
                         .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(primaryMimeTypeLabel)
                             .addComponent(primaryMimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -233,16 +309,16 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                                 .addComponent(subMimeTypeLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(subMimeTypeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)))
-                    .addComponent(representationClassTextField)
-                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                    .addComponent(representationClassTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dataComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
                         .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(presentableNameLabel)
                             .addComponent(stringTypeLabel)
                             .addComponent(mimeTypeLabel)
                             .addComponent(representationClassLabel)
                             .addComponent(dataLabel))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(dataComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         flavorPanelLayout.setVerticalGroup(
@@ -278,7 +354,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dataComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dataCodeArea, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(dataContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -324,13 +400,17 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private javax.swing.JLabel availableFlavorsLabel;
     private org.exbin.bined.swing.basic.CodeArea dataCodeArea;
     private javax.swing.JComboBox<String> dataComboBox;
+    private javax.swing.JPanel dataContentPanel;
     private javax.swing.JLabel dataLabel;
+    private javax.swing.JList<String> dataList;
+    private javax.swing.JScrollPane dataListScrollPane;
     private javax.swing.JPanel flavorContentPanel;
     private javax.swing.JPanel flavorPanel;
     private javax.swing.JList<String> flavorsList;
     private javax.swing.JScrollPane flavorsScrollPane;
     private javax.swing.JLabel mimeTypeLabel;
     private javax.swing.JTextField mimeTypeTextField;
+    private javax.swing.JLabel noFlavorSelectedLabel;
     private javax.swing.JLabel presentableNameLabel;
     private javax.swing.JTextField presentableNameTextField;
     private javax.swing.JLabel primaryMimeTypeLabel;
@@ -341,5 +421,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private javax.swing.JTextField stringTypeTextField;
     private javax.swing.JLabel subMimeTypeLabel;
     private javax.swing.JTextField subMimeTypeTextField;
+    private javax.swing.JScrollPane textDataScrollPane;
+    private javax.swing.JTextArea textDataTextArea;
     // End of variables declaration//GEN-END:variables
 }

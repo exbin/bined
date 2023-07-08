@@ -20,11 +20,11 @@ import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.clipboard.gui.ClipboardContentControlPanel;
 import org.exbin.framework.bined.clipboard.gui.ClipboardContentPanel;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.gui.CloseControlPanel;
 
 /**
  * Clipboard content action.
@@ -55,12 +55,22 @@ public class ClipboardContentAction extends AbstractAction {
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
         clipboardContentPanel.loadFromClipboard();
-        CloseControlPanel controlPanel = new CloseControlPanel();
+        ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
         final WindowUtils.DialogWrapper dialog = frameModule.createDialog(clipboardContentPanel, controlPanel);
         frameModule.setDialogTitle(dialog, clipboardContentPanel.getResourceBundle());
-        controlPanel.setHandler(() -> {
-            dialog.close();
-            dialog.dispose();
+        controlPanel.setHandler((actionType) -> {
+            switch (actionType) {
+                case CLOSE: {
+                    dialog.close();
+                    dialog.dispose();
+
+                    break;
+                }
+                case REFRESH: {
+                    clipboardContentPanel.loadFromClipboard();
+                    break;
+                }
+            }
         });
         WindowUtils.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
         dialog.showCentered(frameModule.getFrame());

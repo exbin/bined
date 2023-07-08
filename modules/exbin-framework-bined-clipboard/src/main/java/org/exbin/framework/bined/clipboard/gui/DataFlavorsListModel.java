@@ -28,10 +28,14 @@ import javax.swing.AbstractListModel;
 @ParametersAreNonnullByDefault
 public class DataFlavorsListModel extends AbstractListModel<String> {
 
-    private DataFlavor[] dataFlavors;
+    private DataFlavor[] dataFlavors = null;
 
     public void setDataFlavors(DataFlavor[] dataFlavors) {
+        if (this.dataFlavors != null) {
+            fireIntervalRemoved(this, 0, this.dataFlavors.length - 1);        
+        }
         this.dataFlavors = dataFlavors;
+        fireIntervalAdded(this, 0, dataFlavors.length - 1);        
     }
 
     @Override
