@@ -16,6 +16,8 @@
 package org.exbin.framework.bined.clipboard.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Image;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -29,10 +31,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.framework.bined.clipboard.data.source.CliboardFlavorBinaryData;
@@ -42,6 +49,7 @@ import org.exbin.framework.bined.clipboard.data.source.ByteBufferPageProvider;
 import org.exbin.framework.bined.clipboard.data.source.CharBufferPageProvider;
 import org.exbin.framework.bined.clipboard.data.source.ReaderPageProvider;
 import org.exbin.framework.bined.clipboard.gui.DataFlavorsListModel;
+import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardUtils;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -54,13 +62,18 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class ClipboardContentPanel extends javax.swing.JPanel {
 
+    public static final String POPUP_MENU_POSTFIX = ".clipboardContentPanel";
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ClipboardContentPanel.class);
 
     private DataFlavor[] dataFlavors;
     private final DefaultComboBoxModel<String> dataListModel = new DefaultComboBoxModel<>();
     private final List<Object> dataContents = new ArrayList<>();
     private final ObjectValueConvertor objectValueConvertor = new ObjectValueConvertor();
+
+    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private JComponent currentDataComponent = null;
+    private AbstractAction openAsTabAction = null;
+    private AbstractAction saveAsFileAction = null;
 
     public ClipboardContentPanel() {
         initComponents();
@@ -131,6 +144,9 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     } else if (data instanceof String) {
                         dataContents.add(data);
                         dataListModel.addElement("Text from: " + data.getClass().getCanonicalName());
+                    } else if (data instanceof Image) {
+                        dataContents.add(data);
+                        dataListModel.addElement("Image from: " + data.getClass().getCanonicalName());
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                 }
@@ -168,7 +184,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 Object dataComponent = dataContents.get(selectedIndex);
                 if (dataComponent instanceof BinaryData) {
                     dataCodeArea.setContentData((BinaryData) dataComponent);
-                    currentDataComponent = dataCodeArea;
+                    currentDataComponent = binaryDataPanel;
                 } else if (dataComponent instanceof List<?>) {
                     DefaultListModel<String> listModel = new DefaultListModel<>();
                     listModel.addAll((List<String>) dataComponent);
@@ -177,6 +193,9 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 } else if (dataComponent instanceof String) {
                     textDataTextArea.setText((String) dataComponent);
                     currentDataComponent = textDataScrollPane;
+                } else if (dataComponent instanceof Image) {
+                    imageLabel.setIcon(new ImageIcon((Image) dataComponent));
+                    currentDataComponent = imageScrollPane;
                 }
             }
 
@@ -201,6 +220,31 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         return resourceBundle;
     }
 
+    @Nonnull
+    public Optional<AbstractAction> getOpenAsTabAction() {
+        return Optional.ofNullable(openAsTabAction);
+    }
+
+    public void setOpenAsTabAction(@Nullable AbstractAction openAsTabAction) {
+        this.openAsTabAction = openAsTabAction;
+        openAsTabButton.setEnabled(openAsTabAction != null);
+    }
+
+    @Nonnull
+    public Optional<AbstractAction> getSaveAsFileAction() {
+        return Optional.ofNullable(saveAsFileAction);
+    }
+
+    public void setSaveAsFileAction(@Nullable AbstractAction saveAsFileAction) {
+        this.saveAsFileAction = saveAsFileAction;
+        saveAsFileButton.setEnabled(saveAsFileAction != null);
+    }
+
+    @Nonnull
+    public Optional<BinaryData> getContentBinaryData() {
+        return Optional.ofNullable(dataCodeArea.getContentData());
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -210,11 +254,16 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dataCodeArea = new org.exbin.bined.swing.basic.CodeArea();
         dataListScrollPane = new javax.swing.JScrollPane();
         dataList = new javax.swing.JList<>();
         textDataScrollPane = new javax.swing.JScrollPane();
         textDataTextArea = new javax.swing.JTextArea();
+        binaryDataPanel = new javax.swing.JPanel();
+        dataCodeArea = new org.exbin.bined.swing.extended.ExtCodeArea();
+        saveAsFileButton = new javax.swing.JButton();
+        openAsTabButton = new javax.swing.JButton();
+        imageScrollPane = new javax.swing.JScrollPane();
+        imageLabel = new javax.swing.JLabel();
         availableFlavorsLabel = new javax.swing.JLabel();
         flavorsScrollPane = new javax.swing.JScrollPane();
         flavorsList = new javax.swing.JList<>();
@@ -246,6 +295,46 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
         textDataTextArea.setEditable(false);
         textDataScrollPane.setViewportView(textDataTextArea);
+
+        saveAsFileButton.setText("Save as file...");
+        saveAsFileButton.setEnabled(false);
+        saveAsFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsFileButtonActionPerformed(evt);
+            }
+        });
+
+        openAsTabButton.setText("Open as tab");
+        openAsTabButton.setEnabled(false);
+        openAsTabButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openAsTabButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout binaryDataPanelLayout = new javax.swing.GroupLayout(binaryDataPanel);
+        binaryDataPanel.setLayout(binaryDataPanelLayout);
+        binaryDataPanelLayout.setHorizontalGroup(
+            binaryDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, binaryDataPanelLayout.createSequentialGroup()
+                .addGap(0, 735, Short.MAX_VALUE)
+                .addComponent(saveAsFileButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(openAsTabButton))
+            .addComponent(dataCodeArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        binaryDataPanelLayout.setVerticalGroup(
+            binaryDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, binaryDataPanelLayout.createSequentialGroup()
+                .addComponent(dataCodeArea, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(binaryDataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(openAsTabButton)
+                    .addComponent(saveAsFileButton)))
+        );
+
+        imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imageScrollPane.setViewportView(imageLabel);
 
         availableFlavorsLabel.setText("Available Flavors");
 
@@ -387,6 +476,14 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void openAsTabButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAsTabButtonActionPerformed
+        openAsTabAction.actionPerformed(evt);
+    }//GEN-LAST:event_openAsTabButtonActionPerformed
+
+    private void saveAsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileButtonActionPerformed
+        saveAsFileAction.actionPerformed(evt);
+    }//GEN-LAST:event_saveAsFileButtonActionPerformed
+
     /**
      * Test method for this panel.
      *
@@ -398,7 +495,8 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel availableFlavorsLabel;
-    private org.exbin.bined.swing.basic.CodeArea dataCodeArea;
+    private javax.swing.JPanel binaryDataPanel;
+    private org.exbin.bined.swing.extended.ExtCodeArea dataCodeArea;
     private javax.swing.JComboBox<String> dataComboBox;
     private javax.swing.JPanel dataContentPanel;
     private javax.swing.JLabel dataLabel;
@@ -408,15 +506,19 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private javax.swing.JPanel flavorPanel;
     private javax.swing.JList<String> flavorsList;
     private javax.swing.JScrollPane flavorsScrollPane;
+    private javax.swing.JLabel imageLabel;
+    private javax.swing.JScrollPane imageScrollPane;
     private javax.swing.JLabel mimeTypeLabel;
     private javax.swing.JTextField mimeTypeTextField;
     private javax.swing.JLabel noFlavorSelectedLabel;
+    private javax.swing.JButton openAsTabButton;
     private javax.swing.JLabel presentableNameLabel;
     private javax.swing.JTextField presentableNameTextField;
     private javax.swing.JLabel primaryMimeTypeLabel;
     private javax.swing.JTextField primaryMimeTypeTextField;
     private javax.swing.JLabel representationClassLabel;
     private javax.swing.JTextField representationClassTextField;
+    private javax.swing.JButton saveAsFileButton;
     private javax.swing.JLabel stringTypeLabel;
     private javax.swing.JTextField stringTypeTextField;
     private javax.swing.JLabel subMimeTypeLabel;
@@ -424,4 +526,28 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane textDataScrollPane;
     private javax.swing.JTextArea textDataTextArea;
     // End of variables declaration//GEN-END:variables
+
+    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
+        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
+        dataCodeArea.setComponentPopupMenu(new JPopupMenu() {
+            @Override
+            public void show(Component invoker, int x, int y) {
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += ((JViewport) invoker).getParent().getX();
+                    clickedY += ((JViewport) invoker).getParent().getY();
+                }
+                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(dataCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
+                popupMenu.show(invoker, x, y);
+                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
+            }
+        });
+    }
+
+    public void detachMenu() {
+        if (codeAreaPopupMenuHandler != null) {
+            codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
+        }
+    }
 }
