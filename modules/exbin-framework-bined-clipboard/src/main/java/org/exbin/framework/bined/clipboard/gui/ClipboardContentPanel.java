@@ -49,6 +49,7 @@ import org.exbin.framework.bined.clipboard.data.source.ByteBufferPageProvider;
 import org.exbin.framework.bined.clipboard.data.source.CharBufferPageProvider;
 import org.exbin.framework.bined.clipboard.data.source.ReaderPageProvider;
 import org.exbin.framework.bined.clipboard.gui.DataFlavorsListModel;
+import org.exbin.framework.bined.clipboard.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardUtils;
 import org.exbin.framework.utils.LanguageUtils;
@@ -72,6 +73,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private JComponent currentDataComponent = null;
+    private InspectComponentPanel inspectComponentPanel = new InspectComponentPanel();
     private AbstractAction openAsTabAction = null;
     private AbstractAction saveAsFileAction = null;
 
@@ -135,7 +137,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                 }
-                
+
                 try {
                     Object data = clipboard.getData(dataFlavor);
                     if (data instanceof List<?>) {
@@ -147,6 +149,11 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     } else if (data instanceof Image) {
                         dataContents.add(data);
                         dataListModel.addElement("Image from: " + data.getClass().getCanonicalName());
+                    }
+                    
+                    if (data != null) {
+                        dataContents.add(new PropertyClass(data));
+                        dataListModel.addElement("Class properties from: " + data.getClass().getCanonicalName());
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                 }
@@ -175,10 +182,23 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         dataComboBox.setModel(dataListModel);
         dataComboBox.addItemListener((e) -> {
             if (currentDataComponent != null) {
+                if (currentDataComponent == binaryDataPanel) {
+                    dataCodeArea.setContentData(null);
+                } else if (currentDataComponent == dataListScrollPane) {
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
+                    dataList.setModel(listModel);
+                } else if (currentDataComponent == textDataScrollPane) {
+                    textDataTextArea.setText("");
+                } else if (currentDataComponent == imageScrollPane) {
+                    imageLabel.setIcon(null);
+                } else if (currentDataComponent == inspectComponentPanel) {
+                    inspectComponentPanel.setComponent("", null);
+                }
+                
                 dataContentPanel.remove(currentDataComponent);
                 currentDataComponent = null;
             }
-            
+
             int selectedIndex = dataComboBox.getSelectedIndex();
             if (selectedIndex >= 0) {
                 Object dataComponent = dataContents.get(selectedIndex);
@@ -196,6 +216,9 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 } else if (dataComponent instanceof Image) {
                     imageLabel.setIcon(new ImageIcon((Image) dataComponent));
                     currentDataComponent = imageScrollPane;
+                } else if (dataComponent instanceof PropertyClass) {
+                    inspectComponentPanel.setComponent(((PropertyClass) dataComponent).classInst, null);
+                    currentDataComponent = inspectComponentPanel;
                 }
             }
 
@@ -208,6 +231,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
             dataContentPanel.repaint();
         });
         currentDataComponent = noFlavorSelectedLabel;
+        inspectComponentPanel.setShowPropertiesOnly(true);
     }
 
     public void loadFromClipboard() {
@@ -548,6 +572,15 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     public void detachMenu() {
         if (codeAreaPopupMenuHandler != null) {
             codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
+        }
+    }
+
+    private static class PropertyClass {
+
+        Object classInst;
+
+        public PropertyClass(Object classInst) {
+            this.classInst = classInst;
         }
     }
 }
