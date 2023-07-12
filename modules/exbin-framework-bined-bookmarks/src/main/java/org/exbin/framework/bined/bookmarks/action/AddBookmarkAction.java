@@ -17,8 +17,9 @@ package org.exbin.framework.bined.bookmarks.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
@@ -54,9 +55,9 @@ public class AddBookmarkAction extends AbstractAction {
         putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
-    @Nullable
-    public BookmarkRecord getBookmarkRecord() {
-        return bookmarkRecord;
+    @Nonnull
+    public Optional<BookmarkRecord> getBookmarkRecord() {
+        return Optional.ofNullable(bookmarkRecord);
     }
 
     @Override

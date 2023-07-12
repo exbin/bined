@@ -48,7 +48,6 @@ import org.exbin.framework.bined.clipboard.data.PageProviderBinaryData;
 import org.exbin.framework.bined.clipboard.data.source.ByteBufferPageProvider;
 import org.exbin.framework.bined.clipboard.data.source.CharBufferPageProvider;
 import org.exbin.framework.bined.clipboard.data.source.ReaderPageProvider;
-import org.exbin.framework.bined.clipboard.gui.DataFlavorsListModel;
 import org.exbin.framework.bined.clipboard.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardUtils;

@@ -18,6 +18,7 @@ package org.exbin.framework.bined.bookmarks;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -59,10 +60,10 @@ public class BookmarksManager {
             @Override
             public void addRecord() {
                 addBookmarkAction.actionPerformed(null);
-                BookmarkRecord bookmarkRecord = addBookmarkAction.getBookmarkRecord();
-                if (bookmarkRecord != null) {
+                Optional<BookmarkRecord> bookmarkRecord = addBookmarkAction.getBookmarkRecord();
+                if (bookmarkRecord.isPresent()) {
                     List<BookmarkRecord> records = bookmarksManagerPanel.getBookmarkRecords();
-                    records.add(bookmarkRecord);
+                    records.add(bookmarkRecord.get());
                     bookmarksManagerPanel.setBookmarkRecords(records);
                 }
             }
@@ -73,9 +74,9 @@ public class BookmarksManager {
                 int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();
                 editBookmarkAction.setBookmarkRecord(new BookmarkRecord(selectedRecord));
                 editBookmarkAction.actionPerformed(null);
-                BookmarkRecord bookmarkRecord = editBookmarkAction.getBookmarkRecord();
-                if (bookmarkRecord != null) {
-                    bookmarksManagerPanel.updateRecord(bookmarkRecord, selectedRow);
+                Optional<BookmarkRecord> bookmarkRecord = editBookmarkAction.getBookmarkRecord();
+                if (bookmarkRecord.isPresent()) {
+                    bookmarksManagerPanel.updateRecord(bookmarkRecord.get(), selectedRow);
                 }
             }
 

@@ -31,11 +31,13 @@ public class DataFlavorsListModel extends AbstractListModel<String> {
     private DataFlavor[] dataFlavors = null;
 
     public void setDataFlavors(DataFlavor[] dataFlavors) {
-        if (this.dataFlavors != null) {
+        if (this.dataFlavors != null && this.dataFlavors.length > 0) {
             fireIntervalRemoved(this, 0, this.dataFlavors.length - 1);        
         }
         this.dataFlavors = dataFlavors;
-        fireIntervalAdded(this, 0, dataFlavors.length - 1);        
+        if (dataFlavors.length > 0) {
+            fireIntervalAdded(this, 0, dataFlavors.length - 1);        
+        }
     }
 
     @Override
