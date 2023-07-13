@@ -75,6 +75,7 @@ public class ManageBookmarksAction extends AbstractAction {
 
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        WindowUtils.addHeaderPanel(dialog.getWindow(), bookmarksPanel.getClass(), bookmarksPanel.getResourceBundle());
         frameModule.setDialogTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
