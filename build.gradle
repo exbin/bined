@@ -15,6 +15,7 @@ plugins {
     id 'distribution'
     id 'maven-publish'
     id "nebula.ospackage" version "8.4.1"
+    id("org.panteleyev.jpackageplugin") version "1.5.2"
 }
 
 version = '0.2.2-SNAPSHOT'
@@ -142,6 +143,43 @@ buildRpm {
 buildDeb {
     arch = 'all'
     requires('default-jre', '1.8.0', GREATER | EQUAL)
+}
+
+task("copyDependencies", type: Copy) {
+    from(project(':apps:bined-editor').configurations.runtimeClasspath).into("$buildDir/jars")
+}
+
+task("copyJar", type: Copy) {
+    from(project(':apps:bined-editor').jar).into("$buildDir/jars")
+}
+
+tasks.jpackage {
+    dependsOn("build", "copyDependencies", "copyJar")
+
+    input  = "$buildDir/jars"
+    destination = "$buildDir/dist"
+
+    appName = "Non-Modular Application"
+    appVersion = "0.2.2"
+    vendor = "app.org"
+
+    mainJar = project(':apps:bined-editor').jar.archivePath
+    mainClass = project(':apps:bined-editor').ext.mainClass
+
+    javaOptions = ["-Dfile.encoding=UTF-8"]
+
+//    mac {
+//        icon = "src/icons/icons.icns"
+//    }
+
+// Windows specific parameters will be processed only during Windows build
+// winMenu = true
+// winDirChooser = true
+
+    windows {
+//        icon = "src/icons/icons.ico"
+        winConsole = true
+    }
 }
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
