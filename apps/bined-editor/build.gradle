@@ -112,7 +112,7 @@ launch4j {
     companyName = "ExBin Project"
     version = (project.version.endsWith("-SNAPSHOT") ? project.version.substring(0, project.version.length() - 9) : project.version)
     textVersion = project.version
-    icon = "../../../../images/icon.ico"
+    icon = "../../../../src/icons/icon.ico"
     copyright = "ExBin Project"
 }
 
