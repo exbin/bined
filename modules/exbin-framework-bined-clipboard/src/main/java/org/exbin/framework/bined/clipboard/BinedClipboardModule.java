@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.clipboard;
 
+import org.exbin.framework.bined.objectdata.BinedObjectDataModule;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;

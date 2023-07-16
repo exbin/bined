@@ -42,13 +42,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.paged_data.BinaryData;
-import org.exbin.framework.bined.clipboard.data.source.CliboardFlavorBinaryData;
-import org.exbin.framework.bined.clipboard.data.ObjectValueConvertor;
-import org.exbin.framework.bined.clipboard.data.PageProviderBinaryData;
-import org.exbin.framework.bined.clipboard.data.source.ByteBufferPageProvider;
-import org.exbin.framework.bined.clipboard.data.source.CharBufferPageProvider;
-import org.exbin.framework.bined.clipboard.data.source.ReaderPageProvider;
-import org.exbin.framework.bined.clipboard.property.gui.InspectComponentPanel;
+import org.exbin.framework.bined.clipboard.source.ClipboardFlavorBinaryData;
+import org.exbin.framework.bined.objectdata.ObjectValueConvertor;
+import org.exbin.framework.bined.objectdata.PageProviderBinaryData;
+import org.exbin.framework.bined.objectdata.source.ByteBufferPageProvider;
+import org.exbin.framework.bined.objectdata.source.CharBufferPageProvider;
+import org.exbin.framework.bined.objectdata.source.ReaderPageProvider;
+import org.exbin.framework.bined.objectdata.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardUtils;
 import org.exbin.framework.utils.LanguageUtils;
@@ -109,7 +109,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     } else {
                         if (data instanceof InputStream) {
                             try {
-                                CliboardFlavorBinaryData cliboardFlavorBinaryData = new CliboardFlavorBinaryData();
+                                ClipboardFlavorBinaryData cliboardFlavorBinaryData = new ClipboardFlavorBinaryData();
                                 cliboardFlavorBinaryData.setDataFlavor(dataFlavor);
                                 contentData = cliboardFlavorBinaryData;
                             } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
@@ -158,7 +158,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 }
 
                 if (dataContents.isEmpty()) {
-                    CliboardFlavorBinaryData binaryData = new CliboardFlavorBinaryData();
+                    ClipboardFlavorBinaryData binaryData = new ClipboardFlavorBinaryData();
                     try {
                         binaryData.convertDataFlavor(dataFlavor);
                         dataContents.add(binaryData);

@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
+import javax.swing.JMenu;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
@@ -27,11 +28,13 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
+import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Binary data editor module.
@@ -50,6 +53,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     private ManageBookmarksAction manageBookmarksAction;
     private BookmarksManager bookmarksManager = new BookmarksManager();
+    private JMenu bookmarksMenu = null;
 
     public BinedBookmarksModule() {
     }
@@ -73,9 +77,9 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public void unregisterModule(String moduleId) {
     }
 
-    public void registerEditMenuActions() {
+    public void registerBookmarksMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getManageBookmarksAction(), new MenuPosition(PositionMode.BOTTOM));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedSearchModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     @Nonnull
@@ -101,6 +105,18 @@ public class BinedBookmarksModule implements XBApplicationModule {
     @Nonnull
     public EditorProvider getEditorProvider() {
         return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
+    }
+
+    @Nonnull
+    public JMenu getBookmarksMenu() {
+        if (bookmarksMenu == null) {
+            getResourceBundle();
+            bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+            bookmarksManager.setBookmarksMenu(bookmarksMenu);
+            getManageBookmarksAction();
+            bookmarksMenu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
+        }
+        return bookmarksMenu;
     }
 
     @Nonnull

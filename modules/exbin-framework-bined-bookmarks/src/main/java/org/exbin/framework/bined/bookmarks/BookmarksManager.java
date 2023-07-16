@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import org.exbin.framework.api.Preferences;
@@ -53,6 +54,7 @@ public class BookmarksManager {
 
     private AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
     private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
+    private JMenu bookmarksMenu;
 
     public BookmarksManager() {
         bookmarksManagerPanel = new BookmarksManagerPanel();
@@ -175,10 +177,20 @@ public class BookmarksManager {
         bookmarkRecords.addAll(records);
         saveBookmarkRecords();
         bookmarksPositionColorModifier.notifyBookmarksChanged();
+        updateBookmarksMenu();
     }
 
     @Nonnull
     public BookmarksManagerPanel getBookmarksManagerPanel() {
         return bookmarksManagerPanel;
+    }
+
+    public void setBookmarksMenu(JMenu bookmarksMenu) {
+        this.bookmarksMenu = bookmarksMenu;
+        updateBookmarksMenu();
+    }
+    
+    public void updateBookmarksMenu() {
+        // TODO bookmarksMenu.
     }
 }

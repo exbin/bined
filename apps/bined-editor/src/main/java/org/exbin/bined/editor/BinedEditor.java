@@ -41,6 +41,7 @@ import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.clipboard.BinedClipboardModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.search.BinedSearchModule;
+import org.exbin.framework.bined.objectdata.BinedObjectDataModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.about.api.AboutModuleApi;
 import org.exbin.framework.editor.api.EditorModuleApi;
@@ -151,6 +152,8 @@ public class BinedEditor {
                     BinedInspectorModule binedInspectorModule = moduleRepository.getModuleByInterface(BinedInspectorModule.class);
                     binedInspectorModule.setEditorProvider(editorProvider);
 
+                    BinedObjectDataModule binedObjectDataModule = moduleRepository.getModuleByInterface(BinedObjectDataModule.class);
+
                     BinedClipboardModule binedClipboardModule = moduleRepository.getModuleByInterface(BinedClipboardModule.class);
                     binedClipboardModule.setEditorProvider(editorProvider);
 
@@ -198,7 +201,7 @@ public class BinedEditor {
                     binedModule.registerCodeTypeToolBarActions();
                     binedModule.registerShowUnprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
-                    binedBookmarksModule.registerEditMenuActions();
+                    binedBookmarksModule.registerBookmarksMenuActions();
                     binedModule.registerViewUnprintablesMenuActions();
                     binedInspectorModule.registerViewValuesPanelMenuActions();
                     binedModule.registerToolsOptionsMenuActions();

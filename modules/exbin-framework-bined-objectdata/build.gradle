@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'org.exbin.framework'
-ext.libraryName = 'BinEd Clipboard Support Hexadecimal Editor Framework Library'
-ext.libraryDescription = 'BinEd clipboard support hexadecimal editor framework library'
+ext.libraryName = 'BinEd Object Data Support Framework Library'
+ext.libraryDescription = 'BinEd support library for object data'
 
 apply from: '../bined-modules.gradle'
 
@@ -45,7 +45,6 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-utils')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor-text')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-objectdata')
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group : 'junit', name: 'junit', version: '4.10'
 }
