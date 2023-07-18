@@ -23,7 +23,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
-import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
@@ -34,7 +33,6 @@ import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
-import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Binary data editor module.
@@ -51,9 +49,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
     private XBApplication application;
     private EditorProvider editorProvider;
 
-    private ManageBookmarksAction manageBookmarksAction;
     private BookmarksManager bookmarksManager = new BookmarksManager();
-    private JMenu bookmarksMenu = null;
 
     public BinedBookmarksModule() {
     }
@@ -70,6 +66,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
+        bookmarksManager.setEditorProvider(editorProvider);
         bookmarksManager.init();
     }
 
@@ -84,13 +81,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     @Nonnull
     public AbstractAction getManageBookmarksAction() {
-        if (manageBookmarksAction == null) {
-            ensureSetup();
-            manageBookmarksAction = new ManageBookmarksAction();
-            manageBookmarksAction.setup(application, editorProvider, resourceBundle);
-        }
-
-        return manageBookmarksAction;
+        return bookmarksManager.getManageBookmarksAction();
     }
 
     @Nonnull
@@ -109,14 +100,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     @Nonnull
     public JMenu getBookmarksMenu() {
-        if (bookmarksMenu == null) {
-            getResourceBundle();
-            bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
-            bookmarksManager.setBookmarksMenu(bookmarksMenu);
-            getManageBookmarksAction();
-            bookmarksMenu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
-        }
-        return bookmarksMenu;
+        return bookmarksManager.getBookmarksMenu();
     }
 
     @Nonnull

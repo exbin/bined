@@ -15,24 +15,35 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
+import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.preferences.BookmarkPreferences;
+import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.LanguageUtils;
 
 /**
@@ -51,10 +62,12 @@ public class BookmarksManager {
 
     private final BookmarksManagerPanel bookmarksManagerPanel;
     private XBApplication application;
+    private EditorProvider editorProvider;
 
+    private ManageBookmarksAction manageBookmarksAction = new ManageBookmarksAction();
     private AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
     private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
-    private JMenu bookmarksMenu;
+    private JMenu bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
 
     public BookmarksManager() {
         bookmarksManagerPanel = new BookmarksManagerPanel();
@@ -141,12 +154,19 @@ public class BookmarksManager {
         editBookmarkAction.setup(application, resourceBundle);
     }
 
+    public void setEditorProvider(EditorProvider editorProvider) {
+        this.editorProvider = editorProvider;
+
+        manageBookmarksAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+    }
+
     public void init() {
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
 
         Preferences preferences = application.getAppPreferences();
         bookmarkPreferences = new BookmarkPreferences(preferences);
         loadBookmarkRecords();
+        updateBookmarksMenu();
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
         binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
     }
@@ -172,6 +192,11 @@ public class BookmarksManager {
         return bookmarkRecords;
     }
 
+    @Nonnull
+    public AbstractAction getManageBookmarksAction() {
+        return manageBookmarksAction;
+    }
+
     public void setBookmarkRecords(List<BookmarkRecord> records) {
         bookmarkRecords.clear();
         bookmarkRecords.addAll(records);
@@ -185,12 +210,40 @@ public class BookmarksManager {
         return bookmarksManagerPanel;
     }
 
+    @Nonnull
+    public JMenu getBookmarksMenu() {
+        return bookmarksMenu;
+    }
+
     public void setBookmarksMenu(JMenu bookmarksMenu) {
         this.bookmarksMenu = bookmarksMenu;
         updateBookmarksMenu();
     }
     
     public void updateBookmarksMenu() {
-        // TODO bookmarksMenu.
+        bookmarksMenu.removeAll();
+        int recordsLimit = Math.min(bookmarkRecords.size(), 10);
+        for (int i = 0; i < recordsLimit; i++) {
+            BookmarkRecord bookmarkRecord = bookmarkRecords.get(i);
+            Action bookmarkAction = new AbstractAction("Bookmark " + (i+1)) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    long startPosition = bookmarkRecord.getStartPosition();
+                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                    if (activeFile.isPresent()) {
+                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                        ExtCodeArea codeArea = fileHandler.getCodeArea();
+                        codeArea.centerOnPosition(startPosition, 0, codeArea.getActiveSection());
+                    }
+                }
+            };
+            bookmarkAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+            bookmarksMenu.add(bookmarkAction);
+        }
+        
+        if (!bookmarkRecords.isEmpty()) {
+            bookmarksMenu.addSeparator();
+        }
+        bookmarksMenu.add(manageBookmarksAction);
     }
 }
