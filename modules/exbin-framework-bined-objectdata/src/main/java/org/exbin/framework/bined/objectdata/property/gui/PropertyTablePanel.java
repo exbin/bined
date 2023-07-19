@@ -111,7 +111,7 @@ public class PropertyTablePanel extends javax.swing.JPanel {
                         if (!accessible) {
                             field.setAccessible(false);
                         }
-                    } catch (IllegalArgumentException | IllegalAccessException ex) {
+                    } catch (Throwable ex) {
                         value = null;
                     }
                     PropertyTableItem item = new PropertyTableItem(field.getName(), field.getGenericType().getTypeName(), value);
