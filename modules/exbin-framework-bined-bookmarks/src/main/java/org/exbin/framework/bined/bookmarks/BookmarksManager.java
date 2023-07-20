@@ -68,6 +68,7 @@ public class BookmarksManager {
     private AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
     private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
     private JMenu bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+    private JMenu bookmarksPopupMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
 
     public BookmarksManager() {
         bookmarksManagerPanel = new BookmarksManagerPanel();
@@ -145,6 +146,7 @@ public class BookmarksManager {
                 bookmarksManagerPanel.updateBookmarkRecords(records);
             }
         });
+        manageBookmarksAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
     public void setApplication(XBApplication application) {
@@ -215,6 +217,11 @@ public class BookmarksManager {
         return bookmarksMenu;
     }
 
+    @Nonnull
+    public JMenu getBookmarksPopupMenu() {
+        return bookmarksPopupMenu;
+    }
+
     public void setBookmarksMenu(JMenu bookmarksMenu) {
         this.bookmarksMenu = bookmarksMenu;
         updateBookmarksMenu();
@@ -222,6 +229,7 @@ public class BookmarksManager {
     
     public void updateBookmarksMenu() {
         bookmarksMenu.removeAll();
+        bookmarksPopupMenu.removeAll();
         int recordsLimit = Math.min(bookmarkRecords.size(), 10);
         for (int i = 0; i < recordsLimit; i++) {
             BookmarkRecord bookmarkRecord = bookmarkRecords.get(i);
@@ -238,12 +246,15 @@ public class BookmarksManager {
                 }
             };
             bookmarkAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
-            bookmarksMenu.add(bookmarkAction);
+            bookmarksMenu.add(ActionUtils.actionToMenuItem(bookmarkAction));
+            bookmarksPopupMenu.add(ActionUtils.actionToMenuItem(bookmarkAction));
         }
         
         if (!bookmarkRecords.isEmpty()) {
             bookmarksMenu.addSeparator();
+            bookmarksPopupMenu.addSeparator();
         }
-        bookmarksMenu.add(manageBookmarksAction);
+        bookmarksMenu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
+        bookmarksPopupMenu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
     }
 }
