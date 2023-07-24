@@ -29,9 +29,12 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.clipboard.gui.ClipboardContentControlPanel;
 import org.exbin.framework.bined.clipboard.gui.ClipboardContentPanel;
+import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -49,6 +52,7 @@ public class ClipboardContentAction extends AbstractAction {
 
     private XBApplication application;
     private ResourceBundle resourceBundle;
+    private ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
 
     public ClipboardContentAction() {
     }
@@ -64,16 +68,9 @@ public class ClipboardContentAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
         clipboardContentPanel.loadFromClipboard();
         ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
         final WindowUtils.DialogWrapper dialog = frameModule.createDialog(clipboardContentPanel, controlPanel);
-//        clipboardContentPanel.setOpenAsTabAction(new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                throw new UnsupportedOperationException("Not supported yet.");
-//            }
-//        });
         clipboardContentPanel.setSaveAsFileAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,5 +119,23 @@ public class ClipboardContentAction extends AbstractAction {
         });
         WindowUtils.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
         dialog.showCentered(frameModule.getFrame());
+    }
+
+    public void setEditorProvider(EditorProvider editorProvider) {
+        clipboardContentPanel.setOpenAsTabAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Optional<BinaryData> optContentBinaryData = clipboardContentPanel.getContentBinaryData();
+                if (optContentBinaryData.isPresent()) {
+                    BinaryData contentBinaryData = optContentBinaryData.get();
+                    editorProvider.newFile();
+                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                    if (activeFile.isPresent()) {
+                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                        fileHandler.getCodeArea().setContentData(contentBinaryData);
+                    }
+                }
+            }
+        });
     }
 }

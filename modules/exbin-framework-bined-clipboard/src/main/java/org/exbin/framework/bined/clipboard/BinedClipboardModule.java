@@ -63,6 +63,9 @@ public class BinedClipboardModule implements XBApplicationModule {
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
+        if (clipboardContentAction != null) {
+            clipboardContentAction.setEditorProvider(editorProvider);
+        }
     }
 
     @Override
@@ -99,6 +102,9 @@ public class BinedClipboardModule implements XBApplicationModule {
             ensureSetup();
             clipboardContentAction = new ClipboardContentAction();
             clipboardContentAction.setup(application, resourceBundle);
+            if (editorProvider != null) {
+                clipboardContentAction.setEditorProvider(editorProvider);
+            }
         }
         return clipboardContentAction;
     }

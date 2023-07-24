@@ -294,6 +294,8 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         flavorPanel = new javax.swing.JPanel();
         presentableNameLabel = new javax.swing.JLabel();
         presentableNameTextField = new javax.swing.JTextField();
+        representationClassLabel = new javax.swing.JLabel();
+        representationClassTextField = new javax.swing.JTextField();
         stringTypeLabel = new javax.swing.JLabel();
         stringTypeTextField = new javax.swing.JTextField();
         mimeTypeLabel = new javax.swing.JLabel();
@@ -302,8 +304,6 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         primaryMimeTypeTextField = new javax.swing.JTextField();
         subMimeTypeLabel = new javax.swing.JLabel();
         subMimeTypeTextField = new javax.swing.JTextField();
-        representationClassLabel = new javax.swing.JLabel();
-        representationClassTextField = new javax.swing.JTextField();
         dataLabel = new javax.swing.JLabel();
         dataComboBox = new javax.swing.JComboBox<>();
         dataContentPanel = new javax.swing.JPanel();
@@ -371,6 +371,11 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
         presentableNameTextField.setEditable(false);
 
+        representationClassLabel.setText("Representation Class");
+        representationClassLabel.setToolTipText("");
+
+        representationClassTextField.setEditable(false);
+
         stringTypeLabel.setText("String Type");
 
         stringTypeTextField.setEditable(false);
@@ -387,11 +392,6 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
         subMimeTypeTextField.setEditable(false);
 
-        representationClassLabel.setText("Representation Class");
-        representationClassLabel.setToolTipText("");
-
-        representationClassTextField.setEditable(false);
-
         dataLabel.setText("Data");
 
         dataContentPanel.setLayout(new java.awt.BorderLayout());
@@ -404,14 +404,12 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         flavorPanel.setLayout(flavorPanelLayout);
         flavorPanelLayout.setHorizontalGroup(
             flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, flavorPanelLayout.createSequentialGroup()
+            .addGroup(flavorPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(dataContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(presentableNameTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stringTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mimeTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
+                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stringTypeTextField)
+                    .addComponent(mimeTypeTextField)
+                    .addGroup(flavorPanelLayout.createSequentialGroup()
                         .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(primaryMimeTypeLabel)
                             .addComponent(primaryMimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -421,14 +419,22 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                                 .addComponent(subMimeTypeLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(subMimeTypeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)))
-                    .addComponent(representationClassTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dataComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, flavorPanelLayout.createSequentialGroup()
                         .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(presentableNameLabel)
+                            .addComponent(presentableNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(representationClassTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, flavorPanelLayout.createSequentialGroup()
+                                .addComponent(representationClassLabel)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(dataContentPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dataComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                        .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(stringTypeLabel)
                             .addComponent(mimeTypeLabel)
-                            .addComponent(representationClassLabel)
                             .addComponent(dataLabel))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -436,9 +442,15 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         flavorPanelLayout.setVerticalGroup(
             flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(flavorPanelLayout.createSequentialGroup()
-                .addComponent(presentableNameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(presentableNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(flavorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                        .addComponent(presentableNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(presentableNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(flavorPanelLayout.createSequentialGroup()
+                        .addComponent(representationClassLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(representationClassTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stringTypeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -457,16 +469,12 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                         .addComponent(subMimeTypeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(subMimeTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(representationClassLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(representationClassTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(dataLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dataComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dataContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(dataContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
