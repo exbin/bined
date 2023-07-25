@@ -4,6 +4,7 @@
 - Added edit selection dialog
 - Added clipboard content dialog
 - Added support for files drag&drop (issue #7)
+- Added reload file action
 - Fixed issue with charsets switching
 
 0.2.1 (2021-10-31)

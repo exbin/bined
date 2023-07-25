@@ -69,6 +69,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     private XBUndoHandler undoHandlerWrapper;
     private int id = 0;
     private URI fileUri = null;
+    private FileType fileType;
     private Font defaultFont;
     private ExtendedCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
@@ -101,6 +102,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     }
 
     private void loadFromFile(URI fileUri, FileType fileType, FileHandlingMode fileHandlingMode) {
+        this.fileType = fileType;
         File file = new File(fileUri);
         if (!file.isFile()) {
             JOptionPane.showOptionDialog(componentPanel,
@@ -291,6 +293,12 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
             } catch (IOException ex) {
                 Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public void reloadFile() {
+        if (fileUri != null) {
+            loadFromFile(fileUri, fileType, getFileHandlingMode());
         }
     }
 

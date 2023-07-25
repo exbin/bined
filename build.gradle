@@ -164,7 +164,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 from project(':apps:bined-editor').jar
 
                 from project.rootDir
-                include 'LICENSE-2.0.txt'
+                include 'LICENSE.txt'
                 include 'changes.txt'
 
                 from 'src/dist'

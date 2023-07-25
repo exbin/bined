@@ -32,7 +32,7 @@ RequestExecutionLevel admin
 
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of BinEd version ${CLIENT_VERSION}.$\r$\n$\r$\nBinEd is free and open source hexadecimal editor written in Java / Swing.$\r$\n$\r$\n$_CLICK"
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "LICENSE-2.0.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -58,7 +58,7 @@ Section
   SetOutPath $INSTDIR
 
   ; Put file there
-  File "LICENSE-2.0.txt"
+  File "LICENSE.txt"
   File "readme.txt"
   File "changes.txt"
   File "BinEd.exe"
@@ -118,7 +118,7 @@ Section "Uninstall"
 
   ; Remove files and uninstaller
   Delete $INSTDIR\readme.txt
-  Delete $INSTDIR\LICENSE-2.0.txt
+  Delete $INSTDIR\LICENSE.txt
   Delete $INSTDIR\changes.txt
   Delete $INSTDIR\uninstall.exe
   Delete $INSTDIR\BinEd.exe
@@ -128,6 +128,7 @@ Section "Uninstall"
   RMDir $INSTDIR\imgs
   RMDir /r $INSTDIR\lib
   RMDir /r $INSTDIR\plugins
+  RMDir /r $INSTDIR\help
 
   ; Remove shortcuts, if any
   Delete "$DESKTOP\${MUI_PRODUCT}.lnk"

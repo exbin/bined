@@ -159,6 +159,7 @@ import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.action.EditSelectionAction;
+import org.exbin.framework.bined.action.ReloadFileAction;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -210,6 +211,7 @@ public class BinedModule implements XBApplicationModule {
     private GoToPositionAction goToPositionAction;
     private EditSelectionAction editSelectionAction;
     private PropertiesAction propertiesAction;
+    private ReloadFileAction reloadFileAction;
     private PrintAction printAction;
     private ViewModeHandlerActions viewModeActions;
     private ShowRowPositionAction showRowPositionAction;
@@ -360,7 +362,7 @@ public class BinedModule implements XBApplicationModule {
         EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
         editorModule.updateActionStatus();
         FileDependentAction[] fileDepActions = new FileDependentAction[]{
-            codeAreaFontAction, propertiesAction
+            codeAreaFontAction, propertiesAction, reloadFileAction
         };
         for (FileDependentAction fileDepAction : fileDepActions) {
             if (fileDepAction != null) {
@@ -1556,6 +1558,17 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
+    private AbstractAction getReloadFileAction() {
+        if (reloadFileAction == null) {
+            ensureSetup();
+            reloadFileAction = new ReloadFileAction();
+            reloadFileAction.setup(application, editorProvider, resourceBundle);
+        }
+
+        return reloadFileAction;
+    }
+
+    @Nonnull
     public AbstractAction getPrintAction() {
         if (printAction == null) {
             ensureSetup();
@@ -1658,6 +1671,12 @@ public class BinedModule implements XBApplicationModule {
         getPropertiesAction();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.FILE_MENU_ID, MODULE_ID, getPropertiesAction(), new MenuPosition(PositionMode.BOTTOM));
+    }
+
+    public void registerReloadFileMenu() {
+        getReloadFileAction();
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(FrameModuleApi.FILE_MENU_ID, MODULE_ID, getReloadFileAction(), new MenuPosition(PositionMode.BOTTOM));
     }
 
     public void registerPrintMenu() {
