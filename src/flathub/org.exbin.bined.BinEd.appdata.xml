@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>org.exbin.bined.BinEd</id>
+  <name>BinEd</name>
+  <developer_name>ExBin Project</developer_name>
+  <summary>Binary/Hexadecimal Editor</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>Apache-2.0</project_license>
+  <url type="homepage">https://bined.exbin.org/editor</url>
+  <description><p>Free and open source hexadecimal viewer/editor written in Java.</p></description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>BinEd</caption>
+      <image>https://raw.githubusercontent.com/exbin/bined/master/images/bined_screenshot.png</image>
+    </screenshot>
+  </screenshots>
+  <categories>
+    <category>Development</category>
+    <category>Tools</category>
+  </categories>
+  <launchable type="desktop-id">org.exbin.bined.BinEd.desktop</launchable>
+  <kudos>
+    <kudo>HiDpiIcon</kudo>
+  </kudos>
+  <releases>
+    <release date="2024-01-01" version="0.2.2"/>
+  </releases>
+  <update_contact>exbinproject@gmail.com</update_contact>
+  <content_rating type="oars-1.1"></content_rating>
+</component>

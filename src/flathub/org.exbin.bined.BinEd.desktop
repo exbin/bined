@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=BinEd
+Exec=org.exbin.bined.BinEd
+Type=Application
+Icon=org.exbin.bined.BinEd
+Categories=Development;Tools;
