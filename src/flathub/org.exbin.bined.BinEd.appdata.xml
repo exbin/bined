@@ -7,10 +7,20 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>Apache-2.0</project_license>
   <url type="homepage">https://bined.exbin.org/editor</url>
-  <description><p>Free and open source hexadecimal viewer/editor written in Java.</p></description>
+  <description><p>Free and open source hexadecimal viewer/editor written in Java.</p>
+  <p>Features:</p>
+  <ul>
+    <li>Visualize data as numerical (hexadecimal) codes and text representation</li>
+    <li>Codes can be also binary, octal or decimal</li>
+    <li>Support for Unicode, UTF-8 and other charsets</li>
+    <li>Insert and overwrite edit modes</li>
+    <li>Searching for text / hexadecimal code with matching highlighting</li>
+    <li>Support for undo/redo</li>
+    <li>Support for files with size up to exabytes</li>
+  </ul></description>
   <screenshots>
     <screenshot type="default">
-      <caption>BinEd</caption>
+      <caption>BinEd Main Window</caption>
       <image>https://raw.githubusercontent.com/exbin/bined/master/images/bined_screenshot.png</image>
     </screenshot>
   </screenshots>

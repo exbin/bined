@@ -1731,6 +1731,12 @@ public class BinedModule implements XBApplicationModule {
         actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.getLowerHexCharsAction(), new MenuPosition(PositionMode.TOP));
     }
 
+    public void registerEditSelectionAction() {
+        getEditSelectionAction();
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getEditSelectionAction(), new MenuPosition(ActionModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
+    }
+
     public void start() {
         if (editorProvider instanceof MultiEditorProvider) {
             editorProvider.newFile();

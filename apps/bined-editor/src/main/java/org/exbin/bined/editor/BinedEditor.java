@@ -206,6 +206,7 @@ public class BinedEditor {
                     binedInspectorModule.registerViewValuesPanelMenuActions();
                     binedModule.registerToolsOptionsMenuActions();
                     binedCompareModule.registerToolsOptionsMenuActions();
+                    binedModule.registerEditSelectionAction();
                     binedModule.registerClipboardCodeActions();
                     binedModule.registerOptionsMenuPanels();
                     binedModule.registerGoToPosition();
