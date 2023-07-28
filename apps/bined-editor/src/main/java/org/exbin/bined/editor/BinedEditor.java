@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -240,7 +242,9 @@ public class BinedEditor {
                         return true;
                     });
 
-                    frameHandler.setMainPanel(editorModule.getEditorComponent());
+                    JComponent editorComponent = editorModule.getEditorComponent();
+                    frameHandler.setMainPanel(editorComponent);
+                    binedBookmarksModule.registerBookmarksComponentActions(editorComponent);
 
                     frameHandler.setDefaultSize(new Dimension(600, 400));
                     frameModule.loadFramePosition();

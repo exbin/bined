@@ -64,7 +64,7 @@ public class ManageBookmarksAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
         BookmarksManager bookmarksManager = bookmarksModule.getBookmarksManager();
-        final BookmarksManagerPanel bookmarksPanel = bookmarksManager.getBookmarksManagerPanel();
+        final BookmarksManagerPanel bookmarksPanel = bookmarksManager.createBookmarksManagerPanel();
         List<BookmarkRecord> records = new ArrayList<>();
         for (BookmarkRecord record : bookmarksManager.getBookmarkRecords()) {
             records.add(new BookmarkRecord(record));

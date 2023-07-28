@@ -145,13 +145,13 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
         colorLabel = new javax.swing.JLabel();
         colorCellPanel = new org.exbin.framework.bined.options.gui.ColorCellPanel();
 
-        startPositionLabel.setText("Start Position");
+        startPositionLabel.setText(resourceBundle.getString("startPositionLabel.text")); // NOI18N
 
-        endPositionLabel.setText("End Position");
+        endPositionLabel.setText(resourceBundle.getString("endPositionLabel.text")); // NOI18N
 
-        lengthLabel.setText("Length");
+        lengthLabel.setText(resourceBundle.getString("lengthLabel.text")); // NOI18N
 
-        colorLabel.setText("Color");
+        colorLabel.setText(resourceBundle.getString("colorLabel.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

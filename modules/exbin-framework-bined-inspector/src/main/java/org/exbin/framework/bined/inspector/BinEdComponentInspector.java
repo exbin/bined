@@ -36,6 +36,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     private boolean parsingPanelVisible = false;
 
     private JScrollPane valuesPanelScrollPane;
+    private BasicValuesPositionColorModifier basicValuesColorModifier;
 
     @Override
     public void onCreate(BinEdComponentPanel componentPanel) {
@@ -44,6 +45,10 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
         valuesPanel = new BasicValuesPanel();
         valuesPanel.setCodeArea(codeArea, null);
+        if (basicValuesColorModifier != null) {
+            valuesPanel.registerFocusPainter(basicValuesColorModifier);
+        }
+
         valuesPanelScrollPane = new JScrollPane(valuesPanel);
         valuesPanelScrollPane.setBorder(null);
         setShowParsingPanel(true);
@@ -86,5 +91,9 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
     public boolean isShowParsingPanel() {
         return parsingPanelVisible;
+    }
+
+    public void setBasicValuesColorModifier(BasicValuesPositionColorModifier basicValuesColorModifier) {
+        this.basicValuesColorModifier = basicValuesColorModifier;
     }
 }

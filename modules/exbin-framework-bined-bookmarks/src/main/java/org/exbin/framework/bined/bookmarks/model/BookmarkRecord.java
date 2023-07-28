@@ -80,4 +80,12 @@ public class BookmarkRecord {
     public void setColor(Color color) {
         this.color = color;
     }
+    
+    public boolean isEmpty() {
+        return length == 0;
+    }
+    
+    public void setEmpty() {
+        length = 0;
+    }
 }

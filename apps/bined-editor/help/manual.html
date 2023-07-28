@@ -3,10 +3,6 @@
 
 <h1 id="user-manual-for-bined">User Manual for BinEd Editor</h1>
 <p>BinEd is free and open source hexadecimal stand-alone viewer/editor written in Java.</p>
-<p style="color: red; font-weight: bold;">Manual is under construction!</p>
-<p>See. <a class="urlextern"  href="https://github.com/exbin/bined/wiki">https://github.com/exbin/bined/wiki</a> for sources or to fix errors</p>
-<p>Example look of the application&#39;s GUI:</p>
-<center><img src="images/editor_screenshot.png" title="Editor Screenshot" alt="Editor Screenshot" /></center>
 <h1 id="features">Features</h1>
 <ul>
 <li>Data as hexadecimal codes and text preview</li>
@@ -17,44 +13,62 @@
 <li>Support for charset/encoding selection</li>
 <li>Codes can be also binary, octal or decimal</li>
 <li>Searching for text / hexadecimal code with matching highlighting</li>
-<li>Support for huge files</li>
-<li>Delta mode - Only changes are stored in memory</li>
+<li>Support for huge files - only changes are stored in memory</li>
 </ul>
-<h1 id="how-to-use">How to Use</h1>
-<p>BinEd is available in multiple variants including plugins for other applications.</p>
-<p>This manual describes stand-alone editor application. For other variants please visit project&#39;s website:</p>
+<h1 id="application">Application</h1>
+<p>Example look of the application&#39;s GUI:</p>
+<center><img src="images/editor_screenshot.png" title="Editor Screenshot" alt="Editor Screenshot" /></center>
+<p>For other variants please visit project&#39;s website:</p>
 <p><a class="urlextern"  href="https://bined.exbin.org">https://bined.exbin.org</a></p>
+<h2 id="license">License</h2>
+<p>Project uses Apache License 2.0, see:</p>
+<p><a class="urlextern"  href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a></p>
 <h2 id="requirements">Requirements</h2>
-<p>Application can be executed on any platform supported by Java 8, including Microsoft Windows, macOS, variants of Linux or BSD and application should have the same minimum requirements as Java. It might be also ok to use any newer version of the Java.</p>
+<p>Application can be executed on any platform supported by Java 8, including Microsoft Windows, macOS, variants of Linux or BSD and application should have the same minimum requirements as Java. It should be also ok to use any newer version of the Java. DMG installer for macOS requires Java 11. </p>
 <p>For instruction on how to install Java on your operating system please search on Internet or visit:</p>
 <p><a class="urlextern"  href="https://java.com">https://java.com</a></p>
 <h2 id="installation">Installation</h2>
 <p>Application is available for download on the project&#39;s website:</p>
 <p><a class="urlextern"  href="https://bined.exbin.org/editor">https://bined.exbin.org/editor</a></p>
-<p>To get the file scroll down to the Downloads section. Please use stable version if you prefer more stable and less problematic application.</p>
+<p>To get the file scroll down to the Downloads section. Please use stable version if you want to have less problematic experience, as development version can contain unfinished/untested functionality.</p>
 <p>For Windows there is currently only installer for x86 32-bit architecture available - after installation it can be used with either 32-bit or 64-bit Java.</p>
+<p>For macOS there is installation file (dmg image) available.</p>
 <p>For some Linux variants there are Debian and RPM packages available.</p>
-<p>For other operating systems please use general ZIP variant / file. It can be also used for Linux or Windows if preferred.</p>
+<p>Alternatively, or for other operating systems, please use general ZIP variant / file. You&#39;ll need to extract content of the file into directory of your choice. This action is different on various operating systems - please search on the Internet for instructions on how to do this step on your operating system.</p>
+<h3 id="installation-on-windows">Installation on Windows</h3>
 <p>Installation package for Windows is typical wizard dialog (created with Nullsoft NSIS tool).</p>
 <center><img src="images/bined_windows_installer.png" title="Installer - Step 1" alt="Installer - Step 1" /></center>
 <p>It will also create shortcuts in start menu in ExBin Project folder.</p>
 <center><img src="images/bined_windows_installer-2.png" title="Installer - Step 2" alt="Installer - Step 2" /></center>
 <p>Specify in which directory you want to install the application or use default.</p>
 <center><img src="images/bined_windows_installer-3.png" title="Installer - Step 3" alt="Installer - Step 3" /></center>
+<h3 id="installation-on-macos">Installation on macOS</h3>
+<p>Installation on macOS requires preexisting Java installation.</p>
+<p>Download and open DMG file. Image should be mounted and installation process should start.</p>
+<center><img src="images/bined_macos_install.png" title="Installation - Step 1" alt="Installation - Step 1" /></center>
+<p>To proceed with installation, agree to application license terms.</p>
+<center><img src="images/bined_macos_install-2.png" title="Installation - Step 2" alt="Installation - Step 2" /></center>
+<p>Drag&amp;Drop BinEd to Applications (from left to right) to perform installation.</p>
+<p>Depending on the version of your system, you will encounter error when trying to execute the application. </p>
+<center><img src="images/bined_macos_install-3.png" title="Installation - Step 3" alt="Installation - Step 3" /></center>
+<p>You&#39;ll need to add security exception in Mac System Settings / Privacy &amp; Security as this application is not available via App Store.</p>
+<p>Consult following page: <a class="urlextern"  href="https://support.apple.com/lv-lv/guide/mac-help/mh40616/mac">MacHelp</a></p>
+<h3 id="installation-on-linux">Installation on Linux</h3>
 <p>Installation on Linux depends on the variant of the system. Some systems allow to perform the installation with simple execution of the downloaded file.</p>
 <p>Alternatively you might need to use shell commands: </p>
 <p>For Debian-based systems command might be:</p>
-<pre><code>sudo dpkg -i bined_*.deb</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>sudo dpkg -i bined_*.deb</code></pre>
 <p>For RPM-based systems command might be:</p>
-<pre><code>sudo rpm -i bined-*.rpm</code></pre>
-<p>For the general ZIP variant you&#39;ll need to extract content of the file into directory of your choice. This action is different on various operating systems - please search on the Internet for instructions on how to do this step on your operating system.</p>
-<h2 id="executing-the-application">Executing the Application</h2>
-<p>To start the application directly, there are multiple options. See the directory where your application is installed.</p>
-<p>You can start &quot;bined.exe&quot; on MS Windows systems or on systems with Windows emulation (for example via Wine) installed.</p>
-<p>&quot;bined.sh&quot; is a simple script which should work on Linux or Mac OSX systems. It might be necessary to assign execution bit on the file (for example via &quot;chmod +x bined.sh&quot; command).</p>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>sudo rpm -i bined-*.rpm</code></pre>
+<h2 id="how-to-use">How to Use</h2>
+<p>To start the application directly, there are multiple options.</p>
+<p>If you installed version for Windows via installer, you can start the application via Start menu in applications list.</p>
+<p>Go to the directory where your application is installed.</p>
+<p>You can start &quot;bined.exe&quot; on MS Windows systems or on systems with Windows emulation installed - for example using <a class="urlextern"  href="https://www.winehq.org/">Wine</a>.</p>
+<p>&quot;bined.sh&quot; is a simple script which should work on Linux or macOS systems. It might be necessary to assign execution bit on the file (for example via &quot;chmod +x bined.sh&quot; command).</p>
 <p>On some systems it might be also possible to execute &quot;bined.jar&quot; depending on how and which variant of the Java is installed.</p>
 <p>Application can be also started via command line, but this might also depend on the operating system, Java version and whether are Java tool applications setup for direct execution.</p>
-<pre><code>java -jar bined.jar</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>java -jar bined.jar</code></pre>
 <p>Application also accepts few command line parameters, like for opening specific file on start.</p>
 <p>Usage: &quot;bined &lt;options&gt; &lt;file&gt;&quot;</p>
 <p>&quot;--help&quot; parameter to see available commands  &quot;-multi_file&quot; forces multi file / tab switching mode  &quot;-single_file&quot; forces single file mode</p>
@@ -80,6 +94,7 @@
 <li>Save as action allows saving copy of the active document as a new file</li>
 <li><strike>Print action</strike> - see. <a  href="#print-document">print document</a></li>
 <li>Properties action shows properties dialog - see. tools section</li>
+<li>Reload content of the file from source</li>
 </ul>
 <center><img src="images/edit_menu.png" title="Edit Menu" alt="Edit Menu" /></center>
 <p>Edit menu contains actions related to document editing and navigation:</p>
@@ -87,7 +102,7 @@
 <li>Undo / redo actions</li>
 <li>Area selection and clipboard operations</li>
 <li>Find and replace actions</li>
-<li>Tools related to editing and navigation</li>
+<li>Tools related to editing, navigation and bookmark</li>
 </ul>
 <center><img src="images/view_menu.png" title="View Menu" alt="View Menu" /></center>
 <p>View menu allows adjusting various options related to displaying properties:</p>
@@ -109,7 +124,7 @@
 <h2 id="parsing-panel">Parsing Panel</h2>
 <p>Content parsing panel provides analysis of the data at the cursor position.</p>
 <p>Parsing panel can be shown/hidden with:</p>
-<pre><code>Menu / View / Show Parsing Panel</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / View / Show Parsing Panel</code></pre>
 <p>Currently, only simple list of values is available. Values are updated when cursor in code area is moved.</p>
 <p>It&#39;s possible to edit the values and overwrite content of the document on the cursor position with ENTER key.</p>
 <p>Values panel supports options for big and little endian - this affects order of bytes for multibyte values.Support for signed and unsigned variants of some values - first bit is typically used for negativity sign.</p>
@@ -150,14 +165,14 @@
 <p>It&#39;s possible to switch between insert and overwrite with single click on the status bar or with INSERT key</p>
 <h1 id="editing-file">Editing File</h1>
 <p>To create new file use:</p>
-<pre><code>Menu / File / New</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / File / New</code></pre>
 <p>To edit existing file use:</p>
-<pre><code>Menu / File / Open</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / File / Open</code></pre>
 <p>File is show in code area as a sequence of codes and preview characters.</p>
 <p>You can edit numerical codes, or you can edit preview characters via keyboard or using available actions.</p>
 <p>You can select specific range of data with using mouse while holding left button or holding SHIFT button while moving in code area.</p>
 <p>When done with editing operations, save file:</p>
-<pre><code>Menu / File / Save</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / File / Save</code></pre>
 <h2 id="edit-mode">Edit Mode</h2>
 <p>Two modes are supported:</p>
 <ul>
@@ -175,17 +190,38 @@
 <h1 id="tools-and-actions">Tools and Actions</h1>
 <h2 id="go-to-position">Go to Position</h2>
 <p>Use this action to move cursor to specific position:</p>
-<pre><code>Menu / Edit / Go To</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Go To</code></pre>
 <center><img src="images/go_to_dialog.png" title="Go To Dialog" alt="Go To Dialog" /></center>
 <p>You can specify position relative to current position, start or end of the document.Position can be specified in octal, decimal or hexadecimal base.</p>
 <h2 id="edit-selection">Edit Selection</h2>
 <p>Use this action to specify exact selection range:</p>
-<pre><code>Menu / Edit / Edit Selection</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Edit Selection</code></pre>
 <center><img src="images/edit_selection_dialog.png" title="Edit Selection Dialog" alt="Edit Selection Dialog" /></center>
 <p>You can specify position relative to current position, start or end of the document.Position can be specified in octal, decimal or hexadecimal base.</p>
+<h2 id="clipboard-content">Clipboard Content</h2>
+<p>Tool to show available content currently stored in system clipboard.</p>
+<p>It provides list of available data flavors (variants of data representation) and allows to show available information about content.</p>
+<center><img src="images/clipboard_content_dialog.png" title="Clipboard Content Dialog" alt="Clipboard Content Dialog" /></center>
+<h2 id="bookmarks">Bookmarks</h2>
+<p>Bookmarks allow to save specific position / ranges and mark them with color.</p>
+<p>First 10 bookmark records are available for quick access, so that they can be set, cleared and jump to with keyboard shortcuts.</p>
+<p>Bookmark functionality is available in main menu and provides list of quick access bookmarks to jump to and access to bookmarks manager.</p>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Bookmark</code></pre>
+<p>Bookmarks manager allows to edit bookmark records:</p>
+<ul>
+<li>Set start/end position and length</li>
+<li>Assign color to highlight background for specific bookmark</li>
+</ul>
+<center><img src="images/bookmarks_manager_dialog.png" title="Bookmarks Manager Dialog" alt="Bookmarks Manager Dialog" /></center>
+<p>First 10 bookmark records have assigned keyboard shortcuts for activation:</p>
+<ul>
+<li>Ctrl/Meta 0..9 - jump to bookmark&#39;s start position</li>
+<li>Ctrl/Meta+Alt 0..9 - replaces bookmark to current cursor position</li>
+<li>Ctrl/Meta+Alt+Shift 0..9 - clears bookmark</li>
+</ul>
 <h2 id="find-or-replace-data">Find or Replace Data</h2>
 <p>Use this action to find specific text or sequence of codes:</p>
-<pre><code>Menu / Edit / Find
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Find
 Menu / Edit / Replace</code></pre>
 <p>This will open quick search bar:</p>
 <center><img src="images/search_bar.png" title="Find Text Dialog" alt="Find Text Dialog" /></center>
@@ -195,13 +231,13 @@ Menu / Edit / Replace</code></pre>
 <center><img src="images/find_text_dialog.png" title="Find Text Dialog" alt="Find Text Dialog" /></center>
 <h2 id="insert-data-action">Insert Data Action</h2>
 <p>Use this action to insert data to current position:</p>
-<pre><code>Menu / Edit / Insert Data</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Insert Data</code></pre>
 <p>Data will be inserted or will replace previous data depending on the current edit mode.</p>
 <center><img src="images/insert_data_dialog.png" title="Insert Data Dialog" alt="Insert Data Dialog" /></center>
 <p>Length can be specified in octal, decimal or hexadecimal base.</p>
 <h2 id="compare-files-action">Compare Files Action</h2>
 <p>Use this action to compare content of two files:</p>
-<pre><code>Menu / Tools / Compare Files</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Tools / Compare Files</code></pre>
 <center><img src="images/compare_files_dialog.png" title="Insert Data Dialog" alt="Insert Data Dialog" /></center>
 <h2 id="print-document">Print Document</h2>
 <p><strike>Not available</strike></p>
@@ -242,7 +278,7 @@ Menu / Edit / Replace</code></pre>
 <h2 id="choose-font">Choose Font</h2>
 <p>You can change font used in code area.</p>
 <p>	Menu / Tools / Set Font</p>
-<pre><code>Options / Appearance / Text Font</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Options / Appearance / Text Font</code></pre>
 <center><img src="images/select_font_dialog.png" title="Select Font Dialog" alt="Select Font Dialog" /></center>
 <p>You can select specific family of the font, size in pixels, style parameters like bold and italic.</p>
 <p>In preview section you can see how the selected font will look, or you can enter other text of your choice there.</p>
@@ -288,15 +324,15 @@ Menu / Edit / Replace</code></pre>
 <center><img src="images/help_dialog.png" title="Help Dialog" alt="Help Dialog" /></center>
 <h2 id="check-for-update">Check for Update</h2>
 <p>It&#39;s possible to check if newer version of the stable version of the application is available.</p>
-<pre><code>Menu / Help / Check for Update</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Help / Check for Update</code></pre>
 <p>Check is performed automatically at the start of the application unless disabled in options:</p>
-<pre><code>Options / Start : Check for available updates on application start</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Options / Start : Check for available updates on application start</code></pre>
 <center><img src="images/check_for_update_dialog.png" title="Check for Update Dialog" alt="Check for Update Dialog" /></center>
 <p>Press download button to be redirected to download page in the browser.</p>
 <p>Automatic update is currently not supported.</p>
 <h2 id="about-dialog">About Dialog</h2>
 <p>You can show basic information about application with:</p>
-<pre><code>Menu / Help / About</code></pre>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Help / About</code></pre>
 <center><img src="images/about_dialog.png" title="About Dialog" alt="About Dialog" /></center>
 <h1 id="participate-in-the-development">Participate in the Development</h1>
 <p>As the project is free and open source, you can participate in the development in many ways:</p>
@@ -305,9 +341,6 @@ Menu / Edit / Replace</code></pre>
 <li>Report <a class="urlextern"  href="https://github.com/exbin/bined/issues/new?labels=bug">an issue</a> or <a class="urlextern"  href="https://github.com/exbin/bined/issues/new?labels=enhancement">suggest a feature</a> on GitHub</li>
 <li>Modify source codes of the editor and provide PR on GitHub</li>
 </ul>
-<p>See. <a class="urlextern"  href="https://bined.exbin.org/?participate">https://bined.exbin.org/?participate</a> for more details.</p>
-<h2 id="license">License</h2>
-<p>Project uses Apache License 2.0, see:</p>
-<p><a class="urlextern"  href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a>
+<p>See. <a class="urlextern"  href="https://bined.exbin.org/?participate">https://bined.exbin.org/?participate</a> for more details.
 
 </body></html>

@@ -31,7 +31,7 @@ public class BasicValuesPositionColorModifier implements BinEdCodeAreaPainter.Po
 
     private long position = -1;
     private long length;
-    private Color color;
+    private Color color = Color.YELLOW;
 
     public BasicValuesPositionColorModifier() {
     }
@@ -41,7 +41,7 @@ public class BasicValuesPositionColorModifier implements BinEdCodeAreaPainter.Po
     public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
         if (position >= 0) {
             long dataPosition = rowDataPosition + byteOnRow;
-            if (position >= dataPosition && position < position + length) {
+            if (dataPosition >= position && dataPosition < position + length) {
                 return color;
             }
         }

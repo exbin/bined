@@ -45,8 +45,12 @@ public class BookmarksPositionColorModifier implements BinEdCodeAreaPainter.Posi
         if (colorCache.start < 0 || colorCache.start > dataPosition || (colorCache.end >= 0 && colorCache.end < dataPosition)) {
             colorCache.fullRange();
             for (BookmarkRecord record : records) {
+                if (record.isEmpty()) {
+                    continue;
+                }
+
                 long startPosition = record.getStartPosition();
-                long endPosition = startPosition + record.getLength();
+                long endPosition = startPosition + record.getLength() - 1;
                 if (startPosition <= dataPosition && endPosition >= dataPosition) {
                     colorCache.start = startPosition;
                     colorCache.end = endPosition;

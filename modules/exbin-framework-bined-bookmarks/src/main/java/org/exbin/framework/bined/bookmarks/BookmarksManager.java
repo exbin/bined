@@ -15,6 +15,9 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -24,9 +27,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -60,18 +68,79 @@ public class BookmarksManager {
     private BookmarkPreferences bookmarkPreferences;
     private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
-    private final BookmarksManagerPanel bookmarksManagerPanel;
     private XBApplication application;
     private EditorProvider editorProvider;
 
     private ManageBookmarksAction manageBookmarksAction = new ManageBookmarksAction();
     private AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
     private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
-    private JMenu bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
-    private JMenu bookmarksPopupMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+    private JMenu bookmarksMenu;
 
     public BookmarksManager() {
-        bookmarksManagerPanel = new BookmarksManagerPanel();
+        manageBookmarksAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
+    }
+
+    public void setApplication(XBApplication application) {
+        this.application = application;
+
+        addBookmarkAction.setup(application, resourceBundle);
+        editBookmarkAction.setup(application, resourceBundle);
+    }
+
+    public void setEditorProvider(EditorProvider editorProvider) {
+        this.editorProvider = editorProvider;
+
+        manageBookmarksAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+    }
+
+    public void init() {
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+
+        Preferences preferences = application.getAppPreferences();
+        bookmarkPreferences = new BookmarkPreferences(preferences);
+        loadBookmarkRecords();
+        updateBookmarksMenu();
+        bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
+        binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
+    }
+
+    private void loadBookmarkRecords() {
+        int bookmarksCount = bookmarkPreferences.getBookmarksCount();
+        for (int i = 0; i < bookmarksCount; i++) {
+            BookmarkRecord bookmarkRecord = bookmarkPreferences.getBookmarkRecord(i);
+            bookmarkRecords.add(bookmarkRecord);
+        }
+    }
+
+    private void saveBookmarkRecords() {
+        int bookmarksCount = bookmarkRecords.size();
+        bookmarkPreferences.setBookmarksCount(bookmarksCount);
+        for (int i = 0; i < bookmarksCount; i++) {
+            bookmarkPreferences.setBookmarkRecord(i, bookmarkRecords.get(i));
+        }
+    }
+
+    @Nonnull
+    public List<BookmarkRecord> getBookmarkRecords() {
+        return bookmarkRecords;
+    }
+
+    @Nonnull
+    public AbstractAction getManageBookmarksAction() {
+        return manageBookmarksAction;
+    }
+
+    public void setBookmarkRecords(List<BookmarkRecord> records) {
+        bookmarkRecords.clear();
+        bookmarkRecords.addAll(records);
+        saveBookmarkRecords();
+        bookmarksPositionColorModifier.notifyBookmarksChanged();
+        updateBookmarksMenu();
+    }
+
+    @Nonnull
+    public BookmarksManagerPanel createBookmarksManagerPanel() {
+        final BookmarksManagerPanel bookmarksManagerPanel = new BookmarksManagerPanel();
         bookmarksManagerPanel.setControl(new BookmarksManagerPanel.Control() {
             @Override
             public void addRecord() {
@@ -146,94 +215,140 @@ public class BookmarksManager {
                 bookmarksManagerPanel.updateBookmarkRecords(records);
             }
         });
-        manageBookmarksAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
-    }
 
-    public void setApplication(XBApplication application) {
-        this.application = application;
-
-        addBookmarkAction.setup(application, resourceBundle);
-        editBookmarkAction.setup(application, resourceBundle);
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-
-        manageBookmarksAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
-    }
-
-    public void init() {
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-
-        Preferences preferences = application.getAppPreferences();
-        bookmarkPreferences = new BookmarkPreferences(preferences);
-        loadBookmarkRecords();
-        updateBookmarksMenu();
-        bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
-        binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
-    }
-
-    private void loadBookmarkRecords() {
-        int bookmarksCount = bookmarkPreferences.getBookmarksCount();
-        for (int i = 0; i < bookmarksCount; i++) {
-            BookmarkRecord bookmarkRecord = bookmarkPreferences.getBookmarkRecord(i);
-            bookmarkRecords.add(bookmarkRecord);
-        }
-    }
-
-    private void saveBookmarkRecords() {
-        int bookmarksCount = bookmarkRecords.size();
-        bookmarkPreferences.setBookmarksCount(bookmarksCount);
-        for (int i = 0; i < bookmarksCount; i++) {
-            bookmarkPreferences.setBookmarkRecord(i, bookmarkRecords.get(i));
-        }
-    }
-
-    @Nonnull
-    public List<BookmarkRecord> getBookmarkRecords() {
-        return bookmarkRecords;
-    }
-
-    @Nonnull
-    public AbstractAction getManageBookmarksAction() {
-        return manageBookmarksAction;
-    }
-
-    public void setBookmarkRecords(List<BookmarkRecord> records) {
-        bookmarkRecords.clear();
-        bookmarkRecords.addAll(records);
-        saveBookmarkRecords();
-        bookmarksPositionColorModifier.notifyBookmarksChanged();
-        updateBookmarksMenu();
-    }
-
-    @Nonnull
-    public BookmarksManagerPanel getBookmarksManagerPanel() {
         return bookmarksManagerPanel;
     }
 
     @Nonnull
     public JMenu getBookmarksMenu() {
+        if (bookmarksMenu == null) {
+            bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+            updateBookmarksMenu();
+        }
         return bookmarksMenu;
     }
 
     @Nonnull
-    public JMenu getBookmarksPopupMenu() {
+    public JMenu createBookmarksPopupMenu() {
+        JMenu bookmarksPopupMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+        updateBookmarksMenu(bookmarksPopupMenu);
         return bookmarksPopupMenu;
     }
 
-    public void setBookmarksMenu(JMenu bookmarksMenu) {
-        this.bookmarksMenu = bookmarksMenu;
-        updateBookmarksMenu();
+    public void registerBookmarksComponentActions(JComponent component) {
+        ActionMap actionMap = component.getActionMap();
+        InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        int metaMask = ActionUtils.getMetaMask();
+        for (int i = 0; i < 10; i++) {
+            final int bookmarkIndex = i;
+            String goToActionKey = "go-to-bookmark-" + i;
+            actionMap.put(goToActionKey, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    goToBookmark(bookmarkIndex);
+                }
+            });
+            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask), goToActionKey);
+            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_NUMPAD0 + i, metaMask), goToActionKey);
+
+            String addActionKey = "add-bookmark-" + i;
+            actionMap.put(addActionKey, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addBookmark(bookmarkIndex);
+                }
+            });
+            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK), addActionKey);
+            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_NUMPAD0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK), addActionKey);
+
+            String clearActionKey = "clear-bookmark-" + i;
+            actionMap.put(clearActionKey, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    clearBookmark(bookmarkIndex);
+                }
+            });
+            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK), clearActionKey);
+            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_NUMPAD0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK), clearActionKey);
+        }
+        component.setActionMap(actionMap);
+        component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap);
     }
-    
+
+    public void goToBookmark(int bookmarkIndex) {
+        if (bookmarkRecords.size() > bookmarkIndex) {
+            BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
+            if (record.isEmpty()) {
+                return;
+            }
+
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (activeFile.isPresent()) {
+                BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                ExtCodeArea codeArea = fileHandler.getCodeArea();
+                codeArea.setCaretPosition(record.getStartPosition());
+                codeArea.centerOnCursor();
+            }
+        }
+    }
+
+    public void addBookmark(int bookmarkIndex) {
+        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+        if (activeFile.isPresent()) {
+            BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+            ExtCodeArea codeArea = fileHandler.getCodeArea();
+            long position = codeArea.getDataPosition();
+
+            if (bookmarkRecords.size() <= bookmarkIndex) {
+                int recordsToInsert = bookmarkIndex - bookmarkRecords.size() + 1;
+                for (int i = 0; i < recordsToInsert; i++) {
+                    bookmarkRecords.add(new BookmarkRecord());
+                }
+            }
+
+            BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
+            record.setStartPosition(position);
+            record.setLength(1);
+            saveBookmarkRecords();
+            bookmarksPositionColorModifier.notifyBookmarksChanged();
+            updateBookmarksMenu();
+        }
+    }
+
+    public void clearBookmark(int bookmarkIndex) {
+        if (bookmarkRecords.size() > bookmarkIndex) {
+            if (bookmarkRecords.size() == bookmarkIndex + 1) {
+                bookmarkRecords.remove(bookmarkIndex);
+            } else {
+                bookmarkRecords.get(bookmarkIndex).setEmpty();
+            }
+            saveBookmarkRecords();
+            bookmarksPositionColorModifier.notifyBookmarksChanged();
+            updateBookmarksMenu();
+        }
+    }
+
     public void updateBookmarksMenu() {
-        bookmarksMenu.removeAll();
-        bookmarksPopupMenu.removeAll();
+        updateBookmarksMenu(bookmarksMenu);
+    }
+
+    public void updateBookmarksMenu(@Nullable JMenu menu) {
+        if (menu == null) {
+            return;
+        }
+
+        menu.removeAll();
+
         int recordsLimit = Math.min(bookmarkRecords.size(), 10);
+        int metaMask = ActionUtils.getMetaMask();
+        String bookmarkActionName = resourceBundle.getString("bookmarkAction.text");
         for (int i = 0; i < recordsLimit; i++) {
             BookmarkRecord bookmarkRecord = bookmarkRecords.get(i);
-            Action bookmarkAction = new AbstractAction("Bookmark " + (i+1)) {
+            if (bookmarkRecord.isEmpty()) {
+                continue;
+            }
+
+            Action bookmarkAction = new AbstractAction(bookmarkActionName + " " + (i + 1)) {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     long startPosition = bookmarkRecord.getStartPosition();
@@ -241,20 +356,39 @@ public class BookmarksManager {
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
                         ExtCodeArea codeArea = fileHandler.getCodeArea();
-                        codeArea.centerOnPosition(startPosition, 0, codeArea.getActiveSection());
+                        codeArea.setCaretPosition(startPosition);
+                        codeArea.centerOnCursor();
                     }
                 }
             };
-            bookmarkAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
-            bookmarksMenu.add(ActionUtils.actionToMenuItem(bookmarkAction));
-            bookmarksPopupMenu.add(ActionUtils.actionToMenuItem(bookmarkAction));
+            bookmarkAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask));
+            final Color bookmarkColor = bookmarkRecord.getColor();
+            bookmarkAction.putValue(Action.SMALL_ICON, new Icon() {
+                @Override
+                public void paintIcon(Component c, Graphics g, int x, int y) {
+                    g.setColor(bookmarkColor);
+                    g.fillRect(x + 2, y + 2, 12, 12);
+                    g.setColor(Color.BLACK);
+                    g.drawRect(x + 2, y + 2, 12, 12);
+                }
+
+                @Override
+                public int getIconWidth() {
+                    return 16;
+                }
+
+                @Override
+                public int getIconHeight() {
+                    return 16;
+                }
+            });
+
+            menu.add(ActionUtils.actionToMenuItem(bookmarkAction));
         }
-        
+
         if (!bookmarkRecords.isEmpty()) {
-            bookmarksMenu.addSeparator();
-            bookmarksPopupMenu.addSeparator();
+            menu.addSeparator();
         }
-        bookmarksMenu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
-        bookmarksPopupMenu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
+        menu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
     }
 }

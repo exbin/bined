@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/bookmarks/gui/resources/BookmarkEditorPanel"/>
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
@@ -64,28 +65,36 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="startPositionLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Start Position"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/bookmarks/gui/resources/BookmarkEditorPanel.properties" key="startPositionLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="startPositionSwitchableSpinnerPanel">
     </Component>
     <Component class="javax.swing.JLabel" name="endPositionLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="End Position"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/bookmarks/gui/resources/BookmarkEditorPanel.properties" key="endPositionLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="endPositionSwitchableSpinnerPanel">
     </Component>
     <Component class="javax.swing.JLabel" name="lengthLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Length"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/bookmarks/gui/resources/BookmarkEditorPanel.properties" key="lengthLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="lengthSwitchableSpinnerPanel">
     </Component>
     <Component class="javax.swing.JLabel" name="colorLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Color"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/bookmarks/gui/resources/BookmarkEditorPanel.properties" key="colorLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="org.exbin.framework.bined.options.gui.ColorCellPanel" name="colorCellPanel">

@@ -18,6 +18,7 @@ package org.exbin.framework.bined.objectdata.property.gui;
 import java.awt.Component;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -101,19 +102,7 @@ public class PropertyTablePanel extends javax.swing.JPanel {
                         continue;
                     }
 
-                    Object value;
-                    try {
-                        boolean accessible = field.canAccess(object);
-                        if (!accessible) {
-                            field.setAccessible(true);
-                        }
-                        value = field.get(object);
-                        if (!accessible) {
-                            field.setAccessible(false);
-                        }
-                    } catch (Throwable ex) {
-                        value = null;
-                    }
+                    Object value = accessField(field, object);
                     PropertyTableItem item = new PropertyTableItem(field.getName(), field.getGenericType().getTypeName(), value);
                     tableModel.addRow(item);
                 }
@@ -121,7 +110,29 @@ public class PropertyTablePanel extends javax.swing.JPanel {
             }
         }
     }
-    
+
+    @Nullable
+    private static Object accessField(Field field, Object object) {
+        Object result = null;
+        try {
+            result = field.get(object);
+        } catch (Throwable ex) {
+            try {
+                // Try to make field accessible
+                field.setAccessible(true);
+                try {
+                    result = field.get(object);
+                } catch (Throwable ex3) {
+                }
+                field.setAccessible(false);
+            } catch (Throwable ex2) {
+                // Can't set it back, just ignore it
+            }
+        }
+
+        return result;
+    }
+
     public boolean isShowStaticFields() {
         return showStaticFields;
     }
@@ -129,7 +140,7 @@ public class PropertyTablePanel extends javax.swing.JPanel {
     public void setShowStaticFields(boolean showStaticFields) {
         this.showStaticFields = showStaticFields;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

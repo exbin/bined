@@ -181,7 +181,7 @@ public class InspectComponentPanel extends javax.swing.JPanel {
 
         closeButton.setText(resourceBundle.getString("closeButton.text")); // NOI18N
 
-        showStaticFieldsCheckBox.setText(resourceBundle.getString("InspectComponentPanel.showStaticFieldsCheckBox.text")); // NOI18N
+        showStaticFieldsCheckBox.setText(resourceBundle.getString("showStaticFieldsCheckBox.text")); // NOI18N
         showStaticFieldsCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 showStaticFieldsCheckBoxStateChanged(evt);

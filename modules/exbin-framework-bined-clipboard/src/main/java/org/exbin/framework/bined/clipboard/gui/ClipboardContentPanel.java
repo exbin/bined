@@ -132,7 +132,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
                     if (contentData != null && data != null) {
                         dataContents.add(contentData);
-                        dataListModel.addElement("Binary data from class: " + data.getClass().getCanonicalName());
+                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.fromClass"), new Object[]{data.getClass().getCanonicalName()}));
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                 }
@@ -141,18 +141,18 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     Object data = clipboard.getData(dataFlavor);
                     if (data instanceof List<?>) {
                         dataContents.add(data);
-                        dataListModel.addElement("List from: " + data.getClass().getCanonicalName());
+                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.list"), new Object[]{data.getClass().getCanonicalName()}));
                     } else if (data instanceof String) {
                         dataContents.add(data);
-                        dataListModel.addElement("Text from: " + data.getClass().getCanonicalName());
+                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.text"), new Object[]{data.getClass().getCanonicalName()}));
                     } else if (data instanceof Image) {
                         dataContents.add(data);
-                        dataListModel.addElement("Image from: " + data.getClass().getCanonicalName());
+                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.image"), new Object[]{data.getClass().getCanonicalName()}));
                     }
-                    
+
                     if (data != null) {
                         dataContents.add(new PropertyClass(data));
-                        dataListModel.addElement("Class properties from: " + data.getClass().getCanonicalName());
+                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.properties"), new Object[]{data.getClass().getCanonicalName()}));
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                 }
@@ -162,7 +162,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     try {
                         binaryData.convertDataFlavor(dataFlavor);
                         dataContents.add(binaryData);
-                        dataListModel.addElement("Requested conversion to: InputStream");
+                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.requestedConversion"), new Object[]{}));
                     } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
                     }
                 }
@@ -193,7 +193,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 } else if (currentDataComponent == inspectComponentPanel) {
                     inspectComponentPanel.setComponent("", null);
                 }
-                
+
                 dataContentPanel.remove(currentDataComponent);
                 currentDataComponent = null;
             }
@@ -205,8 +205,11 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     dataCodeArea.setContentData((BinaryData) dataComponent);
                     currentDataComponent = binaryDataPanel;
                 } else if (dataComponent instanceof List<?>) {
+                    List<?> listComponent = (List<?>) dataComponent;
                     DefaultListModel<String> listModel = new DefaultListModel<>();
-                    listModel.addAll((List<String>) dataComponent);
+                    for (int i = 0; i < listComponent.size(); i++) {
+                        listModel.add(i, (String) listComponent.get(i));
+                    }
                     dataList.setModel(listModel);
                     currentDataComponent = dataListScrollPane;
                 } else if (dataComponent instanceof String) {
@@ -309,17 +312,12 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         dataContentPanel = new javax.swing.JPanel();
         noFlavorSelectedLabel = new javax.swing.JLabel();
 
-        dataList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         dataListScrollPane.setViewportView(dataList);
 
         textDataTextArea.setEditable(false);
         textDataScrollPane.setViewportView(textDataTextArea);
 
-        saveAsFileButton.setText("Save as file...");
+        saveAsFileButton.setText(resourceBundle.getString("saveAsFileButton.text")); // NOI18N
         saveAsFileButton.setEnabled(false);
         saveAsFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -327,7 +325,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
             }
         });
 
-        openAsTabButton.setText("Open as tab");
+        openAsTabButton.setText(resourceBundle.getString("openAsTabButton.text")); // NOI18N
         openAsTabButton.setEnabled(false);
         openAsTabButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,45 +357,45 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imageScrollPane.setViewportView(imageLabel);
 
-        availableFlavorsLabel.setText("Available Flavors");
+        availableFlavorsLabel.setText(resourceBundle.getString("availableFlavorsLabel.text")); // NOI18N
 
         flavorsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         flavorsScrollPane.setViewportView(flavorsList);
 
-        flavorContentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Content"));
+        flavorContentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceBundle.getString("flavorContentPanel.border.title"))); // NOI18N
         flavorContentPanel.setLayout(new java.awt.BorderLayout());
 
-        presentableNameLabel.setText("Presentable Name");
+        presentableNameLabel.setText(resourceBundle.getString("presentableNameLabel.text")); // NOI18N
 
         presentableNameTextField.setEditable(false);
 
-        representationClassLabel.setText("Representation Class");
+        representationClassLabel.setText(resourceBundle.getString("representationClassLabel.text")); // NOI18N
         representationClassLabel.setToolTipText("");
 
         representationClassTextField.setEditable(false);
 
-        stringTypeLabel.setText("String Type");
+        stringTypeLabel.setText(resourceBundle.getString("stringTypeLabel.text")); // NOI18N
 
         stringTypeTextField.setEditable(false);
 
-        mimeTypeLabel.setText("MIME Type");
+        mimeTypeLabel.setText(resourceBundle.getString("mimeTypeLabel.text")); // NOI18N
 
         mimeTypeTextField.setEditable(false);
 
-        primaryMimeTypeLabel.setText("Primary Type");
+        primaryMimeTypeLabel.setText(resourceBundle.getString("primaryMimeTypeLabel.text")); // NOI18N
 
         primaryMimeTypeTextField.setEditable(false);
 
-        subMimeTypeLabel.setText("Sub Type");
+        subMimeTypeLabel.setText(resourceBundle.getString("subMimeTypeLabel.text")); // NOI18N
 
         subMimeTypeTextField.setEditable(false);
 
-        dataLabel.setText("Data");
+        dataLabel.setText(resourceBundle.getString("dataLabel.text")); // NOI18N
 
         dataContentPanel.setLayout(new java.awt.BorderLayout());
 
         noFlavorSelectedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        noFlavorSelectedLabel.setText("No data representation selected");
+        noFlavorSelectedLabel.setText(resourceBundle.getString("noFlavorSelectedLabel.text")); // NOI18N
         dataContentPanel.add(noFlavorSelectedLabel, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout flavorPanelLayout = new javax.swing.GroupLayout(flavorPanel);

@@ -119,7 +119,7 @@
     <Component class="javax.swing.JCheckBox" name="showStaticFieldsCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/objectdata/property/gui/resources/InspectComponentPanel.properties" key="InspectComponentPanel.showStaticFieldsCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/objectdata/property/gui/resources/InspectComponentPanel.properties" key="showStaticFieldsCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>

@@ -15,6 +15,8 @@
  */
 package org.exbin.framework.bined.inspector.gui;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -46,6 +48,7 @@ import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 
 /**
  * Values side panel.
@@ -885,6 +888,17 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         CHARACTER,
         STRING
     }
+    
+    public void registerFocusPainter(BasicValuesPositionColorModifier colorModifier) {
+        byteTextField.addFocusListener(new ValueFocusListener(colorModifier, 1));
+        wordTextField.addFocusListener(new ValueFocusListener(colorModifier, 2));
+        intTextField.addFocusListener(new ValueFocusListener(colorModifier, 4));
+        longTextField.addFocusListener(new ValueFocusListener(colorModifier, 8));
+        floatTextField.addFocusListener(new ValueFocusListener(colorModifier, 4));
+        doubleTextField.addFocusListener(new ValueFocusListener(colorModifier, 8));
+        characterTextField.addFocusListener(new ValueFocusListener(colorModifier, 1));
+        stringTextField.addFocusListener(new ValueFocusListener(colorModifier, 1));
+    }
 
     @ParametersAreNonnullByDefault
     private class ValuesUpdater {
@@ -1156,6 +1170,30 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         private synchronized void stopUpdate() {
             updateInProgress = false;
             updateTerminated = false;
+        }
+    }
+    
+    @ParametersAreNonnullByDefault
+    private class ValueFocusListener implements FocusListener {
+        
+        private BasicValuesPositionColorModifier colorModifier;
+        private int length;
+
+        public ValueFocusListener(BasicValuesPositionColorModifier colorModifier, int length) {
+            this.colorModifier = colorModifier;
+            this.length = length;
+        }
+
+        @Override
+        public void focusGained(FocusEvent e) {
+            colorModifier.setRange(dataPosition, length);
+            codeArea.repaint();
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            colorModifier.clearRange();
+            codeArea.repaint();
         }
     }
 }

@@ -65,6 +65,7 @@ public class BinedInspectorModule implements XBApplicationModule {
     private XBApplication application;
     private EditorProvider editorProvider;
 
+    private BasicValuesPositionColorModifier basicValuesColorModifier = new BasicValuesPositionColorModifier();
     private ShowParsingPanelAction showParsingPanelAction;
 
     private DefaultOptionsPage<DataInspectorOptionsImpl> dataInspectorOptionsPage;
@@ -75,6 +76,9 @@ public class BinedInspectorModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
+
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binedModule.addPainterColorModifier(basicValuesColorModifier);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -89,7 +93,9 @@ public class BinedInspectorModule implements XBApplicationModule {
             @Nonnull
             @Override
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                return Optional.of(new BinEdComponentInspector());
+                BinEdComponentInspector binEdComponentInspector = new BinEdComponentInspector();
+                binEdComponentInspector.setBasicValuesColorModifier(basicValuesColorModifier);
+                return Optional.of(binEdComponentInspector);
             }
 
             @Override

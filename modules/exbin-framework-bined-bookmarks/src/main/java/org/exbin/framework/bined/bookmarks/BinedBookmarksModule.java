@@ -21,8 +21,8 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.extended.ExtCodeArea;
@@ -32,7 +32,6 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.utils.LanguageUtils;
@@ -40,7 +39,6 @@ import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
-import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Binary data editor module.
@@ -87,13 +85,18 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
             @Override
             public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
+                if (variant != BinedModule.PopupMenuVariant.EDITOR) {
+                    return;
+                }
+
                 BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
 
                 if (positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS) {
                     return;
                 }
 
-                popupMenu.add(bookmarksManager.getBookmarksPopupMenu());
+                // TODO: Change position
+                popupMenu.add(bookmarksManager.createBookmarksPopupMenu());
             }
         });
     }
@@ -105,6 +108,10 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public void registerBookmarksMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedSearchModule.EDIT_FIND_MENU_GROUP_ID));
+    }
+
+    public void registerBookmarksComponentActions(JComponent component) {
+        bookmarksManager.registerBookmarksComponentActions(component);
     }
 
     @Nonnull
