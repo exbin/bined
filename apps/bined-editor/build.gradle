@@ -82,7 +82,6 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-popup')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-help')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-help-online')
-    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-editor-text')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-search')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-block-edit')

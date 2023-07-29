@@ -764,7 +764,8 @@ public class BinedModule implements XBApplicationModule {
 
             @Override
             public void applyPreferencesChanges(EditorOptionsImpl options) {
-                editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
+                // TODO: This causes multiple reloads / warnings about modified files
+                // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
                 editorOptionsService.setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
             }
         };

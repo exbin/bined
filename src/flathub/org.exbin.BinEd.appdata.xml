@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>org.exbin.bined.BinEd</id>
+  <id>org.exbin.BinEd</id>
   <name>BinEd</name>
   <developer_name>ExBin Project</developer_name>
   <summary>Binary/Hexadecimal Editor</summary>
@@ -26,14 +26,14 @@
   </screenshots>
   <categories>
     <category>Development</category>
-    <category>Tools</category>
+    <category>Utility</category>
   </categories>
-  <launchable type="desktop-id">org.exbin.bined.BinEd.desktop</launchable>
+  <launchable type="desktop-id">org.exbin.BinEd.desktop</launchable>
   <kudos>
     <kudo>HiDpiIcon</kudo>
   </kudos>
   <releases>
-    <release date="2024-01-01" version="0.2.2"/>
+    <release date="2023-07-29" version="0.2.2"/>
   </releases>
   <update_contact>exbinproject@gmail.com</update_contact>
   <content_rating type="oars-1.1"></content_rating>

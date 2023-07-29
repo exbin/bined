@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=BinEd Hex Editor
 Comment=Free and open source hex viewer/editor and component written in Java.
-Exec=bined
-Icon=bined
+Exec=org.exbin.BinEd
+Icon=org.exbin.BinEd
 Terminal=false
 Type=Application
 Categories=Java;Development;Utility;

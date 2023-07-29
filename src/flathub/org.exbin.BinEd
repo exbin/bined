@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /app/bined
+/app/jre/bin/java -jar bined.jar $*
