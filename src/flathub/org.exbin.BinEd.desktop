@@ -5,5 +5,5 @@ Exec=org.exbin.BinEd
 Icon=org.exbin.BinEd
 Terminal=false
 Type=Application
-Categories=Java;Development;Utility;
+Categories=Java;Development;
 StartupNotify=true

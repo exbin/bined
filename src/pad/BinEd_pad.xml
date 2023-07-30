@@ -6,33 +6,33 @@
     <MASTER_PAD_EDITOR_URL>https://publisher.appvisor.com</MASTER_PAD_EDITOR_URL>
     <MASTER_PAD_INFO>Portable Application Description, or PAD(TM) 2004 Association of Software Professionals (ASP)http://www.asp-shareware.org/pad is a data set standard and specification that is commercialsoftware publishers to disseminate certified information about their software application. The PAD format is copyright of the ASP and cannot be used without the formal licensing and permission of both the Association of Software Professionals and its agent AppVisor.com.</MASTER_PAD_INFO>
     <CERTIFIED>N</CERTIFIED>
-    <CERTIFICATE_ID></CERTIFICATE_ID>
-    <CERTIFICATE_LICENSE></CERTIFICATE_LICENSE>
+    <CERTIFICATE_ID/>
+    <CERTIFICATE_LICENSE/>
   </MASTER_PAD_VERSION_INFO>
   <RoboSoft>
     <Company_UIN>CMP-2200F64E0601</Company_UIN>
     <Product_UIN>APP-42006F9E8601</Product_UIN>
     <Publish_on_CD>FALSE</Publish_on_CD>
-    <NewsFeed_Search_String></NewsFeed_Search_String>
+    <NewsFeed_Search_String/>
     <Search_String>BinEd</Search_String>
-    <Press_Release_Search_String></Press_Release_Search_String>
-    <Backlink></Backlink>
-    <Comments_For_Reviewer></Comments_For_Reviewer>
+    <Press_Release_Search_String/>
+    <Backlink/>
+    <Comments_For_Reviewer/>
     <Search_String_Unique>BinEd</Search_String_Unique>
-    <Search_Engine_Search_String></Search_Engine_Search_String>
-    <Web_Directories_Search_String></Web_Directories_Search_String>
-    <Company_Description></Company_Description>
+    <Search_Engine_Search_String/>
+    <Web_Directories_Search_String/>
+    <Company_Description/>
   </RoboSoft>
   <Company_Info>
     <PublisherID>pid-0200c69ef501</PublisherID>
     <BrandID>bid-2200f64e0601</BrandID>
     <Company_Name>ExBin Project</Company_Name>
     <Country>Czech Republic</Country>
-    <State_Province></State_Province>
+    <State_Province/>
     <City_Town>Zděchov</City_Town>
     <Zip_Postal_Code>75607</Zip_Postal_Code>
     <Address_1>Zděchov 208</Address_1>
-    <Address_2></Address_2>
+    <Address_2/>
     <Company_WebSite_URL>https://exbin.org</Company_WebSite_URL>
     <Contact_Info>
       <Contact_First_Name>Miroslav</Contact_First_Name>
@@ -41,171 +41,168 @@
       <Author_First_Name>Miroslav</Author_First_Name>
       <Author_Last_Name>Hajda</Author_Last_Name>
       <Author_Email>exbinproject@gmail.com</Author_Email>
-      <Contact_Phone></Contact_Phone>
+      <Contact_Phone/>
     </Contact_Info>
     <Support_Info>
       <Sales_Email>exbinproject@gmail.com</Sales_Email>
       <Support_Email>exbinproject@gmail.com</Support_Email>
       <General_Email>exbinproject@gmail.com</General_Email>
-      <Sales_Phone></Sales_Phone>
-      <Support_Phone></Support_Phone>
-      <General_Phone></General_Phone>
-      <Fax_Phone></Fax_Phone>
+      <Sales_Phone/>
+      <Support_Phone/>
+      <General_Phone/>
+      <Fax_Phone/>
     </Support_Info>
-    <LinkedinPage></LinkedinPage>
-    <TwitterCompanyPage></TwitterCompanyPage>
-    <FacebookCompanyPage></FacebookCompanyPage>
+    <LinkedinPage/>
+    <TwitterCompanyPage/>
+    <FacebookCompanyPage/>
   </Company_Info>
-  <ASP>
-    <ASP_FORM>Y</ASP_FORM>
-    <ASP_Member>N</ASP_Member>
-    <ASP_Member_Number></ASP_Member_Number>
-  </ASP>
   <Program_Info>
     <AppID>app-42006f9e8601</AppID>
     <Program_Name>BinEd</Program_Name>
-    <Program_Version>0.2.1</Program_Version>
-    <Program_Release_Month>10</Program_Release_Month>
-    <Program_Release_Day>31</Program_Release_Day>
-    <Program_Release_Year>2021</Program_Release_Year>
+    <Program_Version>0.2.2</Program_Version>
+    <Program_Release_Month>07</Program_Release_Month>
+    <Program_Release_Day>29</Program_Release_Day>
+    <Program_Release_Year>2023</Program_Release_Year>
     <Program_Cost_Dollars>0</Program_Cost_Dollars>
     <Program_Type>Freeware</Program_Type>
     <Program_Category_Class>System Utilities::Text/Document Editors</Program_Category_Class>
-    <Program_Specific_Category></Program_Specific_Category>
+    <Program_Specific_Category/>
     <Program_Categories>Programming :: Tools and Editors,Utilities :: Miscellaneous</Program_Categories>
     <Program_Release_Status>Minor Update</Program_Release_Status>
     <Program_Install_Support>Install and Uninstall</Program_Install_Support>
     <Program_Target_Platform>Windows</Program_Target_Platform>
     <Program_OS_Support>Win2000,WinXP,Win7 x32,Win7 x64,Windows 8,Windows 10,WinServer,WinOther,WinVista,WinVista x64</Program_OS_Support>
     <Program_Language>English</Program_Language>
-    <Program_Change_Info></Program_Change_Info>
+    <Program_Change_Info>- Added support for bookmarks
+- Added off-line help/manual
+- Added edit selection dialog
+- Added clipboard content dialog
+- Added support for files drag&amp;drop (issue #7)
+- Added reload file action
+- Fixed issue with charsets switching</Program_Change_Info>
     <Program_System_Requirements>Java 8</Program_System_Requirements>
-    <Limitations></Limitations>
-    <Awards></Awards>
+    <Limitations>No limitations</Limitations>
+    <Awards/>
     <File_Info>
-      <File_Size_Bytes>2451456</File_Size_Bytes>
-      <File_Size_K>2394</File_Size_K>
-      <File_Size_MB>2.34</File_Size_MB>
+      <File_Size_Bytes>4500480</File_Size_Bytes>
+      <File_Size_K>4395</File_Size_K>
+      <File_Size_MB>4.29</File_Size_MB>
     </File_Info>
     <Expire_Info>
       <Has_Expire_Info>N</Has_Expire_Info>
-      <Expire_Count></Expire_Count>
-      <Expire_Based_On></Expire_Based_On>
-      <Expire_Year></Expire_Year>
-      <Expire_Other_Info></Expire_Other_Info>
-      <Expire_Month></Expire_Month>
-      <Expire_Day></Expire_Day>
+      <Expire_Count/>
+      <Expire_Based_On/>
+      <Expire_Year/>
+      <Expire_Other_Info/>
+      <Expire_Month/>
+      <Expire_Day/>
     </Expire_Info>
-    <Includes_JAVA_VM></Includes_JAVA_VM>
-    <Includes_DirectX></Includes_DirectX>
-    <Includes_VB_Runtime></Includes_VB_Runtime>
+    <Includes_JAVA_VM/>
+    <Includes_DirectX/>
+    <Includes_VB_Runtime/>
   </Program_Info>
   <Web_Info>
     <Application_URLs>
-      <Application_Info_URL>https://bined.exbin.org</Application_Info_URL>
-      <Application_Order_URL></Application_Order_URL>
-      <Application_Screenshot_URL>https://bined.exbin.org/images/editor_screenshot.png</Application_Screenshot_URL>
+      <Application_Info_URL>https://bined.exbin.org/editor</Application_Info_URL>
+      <Application_Order_URL/>
+      <Application_Screenshot_URL>https://bined.exbin.org/images/editor_screenshot_pad.png</Application_Screenshot_URL>
       <Application_Icon_URL>https://bined.exbin.org/images/icon/bined-icon_32x32.png</Application_Icon_URL>
       <Application_XML_File_URL>http://repository.appvisor.com/info/app-42006f9e8601/BinEd_pad.xml</Application_XML_File_URL>
     </Application_URLs>
     <Download_URLs>
-      <Primary_Download_URL>https://bined.exbin.org/download/?bined-0.2.1-win32.exe</Primary_Download_URL>
-      <Secondary_Download_URL>https://sourceforge.net/projects/bined/files/editor/0.2.1/bined-0.2.1-win32.exe/download</Secondary_Download_URL>
-      <Additional_Download_URL_1>https://bined.exbin.org/download/?bined-0.2.1.zip</Additional_Download_URL_1>
-      <Additional_Download_URL_2>https://sourceforge.net/projects/bined/files/editor/0.2.1/bined-0.2.1-zip/download</Additional_Download_URL_2>
+      <Primary_Download_URL>https://bined.exbin.org/download/?bined-0.2.2-win32.exe</Primary_Download_URL>
+      <Secondary_Download_URL>https://sourceforge.net/projects/bined/files/editor/0.2.2/bined-0.2.2-win32.exe/download</Secondary_Download_URL>
+      <Additional_Download_URL_1>https://bined.exbin.org/download/?bined-0.2.2.zip</Additional_Download_URL_1>
+      <Additional_Download_URL_2>https://sourceforge.net/projects/bined/files/editor/0.2.2/bined-0.2.2-zip/download</Additional_Download_URL_2>
     </Download_URLs>
   </Web_Info>
   <Program_Descriptions>
     <English>
-      <Keywords>hexedit,hexadecimal editor,binary editor</Keywords>
+      <Keywords>hexedit,hex editor,binary editor</Keywords>
       <Char_Desc_45>Binary / Hexadecimal Editor</Char_Desc_45>
       <Char_Desc_80>Binary / Hexadecimal Editor</Char_Desc_80>
-      <Char_Desc_250>Free and open source binary/hexadecimal viewer/editor and component written in Java.</Char_Desc_250>
-      <Char_Desc_450>Free and open source binary/hexadecimal viewer/editor and component written in Java.</Char_Desc_450>
-      <Char_Desc_2000>Free and open source binary/hexadecimal viewer/editor and component written in Java.
+      <Char_Desc_250>Free and open source binary/hexadecimal viewer/editor written in Java.</Char_Desc_250>
+      <Char_Desc_450>Free and open source binary/hexadecimal viewer/editor written in Java.</Char_Desc_450>
+      <Char_Desc_2000>Free and open source binary/hexadecimal viewer/editor written in Java.
 
 Features
 
-- Data as hexadecimal codes and text preview
-- Insert and overwrite edit modes
-- Support for selection and clipboard actions
-- Scrollbars fixed or optional, character/line or pixel precision
-- Support for showing unprintable/whitespace characters
-- Support for undo/redo
-- Support for encoding selection
+- Visualize data as numerical (hexadecimal) codes and text representation
 - Codes can be also binary, octal or decimal
+- Support for Unicode, UTF-8 and other charsets
+- Insert and overwrite edit modes
 - Searching for text / hexadecimal code with matching highlighting
-- Support for huge files
-- Delta mode - Only changes are stored in memory</Char_Desc_2000>
+- Support for undo/redo
+- Support for files with size up to exabytes</Char_Desc_2000>
     </English>
   </Program_Descriptions>
   <Permissions>
     <Distribution_Permissions>Apache V2 license</Distribution_Permissions>
-    <EULA></EULA>
+    <EULA/>
   </Permissions>
   <Affiliates>
-    <Affiliates_Regsoft_Order_Page></Affiliates_Regsoft_Order_Page>
-    <Affiliates_Regsoft_Vendor_ID></Affiliates_Regsoft_Vendor_ID>
-    <Affiliates_Regsoft_Product_ID></Affiliates_Regsoft_Product_ID>
-    <Affiliates_FORM></Affiliates_FORM>
-    <Affiliates_FORM_VER></Affiliates_FORM_VER>
-    <Affiliates_VERSION></Affiliates_VERSION>
-    <Affiliates_URL></Affiliates_URL>
-    <Affiliates_Information_Page></Affiliates_Information_Page>
-    <Affiliates_Avangate_Order_Page></Affiliates_Avangate_Order_Page>
-    <Affiliates_Avangate_Vendor_ID></Affiliates_Avangate_Vendor_ID>
-    <Affiliates_Avangate_Product_ID></Affiliates_Avangate_Product_ID>
-    <Affiliates_Avangate_Maximum_Commission_Rate></Affiliates_Avangate_Maximum_Commission_Rate>
-    <Affiliates_BlueSnap_Order_Page></Affiliates_BlueSnap_Order_Page>
-    <Affiliates_BlueSnap_Vendor_ID></Affiliates_BlueSnap_Vendor_ID>
-    <Affiliates_BlueSnap_Product_ID></Affiliates_BlueSnap_Product_ID>
-    <Affiliates_BlueSnap_Maximum_Commission_Rate></Affiliates_BlueSnap_Maximum_Commission_Rate>
-    <Affiliates_BMTMicro_Order_Page></Affiliates_BMTMicro_Order_Page>
-    <Affiliates_BMTMicro_Vendor_ID></Affiliates_BMTMicro_Vendor_ID>
-    <Affiliates_BMTMicro_Product_ID></Affiliates_BMTMicro_Product_ID>
-    <Affiliates_BMTMicro_Maximum_Commission_Rate></Affiliates_BMTMicro_Maximum_Commission_Rate>
-    <Affiliates_eSellerate_Order_Page></Affiliates_eSellerate_Order_Page>
-    <Affiliates_eSellerate_Vendor_ID></Affiliates_eSellerate_Vendor_ID>
-    <Affiliates_eSellerate_Product_ID></Affiliates_eSellerate_Product_ID>
-    <Affiliates_eSellerate_Maximum_Commission_Rate></Affiliates_eSellerate_Maximum_Commission_Rate>
-    <Affiliates_Regnet_Order_Page></Affiliates_Regnet_Order_Page>
-    <Affiliates_Regnet_Vendor_ID></Affiliates_Regnet_Vendor_ID>
-    <Affiliates_Regnet_Product_ID></Affiliates_Regnet_Product_ID>
-    <Affiliates_Regnet_Maximum_Commission_Rate></Affiliates_Regnet_Maximum_Commission_Rate>
-    <Affiliates_Regsoft_Maximum_Commission_Rate></Affiliates_Regsoft_Maximum_Commission_Rate>
-    <Affiliates_ShareIt_Order_Page></Affiliates_ShareIt_Order_Page>
-    <Affiliates_ShareIt_Vendor_ID></Affiliates_ShareIt_Vendor_ID>
-    <Affiliates_ShareIt_Product_ID></Affiliates_ShareIt_Product_ID>
-    <Affiliates_ShareIt_Maximum_Commission_Rate></Affiliates_ShareIt_Maximum_Commission_Rate>
+    <Affiliates_Regsoft_Order_Page/>
+    <Affiliates_Regsoft_Vendor_ID/>
+    <Affiliates_Regsoft_Product_ID/>
+    <Affiliates_FORM/>
+    <Affiliates_FORM_VER/>
+    <Affiliates_VERSION/>
+    <Affiliates_URL/>
+    <Affiliates_Information_Page/>
+    <Affiliates_Avangate_Order_Page/>
+    <Affiliates_Avangate_Vendor_ID/>
+    <Affiliates_Avangate_Product_ID/>
+    <Affiliates_Avangate_Maximum_Commission_Rate/>
+    <Affiliates_BlueSnap_Order_Page/>
+    <Affiliates_BlueSnap_Vendor_ID/>
+    <Affiliates_BlueSnap_Product_ID/>
+    <Affiliates_BlueSnap_Maximum_Commission_Rate/>
+    <Affiliates_BMTMicro_Order_Page/>
+    <Affiliates_BMTMicro_Vendor_ID/>
+    <Affiliates_BMTMicro_Product_ID/>
+    <Affiliates_BMTMicro_Maximum_Commission_Rate/>
+    <Affiliates_eSellerate_Order_Page/>
+    <Affiliates_eSellerate_Vendor_ID/>
+    <Affiliates_eSellerate_Product_ID/>
+    <Affiliates_eSellerate_Maximum_Commission_Rate/>
+    <Affiliates_Regnet_Order_Page/>
+    <Affiliates_Regnet_Vendor_ID/>
+    <Affiliates_Regnet_Product_ID/>
+    <Affiliates_Regnet_Maximum_Commission_Rate/>
+    <Affiliates_Regsoft_Maximum_Commission_Rate/>
+    <Affiliates_ShareIt_Order_Page/>
+    <Affiliates_ShareIt_Vendor_ID/>
+    <Affiliates_ShareIt_Product_ID/>
+    <Affiliates_ShareIt_Maximum_Commission_Rate/>
   </Affiliates>
   <NewsFeed>
-    <NewsFeed_FORM></NewsFeed_FORM>
-    <NewsFeed_VERSION></NewsFeed_VERSION>
-    <NewsFeed_URL></NewsFeed_URL>
-    <NewsFeed_DESCRIPTION></NewsFeed_DESCRIPTION>
-    <NewsFeed_Feed_URL></NewsFeed_Feed_URL>
-    <NewsFeed_Type></NewsFeed_Type>
-    <NewsFeed_Site_URL></NewsFeed_Site_URL>
+    <NewsFeed_FORM/>
+    <NewsFeed_VERSION/>
+    <NewsFeed_URL/>
+    <NewsFeed_DESCRIPTION/>
+    <NewsFeed_Feed_URL/>
+    <NewsFeed_Type/>
+    <NewsFeed_Site_URL/>
     <NewsFeed_Author_First_Name>Miroslav</NewsFeed_Author_First_Name>
     <NewsFeed_Author_Last_Name>Hajda</NewsFeed_Author_Last_Name>
     <NewsFeed_Author_Email>exbinproject@gmail.com</NewsFeed_Author_Email>
-    <NewsFeed_Language></NewsFeed_Language>
-    <NewsFeed_Title></NewsFeed_Title>
-    <NewsFeed_Description_70></NewsFeed_Description_70>
-    <NewsFeed_Description_250></NewsFeed_Description_250>
-    <NewsFeed_Purpose></NewsFeed_Purpose>
-    <NewsFeed_Site_Name></NewsFeed_Site_Name>
+    <NewsFeed_Language/>
+    <NewsFeed_Title/>
+    <NewsFeed_Description_70/>
+    <NewsFeed_Description_250/>
+    <NewsFeed_Purpose/>
+    <NewsFeed_Site_Name/>
   </NewsFeed>
   <Press_Release>
-    <Press_Release></Press_Release>
-    <Headline></Headline>
-    <Summary></Summary>
-    <Press_Release_Plain></Press_Release_Plain>
+    <Press_Release/>
+    <Headline/>
+    <Summary/>
+    <Press_Release_Plain/>
   </Press_Release>
   <Site>
-    <Site_FORM></Site_FORM>
-    <Site_VERSION></Site_VERSION>
-    <Site_DESCRIPTION></Site_DESCRIPTION>
+    <Site_FORM/>
+    <Site_VERSION/>
+    <Site_DESCRIPTION/>
     <Site_Site_Title>BinEd - Binary / Hexadecimal Editor</Site_Site_Title>
     <Site_Site_URL>https://bined.exbin.org</Site_Site_URL>
     <Site_Keywords>binary, hexadecimal, hexedit, hexeditor, viewer, editor, java</Site_Keywords>
@@ -224,8 +221,8 @@ Features
       <DP_Distributive_Enabled>FALSE</DP_Distributive_Enabled>
       <DP_Script_Base_URL>http://repository.appvisor.com/</DP_Script_Base_URL>
       <DP_Pad_Mask>BinEd_pad.xml</DP_Pad_Mask>
-      <DP_Distributive_Primary_URL>https://bined.exbin.org/download/?bined-0.2.1-win32.exe</DP_Distributive_Primary_URL>
-      <DP_Distributive_Mask>?bined-0.2.1-win32.exe</DP_Distributive_Mask>
+      <DP_Distributive_Primary_URL>https://bined.exbin.org/download/?bined-0.2.2-win32.exe</DP_Distributive_Primary_URL>
+      <DP_Distributive_Mask>?bined-0.2.2-win32.exe</DP_Distributive_Mask>
     </General>
   </Dynamic_PAD>
 </XML_DIZ_INFO>
