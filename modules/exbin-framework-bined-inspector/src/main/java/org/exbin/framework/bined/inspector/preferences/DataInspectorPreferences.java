@@ -17,6 +17,7 @@ package org.exbin.framework.bined.inspector.preferences;
 
 import org.exbin.framework.api.Preferences;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
 
 /**
  * Data inspector preferences.
@@ -24,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class DataInspectorPreferences {
+public class DataInspectorPreferences implements DataInspectorOptions {
 
     public static final String PREFERENCES_SHOW_PARSING_PANEL = "showValuesPanel";
 
@@ -34,10 +35,12 @@ public class DataInspectorPreferences {
         this.preferences = preferences;
     }
 
+    @Override
     public boolean isShowParsingPanel() {
         return preferences.getBoolean(PREFERENCES_SHOW_PARSING_PANEL, true);
     }
 
+    @Override
     public void setShowParsingPanel(boolean show) {
         preferences.putBoolean(PREFERENCES_SHOW_PARSING_PANEL, show);
     }
