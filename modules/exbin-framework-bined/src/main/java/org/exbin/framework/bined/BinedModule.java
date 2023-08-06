@@ -189,11 +189,7 @@ public class BinedModule implements XBApplicationModule {
 
     private XBApplication application;
     private EditorProvider editorProvider;
-    private BinaryStatusPanel binaryStatusPanel;
-    private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
-    private final List<ActionStatusUpdateListener> actionStatusUpdateListeners = new ArrayList<>();
-    private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
-    private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
+    private BinEdFileManager fileManager = new BinEdFileManager();
 
     private DefaultOptionsPage<TextEncodingOptionsImpl> textEncodingOptionsPage;
     private DefaultOptionsPage<TextFontOptionsImpl> textFontOptionsPage;
@@ -228,6 +224,7 @@ public class BinedModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
+        fileManager.setApplication(this.application);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -243,10 +240,12 @@ public class BinedModule implements XBApplicationModule {
             default:
                 throw XBFrameworkUtils.getInvalidTypeException(variant);
         }
+        fileManager.setEditorProvider(editorProvider);
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
+        fileManager.setEditorProvider(editorProvider);
     }
 
     @Override
@@ -267,7 +266,7 @@ public class BinedModule implements XBApplicationModule {
         if (editorProvider == null) {
 
             BinEdFileHandler editorFile = new BinEdFileHandler();
-            initFileHandler(editorFile);
+            fileManager.initFileHandler(editorFile);
 
             EditorPreferences editorPreferences = new EditorPreferences(application.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
@@ -310,54 +309,6 @@ public class BinedModule implements XBApplicationModule {
         return editorProvider;
     }
 
-    public void initFileHandler(BinEdFileHandler fileHandler) {
-        fileHandler.setApplication(application);
-        fileHandler.setSegmentsRepository(new SegmentsRepository());
-        BinEdComponentPanel componentPanel = fileHandler.getComponent();
-
-        for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
-            Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
-            componentExtension.ifPresent((extension) -> {
-                extension.setApplication(application);
-                extension.onCreate(componentPanel);
-                componentPanel.addComponentExtension(extension);
-            });
-        }
-        
-        BinEdCodeAreaPainter painter = (BinEdCodeAreaPainter) componentPanel.getCodeArea().getPainter();
-        for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPriorityPositionColorModifiers) {
-            painter.addPriorityColorModifier(modifier);
-        }
-        for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPositionColorModifiers) {
-            painter.addColorModifier(modifier);
-        }
-
-        Preferences preferences = application.getAppPreferences();
-        String encoding = new BinaryEditorPreferences(preferences).getEncodingPreferences().getSelectedEncoding();
-        if (!encoding.isEmpty()) {
-            fileHandler.setCharset(Charset.forName(encoding));
-        }
-        TextFontPreferences textFontPreferences = new BinaryEditorPreferences(preferences).getFontPreferences();
-        ExtCodeArea codeArea = fileHandler.getCodeArea();
-        ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
-    }
-
-    public void addPainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
-        painterPositionColorModifiers.add(modifier);
-    }
-
-    public void removePainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
-        painterPositionColorModifiers.remove(modifier);
-    }
-
-    public void addPainterPriorityColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
-        painterPriorityPositionColorModifiers.add(modifier);
-    }
-
-    public void removePainterPriorityColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
-        painterPriorityPositionColorModifiers.remove(modifier);
-    }
-
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
         EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
         editorModule.updateActionStatus();
@@ -383,9 +334,7 @@ public class BinedModule implements XBApplicationModule {
             }
         }
 
-        for (ActionStatusUpdateListener listener : actionStatusUpdateListeners) {
-            listener.updateActionStatus(codeArea);
-        }
+        fileManager.updateActionStatus(codeArea);
 
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
         fileModule.updateForFileOperations();
@@ -415,8 +364,8 @@ public class BinedModule implements XBApplicationModule {
     }
 
     public void registerStatusBar() {
-        binaryStatusPanel = new BinaryStatusPanel();
-        binaryStatusPanel.setStatusControlHandler(new BinaryStatusPanel.StatusControlHandler() {
+        fileManager.registerStatusBar();
+        fileManager.setStatusControlHandler(new BinaryStatusPanel.StatusControlHandler() {
             @Override
             public void changeEditOperation(EditOperation editOperation) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
@@ -464,13 +413,9 @@ public class BinedModule implements XBApplicationModule {
                 }
             }
         });
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        frameModule.registerStatusBar(MODULE_ID, BINARY_STATUS_BAR_ID, binaryStatusPanel);
-        frameModule.switchStatusBar(BINARY_STATUS_BAR_ID);
-        ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
-        ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
+
         if (encodingsHandler != null) {
-            encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
+            fileManager.updateTextEncodingStatus(encodingsHandler);
         }
     }
 
@@ -861,7 +806,7 @@ public class BinedModule implements XBApplicationModule {
 
             @Override
             public void applyPreferencesChanges(StatusOptionsImpl options) {
-                binaryStatusPanel.setStatusOptions(options);
+                fileManager.applyPreferencesChanges(options);
             }
         };
         optionsModule.addOptionsPage(statusOptionsPage);
@@ -1437,7 +1382,7 @@ public class BinedModule implements XBApplicationModule {
 
     @Nullable
     public BinaryStatusPanel getBinaryStatusPanel() {
-        return binaryStatusPanel;
+        return fileManager.getBinaryStatusPanel();
     }
 
     @Nonnull
@@ -1534,9 +1479,7 @@ public class BinedModule implements XBApplicationModule {
             ensureSetup();
             encodingsHandler = new EncodingsHandler();
             encodingsHandler.setParentComponent(editorProvider.getEditorComponent());
-            if (binaryStatusPanel != null) {
-                encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
-            }
+            fileManager.updateTextEncodingStatus(encodingsHandler);
             encodingsHandler.init();
 
             encodingsHandler.setEncodingChangeListener(new TextEncodingService.EncodingChangeListener() {
@@ -1750,12 +1693,9 @@ public class BinedModule implements XBApplicationModule {
         fileModule.loadFromFile(uri.toASCIIString());
     }
 
-    public void addBinEdComponentExtension(BinEdFileExtension extension) {
-        binEdComponentExtensions.add(extension);
-    }
-
-    public void addActionStatusUpdateListener(ActionStatusUpdateListener listener) {
-        actionStatusUpdateListeners.add(listener);
+    @Nonnull
+    public BinEdFileManager getFileManager() {
+        return fileManager;
     }
 
     @Nonnull
@@ -1910,9 +1850,7 @@ public class BinedModule implements XBApplicationModule {
             popupMenu.add(optionsMenuItem);
         }
 
-        for (BinEdFileExtension extension : binEdComponentExtensions) {
-            extension.onPopupMenuCreation(popupMenu, codeArea, menuPostfix, variant, x, y);
-        }
+        fileManager.insertActionsIntoPopupMenu(popupMenu, codeArea, menuPostfix, variant, x, y);
 
         updateActionStatus(codeArea);
         return popupMenu;
@@ -2001,7 +1939,7 @@ public class BinedModule implements XBApplicationModule {
 
     public void loadFromPreferences(Preferences preferences) {
         encodingsHandler.loadFromPreferences(new TextEncodingPreferences(preferences));
-        binaryStatusPanel.loadFromPreferences(new StatusPreferences(preferences));
+        fileManager.loadFromPreferences(preferences);
     }
 
     @Nonnull
@@ -2090,26 +2028,6 @@ public class BinedModule implements XBApplicationModule {
                 return SwingUtilities.getDeepestComponentAt(e.getComponent(), e.getX(), e.getY());
             }
         });
-    }
-
-    @Nonnull
-    public Iterable<BinEdFileExtension> getBinEdComponentExtensions() {
-        return binEdComponentExtensions;
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface BinEdFileExtension {
-
-        @Nonnull
-        Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
-
-        void onPopupMenuCreation(final JPopupMenu popupMenu, final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y);
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface ActionStatusUpdateListener {
-
-        void updateActionStatus(CodeAreaCore codeArea);
     }
 
     public enum PopupMenuVariant {

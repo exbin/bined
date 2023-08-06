@@ -33,6 +33,7 @@ import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
+import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
@@ -78,7 +79,8 @@ public class BinedInspectorModule implements XBApplicationModule {
         this.application = (XBApplication) application;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        binedModule.addPainterColorModifier(basicValuesColorModifier);
+        BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.addPainterColorModifier(basicValuesColorModifier);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -88,8 +90,9 @@ public class BinedInspectorModule implements XBApplicationModule {
         this.editorProvider = editorProvider;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        binedModule.addActionStatusUpdateListener(this::updateActionStatus);
-        binedModule.addBinEdComponentExtension(new BinedModule.BinEdFileExtension() {
+        BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.addActionStatusUpdateListener(this::updateActionStatus);
+        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull
             @Override
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {

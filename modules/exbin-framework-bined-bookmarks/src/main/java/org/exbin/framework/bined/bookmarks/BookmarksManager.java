@@ -42,6 +42,7 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
@@ -101,7 +102,8 @@ public class BookmarksManager {
         loadBookmarkRecords();
         updateBookmarksMenu();
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
-        binedModule.addPainterColorModifier(bookmarksPositionColorModifier);
+        BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.addPainterColorModifier(bookmarksPositionColorModifier);
     }
 
     private void loadBookmarkRecords() {

@@ -217,7 +217,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         BinEdFileHandler fileHandler = new BinEdFileHandler(id);
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        binedModule.initFileHandler(fileHandler);
+        BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.initFileHandler(fileHandler);
 
         fileHandler.setNewData(defaultFileHandlingMode);
         fileHandler.getUndoHandler().addUndoUpdateListener(new XBUndoUpdateListener() {
