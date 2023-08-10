@@ -56,7 +56,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
     private XBApplication application;
     private EditorProvider editorProvider;
 
-    private BookmarksManager bookmarksManager = new BookmarksManager();
+    private BookmarksManager bookmarksManager;
 
     public BinedBookmarksModule() {
     }
@@ -64,7 +64,6 @@ public class BinedBookmarksModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-        bookmarksManager.setApplication(this.application);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -73,6 +72,8 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
+        bookmarksManager = new BookmarksManager();
+        bookmarksManager.setApplication(this.application);
         bookmarksManager.setEditorProvider(editorProvider);
         bookmarksManager.init();
 

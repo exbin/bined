@@ -77,10 +77,6 @@ public class BinedInspectorModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addPainterColorModifier(basicValuesColorModifier);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -91,6 +87,7 @@ public class BinedInspectorModule implements XBApplicationModule {
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.addPainterColorModifier(basicValuesColorModifier);
         fileManager.addActionStatusUpdateListener(this::updateActionStatus);
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull

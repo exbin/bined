@@ -189,7 +189,7 @@ public class BinedModule implements XBApplicationModule {
 
     private XBApplication application;
     private EditorProvider editorProvider;
-    private BinEdFileManager fileManager = new BinEdFileManager();
+    private BinEdFileManager fileManager;
 
     private DefaultOptionsPage<TextEncodingOptionsImpl> textEncodingOptionsPage;
     private DefaultOptionsPage<TextFontOptionsImpl> textFontOptionsPage;
@@ -224,7 +224,6 @@ public class BinedModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-        fileManager.setApplication(this.application);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -240,6 +239,8 @@ public class BinedModule implements XBApplicationModule {
             default:
                 throw XBFrameworkUtils.getInvalidTypeException(variant);
         }
+        fileManager = new BinEdFileManager();
+        fileManager.setApplication(this.application);
         fileManager.setEditorProvider(editorProvider);
     }
 
