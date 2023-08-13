@@ -1479,6 +1479,7 @@ public class BinedModule implements XBApplicationModule {
         if (encodingsHandler == null) {
             ensureSetup();
             encodingsHandler = new EncodingsHandler();
+            encodingsHandler.setApplication(application);
             encodingsHandler.setParentComponent(editorProvider.getEditorComponent());
             fileManager.updateTextEncodingStatus(encodingsHandler);
             encodingsHandler.init();
@@ -1780,7 +1781,7 @@ public class BinedModule implements XBApplicationModule {
                 });
                 popupMenu.add(copyMenuItem);
 
-                final JMenuItem copyAsCodeMenuItem = new JMenuItem("Copy as Code");
+                final JMenuItem copyAsCodeMenuItem = ActionUtils.actionToMenuItem(clipboardCodeActions.getCopyAsCodeAction());
                 copyAsCodeMenuItem.setEnabled(codeArea.hasSelection());
                 copyAsCodeMenuItem.addActionListener((ActionEvent e) -> {
                     codeArea.copyAsCode();
@@ -1794,7 +1795,7 @@ public class BinedModule implements XBApplicationModule {
                 });
                 popupMenu.add(pasteMenuItem);
 
-                final JMenuItem pasteFromCodeMenuItem = new JMenuItem("Paste from Code");
+                final JMenuItem pasteFromCodeMenuItem = ActionUtils.actionToMenuItem(clipboardCodeActions.getPasteFromCodeAction());
                 pasteFromCodeMenuItem.setEnabled(codeArea.canPaste() && codeArea.isEditable());
                 pasteFromCodeMenuItem.addActionListener((ActionEvent e) -> {
                     try {
@@ -1838,7 +1839,7 @@ public class BinedModule implements XBApplicationModule {
                     break;
                 }
                 default: {
-                    JMenu showMenu = new JMenu("Show");
+                    JMenu showMenu = new JMenu(resourceBundle.getString("popupShowSubMenu.text"));
                     JMenuItem showHeader = createShowHeaderMenuItem(codeArea);
                     showMenu.add(showHeader);
                     JMenuItem showRowPosition = createShowRowPositionMenuItem(codeArea);
@@ -1878,26 +1879,28 @@ public class BinedModule implements XBApplicationModule {
 
     @Nonnull
     private JMenuItem createShowHeaderMenuItem(ExtCodeArea codeArea) {
-        final JCheckBoxMenuItem showHeader = new JCheckBoxMenuItem("Show Header");
+        AbstractAction action = getShowHeaderAction();
+        final JCheckBoxMenuItem showHeader = new JCheckBoxMenuItem((String) action.getValue(Action.NAME));
         showHeader.setSelected(Objects.requireNonNull(codeArea.getLayoutProfile()).isShowHeader());
-        showHeader.addActionListener(getShowHeaderAction());
+        showHeader.addActionListener(action);
         return showHeader;
     }
 
     @Nonnull
     private JMenuItem createShowRowPositionMenuItem(ExtCodeArea codeArea) {
-        final JCheckBoxMenuItem showRowPosition = new JCheckBoxMenuItem("Show Row Position");
+        AbstractAction action = getShowRowPositionAction();
+        final JCheckBoxMenuItem showRowPosition = new JCheckBoxMenuItem((String) action.getValue(Action.NAME));
         showRowPosition.setSelected(Objects.requireNonNull(codeArea.getLayoutProfile()).isShowRowPosition());
-        showRowPosition.addActionListener(getShowRowPositionAction());
+        showRowPosition.addActionListener(action);
         return showRowPosition;
     }
 
     @Nonnull
     private JMenuItem createPositionCodeTypeMenuItem(ExtCodeArea codeArea) {
-        JMenu menu = new JMenu("Position Code Type");
+        JMenu menu = new JMenu(resourceBundle.getString("positionCodeTypeSubMenu.text"));
         PositionCodeType codeType = codeArea.getPositionCodeType();
 
-        final JRadioButtonMenuItem octalCodeTypeMenuItem = new JRadioButtonMenuItem("Octal");
+        final JRadioButtonMenuItem octalCodeTypeMenuItem = new JRadioButtonMenuItem(resourceBundle.getString("octalCodeTypeAction.text"));
         octalCodeTypeMenuItem.setSelected(codeType == PositionCodeType.OCTAL);
         octalCodeTypeMenuItem.addActionListener(new AbstractAction() {
             @Override
@@ -1908,7 +1911,7 @@ public class BinedModule implements XBApplicationModule {
         });
         menu.add(octalCodeTypeMenuItem);
 
-        final JRadioButtonMenuItem decimalCodeTypeMenuItem = new JRadioButtonMenuItem("Decimal");
+        final JRadioButtonMenuItem decimalCodeTypeMenuItem = new JRadioButtonMenuItem(resourceBundle.getString("decimalCodeTypeAction.text"));
         decimalCodeTypeMenuItem.setSelected(codeType == PositionCodeType.DECIMAL);
         decimalCodeTypeMenuItem.addActionListener(new AbstractAction() {
             @Override
@@ -1919,7 +1922,7 @@ public class BinedModule implements XBApplicationModule {
         });
         menu.add(decimalCodeTypeMenuItem);
 
-        final JRadioButtonMenuItem hexadecimalCodeTypeMenuItem = new JRadioButtonMenuItem("Hexadecimal");
+        final JRadioButtonMenuItem hexadecimalCodeTypeMenuItem = new JRadioButtonMenuItem(resourceBundle.getString("hexadecimalCodeTypeAction.text"));
         hexadecimalCodeTypeMenuItem.setSelected(codeType == PositionCodeType.HEXADECIMAL);
         hexadecimalCodeTypeMenuItem.addActionListener(new AbstractAction() {
             @Override
