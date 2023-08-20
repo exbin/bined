@@ -23,13 +23,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
-import org.exbin.bined.capability.RowWrappingCapable;
-import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -42,7 +41,7 @@ import org.exbin.framework.utils.WindowUtils;
 public class BinEdComponentPanel extends javax.swing.JPanel {
 
     private ExtCodeArea codeArea;
-    private CodeAreaUndoHandler undoHandler;
+    private BinaryDataUndoHandler undoHandler;
     private List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
 
     public BinEdComponentPanel() {
@@ -62,17 +61,9 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         add(codeArea);
     }
 
-    public void setApplication(XBApplication application) {
-    }
-
     @Nonnull
     public ExtCodeArea getCodeArea() {
         return codeArea;
-    }
-
-    public boolean changeRowWrapping() {
-        ((RowWrappingCapable) codeArea).setRowWrapping(((RowWrappingCapable) codeArea).getRowWrapping() == RowWrappingMode.WRAPPING ? RowWrappingMode.NO_WRAPPING : RowWrappingMode.WRAPPING);
-        return ((RowWrappingCapable) codeArea).getRowWrapping() == RowWrappingMode.WRAPPING;
     }
 
     public void notifyDataChanged() {
@@ -128,12 +119,13 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
     @Nullable
-    public CodeAreaUndoHandler getUndoHandler() {
+    public BinaryDataUndoHandler getUndoHandler() {
         return undoHandler;
     }
 
-    public void setUndoHandler(CodeAreaUndoHandler undoHandler) {
+    public void setUndoHandler(BinaryDataUndoHandler undoHandler) {
         this.undoHandler = undoHandler;
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler == null ? new CodeAreaUndoHandler(codeArea) : undoHandler);
         codeArea.setCommandHandler(commandHandler);

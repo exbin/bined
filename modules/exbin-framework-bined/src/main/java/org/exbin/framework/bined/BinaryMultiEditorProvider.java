@@ -209,7 +209,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     public void openFile(URI fileUri, FileType fileType) {
         BinEdFileHandler file = createFileHandler(++lastIndex);
         file.loadFromFile(fileUri, fileType);
-        multiEditorPanel.addFileHandler(file, file.getFileName().orElse(""));
+        multiEditorPanel.addFileHandler(file, file.getFileName());
     }
 
     @Nonnull
@@ -435,9 +435,9 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Nonnull
     @Override
     public String getName(FileHandler fileHandler) {
-        Optional<String> fileName = fileHandler.getFileName();
-        if (fileName.isPresent()) {
-            return fileName.get();
+        String fileName = fileHandler.getFileName();
+        if (!fileName.isEmpty()) {
+            return fileName;
         }
 
         return "New File " + newFilesMap.get(fileHandler.getId());

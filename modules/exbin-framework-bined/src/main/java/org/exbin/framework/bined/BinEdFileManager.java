@@ -53,6 +53,7 @@ public class BinEdFileManager {
     private EditorProvider editorProvider;
 
     private BinaryStatusPanel binaryStatusPanel;
+    private final SegmentsRepository segmentsRepository = new SegmentsRepository();
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
     private final List<ActionStatusUpdateListener> actionStatusUpdateListeners = new ArrayList<>();
     private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
@@ -71,7 +72,7 @@ public class BinEdFileManager {
 
     public void initFileHandler(BinEdFileHandler fileHandler) {
         fileHandler.setApplication(application);
-        fileHandler.setSegmentsRepository(new SegmentsRepository());
+        fileHandler.setSegmentsRepository(segmentsRepository);
         BinEdComponentPanel componentPanel = fileHandler.getComponent();
 
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
@@ -92,11 +93,12 @@ public class BinEdFileManager {
         }
 
         Preferences preferences = application.getAppPreferences();
-        String encoding = new BinaryEditorPreferences(preferences).getEncodingPreferences().getSelectedEncoding();
+        BinaryEditorPreferences binaryEditorPreferences = new BinaryEditorPreferences(preferences);
+        String encoding = binaryEditorPreferences.getEncodingPreferences().getSelectedEncoding();
         if (!encoding.isEmpty()) {
             fileHandler.setCharset(Charset.forName(encoding));
         }
-        TextFontPreferences textFontPreferences = new BinaryEditorPreferences(preferences).getFontPreferences();
+        TextFontPreferences textFontPreferences = binaryEditorPreferences.getFontPreferences();
         ExtCodeArea codeArea = fileHandler.getCodeArea();
         ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
     }

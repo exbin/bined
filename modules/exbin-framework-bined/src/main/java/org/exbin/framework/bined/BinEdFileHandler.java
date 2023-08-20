@@ -39,6 +39,7 @@ import org.exbin.auxiliary.paged_data.delta.DeltaDocument;
 import org.exbin.auxiliary.paged_data.delta.FileDataSource;
 import org.exbin.auxiliary.paged_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
+import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 import org.exbin.framework.api.XBApplication;
@@ -65,7 +66,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     private SegmentsRepository segmentsRepository;
 
     @Nonnull
-    private final BinEdComponentPanel componentPanel;
+    private final BinEdEditorComponent editorComponent;
     private XBUndoHandler undoHandlerWrapper;
     private int id = 0;
     private URI fileUri = null;
@@ -75,7 +76,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     private long documentOriginalSize;
 
     public BinEdFileHandler() {
-        componentPanel = new BinEdComponentPanel();
+        editorComponent = new BinEdEditorComponent();
         init();
     }
 
@@ -86,14 +87,14 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
     private void init() {
         final ExtCodeArea codeArea = getCodeArea();
-        CodeAreaUndoHandler undoHandler = new CodeAreaUndoHandler(componentPanel.getCodeArea());
-        componentPanel.setUndoHandler(undoHandler);
+        CodeAreaUndoHandler undoHandler = new CodeAreaUndoHandler(editorComponent.getCodeArea());
+        editorComponent.setUndoHandler(undoHandler);
         defaultFont = codeArea.getCodeFont();
         defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
     }
 
     public void setApplication(XBApplication application) {
-        componentPanel.setApplication(application);
+        editorComponent.setApplication(application);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         this.fileType = fileType;
         File file = new File(fileUri);
         if (!file.isFile()) {
-            JOptionPane.showOptionDialog(componentPanel,
+            JOptionPane.showOptionDialog(editorComponent.getComponentPanel(),
                     "File not found",
                     "Unable to load file",
                     JOptionPane.CLOSED_OPTION,
@@ -115,18 +116,18 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         }
 
         try {
-            BinaryData oldData = componentPanel.getContentData();
+            BinaryData oldData = editorComponent.getContentData();
             if (fileHandlingMode == FileHandlingMode.DELTA) {
                 FileDataSource openFileSource = segmentsRepository.openFileSource(file);
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
-                componentPanel.setContentData(document);
+                editorComponent.setContentData(document);
                 this.fileUri = fileUri;
                 if (oldData != null) {
                     oldData.dispose();
                 }
             } else {
                 try ( FileInputStream fileStream = new FileInputStream(file)) {
-                    BinaryData data = componentPanel.getContentData();
+                    BinaryData data = editorComponent.getContentData();
                     if (!(data instanceof XBData)) {
                         data = new XBData();
                         if (oldData != null) {
@@ -134,7 +135,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                         }
                     }
                     ((EditableBinaryData) data).loadFromStream(fileStream);
-                    componentPanel.setContentData(data);
+                    editorComponent.setContentData(data);
                     this.fileUri = fileUri;
                 }
             }
@@ -150,10 +151,10 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     public void saveToFile(URI fileUri, FileType fileType) {
         File file = new File(fileUri);
         try {
-            BinaryData contentData = componentPanel.getContentData();
+            BinaryData contentData = editorComponent.getContentData();
             if (contentData == null) {
                 newFile();
-                contentData = componentPanel.getContentData();
+                contentData = editorComponent.getContentData();
             }
             if (contentData instanceof DeltaDocument) {
                 // TODO freeze window / replace with progress bar
@@ -188,7 +189,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     }
 
     public void loadFromStream(InputStream stream) throws IOException {
-        BinaryData contentData = componentPanel.getContentData();
+        BinaryData contentData = editorComponent.getContentData();
         if (!(contentData instanceof EditableBinaryData)) {
             contentData = new ByteArrayEditableData();
             // TODO: stream to binary data
@@ -196,11 +197,11 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
         EditableBinaryData data = Objects.requireNonNull((EditableBinaryData) contentData);
         data.loadFromStream(stream);
-        componentPanel.setContentData(contentData);
+        editorComponent.setContentData(contentData);
     }
 
     public void loadFromStream(InputStream stream, long dataSize) throws IOException {
-        BinaryData contentData = componentPanel.getContentData();
+        BinaryData contentData = editorComponent.getContentData();
         if (!(contentData instanceof EditableBinaryData)) {
             contentData = new ByteArrayEditableData();
         }
@@ -208,11 +209,11 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         EditableBinaryData data = Objects.requireNonNull((EditableBinaryData) contentData);
         data.clear();
         data.insert(0, stream, dataSize);
-        componentPanel.setContentData(contentData);
+        editorComponent.setContentData(contentData);
     }
 
     public void saveToStream(OutputStream stream) throws IOException {
-        BinaryData data = Objects.requireNonNull((BinaryData) componentPanel.getContentData());
+        BinaryData data = Objects.requireNonNull((BinaryData) editorComponent.getContentData());
         data.saveToStream(stream);
     }
 
@@ -226,7 +227,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     public void newFile() {
         FileHandlingMode fileHandlingMode = getFileHandlingMode();
         closeData();
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        ExtCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
         if (data instanceof DeltaDocument) {
             segmentsRepository.dropDocument(Objects.requireNonNull((DeltaDocument) codeArea.getContentData()));
@@ -245,14 +246,15 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
     @Nonnull
     @Override
-    public Optional<String> getFileName() {
+    public String getFileName() {
         if (fileUri != null) {
             String path = fileUri.getPath();
             int lastSegment = path.lastIndexOf("/");
-            return Optional.of(lastSegment < 0 ? path : path.substring(lastSegment + 1));
+            String fileName = lastSegment < 0 ? path : path.substring(lastSegment + 1);
+            return fileName == null ? "" : fileName;
         }
 
-        return Optional.empty();
+        return "";
     }
 
     @Nonnull
@@ -273,8 +275,9 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         return documentOriginalSize;
     }
 
+    @Override
     public void saveFile() {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        ExtCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
         if (data instanceof DeltaDocument) {
             try {
@@ -304,9 +307,9 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
     @Override
     public void closeData() {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        ExtCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
-        componentPanel.setContentData(new ByteArrayData());
+        editorComponent.setContentData(new ByteArrayData());
         if (data instanceof DeltaDocument) {
             FileDataSource fileSource = ((DeltaDocument) data).getFileSource();
             data.dispose();
@@ -333,7 +336,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     @Override
     public void switchFileHandlingMode(FileHandlingMode handlingMode) {
         FileHandlingMode oldFileHandlingMode = getFileHandlingMode();
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        ExtCodeArea codeArea = editorComponent.getCodeArea();
         if (handlingMode != oldFileHandlingMode) {
             if (fileUri != null) {
                 loadFromFile(fileUri, null, handlingMode);
@@ -342,13 +345,13 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                 if (oldData instanceof DeltaDocument) {
                     XBData data = new XBData();
                     data.insert(0, oldData);
-                    componentPanel.setContentData(data);
+                    editorComponent.setContentData(data);
                 } else {
                     DeltaDocument document = segmentsRepository.createDocument();
                     if (oldData != null) {
                         document.insert(0, oldData);
                     }
-                    componentPanel.setContentData(document);
+                    editorComponent.setContentData(document);
                 }
 
                 if (undoHandlerWrapper != null) {
@@ -370,12 +373,12 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     @Nonnull
     @Override
     public BinEdComponentPanel getComponent() {
-        return componentPanel;
+        return editorComponent.getComponentPanel();
     }
 
     @Nonnull
     public ExtCodeArea getCodeArea() {
-        return componentPanel.getCodeArea();
+        return editorComponent.getCodeArea();
     }
 
     @Nonnull
@@ -395,9 +398,9 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
     public void setNewData(FileHandlingMode fileHandlingMode) {
         if (fileHandlingMode == FileHandlingMode.DELTA) {
-            componentPanel.setContentData(segmentsRepository.createDocument());
+            editorComponent.setContentData(segmentsRepository.createDocument());
         } else {
-            componentPanel.setContentData(new XBData());
+            editorComponent.setContentData(new XBData());
         }
     }
 
@@ -406,7 +409,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     }
 
     public void requestFocus() {
-        componentPanel.getCodeArea().requestFocus();
+        editorComponent.getCodeArea().requestFocus();
     }
 
     @Nonnull
@@ -414,14 +417,14 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     public XBUndoHandler getUndoHandler() {
         if (undoHandlerWrapper == null) {
             undoHandlerWrapper = new UndoHandlerWrapper();
-            ((UndoHandlerWrapper) undoHandlerWrapper).setHandler(componentPanel.getUndoHandler());
+            ((UndoHandlerWrapper) undoHandlerWrapper).setHandler(editorComponent.getUndoHandler());
         }
         return undoHandlerWrapper;
     }
 
     @Nonnull
-    public CodeAreaUndoHandler getCodeAreaUndoHandler() {
-        return componentPanel.getUndoHandler();
+    public BinaryDataUndoHandler getCodeAreaUndoHandler() {
+        return editorComponent.getUndoHandler();
     }
 
     @Override
