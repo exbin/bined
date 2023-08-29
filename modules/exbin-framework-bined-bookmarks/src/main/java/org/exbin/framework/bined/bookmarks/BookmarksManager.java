@@ -247,7 +247,12 @@ public class BookmarksManager {
             actionMap.put(goToActionKey, new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    goToBookmark(bookmarkIndex);
+                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                    if (activeFile.isPresent()) {
+                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                        ExtCodeArea codeArea = fileHandler.getCodeArea();
+                        goToBookmark(codeArea, bookmarkIndex);
+                    }
                 }
             });
             inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask), goToActionKey);
@@ -257,7 +262,12 @@ public class BookmarksManager {
             actionMap.put(addActionKey, new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    addBookmark(bookmarkIndex);
+                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                    if (activeFile.isPresent()) {
+                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                        ExtCodeArea codeArea = fileHandler.getCodeArea();
+                        addBookmark(codeArea, bookmarkIndex);
+                    }
                 }
             });
             inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK), addActionKey);
@@ -277,44 +287,34 @@ public class BookmarksManager {
         component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap);
     }
 
-    public void goToBookmark(int bookmarkIndex) {
+    public void goToBookmark(ExtCodeArea codeArea, int bookmarkIndex) {
         if (bookmarkRecords.size() > bookmarkIndex) {
             BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
             if (record.isEmpty()) {
                 return;
             }
 
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (activeFile.isPresent()) {
-                BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                ExtCodeArea codeArea = fileHandler.getCodeArea();
-                codeArea.setCaretPosition(record.getStartPosition());
-                codeArea.centerOnCursor();
-            }
+            codeArea.setCaretPosition(record.getStartPosition());
+            codeArea.centerOnCursor();
         }
     }
 
-    public void addBookmark(int bookmarkIndex) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (activeFile.isPresent()) {
-            BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-            ExtCodeArea codeArea = fileHandler.getCodeArea();
-            long position = codeArea.getDataPosition();
+    public void addBookmark(ExtCodeArea codeArea, int bookmarkIndex) {
+        long position = codeArea.getDataPosition();
 
-            if (bookmarkRecords.size() <= bookmarkIndex) {
-                int recordsToInsert = bookmarkIndex - bookmarkRecords.size() + 1;
-                for (int i = 0; i < recordsToInsert; i++) {
-                    bookmarkRecords.add(new BookmarkRecord());
-                }
+        if (bookmarkRecords.size() <= bookmarkIndex) {
+            int recordsToInsert = bookmarkIndex - bookmarkRecords.size() + 1;
+            for (int i = 0; i < recordsToInsert; i++) {
+                bookmarkRecords.add(new BookmarkRecord());
             }
-
-            BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
-            record.setStartPosition(position);
-            record.setLength(1);
-            saveBookmarkRecords();
-            bookmarksPositionColorModifier.notifyBookmarksChanged();
-            updateBookmarksMenu();
         }
+
+        BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
+        record.setStartPosition(position);
+        record.setLength(1);
+        saveBookmarkRecords();
+        bookmarksPositionColorModifier.notifyBookmarksChanged();
+        updateBookmarksMenu();
     }
 
     public void clearBookmark(int bookmarkIndex) {

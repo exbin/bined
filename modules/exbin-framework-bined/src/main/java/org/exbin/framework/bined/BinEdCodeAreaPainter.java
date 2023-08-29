@@ -121,6 +121,19 @@ public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPaint
         return super.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, unprintables);
     }
 
+    @Override
+    public void resetColors() {
+        super.resetColors();
+        
+        for (PositionColorModifier colorModifier : priorityColorModifiers) {
+            colorModifier.resetColors();
+        }
+
+        for (PositionColorModifier colorModifier : colorModifiers) {
+            colorModifier.resetColors();
+        }
+    }
+
     @ParametersAreNonnullByDefault
     public interface PositionColorModifier {
 
@@ -129,5 +142,7 @@ public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPaint
 
         @Nullable
         Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables);
+        
+        void resetColors();
     }
 }
