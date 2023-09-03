@@ -24,8 +24,8 @@ import org.exbin.framework.bined.StatusCursorPositionFormat;
 import org.exbin.framework.bined.StatusDocumentSizeFormat;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.options.api.OptionsCapable;
 import org.exbin.framework.options.api.OptionsModifiedListener;
+import org.exbin.framework.options.api.OptionsComponent;
 
 /**
  * Editor status bar options panel.
@@ -33,7 +33,7 @@ import org.exbin.framework.options.api.OptionsModifiedListener;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCapable<StatusOptionsImpl> {
+public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsComponent<StatusOptionsImpl> {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(StatusOptionsPanel.class);
 

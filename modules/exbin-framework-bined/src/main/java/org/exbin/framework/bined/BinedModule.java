@@ -146,7 +146,6 @@ import org.exbin.framework.editor.text.options.impl.TextEncodingOptionsImpl;
 import org.exbin.framework.editor.text.options.impl.TextFontOptionsImpl;
 import org.exbin.framework.editor.text.service.TextEncodingService;
 import org.exbin.framework.editor.text.service.TextFontService;
-import org.exbin.framework.options.api.OptionsCapable;
 import org.exbin.framework.bined.service.EditorOptionsService;
 import org.exbin.framework.options.api.DefaultOptionsPage;
 import org.exbin.framework.utils.ActionUtils;
@@ -163,6 +162,7 @@ import org.exbin.framework.bined.action.ReloadFileAction;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.options.api.OptionsComponent;
 
 /**
  * Binary data editor module.
@@ -439,7 +439,7 @@ public class BinedModule implements XBApplicationModule {
 
             @Nonnull
             @Override
-            public OptionsCapable<BinaryAppearanceOptionsImpl> createPanel() {
+            public OptionsComponent<BinaryAppearanceOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new BinaryAppearanceOptionsPanel();
                 }
@@ -480,7 +480,7 @@ public class BinedModule implements XBApplicationModule {
             private TextEncodingOptionsPanel panel;
 
             @Override
-            public OptionsCapable<TextEncodingOptionsImpl> createPanel() {
+            public OptionsComponent<TextEncodingOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new TextEncodingOptionsPanel();
                     getEncodingsHandler();
@@ -572,7 +572,7 @@ public class BinedModule implements XBApplicationModule {
             private TextFontOptionsPanel panel;
 
             @Override
-            public OptionsCapable<TextFontOptionsImpl> createPanel() {
+            public OptionsComponent<TextFontOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new TextFontOptionsPanel();
                     panel.setTextFontService(textFontService);
@@ -678,7 +678,7 @@ public class BinedModule implements XBApplicationModule {
 
             @Nonnull
             @Override
-            public OptionsCapable<EditorOptionsImpl> createPanel() {
+            public OptionsComponent<EditorOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new EditorOptionsPanel();
                 }
@@ -720,7 +720,7 @@ public class BinedModule implements XBApplicationModule {
         codeAreaOptionsPage = new DefaultOptionsPage<CodeAreaOptionsImpl>() {
             @Nonnull
             @Override
-            public OptionsCapable<CodeAreaOptionsImpl> createPanel() {
+            public OptionsComponent<CodeAreaOptionsImpl> createPanel() {
                 return new CodeAreaOptionsPanel();
             }
 
@@ -775,7 +775,7 @@ public class BinedModule implements XBApplicationModule {
 
             @Nonnull
             @Override
-            public OptionsCapable<StatusOptionsImpl> createPanel() {
+            public OptionsComponent<StatusOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new StatusOptionsPanel();
                 }
@@ -816,7 +816,7 @@ public class BinedModule implements XBApplicationModule {
 
             @Nonnull
             @Override
-            public OptionsCapable<CodeAreaThemeOptionsImpl> createPanel() {
+            public OptionsComponent<CodeAreaThemeOptionsImpl> createPanel() {
                 ThemeProfilesOptionsPanel panel = new ThemeProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
                     ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
@@ -1000,7 +1000,7 @@ public class BinedModule implements XBApplicationModule {
 
         layoutProfilesOptionsPage = new DefaultOptionsPage<CodeAreaLayoutOptionsImpl>() {
             @Override
-            public OptionsCapable<CodeAreaLayoutOptionsImpl> createPanel() {
+            public OptionsComponent<CodeAreaLayoutOptionsImpl> createPanel() {
                 LayoutProfilesOptionsPanel panel = new LayoutProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
                     LayoutProfilePanel layoutProfilePanel = new LayoutProfilePanel();
@@ -1184,7 +1184,7 @@ public class BinedModule implements XBApplicationModule {
 
         colorProfilesOptionsPage = new DefaultOptionsPage<CodeAreaColorOptionsImpl>() {
             @Override
-            public OptionsCapable<CodeAreaColorOptionsImpl> createPanel() {
+            public OptionsComponent<CodeAreaColorOptionsImpl> createPanel() {
                 ColorProfilesOptionsPanel panel = new ColorProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
                     ColorProfilePanel colorProfilePanel = new ColorProfilePanel();

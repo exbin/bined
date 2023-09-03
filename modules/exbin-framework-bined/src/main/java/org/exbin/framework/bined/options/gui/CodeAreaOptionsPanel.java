@@ -26,8 +26,8 @@ import org.exbin.bined.RowWrappingMode;
 import org.exbin.framework.bined.options.impl.CodeAreaOptionsImpl;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.options.api.OptionsCapable;
 import org.exbin.framework.options.api.OptionsModifiedListener;
+import org.exbin.framework.options.api.OptionsComponent;
 
 /**
  * Code area preference parameters panel.
@@ -35,7 +35,7 @@ import org.exbin.framework.options.api.OptionsModifiedListener;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsCapable<CodeAreaOptionsImpl> {
+public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaOptionsImpl> {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(CodeAreaOptionsPanel.class);
 

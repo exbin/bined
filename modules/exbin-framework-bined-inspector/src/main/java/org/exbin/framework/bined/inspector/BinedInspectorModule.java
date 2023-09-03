@@ -46,7 +46,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.options.api.DefaultOptionsPage;
-import org.exbin.framework.options.api.OptionsCapable;
+import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModuleApi;
 
 /**
@@ -164,7 +164,7 @@ public class BinedInspectorModule implements XBApplicationModule {
 
             @Nonnull
             @Override
-            public OptionsCapable<DataInspectorOptionsImpl> createPanel() {
+            public OptionsComponent<DataInspectorOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new DataInspectorOptionsPanel();
                 }
