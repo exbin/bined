@@ -106,13 +106,14 @@ public class BinedEditor {
                 String editorProvideType = editorProviderType.getSelected();
 
                 final XBBaseApplication app = new XBBaseApplication();
+                app.setAppDirectory(BinedEditor.class);
                 Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
                 moduleRepository.addModulesFromManifest(BinedEditor.class);
-                moduleRepository.loadModulesFromPath(new File("plugins").toURI());
+                moduleRepository.loadModulesFromPath(new File(app.getAppDirectory(), "plugins").toURI());
                 moduleRepository.initModules();
                 Thread.currentThread().setContextClassLoader(moduleRepository.getContextClassLoader());
                 app.init();
