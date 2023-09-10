@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -331,14 +330,12 @@ public class BookmarksManager {
     }
 
     public void updateBookmarksMenu() {
-        updateBookmarksMenu(bookmarksMenu);
+        if (bookmarksMenu != null) {
+            updateBookmarksMenu(bookmarksMenu);
+        }
     }
 
-    public void updateBookmarksMenu(@Nullable JMenu menu) {
-        if (menu == null) {
-            return;
-        }
-
+    public void updateBookmarksMenu(JMenu menu) {
         menu.removeAll();
 
         int recordsLimit = Math.min(bookmarkRecords.size(), 10);
