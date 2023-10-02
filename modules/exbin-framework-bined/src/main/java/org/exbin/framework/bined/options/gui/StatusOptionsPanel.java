@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.options.gui;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -45,6 +46,18 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
+    }
+
+    public void setCursorPositionCodeTypes(List<String> cursorPositionCodeTypes) {
+        for (String cursorPositionCodeType : cursorPositionCodeTypes) {
+            cursorPositionCodeTypeComboBox.addItem(cursorPositionCodeType);
+        }
+    }
+    
+    public void setDocumentSizeCodeTypes(List<String> documentSizeCodeTypes) {
+        for (String documentSizeCodeType : documentSizeCodeTypes) {
+            documentSizeCodeTypeComboBox.addItem(documentSizeCodeType);
+        }
     }
 
     @Override
@@ -103,16 +116,10 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
 
         cursorPositionCodeTypeLabel.setText(resourceBundle.getString("cursorPositionCodeTypeLabel.text")); // NOI18N
 
-        cursorPositionCodeTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OCTAL", "DECIMAL", "HEXADECIMAL" }));
-        cursorPositionCodeTypeComboBox.setSelectedIndex(1);
-
         cursorPositionShowOffsetCheckBox.setSelected(true);
         cursorPositionShowOffsetCheckBox.setText(resourceBundle.getString("cursorPositionShowOffsetCheckBox.text")); // NOI18N
 
         documentSizeCodeTypeLabel.setText(resourceBundle.getString("documentSizeCodeTypeLabel.text")); // NOI18N
-
-        documentSizeCodeTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OCTAL", "DECIMAL", "HEXADECIMAL" }));
-        documentSizeCodeTypeComboBox.setSelectedIndex(1);
 
         documentSizeShowRelativeCheckBox.setSelected(true);
         documentSizeShowRelativeCheckBox.setText(resourceBundle.getString("documentSizeShowRelativeCheckBox.text")); // NOI18N

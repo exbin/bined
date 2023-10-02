@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.options.gui;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -47,6 +48,30 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
+    }
+
+    public void setViewModes(List<String> viewModes) {
+        for (String viewMode : viewModes) {
+            viewModeComboBox.addItem(viewMode);
+        }
+    }
+
+    public void setCodeTypes(List<String> codeTypes) {
+        for (String codeType : codeTypes) {
+            codeTypeComboBox.addItem(codeType);
+        }
+    }
+
+    public void setPositionCodeTypes(List<String> positionCodeTypes) {
+        for (String positionCodeType : positionCodeTypes) {
+            positionCodeTypeComboBox.addItem(positionCodeType);
+        }
+    }
+
+    public void setCharactersCases(List<String> charactersCases) {
+        for (String charactersCase : charactersCases) {
+            codeCharactersModeComboBox.addItem(charactersCase);
+        }
     }
 
     @Override
@@ -104,10 +129,6 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
         maxRowPositionLengthSpinner = new javax.swing.JSpinner();
         rowWrappingModeCheckBox = new javax.swing.JCheckBox();
 
-        codeCharactersModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LOWER", "UPPER" }));
-
-        viewModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DUAL", "CODE_MATRIX", "TEXT_PREVIEW" }));
-
         showNonprintableCharactersCheckBox.setText(resourceBundle.getString("showNonprintableCharactersCheckBox.text")); // NOI18N
 
         viewModeScrollModeLabel.setText(resourceBundle.getString("viewModeScrollModeLabel.text")); // NOI18N
@@ -116,15 +137,9 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
 
         positionCodeTypeLabel.setText(resourceBundle.getString("positionCodeTypeLabel.text")); // NOI18N
 
-        positionCodeTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OCTAL", "DECIMAL", "HEXADECIMAL" }));
-        positionCodeTypeComboBox.setSelectedIndex(2);
-
         codeTypeScrollModeLabel.setText(resourceBundle.getString("codeTypeScrollModeLabel.text")); // NOI18N
 
         hexCharactersModeLabel.setText(resourceBundle.getString("hexCharactersModeLabel.text")); // NOI18N
-
-        codeTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BINARY", "OCTAL", "DECIMAL", "HEXADECIMAL" }));
-        codeTypeComboBox.setSelectedIndex(3);
 
         maxBytesPerRowLabel.setText(resourceBundle.getString("maxBytesPerRowLabel.text")); // NOI18N
 

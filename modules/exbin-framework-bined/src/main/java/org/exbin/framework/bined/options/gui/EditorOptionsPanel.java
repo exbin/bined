@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.options.gui;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -45,6 +46,18 @@ public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsCom
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
+    
+    public void setFileHandlingModes(List<String> fileHandlingModes) {
+        for (String fileHandlingMode : fileHandlingModes) {
+            fileHandlingModeComboBox.addItem(fileHandlingMode);
+        }
+    }
+
+    public void setEnterKeyHandlingModes(List<String> enterKeyHandlingModes) {
+        for (String enterKeyHandlingMode : enterKeyHandlingModes) {
+            enterKeyHandlingModeComboBox.addItem(enterKeyHandlingMode);
+        }
+    }
 
     @Override
     public void saveToOptions(EditorOptionsImpl options) {
@@ -74,11 +87,7 @@ public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsCom
 
         fileHandlingModeLabel.setText(resourceBundle.getString("fileHandlingModeLabel.text")); // NOI18N
 
-        fileHandlingModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MEMORY", "DELTA" }));
-
         enterKeyHandlingModeLabel.setText(resourceBundle.getString("enterKeyHandlingModeLabel.text")); // NOI18N
-
-        enterKeyHandlingModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PLATFORM_SPECIFIC", "CR", "LF", "CRLF", "IGNORE" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -59,14 +59,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="fileHandlingModeComboBox">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="MEMORY"/>
-            <StringItem index="1" value="DELTA"/>
-          </StringArray>
-        </Property>
-      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -79,17 +71,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="enterKeyHandlingModeComboBox">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="PLATFORM_SPECIFIC"/>
-            <StringItem index="1" value="CR"/>
-            <StringItem index="2" value="LF"/>
-            <StringItem index="3" value="CRLF"/>
-            <StringItem index="4" value="IGNORE"/>
-          </StringArray>
-        </Property>
-      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

@@ -681,6 +681,17 @@ public class BinedModule implements XBApplicationModule {
             public OptionsComponent<EditorOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new EditorOptionsPanel();
+                    List<String> fileHandlingModes = new ArrayList<>();
+                    fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
+                    fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
+                    panel.setFileHandlingModes(fileHandlingModes);
+                    List<String> enderKeyHandlingModes = new ArrayList<>();
+                    enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.platformSpecific"));
+                    enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.cr"));
+                    enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.lf"));
+                    enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.crlf"));
+                    enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.ignore"));
+                    panel.setEnterKeyHandlingModes(enderKeyHandlingModes);
                 }
 
                 return panel;
@@ -721,7 +732,32 @@ public class BinedModule implements XBApplicationModule {
             @Nonnull
             @Override
             public OptionsComponent<CodeAreaOptionsImpl> createPanel() {
-                return new CodeAreaOptionsPanel();
+                CodeAreaOptionsPanel panel = new CodeAreaOptionsPanel();
+                List<String> viewModes = new ArrayList<>();
+                viewModes.add(resourceBundle.getString("codeAreaViewMode.dual"));
+                viewModes.add(resourceBundle.getString("codeAreaViewMode.codeMatrix"));
+                viewModes.add(resourceBundle.getString("codeAreaViewMode.textPreview"));
+                panel.setViewModes(viewModes);
+
+                List<String> codeTypes = new ArrayList<>();
+                codeTypes.add(resourceBundle.getString("codeAreaCodeType.binary"));
+                codeTypes.add(resourceBundle.getString("codeAreaCodeType.octal"));
+                codeTypes.add(resourceBundle.getString("codeAreaCodeType.decimal"));
+                codeTypes.add(resourceBundle.getString("codeAreaCodeType.hexadecimal"));
+                panel.setCodeTypes(codeTypes);
+
+                List<String> positionCodeTypes = new ArrayList<>();
+                positionCodeTypes.add(resourceBundle.getString("positionCodeAreaCodeType.octal"));
+                positionCodeTypes.add(resourceBundle.getString("positionCodeAreaCodeType.decimal"));
+                positionCodeTypes.add(resourceBundle.getString("positionCodeAreaCodeType.hexadecimal"));
+                panel.setPositionCodeTypes(positionCodeTypes);
+
+                List<String> charactersCases = new ArrayList<>();
+                charactersCases.add(resourceBundle.getString("codeAreaCharactersCase.lower"));
+                charactersCases.add(resourceBundle.getString("codeAreaCharactersCase.higher"));
+                panel.setCharactersCases(charactersCases);
+
+                return panel;
             }
 
             @Nonnull
@@ -778,6 +814,18 @@ public class BinedModule implements XBApplicationModule {
             public OptionsComponent<StatusOptionsImpl> createPanel() {
                 if (panel == null) {
                     panel = new StatusOptionsPanel();
+
+                    List<String> cursorPositionCodeTypes = new ArrayList<>();
+                    cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.octal"));
+                    cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.decimal"));
+                    cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.hexadecimal"));
+                    panel.setCursorPositionCodeTypes(cursorPositionCodeTypes);
+
+                    List<String> documentSizeCodeTypes = new ArrayList<>();
+                    documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.octal"));
+                    documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.decimal"));
+                    documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.hexadecimal"));
+                    panel.setDocumentSizeCodeTypes(documentSizeCodeTypes);
                 }
 
                 return panel;
