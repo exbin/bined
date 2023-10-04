@@ -53,7 +53,7 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
             cursorPositionCodeTypeComboBox.addItem(cursorPositionCodeType);
         }
     }
-    
+
     public void setDocumentSizeCodeTypes(List<String> documentSizeCodeTypes) {
         for (String documentSizeCodeType : documentSizeCodeTypes) {
             documentSizeCodeTypeComboBox.addItem(documentSizeCodeType);
@@ -63,12 +63,12 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
     @Override
     public void saveToOptions(StatusOptionsImpl options) {
         StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
-        cursorPositionFormat.setCodeType(PositionCodeType.valueOf((String) cursorPositionCodeTypeComboBox.getSelectedItem()));
+        cursorPositionFormat.setCodeType(PositionCodeType.values()[cursorPositionCodeTypeComboBox.getSelectedIndex()]);
         cursorPositionFormat.setShowOffset(cursorPositionShowOffsetCheckBox.isSelected());
         options.setCursorPositionFormat(cursorPositionFormat);
 
         StatusDocumentSizeFormat documentSizeFormat = new StatusDocumentSizeFormat();
-        documentSizeFormat.setCodeType(PositionCodeType.valueOf((String) documentSizeCodeTypeComboBox.getSelectedItem()));
+        documentSizeFormat.setCodeType(PositionCodeType.values()[documentSizeCodeTypeComboBox.getSelectedIndex()]);
         documentSizeFormat.setShowRelative(cursorPositionShowOffsetCheckBox.isSelected());
         options.setDocumentSizeFormat(documentSizeFormat);
 

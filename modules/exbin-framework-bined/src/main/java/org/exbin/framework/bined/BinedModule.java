@@ -157,6 +157,8 @@ public class BinedModule implements XBApplicationModule {
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
+        fileManager = new BinEdFileManager();
+        fileManager.setApplication(application);
         switch (variant) {
             case SINGLE: {
                 editorProvider = createSingleEditorProvider();
@@ -169,8 +171,6 @@ public class BinedModule implements XBApplicationModule {
             default:
                 throw XBFrameworkUtils.getInvalidTypeException(variant);
         }
-        fileManager = new BinEdFileManager();
-        fileManager.setApplication(application);
         fileManager.setEditorProvider(editorProvider);
     }
 
@@ -370,7 +370,7 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerOptionsPanels() {
         BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
-        getMainOptionsManager().registerOptionsPanels(encodingsHandler, fileManager, binaryAppearanceService, codeTypeActions, showUnprintablesActions, hexCharactersCaseActions, positionCodeTypeActions, viewModeActions);
+        getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService, getCodeTypeActions(), getShowUnprintablesActions(), getHexCharactersCaseActions(), getPositionCodeTypeActions(), getViewModeActions());
     }
 
     public void registerWordWrapping() {

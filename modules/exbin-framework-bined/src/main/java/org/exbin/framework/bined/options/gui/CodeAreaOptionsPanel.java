@@ -76,11 +76,11 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
 
     @Override
     public void saveToOptions(CodeAreaOptionsImpl options) {
-        options.setCodeType(CodeType.valueOf((String) codeTypeComboBox.getSelectedItem()));
+        options.setCodeType(CodeType.values()[codeTypeComboBox.getSelectedIndex()]);
         options.setShowUnprintables(showNonprintableCharactersCheckBox.isSelected());
-        options.setCodeCharactersCase(CodeCharactersCase.valueOf((String) codeCharactersModeComboBox.getSelectedItem()));
-        options.setPositionCodeType(PositionCodeType.valueOf((String) positionCodeTypeComboBox.getSelectedItem()));
-        options.setViewMode(CodeAreaViewMode.valueOf((String) viewModeComboBox.getSelectedItem()));
+        options.setCodeCharactersCase(CodeCharactersCase.values()[codeCharactersModeComboBox.getSelectedIndex()]);
+        options.setPositionCodeType(PositionCodeType.values()[positionCodeTypeComboBox.getSelectedIndex()]);
+        options.setViewMode(CodeAreaViewMode.values()[viewModeComboBox.getSelectedIndex()]);
         options.setCodeColorization(codeColorizationCheckBox.isSelected());
         options.setRowWrappingMode(rowWrappingModeCheckBox.isSelected() ? RowWrappingMode.WRAPPING : RowWrappingMode.NO_WRAPPING);
         options.setMaxBytesPerRow((Integer) maxBytesPerRowSpinner.getValue());
@@ -90,11 +90,11 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
 
     @Override
     public void loadFromOptions(CodeAreaOptionsImpl options) {
-        codeTypeComboBox.setSelectedItem(options.getCodeType().name());
+        codeTypeComboBox.setSelectedIndex(options.getCodeType().ordinal());
         showNonprintableCharactersCheckBox.setSelected(options.isShowUnprintables());
-        codeCharactersModeComboBox.setSelectedItem(options.getCodeCharactersCase().name());
-        positionCodeTypeComboBox.setSelectedItem(options.getPositionCodeType().name());
-        viewModeComboBox.setSelectedItem(options.getViewMode().name());
+        codeCharactersModeComboBox.setSelectedIndex(options.getCodeCharactersCase().ordinal());
+        positionCodeTypeComboBox.setSelectedIndex(options.getPositionCodeType().ordinal());
+        viewModeComboBox.setSelectedIndex(options.getViewMode().ordinal());
         codeColorizationCheckBox.setSelected(options.isCodeColorization());
         rowWrappingModeCheckBox.setSelected(options.getRowWrappingMode() == RowWrappingMode.WRAPPING);
         maxBytesPerRowSpinner.setValue(options.getMaxBytesPerRow());

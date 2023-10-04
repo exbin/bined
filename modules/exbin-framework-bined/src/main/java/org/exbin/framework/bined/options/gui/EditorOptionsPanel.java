@@ -46,7 +46,7 @@ public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsCom
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
-    
+
     public void setFileHandlingModes(List<String> fileHandlingModes) {
         for (String fileHandlingMode : fileHandlingModes) {
             fileHandlingModeComboBox.addItem(fileHandlingMode);
@@ -61,8 +61,8 @@ public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsCom
 
     @Override
     public void saveToOptions(EditorOptionsImpl options) {
-        options.setFileHandlingMode(FileHandlingMode.valueOf((String) fileHandlingModeComboBox.getSelectedItem()));
-        options.setEnterKeyHandlingMode(EnterKeyHandlingMode.valueOf((String) enterKeyHandlingModeComboBox.getSelectedItem()));
+        options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex()]);
+        options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
     }
 
     @Override
