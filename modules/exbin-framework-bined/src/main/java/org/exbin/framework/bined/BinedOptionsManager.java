@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
 import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
@@ -111,7 +112,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 @ParametersAreNonnullByDefault
 public class BinedOptionsManager {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinedOptionsManager.class);
+    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinedOptionsManager.class);
 
     private XBApplication application;
     private EditorProvider editorProvider;
@@ -574,7 +575,7 @@ public class BinedOptionsManager {
             public OptionsComponent<CodeAreaThemeOptionsImpl> createPanel() {
                 ThemeProfilesOptionsPanel panel = new ThemeProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
-                    ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
+                    ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
                     themeProfilePanel.setThemeProfile(new ExtendedCodeAreaThemeProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
@@ -604,7 +605,7 @@ public class BinedOptionsManager {
                     return result.profile;
                 });
                 panel.setEditProfileOperation((JComponent parentComponent, ThemeProfilesPanel.ThemeProfile profileRecord) -> {
-                    ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
+                    ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
@@ -634,7 +635,7 @@ public class BinedOptionsManager {
                     return result.profile;
                 });
                 panel.setCopyProfileOperation((JComponent parentComponent, ThemeProfilesPanel.ThemeProfile profileRecord) -> {
-                    ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
+                    ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
                     themeProfilePanel.setThemeProfile(new ExtendedCodeAreaThemeProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
@@ -1125,5 +1126,16 @@ public class BinedOptionsManager {
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
         URI uri = new File(filePath).toURI();
         fileModule.loadFromFile(uri.toASCIIString());
+    }
+
+    @Nonnull
+    private ThemeProfilePanel createThemeProfilePanel() {
+        ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
+        List<String> backgroundModes = new ArrayList<>();
+        for (ExtendedBackgroundPaintMode mode : ExtendedBackgroundPaintMode.values()) {
+            backgroundModes.add(resourceBundle.getString("backgroundPaintMode." + mode.name().toLowerCase()));
+        }
+        themeProfilePanel.setBackgroundModes(backgroundModes);
+        return themeProfilePanel;
     }
 }

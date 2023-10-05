@@ -104,8 +104,6 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
 
         backgroundModeLabel.setText(resourceBundle.getString("backgroundModeLabel.text")); // NOI18N
 
-        backgroundModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NONE", "PLAIN", "STRIPED", "GRIDDED", "CHESSBOARD" }));
-        backgroundModeComboBox.setSelectedIndex(2);
         backgroundModeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backgroundModeComboBoxActionPerformed(evt);
