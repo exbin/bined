@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
+import org.exbin.bined.CodeAreaSelection;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
@@ -43,6 +44,7 @@ public class AddBookmarkAction extends AbstractAction {
     private XBApplication application;
     private ResourceBundle resourceBundle;
     private BookmarkRecord bookmarkRecord = null;
+    private CodeAreaSelection currentSelection;
 
     public AddBookmarkAction() {
     }
@@ -55,6 +57,10 @@ public class AddBookmarkAction extends AbstractAction {
         putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
+    public void setCurrentSelection(CodeAreaSelection currentSelection) {
+        this.currentSelection = currentSelection;
+    }
+
     @Nonnull
     public Optional<BookmarkRecord> getBookmarkRecord() {
         return Optional.ofNullable(bookmarkRecord);
@@ -64,6 +70,7 @@ public class AddBookmarkAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();
         bookmarkEditorPanel.setBookmarkRecord(new BookmarkRecord());
+        bookmarkEditorPanel.setCurrentSelection(currentSelection);
         ResourceBundle panelResourceBundle = bookmarkEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 

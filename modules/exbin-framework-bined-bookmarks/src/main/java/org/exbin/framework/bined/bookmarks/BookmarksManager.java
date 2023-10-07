@@ -145,6 +145,12 @@ public class BookmarksManager {
         bookmarksManagerPanel.setControl(new BookmarksManagerPanel.Control() {
             @Override
             public void addRecord() {
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                if (activeFile.isPresent()) {
+                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                    ExtCodeArea codeArea = fileHandler.getCodeArea();
+                    addBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
+                }
                 addBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = addBookmarkAction.getBookmarkRecord();
                 if (bookmarkRecord.isPresent()) {
@@ -156,6 +162,12 @@ public class BookmarksManager {
 
             @Override
             public void editRecord() {
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                if (activeFile.isPresent()) {
+                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                    ExtCodeArea codeArea = fileHandler.getCodeArea();
+                    editBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
+                }
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
                 int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();
                 editBookmarkAction.setBookmarkRecord(new BookmarkRecord(selectedRecord));
