@@ -114,6 +114,9 @@ public class BinedModule implements XBApplicationModule {
     public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedModule.class);
     public static final String BINARY_POPUP_MENU_ID = MODULE_ID + ".binaryPopupMenu";
     public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
+    public static final String CODE_AREA_POPUP_VIEW_GROUP_ID = MODULE_ID + ".viewPopupMenuGroup";
+    public static final String CODE_AREA_POPUP_EDIT_GROUP_ID = MODULE_ID + ".editPopupMenuGroup";
+    public static final String CODE_AREA_POPUP_TOOLS_GROUP_ID = MODULE_ID + ".toolsPopupMenuGroup";
     public static final String VIEW_MODE_SUBMENU_ID = MODULE_ID + ".viewModeSubMenu";
     public static final String CODE_TYPE_SUBMENU_ID = MODULE_ID + ".codeTypeSubMenu";
     public static final String POSITION_CODE_TYPE_SUBMENU_ID = MODULE_ID + ".positionCodeTypeSubMenu";
@@ -689,6 +692,14 @@ public class BinedModule implements XBApplicationModule {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getEditSelectionAction(), new MenuPosition(ActionModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
     }
+    
+    public void registerCodeAreaPopupMenu() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenu(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID, new MenuPosition(PositionMode.TOP)));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_EDIT_GROUP_ID, new MenuPosition(PositionMode.MIDDLE)));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_TOOLS_GROUP_ID, new MenuPosition(PositionMode.BOTTOM)));
+    }
 
     public void start() {
         if (editorProvider instanceof MultiEditorProvider) {
@@ -753,6 +764,8 @@ public class BinedModule implements XBApplicationModule {
         BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
 
         final JPopupMenu popupMenu = new JPopupMenu();
+        actionModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID);
+
         switch (positionZone) {
             case TOP_LEFT_CORNER:
             case HEADER: {

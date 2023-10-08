@@ -42,7 +42,7 @@ import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
- * Binary data editor module.
+ * Binary data editor bookmarks module.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -72,11 +72,6 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
-        bookmarksManager = new BookmarksManager();
-        bookmarksManager.setApplication(this.application);
-        bookmarksManager.setEditorProvider(editorProvider);
-        bookmarksManager.init();
-
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
@@ -99,7 +94,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
                 }
 
                 // TODO: Change position
-                popupMenu.add(bookmarksManager.createBookmarksPopupMenu());
+                popupMenu.add(getBookmarksManager().createBookmarksPopupMenu());
             }
         });
     }
@@ -114,12 +109,12 @@ public class BinedBookmarksModule implements XBApplicationModule {
     }
 
     public void registerBookmarksComponentActions(JComponent component) {
-        bookmarksManager.registerBookmarksComponentActions(component);
+        getBookmarksManager().registerBookmarksComponentActions(component);
     }
 
     @Nonnull
     public AbstractAction getManageBookmarksAction() {
-        return bookmarksManager.getManageBookmarksAction();
+        return getBookmarksManager().getManageBookmarksAction();
     }
 
     @Nonnull
@@ -138,11 +133,19 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     @Nonnull
     public JMenu getBookmarksMenu() {
-        return bookmarksManager.getBookmarksMenu();
+        return getBookmarksManager().getBookmarksMenu();
     }
 
     @Nonnull
     public BookmarksManager getBookmarksManager() {
+        if (bookmarksManager == null) {
+            ensureSetup();
+
+            bookmarksManager = new BookmarksManager();
+            bookmarksManager.setApplication(this.application);
+            bookmarksManager.setEditorProvider(editorProvider);
+            bookmarksManager.init();
+        }
         return bookmarksManager;
     }
 

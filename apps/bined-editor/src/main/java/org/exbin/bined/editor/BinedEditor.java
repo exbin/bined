@@ -212,6 +212,7 @@ public class BinedEditor {
                     binedModule.registerClipboardCodeActions();
                     binedModule.registerOptionsMenuPanels();
                     binedModule.registerGoToPosition();
+                    binedModule.registerCodeAreaPopupMenu();
                     binedBlockEditModule.registerInsertDataAction();
                     binedModule.registerPropertiesMenu();
                     binedModule.registerReloadFileMenu();
