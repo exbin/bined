@@ -90,7 +90,7 @@ public class BinedSearchModule implements XBApplicationModule {
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 return Optional.of(new BinEdComponentSearch());
             }
-
+/*
             @Override
             public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
                 BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
@@ -106,7 +106,7 @@ public class BinedSearchModule implements XBApplicationModule {
                     final JMenuItem replaceMenuItem = ActionUtils.actionToMenuItem(getFindReplaceActions().getEditReplaceAction());
                     popupMenu.add(replaceMenuItem);
                 }
-            }
+            } */
         });
     }
 

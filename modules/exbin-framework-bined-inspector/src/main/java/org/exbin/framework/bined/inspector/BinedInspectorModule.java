@@ -21,9 +21,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JPopupMenu;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuGroup;
 import org.exbin.framework.action.api.MenuPosition;
@@ -96,10 +94,6 @@ public class BinedInspectorModule implements XBApplicationModule {
                 BinEdComponentInspector binEdComponentInspector = new BinEdComponentInspector();
                 binEdComponentInspector.setBasicValuesColorModifier(basicValuesColorModifier);
                 return Optional.of(binEdComponentInspector);
-            }
-
-            @Override
-            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
             }
         });
     }

@@ -84,7 +84,7 @@ public class BinedBlockEditModule implements XBApplicationModule {
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 return Optional.empty();
             }
-
+/*
             @Override
             public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
                 BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
@@ -99,6 +99,7 @@ public class BinedBlockEditModule implements XBApplicationModule {
                     popupMenu.add(insertDataMenuItem);
                 }
             }
+*/
         });
     }
 

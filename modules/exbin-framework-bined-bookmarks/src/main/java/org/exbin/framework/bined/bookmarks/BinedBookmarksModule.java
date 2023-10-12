@@ -80,7 +80,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 return Optional.empty();
             }
-
+/*
             @Override
             public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
                 if (variant != BinedModule.PopupMenuVariant.EDITOR) {
@@ -95,7 +95,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
                 // TODO: Change position
                 popupMenu.add(getBookmarksManager().createBookmarksPopupMenu());
-            }
+            } */
         });
     }
 

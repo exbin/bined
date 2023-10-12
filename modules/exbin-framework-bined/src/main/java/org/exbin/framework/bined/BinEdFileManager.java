@@ -22,14 +22,12 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JPopupMenu;
 import org.exbin.auxiliary.paged_data.delta.SegmentsRepository;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.BinedModule.PopupMenuVariant;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
@@ -83,7 +81,7 @@ public class BinEdFileManager {
                 componentPanel.addComponentExtension(extension);
             });
         }
-        
+
         BinEdCodeAreaPainter painter = (BinEdCodeAreaPainter) componentPanel.getCodeArea().getPainter();
         for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPriorityPositionColorModifiers) {
             painter.addPriorityColorModifier(modifier);
@@ -127,7 +125,7 @@ public class BinEdFileManager {
         ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
         ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
     }
-    
+
     public void updateTextEncodingStatus(EncodingsHandler encodingsHandler) {
         if (binaryStatusPanel != null) {
             encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
@@ -139,7 +137,7 @@ public class BinEdFileManager {
             listener.updateActionStatus(codeArea);
         }
     }
-    
+
     public void applyPreferencesChanges(StatusOptionsImpl options) {
         binaryStatusPanel.setStatusOptions(options);
     }
@@ -147,7 +145,7 @@ public class BinEdFileManager {
     public void setStatusControlHandler(BinaryStatusPanel.StatusControlHandler statusControlHandler) {
         binaryStatusPanel.setStatusControlHandler(statusControlHandler);
     }
-    
+
     public void addBinEdComponentExtension(BinEdFileExtension extension) {
         binEdComponentExtensions.add(extension);
     }
@@ -170,20 +168,11 @@ public class BinEdFileManager {
         return binaryStatusPanel;
     }
 
-    // TODO: Replace with structured popup menu
-    public void insertActionsIntoPopupMenu(JPopupMenu popupMenu, final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y) {
-        for (BinEdFileExtension extension : binEdComponentExtensions) {
-            extension.onPopupMenuCreation(popupMenu, codeArea, menuPostfix, variant, x, y);
-        }
-    }
-
     @ParametersAreNonnullByDefault
     public interface BinEdFileExtension {
 
         @Nonnull
         Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
-
-        void onPopupMenuCreation(final JPopupMenu popupMenu, final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y);
     }
 
     @ParametersAreNonnullByDefault
