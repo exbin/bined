@@ -108,6 +108,11 @@ public class BinedBookmarksModule implements XBApplicationModule {
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedSearchModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
+    public void registerBookmarksPopupMenuActions() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        // TODO
+    }
+    
     public void registerBookmarksComponentActions(JComponent component) {
         getBookmarksManager().registerBookmarksComponentActions(component);
     }

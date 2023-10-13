@@ -22,6 +22,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JMenuItem;
+import org.exbin.bined.PositionCodeType;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
@@ -93,6 +95,18 @@ public class FindReplaceActions implements FileDependentAction {
             ActionUtils.setupAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
             editFindAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
             editFindAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
+            editFindAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId) {
+//positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS
+//if (variant == BinedModule.PopupMenuVariant.EDITOR) {
+        return true;
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId) {
+                }
+            });
         }
         return editFindAction;
     }
@@ -115,6 +129,18 @@ public class FindReplaceActions implements FileDependentAction {
             };
             ActionUtils.setupAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
             editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+            editFindAgainAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId) {
+//positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS
+//if (variant == BinedModule.PopupMenuVariant.EDITOR) {
+        return true;
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId) {
+                }
+            });
         }
         return editFindAgainAction;
     }

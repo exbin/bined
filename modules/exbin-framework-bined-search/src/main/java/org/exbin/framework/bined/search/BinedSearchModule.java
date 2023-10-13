@@ -21,11 +21,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuGroup;
 import org.exbin.framework.action.api.MenuPosition;
@@ -45,7 +41,6 @@ import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
-import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Binary editor search module.
@@ -90,23 +85,6 @@ public class BinedSearchModule implements XBApplicationModule {
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 return Optional.of(new BinEdComponentSearch());
             }
-/*
-            @Override
-            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
-                BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
-
-                if (positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS) {
-                    return;
-                }
-
-                if (variant == BinedModule.PopupMenuVariant.EDITOR) {
-                    final JMenuItem findMenuItem = ActionUtils.actionToMenuItem(getFindReplaceActions().getEditFindAction());
-                    popupMenu.add(findMenuItem);
-
-                    final JMenuItem replaceMenuItem = ActionUtils.actionToMenuItem(getFindReplaceActions().getEditReplaceAction());
-                    popupMenu.add(replaceMenuItem);
-                }
-            } */
         });
     }
 
@@ -134,6 +112,12 @@ public class BinedSearchModule implements XBApplicationModule {
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditReplaceAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
     }
 
+    public void registerEditFindPopupMenuActions() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getFindReplaceActions().getEditFindAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getFindReplaceActions().getEditReplaceAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+    }
+    
     public void registerEditFindToolBarActions() {
         getFindReplaceActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);

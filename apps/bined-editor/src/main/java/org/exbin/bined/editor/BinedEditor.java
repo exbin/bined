@@ -213,6 +213,8 @@ public class BinedEditor {
                     binedModule.registerOptionsMenuPanels();
                     binedModule.registerGoToPosition();
                     binedModule.registerCodeAreaPopupMenu();
+                    binedSearchModule.registerEditFindPopupMenuActions();
+                    
                     binedBlockEditModule.registerInsertDataAction();
                     binedModule.registerPropertiesMenu();
                     binedModule.registerReloadFileMenu();

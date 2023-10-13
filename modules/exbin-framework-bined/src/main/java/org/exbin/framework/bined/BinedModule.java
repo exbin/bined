@@ -45,12 +45,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
@@ -115,6 +111,8 @@ public class BinedModule implements XBApplicationModule {
     public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
     public static final String CODE_AREA_POPUP_VIEW_GROUP_ID = MODULE_ID + ".viewPopupMenuGroup";
     public static final String CODE_AREA_POPUP_EDIT_GROUP_ID = MODULE_ID + ".editPopupMenuGroup";
+    public static final String CODE_AREA_POPUP_SELECTION_GROUP_ID = MODULE_ID + ".selectionPopupMenuGroup";
+    public static final String CODE_AREA_POPUP_FIND_GROUP_ID = MODULE_ID + ".findPopupMenuGroup";
     public static final String CODE_AREA_POPUP_TOOLS_GROUP_ID = MODULE_ID + ".toolsPopupMenuGroup";
     public static final String VIEW_MODE_SUBMENU_ID = MODULE_ID + ".viewModeSubMenu";
     public static final String CODE_TYPE_SUBMENU_ID = MODULE_ID + ".codeTypeSubMenu";
@@ -748,19 +746,117 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerCodeAreaPopupMenu() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        ClipboardActionsApi clipboardActions = actionModule.getClipboardActions();
 
         actionModule.registerMenu(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID, new MenuPosition(PositionMode.TOP)));
-        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_EDIT_GROUP_ID, new MenuPosition(PositionMode.MIDDLE)));
-        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_TOOLS_GROUP_ID, new MenuPosition(PositionMode.BOTTOM)));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID, new MenuPosition(PositionMode.TOP), SeparationMode.AROUND));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_EDIT_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_SELECTION_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_FIND_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_TOOLS_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.AROUND));
 
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getShowHeaderAction(), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getShowRowPositionAction(), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
+
+        actionModule.registerMenu(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_POPUP_SUBMENU_ID, resourceBundle.getString("positionCodeTypeSubMenu.text"), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
-        
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getOctalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getDecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getHexadecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
+
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getCutAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getCopyAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getClipboardCodeActions().getCopyAsCodeAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getPasteAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getClipboardCodeActions().getPasteFromCodeAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getDeleteAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getSelectAllAction(), new MenuPosition(CODE_AREA_POPUP_SELECTION_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getEditSelectionAction(), new MenuPosition(CODE_AREA_POPUP_SELECTION_GROUP_ID));
+
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getGoToPositionAction(), new MenuPosition(CODE_AREA_POPUP_FIND_GROUP_ID));
+
+        actionModule.registerMenu(SHOW_POPUP_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, SHOW_POPUP_SUBMENU_ID, resourceBundle.getString("popupShowSubMenu.text"), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
-        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getGoToPositionAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(SHOW_POPUP_SUBMENU_ID, MODULE_ID, getShowHeaderAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(SHOW_POPUP_SUBMENU_ID, MODULE_ID, getShowRowPositionAction(), new MenuPosition(PositionMode.TOP));
+
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getOptionsAction(), new MenuPosition(CODE_AREA_POPUP_TOOLS_GROUP_ID));
+    }
+
+    @Nonnull
+    private Action getOctalPositionTypeAction() {
+        Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getActiveCodeArea().setPositionCodeType(PositionCodeType.OCTAL);
+            }
+        };
+        ActionUtils.setupAction(action, resourceBundle, "octalCodeTypeAction");
+        action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
+        action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                return true;
+            }
+
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+                menuItem.setSelected(getActiveCodeArea().getPositionCodeType() == PositionCodeType.OCTAL);
+            }
+        });
+
+        return action;
+    }
+
+    @Nonnull
+    private Action getDecimalPositionTypeAction() {
+        Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getActiveCodeArea().setPositionCodeType(PositionCodeType.DECIMAL);
+            }
+        };
+        ActionUtils.setupAction(action, resourceBundle, "decimalCodeTypeAction");
+        action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
+        action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                return true;
+            }
+
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+                menuItem.setSelected(getActiveCodeArea().getPositionCodeType() == PositionCodeType.DECIMAL);
+            }
+        });
+
+        return action;
+    }
+
+    @Nonnull
+    private Action getHexadecimalPositionTypeAction() {
+        Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getActiveCodeArea().setPositionCodeType(PositionCodeType.HEXADECIMAL);
+            }
+        };
+        ActionUtils.setupAction(action, resourceBundle, "hexadecimalCodeTypeAction");
+        action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
+        action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                return true;
+            }
+
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+                menuItem.setSelected(getActiveCodeArea().getPositionCodeType() == PositionCodeType.HEXADECIMAL);
+            }
+        });
+
+        return action;
     }
 
     public void start() {
@@ -829,7 +925,6 @@ public class BinedModule implements XBApplicationModule {
     private JPopupMenu createCodeAreaPopupMenu(final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y) {
         getClipboardCodeActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        OptionsModuleApi optionsModule = application.getModuleRepository().getModuleByInterface(OptionsModuleApi.class);
         actionModule.registerMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix, MODULE_ID);
 
         popupMenuVariant = variant;
@@ -837,113 +932,6 @@ public class BinedModule implements XBApplicationModule {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         actionModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID);
-
-        switch (popupMenuPositionZone) {
-            case TOP_LEFT_CORNER:
-            case HEADER: {
-                if (variant != PopupMenuVariant.BASIC) {
-//                    popupMenu.add(createShowHeaderMenuItem(codeArea));
-                    popupMenu.add(createPositionCodeTypeMenuItem(codeArea));
-                    break;
-                }
-            }
-            case ROW_POSITIONS: {
-                if (variant != PopupMenuVariant.BASIC) {
-//                    popupMenu.add(createShowRowPositionPopupAction(codeArea));
-                    popupMenu.add(createPositionCodeTypeMenuItem(codeArea));
-                    popupMenu.add(new JSeparator());
-                    popupMenu.add(createGoToMenuItem());
-
-                    break;
-                }
-            }
-            default: {
-                ClipboardActionsApi clipboardActions = actionModule.getClipboardActions();
-                final JMenuItem cutMenuItem = ActionUtils.actionToMenuItem(clipboardActions.getCutAction());
-                cutMenuItem.setEnabled(codeArea.hasSelection() && codeArea.isEditable());
-                cutMenuItem.addActionListener((ActionEvent e) -> {
-                    codeArea.cut();
-                });
-                popupMenu.add(cutMenuItem);
-
-                final JMenuItem copyMenuItem = ActionUtils.actionToMenuItem(clipboardActions.getCopyAction());
-                copyMenuItem.setEnabled(codeArea.hasSelection());
-                copyMenuItem.addActionListener((ActionEvent e) -> {
-                    codeArea.copy();
-                });
-                popupMenu.add(copyMenuItem);
-
-                final JMenuItem copyAsCodeMenuItem = ActionUtils.actionToMenuItem(clipboardCodeActions.getCopyAsCodeAction());
-                copyAsCodeMenuItem.setEnabled(codeArea.hasSelection());
-                copyAsCodeMenuItem.addActionListener((ActionEvent e) -> {
-                    codeArea.copyAsCode();
-                });
-                popupMenu.add(copyAsCodeMenuItem);
-
-                final JMenuItem pasteMenuItem = ActionUtils.actionToMenuItem(clipboardActions.getPasteAction());
-                pasteMenuItem.setEnabled(codeArea.canPaste() && codeArea.isEditable());
-                pasteMenuItem.addActionListener((ActionEvent e) -> {
-                    codeArea.paste();
-                });
-                popupMenu.add(pasteMenuItem);
-
-                final JMenuItem pasteFromCodeMenuItem = ActionUtils.actionToMenuItem(clipboardCodeActions.getPasteFromCodeAction());
-                pasteFromCodeMenuItem.setEnabled(codeArea.canPaste() && codeArea.isEditable());
-                pasteFromCodeMenuItem.addActionListener((ActionEvent e) -> {
-                    try {
-                        codeArea.pasteFromCode();
-                    } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(codeArea, ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
-                    }
-                });
-                popupMenu.add(pasteFromCodeMenuItem);
-
-                final JMenuItem deleteMenuItem = ActionUtils.actionToMenuItem(clipboardActions.getDeleteAction());
-                deleteMenuItem.setEnabled(codeArea.hasSelection() && codeArea.isEditable());
-                deleteMenuItem.addActionListener((ActionEvent e) -> {
-                    codeArea.delete();
-                });
-                popupMenu.add(deleteMenuItem);
-                popupMenu.addSeparator();
-
-                final JMenuItem selectAllMenuItem = ActionUtils.actionToMenuItem(clipboardActions.getSelectAllAction());
-                selectAllMenuItem.addActionListener((ActionEvent e) -> {
-                    codeArea.selectAll();
-                });
-                popupMenu.add(selectAllMenuItem);
-                JMenuItem editSelectionMenuItem = createEditSelectionMenuItem();
-                popupMenu.add(editSelectionMenuItem);
-
-                if (variant != PopupMenuVariant.BASIC) {
-                    JMenuItem goToMenuItem = createGoToMenuItem();
-                    popupMenu.add(goToMenuItem);
-                }
-            }
-        }
-
-        if (variant == PopupMenuVariant.EDITOR) {
-            popupMenu.addSeparator();
-
-            switch (popupMenuPositionZone) {
-                case TOP_LEFT_CORNER:
-                case HEADER:
-                case ROW_POSITIONS: {
-                    break;
-                }
-                default: {
-                    JMenu showMenu = new JMenu(resourceBundle.getString("popupShowSubMenu.text"));
-//                    JMenuItem showHeader = createShowHeaderMenuItem(codeArea);
-//                    showMenu.add(showHeader);
-//                    JMenuItem showRowPosition = createShowRowPositionPopupAction(codeArea);
-//                    showMenu.add(showRowPosition);
-                    popupMenu.add(showMenu);
-                }
-            }
-
-            final JMenuItem optionsMenuItem = ActionUtils.actionToMenuItem(optionsModule.getOptionsAction());
-            popupMenu.add(optionsMenuItem);
-        }
-
         return popupMenu;
     }
 
@@ -954,57 +942,6 @@ public class BinedModule implements XBApplicationModule {
 
     public void dropBinEdComponentPopupMenu() {
         dropCodeAreaPopupMenu("");
-    }
-
-    @Nonnull
-    private JMenuItem createGoToMenuItem() {
-        return ActionUtils.actionToMenuItem(getGoToPositionAction());
-    }
-
-    @Nonnull
-    private JMenuItem createEditSelectionMenuItem() {
-        return ActionUtils.actionToMenuItem(getEditSelectionAction());
-    }
-
-    @Nonnull
-    private JMenuItem createPositionCodeTypeMenuItem(ExtCodeArea codeArea) {
-        JMenu menu = new JMenu(resourceBundle.getString("positionCodeTypeSubMenu.text"));
-        PositionCodeType codeType = codeArea.getPositionCodeType();
-
-        final JRadioButtonMenuItem octalCodeTypeMenuItem = new JRadioButtonMenuItem(resourceBundle.getString("octalCodeTypeAction.text"));
-        octalCodeTypeMenuItem.setSelected(codeType == PositionCodeType.OCTAL);
-        octalCodeTypeMenuItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                codeArea.setPositionCodeType(PositionCodeType.OCTAL);
-//                preferences.getCodeAreaParameters().setPositionCodeType(PositionCodeType.OCTAL);
-            }
-        });
-        menu.add(octalCodeTypeMenuItem);
-
-        final JRadioButtonMenuItem decimalCodeTypeMenuItem = new JRadioButtonMenuItem(resourceBundle.getString("decimalCodeTypeAction.text"));
-        decimalCodeTypeMenuItem.setSelected(codeType == PositionCodeType.DECIMAL);
-        decimalCodeTypeMenuItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                codeArea.setPositionCodeType(PositionCodeType.DECIMAL);
-//                preferences.getCodeAreaParameters().setPositionCodeType(PositionCodeType.DECIMAL);
-            }
-        });
-        menu.add(decimalCodeTypeMenuItem);
-
-        final JRadioButtonMenuItem hexadecimalCodeTypeMenuItem = new JRadioButtonMenuItem(resourceBundle.getString("hexadecimalCodeTypeAction.text"));
-        hexadecimalCodeTypeMenuItem.setSelected(codeType == PositionCodeType.HEXADECIMAL);
-        hexadecimalCodeTypeMenuItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                codeArea.setPositionCodeType(PositionCodeType.HEXADECIMAL);
-//                preferences.getCodeAreaParameters().setPositionCodeType(PositionCodeType.HEXADECIMAL);
-            }
-        });
-        menu.add(hexadecimalCodeTypeMenuItem);
-
-        return menu;
     }
 
     private void dropCodeAreaPopupMenu(String menuPostfix) {
