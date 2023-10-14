@@ -23,9 +23,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.api.XBApplication;
@@ -80,22 +77,6 @@ public class BinedBookmarksModule implements XBApplicationModule {
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 return Optional.empty();
             }
-/*
-            @Override
-            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
-                if (variant != BinedModule.PopupMenuVariant.EDITOR) {
-                    return;
-                }
-
-                BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
-
-                if (positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS) {
-                    return;
-                }
-
-                // TODO: Change position
-                popupMenu.add(getBookmarksManager().createBookmarksPopupMenu());
-            } */
         });
     }
 
@@ -109,10 +90,9 @@ public class BinedBookmarksModule implements XBApplicationModule {
     }
 
     public void registerBookmarksPopupMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        // TODO
+        getBookmarksManager().registerBookmarksPopupMenuActions();
     }
-    
+
     public void registerBookmarksComponentActions(JComponent component) {
         getBookmarksManager().registerBookmarksComponentActions(component);
     }

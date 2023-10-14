@@ -23,6 +23,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
+import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
 
 /**
@@ -35,6 +36,7 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
 
     private BinEdComponentPanel componentPanel;
     private BinarySearchPanel binarySearchPanel = new BinarySearchPanel();
+    private BinarySearchService binarySearchService;
     private boolean binarySearchPanelVisible = false;
     private XBApplication application;
 
@@ -43,7 +45,8 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
         this.componentPanel = componentPanel;
         ExtCodeArea codeArea = componentPanel.getCodeArea();
 
-        binarySearchPanel.setBinarySearchService(new BinarySearchServiceImpl(codeArea));
+        binarySearchService = new BinarySearchServiceImpl(codeArea);
+        binarySearchPanel.setBinarySearchService(binarySearchService);
         binarySearchPanel.setClosePanelListener(this::hideSearchPanel);
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
@@ -83,6 +86,14 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
             componentPanel.remove(binarySearchPanel);
             componentPanel.revalidate();
             binarySearchPanelVisible = false;
+        }
+    }
+    
+    public void performFindAgain() {
+        if (binarySearchPanelVisible) {
+            binarySearchService.performFindAgain(binarySearchPanel.getSearchStatusListener());
+        } else {
+            showSearchPanel(false);
         }
     }
 

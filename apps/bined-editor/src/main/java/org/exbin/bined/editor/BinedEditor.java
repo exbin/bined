@@ -214,6 +214,7 @@ public class BinedEditor {
                     binedModule.registerGoToPosition();
                     binedModule.registerCodeAreaPopupMenu();
                     binedSearchModule.registerEditFindPopupMenuActions();
+                    binedBookmarksModule.registerBookmarksPopupMenuActions();
                     
                     binedBlockEditModule.registerInsertDataAction();
                     binedModule.registerPropertiesMenu();

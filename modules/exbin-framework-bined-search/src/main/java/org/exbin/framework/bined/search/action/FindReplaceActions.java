@@ -23,12 +23,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
-import org.exbin.bined.PositionCodeType;
+import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
@@ -98,9 +99,10 @@ public class FindReplaceActions implements FileDependentAction {
             editFindAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-//positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS
-//if (variant == BinedModule.PopupMenuVariant.EDITOR) {
-        return true;
+                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
@@ -123,8 +125,8 @@ public class FindReplaceActions implements FileDependentAction {
                     }
 
                     BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
-                    throw new UnsupportedOperationException("Not supported yet.");
-                    // TODO activePanel.findAgain();
+                    BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                    componentExtension.performFindAgain();
                 }
             };
             ActionUtils.setupAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
@@ -132,9 +134,10 @@ public class FindReplaceActions implements FileDependentAction {
             editFindAgainAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-//positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS
-//if (variant == BinedModule.PopupMenuVariant.EDITOR) {
-        return true;
+                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
@@ -164,6 +167,19 @@ public class FindReplaceActions implements FileDependentAction {
             ActionUtils.setupAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
             editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
             editReplaceAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
+            editReplaceAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId) {
+                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId) {
+                }
+            });
         }
         return editReplaceAction;
     }

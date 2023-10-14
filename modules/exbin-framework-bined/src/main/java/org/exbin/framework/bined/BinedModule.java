@@ -917,7 +917,6 @@ public class BinedModule implements XBApplicationModule {
                 popupMenu.show(invoker, x, y);
             }
         };
-//        menuModule.buildMenu(popupMenu, popupMenuId);
         return popupMenu;
     }
 
@@ -933,6 +932,16 @@ public class BinedModule implements XBApplicationModule {
         final JPopupMenu popupMenu = new JPopupMenu();
         actionModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID);
         return popupMenu;
+    }
+
+    @Nonnull
+    public PopupMenuVariant getPopupMenuVariant() {
+        return popupMenuVariant;
+    }
+
+    @Nonnull
+    public BasicCodeAreaZone getPopupMenuPositionZone() {
+        return popupMenuPositionZone;
     }
 
     @Nonnull

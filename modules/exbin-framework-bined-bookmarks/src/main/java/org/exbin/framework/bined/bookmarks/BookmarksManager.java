@@ -37,7 +37,11 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -62,6 +66,8 @@ import org.exbin.framework.utils.LanguageUtils;
 @ParametersAreNonnullByDefault
 public class BookmarksManager {
 
+    public static final String BOOKMARKS_POPUP_SUBMENU_ID = BinedBookmarksModule.MODULE_ID + ".bookmarksPopupSubMenu";
+
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksManager.class);
 
     private final List<BookmarkRecord> bookmarkRecords = new ArrayList<>();
@@ -71,9 +77,9 @@ public class BookmarksManager {
     private XBApplication application;
     private EditorProvider editorProvider;
 
-    private ManageBookmarksAction manageBookmarksAction = new ManageBookmarksAction();
-    private AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
-    private EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
+    private final ManageBookmarksAction manageBookmarksAction = new ManageBookmarksAction();
+    private final AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
+    private final EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
     private JMenu bookmarksMenu;
 
     public BookmarksManager() {
@@ -241,11 +247,44 @@ public class BookmarksManager {
         return bookmarksMenu;
     }
 
-    @Nonnull
-    public JMenu createBookmarksPopupMenu() {
+    public void registerBookmarksPopupMenuActions() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+
+//        actionModule.registerMenu(BOOKMARKS_POPUP_SUBMENU_ID, BinedBookmarksModule.MODULE_ID);
+/*
+            @Override
+            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
+                if (variant != BinedModule.PopupMenuVariant.EDITOR) {
+                    return;
+                }
+
+                BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
+
+                if (positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS) {
+                    return;
+                }
+
+                // TODO: Change position
+                popupMenu.add(getBookmarksManager().createBookmarksPopupMenu());
+            } */
+
         JMenu bookmarksPopupMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
-        updateBookmarksMenu(bookmarksPopupMenu);
-        return bookmarksPopupMenu;
+        bookmarksPopupMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                updateBookmarksMenu(bookmarksPopupMenu);
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+            }
+        });
+        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID, bookmarksPopupMenu, new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void registerBookmarksComponentActions(JComponent component) {

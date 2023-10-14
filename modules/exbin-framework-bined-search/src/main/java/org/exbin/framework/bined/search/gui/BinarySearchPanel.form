@@ -139,34 +139,40 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="prevButton">
+            <Component class="javax.swing.JButton" name="prevMatchButton">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-left.png"/>
                 </Property>
-                <Property name="enabled" type="boolean" value="false"/>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="prevButton" noResource="true"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prevButtonActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="nextButton">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-right.png"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="prevMatchButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="nextButton" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="prevMatchButton" noResource="true"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prevMatchButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="nextMatchButton">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-right.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="nextMatchButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                </Property>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="nextMatchButton" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextMatchButtonActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="matchCaseToggleButton">
@@ -194,7 +200,7 @@
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/gui/resources/BinarySearchPanel.properties" key="multipleMatchesToggleButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="multipleMatchesToggleButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -249,7 +255,7 @@
                   <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/dialog-cancel-3.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/gui/resources/BinarySearchPanel.properties" key="closeButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="closeButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>

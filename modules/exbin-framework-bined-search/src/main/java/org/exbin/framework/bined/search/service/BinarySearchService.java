@@ -30,6 +30,8 @@ public interface BinarySearchService {
     void performFind(SearchParameters dialogSearchParameters, SearchStatusListener searchStatusListener);
 
     void setMatchPosition(int matchPosition);
+    
+    void performFindAgain(SearchStatusListener searchStatusListener);
 
     void performReplace(SearchParameters searchParameters, ReplaceParameters replaceParameters);
 

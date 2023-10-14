@@ -122,8 +122,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             private void updateMatchStatus() {
                 int matchesCount = foundMatches.getMatchesCount();
                 int matchPosition = foundMatches.getMatchPosition();
-                prevButton.setEnabled(matchesCount > 1 && matchPosition > 0);
-                nextButton.setEnabled(matchPosition < matchesCount - 1);
+                prevMatchButton.setEnabled(matchesCount > 1 && matchPosition > 0);
+                nextMatchButton.setEnabled(matchPosition < matchesCount - 1);
                 replaceButton.setEnabled(matchesCount > 0);
                 replaceAllButton.setEnabled(matchesCount > 0);
             }
@@ -330,6 +330,11 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         this.binarySearchService = binarySearchService;
     }
 
+    @Nonnull
+    public BinarySearchService.SearchStatusListener getSearchStatusListener() {
+        return searchStatusListener;
+    }
+
     public void switchReplaceMode(boolean replaceMode) {
         if (this.replaceMode != replaceMode) {
             this.replaceMode = replaceMode;
@@ -358,8 +363,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findTypeButton = new javax.swing.JButton();
         findComboBox = new javax.swing.JComboBox<>();
         findToolBar = new javax.swing.JToolBar();
-        prevButton = new javax.swing.JButton();
-        nextButton = new javax.swing.JButton();
+        prevMatchButton = new javax.swing.JButton();
+        nextMatchButton = new javax.swing.JButton();
         matchCaseToggleButton = new javax.swing.JToggleButton();
         multipleMatchesToggleButton = new javax.swing.JToggleButton();
         separator1 = new javax.swing.JToolBar.Separator();
@@ -415,31 +420,33 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findToolBar.setFocusable(false);
         findToolBar.setName("findToolBar"); // NOI18N
 
-        prevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-left.png"))); // NOI18N
-        prevButton.setEnabled(false);
-        prevButton.setFocusable(false);
-        prevButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        prevButton.setName("prevButton"); // NOI18N
-        prevButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        prevButton.addActionListener(new java.awt.event.ActionListener() {
+        prevMatchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-left.png"))); // NOI18N
+        prevMatchButton.setToolTipText(resourceBundle.getString("prevMatchButton.toolTipText")); // NOI18N
+        prevMatchButton.setEnabled(false);
+        prevMatchButton.setFocusable(false);
+        prevMatchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        prevMatchButton.setName("prevMatchButton"); // NOI18N
+        prevMatchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        prevMatchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prevButtonActionPerformed(evt);
+                prevMatchButtonActionPerformed(evt);
             }
         });
-        findToolBar.add(prevButton);
+        findToolBar.add(prevMatchButton);
 
-        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-right.png"))); // NOI18N
-        nextButton.setEnabled(false);
-        nextButton.setFocusable(false);
-        nextButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        nextButton.setName("nextButton"); // NOI18N
-        nextButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
+        nextMatchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-right.png"))); // NOI18N
+        nextMatchButton.setToolTipText(resourceBundle.getString("nextMatchButton.toolTipText")); // NOI18N
+        nextMatchButton.setEnabled(false);
+        nextMatchButton.setFocusable(false);
+        nextMatchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        nextMatchButton.setName("nextMatchButton"); // NOI18N
+        nextMatchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        nextMatchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
+                nextMatchButtonActionPerformed(evt);
             }
         });
-        findToolBar.add(nextButton);
+        findToolBar.add(nextMatchButton);
 
         matchCaseToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/case_sensitive.gif"))); // NOI18N
         matchCaseToggleButton.setSelected(true);
@@ -689,17 +696,17 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         dialog.showCentered(WindowUtils.getWindow(this));
     }//GEN-LAST:event_optionsButtonActionPerformed
 
-    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+    private void prevMatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevMatchButtonActionPerformed
         foundMatches.prev();
         binarySearchService.setMatchPosition(foundMatches.getMatchPosition());
         searchStatusListener.setStatus(foundMatches);
-    }//GEN-LAST:event_prevButtonActionPerformed
+    }//GEN-LAST:event_prevMatchButtonActionPerformed
 
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+    private void nextMatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMatchButtonActionPerformed
         foundMatches.next();
         binarySearchService.setMatchPosition(foundMatches.getMatchPosition());
         searchStatusListener.setStatus(foundMatches);
-    }//GEN-LAST:event_nextButtonActionPerformed
+    }//GEN-LAST:event_nextMatchButtonActionPerformed
 
     private void multipleMatchesToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multipleMatchesToggleButtonActionPerformed
         searchParameters.setMultipleMatches(multipleMatchesToggleButton.isSelected());
@@ -791,9 +798,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private javax.swing.JLabel infoLabel;
     private javax.swing.JToggleButton matchCaseToggleButton;
     private javax.swing.JToggleButton multipleMatchesToggleButton;
-    private javax.swing.JButton nextButton;
+    private javax.swing.JButton nextMatchButton;
     private javax.swing.JButton optionsButton;
-    private javax.swing.JButton prevButton;
+    private javax.swing.JButton prevMatchButton;
     private javax.swing.JButton replaceAllButton;
     private javax.swing.JButton replaceButton;
     private javax.swing.JComboBox<SearchCondition> replaceComboBox;

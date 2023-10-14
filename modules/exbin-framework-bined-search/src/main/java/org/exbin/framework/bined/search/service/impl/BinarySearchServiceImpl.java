@@ -31,6 +31,7 @@ import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CharsetStreamTranslator;
 import org.exbin.bined.CodeAreaUtils;
+import org.exbin.bined.highlight.swing.extended.ExtendedHighlightCodeAreaPainter;
 
 /**
  * Binary search service.
@@ -242,6 +243,18 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch currentMatch = painter.getCurrentMatch();
         codeArea.revealPosition(currentMatch.getPosition(), 0, codeArea.getActiveSection());
         codeArea.repaint();
+    }
+
+    @Override
+    public void performFindAgain(SearchStatusListener searchStatusListener) {
+        ExtendedHighlightNonAsciiCodeAreaPainter painter = (ExtendedHighlightNonAsciiCodeAreaPainter) codeArea.getPainter();
+        int matchesCount = painter.getMatches().size();
+        if (matchesCount > 1) {
+            int currentMatchIndex = painter.getCurrentMatchIndex();
+            setMatchPosition(currentMatchIndex < matchesCount - 1 ? currentMatchIndex + 1 : 0);
+            List<ExtendedHighlightCodeAreaPainter.SearchMatch> foundMatches = painter.getMatches();
+            searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), painter.getCurrentMatchIndex()));
+        }
     }
 
     @Override
