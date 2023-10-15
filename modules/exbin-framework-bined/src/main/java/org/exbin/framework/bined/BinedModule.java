@@ -406,7 +406,8 @@ public class BinedModule implements XBApplicationModule {
             showHeaderAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    return true; // TODO popupMenuVariant != PopupMenuVariant.BASIC && popupMenu;
+                    boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(menuId);
+                    return popupMenuVariant != PopupMenuVariant.BASIC && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
                 }
 
                 @Override
@@ -428,7 +429,8 @@ public class BinedModule implements XBApplicationModule {
             showRowPositionAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    return true;
+                    boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(menuId);
+                    return popupMenuVariant != PopupMenuVariant.BASIC && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
                 }
 
                 @Override
