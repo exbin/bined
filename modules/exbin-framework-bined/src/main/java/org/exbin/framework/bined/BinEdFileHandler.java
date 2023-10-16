@@ -153,7 +153,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         try {
             BinaryData contentData = editorComponent.getContentData();
             if (contentData == null) {
-                newFile();
+                clearFile();
                 contentData = editorComponent.getContentData();
             }
             if (contentData instanceof DeltaDocument) {
@@ -224,7 +224,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     }
 
     @Override
-    public void newFile() {
+    public void clearFile() {
         FileHandlingMode fileHandlingMode = getFileHandlingMode();
         closeData();
         ExtCodeArea codeArea = editorComponent.getCodeArea();

@@ -201,7 +201,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         int fileIndex = ++lastIndex;
         newFilesMap.put(fileIndex, ++lastNewFileIndex);
         BinEdFileHandler newFile = createFileHandler(fileIndex);
-        newFile.newFile();
+        newFile.clearFile();
         multiEditorPanel.addFileHandler(newFile, getName(newFile));
     }
 

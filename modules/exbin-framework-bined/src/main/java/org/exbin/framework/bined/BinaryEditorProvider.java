@@ -226,7 +226,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     @Override
     public void newFile() {
         if (releaseAllFiles()) {
-            activeFile.newFile();
+            activeFile.clearFile();
         }
     }
 

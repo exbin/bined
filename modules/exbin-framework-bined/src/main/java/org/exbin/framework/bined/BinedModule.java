@@ -112,6 +112,7 @@ public class BinedModule implements XBApplicationModule {
     public static final String CODE_AREA_POPUP_VIEW_GROUP_ID = MODULE_ID + ".viewPopupMenuGroup";
     public static final String CODE_AREA_POPUP_EDIT_GROUP_ID = MODULE_ID + ".editPopupMenuGroup";
     public static final String CODE_AREA_POPUP_SELECTION_GROUP_ID = MODULE_ID + ".selectionPopupMenuGroup";
+    public static final String CODE_AREA_POPUP_OPERATION_GROUP_ID = MODULE_ID + ".operationPopupMenuGroup";
     public static final String CODE_AREA_POPUP_FIND_GROUP_ID = MODULE_ID + ".findPopupMenuGroup";
     public static final String CODE_AREA_POPUP_TOOLS_GROUP_ID = MODULE_ID + ".toolsPopupMenuGroup";
     public static final String VIEW_MODE_SUBMENU_ID = MODULE_ID + ".viewModeSubMenu";
@@ -754,6 +755,7 @@ public class BinedModule implements XBApplicationModule {
         actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID, new MenuPosition(PositionMode.TOP), SeparationMode.AROUND));
         actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_EDIT_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
         actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_SELECTION_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
+        actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_OPERATION_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
         actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_FIND_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
         actionModule.registerMenuGroup(CODE_AREA_POPUP_MENU_ID, new MenuGroup(CODE_AREA_POPUP_TOOLS_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.AROUND));
 
@@ -794,12 +796,12 @@ public class BinedModule implements XBApplicationModule {
                 getActiveCodeArea().setPositionCodeType(PositionCodeType.OCTAL);
             }
         };
-        ActionUtils.setupAction(action, resourceBundle, "octalCodeTypeAction");
+        ActionUtils.setupAction(action, resourceBundle, PositionCodeTypeActions.OCTAL_POSITION_CODE_TYPE_ACTION_ID);
         action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
         action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
-                return true;
+                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -819,12 +821,12 @@ public class BinedModule implements XBApplicationModule {
                 getActiveCodeArea().setPositionCodeType(PositionCodeType.DECIMAL);
             }
         };
-        ActionUtils.setupAction(action, resourceBundle, "decimalCodeTypeAction");
+        ActionUtils.setupAction(action, resourceBundle, PositionCodeTypeActions.DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
         action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
-                return true;
+                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -844,12 +846,12 @@ public class BinedModule implements XBApplicationModule {
                 getActiveCodeArea().setPositionCodeType(PositionCodeType.HEXADECIMAL);
             }
         };
-        ActionUtils.setupAction(action, resourceBundle, "hexadecimalCodeTypeAction");
+        ActionUtils.setupAction(action, resourceBundle, PositionCodeTypeActions.HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
         action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
-                return true;
+                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override

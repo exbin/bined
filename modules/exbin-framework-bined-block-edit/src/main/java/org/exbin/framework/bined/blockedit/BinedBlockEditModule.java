@@ -35,6 +35,7 @@ import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.BinedModule.PopupMenuVariant;
 import org.exbin.framework.bined.blockedit.action.InsertDataAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.LanguageUtils;
@@ -84,22 +85,6 @@ public class BinedBlockEditModule implements XBApplicationModule {
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 return Optional.empty();
             }
-/*
-            @Override
-            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
-                BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
-
-                if (positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS) {
-                    return;
-                }
-
-                if (variant != BinedModule.PopupMenuVariant.BASIC) {
-                    popupMenu.addSeparator();
-                    JMenuItem insertDataMenuItem = createInsertDataMenuItem();
-                    popupMenu.add(insertDataMenuItem);
-                }
-            }
-*/
         });
     }
 
@@ -113,6 +98,20 @@ public class BinedBlockEditModule implements XBApplicationModule {
             ensureSetup();
             insertDataAction = new InsertDataAction();
             insertDataAction.setup(application, resourceBundle);
+
+            insertDataAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId) {
+                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId) {
+                }
+            });
         }
 
         return insertDataAction;
@@ -123,9 +122,9 @@ public class BinedBlockEditModule implements XBApplicationModule {
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(PositionMode.BOTTOM));
     }
 
-    @Nonnull
-    private JMenuItem createInsertDataMenuItem() {
-        return ActionUtils.actionToMenuItem(getInsertDataAction());
+    public void registerBlockEditPopupMenuActions() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
     }
 
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
