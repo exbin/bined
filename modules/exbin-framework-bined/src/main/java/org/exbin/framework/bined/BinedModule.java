@@ -51,7 +51,6 @@ import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import org.exbin.auxiliary.paged_data.delta.SegmentsRepository;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.PositionCodeType;
@@ -213,7 +212,9 @@ public class BinedModule implements XBApplicationModule {
             fileModule.setFileOperations(editorProvider);
 
             BinEdComponentPanel componentPanel = editorFile.getComponent();
-            componentPanel.setPopupMenu(createPopupMenu(editorFile.getId(), editorFile.getComponent().getCodeArea()));
+            ExtCodeArea codeArea = editorFile.getComponent().getCodeArea();
+            codeArea.addSelectionChangedListener(this::updateClipboardActionStatus);
+            componentPanel.setPopupMenu(createPopupMenu(editorFile.getId(), codeArea));
         }
 
         return editorProvider;
@@ -223,7 +224,6 @@ public class BinedModule implements XBApplicationModule {
     private EditorProvider createMultiEditorProvider() {
         if (editorProvider == null) {
             editorProvider = new BinaryMultiEditorProvider(application);
-            ((BinaryMultiEditorProvider) editorProvider).setSegmentsRepository(new SegmentsRepository());
             EditorPreferences editorPreferences = new EditorPreferences(application.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(fileHandlingMode);

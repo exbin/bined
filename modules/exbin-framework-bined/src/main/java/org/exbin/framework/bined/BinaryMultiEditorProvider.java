@@ -46,7 +46,6 @@ import javax.swing.JViewport;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import org.exbin.auxiliary.paged_data.delta.DeltaDocument;
-import org.exbin.auxiliary.paged_data.delta.SegmentsRepository;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.EditMode;
@@ -90,7 +89,6 @@ import org.exbin.framework.file.api.FileModuleApi;
 public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEditorProvider, UndoFileHandler {
 
     private final XBApplication application;
-    private SegmentsRepository segmentsRepository;
     private FileTypes fileTypes;
     private final MultiEditorPanel multiEditorPanel = new MultiEditorPanel();
     private int lastIndex = 0;
@@ -162,10 +160,6 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                 }
             }
         });
-    }
-
-    public void setSegmentsRepository(SegmentsRepository segmentsRepository) {
-        this.segmentsRepository = segmentsRepository;
     }
 
     @Nonnull
