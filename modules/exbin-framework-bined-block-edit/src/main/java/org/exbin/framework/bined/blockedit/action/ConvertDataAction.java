@@ -18,37 +18,17 @@ package org.exbin.framework.bined.blockedit.action;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
-import org.exbin.auxiliary.paged_data.EditableBinaryData;
-import org.exbin.bined.EditOperation;
-import static org.exbin.bined.EditOperation.INSERT;
-import static org.exbin.bined.EditOperation.OVERWRITE;
-import org.exbin.bined.capability.CaretCapable;
-import org.exbin.bined.operation.BinaryDataOperationException;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.basic.CodeArea;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.XBFrameworkUtils;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.action.CodeAreaAction;
-import org.exbin.framework.bined.blockedit.gui.InsertDataPanel;
-import org.exbin.framework.bined.blockedit.gui.ModifyDataPanel;
-import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
-import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
-import org.exbin.framework.bined.search.SearchCondition;
-import org.exbin.framework.bined.search.gui.BinaryMultilinePanel;
+import org.exbin.framework.bined.blockedit.gui.ConvertDataPanel;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
@@ -60,15 +40,15 @@ import org.exbin.framework.utils.handler.DefaultControlHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ModifyDataAction extends AbstractAction implements CodeAreaAction {
+public class ConvertDataAction extends AbstractAction implements CodeAreaAction {
 
-    public static final String ACTION_ID = "modifyDataAction";
+    public static final String ACTION_ID = "convertDataAction";
 
     private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
 
-    public ModifyDataAction() {
+    public ConvertDataAction() {
 
     }
 
@@ -89,7 +69,7 @@ public class ModifyDataAction extends AbstractAction implements CodeAreaAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final ModifyDataPanel modifyDataPanel = new ModifyDataPanel();
+        final ConvertDataPanel modifyDataPanel = new ConvertDataPanel();
         DefaultControlPanel controlPanel = new DefaultControlPanel(modifyDataPanel.getResourceBundle());
         JPanel dialogPanel = WindowUtils.createDialogPanel(modifyDataPanel, controlPanel);
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);

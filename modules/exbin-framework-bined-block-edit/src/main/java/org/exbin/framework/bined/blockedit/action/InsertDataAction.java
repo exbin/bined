@@ -94,7 +94,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        insertDataPanel.setController(() -> {
+/*        insertDataPanel.setController(() -> {
             BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
             final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
             SearchCondition searchCondition = new SearchCondition();
@@ -125,10 +125,10 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
             });
             multilineDialog.showCentered(dialog.getWindow());
 //                    multilinePanel.detachMenu();
-        });
+        }); */
         WindowUtils.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), insertDataPanel.getResourceBundle());
         frameModule.setDialogTitle(dialog, insertDataPanel.getResourceBundle());
-        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
+/*        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
                 insertDataPanel.acceptInput();
                 long dataLength = insertDataPanel.getDataLength();
@@ -158,7 +158,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
 
             dialog.close();
             dialog.dispose();
-        });
+        }); */
         SwingUtilities.invokeLater(insertDataPanel::initFocus);
         dialog.showCentered(codeArea);
     }

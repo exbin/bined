@@ -71,9 +71,10 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
     }
 
     /**
+     * Main operation execution method.
      *
-     * @param executionType
-     * @return
+     * @param executionType if undo should be included
+     * @return undo operation if requested
      */
     @Nullable
     @Override

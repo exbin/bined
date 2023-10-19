@@ -249,26 +249,6 @@ public class BookmarksManager {
 
     public void registerBookmarksPopupMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-
-//        actionModule.registerMenu(BOOKMARKS_POPUP_SUBMENU_ID, BinedBookmarksModule.MODULE_ID);
-/*
-            @Override
-            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
-                if (variant != BinedModule.PopupMenuVariant.EDITOR) {
-                    return;
-                }
-
-                BasicCodeAreaZone positionZone = codeArea.getPainter().getPositionZone(x, y);
-
-                if (positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS) {
-                    return;
-                }
-
-                // TODO: Change position
-                popupMenu.add(getBookmarksManager().createBookmarksPopupMenu());
-            } */
-
         JMenu bookmarksPopupMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
         bookmarksPopupMenu.addMenuListener(new MenuListener() {
             @Override

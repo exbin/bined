@@ -18,8 +18,6 @@ package org.exbin.framework.bined.blockedit.gui;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.CodeAreaUtils;
-import org.exbin.framework.bined.blockedit.operation.InsertDataOperation.FillWithType;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -57,39 +55,36 @@ public class InsertDataPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fillWithbuttonGroup = new javax.swing.ButtonGroup();
-        sizeLabel = new javax.swing.JLabel();
-        sizeBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
-        fillWithLabel = new javax.swing.JLabel();
-        emptyRadioButton = new javax.swing.JRadioButton();
-        spaceRadioButton = new javax.swing.JRadioButton();
-        randomRadioButton = new javax.swing.JRadioButton();
-        sampleRadioButton = new javax.swing.JRadioButton();
-        sampleDataButton = new javax.swing.JButton();
+        filterLabel = new javax.swing.JLabel();
+        filterTextField = new javax.swing.JTextField();
+        optionsScrollPane = new javax.swing.JScrollPane();
+        optionsList = new javax.swing.JList<>();
+        splitPane = new javax.swing.JSplitPane();
+        componentScrollPane = new javax.swing.JScrollPane();
+        previewPanel = new javax.swing.JPanel();
 
-        sizeLabel.setText(resourceBundle.getString("sizeLabel.text")); // NOI18N
+        filterLabel.setText(resourceBundle.getString("InsertDataPanel.filterLabel.text")); // NOI18N
 
-        fillWithLabel.setText(resourceBundle.getString("fillWithLabel.text")); // NOI18N
+        optionsScrollPane.setViewportView(optionsList);
 
-        fillWithbuttonGroup.add(emptyRadioButton);
-        emptyRadioButton.setSelected(true);
-        emptyRadioButton.setText(resourceBundle.getString("emptyRadioButton.text")); // NOI18N
+        splitPane.setDividerLocation(400);
+        splitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        splitPane.setLeftComponent(componentScrollPane);
 
-        fillWithbuttonGroup.add(spaceRadioButton);
-        spaceRadioButton.setText(resourceBundle.getString("spaceRadioButton.text")); // NOI18N
+        previewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceBundle.getString("InsertDataPanel.previewPanel.border.title"))); // NOI18N
 
-        fillWithbuttonGroup.add(randomRadioButton);
-        randomRadioButton.setText(resourceBundle.getString("randomRadioButton.text")); // NOI18N
+        javax.swing.GroupLayout previewPanelLayout = new javax.swing.GroupLayout(previewPanel);
+        previewPanel.setLayout(previewPanelLayout);
+        previewPanelLayout.setHorizontalGroup(
+            previewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 745, Short.MAX_VALUE)
+        );
+        previewPanelLayout.setVerticalGroup(
+            previewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
-        fillWithbuttonGroup.add(sampleRadioButton);
-        sampleRadioButton.setText(resourceBundle.getString("sampleRadioButton.text")); // NOI18N
-
-        sampleDataButton.setText(resourceBundle.getString("sampleDataButton.text")); // NOI18N
-        sampleDataButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sampleDataButtonActionPerformed(evt);
-            }
-        });
+        splitPane.setBottomComponent(previewPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -97,104 +92,32 @@ public class InsertDataPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(sampleDataButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
-                            .addComponent(emptyRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(randomRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(sizeLabel)
-                                    .addComponent(fillWithLabel))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(sampleRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spaceRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(filterLabel)
+                    .addComponent(optionsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                    .addComponent(filterTextField))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(splitPane)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(sizeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fillWithLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(emptyRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spaceRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(randomRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sampleRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sampleDataButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(splitPane)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(filterLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(optionsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sampleDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleDataButtonActionPerformed
-        if (controller != null) {
-            controller.sampleDataAction();
-        }
-    }//GEN-LAST:event_sampleDataButtonActionPerformed
-
-    @Nonnull
-    public FillWithType getFillWithType() {
-        if (randomRadioButton.isSelected()) {
-            return FillWithType.RANDOM;
-        } else if (sampleRadioButton.isSelected()) {
-            return FillWithType.SAMPLE;
-        } else if (spaceRadioButton.isSelected()) {
-            return FillWithType.SPACE;
-        }
-
-        return FillWithType.EMPTY;
-    }
-
-    public void setFillWith(FillWithType fillWithType) {
-        switch (fillWithType) {
-            case EMPTY: {
-                emptyRadioButton.setSelected(true);
-                break;
-            }
-            case SPACE: {
-                spaceRadioButton.setSelected(true);
-                break;
-            }
-            case RANDOM: {
-                randomRadioButton.setSelected(true);
-                break;
-            }
-            case SAMPLE: {
-                sampleRadioButton.setSelected(true);
-                break;
-            }
-            default:
-                throw CodeAreaUtils.getInvalidTypeException(fillWithType);
-        }
-    }
-
-    public long getDataLength() {
-        return sizeBaseSwitchableSpinnerPanel.getValue();
-    }
-
-    public void setDataLength(long dataLength) {
-        sizeBaseSwitchableSpinnerPanel.setValue(dataLength);
-    }
-
     public void initFocus() {
-        sizeBaseSwitchableSpinnerPanel.initFocus();
-    }
-
-    public void acceptInput() {
-        sizeBaseSwitchableSpinnerPanel.acceptInput();
+        // TODO
     }
 
     /**
@@ -207,19 +130,16 @@ public class InsertDataPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton emptyRadioButton;
-    private javax.swing.JLabel fillWithLabel;
-    private javax.swing.ButtonGroup fillWithbuttonGroup;
-    private javax.swing.JRadioButton randomRadioButton;
-    private javax.swing.JButton sampleDataButton;
-    private javax.swing.JRadioButton sampleRadioButton;
-    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel sizeBaseSwitchableSpinnerPanel;
-    private javax.swing.JLabel sizeLabel;
-    private javax.swing.JRadioButton spaceRadioButton;
+    private javax.swing.JScrollPane componentScrollPane;
+    private javax.swing.JLabel filterLabel;
+    private javax.swing.JTextField filterTextField;
+    private javax.swing.JList<String> optionsList;
+    private javax.swing.JScrollPane optionsScrollPane;
+    private javax.swing.JPanel previewPanel;
+    private javax.swing.JSplitPane splitPane;
     // End of variables declaration//GEN-END:variables
 
     public interface Controller {
 
-        void sampleDataAction();
     }
 }
