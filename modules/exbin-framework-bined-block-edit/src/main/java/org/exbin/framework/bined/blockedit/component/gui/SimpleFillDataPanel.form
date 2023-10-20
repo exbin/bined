@@ -32,7 +32,6 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="sizeBaseSwitchableSpinnerPanel" pref="403" max="32767" attributes="0"/>
                           <Component id="emptyRadioButton" alignment="0" max="32767" attributes="0"/>
-                          <Component id="randomRadioButton" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="sizeLabel" min="-2" max="-2" attributes="0"/>
@@ -62,8 +61,6 @@
               <Component id="emptyRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="spaceRadioButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="randomRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="sampleRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -108,16 +105,6 @@
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="spaceRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="randomRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="fillWithbuttonGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="randomRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

@@ -18,13 +18,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="filterLabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="optionsScrollPane" pref="276" max="32767" attributes="0"/>
-                  <Component id="filterTextField" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="methodLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="optionsScrollPane" min="-2" pref="276" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="splitPane" max="32767" attributes="0"/>
+              <Component id="splitPane" pref="495" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -34,13 +33,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="splitPane" max="32767" attributes="0"/>
+                  <Component id="splitPane" pref="522" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="filterLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="methodLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="filterTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="optionsScrollPane" pref="470" max="32767" attributes="0"/>
+                      <Component id="optionsScrollPane" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -49,14 +46,12 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="filterLabel">
+    <Component class="javax.swing.JLabel" name="methodLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/gui/resources/ConvertDataPanel.properties" key="filterLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/gui/resources/ConvertDataPanel.properties" key="methodLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="filterTextField">
     </Component>
     <Container class="javax.swing.JScrollPane" name="optionsScrollPane">
       <AuxValues>
@@ -66,8 +61,11 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JList" name="optionsList">
+          <Properties>
+            <Property name="selectionMode" type="int" value="0"/>
+          </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;org.exbin.framework.bined.blockedit.api.ConvertDataMethod&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -105,17 +103,8 @@
             </Constraint>
           </Constraints>
 
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="485" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+            <Property name="axis" type="int" value="0"/>
           </Layout>
         </Container>
       </SubComponents>

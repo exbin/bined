@@ -15,8 +15,10 @@
  */
 package org.exbin.framework.bined.blockedit.action;
 
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +53,8 @@ import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.action.CodeAreaAction;
+import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
+import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -88,13 +92,15 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final EditableBinaryData sampleBinaryData = new ByteArrayEditableData();
+//        final EditableBinaryData sampleBinaryData = new ByteArrayEditableData();
         final InsertDataPanel insertDataPanel = new InsertDataPanel();
         DefaultControlPanel controlPanel = new DefaultControlPanel(insertDataPanel.getResourceBundle());
         JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
+        BinedBlockEditModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedBlockEditModule.class);
+        insertDataPanel.setComponents(binedBlockEditModule.getInsertDataComponents());
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-/*        insertDataPanel.setController(() -> {
+        /*        insertDataPanel.setController(() -> {
             BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
             final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
             SearchCondition searchCondition = new SearchCondition();
@@ -128,37 +134,27 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         }); */
         WindowUtils.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), insertDataPanel.getResourceBundle());
         frameModule.setDialogTitle(dialog, insertDataPanel.getResourceBundle());
-/*        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
+        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
-                insertDataPanel.acceptInput();
-                long dataLength = insertDataPanel.getDataLength();
-                InsertDataOperation.FillWithType fillWithType = insertDataPanel.getFillWithType();
-                EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((ExtCodeArea) codeArea).getActiveOperation();
-                CodeAreaCommand command;
-                switch (activeOperation) {
-                    case INSERT: {
-                        InsertDataOperation operation = new InsertDataOperation(codeArea, ((CaretCapable) codeArea).getDataPosition(), dataLength, fillWithType, sampleBinaryData);
-                        command = new InsertDataOperation.InsertDataCommand(operation);
-                        break;
+                Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
+                if (optionalActiveMethod.isPresent()) {
+                    Component activeComponent = insertDataPanel.getActiveComponent().get();
+                    InsertDataMethod activeMethod = optionalActiveMethod.get();
+                    long dataPosition = ((CaretCapable) codeArea).getDataPosition();
+                    EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((ExtCodeArea) codeArea).getActiveOperation();
+                    CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
+
+                    try {
+                        ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
+                    } catch (BinaryDataOperationException ex) {
+                        Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    case OVERWRITE: {
-                        ReplaceDataOperation operation = new ReplaceDataOperation(codeArea, ((CaretCapable) codeArea).getDataPosition(), dataLength, fillWithType, sampleBinaryData);
-                        command = new ReplaceDataOperation.ReplaceDataCommand(operation);
-                        break;
-                    }
-                    default:
-                        throw XBFrameworkUtils.getInvalidTypeException(activeOperation);
-                }
-                try {
-                    ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
-                } catch (BinaryDataOperationException ex) {
-                    Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
             dialog.close();
             dialog.dispose();
-        }); */
+        });
         SwingUtilities.invokeLater(insertDataPanel::initFocus);
         dialog.showCentered(codeArea);
     }

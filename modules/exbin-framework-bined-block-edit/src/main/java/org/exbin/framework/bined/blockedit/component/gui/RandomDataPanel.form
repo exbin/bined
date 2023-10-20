@@ -2,7 +2,7 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="fillWithbuttonGroup">
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup">
     </Component>
   </NonVisualComponents>
   <AuxValues>
@@ -23,29 +23,20 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                      <Component id="sampleDataButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="sizeBaseSwitchableSpinnerPanel" pref="597" max="32767" attributes="0"/>
+                  <Component id="lowerHalfRadioButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="fullBytesRadioButton" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="sizeBaseSwitchableSpinnerPanel" pref="403" max="32767" attributes="0"/>
-                          <Component id="emptyRadioButton" alignment="0" max="32767" attributes="0"/>
-                          <Component id="randomRadioButton" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="sizeLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fillWithLabel" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="sampleRadioButton" alignment="0" max="32767" attributes="0"/>
-                          <Component id="spaceRadioButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="sizeLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="randomDataLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="alphabetOnlyRadioButton" alignment="1" max="32767" attributes="0"/>
+                  <Component id="numberDigitsRadioButton" alignment="0" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,17 +48,15 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="sizeBaseSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="fillWithLabel" min="-2" max="-2" attributes="0"/>
+              <Component id="randomDataLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="emptyRadioButton" min="-2" max="-2" attributes="0"/>
+              <Component id="fullBytesRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="spaceRadioButton" min="-2" max="-2" attributes="0"/>
+              <Component id="lowerHalfRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="randomRadioButton" min="-2" max="-2" attributes="0"/>
+              <Component id="alphabetOnlyRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="sampleRadioButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="sampleDataButton" min="-2" max="-2" attributes="0"/>
+              <Component id="numberDigitsRadioButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -83,62 +72,55 @@
     </Component>
     <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="sizeBaseSwitchableSpinnerPanel">
     </Component>
-    <Component class="javax.swing.JLabel" name="fillWithLabel">
+    <Component class="javax.swing.JLabel" name="randomDataLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="fillWithLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="randomDataLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="emptyRadioButton">
+    <Component class="javax.swing.JRadioButton" name="fullBytesRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="fillWithbuttonGroup"/>
+          <ComponentRef name="buttonGroup"/>
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="emptyRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="fullBytesRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="spaceRadioButton">
+    <Component class="javax.swing.JRadioButton" name="lowerHalfRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="fillWithbuttonGroup"/>
+          <ComponentRef name="buttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="spaceRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="lowerHalfRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="randomRadioButton">
+    <Component class="javax.swing.JRadioButton" name="alphabetOnlyRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="fillWithbuttonGroup"/>
+          <ComponentRef name="buttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="randomRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="alphabetOnlyRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="sampleRadioButton">
+    <Component class="javax.swing.JRadioButton" name="numberDigitsRadioButton">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="fillWithbuttonGroup"/>
+          <ComponentRef name="buttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="sampleRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="sampleDataButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="sampleDataButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/RandomDataPanel.properties" key="numberDigitsRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sampleDataButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="numberDigitsRadioButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

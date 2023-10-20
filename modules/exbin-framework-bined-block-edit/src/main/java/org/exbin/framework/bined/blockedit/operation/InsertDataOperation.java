@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.blockedit.operation;
 
-import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -41,15 +40,13 @@ public class InsertDataOperation extends CodeAreaOperation {
 
     private final long position;
     private final long length;
-    private final FillWithType fillWithType;
-    private final EditableBinaryData data;
+    private final DataOperationDataProvider dataOperationDataProvider;
 
-    public InsertDataOperation(CodeAreaCore codeArea, long position, long length, FillWithType fillWithType, @Nullable EditableBinaryData data) {
+    public InsertDataOperation(CodeAreaCore codeArea, long position, long length, DataOperationDataProvider dataOperationDataProvider) {
         super(codeArea);
         this.position = position;
         this.length = length;
-        this.fillWithType = fillWithType;
-        this.data = data;
+        this.dataOperationDataProvider = dataOperationDataProvider;
     }
 
     @Nonnull
@@ -75,6 +72,9 @@ public class InsertDataOperation extends CodeAreaOperation {
         CodeAreaOperation undoOperation = null;
         EditableBinaryData contentData = CodeAreaUtils.requireNonNull(((EditableBinaryData) codeArea.getContentData()));
 
+        contentData.insertUninitialized(position, length);
+        dataOperationDataProvider.provideData(contentData);
+        /*
         switch (fillWithType) {
             case EMPTY: {
                 contentData.insert(position, length);
@@ -118,7 +118,7 @@ public class InsertDataOperation extends CodeAreaOperation {
             }
             default:
                 throw CodeAreaUtils.getInvalidTypeException(fillWithType);
-        }
+        } */
 
         if (withUndo) {
             undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
@@ -130,14 +130,6 @@ public class InsertDataOperation extends CodeAreaOperation {
     @Override
     public void dispose() throws BinaryDataOperationException {
         super.dispose();
-        data.dispose();
-    }
-
-    public enum FillWithType {
-        EMPTY,
-        SPACE,
-        RANDOM,
-        SAMPLE
     }
 
     @ParametersAreNonnullByDefault

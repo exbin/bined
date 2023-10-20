@@ -18,6 +18,9 @@ package org.exbin.framework.bined.blockedit.api;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.EditOperation;
+import org.exbin.bined.operation.swing.command.CodeAreaCommand;
+import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Interface for insert data component.
@@ -25,11 +28,25 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface InsertDataComponent {
+public interface InsertDataMethod {
 
     @Nonnull
     String getName();
 
     @Nonnull
     Component getComponent();
+
+    void initFocus(Component component);
+
+    /**
+     * Creates command operation for given component and code area.
+     *
+     * @param component visual component
+     * @param codeArea code area
+     * @param position position in code area
+     * @param editOperation insert operation type
+     * @return
+     */
+    @Nonnull
+    CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation);
 }

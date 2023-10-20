@@ -18,7 +18,8 @@ package org.exbin.framework.bined.blockedit.api;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.auxiliary.paged_data.EditableBinaryData;
+import org.exbin.bined.EditOperation;
 
 /**
  * Interface for convert data component.
@@ -26,7 +27,7 @@ import org.exbin.auxiliary.paged_data.BinaryData;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface ConvertDataComponent {
+public interface ConvertDataMethod {
 
     @Nonnull
     String getName();
@@ -34,5 +35,13 @@ public interface ConvertDataComponent {
     @Nonnull
     Component getComponent();
 
-    void setDataSource(BinaryData binaryData);
+    /**
+     * Performs insertion of data.
+     *
+     * @param binaryData target binary data
+     * @param position target position
+     * @param length length of selected area for conversion
+     * @param editOperation insertion operation mode
+     */
+    void performConvert(EditableBinaryData binaryData, long position, long length, EditOperation editOperation);
 }

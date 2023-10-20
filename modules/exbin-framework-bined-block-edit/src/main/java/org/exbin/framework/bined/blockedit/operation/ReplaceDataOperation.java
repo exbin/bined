@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.blockedit.operation;
 
-import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -32,7 +31,6 @@ import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.bined.blockedit.operation.InsertDataOperation.FillWithType;
 
 /**
  * Replace data operation.
@@ -44,15 +42,13 @@ public class ReplaceDataOperation extends CodeAreaOperation {
 
     private final long position;
     private final long length;
-    private final FillWithType fillWithType;
-    private final EditableBinaryData data;
+    private final DataOperationDataProvider dataOperationDataProvider;
 
-    public ReplaceDataOperation(CodeAreaCore codeArea, long position, long length, FillWithType fillWithType, @Nullable EditableBinaryData data) {
+    public ReplaceDataOperation(CodeAreaCore codeArea, long position, long length, DataOperationDataProvider dataOperationDataProvider) {
         super(codeArea);
         this.position = position;
         this.length = length;
-        this.fillWithType = fillWithType;
-        this.data = data;
+        this.dataOperationDataProvider = dataOperationDataProvider;
     }
 
     @Nonnull
@@ -105,48 +101,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             undoOperation = new ModifyDataOperation(codeArea, position, origData);
         }
 
-        switch (fillWithType) {
-            case EMPTY: {
-                for (long pos = position; pos < position + length; pos++) {
-                    contentData.setByte(pos, (byte) 0x0);
-                }
-                break;
-            }
-            case SPACE: {
-                for (long pos = position; pos < position + length; pos++) {
-                    contentData.setByte(pos, (byte) 0x20);
-                }
-                break;
-            }
-            case RANDOM: {
-                Random random = new Random();
-                for (long pos = position; pos < position + length; pos++) {
-                    contentData.setByte(pos, (byte) random.nextInt());
-                }
-                break;
-            }
-            case SAMPLE: {
-                if (data == null || data.isEmpty()) {
-                    for (long pos = position; pos < position + length; pos++) {
-                        contentData.setByte(pos, (byte) 0xFF);
-                    }
-                } else {
-                    long dataSizeLimit = data.getDataSize();
-                    long pos = position;
-                    long remain = length;
-                    while (remain > 0) {
-                        long seg = Math.min(remain, dataSizeLimit);
-                        contentData.replace(pos, data, 0, seg);
-                        pos += seg;
-                        remain -= seg;
-                    }
-                }
-
-                break;
-            }
-            default:
-                throw CodeAreaUtils.getInvalidTypeException(fillWithType);
-        }
+        dataOperationDataProvider.provideData(contentData);
 
         ((CaretCapable) codeArea).getCaret().setCaretPosition(position + length, 0);
         return undoOperation;
@@ -155,7 +110,6 @@ public class ReplaceDataOperation extends CodeAreaOperation {
     @Override
     public void dispose() throws BinaryDataOperationException {
         super.dispose();
-        data.dispose();
     }
 
     @ParametersAreNonnullByDefault

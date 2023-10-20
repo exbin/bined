@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaUtils;
-import org.exbin.framework.bined.blockedit.operation.InsertDataOperation.FillWithType;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -33,8 +32,6 @@ public class RandomDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(RandomDataPanel.class);
 
-    private Controller controller;
-
     public RandomDataPanel() {
         initComponents();
     }
@@ -42,10 +39,6 @@ public class RandomDataPanel extends javax.swing.JPanel {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     /**
@@ -57,37 +50,34 @@ public class RandomDataPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fillWithbuttonGroup = new javax.swing.ButtonGroup();
+        buttonGroup = new javax.swing.ButtonGroup();
         sizeLabel = new javax.swing.JLabel();
         sizeBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
-        fillWithLabel = new javax.swing.JLabel();
-        emptyRadioButton = new javax.swing.JRadioButton();
-        spaceRadioButton = new javax.swing.JRadioButton();
-        randomRadioButton = new javax.swing.JRadioButton();
-        sampleRadioButton = new javax.swing.JRadioButton();
-        sampleDataButton = new javax.swing.JButton();
+        randomDataLabel = new javax.swing.JLabel();
+        fullBytesRadioButton = new javax.swing.JRadioButton();
+        lowerHalfRadioButton = new javax.swing.JRadioButton();
+        alphabetOnlyRadioButton = new javax.swing.JRadioButton();
+        numberDigitsRadioButton = new javax.swing.JRadioButton();
 
         sizeLabel.setText(resourceBundle.getString("sizeLabel.text")); // NOI18N
 
-        fillWithLabel.setText(resourceBundle.getString("fillWithLabel.text")); // NOI18N
+        randomDataLabel.setText(resourceBundle.getString("randomDataLabel.text")); // NOI18N
 
-        fillWithbuttonGroup.add(emptyRadioButton);
-        emptyRadioButton.setSelected(true);
-        emptyRadioButton.setText(resourceBundle.getString("emptyRadioButton.text")); // NOI18N
+        buttonGroup.add(fullBytesRadioButton);
+        fullBytesRadioButton.setSelected(true);
+        fullBytesRadioButton.setText(resourceBundle.getString("fullBytesRadioButton.text")); // NOI18N
 
-        fillWithbuttonGroup.add(spaceRadioButton);
-        spaceRadioButton.setText(resourceBundle.getString("spaceRadioButton.text")); // NOI18N
+        buttonGroup.add(lowerHalfRadioButton);
+        lowerHalfRadioButton.setText(resourceBundle.getString("lowerHalfRadioButton.text")); // NOI18N
 
-        fillWithbuttonGroup.add(randomRadioButton);
-        randomRadioButton.setText(resourceBundle.getString("randomRadioButton.text")); // NOI18N
+        buttonGroup.add(alphabetOnlyRadioButton);
+        alphabetOnlyRadioButton.setText(resourceBundle.getString("alphabetOnlyRadioButton.text")); // NOI18N
 
-        fillWithbuttonGroup.add(sampleRadioButton);
-        sampleRadioButton.setText(resourceBundle.getString("sampleRadioButton.text")); // NOI18N
-
-        sampleDataButton.setText(resourceBundle.getString("sampleDataButton.text")); // NOI18N
-        sampleDataButton.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup.add(numberDigitsRadioButton);
+        numberDigitsRadioButton.setText(resourceBundle.getString("numberDigitsRadioButton.text")); // NOI18N
+        numberDigitsRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sampleDataButtonActionPerformed(evt);
+                numberDigitsRadioButtonActionPerformed(evt);
             }
         });
 
@@ -98,23 +88,17 @@ public class RandomDataPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(sampleDataButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+                    .addComponent(lowerHalfRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fullBytesRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
-                            .addComponent(emptyRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(randomRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(sizeLabel)
-                                    .addComponent(fillWithLabel))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(sampleRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spaceRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                            .addComponent(sizeLabel)
+                            .addComponent(randomDataLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(alphabetOnlyRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(numberDigitsRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,60 +108,56 @@ public class RandomDataPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fillWithLabel)
+                .addComponent(randomDataLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(emptyRadioButton)
+                .addComponent(fullBytesRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spaceRadioButton)
+                .addComponent(lowerHalfRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(randomRadioButton)
+                .addComponent(alphabetOnlyRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sampleRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sampleDataButton)
+                .addComponent(numberDigitsRadioButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sampleDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleDataButtonActionPerformed
-        if (controller != null) {
-            controller.sampleDataAction();
-        }
-    }//GEN-LAST:event_sampleDataButtonActionPerformed
+    private void numberDigitsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberDigitsRadioButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numberDigitsRadioButtonActionPerformed
 
     @Nonnull
-    public FillWithType getFillWithType() {
-        if (randomRadioButton.isSelected()) {
-            return FillWithType.RANDOM;
-        } else if (sampleRadioButton.isSelected()) {
-            return FillWithType.SAMPLE;
-        } else if (spaceRadioButton.isSelected()) {
-            return FillWithType.SPACE;
+    public AlgorithmType getAlgorithmType() {
+        if (lowerHalfRadioButton.isSelected()) {
+            return AlgorithmType.LOWER_HALF;
+        } else if (alphabetOnlyRadioButton.isSelected()) {
+            return AlgorithmType.ALPHABET_ONLY;
+        } else if (numberDigitsRadioButton.isSelected()) {
+            return AlgorithmType.NUMBER_DIGITS;
         }
 
-        return FillWithType.EMPTY;
+        return AlgorithmType.FULL_BYTES;
     }
 
-    public void setFillWith(FillWithType fillWithType) {
-        switch (fillWithType) {
-            case EMPTY: {
-                emptyRadioButton.setSelected(true);
+    public void setFillWith(AlgorithmType algorithm) {
+        switch (algorithm) {
+            case FULL_BYTES: {
+                fullBytesRadioButton.setSelected(true);
                 break;
             }
-            case SPACE: {
-                spaceRadioButton.setSelected(true);
+            case LOWER_HALF: {
+                lowerHalfRadioButton.setSelected(true);
                 break;
             }
-            case RANDOM: {
-                randomRadioButton.setSelected(true);
+            case ALPHABET_ONLY: {
+                alphabetOnlyRadioButton.setSelected(true);
                 break;
             }
-            case SAMPLE: {
-                sampleRadioButton.setSelected(true);
+            case NUMBER_DIGITS: {
+                numberDigitsRadioButton.setSelected(true);
                 break;
             }
             default:
-                throw CodeAreaUtils.getInvalidTypeException(fillWithType);
+                throw CodeAreaUtils.getInvalidTypeException(algorithm);
         }
     }
 
@@ -207,19 +187,20 @@ public class RandomDataPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton emptyRadioButton;
-    private javax.swing.JLabel fillWithLabel;
-    private javax.swing.ButtonGroup fillWithbuttonGroup;
-    private javax.swing.JRadioButton randomRadioButton;
-    private javax.swing.JButton sampleDataButton;
-    private javax.swing.JRadioButton sampleRadioButton;
+    private javax.swing.JRadioButton alphabetOnlyRadioButton;
+    private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JRadioButton fullBytesRadioButton;
+    private javax.swing.JRadioButton lowerHalfRadioButton;
+    private javax.swing.JRadioButton numberDigitsRadioButton;
+    private javax.swing.JLabel randomDataLabel;
     private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel sizeBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel sizeLabel;
-    private javax.swing.JRadioButton spaceRadioButton;
     // End of variables declaration//GEN-END:variables
 
-    public interface Controller {
-
-        void sampleDataAction();
+    public enum AlgorithmType {
+        FULL_BYTES,
+        LOWER_HALF,
+        ALPHABET_ONLY,
+        NUMBER_DIGITS
     }
 }

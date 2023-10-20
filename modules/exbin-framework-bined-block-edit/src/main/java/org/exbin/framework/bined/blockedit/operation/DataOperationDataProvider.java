@@ -13,31 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.blockedit.component;
+package org.exbin.framework.bined.blockedit.operation;
 
-import java.awt.Component;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.blockedit.api.InsertDataComponent;
-import org.exbin.framework.bined.blockedit.component.gui.RandomDataPanel;
+import org.exbin.auxiliary.paged_data.EditableBinaryData;
 
 /**
- * Random data component.
+ * Data provider for data operation.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class RandomDataComponent implements InsertDataComponent {
+public interface DataOperationDataProvider {
 
-    @Nonnull
-    @Override
-    public String getName() {
-        return "";
-    }
-
-    @Nonnull
-    @Override
-    public Component getComponent() {
-        return new RandomDataPanel();
-    }
+    /**
+     * Provides data into given binary data.
+     *
+     * @param binaryData editable data target
+     */
+    void provideData(EditableBinaryData binaryData);
 }

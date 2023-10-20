@@ -36,16 +36,16 @@ import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.blockedit.action.InsertDataAction;
 import org.exbin.framework.bined.blockedit.action.ConvertDataAction;
-import org.exbin.framework.bined.blockedit.api.ConvertDataComponent;
-import org.exbin.framework.bined.blockedit.api.InsertDataComponent;
-import org.exbin.framework.bined.blockedit.component.RandomDataComponent;
-import org.exbin.framework.bined.blockedit.component.SimpleFillDataComponent;
+import org.exbin.framework.bined.blockedit.component.RandomDataMethod;
+import org.exbin.framework.bined.blockedit.component.SimpleFillDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.ActionUtils;
+import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
+import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 
 /**
  * Binary data editor block editation operations module.
@@ -64,8 +64,8 @@ public class BinedBlockEditModule implements XBApplicationModule {
 
     private InsertDataAction insertDataAction;
     private ConvertDataAction convertDataAction;
-    private final List<InsertDataComponent> insertDataComponents = new ArrayList<>();
-    private final List<ConvertDataComponent> convertDataComponents = new ArrayList<>();
+    private final List<InsertDataMethod> insertDataComponents = new ArrayList<>();
+    private final List<ConvertDataMethod> convertDataComponents = new ArrayList<>();
 
     public BinedBlockEditModule() {
     }
@@ -73,9 +73,13 @@ public class BinedBlockEditModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-        
-        addInsertDataComponent(new SimpleFillDataComponent());
-        addInsertDataComponent(new RandomDataComponent());
+
+        SimpleFillDataMethod simpleFillDataComponent = new SimpleFillDataMethod();
+        simpleFillDataComponent.setApplication(this.application);
+        addInsertDataComponent(simpleFillDataComponent);
+        RandomDataMethod randomDataComponent = new RandomDataMethod();
+        randomDataComponent.setApplication(this.application);
+        addInsertDataComponent(randomDataComponent);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
@@ -164,21 +168,21 @@ public class BinedBlockEditModule implements XBApplicationModule {
         }
     }
 
-    public void addInsertDataComponent(InsertDataComponent insertDataComponent) {
+    public void addInsertDataComponent(InsertDataMethod insertDataComponent) {
         insertDataComponents.add(insertDataComponent);
     }
 
-    public void addConvertDataComponent(ConvertDataComponent convertDataComponent) {
+    public void addConvertDataComponent(ConvertDataMethod convertDataComponent) {
         convertDataComponents.add(convertDataComponent);
     }
 
     @Nonnull
-    public List<InsertDataComponent> getInsertDataComponents() {
+    public List<InsertDataMethod> getInsertDataComponents() {
         return insertDataComponents;
     }
 
     @Nonnull
-    public List<ConvertDataComponent> getConvertDataComponents() {
+    public List<ConvertDataMethod> getConvertDataComponents() {
         return convertDataComponents;
     }
 

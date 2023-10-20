@@ -1,6 +1,7 @@
 0.2.3
-- Fixed issue with language switching
+- Added convert data action
 - Added GUI rendering options
+- Fixed issue with language switching
 
 0.2.2 (2023-07-29)
 - Added support for bookmarks

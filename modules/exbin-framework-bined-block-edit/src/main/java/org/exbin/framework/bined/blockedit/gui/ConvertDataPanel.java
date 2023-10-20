@@ -15,11 +15,21 @@
  */
 package org.exbin.framework.bined.blockedit.gui;
 
+import java.awt.Component;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.auxiliary.paged_data.ByteArrayData;
+import org.exbin.bined.EditMode;
+import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
 
 /**
  * Convert data panel.
@@ -32,9 +42,31 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ConvertDataPanel.class);
 
     private Controller controller;
+    private ExtCodeArea previewCodeArea = new ExtCodeArea();
 
     public ConvertDataPanel() {
         initComponents();
+        init();
+    }
+
+    private void init() {
+        optionsList.setModel(new DefaultListModel<>());
+        optionsList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                if (value == null) {
+                    return super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+                }
+                return super.getListCellRendererComponent(list, ((ConvertDataMethod) value).getName(), index, isSelected, cellHasFocus);
+            }
+        });
+        optionsList.addListSelectionListener((e) -> {
+            ConvertDataMethod selectedComponent = optionsList.getSelectedValue();
+            Component component = selectedComponent != null ? selectedComponent.getComponent() : null;
+            componentScrollPane.getViewport().setView(component);
+        });
+        previewCodeArea.setContentData(new ByteArrayData());
+        previewPanel.add(previewCodeArea);
     }
 
     @Nonnull
@@ -46,6 +78,10 @@ public class ConvertDataPanel extends javax.swing.JPanel {
         this.controller = controller;
     }
 
+    public void setComponents(List<ConvertDataMethod> dataComponents) {
+        ((DefaultListModel<ConvertDataMethod>) optionsList.getModel()).addAll(dataComponents);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,16 +91,16 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        filterLabel = new javax.swing.JLabel();
-        filterTextField = new javax.swing.JTextField();
+        methodLabel = new javax.swing.JLabel();
         optionsScrollPane = new javax.swing.JScrollPane();
         optionsList = new javax.swing.JList<>();
         splitPane = new javax.swing.JSplitPane();
         componentScrollPane = new javax.swing.JScrollPane();
         previewPanel = new javax.swing.JPanel();
 
-        filterLabel.setText(resourceBundle.getString("filterLabel.text")); // NOI18N
+        methodLabel.setText(resourceBundle.getString("methodLabel.text")); // NOI18N
 
+        optionsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         optionsScrollPane.setViewportView(optionsList);
 
         splitPane.setDividerLocation(400);
@@ -72,18 +108,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
         splitPane.setLeftComponent(componentScrollPane);
 
         previewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceBundle.getString("previewPanel.border.title"))); // NOI18N
-
-        javax.swing.GroupLayout previewPanelLayout = new javax.swing.GroupLayout(previewPanel);
-        previewPanel.setLayout(previewPanelLayout);
-        previewPanelLayout.setHorizontalGroup(
-            previewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 485, Short.MAX_VALUE)
-        );
-        previewPanelLayout.setVerticalGroup(
-            previewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
+        previewPanel.setLayout(new javax.swing.BoxLayout(previewPanel, javax.swing.BoxLayout.X_AXIS));
         splitPane.setBottomComponent(previewPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -92,12 +117,11 @@ public class ConvertDataPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(filterLabel)
-                    .addComponent(optionsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                    .addComponent(filterTextField))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(methodLabel)
+                    .addComponent(optionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(splitPane)
+                .addComponent(splitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -105,13 +129,11 @@ public class ConvertDataPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(splitPane)
+                    .addComponent(splitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(filterLabel)
+                        .addComponent(methodLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(optionsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)))
+                        .addComponent(optionsScrollPane)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -131,15 +153,14 @@ public class ConvertDataPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane componentScrollPane;
-    private javax.swing.JLabel filterLabel;
-    private javax.swing.JTextField filterTextField;
-    private javax.swing.JList<String> optionsList;
+    private javax.swing.JLabel methodLabel;
+    private javax.swing.JList<ConvertDataMethod> optionsList;
     private javax.swing.JScrollPane optionsScrollPane;
     private javax.swing.JPanel previewPanel;
     private javax.swing.JSplitPane splitPane;
     // End of variables declaration//GEN-END:variables
 
     public interface Controller {
-        
-    } 
+
+    }
 }
