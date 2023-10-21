@@ -408,7 +408,7 @@ public class BinedModule implements XBApplicationModule {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(menuId);
-                    return popupMenuVariant != PopupMenuVariant.BASIC && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
+                    return popupMenuVariant == PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
                 }
 
                 @Override
@@ -431,7 +431,7 @@ public class BinedModule implements XBApplicationModule {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(menuId);
-                    return popupMenuVariant != PopupMenuVariant.BASIC && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
+                    return popupMenuVariant == PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
                 }
 
                 @Override

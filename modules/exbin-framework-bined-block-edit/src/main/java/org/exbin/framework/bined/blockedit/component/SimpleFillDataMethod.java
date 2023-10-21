@@ -82,11 +82,11 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             searchCondition.setSearchMode(SearchCondition.SearchMode.BINARY);
             multilinePanel.setCondition(searchCondition);
             multilinePanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
-            DefaultControlPanel controlPanel1 = new DefaultControlPanel();
-            JPanel dialogPanel1 = WindowUtils.createDialogPanel(multilinePanel, controlPanel1);
+            DefaultControlPanel controlPanel = new DefaultControlPanel();
+            JPanel dialogPanel1 = WindowUtils.createDialogPanel(multilinePanel, controlPanel);
             final DialogWrapper multilineDialog = frameModule.createDialog(dialog.getWindow(), Dialog.ModalityType.APPLICATION_MODAL, dialogPanel1);
             frameModule.setDialogTitle(multilineDialog, multilinePanel.getResourceBundle());
-            controlPanel1.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
+            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                 if (actionType == DefaultControlHandler.ControlActionType.OK) {
                     SearchCondition condition = multilinePanel.getCondition();
                     sampleBinaryData.clear();

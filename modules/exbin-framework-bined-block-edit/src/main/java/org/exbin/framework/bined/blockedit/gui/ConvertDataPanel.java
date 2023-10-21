@@ -17,19 +17,22 @@ package org.exbin.framework.bined.blockedit.gui;
 
 import java.awt.Component;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import org.exbin.auxiliary.paged_data.BinaryData;
+import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
 import org.exbin.auxiliary.paged_data.ByteArrayData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
+import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Convert data panel.
@@ -39,10 +42,14 @@ import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
 @ParametersAreNonnullByDefault
 public class ConvertDataPanel extends javax.swing.JPanel {
 
+    private static final String POPUP_MENU_POSTFIX = ".convertDataPanel";
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ConvertDataPanel.class);
 
     private Controller controller;
     private ExtCodeArea previewCodeArea = new ExtCodeArea();
+    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
+    private ConvertDataMethod activeMethod;
+    private Component activeComponent;
 
     public ConvertDataPanel() {
         initComponents();
@@ -61,11 +68,13 @@ public class ConvertDataPanel extends javax.swing.JPanel {
             }
         });
         optionsList.addListSelectionListener((e) -> {
-            ConvertDataMethod selectedComponent = optionsList.getSelectedValue();
-            Component component = selectedComponent != null ? selectedComponent.getComponent() : null;
-            componentScrollPane.getViewport().setView(component);
+            activeMethod = optionsList.getSelectedValue();
+            activeComponent = activeMethod != null ? activeMethod.getComponent() : null;
+            componentScrollPane.getViewport().setView(activeComponent);
+            activeMethod.initFocus(activeComponent);
         });
         previewCodeArea.setContentData(new ByteArrayData());
+        previewCodeArea.setEditMode(EditMode.READ_ONLY);
         previewPanel.add(previewCodeArea);
     }
 
@@ -79,7 +88,48 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     }
 
     public void setComponents(List<ConvertDataMethod> dataComponents) {
-        ((DefaultListModel<ConvertDataMethod>) optionsList.getModel()).addAll(dataComponents);
+        DefaultListModel<ConvertDataMethod> listModel = (DefaultListModel<ConvertDataMethod>) optionsList.getModel();
+        for (ConvertDataMethod dataComponent : dataComponents) {
+            listModel.addElement(dataComponent);
+        }
+    }
+
+    @Nonnull
+    public Optional<ConvertDataMethod> getActiveMethod() {
+        return Optional.ofNullable(activeMethod);
+    }
+
+    @Nonnull
+    public Optional<Component> getActiveComponent() {
+        return Optional.ofNullable(activeComponent);
+    }
+
+    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
+        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
+        if (previewCodeArea != null) {
+            attachPopupMenu();
+        }
+    }
+
+    private void attachPopupMenu() {
+        previewCodeArea.setComponentPopupMenu(new JPopupMenu() {
+            @Override
+            public void show(@Nonnull Component invoker, int x, int y) {
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += ((JViewport) invoker).getParent().getX();
+                    clickedY += ((JViewport) invoker).getParent().getY();
+                }
+                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(previewCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
+                popupMenu.show(invoker, x, y);
+                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
+            }
+        });
+    }
+
+    public void detachMenu() {
+        codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
     }
 
     /**

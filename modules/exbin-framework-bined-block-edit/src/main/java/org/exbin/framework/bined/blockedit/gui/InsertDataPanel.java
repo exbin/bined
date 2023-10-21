@@ -24,11 +24,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
 import org.exbin.auxiliary.paged_data.ByteArrayData;
+import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
+import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Insert data panel.
@@ -38,10 +42,13 @@ import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 @ParametersAreNonnullByDefault
 public class InsertDataPanel extends javax.swing.JPanel {
 
+    private static final String POPUP_MENU_POSTFIX = ".insertDataPanel";
+
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(InsertDataPanel.class);
 
     private Controller controller;
     private ExtCodeArea previewCodeArea = new ExtCodeArea();
+    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private InsertDataMethod activeMethod;
     private Component activeComponent;
 
@@ -68,6 +75,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
             activeMethod.initFocus(activeComponent);
         });
         previewCodeArea.setContentData(new ByteArrayData());
+        previewCodeArea.setEditMode(EditMode.READ_ONLY);
         previewPanel.add(previewCodeArea);
     }
 
@@ -81,17 +89,48 @@ public class InsertDataPanel extends javax.swing.JPanel {
     }
 
     public void setComponents(List<InsertDataMethod> dataComponents) {
-        ((DefaultListModel<InsertDataMethod>) optionsList.getModel()).addAll(dataComponents);
+        DefaultListModel<InsertDataMethod> listModel = (DefaultListModel<InsertDataMethod>) optionsList.getModel();
+        for (InsertDataMethod dataComponent : dataComponents) {
+            listModel.addElement(dataComponent);
+        }
     }
 
     @Nonnull
     public Optional<InsertDataMethod> getActiveMethod() {
         return Optional.ofNullable(activeMethod);
     }
-    
+
     @Nonnull
     public Optional<Component> getActiveComponent() {
         return Optional.ofNullable(activeComponent);
+    }
+
+    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
+        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
+        if (previewCodeArea != null) {
+            attachPopupMenu();
+        }
+    }
+
+    private void attachPopupMenu() {
+        previewCodeArea.setComponentPopupMenu(new JPopupMenu() {
+            @Override
+            public void show(@Nonnull Component invoker, int x, int y) {
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += ((JViewport) invoker).getParent().getX();
+                    clickedY += ((JViewport) invoker).getParent().getY();
+                }
+                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(previewCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
+                popupMenu.show(invoker, x, y);
+                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
+            }
+        });
+    }
+
+    public void detachMenu() {
+        codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
     }
 
     /**

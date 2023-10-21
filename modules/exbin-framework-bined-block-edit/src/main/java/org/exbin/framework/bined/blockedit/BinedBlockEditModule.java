@@ -26,6 +26,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
@@ -110,7 +111,8 @@ public class BinedBlockEditModule implements XBApplicationModule {
                     BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    ExtCodeArea codeArea = binedModule.getActiveCodeArea();
+                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
@@ -135,7 +137,8 @@ public class BinedBlockEditModule implements XBApplicationModule {
                     BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    ExtCodeArea codeArea = binedModule.getActiveCodeArea();
+                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override

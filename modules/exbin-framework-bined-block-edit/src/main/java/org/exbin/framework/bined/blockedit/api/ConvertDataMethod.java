@@ -35,6 +35,8 @@ public interface ConvertDataMethod {
     @Nonnull
     Component getComponent();
 
+    void initFocus(Component component);
+
     /**
      * Performs insertion of data.
      *

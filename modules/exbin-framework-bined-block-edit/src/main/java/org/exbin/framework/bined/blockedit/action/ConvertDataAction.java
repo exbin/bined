@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataPanel;
@@ -69,13 +70,15 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final ConvertDataPanel modifyDataPanel = new ConvertDataPanel();
-        DefaultControlPanel controlPanel = new DefaultControlPanel(modifyDataPanel.getResourceBundle());
-        JPanel dialogPanel = WindowUtils.createDialogPanel(modifyDataPanel, controlPanel);
+        final ConvertDataPanel convertDataPanel = new ConvertDataPanel();
+        DefaultControlPanel controlPanel = new DefaultControlPanel(convertDataPanel.getResourceBundle());
+        JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        convertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), modifyDataPanel.getClass(), modifyDataPanel.getResourceBundle());
-        frameModule.setDialogTitle(dialog, modifyDataPanel.getResourceBundle());
+        WindowUtils.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), convertDataPanel.getResourceBundle());
+        frameModule.setDialogTitle(dialog, convertDataPanel.getResourceBundle());
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == DefaultControlHandler.ControlActionType.OK) {
             }
@@ -83,7 +86,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
             dialog.close();
             dialog.dispose();
         });
-        SwingUtilities.invokeLater(modifyDataPanel::initFocus);
+        SwingUtilities.invokeLater(convertDataPanel::initFocus);
         dialog.showCentered(codeArea);
     }
 }

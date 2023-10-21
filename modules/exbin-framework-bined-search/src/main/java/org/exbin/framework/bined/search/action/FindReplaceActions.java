@@ -102,7 +102,7 @@ public class FindReplaceActions implements FileDependentAction {
                     BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
@@ -137,7 +137,7 @@ public class FindReplaceActions implements FileDependentAction {
                     BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
