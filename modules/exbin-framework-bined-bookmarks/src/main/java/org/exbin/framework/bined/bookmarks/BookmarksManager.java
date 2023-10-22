@@ -35,6 +35,7 @@ import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
@@ -249,7 +250,24 @@ public class BookmarksManager {
 
     public void registerBookmarksPopupMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        JMenu bookmarksPopupMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+        Action bookmarksPopupMenuAction = new AbstractAction(resourceBundle.getString("bookmarksMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        bookmarksPopupMenuAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                return menuVariant == BinedModule.PopupMenuVariant.EDITOR;
+            }
+
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+            }
+        });
+        JMenu bookmarksPopupMenu = new JMenu(bookmarksPopupMenuAction);
         bookmarksPopupMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {

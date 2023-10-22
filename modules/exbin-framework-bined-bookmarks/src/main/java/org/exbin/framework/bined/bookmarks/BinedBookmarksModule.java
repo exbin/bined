@@ -16,7 +16,6 @@
 package org.exbin.framework.bined.bookmarks;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -28,9 +27,6 @@ import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
-import org.exbin.framework.bined.BinEdFileManager;
-import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
@@ -68,16 +64,6 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
-
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
-            @Override
-            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                return Optional.empty();
-            }
-        });
     }
 
     @Override
