@@ -242,7 +242,13 @@ public class BookmarksManager {
     @Nonnull
     public JMenu getBookmarksMenu() {
         if (bookmarksMenu == null) {
-            bookmarksMenu = new JMenu(resourceBundle.getString("bookmarksMenu.text"));
+            Action bookmarksMenuAction = new AbstractAction(resourceBundle.getString("bookmarksMenu.text")) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                }
+            };
+            bookmarksMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
+            bookmarksMenu = new JMenu(bookmarksMenuAction);
             updateBookmarksMenu();
         }
         return bookmarksMenu;

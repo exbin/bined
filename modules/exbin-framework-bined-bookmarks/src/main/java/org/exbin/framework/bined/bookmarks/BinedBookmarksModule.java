@@ -27,7 +27,7 @@ import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
-import org.exbin.framework.bined.search.BinedSearchModule;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -72,7 +72,7 @@ public class BinedBookmarksModule implements XBApplicationModule {
 
     public void registerBookmarksMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedSearchModule.EDIT_FIND_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerBookmarksPopupMenuActions() {

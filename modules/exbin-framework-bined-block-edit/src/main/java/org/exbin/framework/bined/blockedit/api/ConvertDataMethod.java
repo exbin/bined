@@ -46,4 +46,12 @@ public interface ConvertDataMethod {
      * @param editOperation insertion operation mode
      */
     void performConvert(EditableBinaryData binaryData, long position, long length, EditOperation editOperation);
+
+    /**
+     * Sets editable data target for preview.
+     *
+     * @param binaryData target editable data
+     * @param lengthLimit limit to length of set data
+     */
+    void setPreviewDataTarget(EditableBinaryData binaryData, long lengthLimit);
 }

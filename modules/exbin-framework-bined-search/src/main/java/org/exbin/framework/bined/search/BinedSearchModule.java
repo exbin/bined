@@ -52,7 +52,6 @@ public class BinedSearchModule implements XBApplicationModule {
 
     public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedSearchModule.class);
 
-    public static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
     public static final String EDIT_FIND_TOOL_BAR_GROUP_ID = MODULE_ID + ".editFindToolBarGroup";
 
     private java.util.ResourceBundle resourceBundle = null;
@@ -79,13 +78,7 @@ public class BinedSearchModule implements XBApplicationModule {
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addActionStatusUpdateListener(this::updateActionStatus);
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
-            @Override
-            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                return Optional.of(new BinEdComponentSearch());
-            }
-        });
+        fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new BinEdComponentSearch()));
     }
 
     @Override
@@ -106,10 +99,9 @@ public class BinedSearchModule implements XBApplicationModule {
     public void registerEditFindMenuActions() {
         getFindReplaceActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuGroup(FrameModuleApi.EDIT_MENU_ID, new MenuGroup(EDIT_FIND_MENU_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAgainAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditReplaceAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAgainAction(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditReplaceAction(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerEditFindPopupMenuActions() {

@@ -18,6 +18,7 @@ package org.exbin.framework.bined.blockedit.api;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -49,4 +50,13 @@ public interface InsertDataMethod {
      */
     @Nonnull
     CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation);
+
+    /**
+     * Sets editable data target for preview.
+     *
+     * @param component visual component
+     * @param binaryData target editable data
+     * @param lengthLimit limit to length of set data
+     */
+    void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit);
 }

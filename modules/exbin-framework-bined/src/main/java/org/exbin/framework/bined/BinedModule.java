@@ -106,6 +106,10 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 public class BinedModule implements XBApplicationModule {
 
     public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedModule.class);
+
+    public static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
+    public static final String VIEW_UNPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewUnprintablesMenuGroup";
+
     public static final String BINARY_POPUP_MENU_ID = MODULE_ID + ".binaryPopupMenu";
     public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
     public static final String CODE_AREA_POPUP_VIEW_GROUP_ID = MODULE_ID + ".viewPopupMenuGroup";
@@ -114,6 +118,7 @@ public class BinedModule implements XBApplicationModule {
     public static final String CODE_AREA_POPUP_OPERATION_GROUP_ID = MODULE_ID + ".operationPopupMenuGroup";
     public static final String CODE_AREA_POPUP_FIND_GROUP_ID = MODULE_ID + ".findPopupMenuGroup";
     public static final String CODE_AREA_POPUP_TOOLS_GROUP_ID = MODULE_ID + ".toolsPopupMenuGroup";
+
     public static final String VIEW_MODE_SUBMENU_ID = MODULE_ID + ".viewModeSubMenu";
     public static final String CODE_TYPE_SUBMENU_ID = MODULE_ID + ".codeTypeSubMenu";
     public static final String POSITION_CODE_TYPE_SUBMENU_ID = MODULE_ID + ".positionCodeTypeSubMenu";
@@ -121,7 +126,6 @@ public class BinedModule implements XBApplicationModule {
     public static final String POSITION_CODE_TYPE_POPUP_SUBMENU_ID = MODULE_ID + ".positionCodeTypePopupSubMenu";
     public static final String SHOW_POPUP_SUBMENU_ID = MODULE_ID + ".showPopupSubMenu";
 
-    private static final String VIEW_UNPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewUnprintablesMenuGroup";
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
@@ -385,7 +389,8 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerGoToPosition() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getGoToPositionAction(), new MenuPosition(PositionMode.BOTTOM));
+        actionModule.registerMenuGroup(FrameModuleApi.EDIT_MENU_ID, new MenuGroup(EDIT_FIND_MENU_GROUP_ID, new MenuPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getGoToPositionAction(), new MenuPosition(EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerEditSelection() {
@@ -698,7 +703,13 @@ public class BinedModule implements XBApplicationModule {
     public void registerViewModeMenu() {
         getViewModeActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, VIEW_MODE_SUBMENU_ID, resourceBundle.getString("viewModeSubMenu.text"), new MenuPosition(PositionMode.BOTTOM));
+        Action viewSubMenuAction = new AbstractAction(resourceBundle.getString("viewModeSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("viewModeSubMenu.shortDescription"));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, VIEW_MODE_SUBMENU_ID, viewSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(VIEW_MODE_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getDualModeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getCodeMatrixModeAction(), new MenuPosition(PositionMode.TOP));
@@ -714,7 +725,13 @@ public class BinedModule implements XBApplicationModule {
     public void registerCodeTypeMenu() {
         getCodeTypeActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, CODE_TYPE_SUBMENU_ID, resourceBundle.getString("codeTypeSubMenu.text"), new MenuPosition(PositionMode.BOTTOM));
+        Action codeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("codeTypeSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("codeTypeSubMenu.shortDescription"));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(CODE_TYPE_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.getBinaryCodeTypeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.getOctalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
@@ -725,7 +742,13 @@ public class BinedModule implements XBApplicationModule {
     public void registerPositionCodeTypeMenu() {
         getPositionCodeTypeActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_SUBMENU_ID, resourceBundle.getString("positionCodeTypeSubMenu.text"), new MenuPosition(PositionMode.BOTTOM));
+        Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.getOctalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.getDecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
@@ -735,7 +758,13 @@ public class BinedModule implements XBApplicationModule {
     public void registerHexCharactersCaseHandlerMenu() {
         getHexCharactersCaseActions();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, HEX_CHARACTERS_CASE_SUBMENU_ID, resourceBundle.getString("hexCharsCaseSubMenu.text"), new MenuPosition(PositionMode.BOTTOM));
+        Action hexCharsCaseSubMenuAction = new AbstractAction(resourceBundle.getString("hexCharsCaseSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.getUpperHexCharsAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.getLowerHexCharsAction(), new MenuPosition(PositionMode.TOP));
@@ -763,7 +792,13 @@ public class BinedModule implements XBApplicationModule {
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getShowRowPositionAction(), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         actionModule.registerMenu(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID);
-        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_POPUP_SUBMENU_ID, resourceBundle.getString("positionCodeTypeSubMenu.text"), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
+        Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_POPUP_SUBMENU_ID, positionCodeTypeSubMenuAction, new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
         actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getOctalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getDecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getHexadecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
@@ -781,7 +816,13 @@ public class BinedModule implements XBApplicationModule {
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getGoToPositionAction(), new MenuPosition(CODE_AREA_POPUP_FIND_GROUP_ID));
 
         actionModule.registerMenu(SHOW_POPUP_SUBMENU_ID, MODULE_ID);
-        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, SHOW_POPUP_SUBMENU_ID, resourceBundle.getString("popupShowSubMenu.text"), new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
+        Action popupShowSubMenuAction = new AbstractAction(resourceBundle.getString("popupShowSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        popupShowSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("popupShowSubMenu.shortDescription"));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, SHOW_POPUP_SUBMENU_ID, popupShowSubMenuAction, new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
         actionModule.registerMenuItem(SHOW_POPUP_SUBMENU_ID, MODULE_ID, getShowHeaderAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(SHOW_POPUP_SUBMENU_ID, MODULE_ID, getShowRowPositionAction(), new MenuPosition(PositionMode.TOP));
 

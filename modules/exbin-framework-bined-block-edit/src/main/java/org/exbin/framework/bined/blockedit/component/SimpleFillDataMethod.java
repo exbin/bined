@@ -53,6 +53,8 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(SimpleFillDataPanel.class);
 
     private XBApplication application;
+    private EditableBinaryData previewBinaryData;
+    private long previewLengthLimit = 0;
 
     public void setApplication(XBApplication application) {
         this.application = application;
@@ -165,4 +167,15 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             return new InsertDataOperation.InsertDataCommand(new InsertDataOperation(codeArea, position, length, dataOperationDataProvider));
         }
     }
+
+    @Override
+    public void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit) {
+        this.previewBinaryData = binaryData;
+        this.previewLengthLimit = lengthLimit;
+        fillPreviewData(component);
+    }
+    
+    private void fillPreviewData(Component component) {
+        
+    } 
 }
