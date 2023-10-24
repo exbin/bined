@@ -35,11 +35,12 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
 
     private Controller controller;
     private EditableBinaryData sampleBinaryData;
+    private ModeChangeListener modeChangeListener = null;
 
     public SimpleFillDataPanel() {
         initComponents();
     }
-
+    
     @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
@@ -59,27 +60,49 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         fillWithbuttonGroup = new javax.swing.ButtonGroup();
-        sizeLabel = new javax.swing.JLabel();
-        sizeBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
+        lengthLabel = new javax.swing.JLabel();
+        lengthBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
         fillWithLabel = new javax.swing.JLabel();
         emptyRadioButton = new javax.swing.JRadioButton();
         spaceRadioButton = new javax.swing.JRadioButton();
         sampleRadioButton = new javax.swing.JRadioButton();
         sampleDataButton = new javax.swing.JButton();
 
-        sizeLabel.setText(resourceBundle.getString("sizeLabel.text")); // NOI18N
+        lengthLabel.setText(resourceBundle.getString("lengthLabel.text")); // NOI18N
+
+        lengthBaseSwitchableSpinnerPanel.setValue(10L);
+        lengthBaseSwitchableSpinnerPanel.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                lengthBaseSwitchableSpinnerPanelStateChanged(evt);
+            }
+        });
 
         fillWithLabel.setText(resourceBundle.getString("fillWithLabel.text")); // NOI18N
 
         fillWithbuttonGroup.add(emptyRadioButton);
         emptyRadioButton.setSelected(true);
         emptyRadioButton.setText(resourceBundle.getString("emptyRadioButton.text")); // NOI18N
+        emptyRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                emptyRadioButtonItemStateChanged(evt);
+            }
+        });
 
         fillWithbuttonGroup.add(spaceRadioButton);
         spaceRadioButton.setText(resourceBundle.getString("spaceRadioButton.text")); // NOI18N
+        spaceRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                spaceRadioButtonItemStateChanged(evt);
+            }
+        });
 
         fillWithbuttonGroup.add(sampleRadioButton);
         sampleRadioButton.setText(resourceBundle.getString("sampleRadioButton.text")); // NOI18N
+        sampleRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                sampleRadioButtonItemStateChanged(evt);
+            }
+        });
 
         sampleDataButton.setText(resourceBundle.getString("sampleDataButton.text")); // NOI18N
         sampleDataButton.addActionListener(new java.awt.event.ActionListener() {
@@ -101,11 +124,11 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                            .addComponent(lengthBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                             .addComponent(emptyRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(sizeLabel)
+                                    .addComponent(lengthLabel)
                                     .addComponent(fillWithLabel))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(sampleRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -116,9 +139,9 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(sizeLabel)
+                .addComponent(lengthLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lengthBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fillWithLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -136,8 +159,31 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private void sampleDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleDataButtonActionPerformed
         if (controller != null) {
             controller.sampleDataAction();
+            modeChanged();
         }
     }//GEN-LAST:event_sampleDataButtonActionPerformed
+
+    private void emptyRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_emptyRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_emptyRadioButtonItemStateChanged
+
+    private void spaceRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_spaceRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_spaceRadioButtonItemStateChanged
+
+    private void sampleRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sampleRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_sampleRadioButtonItemStateChanged
+
+    private void lengthBaseSwitchableSpinnerPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lengthBaseSwitchableSpinnerPanelStateChanged
+        modeChanged();
+    }//GEN-LAST:event_lengthBaseSwitchableSpinnerPanelStateChanged
+
+    private void modeChanged() {
+        if (modeChangeListener != null) {
+            modeChangeListener.modeChanged();
+        } 
+    } 
 
     @Nonnull
     public FillWithType getFillWithType() {
@@ -170,19 +216,23 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     }
 
     public long getDataLength() {
-        return sizeBaseSwitchableSpinnerPanel.getValue();
+        return lengthBaseSwitchableSpinnerPanel.getValue();
     }
 
     public void setDataLength(long dataLength) {
-        sizeBaseSwitchableSpinnerPanel.setValue(dataLength);
+        lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
 
+    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
+        this.modeChangeListener = modeChangeListener;
+    } 
+
     public void initFocus() {
-        sizeBaseSwitchableSpinnerPanel.initFocus();
+        lengthBaseSwitchableSpinnerPanel.initFocus();
     }
 
     public void acceptInput() {
-        sizeBaseSwitchableSpinnerPanel.acceptInput();
+        lengthBaseSwitchableSpinnerPanel.acceptInput();
     }
 
     @Nonnull
@@ -207,10 +257,10 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton emptyRadioButton;
     private javax.swing.JLabel fillWithLabel;
     private javax.swing.ButtonGroup fillWithbuttonGroup;
+    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
+    private javax.swing.JLabel lengthLabel;
     private javax.swing.JButton sampleDataButton;
     private javax.swing.JRadioButton sampleRadioButton;
-    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel sizeBaseSwitchableSpinnerPanel;
-    private javax.swing.JLabel sizeLabel;
     private javax.swing.JRadioButton spaceRadioButton;
     // End of variables declaration//GEN-END:variables
 
@@ -223,5 +273,10 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     public interface Controller {
 
         void sampleDataAction();
+    }
+
+    public interface ModeChangeListener {
+
+        void modeChanged();
     }
 }

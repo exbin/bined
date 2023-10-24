@@ -15,20 +15,34 @@
  */
 package org.exbin.framework.bined.blockedit.action;
 
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.exbin.bined.EditOperation;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.operation.BinaryDataOperationException;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.basic.CodeArea;
+import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.action.CodeAreaAction;
+import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
+import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
+import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataPanel;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -71,16 +85,33 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
     @Override
     public void actionPerformed(ActionEvent e) {
         final ConvertDataPanel convertDataPanel = new ConvertDataPanel();
+        ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(convertDataPanel.getResourceBundle());
         JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
+        BinedBlockEditModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedBlockEditModule.class);
+        convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         convertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
         final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), convertDataPanel.getResourceBundle());
-        frameModule.setDialogTitle(dialog, convertDataPanel.getResourceBundle());
+        WindowUtils.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
+        frameModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == DefaultControlHandler.ControlActionType.OK) {
+                Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
+                if (optionalActiveMethod.isPresent()) {
+                    Component activeComponent = convertDataPanel.getActiveComponent().get();
+                    ConvertDataMethod activeMethod = optionalActiveMethod.get();
+                    long dataPosition = ((CaretCapable) codeArea).getDataPosition();
+                    EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((ExtCodeArea) codeArea).getActiveOperation();
+                    CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea, dataPosition, activeOperation);
+
+                    try {
+                        ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
+                    } catch (BinaryDataOperationException ex) {
+                        Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
 
             dialog.close();
@@ -88,5 +119,6 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
         });
         SwingUtilities.invokeLater(convertDataPanel::initFocus);
         dialog.showCentered(codeArea);
+        convertDataPanel.detachMenu();
     }
 }

@@ -171,7 +171,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
                     .addComponent(methodLabel)
                     .addComponent(optionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(splitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addComponent(splitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -179,7 +179,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(splitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                    .addComponent(splitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(methodLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -204,7 +204,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane componentScrollPane;
     private javax.swing.JLabel methodLabel;
-    private javax.swing.JList<ConvertDataMethod> optionsList;
+    private javax.swing.JList<org.exbin.framework.bined.blockedit.api.ConvertDataMethod> optionsList;
     private javax.swing.JScrollPane optionsScrollPane;
     private javax.swing.JPanel previewPanel;
     private javax.swing.JSplitPane splitPane;

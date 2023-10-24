@@ -30,11 +30,11 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="sizeBaseSwitchableSpinnerPanel" pref="403" max="32767" attributes="0"/>
+                          <Component id="lengthBaseSwitchableSpinnerPanel" pref="403" max="32767" attributes="0"/>
                           <Component id="emptyRadioButton" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="sizeLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lengthLabel" min="-2" max="-2" attributes="0"/>
                                   <Component id="fillWithLabel" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -52,9 +52,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="sizeLabel" min="-2" max="-2" attributes="0"/>
+              <Component id="lengthLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="sizeBaseSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
+              <Component id="lengthBaseSwitchableSpinnerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="fillWithLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -71,14 +71,20 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="sizeLabel">
+    <Component class="javax.swing.JLabel" name="lengthLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="sizeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="lengthLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="sizeBaseSwitchableSpinnerPanel">
+    <Component class="org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel" name="lengthBaseSwitchableSpinnerPanel">
+      <Properties>
+        <Property name="value" type="long" value="10"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="lengthBaseSwitchableSpinnerPanelStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="fillWithLabel">
       <Properties>
@@ -97,6 +103,9 @@
           <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="emptyRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="emptyRadioButtonItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="spaceRadioButton">
       <Properties>
@@ -107,6 +116,9 @@
           <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="spaceRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="spaceRadioButtonItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="sampleRadioButton">
       <Properties>
@@ -117,6 +129,9 @@
           <ResourceString bundle="org/exbin/framework/bined/blockedit/component/gui/resources/SimpleFillDataPanel.properties" key="sampleRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="sampleRadioButtonItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="sampleDataButton">
       <Properties>

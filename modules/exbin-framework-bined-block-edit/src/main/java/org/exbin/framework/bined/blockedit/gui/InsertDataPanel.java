@@ -19,6 +19,8 @@ import java.awt.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListCellRenderer;
@@ -26,7 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
-import org.exbin.auxiliary.paged_data.ByteArrayData;
+import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.utils.LanguageUtils;
@@ -45,6 +47,8 @@ public class InsertDataPanel extends javax.swing.JPanel {
     private static final String POPUP_MENU_POSTFIX = ".insertDataPanel";
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(InsertDataPanel.class);
+
+    private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
     private Controller controller;
     private ExtCodeArea previewCodeArea = new ExtCodeArea();
@@ -71,10 +75,17 @@ public class InsertDataPanel extends javax.swing.JPanel {
         optionsList.addListSelectionListener((e) -> {
             activeMethod = optionsList.getSelectedValue();
             activeComponent = activeMethod != null ? activeMethod.getComponent() : null;
+            ByteArrayEditableData previewBinaryData = (ByteArrayEditableData) previewCodeArea.getContentData();
+            previewBinaryData.clear();
+            activeMethod.setPreviewDataTarget(activeComponent, previewBinaryData, PREVIEW_LENGTH_LIMIT);
             componentScrollPane.getViewport().setView(activeComponent);
-            activeMethod.initFocus(activeComponent);
+            try {
+                activeMethod.initFocus(activeComponent);
+            } catch (Throwable ex) {
+                Logger.getLogger(InsertDataPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
-        previewCodeArea.setContentData(new ByteArrayData());
+        previewCodeArea.setContentData(new ByteArrayEditableData());
         previewCodeArea.setEditMode(EditMode.READ_ONLY);
         previewPanel.add(previewCodeArea);
     }

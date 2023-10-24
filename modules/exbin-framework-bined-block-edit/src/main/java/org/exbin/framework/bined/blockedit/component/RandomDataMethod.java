@@ -19,6 +19,7 @@ import java.awt.Component;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.EditOperation;
@@ -72,34 +73,10 @@ public class RandomDataMethod implements InsertDataMethod {
     public CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         RandomDataPanel panel = (RandomDataPanel) component;
         long length = panel.getDataLength();
+        RandomDataPanel.AlgorithmType algorithmType = panel.getAlgorithmType();
 
         DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            RandomDataPanel.AlgorithmType algorithmType = panel.getAlgorithmType();
-            Random random = new Random();
-            for (long pos = position; pos < position + length; pos++) {
-                byte value;
-                switch (algorithmType) {
-                    case FULL_BYTES:
-                        value = (byte) random.nextInt();
-                        break;
-                    case LOWER_HALF: {
-                        value = (byte) random.nextInt(128);
-                        break;
-                    }
-                    case ALPHABET_ONLY: {
-                        value = (byte) random.nextInt(52);
-                        value += (value < 26) ? 'A' : 'a' - 26;
-                        break;
-                    }
-                    case NUMBER_DIGITS: {
-                        value = (byte) (random.nextInt(10) + '0');
-                        break;
-                    }
-                    default:
-                        throw CodeAreaUtils.getInvalidTypeException(algorithmType);
-                }
-                binaryData.setByte(pos, value);
-            }
+            generateData(binaryData, algorithmType, position, length);
         };
 
         if (editOperation == EditOperation.OVERWRITE) {
@@ -109,15 +86,56 @@ public class RandomDataMethod implements InsertDataMethod {
         }
     }
 
+    public void generateData(EditableBinaryData binaryData, RandomDataPanel.AlgorithmType algorithmType, long position, long length) throws IllegalStateException {
+        Random random = new Random();
+        for (long pos = position; pos < position + length; pos++) {
+            byte value;
+            switch (algorithmType) {
+                case FULL_BYTES:
+                    value = (byte) random.nextInt();
+                    break;
+                case LOWER_HALF: {
+                    value = (byte) random.nextInt(128);
+                    break;
+                }
+                case ALPHABET_ONLY: {
+                    value = (byte) random.nextInt(52);
+                    value += (value < 26) ? 'A' : 'a' - 26;
+                    break;
+                }
+                case NUMBER_DIGITS: {
+                    value = (byte) (random.nextInt(10) + '0');
+                    break;
+                }
+                default:
+                    throw CodeAreaUtils.getInvalidTypeException(algorithmType);
+            }
+            binaryData.setByte(pos, value);
+        }
+    }
+
     @Override
     public void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit) {
         this.previewBinaryData = binaryData;
         this.previewLengthLimit = lengthLimit;
-        fillPreviewData(component);
-//        component.addPreviewChangeListener();
+        RandomDataPanel panel = (RandomDataPanel) component;
+        panel.setModeChangeListener(() -> {
+            fillPreviewData(panel);
+        });
+        fillPreviewData(panel);
     }
-    
-    private void fillPreviewData(Component component) {
-        
-    } 
+
+    private void fillPreviewData(RandomDataPanel panel) {
+        SwingUtilities.invokeLater(() -> {
+            RandomDataPanel.AlgorithmType algorithmType = panel.getAlgorithmType();
+            long dataLength = panel.getDataLength();
+            if (dataLength > previewLengthLimit) {
+                dataLength = previewLengthLimit;
+            }
+
+            previewBinaryData.clear();
+            previewBinaryData.insertUninitialized(0, dataLength);
+            generateData(previewBinaryData, algorithmType, 0, dataLength);
+        });
+    }
 }

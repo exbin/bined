@@ -32,6 +32,8 @@ public class RandomDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(RandomDataPanel.class);
 
+    private ModeChangeListener modeChangeListener = null;
+
     public RandomDataPanel() {
         initComponents();
     }
@@ -51,33 +53,55 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        sizeLabel = new javax.swing.JLabel();
-        sizeBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
+        lengthLabel = new javax.swing.JLabel();
+        lengthBaseSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
         randomDataLabel = new javax.swing.JLabel();
         fullBytesRadioButton = new javax.swing.JRadioButton();
         lowerHalfRadioButton = new javax.swing.JRadioButton();
         alphabetOnlyRadioButton = new javax.swing.JRadioButton();
         numberDigitsRadioButton = new javax.swing.JRadioButton();
 
-        sizeLabel.setText(resourceBundle.getString("sizeLabel.text")); // NOI18N
+        lengthLabel.setText(resourceBundle.getString("lengthLabel.text")); // NOI18N
+
+        lengthBaseSwitchableSpinnerPanel.setValue(10L);
+        lengthBaseSwitchableSpinnerPanel.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                lengthBaseSwitchableSpinnerPanelStateChanged(evt);
+            }
+        });
 
         randomDataLabel.setText(resourceBundle.getString("randomDataLabel.text")); // NOI18N
 
         buttonGroup.add(fullBytesRadioButton);
         fullBytesRadioButton.setSelected(true);
         fullBytesRadioButton.setText(resourceBundle.getString("fullBytesRadioButton.text")); // NOI18N
+        fullBytesRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                fullBytesRadioButtonItemStateChanged(evt);
+            }
+        });
 
         buttonGroup.add(lowerHalfRadioButton);
         lowerHalfRadioButton.setText(resourceBundle.getString("lowerHalfRadioButton.text")); // NOI18N
+        lowerHalfRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                lowerHalfRadioButtonItemStateChanged(evt);
+            }
+        });
 
         buttonGroup.add(alphabetOnlyRadioButton);
         alphabetOnlyRadioButton.setText(resourceBundle.getString("alphabetOnlyRadioButton.text")); // NOI18N
+        alphabetOnlyRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                alphabetOnlyRadioButtonItemStateChanged(evt);
+            }
+        });
 
         buttonGroup.add(numberDigitsRadioButton);
         numberDigitsRadioButton.setText(resourceBundle.getString("numberDigitsRadioButton.text")); // NOI18N
-        numberDigitsRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                numberDigitsRadioButtonActionPerformed(evt);
+        numberDigitsRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                numberDigitsRadioButtonItemStateChanged(evt);
             }
         });
 
@@ -88,12 +112,12 @@ public class RandomDataPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+                    .addComponent(lengthBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
                     .addComponent(lowerHalfRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(fullBytesRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sizeLabel)
+                            .addComponent(lengthLabel)
                             .addComponent(randomDataLabel))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(alphabetOnlyRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -104,9 +128,9 @@ public class RandomDataPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(sizeLabel)
+                .addComponent(lengthLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sizeBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lengthBaseSwitchableSpinnerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(randomDataLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -121,9 +145,31 @@ public class RandomDataPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void numberDigitsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberDigitsRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_numberDigitsRadioButtonActionPerformed
+    private void lengthBaseSwitchableSpinnerPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lengthBaseSwitchableSpinnerPanelStateChanged
+        modeChanged();
+    }//GEN-LAST:event_lengthBaseSwitchableSpinnerPanelStateChanged
+
+    private void fullBytesRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fullBytesRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_fullBytesRadioButtonItemStateChanged
+
+    private void lowerHalfRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_lowerHalfRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_lowerHalfRadioButtonItemStateChanged
+
+    private void alphabetOnlyRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_alphabetOnlyRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_alphabetOnlyRadioButtonItemStateChanged
+
+    private void numberDigitsRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_numberDigitsRadioButtonItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_numberDigitsRadioButtonItemStateChanged
+
+    private void modeChanged() {
+        if (modeChangeListener != null) {
+            modeChangeListener.modeChanged();
+        } 
+    } 
 
     @Nonnull
     public AlgorithmType getAlgorithmType() {
@@ -162,19 +208,23 @@ public class RandomDataPanel extends javax.swing.JPanel {
     }
 
     public long getDataLength() {
-        return sizeBaseSwitchableSpinnerPanel.getValue();
+        return lengthBaseSwitchableSpinnerPanel.getValue();
     }
 
     public void setDataLength(long dataLength) {
-        sizeBaseSwitchableSpinnerPanel.setValue(dataLength);
+        lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
+    
+    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
+        this.modeChangeListener = modeChangeListener;
+    } 
 
     public void initFocus() {
-        sizeBaseSwitchableSpinnerPanel.initFocus();
+        lengthBaseSwitchableSpinnerPanel.initFocus();
     }
 
     public void acceptInput() {
-        sizeBaseSwitchableSpinnerPanel.acceptInput();
+        lengthBaseSwitchableSpinnerPanel.acceptInput();
     }
 
     /**
@@ -190,11 +240,11 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton alphabetOnlyRadioButton;
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JRadioButton fullBytesRadioButton;
+    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
+    private javax.swing.JLabel lengthLabel;
     private javax.swing.JRadioButton lowerHalfRadioButton;
     private javax.swing.JRadioButton numberDigitsRadioButton;
     private javax.swing.JLabel randomDataLabel;
-    private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel sizeBaseSwitchableSpinnerPanel;
-    private javax.swing.JLabel sizeLabel;
     // End of variables declaration//GEN-END:variables
 
     public enum AlgorithmType {
@@ -202,5 +252,10 @@ public class RandomDataPanel extends javax.swing.JPanel {
         LOWER_HALF,
         ALPHABET_ONLY,
         NUMBER_DIGITS
+    }
+
+    public interface ModeChangeListener {
+
+        void modeChanged();
     }
 }

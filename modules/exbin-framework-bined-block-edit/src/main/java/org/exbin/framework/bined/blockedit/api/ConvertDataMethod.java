@@ -18,8 +18,11 @@ package org.exbin.framework.bined.blockedit.api;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.EditOperation;
+import org.exbin.bined.operation.swing.command.CodeAreaCommand;
+import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Interface for convert data component.
@@ -38,20 +41,24 @@ public interface ConvertDataMethod {
     void initFocus(Component component);
 
     /**
-     * Performs insertion of data.
+     * Creates command operation for given component and code area.
      *
-     * @param binaryData target binary data
-     * @param position target position
-     * @param length length of selected area for conversion
-     * @param editOperation insertion operation mode
+     * @param component visual component
+     * @param codeArea code area
+     * @param position position in code area
+     * @param editOperation insert operation type
+     * @return
      */
-    void performConvert(EditableBinaryData binaryData, long position, long length, EditOperation editOperation);
+    @Nonnull
+    CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation);
 
     /**
      * Sets editable data target for preview.
      *
-     * @param binaryData target editable data
+     * @param component visual component
+     * @param sourceBinaryData source binary data
+     * @param targetBinaryData target editable data
      * @param lengthLimit limit to length of set data
      */
-    void setPreviewDataTarget(EditableBinaryData binaryData, long lengthLimit);
+    void setPreviewDataTarget(Component component, BinaryData sourceBinaryData, EditableBinaryData targetBinaryData, long lengthLimit);
 }

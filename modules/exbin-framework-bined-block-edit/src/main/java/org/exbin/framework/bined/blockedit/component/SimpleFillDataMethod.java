@@ -20,6 +20,7 @@ import java.awt.Dialog;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
@@ -75,7 +76,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         component.setController(() -> {
             BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
             final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
-            final DialogWrapper dialog = null; // TODO WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
+//            final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
             SearchCondition searchCondition = new SearchCondition();
             EditableBinaryData conditionData = new ByteArrayEditableData();
             EditableBinaryData sampleBinaryData = component.getSampleBinaryData();
@@ -86,7 +87,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             multilinePanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
             DefaultControlPanel controlPanel = new DefaultControlPanel();
             JPanel dialogPanel1 = WindowUtils.createDialogPanel(multilinePanel, controlPanel);
-            final DialogWrapper multilineDialog = frameModule.createDialog(dialog.getWindow(), Dialog.ModalityType.APPLICATION_MODAL, dialogPanel1);
+            final DialogWrapper multilineDialog = frameModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, dialogPanel1);
             frameModule.setDialogTitle(multilineDialog, multilinePanel.getResourceBundle());
             controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                 if (actionType == DefaultControlHandler.ControlActionType.OK) {
@@ -104,8 +105,8 @@ public class SimpleFillDataMethod implements InsertDataMethod {
                 multilineDialog.close();
                 multilineDialog.dispose();
             });
-            multilineDialog.showCentered(dialog.getWindow());
-//                    multilinePanel.detachMenu();
+            multilineDialog.showCentered(component);
+            multilinePanel.detachMenu();
         });
         return component;
     }
@@ -123,42 +124,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         SimpleFillDataPanel.FillWithType fillWithType = panel.getFillWithType();
 
         DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            switch (fillWithType) {
-                case EMPTY: {
-                    for (long pos = position; pos < position + length; pos++) {
-                        binaryData.setByte(pos, (byte) 0x0);
-                    }
-                    break;
-                }
-                case SPACE: {
-                    for (long pos = position; pos < position + length; pos++) {
-                        binaryData.setByte(pos, (byte) 0x20);
-                    }
-                    break;
-                }
-                case SAMPLE: {
-                    EditableBinaryData data = panel.getSampleBinaryData();
-                    if (data.isEmpty()) {
-                        for (long pos = position; pos < position + length; pos++) {
-                            binaryData.setByte(pos, (byte) 0xFF);
-                        }
-                    } else {
-                        long dataSizeLimit = data.getDataSize();
-                        long pos = position;
-                        long remain = length;
-                        while (remain > 0) {
-                            long seg = Math.min(remain, dataSizeLimit);
-                            binaryData.replace(pos, data, 0, seg);
-                            pos += seg;
-                            remain -= seg;
-                        }
-                    }
-
-                    break;
-                }
-                default:
-                    throw CodeAreaUtils.getInvalidTypeException(fillWithType);
-            }
+            generateData(binaryData, fillWithType, position, length, panel.getSampleBinaryData());
         };
 
         if (editOperation == EditOperation.OVERWRITE) {
@@ -168,14 +134,67 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         }
     }
 
+    public void generateData(EditableBinaryData binaryData, SimpleFillDataPanel.FillWithType fillWithType, long position, long length, EditableBinaryData sampleBinaryData) throws IllegalStateException {
+        switch (fillWithType) {
+            case EMPTY: {
+                for (long pos = position; pos < position + length; pos++) {
+                    binaryData.setByte(pos, (byte) 0x0);
+                }
+                break;
+            }
+            case SPACE: {
+                for (long pos = position; pos < position + length; pos++) {
+                    binaryData.setByte(pos, (byte) 0x20);
+                }
+                break;
+            }
+            case SAMPLE: {
+                if (sampleBinaryData.isEmpty()) {
+                    for (long pos = position; pos < position + length; pos++) {
+                        binaryData.setByte(pos, (byte) 0xFF);
+                    }
+                } else {
+                    long dataSizeLimit = sampleBinaryData.getDataSize();
+                    long pos = position;
+                    long remain = length;
+                    while (remain > 0) {
+                        long seg = Math.min(remain, dataSizeLimit);
+                        binaryData.replace(pos, sampleBinaryData, 0, seg);
+                        pos += seg;
+                        remain -= seg;
+                    }
+                }
+
+                break;
+            }
+            default:
+                throw CodeAreaUtils.getInvalidTypeException(fillWithType);
+        }
+    }
+
     @Override
     public void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit) {
         this.previewBinaryData = binaryData;
         this.previewLengthLimit = lengthLimit;
-        fillPreviewData(component);
+        SimpleFillDataPanel panel = (SimpleFillDataPanel) component;
+        panel.setModeChangeListener(() -> {
+            fillPreviewData(panel);
+        });
+        fillPreviewData(panel);
     }
-    
-    private void fillPreviewData(Component component) {
-        
-    } 
+
+    private void fillPreviewData(SimpleFillDataPanel panel) {
+        SwingUtilities.invokeLater(() -> {
+            SimpleFillDataPanel.FillWithType fillWithType = panel.getFillWithType();
+            long dataLength = panel.getDataLength();
+            if (dataLength > previewLengthLimit) {
+                dataLength = previewLengthLimit;
+            }
+            EditableBinaryData sampleBinaryData = panel.getSampleBinaryData();
+
+            previewBinaryData.clear();
+            previewBinaryData.insertUninitialized(0, dataLength);
+            generateData(previewBinaryData, fillWithType, 0, dataLength, sampleBinaryData);
+        });
+    }
 }

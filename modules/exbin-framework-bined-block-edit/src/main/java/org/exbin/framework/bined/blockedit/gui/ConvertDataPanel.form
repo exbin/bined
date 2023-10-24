@@ -23,7 +23,7 @@
                   <Component id="optionsScrollPane" min="-2" pref="276" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="splitPane" pref="495" max="32767" attributes="0"/>
+              <Component id="splitPane" pref="763" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -33,7 +33,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="splitPane" pref="522" max="32767" attributes="0"/>
+                  <Component id="splitPane" pref="619" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="methodLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>

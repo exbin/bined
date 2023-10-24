@@ -74,51 +74,6 @@ public class InsertDataOperation extends CodeAreaOperation {
 
         contentData.insertUninitialized(position, length);
         dataOperationDataProvider.provideData(contentData);
-        /*
-        switch (fillWithType) {
-            case EMPTY: {
-                contentData.insert(position, length);
-                break;
-            }
-            case SPACE: {
-                contentData.insertUninitialized(position, length);
-                for (long pos = position; pos < position + length; pos++) {
-                    contentData.setByte(pos, (byte) 0x20);
-                }
-                break;
-            }
-            case RANDOM: {
-                contentData.insertUninitialized(position, length);
-                Random random = new Random();
-                for (long pos = position; pos < position + length; pos++) {
-                    contentData.setByte(pos, (byte) random.nextInt());
-                }
-                break;
-            }
-            case SAMPLE: {
-                contentData.insertUninitialized(position, length);
-
-                if (data == null || data.isEmpty()) {
-                    for (long pos = position; pos < position + length; pos++) {
-                        contentData.setByte(pos, (byte) 0xFF);
-                    }
-                } else {
-                    long dataSize = data.getDataSize();
-                    long pos = position;
-                    long remain = length;
-                    while (remain > 0) {
-                        long seg = Math.min(remain, dataSize);
-                        contentData.replace(pos, data, 0, seg);
-                        pos += seg;
-                        remain -= seg;
-                    }
-                }
-
-                break;
-            }
-            default:
-                throw CodeAreaUtils.getInvalidTypeException(fillWithType);
-        } */
 
         if (withUndo) {
             undoOperation = new RemoveDataOperation(codeArea, position, 0, length);

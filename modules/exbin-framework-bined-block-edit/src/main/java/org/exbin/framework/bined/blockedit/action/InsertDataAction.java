@@ -41,7 +41,6 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.blockedit.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
 import org.exbin.framework.utils.handler.DefaultControlHandler;
 import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
@@ -94,7 +93,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         insertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
+        final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         WindowUtils.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
         frameModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {

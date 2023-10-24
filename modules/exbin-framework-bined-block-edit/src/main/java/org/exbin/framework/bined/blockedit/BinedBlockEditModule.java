@@ -47,6 +47,7 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
 import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
+import org.exbin.framework.bined.blockedit.component.ComputeHashDataMethod;
 
 /**
  * Binary data editor block editation operations module.
@@ -75,12 +76,16 @@ public class BinedBlockEditModule implements XBApplicationModule {
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
 
-        SimpleFillDataMethod simpleFillDataComponent = new SimpleFillDataMethod();
-        simpleFillDataComponent.setApplication(this.application);
-        addInsertDataComponent(simpleFillDataComponent);
-        RandomDataMethod randomDataComponent = new RandomDataMethod();
-        randomDataComponent.setApplication(this.application);
-        addInsertDataComponent(randomDataComponent);
+        SimpleFillDataMethod simpleFillDataMethod = new SimpleFillDataMethod();
+        simpleFillDataMethod.setApplication(this.application);
+        addInsertDataComponent(simpleFillDataMethod);
+        RandomDataMethod randomDataMethod = new RandomDataMethod();
+        randomDataMethod.setApplication(this.application);
+        addInsertDataComponent(randomDataMethod);
+        
+        ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
+        computeHashDataMethod.setApplication(this.application);
+        addConvertDataComponent(computeHashDataMethod);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
