@@ -94,7 +94,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
                     SearchCondition condition = multilinePanel.getCondition();
                     sampleBinaryData.clear();
                     sampleBinaryData.insert(0, condition.getBinaryData());
-                    component.setFillWith(SimpleFillDataPanel.FillWithType.SAMPLE);
+                    component.setFillWith(FillWithType.SAMPLE);
                     long dataLength = component.getDataLength();
                     if (dataLength < sampleBinaryData.getDataSize()) {
                         component.setDataLength(sampleBinaryData.getDataSize());
@@ -121,7 +121,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     public CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         SimpleFillDataPanel panel = (SimpleFillDataPanel) component;
         long length = panel.getDataLength();
-        SimpleFillDataPanel.FillWithType fillWithType = panel.getFillWithType();
+        FillWithType fillWithType = panel.getFillWithType();
 
         DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
             generateData(binaryData, fillWithType, position, length, panel.getSampleBinaryData());
@@ -134,7 +134,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         }
     }
 
-    public void generateData(EditableBinaryData binaryData, SimpleFillDataPanel.FillWithType fillWithType, long position, long length, EditableBinaryData sampleBinaryData) throws IllegalStateException {
+    public void generateData(EditableBinaryData binaryData, FillWithType fillWithType, long position, long length, EditableBinaryData sampleBinaryData) throws IllegalStateException {
         switch (fillWithType) {
             case EMPTY: {
                 for (long pos = position; pos < position + length; pos++) {
@@ -185,7 +185,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
 
     private void fillPreviewData(SimpleFillDataPanel panel) {
         SwingUtilities.invokeLater(() -> {
-            SimpleFillDataPanel.FillWithType fillWithType = panel.getFillWithType();
+            FillWithType fillWithType = panel.getFillWithType();
             long dataLength = panel.getDataLength();
             if (dataLength > previewLengthLimit) {
                 dataLength = previewLengthLimit;
@@ -196,5 +196,11 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, fillWithType, 0, dataLength, sampleBinaryData);
         });
+    }
+
+    public enum FillWithType {
+        EMPTY,
+        SPACE,
+        SAMPLE
     }
 }

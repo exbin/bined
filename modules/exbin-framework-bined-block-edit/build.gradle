@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-core')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-swing')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-extended')

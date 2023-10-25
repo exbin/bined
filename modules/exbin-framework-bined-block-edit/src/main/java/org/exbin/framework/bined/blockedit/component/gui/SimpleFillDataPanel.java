@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
+import org.exbin.framework.bined.blockedit.component.SimpleFillDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -40,7 +41,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     public SimpleFillDataPanel() {
         initComponents();
     }
-    
+
     @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
@@ -182,21 +183,21 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private void modeChanged() {
         if (modeChangeListener != null) {
             modeChangeListener.modeChanged();
-        } 
-    } 
-
-    @Nonnull
-    public FillWithType getFillWithType() {
-        if (sampleRadioButton.isSelected()) {
-            return FillWithType.SAMPLE;
-        } else if (spaceRadioButton.isSelected()) {
-            return FillWithType.SPACE;
         }
-
-        return FillWithType.EMPTY;
     }
 
-    public void setFillWith(FillWithType fillWithType) {
+    @Nonnull
+    public SimpleFillDataMethod.FillWithType getFillWithType() {
+        if (sampleRadioButton.isSelected()) {
+            return SimpleFillDataMethod.FillWithType.SAMPLE;
+        } else if (spaceRadioButton.isSelected()) {
+            return SimpleFillDataMethod.FillWithType.SPACE;
+        }
+
+        return SimpleFillDataMethod.FillWithType.EMPTY;
+    }
+
+    public void setFillWith(SimpleFillDataMethod.FillWithType fillWithType) {
         switch (fillWithType) {
             case EMPTY: {
                 emptyRadioButton.setSelected(true);
@@ -225,7 +226,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
 
     public void setModeChangeListener(ModeChangeListener modeChangeListener) {
         this.modeChangeListener = modeChangeListener;
-    } 
+    }
 
     public void initFocus() {
         lengthBaseSwitchableSpinnerPanel.initFocus();
@@ -263,12 +264,6 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton sampleRadioButton;
     private javax.swing.JRadioButton spaceRadioButton;
     // End of variables declaration//GEN-END:variables
-
-    public enum FillWithType {
-        EMPTY,
-        SPACE,
-        SAMPLE
-    }
 
     public interface Controller {
 

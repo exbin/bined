@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaUtils;
+import org.exbin.framework.bined.blockedit.component.RandomDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -168,23 +169,23 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private void modeChanged() {
         if (modeChangeListener != null) {
             modeChangeListener.modeChanged();
-        } 
-    } 
-
-    @Nonnull
-    public AlgorithmType getAlgorithmType() {
-        if (lowerHalfRadioButton.isSelected()) {
-            return AlgorithmType.LOWER_HALF;
-        } else if (alphabetOnlyRadioButton.isSelected()) {
-            return AlgorithmType.ALPHABET_ONLY;
-        } else if (numberDigitsRadioButton.isSelected()) {
-            return AlgorithmType.NUMBER_DIGITS;
         }
-
-        return AlgorithmType.FULL_BYTES;
     }
 
-    public void setFillWith(AlgorithmType algorithm) {
+    @Nonnull
+    public RandomDataMethod.AlgorithmType getAlgorithmType() {
+        if (lowerHalfRadioButton.isSelected()) {
+            return RandomDataMethod.AlgorithmType.LOWER_HALF;
+        } else if (alphabetOnlyRadioButton.isSelected()) {
+            return RandomDataMethod.AlgorithmType.ALPHABET_ONLY;
+        } else if (numberDigitsRadioButton.isSelected()) {
+            return RandomDataMethod.AlgorithmType.NUMBER_DIGITS;
+        }
+
+        return RandomDataMethod.AlgorithmType.FULL_BYTES;
+    }
+
+    public void setFillWith(RandomDataMethod.AlgorithmType algorithm) {
         switch (algorithm) {
             case FULL_BYTES: {
                 fullBytesRadioButton.setSelected(true);
@@ -214,10 +215,10 @@ public class RandomDataPanel extends javax.swing.JPanel {
     public void setDataLength(long dataLength) {
         lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
-    
+
     public void setModeChangeListener(ModeChangeListener modeChangeListener) {
         this.modeChangeListener = modeChangeListener;
-    } 
+    }
 
     public void initFocus() {
         lengthBaseSwitchableSpinnerPanel.initFocus();
@@ -246,13 +247,6 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton numberDigitsRadioButton;
     private javax.swing.JLabel randomDataLabel;
     // End of variables declaration//GEN-END:variables
-
-    public enum AlgorithmType {
-        FULL_BYTES,
-        LOWER_HALF,
-        ALPHABET_ONLY,
-        NUMBER_DIGITS
-    }
 
     public interface ModeChangeListener {
 

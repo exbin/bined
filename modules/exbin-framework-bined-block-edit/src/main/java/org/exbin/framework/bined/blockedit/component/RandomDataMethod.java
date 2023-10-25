@@ -73,7 +73,7 @@ public class RandomDataMethod implements InsertDataMethod {
     public CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         RandomDataPanel panel = (RandomDataPanel) component;
         long length = panel.getDataLength();
-        RandomDataPanel.AlgorithmType algorithmType = panel.getAlgorithmType();
+        AlgorithmType algorithmType = panel.getAlgorithmType();
 
         DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
             generateData(binaryData, algorithmType, position, length);
@@ -86,7 +86,7 @@ public class RandomDataMethod implements InsertDataMethod {
         }
     }
 
-    public void generateData(EditableBinaryData binaryData, RandomDataPanel.AlgorithmType algorithmType, long position, long length) throws IllegalStateException {
+    public void generateData(EditableBinaryData binaryData, AlgorithmType algorithmType, long position, long length) throws IllegalStateException {
         Random random = new Random();
         for (long pos = position; pos < position + length; pos++) {
             byte value;
@@ -127,7 +127,7 @@ public class RandomDataMethod implements InsertDataMethod {
 
     private void fillPreviewData(RandomDataPanel panel) {
         SwingUtilities.invokeLater(() -> {
-            RandomDataPanel.AlgorithmType algorithmType = panel.getAlgorithmType();
+            AlgorithmType algorithmType = panel.getAlgorithmType();
             long dataLength = panel.getDataLength();
             if (dataLength > previewLengthLimit) {
                 dataLength = previewLengthLimit;
@@ -137,5 +137,12 @@ public class RandomDataMethod implements InsertDataMethod {
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, algorithmType, 0, dataLength);
         });
+    }
+
+    public enum AlgorithmType {
+        FULL_BYTES,
+        LOWER_HALF,
+        ALPHABET_ONLY,
+        NUMBER_DIGITS
     }
 }

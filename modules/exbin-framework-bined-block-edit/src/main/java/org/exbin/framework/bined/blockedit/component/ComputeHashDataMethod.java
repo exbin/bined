@@ -16,11 +16,37 @@
 package org.exbin.framework.bined.blockedit.component;
 
 import java.awt.Component;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.SwingUtilities;
+import org.bouncycastle.crypto.Digest;
+import org.bouncycastle.crypto.digests.GOST3411Digest;
+import org.bouncycastle.crypto.digests.KeccakDigest;
+import org.bouncycastle.crypto.digests.MD2Digest;
+import org.bouncycastle.crypto.digests.MD4Digest;
+import org.bouncycastle.crypto.digests.MD5Digest;
+import org.bouncycastle.crypto.digests.RIPEMD128Digest;
+import org.bouncycastle.crypto.digests.RIPEMD160Digest;
+import org.bouncycastle.crypto.digests.RIPEMD256Digest;
+import org.bouncycastle.crypto.digests.RIPEMD320Digest;
+import org.bouncycastle.crypto.digests.SHA1Digest;
+import org.bouncycastle.crypto.digests.SHA224Digest;
+import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.digests.SHA384Digest;
+import org.bouncycastle.crypto.digests.SHA3Digest;
+import org.bouncycastle.crypto.digests.SHA512Digest;
+import org.bouncycastle.crypto.digests.SHAKEDigest;
+import org.bouncycastle.crypto.digests.SM3Digest;
+import org.bouncycastle.crypto.digests.TigerDigest;
+import org.bouncycastle.crypto.digests.WhirlpoolDigest;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
+import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -33,7 +59,7 @@ import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
 import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
 
 /**
- * Compute CRC data component.
+ * Compute Hash digest data component.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -45,6 +71,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     private XBApplication application;
     private EditableBinaryData previewBinaryData;
     private long previewLengthLimit = 0;
+    private HashType lastHashType = null;
 
     public void setApplication(XBApplication application) {
         this.application = application;
@@ -60,6 +87,13 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     @Override
     public Component getComponent() {
         ComputeHashDataPanel component = new ComputeHashDataPanel();
+        component.setHashTypeChangeListener(() -> {
+            HashType hashType = component.getHashType().orElse(null);
+            if (lastHashType != hashType) {
+                lastHashType = hashType;
+                component.setBitSizes(HashType.BIT_SIZES.get(hashType));
+            }
+        });
         return component;
     }
 
@@ -72,10 +106,11 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
-        ComputeHashDataPanel.HashType hashType = panel.getHashType();
+        Optional<HashType> hashType = panel.getHashType();
+        int bitSize = panel.getBitSize();
 
         DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            generateData(binaryData, hashType, position);
+            convertData(binaryData, hashType.get(), bitSize, position);
         };
 
         // TODO
@@ -87,42 +122,63 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         }
     }
 
-    public void generateData(EditableBinaryData binaryData, ComputeHashDataPanel.HashType hashType, long position) throws IllegalStateException {
-/*        switch (hashType) {
-            case EMPTY: {
-                for (long pos = position; pos < position + length; pos++) {
-                    binaryData.setByte(pos, (byte) 0x0);
-                }
-                break;
-            }
-            case SPACE: {
-                for (long pos = position; pos < position + length; pos++) {
-                    binaryData.setByte(pos, (byte) 0x20);
-                }
-                break;
-            }
-            case SAMPLE: {
-                if (sampleBinaryData.isEmpty()) {
-                    for (long pos = position; pos < position + length; pos++) {
-                        binaryData.setByte(pos, (byte) 0xFF);
-                    }
-                } else {
-                    long dataSizeLimit = sampleBinaryData.getDataSize();
-                    long pos = position;
-                    long remain = length;
-                    while (remain > 0) {
-                        long seg = Math.min(remain, dataSizeLimit);
-                        binaryData.replace(pos, sampleBinaryData, 0, seg);
-                        pos += seg;
-                        remain -= seg;
-                    }
-                }
+    public void convertData(EditableBinaryData binaryData, HashType hashType, int bitSize, long position) throws IllegalStateException {
+        Digest digest = getDigest(hashType, bitSize);
+        digest.reset();
+        // TODO digest.update();
+        int digestSize = (digest.getDigestSize() + 7) << 3;
+        byte[] output = new byte[digestSize];
+        digest.doFinal(output, 0);
+    }
 
-                break;
+    @Nonnull
+    private Digest getDigest(HashType hashType, int bitSize) {
+        switch (hashType) {
+            case GOST3411:
+                return new GOST3411Digest();
+            case KECCAK:
+                return new KeccakDigest(bitSize);
+            case MD2:
+                return new MD2Digest();
+            case MD4:
+                return new MD4Digest();
+            case MD5:
+                return new MD5Digest();
+            case RIPEMD: {
+                switch (bitSize) {
+                    case 128:
+                        return new RIPEMD128Digest();
+                    case 160:
+                        return new RIPEMD160Digest();
+                    case 256:
+                        return new RIPEMD256Digest();
+                    case 320:
+                        return new RIPEMD320Digest();
+                }
             }
+            case SHA1:
+                return new SHA1Digest();
+            case SHA224:
+                return new SHA224Digest();
+            case SHA256:
+                return new SHA256Digest();
+            case SHA384:
+                return new SHA384Digest();
+            case SHA512:
+                return new SHA512Digest();
+            case SHA3:
+                return new SHA3Digest();
+            case SHAKE:
+                return new SHAKEDigest();
+            case SM3:
+                return new SM3Digest();
+            case TIGER:
+                return new TigerDigest();
+            case WHIRLPOOL:
+                return new WhirlpoolDigest();
             default:
                 throw CodeAreaUtils.getInvalidTypeException(hashType);
-        } */
+        }
     }
 
     @Override
@@ -138,17 +194,47 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
 
     private void fillPreviewData(ComputeHashDataPanel panel) {
         SwingUtilities.invokeLater(() -> {
-            ComputeHashDataPanel.HashType hashType = panel.getHashType();
-            // TODO
+            Optional<HashType> hashType = panel.getHashType();
+            int bitSize = panel.getBitSize();
+
 //            long dataLength = panel.getDataLength();
 //            if (dataLength > previewLengthLimit) {
 //                dataLength = previewLengthLimit;
 //            }
 //            EditableBinaryData sampleBinaryData = panel.getSampleBinaryData();
-
             previewBinaryData.clear();
+            if (hashType.isPresent()) { 
 //            previewBinaryData.insertUninitialized(0, dataLength);
-//            generateData(previewBinaryData, fillWithType, 0, dataLength, sampleBinaryData);
+                convertData(previewBinaryData, hashType.get(), bitSize, 0);
+            }
         });
+    }
+
+    public enum HashType {
+        KECCAK,
+        MD2,
+        MD4,
+        MD5,
+        RIPEMD,
+        SHA1,
+        SHA224,
+        SHA256,
+        SHA384,
+        SHA512,
+        SHA3,
+        SHAKE,
+        SM3,
+        TIGER,
+        GOST3411,
+        WHIRLPOOL;
+
+        public static Map<HashType, List<Integer>> BIT_SIZES = new HashMap<HashType, List<Integer>>() {
+            {
+                put(KECCAK, Arrays.asList(224, 256, 288, 384, 512));
+                put(RIPEMD, Arrays.asList(128, 160, 256, 320));
+                put(SHA3, Arrays.asList(224, 256, 384, 512));
+                put(SHAKE, Arrays.asList(128, 256));
+            }
+        };
     }
 }

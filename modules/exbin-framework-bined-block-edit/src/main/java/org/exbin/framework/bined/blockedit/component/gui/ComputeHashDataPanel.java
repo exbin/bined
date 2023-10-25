@@ -15,14 +15,15 @@
  */
 package org.exbin.framework.bined.blockedit.component.gui;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import org.exbin.framework.bined.blockedit.component.ComputeHashDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -38,6 +39,7 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
 
     private Controller controller;
     private ModeChangeListener modeChangeListener = null;
+    private HashTypeChangeListener hashTypeChangeListener = null;
 
     public ComputeHashDataPanel() {
         initComponents();
@@ -45,11 +47,12 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     }
 
     private void init() {
-        DefaultComboBoxModel<String> hashTypesModel = new DefaultComboBoxModel<>();
-        for (HashType hashType : HashType.values()) {
+        DefaultListModel<String> hashTypesModel = new DefaultListModel<>();
+        for (ComputeHashDataMethod.HashType hashType : ComputeHashDataMethod.HashType.values()) {
             hashTypesModel.addElement(hashType.name());
         }
-        hashTypeComboBox.setModel(hashTypesModel);
+        hashTypeList.setModel(hashTypesModel);
+        hashBitSizeComboBox.setModel(new DefaultComboBoxModel<>());
     }
 
     @Nonnull
@@ -70,26 +73,41 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fillWithbuttonGroup = new javax.swing.ButtonGroup();
         hashTypeLabel = new javax.swing.JLabel();
-        hashTypeComboBox = new javax.swing.JComboBox<>();
+        hashTypeScrollPane = new javax.swing.JScrollPane();
+        hashTypeList = new javax.swing.JList<>();
         hashBitSizeLabel = new javax.swing.JLabel();
         hashBitSizeComboBox = new javax.swing.JComboBox<>();
 
         hashTypeLabel.setText(resourceBundle.getString("hashTypeLabel.text")); // NOI18N
 
+        hashTypeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        hashTypeList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                hashTypeListValueChanged(evt);
+            }
+        });
+        hashTypeScrollPane.setViewportView(hashTypeList);
+
         hashBitSizeLabel.setText(resourceBundle.getString("hashBitSizeLabel.text")); // NOI18N
+
+        hashBitSizeComboBox.setEnabled(false);
+        hashBitSizeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                hashBitSizeComboBoxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(hashTypeComboBox, 0, 405, Short.MAX_VALUE)
-                    .addComponent(hashBitSizeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(hashTypeScrollPane)
+                    .addComponent(hashBitSizeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 405, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(hashTypeLabel)
                             .addComponent(hashBitSizeLabel))
@@ -102,14 +120,23 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(hashTypeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hashTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hashTypeScrollPane)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hashBitSizeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hashBitSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void hashTypeListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_hashTypeListValueChanged
+        modeChanged();
+        hashTypeChanged();
+    }//GEN-LAST:event_hashTypeListValueChanged
+
+    private void hashBitSizeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hashBitSizeComboBoxItemStateChanged
+        modeChanged();
+    }//GEN-LAST:event_hashBitSizeComboBoxItemStateChanged
 
     private void modeChanged() {
         if (modeChangeListener != null) {
@@ -117,26 +144,54 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
-    public HashType getHashType() {
-        return HashType.values()[hashTypeComboBox.getSelectedIndex()];
+    private void hashTypeChanged() {
+        if (hashTypeChangeListener != null) {
+            hashTypeChangeListener.hashTypeChanged();
+        }
     }
 
-    public void setHashType(HashType hashType) {
-        hashTypeComboBox.setSelectedIndex(hashType.ordinal());
+    @Nonnull
+    public Optional<ComputeHashDataMethod.HashType> getHashType() {
+        int selectedIndex = hashTypeList.getSelectedIndex();
+        return selectedIndex >= 0 ? Optional.of(ComputeHashDataMethod.HashType.values()[selectedIndex]) : Optional.empty();
+    }
+
+    public void setHashType(ComputeHashDataMethod.HashType hashType) {
+        hashTypeList.setSelectedIndex(hashType.ordinal());
     }
 
     public int getBitSize() {
-        // TODO
+        int selectedIndex = hashBitSizeComboBox.getSelectedIndex();
+        if (selectedIndex >= 0) {
+            return (Integer) hashBitSizeComboBox.getSelectedItem();
+        }
         return 0;
+    }
+
+    public void setBitSizes(@Nullable List<Integer> bitSizes) {
+        DefaultComboBoxModel<Integer> bitSizeModel = (DefaultComboBoxModel<Integer>) hashBitSizeComboBox.getModel();
+        bitSizeModel.removeAllElements();
+
+        if (bitSizes != null && !bitSizes.isEmpty()) {
+            for (Integer bitSize : bitSizes) {
+                bitSizeModel.addElement(bitSize);
+            }
+            hashBitSizeComboBox.setEnabled(true);
+        } else {
+            hashBitSizeComboBox.setEnabled(false);
+        }
     }
 
     public void setModeChangeListener(ModeChangeListener modeChangeListener) {
         this.modeChangeListener = modeChangeListener;
     }
 
+    public void setHashTypeChangeListener(HashTypeChangeListener hashTypeChangeListener) {
+        this.hashTypeChangeListener = hashTypeChangeListener;
+    }
+
     public void initFocus() {
-        hashTypeComboBox.requestFocus();
+        hashTypeList.requestFocus();
     }
 
     public void acceptInput() {
@@ -152,38 +207,12 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup fillWithbuttonGroup;
-    private javax.swing.JComboBox<String> hashBitSizeComboBox;
+    private javax.swing.JComboBox<Integer> hashBitSizeComboBox;
     private javax.swing.JLabel hashBitSizeLabel;
-    private javax.swing.JComboBox<String> hashTypeComboBox;
     private javax.swing.JLabel hashTypeLabel;
+    private javax.swing.JList<String> hashTypeList;
+    private javax.swing.JScrollPane hashTypeScrollPane;
     // End of variables declaration//GEN-END:variables
-
-    public enum HashType {
-        KECCAK,
-        MD2,
-        MD4,
-        MD5,
-        RIPEMD,
-        SHA1,
-        SHA224,
-        SHA256,
-        SHA384,
-        SHA512,
-        SHA3,
-        SHAKE,
-        SM3,
-        TIGER,
-        GOST3411,
-        WHIRLPOOL;
-        
-        public static Map<HashType, List<Integer>> BIT_SIZES = new HashMap<HashType, List<Integer>>() {{
-            put(KECCAK, Arrays.asList(224, 256, 288, 384, 512));
-            put(RIPEMD, Arrays.asList(128, 160, 256, 320));
-            put(SHA3, Arrays.asList(224, 256, 384, 512));
-            put(SHAKE, Arrays.asList(128, 256));
-        }};
-    }
 
     public interface Controller {
 
@@ -192,5 +221,10 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     public interface ModeChangeListener {
 
         void modeChanged();
+    }
+    
+    public interface HashTypeChangeListener {
+
+        void hashTypeChanged();
     }
 }
