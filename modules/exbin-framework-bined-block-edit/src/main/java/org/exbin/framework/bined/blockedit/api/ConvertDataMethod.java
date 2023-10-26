@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
-import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 
@@ -46,11 +45,22 @@ public interface ConvertDataMethod {
      * @param component visual component
      * @param codeArea code area
      * @param position position in code area
-     * @param editOperation insert operation type
-     * @return
+     * @param length length of the selected area
+     * @return generated command
      */
     @Nonnull
-    CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation);
+    CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, long length);
+
+    /**
+     * Performs direct convert of the selected data to target binary data
+     *
+     * @param component visual component
+     * @param codeArea code area
+     * @param position position in code area
+     * @param length length of the selected area
+     * @param targetData target binary data
+     */
+    void performDirectConvert(Component component, CodeAreaCore codeArea, long position, long length, EditableBinaryData targetData);
 
     /**
      * Sets editable data target for preview.

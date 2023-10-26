@@ -104,7 +104,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
 
     @Nonnull
     @Override
-    public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
+    public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, long length) {
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
         Optional<HashType> hashType = panel.getHashType();
         int bitSize = panel.getBitSize();
@@ -113,13 +113,12 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             convertData(binaryData, hashType.get(), bitSize, position);
         };
 
-        // TODO
-        long length = 0;
-        if (editOperation == EditOperation.OVERWRITE) {
-            return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
-        } else {
-            return new InsertDataOperation.InsertDataCommand(new InsertDataOperation(codeArea, position, length, dataOperationDataProvider));
-        }
+        return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
+    }
+
+    @Override
+    public void performDirectConvert(Component component, CodeAreaCore codeArea, long position, long length, EditableBinaryData targetData) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void convertData(EditableBinaryData binaryData, HashType hashType, int bitSize, long position) throws IllegalStateException {

@@ -28,21 +28,18 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import org.exbin.bined.EditOperation;
-import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.SelectionRange;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.basic.CodeArea;
-import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
 import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
-import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataPanel;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -102,9 +99,13 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = convertDataPanel.getActiveComponent().get();
                     ConvertDataMethod activeMethod = optionalActiveMethod.get();
-                    long dataPosition = ((CaretCapable) codeArea).getDataPosition();
-                    EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((ExtCodeArea) codeArea).getActiveOperation();
-                    CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea, dataPosition, activeOperation);
+                    SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+                    CodeAreaCommand command;
+                    if (selection.isEmpty()) {
+                        command = activeMethod.createConvertCommand(activeComponent, codeArea, 0, codeArea.getDataSize());
+                    } else {
+                        command = activeMethod.createConvertCommand(activeComponent, codeArea, selection.getFirst(), selection.getLength());
+                    }
 
                     try {
                         ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
