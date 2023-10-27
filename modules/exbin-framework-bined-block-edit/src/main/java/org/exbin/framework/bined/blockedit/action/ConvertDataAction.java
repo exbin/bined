@@ -28,8 +28,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import org.exbin.bined.SelectionRange;
-import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -55,6 +53,8 @@ import org.exbin.framework.utils.handler.DefaultControlHandler;
 public class ConvertDataAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "convertDataAction";
+
+    private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
     private XBApplication application;
     private ResourceBundle resourceBundle;
@@ -82,8 +82,15 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
     @Override
     public void actionPerformed(ActionEvent e) {
         final ConvertDataPanel convertDataPanel = new ConvertDataPanel();
+        convertDataPanel.setController((previewBinaryData) -> {
+            Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
+            if (optionalActiveMethod.isPresent()) { 
+                Component activeComponent = convertDataPanel.getActiveComponent().get();
+                optionalActiveMethod.get().setPreviewDataTarget(activeComponent, codeArea, previewBinaryData, PREVIEW_LENGTH_LIMIT);
+            }
+        });
         ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
-        DefaultControlPanel controlPanel = new DefaultControlPanel(convertDataPanel.getResourceBundle());
+        DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
         JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
         BinedBlockEditModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedBlockEditModule.class);
         convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
@@ -99,13 +106,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = convertDataPanel.getActiveComponent().get();
                     ConvertDataMethod activeMethod = optionalActiveMethod.get();
-                    SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
-                    CodeAreaCommand command;
-                    if (selection.isEmpty()) {
-                        command = activeMethod.createConvertCommand(activeComponent, codeArea, 0, codeArea.getDataSize());
-                    } else {
-                        command = activeMethod.createConvertCommand(activeComponent, codeArea, selection.getFirst(), selection.getLength());
-                    }
+                    CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea);
 
                     try {
                         ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);

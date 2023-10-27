@@ -48,8 +48,6 @@ public class InsertDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(InsertDataPanel.class);
 
-    private static final int PREVIEW_LENGTH_LIMIT = 4096;
-
     private Controller controller;
     private ExtCodeArea previewCodeArea = new ExtCodeArea();
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
@@ -77,7 +75,9 @@ public class InsertDataPanel extends javax.swing.JPanel {
             activeComponent = activeMethod != null ? activeMethod.getComponent() : null;
             ByteArrayEditableData previewBinaryData = (ByteArrayEditableData) previewCodeArea.getContentData();
             previewBinaryData.clear();
-            activeMethod.setPreviewDataTarget(activeComponent, previewBinaryData, PREVIEW_LENGTH_LIMIT);
+            if (controller != null) { 
+                controller.updatePreviewData(previewBinaryData);
+            }
             componentScrollPane.getViewport().setView(activeComponent);
             try {
                 activeMethod.initFocus(activeComponent);
@@ -224,5 +224,6 @@ public class InsertDataPanel extends javax.swing.JPanel {
 
     public interface Controller {
 
+        void updatePreviewData(@Nonnull ByteArrayEditableData previewBinaryData);
     }
 }

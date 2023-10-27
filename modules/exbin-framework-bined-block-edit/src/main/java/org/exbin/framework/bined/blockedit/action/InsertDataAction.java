@@ -35,14 +35,12 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.basic.CodeArea;
-import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.blockedit.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.handler.DefaultControlHandler;
-import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
@@ -58,6 +56,8 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 public class InsertDataAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "insertDataAction";
+
+    private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
     private XBApplication application;
     private ResourceBundle resourceBundle;
@@ -85,6 +85,13 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         final InsertDataPanel insertDataPanel = new InsertDataPanel();
+        insertDataPanel.setController((previewBinaryData) -> {
+            Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
+            if (optionalActiveMethod.isPresent()) { 
+                Component activeComponent = insertDataPanel.getActiveComponent().get();
+                optionalActiveMethod.get().setPreviewDataTarget(activeComponent, previewBinaryData, PREVIEW_LENGTH_LIMIT);
+            }
+        });
         ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel();
         JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
@@ -97,13 +104,13 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         WindowUtils.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
         frameModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-            if (actionType == ControlActionType.OK) {
+            if (actionType == DefaultControlHandler.ControlActionType.OK) {
                 Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = insertDataPanel.getActiveComponent().get();
                     InsertDataMethod activeMethod = optionalActiveMethod.get();
                     long dataPosition = ((CaretCapable) codeArea).getDataPosition();
-                    EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((ExtCodeArea) codeArea).getActiveOperation();
+                    EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((CodeArea) codeArea).getActiveOperation();
                     CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
 
                     try {

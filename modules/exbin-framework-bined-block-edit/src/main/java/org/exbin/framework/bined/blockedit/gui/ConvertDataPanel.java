@@ -28,7 +28,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
-import org.exbin.auxiliary.paged_data.ByteArrayData;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
@@ -48,8 +47,6 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     private static final String POPUP_MENU_POSTFIX = ".convertDataPanel";
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ConvertDataPanel.class);
-
-    private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
     private Controller controller;
     private ExtCodeArea previewCodeArea = new ExtCodeArea();
@@ -78,7 +75,9 @@ public class ConvertDataPanel extends javax.swing.JPanel {
             activeComponent = activeMethod != null ? activeMethod.getComponent() : null;
             ByteArrayEditableData previewBinaryData = (ByteArrayEditableData) previewCodeArea.getContentData();
             previewBinaryData.clear();
-            activeMethod.setPreviewDataTarget(activeComponent, null, previewBinaryData, PREVIEW_LENGTH_LIMIT);
+            if (controller != null) { 
+                controller.updatePreviewData(previewBinaryData);
+            }
             componentScrollPane.getViewport().setView(activeComponent);
             try {
                 activeMethod.initFocus(activeComponent);
@@ -224,6 +223,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public interface Controller {
-
+        
+        void updatePreviewData(@Nonnull ByteArrayEditableData previewBinaryData);
     }
 }

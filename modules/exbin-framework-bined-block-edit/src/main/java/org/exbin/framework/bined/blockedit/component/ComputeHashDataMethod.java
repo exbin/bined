@@ -47,7 +47,8 @@ import org.bouncycastle.crypto.digests.WhirlpoolDigest;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
-import org.exbin.bined.EditOperation;
+import org.exbin.bined.SelectionRange;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
@@ -55,7 +56,6 @@ import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
 import org.exbin.framework.bined.blockedit.component.gui.ComputeHashDataPanel;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
-import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
 import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
 
 /**
@@ -72,6 +72,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     private EditableBinaryData previewBinaryData;
     private long previewLengthLimit = 0;
     private HashType lastHashType = null;
+    private static final int BUFFER_SIZE = 4096;
 
     public void setApplication(XBApplication application) {
         this.application = application;
@@ -104,30 +105,63 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
 
     @Nonnull
     @Override
-    public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea, long position, long length) {
+    public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
         Optional<HashType> hashType = panel.getHashType();
         int bitSize = panel.getBitSize();
+        long position;
+        long length;
+        SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+        if (selection.isEmpty()) {
+            position = 0;
+            length = codeArea.getDataSize();
+        } else {
+            position = selection.getFirst();
+            length = selection.getLength();
+        }
 
         DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            convertData(binaryData, hashType.get(), bitSize, position);
+            convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, binaryData);
         };
 
         return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
     }
 
     @Override
-    public void performDirectConvert(Component component, CodeAreaCore codeArea, long position, long length, EditableBinaryData targetData) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void performDirectConvert(Component component, CodeAreaCore codeArea, EditableBinaryData targetData) {
+        ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
+        Optional<HashType> hashType = panel.getHashType();
+        int bitSize = panel.getBitSize();
+        long position;
+        long length;
+        SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+        if (selection.isEmpty()) {
+            position = 0;
+            length = codeArea.getDataSize();
+        } else {
+            position = selection.getFirst();
+            length = selection.getLength();
+        }
+
+        convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, targetData);
     }
 
-    public void convertData(EditableBinaryData binaryData, HashType hashType, int bitSize, long position) throws IllegalStateException {
+    public void convertData(BinaryData sourceBinaryData, long position, long length, HashType hashType, int bitSize, EditableBinaryData targetBinaryData) throws IllegalStateException {
         Digest digest = getDigest(hashType, bitSize);
         digest.reset();
-        // TODO digest.update();
-        int digestSize = (digest.getDigestSize() + 7) << 3;
+
+        int bufferSize = length < BUFFER_SIZE ? (int) length : BUFFER_SIZE;
+        byte[] buffer = new byte[bufferSize];
+        long remaining = length;
+        while (remaining > 0) {
+            sourceBinaryData.copyToArray(position, buffer, 0, bufferSize);
+            digest.update(buffer, 0, bufferSize);
+            remaining -= bufferSize;
+        }
+        int digestSize = digest.getDigestSize();
         byte[] output = new byte[digestSize];
         digest.doFinal(output, 0);
+        targetBinaryData.insert(0, output);
     }
 
     @Nonnull
@@ -181,30 +215,38 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void setPreviewDataTarget(Component component, BinaryData sourceBinaryData, EditableBinaryData targetBinaryData, long lengthLimit) {
+    public void setPreviewDataTarget(Component component, CodeAreaCore codeArea, EditableBinaryData targetBinaryData, long lengthLimit) {
         this.previewBinaryData = targetBinaryData;
         this.previewLengthLimit = lengthLimit;
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
         panel.setModeChangeListener(() -> {
-            fillPreviewData(panel);
+            fillPreviewData(panel, codeArea);
         });
-        fillPreviewData(panel);
+        fillPreviewData(panel, codeArea);
     }
 
-    private void fillPreviewData(ComputeHashDataPanel panel) {
+    private void fillPreviewData(ComputeHashDataPanel panel, CodeAreaCore codeArea) {
         SwingUtilities.invokeLater(() -> {
             Optional<HashType> hashType = panel.getHashType();
             int bitSize = panel.getBitSize();
 
-//            long dataLength = panel.getDataLength();
-//            if (dataLength > previewLengthLimit) {
-//                dataLength = previewLengthLimit;
-//            }
-//            EditableBinaryData sampleBinaryData = panel.getSampleBinaryData();
             previewBinaryData.clear();
-            if (hashType.isPresent()) { 
-//            previewBinaryData.insertUninitialized(0, dataLength);
-                convertData(previewBinaryData, hashType.get(), bitSize, 0);
+            if (hashType.isPresent()) {
+                long position;
+                long length;
+                SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+                if (selection.isEmpty()) {
+                    position = 0;
+                    length = codeArea.getDataSize();
+                } else {
+                    position = selection.getFirst();
+                    length = selection.getLength();
+                }
+                convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, previewBinaryData);
+                long previewDataSize = previewBinaryData.getDataSize();
+                if (previewDataSize > previewLengthLimit) {
+                    previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+                }
             }
         });
     }
