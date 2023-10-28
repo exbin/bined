@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -75,8 +76,8 @@ public class ConvertDataPanel extends javax.swing.JPanel {
             activeComponent = activeMethod != null ? activeMethod.getComponent() : null;
             ByteArrayEditableData previewBinaryData = (ByteArrayEditableData) previewCodeArea.getContentData();
             previewBinaryData.clear();
-            if (controller != null) { 
-                controller.updatePreviewData(previewBinaryData);
+            if (controller != null) {
+                controller.updatePreviewData(previewCodeArea);
             }
             componentScrollPane.getViewport().setView(activeComponent);
             try {
@@ -223,7 +224,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public interface Controller {
-        
-        void updatePreviewData(@Nonnull ByteArrayEditableData previewBinaryData);
+
+        void updatePreviewData(@Nonnull CodeAreaCore previewCodeArea);
     }
 }

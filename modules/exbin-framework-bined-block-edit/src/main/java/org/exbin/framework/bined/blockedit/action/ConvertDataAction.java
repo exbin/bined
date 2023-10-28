@@ -28,6 +28,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -38,11 +39,11 @@ import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
 import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
+import org.exbin.framework.bined.blockedit.gui.ConvertDataControlHandler;
+import org.exbin.framework.bined.blockedit.gui.ConvertDataControlPanel;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataPanel;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
 
 /**
  * Modify data action.
@@ -82,15 +83,17 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
     @Override
     public void actionPerformed(ActionEvent e) {
         final ConvertDataPanel convertDataPanel = new ConvertDataPanel();
-        convertDataPanel.setController((previewBinaryData) -> {
+        convertDataPanel.setController((previewCodeArea) -> {
             Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
-            if (optionalActiveMethod.isPresent()) { 
+            if (optionalActiveMethod.isPresent()) {
                 Component activeComponent = convertDataPanel.getActiveComponent().get();
-                optionalActiveMethod.get().setPreviewDataTarget(activeComponent, codeArea, previewBinaryData, PREVIEW_LENGTH_LIMIT);
+                optionalActiveMethod.get().registerPreviewDataHandler((binaryData) -> {
+                    previewCodeArea.setContentData(binaryData);
+                }, activeComponent, codeArea, PREVIEW_LENGTH_LIMIT);
             }
         });
         ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
-        DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
+        ConvertDataControlPanel controlPanel = new ConvertDataControlPanel();
         JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
         BinedBlockEditModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedBlockEditModule.class);
         convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
@@ -100,18 +103,33 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
         final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         WindowUtils.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
         frameModule.setDialogTitle(dialog, panelResourceBundle);
-        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-            if (actionType == DefaultControlHandler.ControlActionType.OK) {
+        controlPanel.setHandler((ConvertDataControlHandler.ControlActionType actionType) -> {
+            if (actionType != ConvertDataControlHandler.ControlActionType.CANCEL) {
                 Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = convertDataPanel.getActiveComponent().get();
                     ConvertDataMethod activeMethod = optionalActiveMethod.get();
-                    CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea);
 
-                    try {
-                        ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
-                    } catch (BinaryDataOperationException ex) {
-                        Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
+                    switch (actionType) {
+                        case CONVERT: {
+                            CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea);
+
+                            try {
+                                ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
+                            } catch (BinaryDataOperationException ex) {
+                                Logger.getLogger(ConvertDataAction.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            break;
+                        }
+                        case CONVERT_TO_NEW_FILE: {
+                            BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
+
+                            break;
+                        }
+                        case CONVERT_TO_CLIPBOARD: {
+                            BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
+                            break;
+                        }
                     }
                 }
             }

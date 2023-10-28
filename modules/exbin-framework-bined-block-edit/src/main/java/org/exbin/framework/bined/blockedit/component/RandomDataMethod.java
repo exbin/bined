@@ -20,6 +20,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.SwingUtilities;
+import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.EditOperation;
@@ -29,6 +30,7 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.blockedit.component.gui.RandomDataPanel;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
+import org.exbin.framework.bined.blockedit.api.PreviewDataHandler;
 import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
 import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
 import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
@@ -44,7 +46,7 @@ public class RandomDataMethod implements InsertDataMethod {
     private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(RandomDataPanel.class);
 
     private XBApplication application;
-    private EditableBinaryData previewBinaryData;
+    private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
 
     public void setApplication(XBApplication application) {
@@ -115,8 +117,8 @@ public class RandomDataMethod implements InsertDataMethod {
     }
 
     @Override
-    public void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit) {
-        this.previewBinaryData = binaryData;
+    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
+        this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         RandomDataPanel panel = (RandomDataPanel) component;
         panel.setModeChangeListener(() -> {
@@ -133,9 +135,10 @@ public class RandomDataMethod implements InsertDataMethod {
                 dataLength = previewLengthLimit;
             }
 
-            previewBinaryData.clear();
+            EditableBinaryData previewBinaryData = new ByteArrayEditableData();
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, algorithmType, 0, dataLength);
+            previewDataHandler.setPreviewData(previewBinaryData);
         });
     }
 

@@ -85,11 +85,13 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         final InsertDataPanel insertDataPanel = new InsertDataPanel();
-        insertDataPanel.setController((previewBinaryData) -> {
+        insertDataPanel.setController((previewCodeArea) -> {
             Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
             if (optionalActiveMethod.isPresent()) { 
                 Component activeComponent = insertDataPanel.getActiveComponent().get();
-                optionalActiveMethod.get().setPreviewDataTarget(activeComponent, previewBinaryData, PREVIEW_LENGTH_LIMIT);
+                optionalActiveMethod.get().registerPreviewDataHandler((binaryData) -> {
+                    previewCodeArea.setContentData(binaryData);
+                }, activeComponent, PREVIEW_LENGTH_LIMIT);
             }
         });
         ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();

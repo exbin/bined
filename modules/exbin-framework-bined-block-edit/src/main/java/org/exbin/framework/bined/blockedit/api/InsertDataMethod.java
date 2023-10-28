@@ -54,9 +54,9 @@ public interface InsertDataMethod {
     /**
      * Sets editable data target for preview.
      *
+     * @param previewDataHandler preview data handler
      * @param component visual component
-     * @param binaryData target editable data
      * @param lengthLimit limit to length of set data
      */
-    void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit);
+    void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit);
 }

@@ -18,7 +18,7 @@ package org.exbin.framework.bined.blockedit.api;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.auxiliary.paged_data.EditableBinaryData;
+import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 
@@ -53,17 +53,19 @@ public interface ConvertDataMethod {
      *
      * @param component visual component
      * @param codeArea code area
-     * @param targetData target binary data
+     * @return binary data
      */
-    void performDirectConvert(Component component, CodeAreaCore codeArea, EditableBinaryData targetData);
+    @Nonnull
+    BinaryData performDirectConvert(Component component, CodeAreaCore codeArea);
 
     /**
      * Sets editable data target for preview.
      *
+     * @param previewDataHandler preview data handler
      * @param component visual component
      * @param codeArea source code area
-     * @param targetBinaryData target editable data
      * @param lengthLimit limit to length of set data
      */
-    void setPreviewDataTarget(Component component, CodeAreaCore codeArea, EditableBinaryData targetBinaryData, long lengthLimit);
+    @Nonnull
+    void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit);
 }

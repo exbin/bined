@@ -39,6 +39,7 @@ import org.exbin.framework.utils.WindowUtils.DialogWrapper;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.framework.utils.handler.DefaultControlHandler;
 import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
+import org.exbin.framework.bined.blockedit.api.PreviewDataHandler;
 import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
 import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
 import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
@@ -54,7 +55,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(SimpleFillDataPanel.class);
 
     private XBApplication application;
-    private EditableBinaryData previewBinaryData;
+    private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
 
     public void setApplication(XBApplication application) {
@@ -173,8 +174,8 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     }
 
     @Override
-    public void setPreviewDataTarget(Component component, EditableBinaryData binaryData, long lengthLimit) {
-        this.previewBinaryData = binaryData;
+    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
+        this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         SimpleFillDataPanel panel = (SimpleFillDataPanel) component;
         panel.setModeChangeListener(() -> {
@@ -192,9 +193,10 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             }
             EditableBinaryData sampleBinaryData = panel.getSampleBinaryData();
 
-            previewBinaryData.clear();
+            EditableBinaryData previewBinaryData = new ByteArrayEditableData();
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, fillWithType, 0, dataLength, sampleBinaryData);
+            previewDataHandler.setPreviewData(sampleBinaryData);
         });
     }
 

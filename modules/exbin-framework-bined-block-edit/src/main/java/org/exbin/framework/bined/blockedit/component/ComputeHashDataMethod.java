@@ -45,6 +45,7 @@ import org.bouncycastle.crypto.digests.SM3Digest;
 import org.bouncycastle.crypto.digests.TigerDigest;
 import org.bouncycastle.crypto.digests.WhirlpoolDigest;
 import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.SelectionRange;
@@ -53,6 +54,7 @@ import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
+import org.exbin.framework.bined.blockedit.api.PreviewDataHandler;
 import org.exbin.framework.bined.blockedit.component.gui.ComputeHashDataPanel;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
@@ -69,7 +71,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ComputeHashDataPanel.class);
 
     private XBApplication application;
-    private EditableBinaryData previewBinaryData;
+    private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
     private HashType lastHashType = null;
     private static final int BUFFER_SIZE = 4096;
@@ -127,8 +129,9 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
     }
 
+    @Nonnull
     @Override
-    public void performDirectConvert(Component component, CodeAreaCore codeArea, EditableBinaryData targetData) {
+    public BinaryData performDirectConvert(Component component, CodeAreaCore codeArea) {
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
         Optional<HashType> hashType = panel.getHashType();
         int bitSize = panel.getBitSize();
@@ -143,7 +146,9 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             length = selection.getLength();
         }
 
-        convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, targetData);
+        EditableBinaryData binaryData = new ByteArrayEditableData();
+        convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, binaryData);
+        return binaryData;
     }
 
     public void convertData(BinaryData sourceBinaryData, long position, long length, HashType hashType, int bitSize, EditableBinaryData targetBinaryData) throws IllegalStateException {
@@ -200,9 +205,9 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             case SHA512:
                 return new SHA512Digest();
             case SHA3:
-                return new SHA3Digest();
+                return new SHA3Digest(bitSize);
             case SHAKE:
-                return new SHAKEDigest();
+                return new SHAKEDigest(bitSize);
             case SM3:
                 return new SM3Digest();
             case TIGER:
@@ -215,8 +220,8 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void setPreviewDataTarget(Component component, CodeAreaCore codeArea, EditableBinaryData targetBinaryData, long lengthLimit) {
-        this.previewBinaryData = targetBinaryData;
+    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+        this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
         panel.setModeChangeListener(() -> {
@@ -230,6 +235,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             Optional<HashType> hashType = panel.getHashType();
             int bitSize = panel.getBitSize();
 
+            EditableBinaryData previewBinaryData = new ByteArrayEditableData();
             previewBinaryData.clear();
             if (hashType.isPresent()) {
                 long position;
@@ -248,6 +254,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
                     previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
                 }
             }
+            previewDataHandler.setPreviewData(previewBinaryData);
         });
     }
 
