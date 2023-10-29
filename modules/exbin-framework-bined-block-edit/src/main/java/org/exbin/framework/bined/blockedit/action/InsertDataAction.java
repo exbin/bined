@@ -30,11 +30,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.basic.CodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.blockedit.gui.InsertDataPanel;
@@ -112,7 +112,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
                     Component activeComponent = insertDataPanel.getActiveComponent().get();
                     InsertDataMethod activeMethod = optionalActiveMethod.get();
                     long dataPosition = ((CaretCapable) codeArea).getDataPosition();
-                    EditOperation activeOperation = codeArea instanceof CodeArea ? ((CodeArea) codeArea).getActiveOperation() : ((CodeArea) codeArea).getActiveOperation();
+                    EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
                     CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
 
                     try {

@@ -101,7 +101,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             undoOperation = new ModifyDataOperation(codeArea, position, origData);
         }
 
-        dataOperationDataProvider.provideData(contentData);
+        dataOperationDataProvider.provideData(contentData, position);
 
         ((CaretCapable) codeArea).getCaret().setCaretPosition(position + length, 0);
         return undoOperation;

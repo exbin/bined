@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
@@ -124,8 +125,8 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         long length = panel.getDataLength();
         FillWithType fillWithType = panel.getFillWithType();
 
-        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            generateData(binaryData, fillWithType, position, length, panel.getSampleBinaryData());
+        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
+            generateData(binaryData, fillWithType, insertPosition, length, panel.getSampleBinaryData());
         };
 
         if (editOperation == EditOperation.OVERWRITE) {
@@ -135,7 +136,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         }
     }
 
-    public void generateData(EditableBinaryData binaryData, FillWithType fillWithType, long position, long length, EditableBinaryData sampleBinaryData) throws IllegalStateException {
+    public void generateData(EditableBinaryData binaryData, FillWithType fillWithType, long position, long length, BinaryData sampleBinaryData) throws IllegalStateException {
         switch (fillWithType) {
             case EMPTY: {
                 for (long pos = position; pos < position + length; pos++) {
@@ -155,14 +156,14 @@ public class SimpleFillDataMethod implements InsertDataMethod {
                         binaryData.setByte(pos, (byte) 0xFF);
                     }
                 } else {
-                    long dataSizeLimit = sampleBinaryData.getDataSize();
+                    long sampleDataSize = sampleBinaryData.getDataSize();
                     long pos = position;
                     long remain = length;
                     while (remain > 0) {
-                        long seg = Math.min(remain, dataSizeLimit);
-                        binaryData.replace(pos, sampleBinaryData, 0, seg);
-                        pos += seg;
-                        remain -= seg;
+                        long segmentLength = Math.min(remain, sampleDataSize);
+                        binaryData.replace(pos, sampleBinaryData, 0, segmentLength);
+                        pos += segmentLength;
+                        remain -= segmentLength;
                     }
                 }
 
@@ -196,7 +197,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             EditableBinaryData previewBinaryData = new ByteArrayEditableData();
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, fillWithType, 0, dataLength, sampleBinaryData);
-            previewDataHandler.setPreviewData(sampleBinaryData);
+            previewDataHandler.setPreviewData(previewBinaryData);
         });
     }
 

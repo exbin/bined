@@ -30,6 +30,7 @@ public interface DataOperationDataProvider {
      * Provides data into given binary data.
      *
      * @param binaryData editable data target
+     * @param position position
      */
-    void provideData(EditableBinaryData binaryData);
+    void provideData(EditableBinaryData binaryData, long position);
 }

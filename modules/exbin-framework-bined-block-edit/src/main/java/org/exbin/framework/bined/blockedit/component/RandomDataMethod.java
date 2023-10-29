@@ -77,8 +77,8 @@ public class RandomDataMethod implements InsertDataMethod {
         long length = panel.getDataLength();
         AlgorithmType algorithmType = panel.getAlgorithmType();
 
-        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            generateData(binaryData, algorithmType, position, length);
+        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
+            generateData(binaryData, algorithmType, insertPosition, length);
         };
 
         if (editOperation == EditOperation.OVERWRITE) {

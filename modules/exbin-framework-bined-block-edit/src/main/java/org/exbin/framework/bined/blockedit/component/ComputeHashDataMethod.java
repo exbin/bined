@@ -122,8 +122,8 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             length = selection.getLength();
         }
 
-        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData) -> {
-            convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, binaryData);
+        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
+            convertData(codeArea.getContentData(), insertPosition, length, hashType.get(), bitSize, binaryData);
         };
 
         return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
