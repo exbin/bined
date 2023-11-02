@@ -135,6 +135,7 @@ public class BinedBlockEditModule implements XBApplicationModule {
             ensureSetup();
             convertDataAction = new ConvertDataAction();
             convertDataAction.setup(application, resourceBundle);
+            convertDataAction.setEditorProvider(editorProvider);
 
             convertDataAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override

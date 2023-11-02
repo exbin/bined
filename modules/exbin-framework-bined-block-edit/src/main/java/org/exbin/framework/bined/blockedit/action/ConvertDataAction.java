@@ -17,6 +17,8 @@ package org.exbin.framework.bined.blockedit.action;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -29,11 +31,15 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.CodeAreaSwingUtils;
+import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.action.CodeAreaAction;
@@ -42,6 +48,8 @@ import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataControlHandler;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataControlPanel;
 import org.exbin.framework.bined.blockedit.gui.ConvertDataPanel;
+import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -60,6 +68,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
     private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
+    private EditorProvider editorProvider;
 
     public ConvertDataAction() {
 
@@ -78,6 +87,10 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
     public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
         this.codeArea = codeArea;
         setEnabled(codeArea != null);
+    }
+
+    public void setEditorProvider(EditorProvider editorProvider) {
+        this.editorProvider = editorProvider;
     }
 
     @Override
@@ -124,10 +137,27 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
                         case CONVERT_TO_NEW_FILE: {
                             BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
 
+                            if (editorProvider != null) {
+                                editorProvider.newFile();
+                                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                                if (activeFile.isPresent()) {
+                                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                                    fileHandler.getCodeArea().setContentData(outputData);
+                                }
+                            }
                             break;
                         }
                         case CONVERT_TO_CLIPBOARD: {
-                            BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
+                            try {
+                                BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
+                                DataFlavor binedDataFlavor = new DataFlavor(DefaultCodeAreaCommandHandler.BINED_CLIPBOARD_MIME_FULL);;
+                                DataFlavor binaryDataFlavor = new DataFlavor(CodeAreaUtils.MIME_CLIPBOARD_BINARY);
+                                Clipboard clipboard = CodeAreaSwingUtils.getClipboard();
+                                CodeAreaSwingUtils.BinaryDataClipboardData binaryData = new CodeAreaSwingUtils.BinaryDataClipboardData(outputData, binedDataFlavor, binaryDataFlavor, null);
+                                clipboard.setContents(binaryData, binaryData);
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(ConvertDataAction.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             break;
                         }
                     }

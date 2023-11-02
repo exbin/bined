@@ -580,6 +580,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         }
     }
 
+    @ParametersAreNonnullByDefault
     private static class PropertyClass {
 
         Object classInst;
