@@ -22,6 +22,7 @@ import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
@@ -31,28 +32,30 @@ import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
- * Insert data operation.
+ * Operation to convert selection or all data into provided data.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class InsertDataOperation extends CodeAreaOperation {
+public class ConvertDataOperation extends CodeAreaOperation {
 
-    private final long position;
+    private final long startPosition;
     private final long length;
-    private final InsertionDataProvider dataOperationDataProvider;
+    private final long convertedDataLength;
+    private final ConversionDataProvider conversionDataProvider;
 
-    public InsertDataOperation(CodeAreaCore codeArea, long position, long length, InsertionDataProvider dataOperationDataProvider) {
+    public ConvertDataOperation(CodeAreaCore codeArea, long startPosition, long length, long convertedDataLength, ConversionDataProvider conversionDataProvider) {
         super(codeArea);
-        this.position = position;
+        this.startPosition = startPosition;
         this.length = length;
-        this.dataOperationDataProvider = dataOperationDataProvider;
+        this.convertedDataLength = convertedDataLength;
+        this.conversionDataProvider = conversionDataProvider;
     }
 
     @Nonnull
     @Override
     public CodeAreaOperationType getType() {
-        return CodeAreaOperationType.INSERT_DATA;
+        return CodeAreaOperationType.MODIFY_DATA;
     }
 
     @Nullable
@@ -68,17 +71,30 @@ public class InsertDataOperation extends CodeAreaOperation {
     }
 
     @Nullable
-    private CodeAreaOperation execute(boolean withUndo) {
+    private CodeAreaOperation execute(boolean withUndo) throws BinaryDataOperationException {
         CodeAreaOperation undoOperation = null;
         EditableBinaryData contentData = CodeAreaUtils.requireNonNull(((EditableBinaryData) codeArea.getContentData()));
 
-        contentData.insertUninitialized(position, length);
-        dataOperationDataProvider.provideData(contentData, position);
+        CodeAreaOperation originalDataUndoOperation = null;
 
         if (withUndo) {
-            undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
+            originalDataUndoOperation = new org.exbin.bined.operation.swing.InsertDataOperation(codeArea, startPosition, 0, contentData.copy(startPosition, length));
         }
-        ((CaretCapable) codeArea).getCaret().setCaretPosition(position + length, 0);
+
+        if (withUndo) {
+            undoOperation = new CompoundCodeAreaOperation(codeArea);
+            ((CompoundCodeAreaOperation) undoOperation).appendOperation(new RemoveDataOperation(codeArea, startPosition, 0, convertedDataLength));
+            ((CompoundCodeAreaOperation) undoOperation).appendOperation(originalDataUndoOperation);
+        }
+//        contentData.insertUninitialized(startPosition, convertedDataLength);
+        conversionDataProvider.provideData(contentData, startPosition, length, startPosition + length);
+
+        contentData.remove(startPosition, length);
+
+
+        ((CaretCapable) codeArea).getCaret().setCaretPosition(startPosition + convertedDataLength, 0);
+
+        ((SelectionCapable) codeArea).setSelection(startPosition, convertedDataLength);
         return undoOperation;
     }
 
@@ -88,12 +104,12 @@ public class InsertDataOperation extends CodeAreaOperation {
     }
 
     @ParametersAreNonnullByDefault
-    public static class InsertDataCommand extends CodeAreaCommand {
+    public static class ConvertDataCommand extends CodeAreaCommand {
 
-        private final InsertDataOperation operation;
+        private final ConvertDataOperation operation;
         private CodeAreaOperation undoOperation;
 
-        public InsertDataCommand(InsertDataOperation operation) {
+        public ConvertDataCommand(ConvertDataOperation operation) {
             super(operation.getCodeArea());
             this.operation = operation;
         }
@@ -101,7 +117,7 @@ public class InsertDataOperation extends CodeAreaOperation {
         @Nonnull
         @Override
         public CodeAreaCommandType getType() {
-            return CodeAreaCommandType.DATA_INSERTED;
+            return CodeAreaCommandType.DATA_MODIFIED;
         }
 
         @Override

@@ -31,9 +31,9 @@ import org.exbin.framework.bined.blockedit.component.gui.RandomDataPanel;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 import org.exbin.framework.bined.blockedit.api.PreviewDataHandler;
-import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
 import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
 import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
+import org.exbin.framework.bined.blockedit.operation.InsertionDataProvider;
 
 /**
  * Random data component.
@@ -77,7 +77,7 @@ public class RandomDataMethod implements InsertDataMethod {
         long length = panel.getDataLength();
         AlgorithmType algorithmType = panel.getAlgorithmType();
 
-        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
+        InsertionDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
             generateData(binaryData, algorithmType, insertPosition, length);
         };
 

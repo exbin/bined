@@ -56,9 +56,9 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.blockedit.api.ConvertDataMethod;
 import org.exbin.framework.bined.blockedit.api.PreviewDataHandler;
 import org.exbin.framework.bined.blockedit.component.gui.ComputeHashDataPanel;
+import org.exbin.framework.bined.blockedit.operation.ConversionDataProvider;
+import org.exbin.framework.bined.blockedit.operation.ConvertDataOperation;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
-import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
 
 /**
  * Compute Hash digest data component.
@@ -122,11 +122,12 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             length = selection.getLength();
         }
 
-        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
-            convertData(codeArea.getContentData(), insertPosition, length, hashType.get(), bitSize, binaryData);
+        ConversionDataProvider conversionDataProvider = (EditableBinaryData binaryData, long sourcePosition, long sourceLength, long targetPosition) -> {
+            convertData(binaryData, sourcePosition, sourceLength, hashType.get(), bitSize, binaryData, targetPosition);
         };
 
-        return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
+        long convertedDataLength = computeDigestLength(hashType.get(), bitSize);
+        return new ConvertDataOperation.ConvertDataCommand(new ConvertDataOperation(codeArea, position, length, convertedDataLength, conversionDataProvider));
     }
 
     @Nonnull
@@ -147,11 +148,11 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         }
 
         EditableBinaryData binaryData = new ByteArrayEditableData();
-        convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, binaryData);
+        convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, binaryData, 0);
         return binaryData;
     }
 
-    public void convertData(BinaryData sourceBinaryData, long position, long length, HashType hashType, int bitSize, EditableBinaryData targetBinaryData) throws IllegalStateException {
+    public void convertData(BinaryData sourceBinaryData, long position, long length, HashType hashType, int bitSize, EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
         Digest digest = getDigest(hashType, bitSize);
         digest.reset();
 
@@ -166,7 +167,12 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         int digestSize = digest.getDigestSize();
         byte[] output = new byte[digestSize];
         digest.doFinal(output, 0);
-        targetBinaryData.insert(0, output);
+        targetBinaryData.insert(targetPosition, output);
+    }
+
+    public long computeDigestLength(HashType hashType, int bitSize) {
+        Digest digest = getDigest(hashType, bitSize);
+        return digest.getDigestSize();
     }
 
     @Nonnull
@@ -248,7 +254,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
                     position = selection.getFirst();
                     length = selection.getLength();
                 }
-                convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, previewBinaryData);
+                convertData(codeArea.getContentData(), position, length, hashType.get(), bitSize, previewBinaryData, 0);
                 long previewDataSize = previewBinaryData.getDataSize();
                 if (previewDataSize > previewLengthLimit) {
                     previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);

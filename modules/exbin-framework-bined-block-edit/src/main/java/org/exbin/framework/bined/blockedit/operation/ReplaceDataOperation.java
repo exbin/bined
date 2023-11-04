@@ -42,9 +42,9 @@ public class ReplaceDataOperation extends CodeAreaOperation {
 
     private final long position;
     private final long length;
-    private final DataOperationDataProvider dataOperationDataProvider;
+    private final InsertionDataProvider dataOperationDataProvider;
 
-    public ReplaceDataOperation(CodeAreaCore codeArea, long position, long length, DataOperationDataProvider dataOperationDataProvider) {
+    public ReplaceDataOperation(CodeAreaCore codeArea, long position, long length, InsertionDataProvider dataOperationDataProvider) {
         super(codeArea);
         this.position = position;
         this.length = length;
@@ -80,7 +80,9 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         EditableBinaryData contentData = CodeAreaUtils.requireNonNull(((EditableBinaryData) codeArea.getContentData()));
 
         if (position == dataSize) {
-            undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
+            if (withUndo) {
+                undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
+            } 
             contentData.insertUninitialized(dataSize, length);
         } else if (position + length > dataSize) {
             long diff = position + length - dataSize;

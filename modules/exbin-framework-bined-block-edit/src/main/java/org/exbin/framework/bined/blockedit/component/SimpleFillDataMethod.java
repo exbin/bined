@@ -41,9 +41,9 @@ import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.framework.utils.handler.DefaultControlHandler;
 import org.exbin.framework.bined.blockedit.api.InsertDataMethod;
 import org.exbin.framework.bined.blockedit.api.PreviewDataHandler;
-import org.exbin.framework.bined.blockedit.operation.DataOperationDataProvider;
 import org.exbin.framework.bined.blockedit.operation.InsertDataOperation;
 import org.exbin.framework.bined.blockedit.operation.ReplaceDataOperation;
+import org.exbin.framework.bined.blockedit.operation.InsertionDataProvider;
 
 /**
  * Simple fill data component.
@@ -125,7 +125,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         long length = panel.getDataLength();
         FillWithType fillWithType = panel.getFillWithType();
 
-        DataOperationDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
+        InsertionDataProvider dataOperationDataProvider = (EditableBinaryData binaryData, long insertPosition) -> {
             generateData(binaryData, fillWithType, insertPosition, length, panel.getSampleBinaryData());
         };
 

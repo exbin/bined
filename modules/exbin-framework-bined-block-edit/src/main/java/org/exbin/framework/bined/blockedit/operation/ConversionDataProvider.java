@@ -19,18 +19,20 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
 
 /**
- * Data provider for data operation.
+ * Data provider for conversion operation.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface DataOperationDataProvider {
+public interface ConversionDataProvider {
 
     /**
      * Provides data into given binary data.
      *
      * @param binaryData editable data target
      * @param position position
+     * @param length source data position
+     * @param targetPosition target position
      */
-    void provideData(EditableBinaryData binaryData, long position);
+    void provideData(EditableBinaryData binaryData, long position, long length, long targetPosition);
 }
