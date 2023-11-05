@@ -86,11 +86,9 @@ public class ConvertDataOperation extends CodeAreaOperation {
             ((CompoundCodeAreaOperation) undoOperation).appendOperation(new RemoveDataOperation(codeArea, startPosition, 0, convertedDataLength));
             ((CompoundCodeAreaOperation) undoOperation).appendOperation(originalDataUndoOperation);
         }
-//        contentData.insertUninitialized(startPosition, convertedDataLength);
+
         conversionDataProvider.provideData(contentData, startPosition, length, startPosition + length);
-
         contentData.remove(startPosition, length);
-
 
         ((CaretCapable) codeArea).getCaret().setCaretPosition(startPosition + convertedDataLength, 0);
 

@@ -28,13 +28,17 @@ import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.MenuGroup;
 import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.NextToMode;
 import org.exbin.framework.action.api.PositionMode;
+import org.exbin.framework.action.api.SeparationMode;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
+import static org.exbin.framework.bined.BinedModule.EDIT_FIND_MENU_GROUP_ID;
 import org.exbin.framework.bined.blockedit.action.InsertDataAction;
 import org.exbin.framework.bined.blockedit.action.ConvertDataAction;
 import org.exbin.framework.bined.blockedit.component.RandomDataMethod;
@@ -158,8 +162,8 @@ public class BinedBlockEditModule implements XBApplicationModule {
 
     public void registerBlockEditActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(PositionMode.BOTTOM));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(PositionMode.BOTTOM));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {

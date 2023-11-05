@@ -1,6 +1,7 @@
 .gradle
 .nb-gradle
 .nb-gradle-properties
+.idea
 /deps/*
 !/deps/dependency.txt
 !/deps/*.gradle

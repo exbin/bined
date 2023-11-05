@@ -199,11 +199,9 @@ public class BinedEditor {
 
                     optionsModule.registerMenuAction();
 
-                    binedSearchModule.registerEditFindMenuActions();
                     binedModule.registerCodeTypeToolBarActions();
                     binedModule.registerShowUnprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
-                    binedBookmarksModule.registerBookmarksMenuActions();
                     binedModule.registerViewUnprintablesMenuActions();
                     binedInspectorModule.registerViewValuesPanelMenuActions();
                     binedModule.registerToolsOptionsMenuActions();
@@ -212,6 +210,8 @@ public class BinedEditor {
                     binedModule.registerClipboardCodeActions();
                     binedModule.registerOptionsMenuPanels();
                     binedModule.registerGoToPosition();
+                    binedSearchModule.registerEditFindMenuActions();
+                    binedBookmarksModule.registerBookmarksMenuActions();
                     binedBlockEditModule.registerBlockEditActions();
 
                     binedModule.registerCodeAreaPopupMenu();
