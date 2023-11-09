@@ -1,8 +1,0 @@
-rootProject.name = 'exbin-framework-bined-clipboard'
-
-if (rootProject.path == ':') {
-    include ':modules:exbin-framework-bined'
-    include ':modules:exbin-framework-bined-objectdata'
-}
-
-apply from: '../bined-modules-settings.gradle'

@@ -88,7 +88,7 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-compare')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-bookmarks')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-inspector')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-clipboard')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-tool-content')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-objectdata')
     implementation 'commons-cli:commons-cli:1.2'
     implementation 'com.formdev:flatlaf-desktop:3.2'

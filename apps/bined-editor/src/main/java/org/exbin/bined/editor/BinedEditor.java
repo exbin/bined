@@ -39,7 +39,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
-import org.exbin.framework.bined.clipboard.BinedClipboardModule;
+import org.exbin.framework.bined.tool.content.BinedToolContentModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.objectdata.BinedObjectDataModule;
@@ -156,8 +156,8 @@ public class BinedEditor {
 
                     BinedObjectDataModule binedObjectDataModule = moduleRepository.getModuleByInterface(BinedObjectDataModule.class);
 
-                    BinedClipboardModule binedClipboardModule = moduleRepository.getModuleByInterface(BinedClipboardModule.class);
-                    binedClipboardModule.setEditorProvider(editorProvider);
+                    BinedToolContentModule binedToolContentModule = moduleRepository.getModuleByInterface(BinedToolContentModule.class);
+                    binedToolContentModule.setEditorProvider(editorProvider);
 
                     frameModule.createMainMenu();
                     try {
@@ -221,7 +221,7 @@ public class BinedEditor {
 
                     binedModule.registerPropertiesMenu();
                     binedModule.registerReloadFileMenu();
-                    binedClipboardModule.registerClipboardContentMenu();
+                    binedToolContentModule.registerClipboardContentMenu();
                     // TODO binedModule.registerPrintMenu();
                     binedModule.registerViewModeMenu();
                     binedModule.registerCodeTypeMenu();
