@@ -26,6 +26,7 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
+import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -48,6 +49,7 @@ public class BinedToolContentModule implements XBApplicationModule {
     private EditorProvider editorProvider;
 
     private ClipboardContentAction clipboardContentAction;
+    private DragDropContentAction dragDropContentAction;
 
     public BinedToolContentModule() {
     }
@@ -108,9 +110,28 @@ public class BinedToolContentModule implements XBApplicationModule {
         return clipboardContentAction;
     }
 
+    @Nonnull
+    public DragDropContentAction getDragDropContentAction() {
+        if (dragDropContentAction == null) {
+            ensureSetup();
+            dragDropContentAction = new DragDropContentAction();
+            dragDropContentAction.setup(application, resourceBundle);
+            if (editorProvider != null) {
+                dragDropContentAction.setEditorProvider(editorProvider);
+            }
+        }
+        return dragDropContentAction;
+    }
+
     public void registerClipboardContentMenu() {
         getClipboardContentAction();
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
         actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
+    }
+
+    public void registerDragDropContentMenu() {
+        getDragDropContentAction();
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 }
