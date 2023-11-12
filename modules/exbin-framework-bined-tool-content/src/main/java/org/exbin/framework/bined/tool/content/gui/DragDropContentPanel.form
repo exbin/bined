@@ -63,7 +63,7 @@
         <Component class="javax.swing.JButton" name="saveAsFileButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="saveAsFileButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="saveAsFileButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -74,7 +74,7 @@
         <Component class="javax.swing.JButton" name="openAsTabButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="openAsTabButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="openAsTabButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -95,11 +95,20 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="dragHereLabel">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="dragHereLabel" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
+        <Property name="horizontalTextPosition" type="int" value="0"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
-    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel"/>
+    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel"/>
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
@@ -145,7 +154,7 @@
     <Component class="javax.swing.JLabel" name="availableFlavorsLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="availableFlavorsLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="availableFlavorsLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -171,7 +180,7 @@
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Content">
-              <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="flavorContentPanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="flavorContentPanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -288,7 +297,7 @@
             <Component class="javax.swing.JLabel" name="presentableNameLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="presentableNameLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="presentableNameLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -300,7 +309,7 @@
             <Component class="javax.swing.JLabel" name="representationClassLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="representationClassLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="representationClassLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -313,7 +322,7 @@
             <Component class="javax.swing.JLabel" name="stringTypeLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="stringTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="stringTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -325,7 +334,7 @@
             <Component class="javax.swing.JLabel" name="mimeTypeLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="mimeTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="mimeTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -337,7 +346,7 @@
             <Component class="javax.swing.JLabel" name="primaryMimeTypeLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="primaryMimeTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="primaryMimeTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -349,7 +358,7 @@
             <Component class="javax.swing.JLabel" name="subMimeTypeLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="subMimeTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="subMimeTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -361,7 +370,7 @@
             <Component class="javax.swing.JLabel" name="dataLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="dataLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="dataLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -378,7 +387,7 @@
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                      <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/ClipboardContentPanel.properties" key="noFlavorSelectedLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                      <ResourceString bundle="org/exbin/framework/bined/tool/content/gui/resources/DragDropContentPanel.properties" key="noFlavorSelectedLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                     </Property>
                   </Properties>
                   <Constraints>

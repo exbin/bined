@@ -18,16 +18,21 @@ package org.exbin.framework.bined.tool.content.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Image;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.InvalidDnDOperationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -40,6 +45,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
+import javax.swing.TransferHandler;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.framework.bined.tool.content.source.ClipboardFlavorBinaryData;
@@ -50,7 +56,6 @@ import org.exbin.framework.bined.objectdata.source.CharBufferPageProvider;
 import org.exbin.framework.bined.objectdata.source.ReaderPageProvider;
 import org.exbin.framework.bined.objectdata.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.utils.ClipboardUtils;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -62,10 +67,11 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class DragDropContentPanel extends javax.swing.JPanel {
 
-    public static final String POPUP_MENU_POSTFIX = ".clipboardContentPanel";
+    public static final String POPUP_MENU_POSTFIX = ".dragDropContentPanel";
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(DragDropContentPanel.class);
 
     private DataFlavor[] dataFlavors;
+    private Map<DataFlavor, Object> transferableData = new HashMap<>();
     private final DefaultComboBoxModel<String> dataListModel = new DefaultComboBoxModel<>();
     private final List<Object> dataContents = new ArrayList<>();
     private final ObjectValueConvertor objectValueConvertor = new ObjectValueConvertor();
@@ -83,6 +89,11 @@ public class DragDropContentPanel extends javax.swing.JPanel {
 
     private void init() {
         dataCodeArea.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        flavorsScrollPane.setViewportView(dragHereLabel);
+
+        dragHereLabel.setDropTarget(new ContentDropTarget());
+        flavorsList.setDropTarget(new ContentDropTarget());
+
         flavorsList.setModel(new DataFlavorsListModel());
         flavorsList.addListSelectionListener((e) -> {
             int selectedIndex = flavorsList.getSelectedIndex();
@@ -99,11 +110,10 @@ public class DragDropContentPanel extends javax.swing.JPanel {
                 dataContents.clear();
                 dataCodeArea.setContentData(null);
 
-                Clipboard clipboard = ClipboardUtils.getClipboard();
-                try {
-                    Object data = clipboard.getData(dataFlavor);
-                    Optional<BinaryData> convBinaryData = objectValueConvertor.process(data);
+                Object data = transferableData.get(dataFlavor);
+                if (data != null) {
                     Object contentData = null;
+                    Optional<BinaryData> convBinaryData = objectValueConvertor.process(data);
                     if (convBinaryData.isPresent()) {
                         contentData = convBinaryData.get();
                     } else {
@@ -121,24 +131,16 @@ public class DragDropContentPanel extends javax.swing.JPanel {
                             contentData = new PageProviderBinaryData(new CharBufferPageProvider((CharBuffer) data));
                         } else if (data instanceof Reader) {
                             contentData = new PageProviderBinaryData(new ReaderPageProvider(() -> {
-                                try {
-                                    return (Reader) clipboard.getData(dataFlavor);
-                                } catch (UnsupportedFlavorException | IOException ex) {
-                                    throw new IllegalStateException("Unable to get clipboard data");
-                                }
+                                return (Reader) transferableData.get(dataFlavor);
                             }));
                         }
                     }
 
-                    if (contentData != null && data != null) {
+                    if (contentData != null) {
                         dataContents.add(contentData);
                         dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.fromClass"), new Object[]{data.getClass().getCanonicalName()}));
                     }
-                } catch (UnsupportedFlavorException | IOException ex) {
-                }
 
-                try {
-                    Object data = clipboard.getData(dataFlavor);
                     if (data instanceof List<?>) {
                         dataContents.add(data);
                         dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.list"), new Object[]{data.getClass().getCanonicalName()}));
@@ -150,11 +152,8 @@ public class DragDropContentPanel extends javax.swing.JPanel {
                         dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.image"), new Object[]{data.getClass().getCanonicalName()}));
                     }
 
-                    if (data != null) {
-                        dataContents.add(new PropertyClass(data));
-                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.properties"), new Object[]{data.getClass().getCanonicalName()}));
-                    }
-                } catch (UnsupportedFlavorException | IOException ex) {
+                    dataContents.add(new PropertyClass(data));
+                    dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.properties"), new Object[]{data.getClass().getCanonicalName()}));
                 }
 
                 if (dataContents.isEmpty()) {
@@ -208,7 +207,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
                     List<?> listComponent = (List<?>) dataComponent;
                     DefaultListModel<String> listModel = new DefaultListModel<>();
                     for (int i = 0; i < listComponent.size(); i++) {
-                        listModel.add(i, (String) listComponent.get(i));
+                        listModel.add(i, listComponent.get(i).toString());
                     }
                     dataList.setModel(listModel);
                     currentDataComponent = dataListScrollPane;
@@ -234,11 +233,6 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         });
         currentDataComponent = noFlavorSelectedLabel;
         inspectComponentPanel.setShowPropertiesOnly(true);
-    }
-
-    public void loadFromClipboard() {
-        dataFlavors = ClipboardUtils.getClipboard().getAvailableDataFlavors();
-        ((DataFlavorsListModel) flavorsList.getModel()).setDataFlavors(dataFlavors);
     }
 
     @Nonnull
@@ -290,6 +284,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         openAsTabButton = new javax.swing.JButton();
         imageScrollPane = new javax.swing.JScrollPane();
         imageLabel = new javax.swing.JLabel();
+        dragHereLabel = new javax.swing.JLabel();
         availableFlavorsLabel = new javax.swing.JLabel();
         flavorsScrollPane = new javax.swing.JScrollPane();
         flavorsList = new javax.swing.JList<>();
@@ -356,6 +351,10 @@ public class DragDropContentPanel extends javax.swing.JPanel {
 
         imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imageScrollPane.setViewportView(imageLabel);
+
+        dragHereLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dragHereLabel.setText(resourceBundle.getString("dragHereLabel")); // NOI18N
+        dragHereLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         availableFlavorsLabel.setText(resourceBundle.getString("availableFlavorsLabel.text")); // NOI18N
 
@@ -531,6 +530,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
     private javax.swing.JLabel dataLabel;
     private javax.swing.JList<String> dataList;
     private javax.swing.JScrollPane dataListScrollPane;
+    private javax.swing.JLabel dragHereLabel;
     private javax.swing.JPanel flavorContentPanel;
     private javax.swing.JPanel flavorPanel;
     private javax.swing.JList<String> flavorsList;
@@ -587,6 +587,34 @@ public class DragDropContentPanel extends javax.swing.JPanel {
 
         public PropertyClass(Object classInst) {
             this.classInst = classInst;
+        }
+    }
+
+    private class ContentDropTarget extends DropTarget {
+
+        @Override
+        public synchronized void drop(DropTargetDropEvent dtde) {
+            if (flavorsScrollPane.getViewport().getView() == dragHereLabel) {
+                flavorsScrollPane.setViewportView(flavorsList);
+                flavorsScrollPane.invalidate();
+                flavorsScrollPane.repaint();
+            }
+
+            transferableData.clear();
+            // Try to read all data as they won't be available after drop is finished
+            Transferable transferable = dtde.getTransferable();
+            dataFlavors = transferable.getTransferDataFlavors();
+
+            dtde.acceptDrop(dtde.getDropAction());
+
+            for (DataFlavor dataFlavor : dataFlavors) {
+                try {
+                    transferableData.put(dataFlavor, transferable.getTransferData(dataFlavor));
+                } catch (UnsupportedFlavorException | IOException | InvalidDnDOperationException ex) {
+                }
+            }
+            ((DataFlavorsListModel) flavorsList.getModel()).setDataFlavors(dataFlavors);
+            dtde.dropComplete(false);
         }
     }
 }

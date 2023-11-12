@@ -102,55 +102,52 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                 Clipboard clipboard = ClipboardUtils.getClipboard();
                 try {
                     Object data = clipboard.getData(dataFlavor);
-                    Optional<BinaryData> convBinaryData = objectValueConvertor.process(data);
-                    Object contentData = null;
-                    if (convBinaryData.isPresent()) {
-                        contentData = convBinaryData.get();
-                    } else {
-                        if (data instanceof InputStream) {
-                            try {
-                                ClipboardFlavorBinaryData cliboardFlavorBinaryData = new ClipboardFlavorBinaryData();
-                                cliboardFlavorBinaryData.setDataFlavor(dataFlavor);
-                                contentData = cliboardFlavorBinaryData;
-                            } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
-                            }
-                        }
-                        if (data instanceof ByteBuffer) {
-                            contentData = new PageProviderBinaryData(new ByteBufferPageProvider((ByteBuffer) data));
-                        } else if (data instanceof CharBuffer) {
-                            contentData = new PageProviderBinaryData(new CharBufferPageProvider((CharBuffer) data));
-                        } else if (data instanceof Reader) {
-                            contentData = new PageProviderBinaryData(new ReaderPageProvider(() -> {
-                                try {
-                                    return (Reader) clipboard.getData(dataFlavor);
-                                } catch (UnsupportedFlavorException | IOException ex) {
-                                    throw new IllegalStateException("Unable to get clipboard data");
-                                }
-                            }));
-                        }
-                    }
-
-                    if (contentData != null && data != null) {
-                        dataContents.add(contentData);
-                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.fromClass"), new Object[]{data.getClass().getCanonicalName()}));
-                    }
-                } catch (UnsupportedFlavorException | IOException ex) {
-                }
-
-                try {
-                    Object data = clipboard.getData(dataFlavor);
-                    if (data instanceof List<?>) {
-                        dataContents.add(data);
-                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.list"), new Object[]{data.getClass().getCanonicalName()}));
-                    } else if (data instanceof String) {
-                        dataContents.add(data);
-                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.text"), new Object[]{data.getClass().getCanonicalName()}));
-                    } else if (data instanceof Image) {
-                        dataContents.add(data);
-                        dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.image"), new Object[]{data.getClass().getCanonicalName()}));
-                    }
 
                     if (data != null) {
+                        Optional<BinaryData> convBinaryData = objectValueConvertor.process(data);
+                        Object contentData = null;
+                        if (convBinaryData.isPresent()) {
+                            contentData = convBinaryData.get();
+                        } else {
+                            if (data instanceof InputStream) {
+                                try {
+                                    ClipboardFlavorBinaryData cliboardFlavorBinaryData = new ClipboardFlavorBinaryData();
+                                    cliboardFlavorBinaryData.setDataFlavor(dataFlavor);
+                                    contentData = cliboardFlavorBinaryData;
+                                } catch (ClassNotFoundException | UnsupportedFlavorException ex) {
+                                }
+                            }
+                            if (data instanceof ByteBuffer) {
+                                contentData = new PageProviderBinaryData(new ByteBufferPageProvider((ByteBuffer) data));
+                            } else if (data instanceof CharBuffer) {
+                                contentData = new PageProviderBinaryData(new CharBufferPageProvider((CharBuffer) data));
+                            } else if (data instanceof Reader) {
+                                contentData = new PageProviderBinaryData(new ReaderPageProvider(() -> {
+                                    try {
+                                        return (Reader) clipboard.getData(dataFlavor);
+                                    } catch (UnsupportedFlavorException | IOException ex) {
+                                        throw new IllegalStateException("Unable to get clipboard data");
+                                    }
+                                }));
+                            }
+                        }
+
+                        if (contentData != null) {
+                            dataContents.add(contentData);
+                            dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.fromClass"), new Object[]{data.getClass().getCanonicalName()}));
+                        }
+
+                        if (data instanceof List<?>) {
+                            dataContents.add(data);
+                            dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.list"), new Object[]{data.getClass().getCanonicalName()}));
+                        } else if (data instanceof String) {
+                            dataContents.add(data);
+                            dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.text"), new Object[]{data.getClass().getCanonicalName()}));
+                        } else if (data instanceof Image) {
+                            dataContents.add(data);
+                            dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.image"), new Object[]{data.getClass().getCanonicalName()}));
+                        }
+
                         dataContents.add(new PropertyClass(data));
                         dataListModel.addElement(java.text.MessageFormat.format(resourceBundle.getString("modelType.properties"), new Object[]{data.getClass().getCanonicalName()}));
                     }
@@ -208,7 +205,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
                     List<?> listComponent = (List<?>) dataComponent;
                     DefaultListModel<String> listModel = new DefaultListModel<>();
                     for (int i = 0; i < listComponent.size(); i++) {
-                        listModel.add(i, (String) listComponent.get(i));
+                        listModel.add(i, listComponent.get(i).toString());
                     }
                     dataList.setModel(listModel);
                     currentDataComponent = dataListScrollPane;

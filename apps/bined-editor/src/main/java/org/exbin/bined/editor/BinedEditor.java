@@ -222,6 +222,7 @@ public class BinedEditor {
                     binedModule.registerPropertiesMenu();
                     binedModule.registerReloadFileMenu();
                     binedToolContentModule.registerClipboardContentMenu();
+                    binedToolContentModule.registerDragDropContentMenu();
                     // TODO binedModule.registerPrintMenu();
                     binedModule.registerViewModeMenu();
                     binedModule.registerCodeTypeMenu();
