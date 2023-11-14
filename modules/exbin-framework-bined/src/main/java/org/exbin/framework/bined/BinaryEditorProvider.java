@@ -95,7 +95,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
                         break;
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
-                    Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BinaryEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -227,6 +227,9 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     public void newFile() {
         if (releaseAllFiles()) {
             activeFile.clearFile();
+            BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+            String title = binedModule.getNewFileTitlePrefix() + " " + activeFile.getId();
+            activeFile.setTitle(title);
         }
     }
 

@@ -156,7 +156,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                         openFile(file.toURI(), null);
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
-                    Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -196,14 +196,18 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         newFilesMap.put(fileIndex, ++lastNewFileIndex);
         BinEdFileHandler newFile = createFileHandler(fileIndex);
         newFile.clearFile();
-        multiEditorPanel.addFileHandler(newFile, getName(newFile));
+
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        String title = binedModule.getNewFileTitlePrefix() + " " + newFilesMap.get(newFile.getId());
+        newFile.setTitle(title);
+        multiEditorPanel.addFileHandler(newFile, title);
     }
 
     @Override
     public void openFile(URI fileUri, FileType fileType) {
         BinEdFileHandler file = createFileHandler(++lastIndex);
         file.loadFromFile(fileUri, fileType);
-        multiEditorPanel.addFileHandler(file, file.getFileName());
+        multiEditorPanel.addFileHandler(file, file.getTitle());
     }
 
     @Nonnull
@@ -429,12 +433,13 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Nonnull
     @Override
     public String getName(FileHandler fileHandler) {
-        String fileName = fileHandler.getFileName();
-        if (!fileName.isEmpty()) {
-            return fileName;
+        String name = fileHandler.getTitle();
+        if (!name.isEmpty()) {
+            return name;
         }
 
-        return "New File " + newFilesMap.get(fileHandler.getId());
+        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        return binedModule.getNewFileTitlePrefix() + " " + newFilesMap.get(fileHandler.getId());
     }
 
     @Override

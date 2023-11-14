@@ -924,6 +924,11 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
+    public String getNewFileTitlePrefix() {
+        return resourceBundle.getString("newFileTitlePrefix");
+    }
+
+    @Nonnull
     public ExtCodeArea getActiveCodeArea() {
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         if (activeFile.isPresent()) {

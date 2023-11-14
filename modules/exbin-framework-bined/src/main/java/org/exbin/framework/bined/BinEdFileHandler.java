@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JOptionPane;
 import org.exbin.auxiliary.paged_data.BinaryData;
@@ -71,6 +72,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     private int id = 0;
     private URI fileUri = null;
     private FileType fileType;
+    private String title;
     private Font defaultFont;
     private ExtendedCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
@@ -246,7 +248,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
     @Nonnull
     @Override
-    public String getFileName() {
+    public String getTitle() {
         if (fileUri != null) {
             String path = fileUri.getPath();
             int lastSegment = path.lastIndexOf("/");
@@ -254,7 +256,11 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
             return fileName == null ? "" : fileName;
         }
 
-        return "";
+        return title == null ? "" : title;
+    }
+
+    public void setTitle(@Nullable String title) {
+        this.title = title;
     }
 
     @Nonnull
