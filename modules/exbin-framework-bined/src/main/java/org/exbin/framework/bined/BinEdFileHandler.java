@@ -33,9 +33,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JOptionPane;
 import org.exbin.auxiliary.paged_data.BinaryData;
-import org.exbin.auxiliary.paged_data.ByteArrayData;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.auxiliary.paged_data.EditableBinaryData;
+import org.exbin.auxiliary.paged_data.EmptyBinaryData;
 import org.exbin.auxiliary.paged_data.delta.DeltaDocument;
 import org.exbin.auxiliary.paged_data.delta.FileDataSource;
 import org.exbin.auxiliary.paged_data.delta.SegmentsRepository;
@@ -124,17 +124,13 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
                 editorComponent.setContentData(document);
                 this.fileUri = fileUri;
-                if (oldData != null) {
-                    oldData.dispose();
-                }
+                oldData.dispose();
             } else {
                 try ( FileInputStream fileStream = new FileInputStream(file)) {
                     BinaryData data = editorComponent.getContentData();
                     if (!(data instanceof XBData)) {
                         data = new XBData();
-                        if (oldData != null) {
-                            oldData.dispose();
-                        }
+                        oldData.dispose();
                     }
                     ((EditableBinaryData) data).loadFromStream(fileStream);
                     editorComponent.setContentData(data);
@@ -154,7 +150,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         File file = new File(fileUri);
         try {
             BinaryData contentData = editorComponent.getContentData();
-            if (contentData == null) {
+            if (contentData instanceof EmptyBinaryData) {
                 clearFile();
                 contentData = editorComponent.getContentData();
             }
@@ -295,9 +291,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
             File file = new File(fileUri);
             try ( OutputStream stream = new FileOutputStream(file)) {
                 BinaryData contentData = codeArea.getContentData();
-                if (contentData != null) {
-                    contentData.saveToStream(stream);
-                }
+                contentData.saveToStream(stream);
                 stream.flush();
             } catch (IOException ex) {
                 Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -315,7 +309,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     public void closeData() {
         ExtCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
-        editorComponent.setContentData(new ByteArrayData());
+        editorComponent.setContentData(EmptyBinaryData.INSTANCE);
         if (data instanceof DeltaDocument) {
             FileDataSource fileSource = ((DeltaDocument) data).getFileSource();
             data.dispose();
@@ -324,9 +318,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                 segmentsRepository.closeFileSource(fileSource);
             }
         } else {
-            if (data != null) {
-                data.dispose();
-            }
+            data.dispose();
         }
     }
 
@@ -354,9 +346,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                     editorComponent.setContentData(data);
                 } else {
                     DeltaDocument document = segmentsRepository.createDocument();
-                    if (oldData != null) {
-                        document.insert(0, oldData);
-                    }
+                    document.insert(0, oldData);
                     editorComponent.setContentData(document);
                 }
 
@@ -364,9 +354,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                     undoHandlerWrapper.clear();
                 }
 
-                if (oldData != null) {
-                    oldData.dispose();
-                }
+                oldData.dispose();
             }
         }
     }

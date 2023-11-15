@@ -36,7 +36,7 @@ import org.exbin.framework.XBBaseApplication;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.blockedit.BinedBlockEditModule;
+import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.tool.content.BinedToolContentModule;
@@ -142,8 +142,8 @@ public class BinedEditor {
                     BinedSearchModule binedSearchModule = moduleRepository.getModuleByInterface(BinedSearchModule.class);
                     binedSearchModule.setEditorProvider(editorProvider);
 
-                    BinedBlockEditModule binedBlockEditModule = moduleRepository.getModuleByInterface(BinedBlockEditModule.class);
-                    binedBlockEditModule.setEditorProvider(editorProvider);
+                    BinedOperationModule binedOperationModule = moduleRepository.getModuleByInterface(BinedOperationModule.class);
+                    binedOperationModule.setEditorProvider(editorProvider);
 
                     BinedCompareModule binedCompareModule = moduleRepository.getModuleByInterface(BinedCompareModule.class);
                     binedCompareModule.setEditorProvider(editorProvider);
@@ -212,12 +212,12 @@ public class BinedEditor {
                     binedModule.registerGoToPosition();
                     binedSearchModule.registerEditFindMenuActions();
                     binedBookmarksModule.registerBookmarksMenuActions();
-                    binedBlockEditModule.registerBlockEditActions();
+                    binedOperationModule.registerBlockEditActions();
 
                     binedModule.registerCodeAreaPopupMenu();
                     binedSearchModule.registerEditFindPopupMenuActions();
                     binedBookmarksModule.registerBookmarksPopupMenuActions();
-                    binedBlockEditModule.registerBlockEditPopupMenuActions();
+                    binedOperationModule.registerBlockEditPopupMenuActions();
 
                     binedModule.registerPropertiesMenu();
                     binedModule.registerReloadFileMenu();

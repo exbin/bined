@@ -84,7 +84,7 @@ public class BinEdEditorComponent {
 //        });
     }
 
-    @Nullable
+    @Nonnull
     public BinaryData getContentData() {
         ExtCodeArea codeArea = componentPanel.getCodeArea();
         return codeArea.getContentData();

@@ -42,6 +42,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.paged_data.BinaryData;
+import org.exbin.auxiliary.paged_data.EmptyBinaryData;
 import org.exbin.framework.bined.tool.content.source.ClipboardFlavorBinaryData;
 import org.exbin.framework.bined.objectdata.ObjectValueConvertor;
 import org.exbin.framework.bined.objectdata.PageProviderBinaryData;
@@ -97,7 +98,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
                 dataListModel.removeAllElements();
                 dataContents.clear();
-                dataCodeArea.setContentData(null);
+                dataCodeArea.setContentData(EmptyBinaryData.INSTANCE);
 
                 Clipboard clipboard = ClipboardUtils.getClipboard();
                 try {
@@ -179,7 +180,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         dataComboBox.addItemListener((e) -> {
             if (currentDataComponent != null) {
                 if (currentDataComponent == binaryDataPanel) {
-                    dataCodeArea.setContentData(null);
+                    dataCodeArea.setContentData(EmptyBinaryData.INSTANCE);
                 } else if (currentDataComponent == dataListScrollPane) {
                     DefaultListModel<String> listModel = new DefaultListModel<>();
                     dataList.setModel(listModel);
@@ -265,7 +266,8 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
     @Nonnull
     public Optional<BinaryData> getContentBinaryData() {
-        return Optional.ofNullable(dataCodeArea.getContentData());
+        BinaryData contentData = dataCodeArea.getContentData();
+        return Optional.ofNullable(contentData instanceof EmptyBinaryData ? null : contentData);
     }
 
     /**

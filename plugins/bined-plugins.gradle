@@ -1,0 +1,145 @@
+// Shared plugins build
+
+version = '0.2.3-SNAPSHOT'
+def repositoryName = "bined"
+def githubProfile = 'exbin'
+def libraryUrl = 'https://bined.exbin.org/editor'
+
+ext.depsThis = 'Bined'
+
+ext.depsBined = [
+    githubProfile: githubProfile,
+    githubRepo   : repositoryName,
+    version      : version
+]
+
+ext.depsExbinFrameworkJava = [
+    githubProfile: 'exbin',
+    githubRepo: 'exbin-framework-java',
+    version: '0.2.2-SNAPSHOT'
+]
+
+ext.depsExbinAuxiliaryJava = [
+    githubProfile: 'exbin',
+    githubRepo: 'exbin-auxiliary-java',
+    version: '0.2.1-SNAPSHOT'
+]
+
+ext.depsXbupJava = [
+    githubProfile: 'exbin',
+    githubRepo: 'xbup-java',
+    version: '0.2.2-SNAPSHOT'
+]
+
+ext.depsXbupDataJava = [
+    githubProfile: 'exbin',
+    githubRepo: 'xbup-data-java',
+    version: '0.2.2-SNAPSHOT'
+]
+
+ext.depsBinedLibJava = [
+    githubProfile: 'exbin',
+    githubRepo: 'bined-lib-java',
+    version: '0.2.1-SNAPSHOT'
+]
+
+import org.gradle.util.VersionNumber
+
+apply from: '../deps_processing.gradle'
+
+sourceCompatibility = '1.8'
+
+targetCompatibility = '1.8'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    doFirst {
+        options.fork = true
+        if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+            if (VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('5.0')) {
+                options.bootstrapClasspath = files("${System.properties['java.home']}/lib/rt.jar", "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar")
+            } else {
+                options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar"
+                options.bootClasspath += "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
+            }
+        }
+    }
+}
+
+// Disable tests on build
+if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
+    tasks.withType(Test) {enabled = false}
+}
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier "tests"
+    archiveBaseName = "test-${project.archivesBaseName}"
+    from sourceSets.test.output
+}
+
+configurations {
+    tests
+}
+
+artifacts {
+    tests testJar
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+task javadocJar (type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            //            artifact sourceJar {
+            //                classifier 'sources'
+            //            }
+            //            artifact (javadocJar) {
+            //                classifier = 'javadoc'
+            //            }
+
+            pom.withXml {
+                asNode().children().last() + {
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    name libraryName
+                    description libraryDescription
+                    url libraryUrl
+                    scm {
+                        url "https://github.com/${githubProfile}/${repositoryName}"
+                        connection "cm:git:git://github.com/${githubProfile}/${repositoryName}.git"
+                        developerConnection "scm:git:git@github.com:${githubProfile}/${repositoryName}.git"
+                    }
+                    licenses {
+                        license {
+                            name 'Apache License, Version 2.0'
+                            url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'HajdaM'
+                            name 'Miroslav Hajda'
+                            email 'hajdam@users.sf.net'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
+}
+

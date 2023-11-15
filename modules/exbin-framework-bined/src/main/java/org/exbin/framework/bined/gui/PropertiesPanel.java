@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListModel;
+import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.auxiliary.paged_data.delta.DataSegment;
 import org.exbin.auxiliary.paged_data.delta.DeltaDocument;
 import org.exbin.auxiliary.paged_data.delta.FileSegment;
@@ -160,8 +161,9 @@ public class PropertiesPanel extends javax.swing.JPanel {
         fileNameTextField.setText(fileUri.isPresent() ? fileUri.get().toString() : "");
         fileSizeTextField.setText(Long.toString(codeArea.getDataSize()));
 
-        if (codeArea.getContentData() instanceof DeltaDocument) {
-            DefaultDoublyLinkedList<DataSegment> segments = ((DeltaDocument) codeArea.getContentData()).getSegments();
+        BinaryData contentData = codeArea.getContentData();
+        if (contentData instanceof DeltaDocument) {
+            DefaultDoublyLinkedList<DataSegment> segments = ((DeltaDocument) contentData).getSegments();
             DataSegment segment = segments.first();
             DefaultListModel<String> listModel = (DefaultListModel<String>) structureList.getModel();
             while (segment != null) {

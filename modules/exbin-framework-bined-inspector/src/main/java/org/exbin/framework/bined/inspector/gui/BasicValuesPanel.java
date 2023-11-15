@@ -805,7 +805,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
         if (dataPosition < dataSize) {
             int availableData = dataSize - dataPosition >= CACHE_SIZE ? CACHE_SIZE : (int) (dataSize - dataPosition);
-            BinaryData contentData = Objects.requireNonNull(codeArea.getContentData());
+            BinaryData contentData = codeArea.getContentData();
             contentData.copyToArray(dataPosition, valuesCache, 0, availableData);
             if (availableData < CACHE_SIZE) {
                 Arrays.fill(valuesCache, availableData, CACHE_SIZE, (byte) 0);

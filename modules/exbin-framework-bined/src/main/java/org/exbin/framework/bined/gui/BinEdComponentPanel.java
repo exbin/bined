@@ -141,7 +141,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setComponentPopupMenu(menu);
     }
 
-    @Nullable
+    @Nonnull
     public BinaryData getContentData() {
         return codeArea.getContentData();
     }
