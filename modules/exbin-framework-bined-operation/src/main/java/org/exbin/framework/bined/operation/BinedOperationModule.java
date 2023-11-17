@@ -46,7 +46,6 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
-import org.exbin.framework.bined.operation.component.ComputeHashDataMethod;
 
 /**
  * Binary data editor operations module.
@@ -81,10 +80,6 @@ public class BinedOperationModule implements XBApplicationModule {
         RandomDataMethod randomDataMethod = new RandomDataMethod();
         randomDataMethod.setApplication(this.application);
         addInsertDataComponent(randomDataMethod);
-        
-        ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
-        computeHashDataMethod.setApplication(this.application);
-        addConvertDataComponent(computeHashDataMethod);
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {

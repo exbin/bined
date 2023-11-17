@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.component;
+package org.exbin.framework.bined.operation.bouncycastle.component;
 
 import java.awt.Component;
 import java.util.Arrays;
@@ -55,7 +55,7 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
-import org.exbin.framework.bined.operation.component.gui.ComputeHashDataPanel;
+import org.exbin.framework.bined.operation.bouncycastle.component.gui.ComputeHashDataPanel;
 import org.exbin.framework.bined.operation.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.operation.ConvertDataOperation;
 import org.exbin.framework.utils.LanguageUtils;
@@ -202,18 +202,14 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             }
             case SHA1:
                 return new SHA1Digest();
-            case SHA2: {
-                switch (bitSize) {
-                    case 224:
-                        return new SHA224Digest();
-                    case 256:
-                        return new SHA256Digest();
-                    case 384:
-                        return new SHA384Digest();
-                    case 512:
-                        return new SHA512Digest();
-                }
-            }
+            case SHA224:
+                return new SHA224Digest();
+            case SHA256:
+                return new SHA256Digest();
+            case SHA384:
+                return new SHA384Digest();
+            case SHA512:
+                return new SHA512Digest();
             case SHA3:
                 return new SHA3Digest(bitSize);
             case SHAKE:
@@ -275,7 +271,10 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         MD5,
         RIPEMD,
         SHA1,
-        SHA2,
+        SHA224,
+        SHA256,
+        SHA384,
+        SHA512,
         SHA3,
         SHAKE,
         SM3,
@@ -287,7 +286,6 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
             {
                 put(KECCAK, Arrays.asList(224, 256, 288, 384, 512));
                 put(RIPEMD, Arrays.asList(128, 160, 256, 320));
-                put(SHA2, Arrays.asList(224, 256, 384, 512));
                 put(SHA3, Arrays.asList(224, 256, 384, 512));
                 put(SHAKE, Arrays.asList(128, 256));
             }

@@ -1,0 +1,9 @@
+rootProject.name = 'exbin-framework-bined-operation-bouncycastle'
+
+if (rootProject.path == ':') {
+    include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-search'
+    include ':modules:exbin-framework-bined-operation'
+}
+
+apply from: '../bined-modules-settings.gradle'

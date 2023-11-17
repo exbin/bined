@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.component.gui;
+package org.exbin.framework.bined.operation.bouncycastle.component.gui;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +23,12 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import org.exbin.framework.bined.operation.component.ComputeHashDataMethod;
+import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
- * Fill simple data component panel.
+ * Compute hash from provided data component panel.
  *
  * @author ExBin Project (https://exbin.org)
  */

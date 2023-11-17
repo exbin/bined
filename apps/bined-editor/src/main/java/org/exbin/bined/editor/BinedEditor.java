@@ -37,6 +37,7 @@ import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
+import org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.tool.content.BinedToolContentModule;
@@ -144,6 +145,9 @@ public class BinedEditor {
 
                     BinedOperationModule binedOperationModule = moduleRepository.getModuleByInterface(BinedOperationModule.class);
                     binedOperationModule.setEditorProvider(editorProvider);
+
+                    BinedOperationBouncycastleModule binedOperationBouncycastleModule = moduleRepository.getModuleByInterface(BinedOperationBouncycastleModule.class);
+                    binedOperationBouncycastleModule.setEditorProvider(editorProvider);
 
                     BinedCompareModule binedCompareModule = moduleRepository.getModuleByInterface(BinedCompareModule.class);
                     binedCompareModule.setEditorProvider(editorProvider);
