@@ -62,7 +62,7 @@ import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
 
 /**
- * The main class of the BinEd Hexadecimal Editor application.
+ * The main class of the BinEd Binary / Hex Editor application.
  *
  * @author ExBin Project (https://exbin.org)
  */

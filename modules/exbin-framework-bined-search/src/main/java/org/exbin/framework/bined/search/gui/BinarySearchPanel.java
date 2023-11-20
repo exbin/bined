@@ -140,6 +140,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         ExtendedCodeAreaThemeProfile themeProfile = searchCodeArea.getThemeProfile();
         themeProfile.setBackgroundPaintMode(ExtendedBackgroundPaintMode.PLAIN);
 
+        searchCodeArea.setBorder(null);
         searchCodeArea.setLayoutProfile(layoutProfile);
         searchCodeArea.setRowWrapping(RowWrappingMode.WRAPPING);
         searchCodeArea.setWrappingBytesGroupSize(0);
