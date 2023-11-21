@@ -54,7 +54,7 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
- * Modify data action.
+ * Convert data action.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -69,6 +69,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
     private EditorProvider editorProvider;
+    private ConvertDataMethod lastMethod = null;
 
     public ConvertDataAction() {
 
@@ -110,6 +111,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
         JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedOperationModule.class);
         convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
+        convertDataPanel.selectActiveMethod(lastMethod);
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         convertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
@@ -162,6 +164,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
                         }
                     }
                 }
+                lastMethod = optionalActiveMethod.orElse(null);
             }
 
             dialog.close();

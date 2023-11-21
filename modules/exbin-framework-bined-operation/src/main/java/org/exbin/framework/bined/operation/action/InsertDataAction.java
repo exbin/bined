@@ -62,6 +62,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
     private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
+    private InsertDataMethod lastMethod = null;
 
     public InsertDataAction() {
 
@@ -99,6 +100,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedOperationModule.class);
         insertDataPanel.setComponents(binedBlockEditModule.getInsertDataComponents());
+        insertDataPanel.selectActiveMethod(lastMethod);
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         insertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
@@ -121,6 +123,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
                         Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                lastMethod = optionalActiveMethod.orElse(null);
             }
 
             dialog.close();

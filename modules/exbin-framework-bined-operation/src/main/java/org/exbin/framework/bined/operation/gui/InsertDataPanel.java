@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -76,7 +77,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
             activeComponent = activeMethod != null ? activeMethod.getComponent() : null;
             ByteArrayEditableData previewBinaryData = (ByteArrayEditableData) previewCodeArea.getContentData();
             previewBinaryData.clear();
-            if (controller != null) { 
+            if (controller != null) {
                 controller.updatePreviewData(previewCodeArea);
             }
             componentScrollPane.getViewport().setView(activeComponent);
@@ -203,6 +204,18 @@ public class InsertDataPanel extends javax.swing.JPanel {
 
     public void initFocus() {
         // TODO
+    }
+
+    public void selectActiveMethod(@Nullable InsertDataMethod method) {
+        DefaultListModel<InsertDataMethod> listModel = (DefaultListModel<InsertDataMethod>) optionsList.getModel();
+        if (method == null && !listModel.isEmpty()) {
+            optionsList.setSelectedIndex(0);
+        } else {
+            int methodIndex = listModel.indexOf(method);
+            if (methodIndex >= 0) {
+                optionsList.setSelectedIndex(methodIndex);
+            }
+        }
     }
 
     /**

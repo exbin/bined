@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -203,6 +204,18 @@ public class ConvertDataPanel extends javax.swing.JPanel {
 
     public void initFocus() {
         // TODO
+    }
+
+    public void selectActiveMethod(@Nullable ConvertDataMethod method) {
+        DefaultListModel<ConvertDataMethod> listModel = (DefaultListModel<ConvertDataMethod>) optionsList.getModel();
+        if (method == null && !listModel.isEmpty()) {
+            optionsList.setSelectedIndex(0);
+        } else {
+            int methodIndex = listModel.indexOf(method);
+            if (methodIndex >= 0) {
+                optionsList.setSelectedIndex(methodIndex);
+            }
+        }
     }
 
     /**
