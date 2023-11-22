@@ -65,7 +65,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
         optionsList.setModel(new DefaultListModel<>());
         optionsList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, @Nullable Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
                     return super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
                 }
@@ -81,10 +81,12 @@ public class ConvertDataPanel extends javax.swing.JPanel {
                 controller.updatePreviewData(previewCodeArea);
             }
             componentScrollPane.getViewport().setView(activeComponent);
-            try {
-                activeMethod.initFocus(activeComponent);
-            } catch (Throwable ex) {
-                Logger.getLogger(ConvertDataPanel.class.getName()).log(Level.SEVERE, null, ex);
+            if (activeMethod != null) {
+                try {
+                    activeMethod.initFocus(activeComponent);
+                } catch (Throwable ex) {
+                    Logger.getLogger(ConvertDataPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         previewCodeArea.setContentData(new ByteArrayEditableData());
