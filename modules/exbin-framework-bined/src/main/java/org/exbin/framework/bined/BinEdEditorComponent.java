@@ -38,8 +38,8 @@ public class BinEdEditorComponent {
     }
 
     public void setApplication(XBApplication application) {
-        
-    };
+
+    }
 
     @Nonnull
     public BinEdComponentPanel getComponentPanel() {
@@ -58,30 +58,6 @@ public class BinEdEditorComponent {
 
     public void setUndoHandler(BinaryDataUndoHandler undoHandler) {
         componentPanel.setUndoHandler(undoHandler);
-//        ExtCodeArea codeArea = componentPanel.getCodeArea();
-//        toolbarPanel.setUndoHandler(undoHandler);
-//        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler);
-//        codeArea.setCommandHandler(commandHandler);
-//        if (valuesPanel != null) {
-//            valuesPanel.setCodeArea(codeArea, undoHandler);
-//        }
-////        insertDataAction.setUndoHandler(undoHandler);
-//        // TODO set ENTER KEY mode in apply options
-//
-//        undoHandler.addUndoUpdateListener(new BinaryDataUndoUpdateListener() {
-//            @Override
-//            public void undoCommandPositionChanged() {
-//                codeArea.repaint();
-//                updateCurrentDocumentSize();
-//                notifyModified();
-//            }
-//
-//            @Override
-//            public void undoCommandAdded(@Nonnull final BinaryDataCommand command) {
-//                updateCurrentDocumentSize();
-//                notifyModified();
-//            }
-//        });
     }
 
     @Nonnull
@@ -93,17 +69,5 @@ public class BinEdEditorComponent {
     public void setContentData(@Nullable BinaryData data) {
         ExtCodeArea codeArea = componentPanel.getCodeArea();
         codeArea.setContentData(data);
-
-//        documentOriginalSize = codeArea.getDataSize();
-//        updateCurrentDocumentSize();
-//        updateCurrentMemoryMode();
-
-        // Autodetect encoding using IDE mechanism
-        //        final Charset charset = Charset.forName(FileEncodingQuery.getEncoding(dataObject.getPrimaryFile()).name());
-        //        if (charsetChangeListener != null) {
-        //            charsetChangeListener.charsetChanged();
-        //        }
-        //        codeArea.setCharset(charset);
     }
-
 }
