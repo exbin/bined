@@ -45,7 +45,7 @@ subprojects {
 }
 
 if (file('deps/.downloaded').exists()) {
-	file('deps/.downloaded').delete()
+    file('deps/.downloaded').delete()
     // Performs another build task for new dependency handling
     def depsLevel
     if (project.gradle.startParameter.projectProperties.containsKey('moduleDep')) {

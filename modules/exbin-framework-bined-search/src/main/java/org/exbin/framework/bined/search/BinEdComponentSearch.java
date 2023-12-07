@@ -35,7 +35,7 @@ import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
 public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentExtension {
 
     private BinEdComponentPanel componentPanel;
-    private BinarySearchPanel binarySearchPanel = new BinarySearchPanel();
+    private BinarySearch binarySearch = new BinarySearch();
     private BinarySearchService binarySearchService;
     private boolean binarySearchPanelVisible = false;
     private XBApplication application;
@@ -46,18 +46,18 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
         ExtCodeArea codeArea = componentPanel.getCodeArea();
 
         binarySearchService = new BinarySearchServiceImpl(codeArea);
-        binarySearchPanel.setBinarySearchService(binarySearchService);
-        binarySearchPanel.setClosePanelListener(this::hideSearchPanel);
+        binarySearch.setBinarySearchService(binarySearchService);
+        binarySearch.setPanelClosingListener(this::hideSearchPanel);
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
 
-        binarySearchPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
+        binarySearch.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
     }
 
     @Override
     public void onDataChange() {
         if (binarySearchPanelVisible) {
-            binarySearchPanel.dataChanged();
+            binarySearch.dataChanged();
         }
     }
 
@@ -69,21 +69,21 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
     public void onClose() {
     }
 
-    public void showSearchPanel(boolean replace) {
+    public void showSearchPanel(BinarySearchPanel.Mode panelMode) {
         if (!binarySearchPanelVisible) {
-            componentPanel.add(binarySearchPanel, BorderLayout.SOUTH);
+            componentPanel.add(binarySearch.getPanel(), BorderLayout.SOUTH);
             componentPanel.revalidate();
             binarySearchPanelVisible = true;
-            binarySearchPanel.requestSearchFocus();
+            binarySearch.getPanel().requestSearchFocus();
         }
-        binarySearchPanel.switchReplaceMode(replace);
+        binarySearch.getPanel().switchPanelMode(panelMode);
     }
 
     public void hideSearchPanel() {
         if (binarySearchPanelVisible) {
-            binarySearchPanel.cancelSearch();
-            binarySearchPanel.clearSearch();
-            componentPanel.remove(binarySearchPanel);
+            binarySearch.cancelSearch();
+            binarySearch.clearSearch();
+            componentPanel.remove(binarySearch.getPanel());
             componentPanel.revalidate();
             binarySearchPanelVisible = false;
         }
@@ -91,19 +91,19 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
     
     public void performFindAgain() {
         if (binarySearchPanelVisible) {
-            binarySearchService.performFindAgain(binarySearchPanel.getSearchStatusListener());
+            binarySearchService.performFindAgain(binarySearch.getSearchStatusListener());
         } else {
-            showSearchPanel(false);
+            showSearchPanel(BinarySearchPanel.Mode.FIND);
         }
     }
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        binarySearchPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
+        binarySearch.getPanel().setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
     }
 
     @Override
     public void setApplication(XBApplication application) {
         this.application = application;
-        binarySearchPanel.setApplication(application);
+        binarySearch.setApplication(application);
     }
 }
