@@ -30,7 +30,6 @@ import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.bined.search.gui.FindBinaryPanel;
 import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.framework.bined.search.service.BinarySearchService.FoundMatches;
-import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -139,13 +138,22 @@ public class BinarySearch {
 
             @Override
             public void performReplace() {
-                // TODO replaceParameters.setCondition(replaceComboBoxEditorComponent.getItem());
-                binarySearchService.performReplace(searchParameters, replaceParameters);
+                binarySearchService.performReplace(searchParameters, binarySearchPanel.getReplaceParameters());
             }
 
             @Override
             public void performReplaceAll() {
                 throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void performSearch() {
+                performSearch(0);
+            }
+
+            @Override
+            public void performSearch(final int delay) {
+                BinarySearch.this.performSearch(delay);
             }
 
             @Override
@@ -204,7 +212,7 @@ public class BinarySearch {
                         binarySearchPanel.updateFindStatus();
 
                         ReplaceParameters dialogReplaceParameters = findBinaryPanel.getReplaceParameters();
-                        binarySearchPanel.switchPanelMode(dialogReplaceParameters.isPerformReplace() ? BinarySearchPanel.Mode.REPLACE : BinarySearchPanel.Mode.FIND);
+                        binarySearchPanel.switchPanelMode(dialogReplaceParameters.isPerformReplace() ? BinarySearchPanel.PanelMode.REPLACE : BinarySearchPanel.PanelMode.FIND);
                         binarySearchService.performFind(dialogSearchParameters, searchStatusListener);
                     }
                     findBinaryPanel.detachMenu();

@@ -69,7 +69,7 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
     public void onClose() {
     }
 
-    public void showSearchPanel(BinarySearchPanel.Mode panelMode) {
+    public void showSearchPanel(BinarySearchPanel.PanelMode panelMode) {
         if (!binarySearchPanelVisible) {
             componentPanel.add(binarySearch.getPanel(), BorderLayout.SOUTH);
             componentPanel.revalidate();
@@ -93,7 +93,7 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
         if (binarySearchPanelVisible) {
             binarySearchService.performFindAgain(binarySearch.getSearchStatusListener());
         } else {
-            showSearchPanel(BinarySearchPanel.Mode.FIND);
+            showSearchPanel(BinarySearchPanel.PanelMode.FIND);
         }
     }
 

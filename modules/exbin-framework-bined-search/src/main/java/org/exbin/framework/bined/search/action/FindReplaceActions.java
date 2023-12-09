@@ -91,7 +91,7 @@ public class FindReplaceActions implements FileDependentAction {
 
                     BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
                     BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                    componentExtension.showSearchPanel(BinarySearchPanel.Mode.FIND);
+                    componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
                 }
             };
             ActionUtils.setupAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
@@ -162,7 +162,7 @@ public class FindReplaceActions implements FileDependentAction {
 
                     BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
                     BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                    componentExtension.showSearchPanel(BinarySearchPanel.Mode.REPLACE);
+                    componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
                 }
             };
             ActionUtils.setupAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
