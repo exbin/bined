@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
-import org.exbin.bined.CodeAreaUtils;
+import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
+import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.search.gui.BinaryMultilinePanel;
@@ -45,12 +47,15 @@ import org.exbin.framework.utils.handler.DefaultControlHandler;
 public class BinarySearch {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinarySearch.class);
+    private static final int DEFAULT_DELAY = 500;
 
-    private Thread searchStartThread;
-    private Thread searchThread;
+    private InvokeSearchThread invokeSearchThread;
+    private SearchThread searchThread;
 
-    private final SearchParameters searchParameters = new SearchParameters();
-    private final ReplaceParameters replaceParameters = new ReplaceParameters();
+    private SearchOperation currentSearchOperation = SearchOperation.FIND;
+    private SearchParameters.SearchDirection currentSearchDirection = SearchParameters.SearchDirection.FORWARD;
+    private final SearchParameters currentSearchParameters = new SearchParameters();
+    private final ReplaceParameters currentReplaceParameters = new ReplaceParameters();
     private FoundMatches foundMatches = new FoundMatches();
 
     private final List<SearchCondition> searchHistory = new ArrayList<>();
@@ -118,42 +123,80 @@ public class BinarySearch {
 
             @Override
             public void performEscape() {
-                SearchCondition condition = searchParameters.getCondition();
-                if (!condition.isEmpty()) {
-                    clearSearch();
-                } else {
-                    cancelSearch();
-                    close();
-                }
+                cancelSearch();
+                close();
+                clearSearch();
             }
 
             @Override
             public void performFind() {
-                binarySearchService.performFind(searchParameters, searchStatusListener);
-                // TODO
-//                findComboBoxEditorComponent.setRunningUpdate(true);
-//                ((SearchHistoryModel) findComboBox.getModel()).addSearchCondition(searchParameters.getCondition());
-//                findComboBoxEditorComponent.setRunningUpdate(false);
+                invokeSearch(SearchOperation.FIND);
+                binarySearchPanel.updateSearchHistory(currentSearchParameters.getCondition());
             }
 
             @Override
             public void performReplace() {
-                binarySearchService.performReplace(searchParameters, binarySearchPanel.getReplaceParameters());
+                invokeSearch(SearchOperation.REPLACE);
+                binarySearchPanel.updateSearchHistory(currentSearchParameters.getCondition());
             }
 
             @Override
             public void performReplaceAll() {
-                throw new UnsupportedOperationException("Not supported yet.");
+                invokeSearch(SearchOperation.REPLACE_ALL);
+                binarySearchPanel.updateSearchHistory(currentSearchParameters.getCondition());
             }
 
             @Override
-            public void performSearch() {
-                performSearch(0);
+            public void notifySearchChanged() {
+                if (currentSearchOperation == SearchOperation.FIND) {
+                    invokeSearch(SearchOperation.FIND);
+                }
             }
 
             @Override
-            public void performSearch(final int delay) {
-                BinarySearch.this.performSearch(delay);
+            public void notifySearchChanging() {
+                if (currentSearchOperation != SearchOperation.FIND) {
+                    return;
+                }
+
+                SearchCondition condition = currentSearchParameters.getCondition();
+                SearchCondition updatedSearchCondition = binarySearchPanel.getSearchParameters().getCondition();
+
+                switch (updatedSearchCondition.getSearchMode()) {
+                    case TEXT: {
+                        String searchText = updatedSearchCondition.getSearchText();
+                        if (searchText.isEmpty()) {
+                            condition.setSearchText(searchText);
+                            clearSearch();
+                            return;
+                        }
+
+                        if (searchText.equals(condition.getSearchText())) {
+                            return;
+                        }
+
+                        condition.setSearchText(searchText);
+                        break;
+                    }
+                    case BINARY: {
+                        EditableBinaryData searchData = (EditableBinaryData) updatedSearchCondition.getBinaryData();
+                        if (searchData == null || searchData.isEmpty()) {
+                            condition.setBinaryData(null);
+                            clearSearch();
+                            return;
+                        }
+
+                        if (searchData.equals(condition.getBinaryData())) {
+                            return;
+                        }
+
+                        ByteArrayEditableData data = new ByteArrayEditableData();
+                        data.insert(0, searchData);
+                        condition.setBinaryData(data);
+                        break;
+                    }
+                }
+                BinarySearch.this.invokeSearch(SearchOperation.FIND, DEFAULT_DELAY);
             }
 
             @Override
@@ -163,9 +206,9 @@ public class BinarySearch {
                 final FindBinaryPanel findBinaryPanel = new FindBinaryPanel();
                 findBinaryPanel.setSelected();
                 findBinaryPanel.setSearchHistory(searchHistory);
-                findBinaryPanel.setSearchParameters(searchParameters);
+                findBinaryPanel.setSearchParameters(currentSearchParameters);
                 // TODO replaceParameters.setPerformReplace(replaceMode);
-                findBinaryPanel.setReplaceParameters(replaceParameters);
+                findBinaryPanel.setReplaceParameters(currentReplaceParameters);
                 findBinaryPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
                 DefaultControlPanel controlPanel = new DefaultControlPanel(findBinaryPanel.getResourceBundle());
                 final WindowUtils.DialogWrapper dialog = frameModule.createDialog(findBinaryPanel, controlPanel);
@@ -206,20 +249,26 @@ public class BinarySearch {
                 controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                     if (actionType == DefaultControlHandler.ControlActionType.OK) {
                         SearchParameters dialogSearchParameters = findBinaryPanel.getSearchParameters();
-                        // TODO ((SearchHistoryModel) findComboBox.getModel()).addSearchCondition(dialogSearchParameters.getCondition());
                         dialogSearchParameters.setFromParameters(dialogSearchParameters);
-                        // TODO findComboBoxEditorComponent.setItem(dialogSearchParameters.getCondition());
-                        binarySearchPanel.updateFindStatus();
+                        currentSearchDirection = dialogSearchParameters.getSearchDirection();
 
-                        ReplaceParameters dialogReplaceParameters = findBinaryPanel.getReplaceParameters();
-                        binarySearchPanel.switchPanelMode(dialogReplaceParameters.isPerformReplace() ? BinarySearchPanel.PanelMode.REPLACE : BinarySearchPanel.PanelMode.FIND);
-                        binarySearchService.performFind(dialogSearchParameters, searchStatusListener);
+                        ReplaceParameters dialogReplaceParameters = new ReplaceParameters();
+                        dialogReplaceParameters.setFromParameters(findBinaryPanel.getReplaceParameters());
+                        boolean performReplace = dialogReplaceParameters.isPerformReplace();
+                        binarySearchPanel.switchPanelMode(performReplace ? BinarySearchPanel.PanelMode.REPLACE : BinarySearchPanel.PanelMode.FIND);
+                        invokeSearch(performReplace ? SearchOperation.REPLACE : SearchOperation.FIND, dialogSearchParameters, dialogReplaceParameters);
                     }
                     findBinaryPanel.detachMenu();
                     dialog.close();
                     dialog.dispose();
                 });
                 dialog.showCentered(WindowUtils.getWindow(binarySearchPanel));
+            }
+
+            @Nonnull
+            @Override
+            public SearchParameters.SearchDirection getSearchDirection() {
+                return currentSearchDirection;
             }
 
             @Override
@@ -257,63 +306,45 @@ public class BinarySearch {
         return searchStatusListener;
     }
 
-    private void performSearch() {
-        performSearch(0);
+    private void invokeSearch(SearchOperation searchOperation) {
+        invokeSearch(searchOperation, binarySearchPanel.getSearchParameters(), binarySearchPanel.getReplaceParameters(), 0);
     }
 
-    private void performSearch(final int delay) {
-        if (searchStartThread != null) {
-            searchStartThread.interrupt();
+    private void invokeSearch(SearchOperation searchOperation, final int delay) {
+        invokeSearch(searchOperation, binarySearchPanel.getSearchParameters(), binarySearchPanel.getReplaceParameters(), delay);
+    }
+
+    private void invokeSearch(SearchOperation searchOperation, SearchParameters searchParameters, @Nullable ReplaceParameters replaceParameters) {
+        invokeSearch(searchOperation, searchParameters, replaceParameters, 0);
+    }
+
+    private void invokeSearch(SearchOperation searchOperation, SearchParameters searchParameters, @Nullable ReplaceParameters replaceParameters, final int delay) {
+        if (invokeSearchThread != null) {
+            invokeSearchThread.interrupt();
         }
-        searchStartThread = new Thread(() -> {
-            try {
-                Thread.sleep(delay);
-                if (searchThread != null) {
-                    searchThread.interrupt();
-                }
-                searchThread = new Thread(); // TODO parameter was: this::performFind
-                searchThread.start();
-            } catch (InterruptedException ex) {
-                // don't search
-            }
-        });
-        searchStartThread.start();
+        invokeSearchThread = new InvokeSearchThread();
+        invokeSearchThread.delay = delay;
+        currentSearchOperation = searchOperation;
+        currentSearchParameters.setFromParameters(searchParameters);
+        currentReplaceParameters.setFromParameters(replaceParameters);
+        invokeSearchThread.start();
     }
 
     public void cancelSearch() {
+        if (invokeSearchThread != null) {
+            invokeSearchThread.interrupt();
+        }
         if (searchThread != null) {
             searchThread.interrupt();
         }
     }
 
     public void clearSearch() {
-        SearchCondition condition = searchParameters.getCondition();
-        if (!condition.isEmpty()) {
-            condition.clear();
-            binarySearchPanel.clearSearch();
-            performSearch();
-        }
-    }
-
-    public void updatePosition(long position, long dataSize) {
-        long startPosition;
-        if (searchParameters.isSearchFromCursor()) {
-            startPosition = position;
-        } else {
-            switch (searchParameters.getSearchDirection()) {
-                case FORWARD: {
-                    startPosition = 0;
-                    break;
-                }
-                case BACKWARD: {
-                    startPosition = dataSize - 1;
-                    break;
-                }
-                default:
-                    throw CodeAreaUtils.getInvalidTypeException(searchParameters.getSearchDirection());
-            }
-        }
-        searchParameters.setStartPosition(startPosition);
+        SearchCondition condition = currentSearchParameters.getCondition();
+        condition.clear();
+        binarySearchPanel.clearSearch();
+        binarySearchService.clearMatches();
+        searchStatusListener.clearStatus();
     }
 
     @Nonnull
@@ -323,11 +354,61 @@ public class BinarySearch {
 
     public void dataChanged() {
         binarySearchService.clearMatches();
-        performSearch(500);
+        invokeSearch(currentSearchOperation, DEFAULT_DELAY);
+    }
+
+    private class InvokeSearchThread extends Thread {
+
+        private int delay = DEFAULT_DELAY;
+
+        public InvokeSearchThread() {
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(delay);
+                if (searchThread != null) {
+                    searchThread.interrupt();
+                }
+                searchThread = new SearchThread();
+                searchThread.start();
+            } catch (InterruptedException ex) {
+                // don't search
+            }
+        }
+    }
+
+    private class SearchThread extends Thread {
+
+        public SearchThread() {
+            super(() -> {
+                switch (currentSearchOperation) {
+                    case FIND:
+                        binarySearchService.performFind(currentSearchParameters, searchStatusListener);
+                        break;
+                    case FIND_AGAIN:
+                        binarySearchService.performFindAgain(searchStatusListener);
+                        break;
+                    case REPLACE:
+                        binarySearchService.performReplace(currentSearchParameters, currentReplaceParameters);
+                        break;
+                    default:
+                        throw new UnsupportedOperationException("Not supported yet.");
+                }
+            });
+        }
     }
 
     public interface PanelClosingListener {
 
         void closed();
+    }
+
+    private enum SearchOperation {
+        FIND,
+        FIND_AGAIN,
+        REPLACE,
+        REPLACE_ALL
     }
 }

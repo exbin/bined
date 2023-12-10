@@ -30,6 +30,7 @@ import javax.swing.JViewport;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
@@ -185,10 +186,6 @@ public class BinarySearchComboBoxPanel extends JPanel {
         this.valueChangedListener = valueChangedListener;
     }
 
-    public void setRunningUpdate(boolean runningUpdate) {
-        this.runningUpdate = runningUpdate;
-    }
-
     @Override
     public void requestFocus() {
         super.requestFocus();
@@ -228,6 +225,31 @@ public class BinarySearchComboBoxPanel extends JPanel {
                 codeAreaPopupMenuHandler.dropPopupMenu(".search" + postfix);
             }
         });
+    }
+
+    public void exclusiveUpdate(Runnable runnable) {
+        runningUpdate = true;
+        runnable.run();
+        runningUpdate = false;
+    }
+
+    public void clear() {
+        switch (item.getSearchMode()) {
+            case TEXT: {
+                String text = textField.getText();
+                if (!"".equals(text)) {
+                    textField.setText("");
+                }
+                break;
+            }
+            case BINARY: {
+                EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
+                if (!contentData.isEmpty()) {
+                    contentData.clear();
+                }
+                break;
+            }
+        }
     }
 
     /**

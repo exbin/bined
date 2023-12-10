@@ -22,12 +22,10 @@ import org.exbin.framework.bined.search.SearchHistoryModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -48,15 +46,8 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
-import org.exbin.auxiliary.paged_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
-import org.exbin.framework.bined.search.service.BinarySearchService;
-import org.exbin.framework.bined.search.service.BinarySearchService.FoundMatches;
-import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor search panel.
@@ -149,7 +140,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             }
 
             @Override
-            public void setItem(Object item) {
+            public void setItem(@Nullable Object item) {
                 SearchCondition condition;
                 if (item == null || item instanceof String) {
                     condition = new SearchCondition();
@@ -160,7 +151,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 } else {
                     condition = (SearchCondition) item;
                 }
-                // TODO searchParameters.setCondition(new SearchCondition(condition));
                 SearchCondition currentItem = findComboBoxEditorComponent.getItem();
                 if (item != currentItem) {
                     findComboBoxEditorComponent.setItem(condition);
@@ -286,9 +276,32 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }
 
     @Nonnull
-    public SearchParameters getFindParameters() {
+    public SearchParameters getSearchParameters() {
         SearchParameters searchParameters = new SearchParameters();
-        searchParameters.setMatchCase(multipleMatchesToggleButton.isSelected());
+        searchParameters.setMatchCase(matchCaseToggleButton.isSelected());
+        searchParameters.setMultipleMatches(multipleMatchesToggleButton.isSelected());
+        SearchParameters.SearchDirection searchDirection = control.getSearchDirection();
+        searchParameters.setSearchDirection(searchDirection);
+
+        long startPosition;
+        if (searchParameters.isSearchFromCursor()) {
+            startPosition = searchCodeArea.getCaretPosition().getDataPosition();
+        } else {
+            switch (searchDirection) {
+                case FORWARD: {
+                    startPosition = 0;
+                    break;
+                }
+                case BACKWARD: {
+                    startPosition = searchCodeArea.getDataSize() - 1;
+                    break;
+                }
+                default:
+                    throw CodeAreaUtils.getInvalidTypeException(searchDirection);
+            }
+        }
+        searchParameters.setStartPosition(startPosition);
+
         searchParameters.setCondition(new SearchCondition(findComboBoxEditorComponent.getItem()));
         return searchParameters;
     }
@@ -377,7 +390,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findTypeToolBar.setFocusable(false);
         findTypeToolBar.setName("findTypeToolBar"); // NOI18N
 
-        findTypeButton.setText("T");
+        findTypeButton.setText(resourceBundle.getString("inputType.text")); // NOI18N
         findTypeButton.setToolTipText(resourceBundle.getString("findTypeButton.toolTipText")); // NOI18N
         findTypeButton.setFocusable(false);
         findTypeButton.setMaximumSize(new java.awt.Dimension(27, 27));
@@ -429,7 +442,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findToolBar.add(nextMatchButton);
 
         matchCaseToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/case_sensitive.gif"))); // NOI18N
-        matchCaseToggleButton.setSelected(true);
         matchCaseToggleButton.setToolTipText(resourceBundle.getString("matchCaseToggleButton.toolTipText")); // NOI18N
         matchCaseToggleButton.setFocusable(false);
         matchCaseToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -533,7 +545,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         replaceTypeToolBar.setFocusable(false);
         replaceTypeToolBar.setName("replaceTypeToolBar"); // NOI18N
 
-        replaceTypeButton.setText(resourceBundle.getString("replaceTypeButton.text")); // NOI18N
+        replaceTypeButton.setText(resourceBundle.getString("inputType.text")); // NOI18N
         replaceTypeButton.setToolTipText(resourceBundle.getString("replaceTypeButton.toolTipText")); // NOI18N
         replaceTypeButton.setDefaultCapable(false);
         replaceTypeButton.setFocusable(false);
@@ -624,11 +636,11 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_nextMatchButtonActionPerformed
 
     private void multipleMatchesToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multipleMatchesToggleButtonActionPerformed
-        control.performSearch();
+        control.notifySearchChanged();
     }//GEN-LAST:event_multipleMatchesToggleButtonActionPerformed
 
     private void matchCaseToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matchCaseToggleButtonActionPerformed
-        control.performSearch();
+        control.notifySearchChanged();
     }//GEN-LAST:event_matchCaseToggleButtonActionPerformed
 
     private void findTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findTypeButtonActionPerformed
@@ -639,21 +651,21 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             condition.setSearchMode(SearchCondition.SearchMode.TEXT);
         }
 
-        findComboBoxEditor.setItem(condition);
+        findComboBoxEditorComponent.setItem(condition);
         findComboBox.setEditor(findComboBoxEditor);
         findComboBox.invalidate();
         findComboBox.repaint();
         updateFindStatus();
-        control.performSearch();
+        control.notifySearchChanged();
     }//GEN-LAST:event_findTypeButtonActionPerformed
 
     public void updateFindStatus() {
         SearchCondition condition = findComboBoxEditorComponent.getItem();
         if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            findTypeButton.setText("T");
+            findTypeButton.setText(resourceBundle.getString("inputType.text"));
             matchCaseToggleButton.setEnabled(true);
         } else {
-            findTypeButton.setText("B");
+            findTypeButton.setText(resourceBundle.getString("inputType.binary"));
             matchCaseToggleButton.setEnabled(false);
         }
     }
@@ -661,14 +673,14 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private void updateReplaceStatus() {
         SearchCondition condition = replaceComboBoxEditorComponent.getItem();
         if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            replaceTypeButton.setText("T");
+            replaceTypeButton.setText(resourceBundle.getString("inputType.text"));
         } else {
-            replaceTypeButton.setText("B");
+            replaceTypeButton.setText(resourceBundle.getString("inputType.binary"));
         }
     }
 
     public void clearSearch() {
-        findComboBox.getEditor().setItem(new SearchCondition());
+        findComboBoxEditorComponent.clear();
     }
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
@@ -683,10 +695,11 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             condition.setSearchMode(SearchCondition.SearchMode.TEXT);
         }
 
-        replaceComboBoxEditor.setItem(condition);
+        replaceComboBoxEditorComponent.setItem(condition);
         replaceComboBox.setEditor(replaceComboBoxEditor);
         replaceComboBox.invalidate();
         replaceComboBox.repaint();
+        updateReplaceStatus();
     }//GEN-LAST:event_replaceTypeButtonActionPerformed
 
     private void replaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceButtonActionPerformed
@@ -734,45 +747,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void comboBoxValueChanged() {
-        SearchCondition condition = getFindParameters().getCondition();
-        SearchCondition searchCondition = (SearchCondition) findComboBox.getEditor().getItem();
-
-        switch (searchCondition.getSearchMode()) {
-            case TEXT: {
-                String searchText = searchCondition.getSearchText();
-                if (searchText.isEmpty()) {
-                    condition.setSearchText(searchText);
-                    control.performFind();
-                    return;
-                }
-
-                if (searchText.equals(condition.getSearchText())) {
-                    return;
-                }
-
-                condition.setSearchText(searchText);
-                break;
-            }
-            case BINARY: {
-                EditableBinaryData searchData = (EditableBinaryData) searchCondition.getBinaryData();
-                if (searchData == null || searchData.isEmpty()) {
-                    condition.setBinaryData(null);
-                    control.performFind();
-                    return;
-                }
-
-                if (searchData.equals(condition.getBinaryData())) {
-                    return;
-                }
-
-                ByteArrayEditableData data = new ByteArrayEditableData();
-                data.insert(0, searchData);
-                condition.setBinaryData(data);
-                break;
-            }
-        }
-        // TODO updatePosition(searchCodeArea.getCaretPosition().getDataPosition(), searchCodeArea.getDataSize());
-        control.performSearch(500);
+        control.notifySearchChanging();
     }
 
     public void setApplication(XBApplication application) {
@@ -786,6 +761,10 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
         findComboBoxEditorComponent.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler, "");
+    }
+
+    public void updateSearchHistory(SearchCondition condition) {
+        findComboBoxEditorComponent.exclusiveUpdate(() -> ((SearchHistoryModel) findComboBox.getModel()).addSearchCondition(condition));
     }
 
     public interface Control {
@@ -802,9 +781,21 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         void performReplaceAll();
 
-        void performSearch();
+        /**
+         * Parameters of search have changed.
+         */
+        void notifySearchChanged();
 
-        void performSearch(final int delay);
+        /**
+         * Parameters of search are changing which migth not lead to immediate
+         * search change.
+         * <p>
+         * Typically text typing.
+         */
+        void notifySearchChanging();
+
+        @Nonnull
+        SearchParameters.SearchDirection getSearchDirection();
 
         void searchOptions();
 

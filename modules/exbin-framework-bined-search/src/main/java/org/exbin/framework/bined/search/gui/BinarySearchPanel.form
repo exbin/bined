@@ -93,7 +93,9 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="findTypeButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="T"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="inputType.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="findTypeButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -180,7 +182,6 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/case_sensitive.gif"/>
                 </Property>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="matchCaseToggleButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -337,7 +338,7 @@
             <Component class="javax.swing.JButton" name="replaceTypeButton">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="replaceTypeButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="inputType.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="replaceTypeButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
