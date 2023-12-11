@@ -30,7 +30,6 @@ import javax.swing.JViewport;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.exbin.auxiliary.paged_data.BinaryData;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;

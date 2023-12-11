@@ -97,37 +97,28 @@ public class BinarySearchServiceImpl implements BinarySearchService {
     private void searchForBinaryData(SearchParameters searchParameters, SearchStatusListener searchStatusListener) {
         ExtendedHighlightNonAsciiCodeAreaPainter painter = (ExtendedHighlightNonAsciiCodeAreaPainter) codeArea.getPainter();
         SearchCondition condition = searchParameters.getCondition();
-        long position = codeArea.getCaretPosition().getDataPosition();
-        ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch currentMatch = painter.getCurrentMatch();
-
-        if (currentMatch != null) {
-            if (currentMatch.getPosition() == position) {
-                position++;
-            }
-            painter.clearMatches();
-        } else if (!searchParameters.isSearchFromCursor()) {
-            position = 0;
-        }
+        long position = searchParameters.getStartPosition();
 
         BinaryData searchData = condition.getBinaryData();
+        long searchDataSize = searchData.getDataSize();
         BinaryData data = codeArea.getContentData();
 
         List<ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch> foundMatches = new ArrayList<>();
 
         long dataSize = data.getDataSize();
-        while (position < dataSize - searchData.getDataSize()) {
+        while (position <= dataSize - searchDataSize) {
             int matchLength = 0;
-            while (matchLength < searchData.getDataSize()) {
+            while (matchLength < searchDataSize) {
                 if (data.getByte(position + matchLength) != searchData.getByte(matchLength)) {
                     break;
                 }
                 matchLength++;
             }
 
-            if (matchLength == searchData.getDataSize()) {
+            if (matchLength == searchDataSize) {
                 ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch match = new ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch();
                 match.setPosition(position);
-                match.setLength(searchData.getDataSize());
+                match.setLength(searchDataSize);
                 foundMatches.add(match);
 
                 if (foundMatches.size() == 100 || !searchParameters.isMultipleMatches()) {

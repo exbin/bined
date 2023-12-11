@@ -470,7 +470,7 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public AbstractAction getRowWrappingAction() {
+    public RowWrappingAction getRowWrappingAction() {
         if (rowWrappingAction == null) {
             ensureSetup();
             rowWrappingAction = new RowWrappingAction();
@@ -503,7 +503,7 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public AbstractAction getGoToPositionAction() {
+    public GoToPositionAction getGoToPositionAction() {
         if (goToPositionAction == null) {
             ensureSetup();
             goToPositionAction = new GoToPositionAction();
@@ -524,7 +524,7 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public AbstractAction getEditSelectionAction() {
+    public EditSelectionAction getEditSelectionAction() {
         if (editSelectionAction == null) {
             ensureSetup();
             editSelectionAction = new EditSelectionAction();
@@ -535,7 +535,7 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public AbstractAction getPropertiesAction() {
+    public PropertiesAction getPropertiesAction() {
         if (propertiesAction == null) {
             ensureSetup();
             propertiesAction = new PropertiesAction();
@@ -575,7 +575,7 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    private AbstractAction getReloadFileAction() {
+    private ReloadFileAction getReloadFileAction() {
         if (reloadFileAction == null) {
             ensureSetup();
             reloadFileAction = new ReloadFileAction();
@@ -586,7 +586,7 @@ public class BinedModule implements XBApplicationModule {
     }
 
     @Nonnull
-    public AbstractAction getPrintAction() {
+    public PrintAction getPrintAction() {
         if (printAction == null) {
             ensureSetup();
             printAction = new PrintAction();
