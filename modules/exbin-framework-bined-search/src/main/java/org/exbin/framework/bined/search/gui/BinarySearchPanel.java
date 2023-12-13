@@ -48,6 +48,9 @@ import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.paged_data.ByteArrayEditableData;
 import org.exbin.bined.CodeAreaUtils;
+import org.exbin.bined.color.CodeAreaBasicColors;
+import org.exbin.bined.swing.extended.ExtendedCodeAreaPainter;
+import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 
 /**
  * Binary editor search panel.
@@ -84,6 +87,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         searchCodeArea.setLayoutProfile(layoutProfile);
         ExtendedCodeAreaThemeProfile themeProfile = searchCodeArea.getThemeProfile();
         themeProfile.setBackgroundPaintMode(ExtendedBackgroundPaintMode.PLAIN);
+        searchCodeArea.setThemeProfile(themeProfile);
 
         searchCodeArea.setBorder(null);
         searchCodeArea.setLayoutProfile(layoutProfile);
@@ -98,6 +102,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             public void keyPressed(@Nonnull KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     control.performEscape();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    control.performFind();
                 }
             }
         };
@@ -125,9 +132,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                     } else {
                         backgroundColor = list.getBackground();
                     }
-// TODO                    ColorsGroup mainColors = new ColorsGroup(hexadecimalRenderer.getMainColors());
-//                    mainColors.setBothBackgroundColors(backgroundColor);
-//                    hexadecimalRenderer.setMainColors(mainColors);
+                    ExtendedCodeAreaPainter painter = (ExtendedCodeAreaPainter) searchCodeArea.getPainter();
+                    ExtendedCodeAreaColorProfile colorsProfile = (ExtendedCodeAreaColorProfile) painter.getColorsProfile();
+                    colorsProfile.setColor(CodeAreaBasicColors.TEXT_BACKGROUND, backgroundColor);
                     return searchCodeArea;
                 }
             }
@@ -205,9 +212,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                     } else {
                         backgroundColor = list.getBackground();
                     }
-// TODO                    ColorsGroup mainColors = new ColorsGroup(hexadecimalRenderer.getMainColors());
-//                    mainColors.setBothBackgroundColors(backgroundColor);
-//                    hexadecimalRenderer.setMainColors(mainColors);
+                    ExtendedCodeAreaPainter painter = (ExtendedCodeAreaPainter) searchCodeArea.getPainter();
+                    ExtendedCodeAreaColorProfile colorsProfile = (ExtendedCodeAreaColorProfile) painter.getColorsProfile();
+                    colorsProfile.setColor(CodeAreaBasicColors.TEXT_BACKGROUND, backgroundColor);
                     return searchCodeArea;
                 }
             }
@@ -264,11 +271,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     public void setControl(Control control) {
         this.control = control;
-    }
-
-    @Nonnull
-    public ExtCodeArea getCodeArea() {
-        return searchCodeArea;
     }
 
     public void setInfoLabel(String text) {
@@ -405,7 +407,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findTypeToolBar.add(findTypeButton);
 
         findComboBox.setEditable(true);
-        findComboBox.setSelectedItem("");
         findComboBox.setName("findComboBox"); // NOI18N
 
         findToolBar.setBorder(null);
@@ -563,7 +564,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         replaceTypeToolBar.add(replaceTypeButton);
 
         replaceComboBox.setEditable(true);
-        replaceComboBox.setSelectedItem("");
         replaceComboBox.setName("replaceComboBox"); // NOI18N
 
         replaceToolBar.setBorder(null);

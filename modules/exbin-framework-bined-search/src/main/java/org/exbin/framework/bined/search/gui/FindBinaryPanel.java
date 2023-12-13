@@ -114,9 +114,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                     } else {
                         backgroundColor = list.getBackground();
                     }
-// TODO                    ColorsGroup mainColors = new ColorsGroup(findHexadecimalRenderer.getMainColors());
-//                    mainColors.setBothBackgroundColors(backgroundColor);
-//                    findHexadecimalRenderer.setMainColors(mainColors);
+                    findCodeArea.setBackground(backgroundColor);
                     return findCodeArea;
                 }
             }

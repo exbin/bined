@@ -207,7 +207,6 @@ public class BinarySearch {
                 findBinaryPanel.setSelected();
                 findBinaryPanel.setSearchHistory(searchHistory);
                 findBinaryPanel.setSearchParameters(currentSearchParameters);
-                // TODO replaceParameters.setPerformReplace(replaceMode);
                 findBinaryPanel.setReplaceParameters(currentReplaceParameters);
                 findBinaryPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
                 DefaultControlPanel controlPanel = new DefaultControlPanel(findBinaryPanel.getResourceBundle());

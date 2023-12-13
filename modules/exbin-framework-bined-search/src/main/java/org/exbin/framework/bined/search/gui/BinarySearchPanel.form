@@ -120,9 +120,6 @@
         <Component class="javax.swing.JComboBox" name="findComboBox">
           <Properties>
             <Property name="editable" type="boolean" value="true"/>
-            <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&quot;" type="code"/>
-            </Property>
             <Property name="name" type="java.lang.String" value="findComboBox" noResource="true"/>
           </Properties>
           <AuxValues>
@@ -367,9 +364,6 @@
         <Component class="javax.swing.JComboBox" name="replaceComboBox">
           <Properties>
             <Property name="editable" type="boolean" value="true"/>
-            <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&quot;" type="code"/>
-            </Property>
             <Property name="name" type="java.lang.String" value="replaceComboBox" noResource="true"/>
           </Properties>
           <AuxValues>
