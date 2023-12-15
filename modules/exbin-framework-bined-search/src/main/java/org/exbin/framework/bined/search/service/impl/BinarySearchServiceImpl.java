@@ -20,6 +20,7 @@ import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.swing.extended.ExtCodeArea;
@@ -41,7 +42,9 @@ import org.exbin.bined.highlight.swing.extended.ExtendedHighlightCodeAreaPainter
 @ParametersAreNonnullByDefault
 public class BinarySearchServiceImpl implements BinarySearchService {
 
+    private static final int MAX_MATCHES_COUNT = 100;
     private final ExtCodeArea codeArea;
+    private final SearchParameters lastSearchParameters = new SearchParameters();
 
     public BinarySearchServiceImpl(ExtCodeArea codeArea) {
         this.codeArea = codeArea;
@@ -121,7 +124,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 match.setLength(searchDataSize);
                 foundMatches.add(match);
 
-                if (foundMatches.size() == 100 || !searchParameters.isMultipleMatches()) {
+                if (foundMatches.size() == MAX_MATCHES_COUNT || searchParameters.getMatchMode() == SearchParameters.MatchMode.SINGLE) {
                     break;
                 }
             }
@@ -135,7 +138,8 @@ public class BinarySearchServiceImpl implements BinarySearchService {
             ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch firstMatch = Objects.requireNonNull(painter.getCurrentMatch());
             codeArea.revealPosition(firstMatch.getPosition(), 0, codeArea.getActiveSection());
         }
-        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : 0));
+        lastSearchParameters.setFromParameters(searchParameters);
+        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : 0), searchParameters.getMatchMode());
         codeArea.repaint();
     }
 
@@ -198,7 +202,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 match.setLength(matchLength);
                 foundMatches.add(match);
 
-                if (foundMatches.size() == 100 || !searchParameters.isMultipleMatches()) {
+                if (foundMatches.size() == MAX_MATCHES_COUNT || searchParameters.getMatchMode() == SearchParameters.MatchMode.SINGLE) {
                     break;
                 }
             }
@@ -223,7 +227,8 @@ public class BinarySearchServiceImpl implements BinarySearchService {
             ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch firstMatch = painter.getCurrentMatch();
             codeArea.revealPosition(firstMatch.getPosition(), 0, codeArea.getActiveSection());
         }
-        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : 0));
+        lastSearchParameters.setFromParameters(searchParameters);
+        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : 0), searchParameters.getMatchMode());
         codeArea.repaint();
     }
 
@@ -244,7 +249,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
             int currentMatchIndex = painter.getCurrentMatchIndex();
             setMatchPosition(currentMatchIndex < matchesCount - 1 ? currentMatchIndex + 1 : 0);
             List<ExtendedHighlightCodeAreaPainter.SearchMatch> foundMatches = painter.getMatches();
-            searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), painter.getCurrentMatchIndex()));
+            searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), painter.getCurrentMatchIndex()), lastSearchParameters.getMatchMode());
         }
     }
 
@@ -264,6 +269,12 @@ public class BinarySearchServiceImpl implements BinarySearchService {
             painter.getMatches().remove(currentMatch);
             codeArea.repaint();
         }
+    }
+
+    @Nonnull
+    @Override
+    public SearchParameters getLastSearchParameters() {
+        return lastSearchParameters;
     }
 
     @Override

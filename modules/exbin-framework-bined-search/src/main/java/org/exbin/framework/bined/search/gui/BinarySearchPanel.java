@@ -196,7 +196,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
             @Nonnull
             @Override
-            public Component getListCellRendererComponent(JList<? extends SearchCondition> list, SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(@Nonnull JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
                     return panel;
                 }
@@ -220,14 +220,14 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             }
         });
         replaceComboBoxEditor = new ComboBoxEditor() {
-
+            @Nonnull
             @Override
             public Component getEditorComponent() {
                 return replaceComboBoxEditorComponent;
             }
 
             @Override
-            public void setItem(Object item) {
+            public void setItem(@Nullable Object item) {
                 SearchCondition condition;
                 if (item == null || item instanceof String) {
                     condition = new SearchCondition();
@@ -281,7 +281,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     public SearchParameters getSearchParameters() {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.setMatchCase(matchCaseToggleButton.isSelected());
-        searchParameters.setMultipleMatches(multipleMatchesToggleButton.isSelected());
+        searchParameters.setMatchMode(SearchParameters.MatchMode.fromBoolean(multipleMatchesToggleButton.isSelected()));
         SearchParameters.SearchDirection searchDirection = control.getSearchDirection();
         searchParameters.setSearchDirection(searchDirection);
 

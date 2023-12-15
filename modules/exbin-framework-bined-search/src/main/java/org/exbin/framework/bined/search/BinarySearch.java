@@ -72,14 +72,16 @@ public class BinarySearch {
     public BinarySearch() {
         searchStatusListener = new BinarySearchService.SearchStatusListener() {
             @Override
-            public void setStatus(@Nonnull BinarySearchService.FoundMatches foundMatches) {
+            public void setStatus(@Nonnull BinarySearchService.FoundMatches foundMatches, @Nonnull SearchParameters.MatchMode matchMode) {
                 BinarySearch.this.foundMatches = foundMatches;
                 switch (foundMatches.getMatchesCount()) {
                     case 0:
                         binarySearchPanel.setInfoLabel(resourceBundle.getString("searchStatus.noMatch"));
                         break;
                     case 1:
-                        binarySearchPanel.setInfoLabel(resourceBundle.getString("searchStatus.singleMatch"));
+                        binarySearchPanel.setInfoLabel(
+                                matchMode == SearchParameters.MatchMode.MULTIPLE ? resourceBundle.getString("searchStatus.singleMatch") : resourceBundle.getString("searchStatus.matchFound")
+                        );
                         break;
                     default:
                         binarySearchPanel.setInfoLabel(
@@ -111,14 +113,14 @@ public class BinarySearch {
             public void prevMatch() {
                 foundMatches.prev();
                 binarySearchService.setMatchPosition(foundMatches.getMatchPosition());
-                searchStatusListener.setStatus(foundMatches);
+                searchStatusListener.setStatus(foundMatches, binarySearchService.getLastSearchParameters().getMatchMode());
             }
 
             @Override
             public void nextMatch() {
                 foundMatches.next();
                 binarySearchService.setMatchPosition(foundMatches.getMatchPosition());
-                searchStatusListener.setStatus(foundMatches);
+                searchStatusListener.setStatus(foundMatches, binarySearchService.getLastSearchParameters().getMatchMode());
             }
 
             @Override

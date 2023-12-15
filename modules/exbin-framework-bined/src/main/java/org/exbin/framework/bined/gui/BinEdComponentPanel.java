@@ -25,6 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
+import org.exbin.bined.operation.undo.EmptyBinaryDataUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.auxiliary.paged_data.BinaryData;
@@ -54,8 +55,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setPainter(new BinEdCodeAreaPainter(codeArea));
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
-        // TODO: Use empty undo handler instead
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new CodeAreaUndoHandler(codeArea));
+        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new EmptyBinaryDataUndoHandler());
         codeArea.setCommandHandler(commandHandler);
 
         add(codeArea);

@@ -155,7 +155,7 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
                 contentData = editorComponent.getContentData();
             }
             if (contentData instanceof DeltaDocument) {
-                // TODO freeze window / replace with progress bar
+                // TODO freezes window / replace with progress bar
                 DeltaDocument document = (DeltaDocument) contentData;
                 FileDataSource fileSource = document.getFileSource();
                 if (fileSource == null || !file.equals(fileSource.getFile())) {

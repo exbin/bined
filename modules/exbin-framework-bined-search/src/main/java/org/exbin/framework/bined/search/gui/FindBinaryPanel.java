@@ -531,14 +531,14 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         result.setCondition((SearchCondition) findComboBox.getEditor().getItem());
         result.setSearchFromCursor(searchFromCursorCheckBox.isSelected());
         result.setMatchCase(matchCaseCheckBox.isSelected());
-        result.setMultipleMatches(multipleMatchesCheckBox.isSelected());
+        result.setMatchMode(SearchParameters.MatchMode.fromBoolean(multipleMatchesCheckBox.isSelected()));
         return result;
     }
 
     public void setSearchParameters(SearchParameters parameters) {
         searchFromCursorCheckBox.setSelected(parameters.isSearchFromCursor());
         matchCaseCheckBox.setSelected(parameters.isMatchCase());
-        multipleMatchesCheckBox.setSelected(parameters.isMultipleMatches());
+        multipleMatchesCheckBox.setSelected(parameters.getMatchMode() == SearchParameters.MatchMode.MULTIPLE);
         findComboBoxEditorComponent.setItem(parameters.getCondition());
         findComboBox.setEditor(findComboBoxEditor);
         findComboBox.repaint();
@@ -575,7 +575,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
         this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
-        findComboBoxEditorComponent.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler, "FindHexPanel");
+        findComboBoxEditorComponent.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler, "FindBinaryPanel");
     }
 
     public void detachMenu() {

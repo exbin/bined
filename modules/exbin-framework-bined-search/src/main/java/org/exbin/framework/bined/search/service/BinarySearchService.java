@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.search.service;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.search.ReplaceParameters;
 import org.exbin.framework.bined.search.SearchParameters;
@@ -30,17 +31,20 @@ public interface BinarySearchService {
     void performFind(SearchParameters dialogSearchParameters, SearchStatusListener searchStatusListener);
 
     void setMatchPosition(int matchPosition);
-    
+
     void performFindAgain(SearchStatusListener searchStatusListener);
 
     void performReplace(SearchParameters searchParameters, ReplaceParameters replaceParameters);
+
+    @Nonnull
+    SearchParameters getLastSearchParameters();
 
     void clearMatches();
 
     @ParametersAreNonnullByDefault
     public interface SearchStatusListener {
 
-        void setStatus(FoundMatches foundMatches);
+        void setStatus(FoundMatches foundMatches, SearchParameters.MatchMode matchMode);
 
         void clearStatus();
     }
