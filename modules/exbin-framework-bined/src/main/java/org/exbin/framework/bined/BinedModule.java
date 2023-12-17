@@ -284,7 +284,13 @@ public class BinedModule implements XBApplicationModule {
     public void updateClipboardActionStatus() {
         if (clipboardCodeActions != null) {
             Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            CodeAreaCore codeArea = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea() : null;
+            CodeAreaCore codeArea = null;
+            if (activeFile.isPresent()) {
+                FileHandler fileHandler = activeFile.get();
+                if (fileHandler instanceof BinEdFileHandler) {
+                    codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
+                }
+            }
             clipboardCodeActions.updateForActiveCodeArea(codeArea);
         }
     }

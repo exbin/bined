@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.ComboBoxEditor;
@@ -256,6 +257,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         searchFromCursorCheckBox = new javax.swing.JCheckBox();
         matchCaseCheckBox = new javax.swing.JCheckBox();
         multipleMatchesCheckBox = new javax.swing.JCheckBox();
+        searchBackwardCheckBox = new javax.swing.JCheckBox();
         replacePanel = new javax.swing.JPanel();
         performReplaceCheckBox = new javax.swing.JCheckBox();
         replaceLabel = new javax.swing.JLabel();
@@ -299,6 +301,8 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         multipleMatchesCheckBox.setSelected(true);
         multipleMatchesCheckBox.setText(resourceBundle.getString("multipleMatchesCheckBox.text")); // NOI18N
 
+        searchBackwardCheckBox.setText(resourceBundle.getString("searchBackwardCheckBox.text")); // NOI18N
+
         javax.swing.GroupLayout findPanelLayout = new javax.swing.GroupLayout(findPanel);
         findPanel.setLayout(findPanelLayout);
         findPanelLayout.setHorizontalGroup(
@@ -317,7 +321,8 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                     .addComponent(multipleMatchesCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                     .addGroup(findPanelLayout.createSequentialGroup()
                         .addComponent(findLabel)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(searchBackwardCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
                 .addContainerGap())
         );
         findPanelLayout.setVerticalGroup(
@@ -336,6 +341,8 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                 .addComponent(matchCaseCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(multipleMatchesCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchBackwardCheckBox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -510,10 +517,12 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     private javax.swing.JButton replaceMultilineButton;
     private javax.swing.JPanel replacePanel;
     private javax.swing.JButton replaceTypeButton;
+    private javax.swing.JCheckBox searchBackwardCheckBox;
     private javax.swing.JCheckBox searchFromCursorCheckBox;
     private javax.swing.JButton searchTypeButton;
     // End of variables declaration//GEN-END:variables
 
+    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -526,12 +535,14 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         return performReplaceCheckBox.isSelected();
     }
 
+    @Nonnull
     public SearchParameters getSearchParameters() {
         SearchParameters result = new SearchParameters();
         result.setCondition((SearchCondition) findComboBox.getEditor().getItem());
         result.setSearchFromCursor(searchFromCursorCheckBox.isSelected());
         result.setMatchCase(matchCaseCheckBox.isSelected());
         result.setMatchMode(SearchParameters.MatchMode.fromBoolean(multipleMatchesCheckBox.isSelected()));
+        result.setSearchDirection(searchBackwardCheckBox.isSelected() ? SearchParameters.SearchDirection.BACKWARD : SearchParameters.SearchDirection.FORWARD);
         return result;
     }
 
@@ -539,12 +550,14 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         searchFromCursorCheckBox.setSelected(parameters.isSearchFromCursor());
         matchCaseCheckBox.setSelected(parameters.isMatchCase());
         multipleMatchesCheckBox.setSelected(parameters.getMatchMode() == SearchParameters.MatchMode.MULTIPLE);
+        searchBackwardCheckBox.setSelected(parameters.getSearchDirection() == SearchParameters.SearchDirection.BACKWARD);
         findComboBoxEditorComponent.setItem(parameters.getCondition());
         findComboBox.setEditor(findComboBoxEditor);
         findComboBox.repaint();
         updateFindStatus();
     }
 
+    @Nonnull
     public ReplaceParameters getReplaceParameters() {
         ReplaceParameters result = new ReplaceParameters();
         result.setCondition((SearchCondition) replaceComboBox.getEditor().getItem());

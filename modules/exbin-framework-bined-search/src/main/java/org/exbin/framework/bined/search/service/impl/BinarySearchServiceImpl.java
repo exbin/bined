@@ -62,21 +62,38 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         }
 
         long position;
-        if (searchParameters.isSearchFromCursor()) {
-            position = codeArea.getCaretPosition().getDataPosition();
-        } else {
-            switch (searchParameters.getSearchDirection()) {
-                case FORWARD: {
+        switch (searchParameters.getSearchDirection()) {
+            case FORWARD: {
+                if (searchParameters.isSearchFromCursor()) {
+                    position = codeArea.getCaretPosition().getDataPosition();
+                } else {
                     position = 0;
-                    break;
                 }
-                case BACKWARD: {
-                    position = codeArea.getDataSize() - 1;
-                    break;
-                }
-                default:
-                    throw CodeAreaUtils.getInvalidTypeException(searchParameters.getSearchDirection());
+                break;
             }
+            case BACKWARD: {
+                if (searchParameters.isSearchFromCursor()) {
+                    position = codeArea.getCaretPosition().getDataPosition() - 1;
+                } else {
+                    long searchDataSize;
+                    switch (condition.getSearchMode()) {
+                        case TEXT: {
+                            searchDataSize = condition.getSearchText().length();
+                            break;
+                        }
+                        case BINARY: {
+                            searchDataSize = condition.getBinaryData().getDataSize();
+                            break;
+                        }
+                        default:
+                            throw CodeAreaUtils.getInvalidTypeException(condition.getSearchMode());
+                    }
+                    position = codeArea.getDataSize() - searchDataSize;
+                }
+                break;
+            }
+            default:
+                throw CodeAreaUtils.getInvalidTypeException(searchParameters.getSearchDirection());
         }
         searchParameters.setStartPosition(position);
 
@@ -109,7 +126,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         List<ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch> foundMatches = new ArrayList<>();
 
         long dataSize = data.getDataSize();
-        while (position <= dataSize - searchDataSize) {
+        while (position >= 0 && position <= dataSize - searchDataSize) {
             int matchLength = 0;
             while (matchLength < searchDataSize) {
                 if (data.getByte(position + matchLength) != searchData.getByte(matchLength)) {
@@ -122,7 +139,11 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch match = new ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch();
                 match.setPosition(position);
                 match.setLength(searchDataSize);
-                foundMatches.add(match);
+                if (searchParameters.getSearchDirection() == SearchParameters.SearchDirection.BACKWARD) {
+                    foundMatches.add(0, match);
+                } else {
+                    foundMatches.add(match);
+                }
 
                 if (foundMatches.size() == MAX_MATCHES_COUNT || searchParameters.getMatchMode() == SearchParameters.MatchMode.SINGLE) {
                     break;
@@ -134,12 +155,16 @@ public class BinarySearchServiceImpl implements BinarySearchService {
 
         painter.setMatches(foundMatches);
         if (!foundMatches.isEmpty()) {
-            painter.setCurrentMatchIndex(0);
+            if (searchParameters.getSearchDirection() == SearchParameters.SearchDirection.BACKWARD) {
+                painter.setCurrentMatchIndex(foundMatches.size() - 1);
+            } else {
+                painter.setCurrentMatchIndex(0);
+            }
             ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch firstMatch = Objects.requireNonNull(painter.getCurrentMatch());
             codeArea.revealPosition(firstMatch.getPosition(), 0, codeArea.getActiveSection());
         }
         lastSearchParameters.setFromParameters(searchParameters);
-        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : 0), searchParameters.getMatchMode());
+        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : painter.getCurrentMatchIndex()), searchParameters.getMatchMode());
         codeArea.repaint();
     }
 
@@ -157,6 +182,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         } else {
             findText = condition.getSearchText().toLowerCase();
         }
+        long searchDataSize = findText.length();
         BinaryData data = codeArea.getContentData();
 
         List<ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch> foundMatches = new ArrayList<>();
@@ -171,10 +197,10 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         }
         byte[] charData = new byte[maxBytesPerChar];
         long dataSize = data.getDataSize();
-        while (position <= dataSize - findText.length()) {
+        while (position >= 0 && position <= dataSize - searchDataSize) {
             int matchCharLength = 0;
             int matchLength = 0;
-            while (matchCharLength < findText.length()) {
+            while (matchCharLength < searchDataSize) {
                 long searchPosition = position + matchLength;
                 int bytesToUse = maxBytesPerChar;
                 if (searchPosition + bytesToUse > dataSize) {
@@ -200,7 +226,11 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch match = new ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch();
                 match.setPosition(position);
                 match.setLength(matchLength);
-                foundMatches.add(match);
+                if (searchParameters.getSearchDirection() == SearchParameters.SearchDirection.BACKWARD) {
+                    foundMatches.add(0, match);
+                } else {
+                    foundMatches.add(match);
+                }
 
                 if (foundMatches.size() == MAX_MATCHES_COUNT || searchParameters.getMatchMode() == SearchParameters.MatchMode.SINGLE) {
                     break;
@@ -223,12 +253,16 @@ public class BinarySearchServiceImpl implements BinarySearchService {
 
         painter.setMatches(foundMatches);
         if (!foundMatches.isEmpty()) {
-            painter.setCurrentMatchIndex(0);
+            if (searchParameters.getSearchDirection() == SearchParameters.SearchDirection.BACKWARD) {
+                painter.setCurrentMatchIndex(foundMatches.size() - 1);
+            } else {
+                painter.setCurrentMatchIndex(0);
+            }
             ExtendedHighlightNonAsciiCodeAreaPainter.SearchMatch firstMatch = painter.getCurrentMatch();
             codeArea.revealPosition(firstMatch.getPosition(), 0, codeArea.getActiveSection());
         }
         lastSearchParameters.setFromParameters(searchParameters);
-        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : 0), searchParameters.getMatchMode());
+        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), foundMatches.isEmpty() ? -1 : painter.getCurrentMatchIndex()), searchParameters.getMatchMode());
         codeArea.repaint();
     }
 
@@ -244,12 +278,44 @@ public class BinarySearchServiceImpl implements BinarySearchService {
     @Override
     public void performFindAgain(SearchStatusListener searchStatusListener) {
         ExtendedHighlightNonAsciiCodeAreaPainter painter = (ExtendedHighlightNonAsciiCodeAreaPainter) codeArea.getPainter();
-        int matchesCount = painter.getMatches().size();
-        if (matchesCount > 1) {
-            int currentMatchIndex = painter.getCurrentMatchIndex();
-            setMatchPosition(currentMatchIndex < matchesCount - 1 ? currentMatchIndex + 1 : 0);
-            List<ExtendedHighlightCodeAreaPainter.SearchMatch> foundMatches = painter.getMatches();
-            searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), painter.getCurrentMatchIndex()), lastSearchParameters.getMatchMode());
+        List<ExtendedHighlightCodeAreaPainter.SearchMatch> foundMatches = painter.getMatches();
+        int matchesCount = foundMatches.size();
+        if (matchesCount > 0) {
+            switch (lastSearchParameters.getMatchMode()) {
+                case MULTIPLE:
+                    if (matchesCount > 1) {
+                        int currentMatchIndex = painter.getCurrentMatchIndex();
+                        setMatchPosition(currentMatchIndex < matchesCount - 1 ? currentMatchIndex + 1 : 0);
+                        searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), painter.getCurrentMatchIndex()), lastSearchParameters.getMatchMode());
+                    }
+
+                    break;
+                case SINGLE:
+                    switch (lastSearchParameters.getSearchDirection()) {
+                        case FORWARD:
+                            lastSearchParameters.setStartPosition(foundMatches.get(0).getPosition() + 1);
+                            break;
+                        case BACKWARD:
+                            ExtendedHighlightCodeAreaPainter.SearchMatch match = foundMatches.get(0);
+                            lastSearchParameters.setStartPosition(match.getPosition() - 1);
+                            break;
+                    }
+
+                    SearchCondition condition = lastSearchParameters.getCondition();
+                    switch (condition.getSearchMode()) {
+                        case TEXT: {
+                            searchForText(lastSearchParameters, searchStatusListener);
+                            break;
+                        }
+                        case BINARY: {
+                            searchForBinaryData(lastSearchParameters, searchStatusListener);
+                            break;
+                        }
+                        default:
+                            throw CodeAreaUtils.getInvalidTypeException(condition.getSearchMode());
+                    }
+                    break;
+            }
         }
     }
 
