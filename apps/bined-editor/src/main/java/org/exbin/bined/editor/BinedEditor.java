@@ -212,7 +212,7 @@ public class BinedEditor {
                     binedCompareModule.registerToolsOptionsMenuActions();
                     binedModule.registerEditSelectionAction();
                     binedModule.registerClipboardCodeActions();
-                    binedModule.registerOptionsMenuPanels();
+                    binedModule.registerEncodings();
                     binedModule.registerGoToPosition();
                     binedSearchModule.registerEditFindMenuActions();
                     binedBookmarksModule.registerBookmarksMenuActions();

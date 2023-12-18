@@ -376,12 +376,12 @@ public class BinedModule implements XBApplicationModule {
         }
     }
 
-    public void registerOptionsMenuPanels() {
+    public void registerEncodings() {
         getEncodingsHandler();
         encodingsHandler.rebuildEncodings();
 
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, encodingsHandler.getToolsEncodingMenu(), new MenuPosition(PositionMode.TOP_LAST));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, encodingsHandler.getToolsEncodingMenu(), new MenuPosition(PositionMode.TOP_LAST));
     }
 
     public void registerOptionsPanels() {
@@ -680,7 +680,7 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getCodeAreaFontAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getCodeAreaFontAction(), new MenuPosition(PositionMode.BOTTOM));
     }
 
     public void registerClipboardCodeActions() {
