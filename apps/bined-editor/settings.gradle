@@ -13,6 +13,7 @@ if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined-operation'
     include ':modules:exbin-framework-bined-operation-bouncycastle'
     include ':modules:exbin-framework-bined-bookmarks'
+    include ':modules:exbin-framework-bined-makro'
     include ':modules:exbin-framework-bined-compare'
     include ':modules:exbin-framework-bined-inspector'
     include ':modules:exbin-framework-bined-tool-content'

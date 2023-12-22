@@ -15,16 +15,23 @@
  */
 package org.exbin.framework.bined.makro;
 
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor makro support module.
@@ -40,6 +47,8 @@ public class BinedMakroModule implements XBApplicationModule {
 
     private XBApplication application;
     private EditorProvider editorProvider;
+
+    private MakrosManager makrosManager;
 
     public BinedMakroModule() {
     }
@@ -67,5 +76,51 @@ public class BinedMakroModule implements XBApplicationModule {
         }
 
         return resourceBundle;
+    }
+
+    @Nonnull
+    public EditorProvider getEditorProvider() {
+        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
+    }
+
+    public void registerMakrosMenuActions() {
+        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getMakrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+    }
+
+    public void registerBookmarksPopupMenuActions() {
+        getMakrosManager().registerMakrosPopupMenuActions();
+    }
+
+    public void registerMakrosComponentActions(JComponent component) {
+        getMakrosManager().registerMakroComponentActions(component);
+    }
+
+    @Nonnull
+    public JMenu getMakrosMenu() {
+        return getMakrosManager().getMakrosMenu();
+    }
+
+    @Nonnull
+    public MakrosManager getMakrosManager() {
+        if (makrosManager == null) {
+            ensureSetup();
+
+            makrosManager = new MakrosManager();
+            makrosManager.setApplication(this.application);
+            makrosManager.setEditorProvider(editorProvider);
+            makrosManager.init();
+        }
+        return makrosManager;
+    }
+
+    private void ensureSetup() {
+        if (editorProvider == null) {
+            getEditorProvider();
+        }
+
+        if (resourceBundle == null) {
+            getResourceBundle();
+        }
     }
 }

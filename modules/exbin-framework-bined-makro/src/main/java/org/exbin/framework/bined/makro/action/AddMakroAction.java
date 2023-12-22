@@ -16,84 +16,74 @@
 package org.exbin.framework.bined.makro.action;
 
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.bined.makro.BinedMakroModule;
-import org.exbin.framework.bined.makro.MakrosManager;
-import org.exbin.framework.bined.makro.gui.MakrosManagerPanel;
+import org.exbin.framework.bined.makro.gui.MakroEditorPanel;
 import org.exbin.framework.bined.makro.model.MakroRecord;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
 /**
- * Manage makros action.
+ * Add makro record action.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ManageMakrosAction extends AbstractAction {
+public class AddMakroAction extends AbstractAction {
 
-    public static final String ACTION_ID = "manageMakrosAction";
+    public static final String ACTION_ID = "addMakroAction";
 
-    private EditorProvider editorProvider;
     private XBApplication application;
     private ResourceBundle resourceBundle;
+    private MakroRecord makroRecord = null;
 
-    public ManageMakrosAction() {
+    public AddMakroAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
+    public void setup(XBApplication application, ResourceBundle resourceBundle) {
         this.application = application;
-        this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
         putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
+    @Nonnull
+    public Optional<MakroRecord> getMakroRecord() {
+        return Optional.ofNullable(makroRecord);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinedMakroModule makroModule = application.getModuleRepository().getModuleByInterface(BinedMakroModule.class);
-        MakrosManager makrosManager = makroModule.getMakrosManager();
-        final MakrosManagerPanel makrosPanel = makrosManager.createMakrosManagerPanel();
-        List<MakroRecord> records = new ArrayList<>();
-        for (MakroRecord record : makrosManager.getMakroRecords()) {
-            records.add(new MakroRecord(record));
-        }
-        makrosPanel.setMakroRecords(records);
-        ResourceBundle panelResourceBundle = makrosPanel.getResourceBundle();
+        final MakroEditorPanel makroEditorPanel = new MakroEditorPanel();
+        makroEditorPanel.setMakroRecord(new MakroRecord());
+        ResourceBundle panelResourceBundle = makroEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, makrosPanel, controlPanel);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), makrosPanel.getClass(), makrosPanel.getResourceBundle());
+        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, makroEditorPanel, controlPanel);
         frameModule.setDialogTitle(dialog, panelResourceBundle);
-        Dimension preferredSize = dialog.getWindow().getPreferredSize();
-        dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
-                    List<MakroRecord> bookmarkRecords = makrosPanel.getMakroRecords();
-                    makrosManager.setMakroRecords(bookmarkRecords);
-                    dialog.close();
+                    makroRecord = makroEditorPanel.getMakroRecord();
                     break;
                 }
                 case CANCEL: {
-                    dialog.close();
+                    makroRecord = null;
                     break;
                 }
             }
+            dialog.close();
         });
 
-        dialog.showCentered(editorProvider.getEditorComponent());
+        dialog.showCentered(frameModule.getFrame());
     }
 }

@@ -40,6 +40,7 @@ import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
+import org.exbin.framework.bined.makro.BinedMakroModule;
 import org.exbin.framework.bined.tool.content.BinedToolContentModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.search.BinedSearchModule;
@@ -77,8 +78,6 @@ public class BinedEditor {
     private static final String OPTION_SINGLE_FILE = "single_file";
     private static final String OPTION_MULTI_FILE = "multi_file";
 
-    private static final ResourceBundle bundle = LanguageUtils.getResourceBundleByClass(BinedEditor.class);
-
     /**
      * Main method launching the application.
      *
@@ -86,6 +85,18 @@ public class BinedEditor {
      */
     public static void main(String[] args) {
         try {
+            final XBBaseApplication app = new XBBaseApplication();
+            app.setAppDirectory(BinedEditor.class);
+            Preferences preferences = app.createPreferences(BinedEditor.class);
+
+            // Load modules / languages first
+            XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
+            moduleRepository.addClassPathModules();
+            moduleRepository.addModulesFromManifest(BinedEditor.class);
+            moduleRepository.loadModulesFromPath(new File(app.getAppDirectory().getAbsoluteFile(), "plugins").toURI());
+            moduleRepository.initModules();
+            ResourceBundle bundle = LanguageUtils.getResourceBundleByClass(BinedEditor.class);
+
             // Parameters processing
             Options opt = new Options();
             opt.addOption(OPTION_HELP, "help", false, bundle.getString("cl_option_help"));
@@ -105,16 +116,8 @@ public class BinedEditor {
                 boolean devMode = cl.hasOption(OPTION_DEV);
                 String editorProvideType = editorProviderType.getSelected();
 
-                final XBBaseApplication app = new XBBaseApplication();
-                app.setAppDirectory(BinedEditor.class);
-                Preferences preferences = app.createPreferences(BinedEditor.class);
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
 
-                XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
-                moduleRepository.addClassPathModules();
-                moduleRepository.addModulesFromManifest(BinedEditor.class);
-                moduleRepository.loadModulesFromPath(new File(app.getAppDirectory(), "plugins").toURI());
-                moduleRepository.initModules();
                 Thread.currentThread().setContextClassLoader(moduleRepository.getContextClassLoader());
                 app.init();
 
@@ -151,9 +154,12 @@ public class BinedEditor {
 
                     BinedCompareModule binedCompareModule = moduleRepository.getModuleByInterface(BinedCompareModule.class);
                     binedCompareModule.setEditorProvider(editorProvider);
-                    
+
                     BinedBookmarksModule binedBookmarksModule = moduleRepository.getModuleByInterface(BinedBookmarksModule.class);
                     binedBookmarksModule.setEditorProvider(editorProvider);
+
+                    BinedMakroModule binedMakroModule = moduleRepository.getModuleByInterface(BinedMakroModule.class);
+                    binedMakroModule.setEditorProvider(editorProvider);
 
                     BinedInspectorModule binedInspectorModule = moduleRepository.getModuleByInterface(BinedInspectorModule.class);
                     binedInspectorModule.setEditorProvider(editorProvider);
@@ -216,6 +222,7 @@ public class BinedEditor {
                     binedModule.registerGoToPosition();
                     binedSearchModule.registerEditFindMenuActions();
                     binedBookmarksModule.registerBookmarksMenuActions();
+                    binedMakroModule.registerMakrosMenuActions();
                     binedOperationModule.registerBlockEditActions();
 
                     binedModule.registerCodeAreaPopupMenu();

@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.makro.gui;
 
+import org.exbin.framework.bined.makro.model.MakrosTableModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
@@ -23,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JTable;
+import org.exbin.framework.bined.makro.model.MakroRecord;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
 
@@ -35,7 +37,7 @@ import org.exbin.framework.utils.WindowUtils;
 public class MakrosManagerPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(MakrosManagerPanel.class);
-//    private final BookmarksTableModel bookmarksTableModel = new BookmarksTableModel();
+    private final MakrosTableModel makrosTableModel = new MakrosTableModel();
     private Control control = null;
 
     public MakrosManagerPanel() {
@@ -225,6 +227,34 @@ public class MakrosManagerPanel extends javax.swing.JPanel {
      */
     public static void main(String[] args) {
         WindowUtils.invokeDialog(new MakrosManagerPanel());
+    }
+
+    @Nonnull
+    public List<MakroRecord> getMakroRecords() {
+        return makrosTableModel.getRecords();
+    }
+
+    public void setMakroRecords(List<MakroRecord> makroRecords) {
+        makrosTableModel.setRecords(makroRecords);
+        makrosTableModel.fireTableDataChanged();
+        table.repaint();
+    }
+
+    public void updateMakroRecords(List<MakroRecord> makroRecords) {
+        makrosTableModel.setRecords(makroRecords);
+        makrosTableModel.fireDataChanged();
+        table.repaint();
+    }
+
+    public void updateRecord(MakroRecord makroRecord, int index) {
+        makrosTableModel.updateRecord(makroRecord, index);
+        table.repaint();
+    }
+
+    @Nullable
+    public MakroRecord getSelectedRecord() {
+        int selectedRow = table.getSelectedRow();
+        return selectedRow >= 0 ? makrosTableModel.getRecords().get(selectedRow) : null;
     }
 
     @Nonnull
