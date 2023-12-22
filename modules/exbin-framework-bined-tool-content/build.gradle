@@ -31,8 +31,9 @@ dependencies {
 //    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-highlight-swing')
     implementation moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
     implementation moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-operation')
-    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'paged_data')
-    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'paged_data-delta')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'binary_data')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'binary_data-paged')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'binary_data-delta')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-frame-api')
@@ -47,5 +48,5 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined')
     implementation moduleDep('Bined', 'org.exbin.framework', 'exbin-framework-bined-objectdata')
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    testImplementation group : 'junit', name: 'junit', version: '4.10'
+    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }

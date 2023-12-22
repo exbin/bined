@@ -56,7 +56,7 @@ dependencies {
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'bined-operation-swing')
     implementation moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
     implementation moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-operation')
-    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'paged_data-delta')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'binary_data-delta')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-frame-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-frame')
@@ -95,7 +95,7 @@ dependencies {
     implementation 'commons-cli:commons-cli:1.2'
     implementation 'com.formdev:flatlaf-desktop:3.2'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    testImplementation group: 'junit', name: 'junit', version: '4.10'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 def manifestClassPath() {
