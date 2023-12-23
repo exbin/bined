@@ -46,7 +46,7 @@ import org.exbin.framework.bined.operation.operation.ReplaceDataOperation;
 import org.exbin.framework.bined.operation.operation.InsertionDataProvider;
 
 /**
- * Simple fill data component.
+ * Simple fill data method.
  *
  * @author ExBin Project (https://exbin.org)
  */

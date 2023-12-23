@@ -92,6 +92,7 @@ public class BinEdFileManager {
 
         Preferences preferences = application.getAppPreferences();
         BinaryEditorPreferences binaryEditorPreferences = new BinaryEditorPreferences(preferences);
+        fileHandler.onInitFromPreferences(binaryEditorPreferences);
         String encoding = binaryEditorPreferences.getEncodingPreferences().getSelectedEncoding();
         if (!encoding.isEmpty()) {
             fileHandler.setCharset(Charset.forName(encoding));
@@ -99,6 +100,7 @@ public class BinEdFileManager {
         TextFontPreferences textFontPreferences = binaryEditorPreferences.getFontPreferences();
         ExtCodeArea codeArea = fileHandler.getCodeArea();
         ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
+        binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusPreferences());
     }
 
     public void addPainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {

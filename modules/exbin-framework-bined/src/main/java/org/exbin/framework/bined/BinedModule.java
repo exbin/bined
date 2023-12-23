@@ -680,7 +680,7 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getCodeAreaFontAction(), new MenuPosition(PositionMode.BOTTOM));
+        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getCodeAreaFontAction(), new MenuPosition(PositionMode.BOTTOM_LAST));
     }
 
     public void registerClipboardCodeActions() {
@@ -921,7 +921,7 @@ public class BinedModule implements XBApplicationModule {
     public void startWithFile(String filePath) {
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
         URI uri = new File(filePath).toURI();
-        fileModule.loadFromFile(uri.toASCIIString());
+        fileModule.loadFromFile(uri);
     }
 
     @Nonnull

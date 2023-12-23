@@ -21,14 +21,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="fileHandlingModeComboBox" alignment="0" max="32767" attributes="0"/>
+                  <Component id="enterKeyHandlingModeComboBox" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tabKeyHandlingModeComboBox" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="fileHandlingModeLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="enterKeyHandlingModeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="tabKeyHandlingModeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="enterKeyHandlingModeComboBox" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -45,6 +47,10 @@
               <Component id="enterKeyHandlingModeLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="enterKeyHandlingModeComboBox" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="tabKeyHandlingModeLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="tabKeyHandlingModeComboBox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -71,6 +77,18 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="enterKeyHandlingModeComboBox">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="tabKeyHandlingModeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/EditorOptionsPanel.properties" key="tabKeyHandlingModeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="tabKeyHandlingModeComboBox">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

@@ -36,7 +36,7 @@ import org.exbin.framework.bined.operation.operation.ReplaceDataOperation;
 import org.exbin.framework.bined.operation.operation.InsertionDataProvider;
 
 /**
- * Random data component.
+ * Generate random data method.
  *
  * @author ExBin Project (https://exbin.org)
  */

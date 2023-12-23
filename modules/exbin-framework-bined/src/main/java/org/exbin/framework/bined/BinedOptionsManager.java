@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
+import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
 import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
@@ -380,6 +381,16 @@ public class BinedOptionsManager {
                     ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
                 }
             }
+
+            @Override
+            public void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode) {
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                if (activeFile.isPresent()) {
+                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                    ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
+                }
+            }
         };
         editorOptionsPage = new DefaultOptionsPage<EditorOptionsImpl>() {
             private EditorOptionsPanel panel;
@@ -400,6 +411,14 @@ public class BinedOptionsManager {
                     enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.crlf"));
                     enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.ignore"));
                     panel.setEnterKeyHandlingModes(enderKeyHandlingModes);
+                    List<String> tabKeyHandlingModes = new ArrayList<>();
+                    tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.platformSpecific"));
+                    tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.insertTab"));
+                    tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.insertSpaces"));
+                    tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.cycleToNextSection"));
+                    tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.cycleToPreviousSection"));
+                    tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.ignore"));
+                    panel.setTabKeyHandlingModes(tabKeyHandlingModes);
                 }
 
                 return panel;
@@ -432,6 +451,7 @@ public class BinedOptionsManager {
                 // TODO: This causes multiple reloads / warnings about modified files
                 // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
                 editorOptionsService.setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
+                editorOptionsService.setTabKeyHandlingMode(options.getTabKeyHandlingMode());
             }
         };
         optionsModule.addOptionsPage(editorOptionsPage);
@@ -1125,7 +1145,7 @@ public class BinedOptionsManager {
     public void startWithFile(String filePath) {
         FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
         URI uri = new File(filePath).toURI();
-        fileModule.loadFromFile(uri.toASCIIString());
+        fileModule.loadFromFile(uri);
     }
 
     @Nonnull

@@ -31,6 +31,7 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
+import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -43,7 +44,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     private ExtCodeArea codeArea;
     private BinaryDataUndoHandler undoHandler;
-    private List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
+    private final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
 
     public BinEdComponentPanel() {
         initComponents();
@@ -72,6 +73,12 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         }
     }
 
+    public void onInitFromPreferences(BinaryEditorPreferences preferences) {
+        for (BinEdComponentExtension extension : componentExtensions) {
+            extension.onInitFromPreferences(preferences);
+        }
+    }
+            
     public void addComponentExtension(BinEdComponentExtension extension) {
         componentExtensions.add(extension);
         if (undoHandler != null) {
@@ -164,6 +171,8 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         void setApplication(XBApplication application);
 
         void onCreate(BinEdComponentPanel componentPanel);
+        
+        void onInitFromPreferences(BinaryEditorPreferences preferences);
 
         void onDataChange();
 

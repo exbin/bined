@@ -17,6 +17,7 @@ package org.exbin.framework.bined.service;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
+import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.framework.bined.FileHandlingMode;
 
 /**
@@ -30,4 +31,6 @@ public interface EditorOptionsService {
     void setFileHandlingMode(FileHandlingMode fileHandlingMode);
 
     void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode);
+
+    void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode);
 }

@@ -22,6 +22,8 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
+import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
+import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 
 /**
  * BinEd component data inspector.
@@ -67,6 +69,12 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
         if (valuesPanel != null) {
             valuesPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoHandler());
         }
+    }
+
+    @Override
+    public void onInitFromPreferences(BinaryEditorPreferences preferences) {
+        DataInspectorPreferences dataInspectorPreferences = new DataInspectorPreferences(preferences.getPreferences());
+        setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
     }
 
     @Override
