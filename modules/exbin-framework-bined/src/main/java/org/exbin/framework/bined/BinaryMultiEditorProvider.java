@@ -151,9 +151,10 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             public synchronized void drop(DropTargetDropEvent event) {
                 try {
                     event.acceptDrop(DnDConstants.ACTION_COPY);
-                    List<File> droppedFiles = (List<File>) event.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    for (File file : droppedFiles) {
-                        openFile(file.toURI(), null);
+                    Object transferData = event.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    List<?> droppedFiles = (List) transferData;
+                    for (Object file : droppedFiles) {
+                        openFile(((File) file).toURI(), null);
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {
                     Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);

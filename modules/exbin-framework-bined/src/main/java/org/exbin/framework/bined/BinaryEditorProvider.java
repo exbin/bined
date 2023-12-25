@@ -89,9 +89,9 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
             public synchronized void drop(DropTargetDropEvent event) {
                 try {
                     event.acceptDrop(DnDConstants.ACTION_COPY);
-                    List<File> droppedFiles = (List<File>) event.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    for (File file : droppedFiles) {
-                        openFile(file.toURI(), null);
+                    List<?> droppedFiles = (List) event.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    for (Object file : droppedFiles) {
+                        openFile(((File) file).toURI(), null);
                         break;
                     }
                 } catch (UnsupportedFlavorException | IOException ex) {

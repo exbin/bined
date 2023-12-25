@@ -15,6 +15,8 @@
  */
 package org.exbin.framework.bined.gui;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
 import org.exbin.framework.bined.StatusDocumentSizeFormat;
 import org.exbin.framework.bined.StatusCursorPositionFormat;
 import java.awt.Toolkit;
@@ -23,7 +25,10 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JLabel;
 import javax.swing.JToolTip;
+import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicArrowButton;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.EditMode;
@@ -174,25 +179,23 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         memoryModeButtonGroup = new javax.swing.ButtonGroup();
         documentSizeModeButtonGroup = new javax.swing.ButtonGroup();
         cursorPositionModeButtonGroup = new javax.swing.ButtonGroup();
-        memoryModeLabel = new javax.swing.JLabel();
+        encodingLabel = new EncodingLabel();
         documentSizeLabel = new javax.swing.JLabel() {
             @Override
             public JToolTip createToolTip() {
                 updateDocumentSizeToolTip();
                 return super.createToolTip();
             }
-        }
-        ;
+        };
         cursorPositionLabel = new javax.swing.JLabel() {
             @Override
             public JToolTip createToolTip() {
                 updateCursorPositionToolTip();
                 return super.createToolTip();
             }
-        }
-        ;
+        };
+        memoryModeLabel = new javax.swing.JLabel();
         editModeLabel = new javax.swing.JLabel();
-        encodingLabel = new javax.swing.JLabel();
 
         positionPopupMenu.setName("positionPopupMenu"); // NOI18N
 
@@ -344,11 +347,21 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
         setName("Form"); // NOI18N
 
-        memoryModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        memoryModeLabel.setText(resourceBundle.getString("memoryModeLabel.text")); // NOI18N
-        memoryModeLabel.setToolTipText(resourceBundle.getString("memoryModeLabel.toolTipText")); // NOI18N
-        memoryModeLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        memoryModeLabel.setComponentPopupMenu(memoryModePopupMenu);
+        encodingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        encodingLabel.setText(resourceBundle.getString("encodingLabel.text")); // NOI18N
+        encodingLabel.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText")); // NOI18N
+        encodingLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        encodingLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encodingLabelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                encodingLabelMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                encodingLabelMouseReleased(evt);
+            }
+        });
 
         documentSizeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         documentSizeLabel.setText("0 (0)");
@@ -367,6 +380,12 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
             }
         });
 
+        memoryModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        memoryModeLabel.setText(resourceBundle.getString("memoryModeLabel.text")); // NOI18N
+        memoryModeLabel.setToolTipText(resourceBundle.getString("memoryModeLabel.toolTipText")); // NOI18N
+        memoryModeLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        memoryModeLabel.setComponentPopupMenu(memoryModePopupMenu);
+
         editModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         editModeLabel.setText("OVR");
         editModeLabel.setToolTipText(resourceBundle.getString("editModeLabel.toolTipText")); // NOI18N
@@ -374,22 +393,6 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         editModeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 editModeLabelMouseClicked(evt);
-            }
-        });
-
-        encodingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        encodingLabel.setText(resourceBundle.getString("encodingLabel.text")); // NOI18N
-        encodingLabel.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText")); // NOI18N
-        encodingLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        encodingLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                encodingLabelMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                encodingLabelMouseReleased(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                encodingLabelMouseClicked(evt);
             }
         });
 
@@ -608,7 +611,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     @Override
     public void setEncoding(String encodingName) {
-        encodingLabel.setText(encodingName + " ^");
+        encodingLabel.setText(encodingName);
     }
 
     @Override
@@ -840,5 +843,22 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
          * @param memoryMode memory mode
          */
         void changeMemoryMode(MemoryMode memoryMode);
+    }
+
+    private static class EncodingLabel extends JLabel {
+
+        private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
+
+        @Override
+        protected void paintComponent(@Nonnull Graphics g) {
+            super.paintComponent(g);
+            Dimension areaSize = getSize();
+
+            int h = areaSize.height;
+            int w = areaSize.width;
+            int size = Math.min(Math.max((h - 4) / 4, 2), 10);
+            basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 - (h / 5), size, SwingConstants.NORTH, true);
+            basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 + (h / 5), size, SwingConstants.SOUTH, true);
+        }
     }
 }
