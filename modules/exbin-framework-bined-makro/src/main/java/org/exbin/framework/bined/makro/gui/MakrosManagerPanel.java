@@ -17,7 +17,6 @@ package org.exbin.framework.bined.makro.gui;
 
 import org.exbin.framework.bined.makro.model.MakrosTableModel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -47,7 +46,6 @@ public class MakrosManagerPanel extends javax.swing.JPanel {
 
     private void init() {
         add(controlPanel, BorderLayout.EAST);
-        table.setDefaultRenderer(Color.class, new MakrosManagerCellTableRenderer());
         table.getSelectionModel().addListSelectionListener((e) -> {
             int rowCount = table.getRowCount();
             int selectedRows = table.getSelectedRowCount();
@@ -142,12 +140,12 @@ public class MakrosManagerPanel extends javax.swing.JPanel {
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(upButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
-                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE))
+                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(upButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
                 .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
@@ -170,6 +168,7 @@ public class MakrosManagerPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
+        table.setModel(makrosTableModel);
         scrollPane.setViewportView(table);
 
         javax.swing.GroupLayout listPanelLayout = new javax.swing.GroupLayout(listPanel);

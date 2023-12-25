@@ -50,6 +50,7 @@ public class MakroRecord {
 
     public void setRecord(MakroRecord record) {
         name = record.name;
+        steps = record.steps;
     }
 
     public String getName() {

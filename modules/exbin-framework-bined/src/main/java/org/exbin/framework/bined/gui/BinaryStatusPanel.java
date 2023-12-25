@@ -26,7 +26,6 @@ import java.awt.event.MouseEvent;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JLabel;
-import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import org.exbin.bined.CodeAreaCaretPosition;
@@ -50,15 +49,6 @@ import org.exbin.framework.bined.preferences.StatusPreferences;
  */
 @ParametersAreNonnullByDefault
 public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatusApi, TextEncodingStatusApi {
-
-    public static final String INSERT_EDIT_MODE_LABEL = "INS";
-    public static final String OVERWRITE_EDIT_MODE_LABEL = "OVR";
-    public static final String READONLY_EDIT_MODE_LABEL = "RO";
-    public static final String INPLACE_EDIT_MODE_LABEL = "INP";
-
-    public static final String OCTAL_CODE_TYPE_LABEL = "OCT";
-    public static final String DECIMAL_CODE_TYPE_LABEL = "DEC";
-    public static final String HEXADECIMAL_CODE_TYPE_LABEL = "HEX";
 
     private static final String BR_TAG = "<br>";
 
@@ -180,20 +170,8 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         documentSizeModeButtonGroup = new javax.swing.ButtonGroup();
         cursorPositionModeButtonGroup = new javax.swing.ButtonGroup();
         encodingLabel = new EncodingLabel();
-        documentSizeLabel = new javax.swing.JLabel() {
-            @Override
-            public JToolTip createToolTip() {
-                updateDocumentSizeToolTip();
-                return super.createToolTip();
-            }
-        };
-        cursorPositionLabel = new javax.swing.JLabel() {
-            @Override
-            public JToolTip createToolTip() {
-                updateCursorPositionToolTip();
-                return super.createToolTip();
-            }
-        };
+        documentSizeLabel = new javax.swing.JLabel();
+        cursorPositionLabel = new javax.swing.JLabel();
         memoryModeLabel = new javax.swing.JLabel();
         editModeLabel = new javax.swing.JLabel();
 
@@ -619,18 +597,18 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         this.editOperation = editOperation;
         switch (editMode) {
             case READ_ONLY: {
-                editModeLabel.setText(READONLY_EDIT_MODE_LABEL);
+                editModeLabel.setText(resourceBundle.getString("editMode.readonly"));
                 break;
             }
             case EXPANDING:
             case CAPPED: {
                 switch (editOperation) {
                     case INSERT: {
-                        editModeLabel.setText(INSERT_EDIT_MODE_LABEL);
+                        editModeLabel.setText(resourceBundle.getString("editMode.insert"));
                         break;
                     }
                     case OVERWRITE: {
-                        editModeLabel.setText(OVERWRITE_EDIT_MODE_LABEL);
+                        editModeLabel.setText(resourceBundle.getString("editMode.overwrite"));
                         break;
                     }
                     default:
@@ -639,7 +617,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
                 break;
             }
             case INPLACE: {
-                editModeLabel.setText(INPLACE_EDIT_MODE_LABEL);
+                editModeLabel.setText(resourceBundle.getString("editMode.inplace"));
                 break;
             }
             default:
@@ -672,9 +650,11 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
             if (selectionRange != null && !selectionRange.isEmpty()) {
                 long first = selectionRange.getFirst();
                 long last = selectionRange.getLast();
-                labelBuilder.append(numberToPosition(first, cursorPositionFormat.getCodeType()));
-                labelBuilder.append(" to ");
-                labelBuilder.append(numberToPosition(last, cursorPositionFormat.getCodeType()));
+                labelBuilder.append(String.format(
+                        resourceBundle.getString("caretPosition.text"),
+                        numberToPosition(first, cursorPositionFormat.getCodeType()),
+                        numberToPosition(last, cursorPositionFormat.getCodeType())
+                ));
             } else {
                 labelBuilder.append(numberToPosition(caretPosition.getDataPosition(), cursorPositionFormat.getCodeType()));
                 if (cursorPositionFormat.isShowOffset()) {
@@ -688,31 +668,34 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     private void updateCursorPositionToolTip() {
         StringBuilder builder = new StringBuilder();
-        builder.append("<html>");
+        builder.append("<html><body>");
         if (caretPosition == null) {
             builder.append(resourceBundle.getString("cursorPositionLabel.toolTipText"));
         } else {
+            String octalPrefix = resourceBundle.getString("codeType.octal") + ": ";
+            String decimalPrefix = resourceBundle.getString("codeType.decimal") + ": ";
+            String hexadecimalPrefix = resourceBundle.getString("codeType.hexadecimal") + ": ";
             if (selectionRange != null && !selectionRange.isEmpty()) {
                 long first = selectionRange.getFirst();
                 long last = selectionRange.getLast();
                 builder.append(resourceBundle.getString("selectionFromLabel.toolTipText")).append(BR_TAG);
-                builder.append(OCTAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(first, PositionCodeType.OCTAL)).append(BR_TAG);
-                builder.append(DECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(first, PositionCodeType.DECIMAL)).append(BR_TAG);
-                builder.append(HEXADECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(first, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
+                builder.append(octalPrefix).append(numberToPosition(first, PositionCodeType.OCTAL)).append(BR_TAG);
+                builder.append(decimalPrefix).append(numberToPosition(first, PositionCodeType.DECIMAL)).append(BR_TAG);
+                builder.append(hexadecimalPrefix).append(numberToPosition(first, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
                 builder.append(BR_TAG);
                 builder.append(resourceBundle.getString("selectionToLabel.toolTipText")).append(BR_TAG);
-                builder.append(OCTAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(last, PositionCodeType.OCTAL)).append(BR_TAG);
-                builder.append(DECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(last, PositionCodeType.DECIMAL)).append(BR_TAG);
-                builder.append(HEXADECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(first, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
+                builder.append(octalPrefix).append(numberToPosition(last, PositionCodeType.OCTAL)).append(BR_TAG);
+                builder.append(decimalPrefix).append(numberToPosition(last, PositionCodeType.DECIMAL)).append(BR_TAG);
+                builder.append(hexadecimalPrefix).append(numberToPosition(first, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
             } else {
                 long dataPosition = caretPosition.getDataPosition();
                 builder.append(resourceBundle.getString("cursorPositionLabel.toolTipText")).append(BR_TAG);
-                builder.append(OCTAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(dataPosition, PositionCodeType.OCTAL)).append(BR_TAG);
-                builder.append(DECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(dataPosition, PositionCodeType.DECIMAL)).append(BR_TAG);
-                builder.append(HEXADECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(dataPosition, PositionCodeType.HEXADECIMAL));
-                builder.append("</html>");
+                builder.append(octalPrefix).append(numberToPosition(dataPosition, PositionCodeType.OCTAL)).append(BR_TAG);
+                builder.append(decimalPrefix).append(numberToPosition(dataPosition, PositionCodeType.DECIMAL)).append(BR_TAG);
+                builder.append(hexadecimalPrefix).append(numberToPosition(dataPosition, PositionCodeType.HEXADECIMAL));
             }
         }
+        builder.append("</body></html>");
 
         cursorPositionLabel.setToolTipText(builder.toString());
     }
@@ -723,9 +706,11 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         } else {
             StringBuilder labelBuilder = new StringBuilder();
             if (selectionRange != null && !selectionRange.isEmpty()) {
-                labelBuilder.append(numberToPosition(selectionRange.getLength(), documentSizeFormat.getCodeType()));
-                labelBuilder.append(" of ");
-                labelBuilder.append(numberToPosition(documentSize, documentSizeFormat.getCodeType()));
+                labelBuilder.append(String.format(
+                        resourceBundle.getString("documentSize.text"),
+                        numberToPosition(selectionRange.getLength(), documentSizeFormat.getCodeType()),
+                        numberToPosition(documentSize, documentSizeFormat.getCodeType())
+                ));
             } else {
                 labelBuilder.append(numberToPosition(documentSize, documentSizeFormat.getCodeType()));
                 if (documentSizeFormat.isShowRelative()) {
@@ -742,22 +727,27 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
     }
 
     private void updateDocumentSizeToolTip() {
+        String octalPrefix = resourceBundle.getString("codeType.octal") + ": ";
+        String decimalPrefix = resourceBundle.getString("codeType.decimal") + ": ";
+        String hexadecimalPrefix = resourceBundle.getString("codeType.hexadecimal") + ": ";
+
         StringBuilder builder = new StringBuilder();
-        builder.append("<html>");
+        builder.append("<html><body>");
         if (selectionRange != null && !selectionRange.isEmpty()) {
             long length = selectionRange.getLength();
             builder.append(resourceBundle.getString("selectionLengthLabel.toolTipText")).append(BR_TAG);
-            builder.append(OCTAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(length, PositionCodeType.OCTAL)).append(BR_TAG);
-            builder.append(DECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(length, PositionCodeType.DECIMAL)).append(BR_TAG);
-            builder.append(HEXADECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(length, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
+            builder.append(octalPrefix).append(numberToPosition(length, PositionCodeType.OCTAL)).append(BR_TAG);
+            builder.append(decimalPrefix).append(numberToPosition(length, PositionCodeType.DECIMAL)).append(BR_TAG);
+            builder.append(hexadecimalPrefix).append(numberToPosition(length, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
             builder.append(BR_TAG);
         }
 
         builder.append(resourceBundle.getString("documentSizeLabel.toolTipText")).append(BR_TAG);
-        builder.append(OCTAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(documentSize, PositionCodeType.OCTAL)).append(BR_TAG);
-        builder.append(DECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(documentSize, PositionCodeType.DECIMAL)).append(BR_TAG);
-        builder.append(HEXADECIMAL_CODE_TYPE_LABEL + ": ").append(numberToPosition(documentSize, PositionCodeType.HEXADECIMAL));
-        builder.append("</html>");
+        builder.append(octalPrefix).append(numberToPosition(documentSize, PositionCodeType.OCTAL)).append(BR_TAG);
+        builder.append(decimalPrefix).append(numberToPosition(documentSize, PositionCodeType.DECIMAL)).append(BR_TAG);
+        builder.append(hexadecimalPrefix).append(numberToPosition(documentSize, PositionCodeType.HEXADECIMAL));
+        builder.append("</body></html>");
+
         documentSizeLabel.setToolTipText(builder.toString());
     }
 

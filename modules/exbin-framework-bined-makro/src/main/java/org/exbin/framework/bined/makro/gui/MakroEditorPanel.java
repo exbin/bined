@@ -15,7 +15,8 @@
  */
 package org.exbin.framework.bined.makro.gui;
 
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -33,9 +34,6 @@ public class MakroEditorPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(MakroEditorPanel.class);
 
-    private Color color = null;
-    private volatile boolean spinnerUpdate = false;
-
     public MakroEditorPanel() {
         initComponents();
         init();
@@ -46,18 +44,62 @@ public class MakroEditorPanel extends javax.swing.JPanel {
 
     @Nonnull
     public MakroRecord getMakroRecord() {
-        return new MakroRecord(
+        MakroRecord makroRecord = new MakroRecord(
                 nameTextField.getText()
         );
+        List<String> steps = new ArrayList<>();
+        String stepsText = stepsTextArea.getText();
+        int position = 0;
+        while (position < stepsText.length()) {
+            int nextLineBreak = stepsText.indexOf("\n", position);
+            if (nextLineBreak >= 0) {
+                String line = stepsText.substring(position, nextLineBreak);
+                steps.add(line);
+                position = nextLineBreak + 1;
+            } else {
+                if (position < stepsText.length()) {
+                    String line = stepsText.substring(position);
+                    steps.add(line);
+                }
+                break;
+            }
+        }
+
+        makroRecord.setSteps(steps);
+        return makroRecord;
     }
 
     public void setMakroRecord(MakroRecord makroRecord) {
         nameTextField.setText(makroRecord.getName());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String step : makroRecord.getSteps()) {
+            stringBuilder.append(step);
+            stringBuilder.append("\n");
+        }
+        stepsTextArea.setText(stringBuilder.toString());
     }
 
     @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
+    }
+
+    @Nonnull
+    public String getMakroName() {
+        return nameTextField.getText();
+    }
+
+    public void setMakroName(String name) {
+        nameTextField.setText(name);
+    }
+
+    @Nonnull
+    public String getMakroSteps() {
+        return stepsTextArea.getText();
+    }
+
+    public void setMakroSteps(String name) {
+        stepsTextArea.setText(name);
     }
 
     /**
@@ -71,20 +113,32 @@ public class MakroEditorPanel extends javax.swing.JPanel {
 
         nameLabel = new javax.swing.JLabel();
         nameTextField = new javax.swing.JTextField();
+        stepsLabel = new javax.swing.JLabel();
+        stepsScrollPane = new javax.swing.JScrollPane();
+        stepsTextArea = new javax.swing.JTextArea();
 
         nameLabel.setText("Name");
+
+        stepsLabel.setText("Steps");
+
+        stepsTextArea.setColumns(20);
+        stepsTextArea.setRows(5);
+        stepsScrollPane.setViewportView(stepsTextArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(nameLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(stepsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
+                    .addComponent(nameTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameLabel)
+                            .addComponent(stepsLabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -94,7 +148,11 @@ public class MakroEditorPanel extends javax.swing.JPanel {
                 .addComponent(nameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stepsLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stepsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -111,5 +169,8 @@ public class MakroEditorPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JLabel stepsLabel;
+    private javax.swing.JScrollPane stepsScrollPane;
+    private javax.swing.JTextArea stepsTextArea;
     // End of variables declaration//GEN-END:variables
 }

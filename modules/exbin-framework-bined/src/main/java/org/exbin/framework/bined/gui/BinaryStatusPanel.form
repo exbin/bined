@@ -322,9 +322,6 @@
           <ComponentRef name="documentSizePopupMenu"/>
         </Property>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JLabel() {&#xa;    @Override&#xa;    public JToolTip createToolTip() {&#xa;        updateDocumentSizeToolTip();&#xa;        return super.createToolTip();&#xa;    }&#xa;}"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="cursorPositionLabel">
       <Properties>
@@ -345,9 +342,6 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cursorPositionLabelMouseClicked"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JLabel() {&#xa;    @Override&#xa;    public JToolTip createToolTip() {&#xa;        updateCursorPositionToolTip();&#xa;        return super.createToolTip();&#xa;    }&#xa;}"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="memoryModeLabel">
       <Properties>

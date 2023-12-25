@@ -15,6 +15,8 @@
  */
 package org.exbin.framework.bined.makro.preferences;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.api.Preferences;
 import org.exbin.framework.bined.makro.model.MakroRecord;
@@ -30,10 +32,9 @@ public class MakroPreferences implements MakroOptions {
 
     public static final String PREFERENCES_MAKROS_COUNT = "makrosCount";
     public static final String PREFERENCES_MAKRO_VALUE_PREFIX = "makro.";
-    public static final String PREFERENCES_MAKRO_STEP_PREFIX = PREFERENCES_MAKRO_VALUE_PREFIX + "step.";
 
     public static final String MAKRO_NAME = "name";
-    public static final String STEP_LINE = "line";
+    public static final String STEP = "step";
 
     private final Preferences preferences;
 
@@ -50,7 +51,22 @@ public class MakroPreferences implements MakroOptions {
     public MakroRecord getMakroRecord(int index) {
         String prefix = PREFERENCES_MAKRO_VALUE_PREFIX + index + ".";
         String name = preferences.get(prefix + MAKRO_NAME, "");
-        return new MakroRecord(name);
+        MakroRecord makroRecord = new MakroRecord(name);
+
+        List<String> steps = new ArrayList<>();
+        int stepIndex = 1;
+        while (true) {
+            String line = preferences.get(prefix + STEP + "." + stepIndex, "");
+            if (!line.isBlank()) {
+                steps.add(line);
+                stepIndex++;
+            } else {
+                break;
+            }
+        }
+        makroRecord.setSteps(steps);
+
+        return makroRecord;
     }
 
     @Override
@@ -62,5 +78,18 @@ public class MakroPreferences implements MakroOptions {
     public void setMakroRecord(int index, MakroRecord record) {
         String prefix = PREFERENCES_MAKRO_VALUE_PREFIX + index + ".";
         preferences.put(prefix + MAKRO_NAME, record.getName());
+
+        List<String> steps = record.getSteps();
+        int stepIndex = 1;
+        for (String step : steps) {
+            preferences.put(prefix + STEP + "." + stepIndex, step);
+            stepIndex++;
+        }
+
+        String oldLine;
+        do {
+            oldLine = preferences.get(prefix + STEP + "." + stepIndex, "");
+            preferences.remove(prefix + STEP + "." + stepIndex);
+        } while (!oldLine.isBlank());
     }
 }
