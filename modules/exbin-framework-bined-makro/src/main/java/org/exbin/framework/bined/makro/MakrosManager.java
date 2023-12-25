@@ -15,11 +15,7 @@
  */
 package org.exbin.framework.bined.makro;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.Icon;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -50,6 +43,8 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.makro.action.AddMakroAction;
 import org.exbin.framework.bined.makro.action.EditMakroAction;
 import org.exbin.framework.bined.makro.action.ManageMakrosAction;
+import org.exbin.framework.bined.makro.action.StartMakroRecordingAction;
+import org.exbin.framework.bined.makro.action.StopMakroRecordingAction;
 import org.exbin.framework.bined.makro.gui.MakrosManagerPanel;
 import org.exbin.framework.bined.makro.model.MakroRecord;
 import org.exbin.framework.bined.makro.preferences.MakroPreferences;
@@ -77,6 +72,8 @@ public class MakrosManager {
     private EditorProvider editorProvider;
 
     private final ManageMakrosAction manageMakrosAction = new ManageMakrosAction();
+    private final StartMakroRecordingAction startMakroRecordingAction = new StartMakroRecordingAction();
+    private final StopMakroRecordingAction stopMakroRecordingAction = new StopMakroRecordingAction();
     private final AddMakroAction addMakroAction = new AddMakroAction();
     private final EditMakroAction editMakroAction = new EditMakroAction();
     private JMenu makrosMenu;
@@ -96,6 +93,8 @@ public class MakrosManager {
         this.editorProvider = editorProvider;
 
         manageMakrosAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        startMakroRecordingAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        stopMakroRecordingAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
     }
 
     public void init() {
@@ -274,7 +273,7 @@ public class MakrosManager {
     }
 
     public void registerMakroComponentActions(JComponent component) {
-/*        ActionMap actionMap = component.getActionMap();
+        /*        ActionMap actionMap = component.getActionMap();
         InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         int metaMask = ActionUtils.getMetaMask();
         for (int i = 0; i < 10; i++) {
@@ -367,7 +366,7 @@ public class MakrosManager {
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
                         ExtCodeArea codeArea = fileHandler.getCodeArea();
-                    // executeMakro(codeArea, makroRecord);
+                        // executeMakro(codeArea, makroRecord);
                     }
                 }
             };
@@ -378,6 +377,8 @@ public class MakrosManager {
         if (!makroRecords.isEmpty()) {
             menu.addSeparator();
         }
+        menu.add(ActionUtils.actionToMenuItem(startMakroRecordingAction));
+        menu.add(ActionUtils.actionToMenuItem(stopMakroRecordingAction));
         menu.add(ActionUtils.actionToMenuItem(manageMakrosAction));
     }
 }

@@ -228,6 +228,7 @@ public class BinedEditor {
                     binedModule.registerCodeAreaPopupMenu();
                     binedSearchModule.registerEditFindPopupMenuActions();
                     binedBookmarksModule.registerBookmarksPopupMenuActions();
+                    binedMakroModule.registerMakrosPopupMenuActions();
                     binedOperationModule.registerBlockEditPopupMenuActions();
 
                     binedModule.registerPropertiesMenu();
@@ -263,6 +264,7 @@ public class BinedEditor {
                     JComponent editorComponent = editorModule.getEditorComponent();
                     frameHandler.setMainPanel(editorComponent);
                     binedBookmarksModule.registerBookmarksComponentActions(editorComponent);
+                    binedMakroModule.registerMakrosComponentActions(editorComponent);
 
                     frameHandler.setDefaultSize(new Dimension(600, 400));
                     frameModule.loadFramePosition();

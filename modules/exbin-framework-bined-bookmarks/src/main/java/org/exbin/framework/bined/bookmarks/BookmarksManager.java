@@ -398,9 +398,6 @@ public class BookmarksManager {
         String bookmarkActionName = resourceBundle.getString("bookmarkAction.text");
         for (int i = 0; i < recordsLimit; i++) {
             BookmarkRecord bookmarkRecord = bookmarkRecords.get(i);
-            if (bookmarkRecord.isEmpty()) {
-                continue;
-            }
 
             Action bookmarkAction = new AbstractAction(bookmarkActionName + " " + (i + 1)) {
                 @Override

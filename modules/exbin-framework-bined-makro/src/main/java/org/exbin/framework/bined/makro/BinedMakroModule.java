@@ -88,7 +88,7 @@ public class BinedMakroModule implements XBApplicationModule {
         actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getMakrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
-    public void registerBookmarksPopupMenuActions() {
+    public void registerMakrosPopupMenuActions() {
         getMakrosManager().registerMakrosPopupMenuActions();
     }
 

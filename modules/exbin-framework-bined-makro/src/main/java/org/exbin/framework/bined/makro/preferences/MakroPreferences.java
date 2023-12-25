@@ -57,7 +57,7 @@ public class MakroPreferences implements MakroOptions {
         int stepIndex = 1;
         while (true) {
             String line = preferences.get(prefix + STEP + "." + stepIndex, "");
-            if (!line.isBlank()) {
+            if (!line.trim().isEmpty()) {
                 steps.add(line);
                 stepIndex++;
             } else {
@@ -90,6 +90,6 @@ public class MakroPreferences implements MakroOptions {
         do {
             oldLine = preferences.get(prefix + STEP + "." + stepIndex, "");
             preferences.remove(prefix + STEP + "." + stepIndex);
-        } while (!oldLine.isBlank());
+        } while (!oldLine.trim().isEmpty());
     }
 }
