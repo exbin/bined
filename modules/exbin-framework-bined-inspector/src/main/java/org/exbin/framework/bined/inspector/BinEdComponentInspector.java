@@ -67,7 +67,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     @Override
     public void onUndoHandlerChange() {
         if (valuesPanel != null) {
-            valuesPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoHandler());
+            valuesPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoHandler().orElse(null));
         }
     }
 

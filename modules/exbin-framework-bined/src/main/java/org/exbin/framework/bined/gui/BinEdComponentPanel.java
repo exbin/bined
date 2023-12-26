@@ -19,8 +19,8 @@ import java.awt.Font;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
@@ -127,9 +127,9 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    @Nullable
-    public BinaryDataUndoHandler getUndoHandler() {
-        return undoHandler;
+    @Nonnull
+    public Optional<BinaryDataUndoHandler> getUndoHandler() {
+        return Optional.ofNullable(undoHandler);
     }
 
     public void setUndoHandler(BinaryDataUndoHandler undoHandler) {

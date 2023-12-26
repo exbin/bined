@@ -30,7 +30,6 @@ import org.exbin.framework.bined.compare.action.CompareFilesAction;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -56,9 +55,6 @@ public class BinedCompareModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-    }
-
-    public void initEditorProvider(EditorProviderVariant variant) {
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {

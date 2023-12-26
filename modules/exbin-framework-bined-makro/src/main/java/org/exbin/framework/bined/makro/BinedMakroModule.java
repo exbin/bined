@@ -27,10 +27,10 @@ import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.makro.operation.CodeAreaMakroCommandHandler;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -58,11 +58,10 @@ public class BinedMakroModule implements XBApplicationModule {
         this.application = (XBApplication) application;
     }
 
-    public void initEditorProvider(EditorProviderVariant variant) {
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
+        BinedModule binEdModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binEdModule.registerCodeAreaCommandHandlerProvider((codeArea, undoHandler) -> new CodeAreaMakroCommandHandler(codeArea, undoHandler));
     }
 
     @Override

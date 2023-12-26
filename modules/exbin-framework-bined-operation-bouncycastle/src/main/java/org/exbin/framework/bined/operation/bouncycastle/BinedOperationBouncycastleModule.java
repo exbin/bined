@@ -50,19 +50,16 @@ public class BinedOperationBouncycastleModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
+    }
+
+    public void setEditorProvider(EditorProvider editorProvider) {
+        this.editorProvider = editorProvider;
 
         BinedOperationModule binedOperationModule = application.getModuleRepository().getModuleByInterface(BinedOperationModule.class);
         
         ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
         computeHashDataMethod.setApplication(this.application);
         binedOperationModule.addConvertDataComponent(computeHashDataMethod);
-    }
-
-    public void initEditorProvider(EditorProviderVariant variant) {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     @Override

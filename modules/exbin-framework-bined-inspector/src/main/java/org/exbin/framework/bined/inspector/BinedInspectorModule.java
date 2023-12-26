@@ -41,7 +41,6 @@ import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.options.api.DefaultOptionsPage;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -75,9 +74,6 @@ public class BinedInspectorModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-    }
-
-    public void initEditorProvider(EditorProviderVariant variant) {
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {

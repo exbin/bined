@@ -1109,6 +1109,10 @@ public class BinedModule implements XBApplicationModule {
         });
     }
 
+    public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
+        fileManager.setCommandHandlerProvider(commandHandlerProvider);
+    }
+
     public enum PopupMenuVariant {
         BASIC, NORMAL, EDITOR
     }

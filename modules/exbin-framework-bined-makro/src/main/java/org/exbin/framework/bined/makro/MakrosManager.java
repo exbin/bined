@@ -43,6 +43,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.makro.action.AddMakroAction;
 import org.exbin.framework.bined.makro.action.EditMakroAction;
 import org.exbin.framework.bined.makro.action.ManageMakrosAction;
+import org.exbin.framework.bined.makro.action.ExecuteLastMakroAction;
 import org.exbin.framework.bined.makro.action.StartMakroRecordingAction;
 import org.exbin.framework.bined.makro.action.StopMakroRecordingAction;
 import org.exbin.framework.bined.makro.gui.MakrosManagerPanel;
@@ -74,6 +75,7 @@ public class MakrosManager {
     private final ManageMakrosAction manageMakrosAction = new ManageMakrosAction();
     private final StartMakroRecordingAction startMakroRecordingAction = new StartMakroRecordingAction();
     private final StopMakroRecordingAction stopMakroRecordingAction = new StopMakroRecordingAction();
+    private final ExecuteLastMakroAction executeLastMakroAction = new ExecuteLastMakroAction();
     private final AddMakroAction addMakroAction = new AddMakroAction();
     private final EditMakroAction editMakroAction = new EditMakroAction();
     private JMenu makrosMenu;
@@ -93,6 +95,7 @@ public class MakrosManager {
         this.editorProvider = editorProvider;
 
         manageMakrosAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        executeLastMakroAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
         startMakroRecordingAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
         stopMakroRecordingAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
     }
@@ -377,6 +380,7 @@ public class MakrosManager {
         if (!makroRecords.isEmpty()) {
             menu.addSeparator();
         }
+        menu.add(ActionUtils.actionToMenuItem(executeLastMakroAction));
         menu.add(ActionUtils.actionToMenuItem(startMakroRecordingAction));
         menu.add(ActionUtils.actionToMenuItem(stopMakroRecordingAction));
         menu.add(ActionUtils.actionToMenuItem(manageMakrosAction));

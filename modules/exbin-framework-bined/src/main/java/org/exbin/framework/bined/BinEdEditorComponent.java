@@ -15,10 +15,12 @@
  */
 package org.exbin.framework.bined;
 
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
@@ -69,8 +71,8 @@ public class BinEdEditorComponent {
         return componentPanel.getCodeArea();
     }
 
-    @Nullable
-    public BinaryDataUndoHandler getUndoHandler() {
+    @Nonnull
+    public Optional<BinaryDataUndoHandler> getUndoHandler() {
         return componentPanel.getUndoHandler();
     }
 
@@ -87,6 +89,7 @@ public class BinEdEditorComponent {
         EditorOptions editorOptions = preferences.getEditorPreferences();
         if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
             ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
+            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
         }
 
         applyProfileFromPreferences(preferences);

@@ -416,13 +416,13 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
     public XBUndoHandler getUndoHandler() {
         if (undoHandlerWrapper == null) {
             undoHandlerWrapper = new UndoHandlerWrapper();
-            ((UndoHandlerWrapper) undoHandlerWrapper).setHandler(editorComponent.getUndoHandler());
+            ((UndoHandlerWrapper) undoHandlerWrapper).setHandler(editorComponent.getUndoHandler().orElse(null));
         }
         return undoHandlerWrapper;
     }
 
     @Nonnull
-    public BinaryDataUndoHandler getCodeAreaUndoHandler() {
+    public Optional<BinaryDataUndoHandler> getCodeAreaUndoHandler() {
         return editorComponent.getUndoHandler();
     }
 

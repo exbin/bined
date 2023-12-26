@@ -235,10 +235,9 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                 // notifyModified();
             }
         });
-        ExtCodeArea codeArea = fileHandler.getCodeArea();
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, fileHandler.getCodeAreaUndoHandler());
-        codeArea.setCommandHandler(commandHandler);
+        fileManager.initCommandHandler(fileHandler);
 
+        ExtCodeArea codeArea = fileHandler.getCodeArea();
         codeArea.addDataChangedListener(() -> {
             if (fileHandler == activeFileCache) {
                 ((BinEdFileHandler) activeFileCache).getComponent().notifyDataChanged();

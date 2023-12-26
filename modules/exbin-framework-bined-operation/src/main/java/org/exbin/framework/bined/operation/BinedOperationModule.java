@@ -73,6 +73,10 @@ public class BinedOperationModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
+    }
+
+    public void setEditorProvider(EditorProvider editorProvider) {
+        this.editorProvider = editorProvider;
 
         SimpleFillDataMethod simpleFillDataMethod = new SimpleFillDataMethod();
         simpleFillDataMethod.setApplication(this.application);
@@ -80,13 +84,6 @@ public class BinedOperationModule implements XBApplicationModule {
         RandomDataMethod randomDataMethod = new RandomDataMethod();
         randomDataMethod.setApplication(this.application);
         addInsertDataComponent(randomDataMethod);
-    }
-
-    public void initEditorProvider(EditorProviderVariant variant) {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();

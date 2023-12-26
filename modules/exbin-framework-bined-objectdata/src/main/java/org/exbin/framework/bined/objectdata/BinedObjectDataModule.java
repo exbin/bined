@@ -23,7 +23,6 @@ import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
-import org.exbin.framework.editor.api.EditorProviderVariant;
 
 /**
  * Binary editor object data support module.
@@ -45,9 +44,6 @@ public class BinedObjectDataModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler application) {
         this.application = (XBApplication) application;
-    }
-
-    public void initEditorProvider(EditorProviderVariant variant) {
     }
 
     @Override

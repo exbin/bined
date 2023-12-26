@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
@@ -56,6 +57,7 @@ public class BinEdFileManager {
     private final List<ActionStatusUpdateListener> actionStatusUpdateListeners = new ArrayList<>();
     private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
     private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
+    private CodeAreaCommandHandlerProvider commandHandlerProvider = null;
 
     public BinEdFileManager() {
     }
@@ -103,6 +105,17 @@ public class BinEdFileManager {
         binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusPreferences());
     }
 
+    public void initCommandHandler(BinEdFileHandler fileHandler) {
+        ExtCodeArea codeArea = fileHandler.getCodeArea();
+        CodeAreaOperationCommandHandler commandHandler;
+        if (commandHandlerProvider != null) {
+            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, fileHandler.getCodeAreaUndoHandler().orElse(null));
+        } else {
+            commandHandler = new CodeAreaOperationCommandHandler(codeArea, fileHandler.getCodeAreaUndoHandler().orElse(null));
+        }
+        codeArea.setCommandHandler(commandHandler);
+    }
+
     public void addPainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
         painterPositionColorModifiers.add(modifier);
     }
@@ -146,6 +159,10 @@ public class BinEdFileManager {
 
     public void setStatusControlHandler(BinaryStatusPanel.StatusControlHandler statusControlHandler) {
         binaryStatusPanel.setStatusControlHandler(statusControlHandler);
+    }
+
+    public void setCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
+        this.commandHandlerProvider = commandHandlerProvider;
     }
 
     public void addBinEdComponentExtension(BinEdFileExtension extension) {
