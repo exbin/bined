@@ -2,6 +2,7 @@
 - Added convert data action
 - Added drag&drop content tool
 - Added GUI rendering options
+- Added support for basic makro
 - Fixed issue with language switching
 - Fixed some issues with searching
 

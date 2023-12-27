@@ -17,6 +17,7 @@ package org.exbin.framework.bined.makro.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -29,7 +30,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class MakroRecord {
 
     private String name;
-    private List<String> steps = new ArrayList<>();
+    private final List<String> steps = new ArrayList<>();
 
     public MakroRecord() {
         name = "";
@@ -50,7 +51,8 @@ public class MakroRecord {
 
     public void setRecord(MakroRecord record) {
         name = record.name;
-        steps = record.steps;
+        steps.clear();
+        steps.addAll(record.steps);
     }
 
     public String getName() {
@@ -67,6 +69,20 @@ public class MakroRecord {
     }
 
     public void setSteps(List<String> steps) {
-        this.steps = steps;
+        steps.clear();
+        steps.addAll(steps);
+    }
+
+    public void addStep(String step) {
+        steps.add(step);
+    }
+
+    @Nonnull
+    public Optional<String> getLastStep() {
+        if (steps.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(steps.get(steps.size() - 1));
     }
 }

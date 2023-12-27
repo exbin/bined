@@ -15,6 +15,9 @@
  */
 package org.exbin.framework.bined.makro.operation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -29,7 +32,10 @@ public enum MakroStep {
     ENTER_KEY("enter-key"),
     BACKSPACE_KEY("backspace-key"),
     DELETE_KEY("delete-key"),
-    CARET_MOVED("caret-moved"),
+    CARET_SET("caret-set"),
+    CARET_MOVE("caret-move"),
+    SELECTION_UPDATE("selection-update"),
+    SELECTION_SET("selection-set"),
     CLIPBOARD_CUT("clipboard-cut"),
     CLIPBOARD_COPY("clipboard-copy"),
     CLIPBOARD_COPY_AS_CODE("clipboard-copy-as-code"),
@@ -40,6 +46,13 @@ public enum MakroStep {
     SELECTION_CLEAR("selection-clear");
 
     private final String operationCode;
+    public static final Map<String, MakroStep> MAP = new HashMap<>();
+
+    static {
+        for (MakroStep makroStep : MakroStep.values()) {
+            MAP.put(makroStep.operationCode, makroStep);
+        }
+    }
 
     private MakroStep(String operationCode) {
         this.operationCode = operationCode;
@@ -48,5 +61,10 @@ public enum MakroStep {
     @Nonnull
     public String getOperationCode() {
         return operationCode;
+    }
+
+    @Nonnull
+    public static Optional<MakroStep> findByCode(String operationCode) {
+        return Optional.ofNullable(MAP.get(operationCode));
     }
 }
