@@ -171,11 +171,12 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 include 'LICENSE.txt'
                 include 'changes.txt'
 
-                from 'src/dist'
-                include 'readme.txt'
-                include 'bined.sh'
+                from ('src/dist') {
+                    include 'readme.txt'
+                    include 'bined.sh'
                 //                include 'bined.bat'
-                include 'plugins/*'
+                    include 'plugins/*'
+                }
 
                 from project(':apps:bined-editor').projectDir.absolutePath + '/build/launch4j'
                 include "Bined.exe"

@@ -61,7 +61,7 @@ public class StopMacroRecordingAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isEmpty()) {
+        if (activeFile.isPresent()) {
             BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
             ExtCodeArea codeArea = fileHandler.getCodeArea();
             macroManager.stopMacroRecording(codeArea);

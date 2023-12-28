@@ -16,6 +16,8 @@
 package org.exbin.bined.editor;
 
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -77,6 +80,7 @@ public class BinedEditor {
     private static final String OPTION_DEV = "dev";
     private static final String OPTION_SINGLE_FILE = "single_file";
     private static final String OPTION_MULTI_FILE = "multi_file";
+    private static final String OPTION_FULLSCREEN = "fullscreen";
 
     /**
      * Main method launching the application.
@@ -102,6 +106,7 @@ public class BinedEditor {
             opt.addOption(OPTION_HELP, "help", false, bundle.getString("cl_option_help"));
             opt.addOption(OPTION_VERBOSE, false, bundle.getString("cl_option_verbose"));
             opt.addOption(OPTION_DEV, false, bundle.getString("cl_option_dev"));
+            opt.addOption(OPTION_FULLSCREEN, false, bundle.getString("cl_option_fullscreen"));
             OptionGroup editorProviderType = new OptionGroup();
             editorProviderType.addOption(new Option(OPTION_SINGLE_FILE, bundle.getString("cl_option_single_file")));
             editorProviderType.addOption(new Option(OPTION_MULTI_FILE, bundle.getString("cl_option_multi_file")));
@@ -114,6 +119,7 @@ public class BinedEditor {
             } else {
                 boolean verboseMode = cl.hasOption(OPTION_VERBOSE);
                 boolean devMode = cl.hasOption(OPTION_DEV);
+                boolean fullScreenMode = cl.hasOption(OPTION_FULLSCREEN);
                 String editorProvideType = editorProviderType.getSelected();
 
                 app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(BinedEditor.class));
@@ -186,7 +192,7 @@ public class BinedEditor {
                     }
                     helpOnlineModule.registerOnlineHelpMenu();
 
-                    frameModule.registerExitAction();
+//                    frameModule.registerExitAction();
                     frameModule.registerBarsVisibilityActions();
 
                     fileModule.registerMenuFileHandlingActions();
@@ -269,6 +275,12 @@ public class BinedEditor {
                     frameHandler.setDefaultSize(new Dimension(600, 400));
                     frameModule.loadFramePosition();
                     optionsModule.initialLoadFromPreferences();
+                    if (fullScreenMode) {
+                        JFrame frame = (JFrame) frameHandler.getFrame();
+                        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+                        device.setFullScreenWindow(frame);
+                    }
+
                     frameHandler.showFrame();
 
                     String filePath = null;

@@ -15,10 +15,10 @@
  */
 package org.exbin.framework.bined.macro.operation;
 
-import com.sun.tools.javac.util.Pair;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -76,35 +76,35 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         if (recordingMacro != null) {
             switch (keyEvent.getKeyCode()) {
                 case KeyEvent.VK_LEFT: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of(MovementDirection.LEFT));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.LEFT));
                     break;
                 }
                 case KeyEvent.VK_RIGHT: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of(MovementDirection.RIGHT));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.RIGHT));
                     break;
                 }
                 case KeyEvent.VK_UP: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of(MovementDirection.UP));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.UP));
                     break;
                 }
                 case KeyEvent.VK_DOWN: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of(MovementDirection.DOWN));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.DOWN));
                     break;
                 }
                 case KeyEvent.VK_HOME: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_START : MovementDirection.ROW_START));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_START : MovementDirection.ROW_START));
                     break;
                 }
                 case KeyEvent.VK_END: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_END : MovementDirection.ROW_END));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_END : MovementDirection.ROW_END));
                     break;
                 }
                 case KeyEvent.VK_PAGE_UP: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of(MovementDirection.PAGE_UP));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.PAGE_UP));
                     break;
                 }
                 case KeyEvent.VK_PAGE_DOWN: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, List.of(MovementDirection.PAGE_DOWN));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.PAGE_DOWN));
                     break;
                 }
                 case KeyEvent.VK_INSERT: {
@@ -123,10 +123,10 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         if (recordingMacro != null && keyValue != KeyEvent.CHAR_UNDEFINED) {
             CodeAreaSection section = ((CaretCapable) codeArea).getActiveSection();
             if (section != BasicCodeAreaSection.TEXT_PREVIEW) {
-                CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, List.of(String.valueOf(keyValue)));
+                CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, Arrays.asList(String.valueOf(keyValue)));
             } else {
                 if (keyValue > DefaultCodeAreaCommandHandler.LAST_CONTROL_CODE && keyValue != DELETE_CHAR) {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, List.of(String.valueOf(keyValue)));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, Arrays.asList(String.valueOf(keyValue)));
                 }
             }
         }
@@ -314,7 +314,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     }
 
     public void appendMacroOperationStep(MacroStep macroStep) {
-        CodeAreaMacroCommandHandler.this.appendMacroOperationStep(macroStep, List.of());
+        CodeAreaMacroCommandHandler.this.appendMacroOperationStep(macroStep, Arrays.asList());
     }
 
     public void appendMacroOperationStep(MacroStep macroStep, List<Object> parameters) {
@@ -322,8 +322,8 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
             List<String> steps = recordingMacro.getSteps();
             try {
                 int stepIndex = steps.size() - 1;
-                Pair<MacroStep, List<Object>> step = parseStep(steps.get(stepIndex));
-                List<Object> stepParameters = step.snd;
+                MacroOperation macroOperation = parseStep(steps.get(stepIndex));
+                List<Object> stepParameters = macroOperation.getParameters();
                 switch (macroStep) {
                     case CARET_MOVE: {
                         if (stepParameters.get(0) == parameters.get(0)) {
@@ -333,14 +333,14 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
                                 stepParameters.add(2);
                             }
 
-                            recordingMacro.setStep(stepIndex, stepAsString(step.fst, stepParameters));
+                            recordingMacro.setStep(stepIndex, stepAsString(macroOperation.getMacroStep(), stepParameters));
                             return;
                         }
                         break;
                     }
                     case KEY_PRESSED: {
                         stepParameters.set(0, (String) stepParameters.get(0) + parameters.get(0));
-                        recordingMacro.setStep(stepIndex, stepAsString(step.fst, stepParameters));
+                        recordingMacro.setStep(stepIndex, stepAsString(macroOperation.getMacroStep(), stepParameters));
                         return;
                     }
                     case CLIPBOARD_COPY:
@@ -426,7 +426,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     }
 
     @Nonnull
-    public static Pair<MacroStep, List<Object>> parseStep(String stepString) throws ParseException, NumberFormatException {
+    public static MacroOperation parseStep(String stepString) throws ParseException, NumberFormatException {
         String operationCode;
         List<Object> parameters = new ArrayList<>();
         int parametersStart = stepString.indexOf("(");
@@ -532,7 +532,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         }
 
         Optional<MacroStep> macroStep = MacroStep.findByCode(operationCode);
-        return new Pair<>(macroStep.orElse(null), parameters);
+        return new MacroOperation(macroStep.orElse(null), parameters);
     }
 
     @Nullable

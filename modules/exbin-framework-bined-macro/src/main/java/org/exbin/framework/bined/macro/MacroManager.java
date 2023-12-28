@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.macro;
 
-import com.sun.tools.javac.util.Pair;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -53,6 +52,7 @@ import org.exbin.framework.bined.macro.action.StopMacroRecordingAction;
 import org.exbin.framework.bined.macro.gui.MacrosManagerPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
+import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.preferences.MacroPreferences;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -341,15 +341,15 @@ public class MacroManager {
             List<String> steps = record.getSteps();
             for (String step : steps) {
                 try {
-                    Pair<MacroStep, List<Object>> parseStep = CodeAreaMacroCommandHandler.parseStep(step);
-                    MacroStep macroStep = parseStep.fst;
-                    List<Object> parameters = parseStep.snd;
+                    MacroOperation parseStep = CodeAreaMacroCommandHandler.parseStep(step);
+                    MacroStep macroStep = parseStep.getMacroStep();
+                    List<Object> parameters = parseStep.getParameters();
                     switch (macroStep) {
                         case KEY_PRESSED: {
                             if (!parameters.isEmpty()) {
                                 String text = (String) parameters.get(0);
                                 for (char character : text.toCharArray()) {
-                                    commandHandler.executeMacroStep(macroStep, List.of(character));
+                                    commandHandler.executeMacroStep(macroStep, Arrays.asList(character));
                                 }
                                 continue;
                             }
@@ -359,7 +359,7 @@ public class MacroManager {
                             if (parameters.size() > 1) {
                                 Integer count = (Integer) parameters.get(1);
                                 for (int i = 0; i < count; i++) {
-                                    commandHandler.executeMacroStep(macroStep, List.of(parameters.get(0)));
+                                    commandHandler.executeMacroStep(macroStep, Arrays.asList(parameters.get(0)));
                                 }
                                 continue;
                             }
