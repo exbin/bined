@@ -1,7 +1,0 @@
-rootProject.name = 'exbin-framework-bined-makro'
-
-if (rootProject.path == ':') {
-    include ':modules:exbin-framework-bined'
-}
-
-apply from: '../bined-modules-settings.gradle'

@@ -40,7 +40,7 @@ import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
-import org.exbin.framework.bined.makro.BinedMakroModule;
+import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.tool.content.BinedToolContentModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.search.BinedSearchModule;
@@ -158,8 +158,8 @@ public class BinedEditor {
                     BinedBookmarksModule binedBookmarksModule = moduleRepository.getModuleByInterface(BinedBookmarksModule.class);
                     binedBookmarksModule.setEditorProvider(editorProvider);
 
-                    BinedMakroModule binedMakroModule = moduleRepository.getModuleByInterface(BinedMakroModule.class);
-                    binedMakroModule.setEditorProvider(editorProvider);
+                    BinedMacroModule binedMacroModule = moduleRepository.getModuleByInterface(BinedMacroModule.class);
+                    binedMacroModule.setEditorProvider(editorProvider);
 
                     BinedInspectorModule binedInspectorModule = moduleRepository.getModuleByInterface(BinedInspectorModule.class);
                     binedInspectorModule.setEditorProvider(editorProvider);
@@ -222,13 +222,13 @@ public class BinedEditor {
                     binedModule.registerGoToPosition();
                     binedSearchModule.registerEditFindMenuActions();
                     binedBookmarksModule.registerBookmarksMenuActions();
-                    binedMakroModule.registerMakrosMenuActions();
+                    binedMacroModule.registerMacrosMenuActions();
                     binedOperationModule.registerBlockEditActions();
 
                     binedModule.registerCodeAreaPopupMenu();
                     binedSearchModule.registerEditFindPopupMenuActions();
                     binedBookmarksModule.registerBookmarksPopupMenuActions();
-                    binedMakroModule.registerMakrosPopupMenuActions();
+                    binedMacroModule.registerMacrosPopupMenuActions();
                     binedOperationModule.registerBlockEditPopupMenuActions();
 
                     binedModule.registerPropertiesMenu();
@@ -264,7 +264,7 @@ public class BinedEditor {
                     JComponent editorComponent = editorModule.getEditorComponent();
                     frameHandler.setMainPanel(editorComponent);
                     binedBookmarksModule.registerBookmarksComponentActions(editorComponent);
-                    binedMakroModule.registerMakrosComponentActions(editorComponent);
+                    binedMacroModule.registerMacrosComponentActions(editorComponent);
 
                     frameHandler.setDefaultSize(new Dimension(600, 400));
                     frameModule.loadFramePosition();
