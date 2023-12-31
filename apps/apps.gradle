@@ -9,13 +9,13 @@ ext.depsThis = 'Bined'
 ext.depsBinedLibJava = [
     githubProfile: 'exbin',
     githubRepo: 'bined-lib-java',
-    version: '0.2.1-SNAPSHOT'
+    version: '0.2.1'
 ]
 
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-auxiliary-java',
-    version: '0.2.1-SNAPSHOT'
+    version: '0.2.1'
 ]
 
 ext.depsExbinFrameworkJava = [

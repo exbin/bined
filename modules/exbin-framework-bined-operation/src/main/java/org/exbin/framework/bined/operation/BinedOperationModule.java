@@ -41,11 +41,11 @@ import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
+import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
 
 /**
  * Binary data editor operations module.
@@ -84,6 +84,9 @@ public class BinedOperationModule implements XBApplicationModule {
         RandomDataMethod randomDataMethod = new RandomDataMethod();
         randomDataMethod.setApplication(this.application);
         addInsertDataComponent(randomDataMethod);
+        BitSwappingDataMethod bitSwappingDataMethod = new BitSwappingDataMethod();
+        bitSwappingDataMethod.setApplication(this.application);
+        addConvertDataComponent(bitSwappingDataMethod);
 
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();

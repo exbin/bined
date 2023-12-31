@@ -35,7 +35,7 @@ import org.exbin.framework.bined.operation.component.gui.ExportAsCodeDataPanel;
 @ParametersAreNonnullByDefault
 public class ExportAsCodeDataMethod implements ConvertDataMethod {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ExportAsCodeDataMethod.class);
+    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ExportAsCodeDataPanel.class);
 
     private XBApplication application;
     private PreviewDataHandler previewDataHandler;

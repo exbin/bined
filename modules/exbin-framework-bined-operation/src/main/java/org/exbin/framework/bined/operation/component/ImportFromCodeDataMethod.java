@@ -35,7 +35,7 @@ import org.exbin.framework.bined.operation.component.gui.ImportFromCodeDataPanel
 @ParametersAreNonnullByDefault
 public class ImportFromCodeDataMethod implements InsertDataMethod {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ImportFromCodeDataMethod.class);
+    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ImportFromCodeDataPanel.class);
 
     private XBApplication application;
     private PreviewDataHandler previewDataHandler;

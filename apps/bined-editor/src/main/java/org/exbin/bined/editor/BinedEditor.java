@@ -192,7 +192,7 @@ public class BinedEditor {
                     }
                     helpOnlineModule.registerOnlineHelpMenu();
 
-//                    frameModule.registerExitAction();
+                    frameModule.registerExitAction();
                     frameModule.registerBarsVisibilityActions();
 
                     fileModule.registerMenuFileHandlingActions();
