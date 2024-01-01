@@ -73,7 +73,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             switch (keyEvent.getKeyCode()) {
                 case KeyEvent.VK_LEFT: {
                     CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.LEFT));
@@ -161,7 +161,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void delete() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_DELETE);
         }
 
@@ -170,7 +170,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void copy() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_COPY);
         }
 
@@ -179,7 +179,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void copyAsCode() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_COPY_AS_CODE);
         }
 
@@ -188,7 +188,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void cut() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_CUT);
         }
 
@@ -197,7 +197,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void paste() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_PASTE);
         }
 
@@ -206,7 +206,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void pasteFromCode() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_PASTE_FROM_CODE);
         }
 
@@ -215,7 +215,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void selectAll() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.SELECTION_SELECT_ALL);
         }
 
@@ -224,7 +224,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void clearSelection() {
-        if (recordingMacro != null) {
+        if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.SELECTION_CLEAR);
         }
 
@@ -234,6 +234,10 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     @Nonnull
     private static boolean isSelecting(KeyEvent keyEvent) {
         return (keyEvent.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) > 0;
+    }
+    
+    public boolean isMacroRecording() {
+        return recordingMacro != null;
     }
 
     public void executeMacroStep(MacroStep macroStep, List<Object> parameters) {
@@ -299,12 +303,11 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
                 break;
             }
             case SELECTION_SET: {
-                // TODO updateSelection(SelectingMode.SELECTING, CodeAreaCaretPosition);
+                updateSelection(SelectingMode.SELECTING, ((CaretCapable) codeArea).getCaretPosition());
                 break;
             }
             case SELECTION_UPDATE: {
-                String directionCode = (String) parameters.get(0);
-                MovementDirection movementDirection = movementDirectionFromCode(directionCode);
+                MovementDirection movementDirection = (MovementDirection) parameters.get(0);
                 move(SelectingMode.SELECTING, movementDirection);
                 break;
             }

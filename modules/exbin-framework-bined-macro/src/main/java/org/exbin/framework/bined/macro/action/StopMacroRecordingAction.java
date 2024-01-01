@@ -18,12 +18,17 @@ package org.exbin.framework.bined.macro.action;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.macro.MacroManager;
+import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ActionUtils;
@@ -34,7 +39,7 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class StopMacroRecordingAction extends AbstractAction {
+public class StopMacroRecordingAction extends AbstractAction implements CodeAreaAction {
 
     public static final String ACTION_ID = "stopMacroRecordingAction";
 
@@ -52,6 +57,16 @@ public class StopMacroRecordingAction extends AbstractAction {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
+    }
+
+    @Override
+    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
+        boolean enabled = false;
+        if (codeArea != null) {
+            CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+            enabled = commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
+        }
+        setEnabled(enabled);
     }
 
     public void setMacroManager(MacroManager macroManager) {

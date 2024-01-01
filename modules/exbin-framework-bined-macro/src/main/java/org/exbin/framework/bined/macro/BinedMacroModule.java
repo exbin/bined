@@ -16,21 +16,28 @@
 package org.exbin.framework.bined.macro;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
+import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
+import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
+import org.exbin.framework.bined.macro.operation.MacroStep;
+import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -62,6 +69,19 @@ public class BinedMacroModule implements XBApplicationModule {
         this.editorProvider = editorProvider;
         BinedModule binEdModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
         binEdModule.registerCodeAreaCommandHandlerProvider((codeArea, undoHandler) -> new CodeAreaMacroCommandHandler(codeArea, undoHandler));
+
+        BinedSearchModule binedSearchModule = application.getModuleRepository().getModuleByInterface(BinedSearchModule.class);
+        binedSearchModule.getFindReplaceActions().addFindAgainListener(() -> {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (activeFile.isPresent()) {
+                BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                ExtCodeArea codeArea = fileHandler.getCodeArea();
+                CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                if (commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording()) {
+                    ((CodeAreaMacroCommandHandler) commandHandler).appendMacroOperationStep(MacroStep.FIND_AGAIN);
+                }
+            }
+        });
     }
 
     @Override
@@ -92,7 +112,6 @@ public class BinedMacroModule implements XBApplicationModule {
     }
 
     public void registerMacrosComponentActions(JComponent component) {
-        getMacroManager().registerMacroComponentActions(component);
     }
 
     @Nonnull

@@ -29,7 +29,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
@@ -43,6 +42,7 @@ import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.macro.action.AddMacroAction;
 import org.exbin.framework.bined.macro.action.EditMacroAction;
 import org.exbin.framework.bined.macro.action.ManageMacrosAction;
@@ -54,7 +54,9 @@ import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
+import static org.exbin.framework.bined.macro.operation.MacroStep.FIND_TEXT;
 import org.exbin.framework.bined.macro.preferences.MacroPreferences;
+import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ActionUtils;
@@ -85,6 +87,8 @@ public class MacroManager {
     private final AddMacroAction addMacroAction = new AddMacroAction();
     private final EditMacroAction editMacroAction = new EditMacroAction();
     private JMenu macrosMenu;
+    private int lastActiveMacro = -1;
+    private long lastMacroIndex = 0;
 
     public MacroManager() {
         manageMacrosAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
@@ -110,6 +114,9 @@ public class MacroManager {
 
     public void init() {
         BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        binedModule.addCodeAreaAction(executeLastMacroAction);
+        binedModule.addCodeAreaAction(startMacroRecordingAction);
+        binedModule.addCodeAreaAction(stopMacroRecordingAction);
 
         Preferences preferences = application.getAppPreferences();
         macroPreferences = new MacroPreferences(preferences);
@@ -265,6 +272,7 @@ public class MacroManager {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
+        macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
         JMenu macrosPopupMenu = new JMenu(macrosPopupMenuAction);
         macrosPopupMenu.addMenuListener(new MenuListener() {
             @Override
@@ -283,58 +291,9 @@ public class MacroManager {
         actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID, macrosPopupMenu, new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
-    public void registerMacroComponentActions(JComponent component) {
-        /*        ActionMap actionMap = component.getActionMap();
-        InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        int metaMask = ActionUtils.getMetaMask();
-        for (int i = 0; i < 10; i++) {
-            final int bookmarkIndex = i;
-            String goToActionKey = "go-to-bookmark-" + i;
-            actionMap.put(goToActionKey, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        ExtCodeArea codeArea = fileHandler.getCodeArea();
-                        executeMacro(codeArea, bookmarkIndex);
-                    }
-                }
-            });
-            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask), goToActionKey);
-            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_NUMPAD0 + i, metaMask), goToActionKey);
-
-            String addActionKey = "add-bookmark-" + i;
-            actionMap.put(addActionKey, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        ExtCodeArea codeArea = fileHandler.getCodeArea();
-                        startMacroRecording(codeArea, bookmarkIndex);
-                    }
-                }
-            });
-            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK), addActionKey);
-            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_NUMPAD0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK), addActionKey);
-
-            String clearActionKey = "clear-bookmark-" + i;
-            actionMap.put(clearActionKey, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    clearMacro(bookmarkIndex);
-                }
-            });
-            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK), clearActionKey);
-            inputMap.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_NUMPAD0 + i, metaMask | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK), clearActionKey);
-        }
-        component.setActionMap(actionMap);
-        component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap); */
-    }
-
     public void executeMacro(ExtCodeArea codeArea, int macroIndex) {
         if (macroRecords.size() > macroIndex) {
+            lastActiveMacro = macroIndex;
             MacroRecord record = macroRecords.get(macroIndex);
             CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
 
@@ -365,6 +324,28 @@ public class MacroManager {
                             }
                             break;
                         }
+                        case FIND_TEXT: {
+                            if (parameters.size() > 1) {
+                                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                                if (!activeFile.isPresent()) {
+                                    throw new IllegalStateException();
+                                }
+                                BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+                                BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                                componentExtension.performSearchText((String) parameters.get(0));
+                            }
+                            continue;
+                        }
+                        case FIND_AGAIN: {
+                            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                            if (!activeFile.isPresent()) {
+                                throw new IllegalStateException();
+                            }
+                            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+                            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                            componentExtension.performFindAgain();
+                            continue;
+                        }
                     }
                     commandHandler.executeMacroStep(macroStep, parameters);
                 } catch (ParseException | NumberFormatException ex) {
@@ -374,12 +355,23 @@ public class MacroManager {
         }
     }
 
+    public int getLastActiveMacro() {
+        if (lastActiveMacro == -1 && !macroRecords.isEmpty()) {
+            return 0;
+        }
+        if (lastActiveMacro >= macroRecords.size()) {
+            return -1;
+        }
+        return lastActiveMacro;
+    }
+
     public void startMacroRecording(ExtCodeArea codeArea) {
         CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
         MacroRecord macroRecord = new MacroRecord();
-        // TODO add number postfix
-        macroRecord.setName("Macro");
+        macroRecord.setName(resourceBundle.getString("macroAction.defaultNamePrefix") + lastMacroIndex);
+        lastMacroIndex++;
         commandHandler.setRecordingMacro(macroRecord);
+        notifyMacroRecordingChange(codeArea);
     }
 
     public void stopMacroRecording(ExtCodeArea codeArea) {
@@ -389,11 +381,19 @@ public class MacroManager {
             MacroRecord macroRecord = recordingMacro.get();
             if (!macroRecord.isEmpty()) {
                 macroRecords.add(macroRecord);
+                lastActiveMacro = macroRecords.size() - 1;
                 saveMacroRecords();
                 MacroManager.this.updateMacrosMenu();
             }
         }
         commandHandler.setRecordingMacro(null);
+        notifyMacroRecordingChange(codeArea);
+    }
+
+    private void notifyMacroRecordingChange(ExtCodeArea codeArea) {
+        startMacroRecordingAction.updateForActiveCodeArea(codeArea);
+        stopMacroRecordingAction.updateForActiveCodeArea(codeArea);
+        executeLastMacroAction.updateForActiveCodeArea(codeArea);
     }
 
     public void updateMacrosMenu() {
@@ -406,11 +406,12 @@ public class MacroManager {
         menu.removeAll();
 
         int recordsLimit = Math.min(macroRecords.size(), 10);
-        int metaMask = ActionUtils.getMetaMask();
-        String macroActionName = resourceBundle.getString("macroAction.text");
+        String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
+        String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
         for (int i = 0; i < recordsLimit; i++) {
             final int macroIndex = i;
-            Action macroAction = new AbstractAction(macroActionName + " " + (i + 1)) {
+            String macroName = macroRecords.get(i).getName();
+            Action macroAction = new AbstractAction(macroName.isEmpty() ? macroActionName + (i + 1) : macroName) {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Optional<FileHandler> activeFile = editorProvider.getActiveFile();
@@ -421,6 +422,7 @@ public class MacroManager {
                     }
                 }
             };
+            macroAction.putValue(Action.SHORT_DESCRIPTION, macroActionDescription);
 
             menu.add(ActionUtils.actionToMenuItem(macroAction));
         }

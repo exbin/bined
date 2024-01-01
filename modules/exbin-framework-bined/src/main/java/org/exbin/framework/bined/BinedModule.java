@@ -37,6 +37,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -157,6 +159,8 @@ public class BinedModule implements XBApplicationModule {
     private PopupMenuVariant popupMenuVariant = PopupMenuVariant.NORMAL;
     private BasicCodeAreaZone popupMenuPositionZone = BasicCodeAreaZone.UNKNOWN;
 
+    private final List<CodeAreaAction> codeAreaActions = new ArrayList<>();
+
     public BinedModule() {
     }
 
@@ -262,13 +266,19 @@ public class BinedModule implements XBApplicationModule {
             }
         }
 
-        CodeAreaAction[] codeAreaActions = new CodeAreaAction[]{
+        CodeAreaAction[] binedCodeAreaActions = new CodeAreaAction[]{
             goToPositionAction, editSelectionAction,
             hexCharactersCaseActions, codeTypeActions, positionCodeTypeActions,
             rowWrappingAction, viewModeActions, showHeaderAction,
             showRowPositionAction, showUnprintablesActions,
             clipboardCodeActions, printAction
         };
+        for (CodeAreaAction codeAreaAction : binedCodeAreaActions) {
+            if (codeAreaAction != null) {
+                codeAreaAction.updateForActiveCodeArea(codeArea);
+            }
+        }
+
         for (CodeAreaAction codeAreaAction : codeAreaActions) {
             if (codeAreaAction != null) {
                 codeAreaAction.updateForActiveCodeArea(codeArea);
@@ -1111,6 +1121,14 @@ public class BinedModule implements XBApplicationModule {
 
     public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
         fileManager.setCommandHandlerProvider(commandHandlerProvider);
+    }
+
+    public void addCodeAreaAction(CodeAreaAction codeAreaAction) {
+        codeAreaActions.add(codeAreaAction);
+    }
+
+    public void removeCodeAreaAction(CodeAreaAction codeAreaAction) {
+        codeAreaActions.remove(codeAreaAction);
     }
 
     public enum PopupMenuVariant {

@@ -16,6 +16,8 @@
 package org.exbin.framework.bined.search.action;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -54,6 +56,8 @@ public class FindReplaceActions implements FileDependentAction {
     private Action editFindAction;
     private Action editFindAgainAction;
     private Action editReplaceAction;
+
+    private final List<FindAgainListener> findAgainListeners = new ArrayList<>();
 
     public FindReplaceActions() {
     }
@@ -128,6 +132,10 @@ public class FindReplaceActions implements FileDependentAction {
                     BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
                     BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                     componentExtension.performFindAgain();
+
+                    for (FindAgainListener findAgainListener : findAgainListeners) {
+                        findAgainListener.performed();
+                    }
                 }
             };
             ActionUtils.setupAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
@@ -183,5 +191,18 @@ public class FindReplaceActions implements FileDependentAction {
             });
         }
         return editReplaceAction;
+    }
+
+    public void addFindAgainListener(FindAgainListener findAgainListener) {
+        findAgainListeners.add(findAgainListener);
+    }
+
+    public void removeFindAgainListener(FindAgainListener findAgainListener) {
+        findAgainListeners.remove(findAgainListener);
+    }
+
+    public static interface FindAgainListener {
+
+        void performed();
     }
 }

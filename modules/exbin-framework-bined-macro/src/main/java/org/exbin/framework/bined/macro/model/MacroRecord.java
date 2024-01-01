@@ -57,6 +57,7 @@ public class MacroRecord {
         }
     }
 
+    @Nonnull
     public String getName() {
         return name;
     }

@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.search;
 
 import java.awt.BorderLayout;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.api.XBApplication;
@@ -36,7 +37,7 @@ import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
 public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentExtension {
 
     private BinEdComponentPanel componentPanel;
-    private BinarySearch binarySearch = new BinarySearch();
+    private final BinarySearch binarySearch = new BinarySearch();
     private BinarySearchService binarySearchService;
     private boolean binarySearchPanelVisible = false;
     private XBApplication application;
@@ -94,6 +95,14 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
         }
     }
     
+    public void performSearchText(String text) {
+        SearchParameters searchParameters = new SearchParameters();
+        SearchCondition searchCondition = new SearchCondition();
+        searchCondition.setSearchText(text);
+        searchParameters.setCondition(searchCondition);
+        binarySearchService.performFind(searchParameters, binarySearch.getSearchStatusListener());
+    }
+
     public void performFindAgain() {
         if (binarySearchPanelVisible) {
             binarySearchService.performFindAgain(binarySearch.getSearchStatusListener());

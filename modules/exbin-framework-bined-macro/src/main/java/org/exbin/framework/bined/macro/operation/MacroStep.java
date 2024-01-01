@@ -44,7 +44,9 @@ public enum MacroStep {
     CLIPBOARD_DELETE("clipboard-delete"),
     SELECTION_SELECT_ALL("selection-select-all"),
     SELECTION_CLEAR("selection-clear"),
-    EDIT_OPERATION_CHANGE("edit-operation-change");
+    EDIT_OPERATION_CHANGE("edit-operation-change"),
+    FIND_TEXT("search-find-text"),
+    FIND_AGAIN("search-find-again");
 
     private final String operationCode;
     public static final Map<String, MacroStep> MAP = new HashMap<>();

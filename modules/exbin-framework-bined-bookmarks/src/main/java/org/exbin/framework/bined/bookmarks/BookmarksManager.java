@@ -273,6 +273,7 @@ public class BookmarksManager {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
+        bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
         JMenu bookmarksPopupMenu = new JMenu(bookmarksPopupMenuAction);
         bookmarksPopupMenu.addMenuListener(new MenuListener() {
             @Override
