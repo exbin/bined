@@ -54,9 +54,10 @@ public class InspectComponentPanel extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    
+
     private void init() {
         codeArea.setEditMode(EditMode.READ_ONLY);
+        codeArea.setFocusTraversalKeysEnabled(false);
     }
 
     public void setComponent(Object component, @Nullable String componentName) {
@@ -97,14 +98,14 @@ public class InspectComponentPanel extends javax.swing.JPanel {
         Object basicType = PropertyTableItem.convertToBasicType(component);
         if (!showPropertiesOnly && basicType instanceof String || binarySupported) {
             JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.add("Instance", instanceSplitPane);
+            tabbedPane.add(resourceBundle.getString("propertyTab.instance"), instanceSplitPane);
             if (basicType instanceof String) {
                 JTextArea textArea = new JTextArea((String) basicType);
                 textArea.setEditable(false);
-                tabbedPane.add("Text", textArea);
+                tabbedPane.add(resourceBundle.getString("propertyTab.text"), textArea);
             }
             if (binarySupported) {
-                tabbedPane.add("Binary", binaryComponent);
+                tabbedPane.add(resourceBundle.getString("propertyTab.binary"), binaryComponent);
             }
             mainPanel.add(tabbedPane, BorderLayout.CENTER);
         } else {

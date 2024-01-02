@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.macro.action;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -22,6 +23,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.api.XBApplication;
@@ -79,7 +81,17 @@ public class ExecuteLastMacroAction extends AbstractAction implements CodeAreaAc
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         if (activeFile.isPresent()) {
             BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-            macroManager.executeMacro(fileHandler.getCodeArea(), 0);
+            try {
+                macroManager.executeMacro(fileHandler.getCodeArea(), macroManager.getLastActiveMacro());
+            } catch (Exception ex) {
+                String message = ex.getMessage();
+                if (message == null || message.isEmpty()) {
+                    message = ex.toString();
+                } else if (ex.getCause() != null) {
+                    message += ex.getCause().getMessage();
+                }
+                JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

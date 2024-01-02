@@ -136,6 +136,13 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void enterPressed() {
+        if (isMacroRecording()) {
+            CodeAreaSection section = ((CaretCapable) codeArea).getActiveSection();
+            if (section == BasicCodeAreaSection.TEXT_PREVIEW) {
+                CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.ENTER_KEY);
+            }
+        }
+
         super.enterPressed();
     }
 
@@ -146,16 +153,24 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
 
     @Override
     public void tabPressed(SelectingMode selectingMode) {
-        super.tabPressed();
+        super.tabPressed(selectingMode);
     }
 
     @Override
     public void backSpacePressed() {
+        if (isMacroRecording()) {
+            CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.BACKSPACE_KEY);
+        }
+
         super.backSpacePressed();
     }
 
     @Override
     public void deletePressed() {
+        if (isMacroRecording()) {
+            CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.DELETE_KEY);
+        }
+
         super.deletePressed();
     }
 
@@ -235,7 +250,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     private static boolean isSelecting(KeyEvent keyEvent) {
         return (keyEvent.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) > 0;
     }
-    
+
     public boolean isMacroRecording() {
         return recordingMacro != null;
     }
@@ -535,7 +550,11 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         }
 
         Optional<MacroStep> macroStep = MacroStep.findByCode(operationCode);
-        return new MacroOperation(macroStep.orElse(null), parameters);
+        if (!macroStep.isPresent()) {
+            throw new ParseException("Unknown operation: " + operationCode, 0);
+        }
+
+        return new MacroOperation(macroStep.get(), parameters);
     }
 
     @Nullable

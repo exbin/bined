@@ -91,6 +91,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
         });
         previewCodeArea.setContentData(new ByteArrayEditableData());
         previewCodeArea.setEditMode(EditMode.READ_ONLY);
+        previewCodeArea.setFocusTraversalKeysEnabled(false);
         previewPanel.add(previewCodeArea);
     }
 

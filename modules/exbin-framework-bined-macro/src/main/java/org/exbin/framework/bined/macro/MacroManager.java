@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.macro;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
@@ -297,8 +299,10 @@ public class MacroManager {
             MacroRecord record = macroRecords.get(macroIndex);
             CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
 
+            int line = 0;
             List<String> steps = record.getSteps();
             for (String step : steps) {
+                line++;
                 try {
                     MacroOperation parseStep = CodeAreaMacroCommandHandler.parseStep(step);
                     MacroStep macroStep = parseStep.getMacroStep();
@@ -328,7 +332,7 @@ public class MacroManager {
                             if (parameters.size() > 1) {
                                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                                 if (!activeFile.isPresent()) {
-                                    throw new IllegalStateException();
+                                    throw new IllegalStateException("No active file");
                                 }
                                 BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
                                 BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
@@ -339,7 +343,7 @@ public class MacroManager {
                         case FIND_AGAIN: {
                             Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                             if (!activeFile.isPresent()) {
-                                throw new IllegalStateException();
+                                throw new IllegalStateException("No active file");
                             }
                             BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
                             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
@@ -348,8 +352,8 @@ public class MacroManager {
                         }
                     }
                     commandHandler.executeMacroStep(macroStep, parameters);
-                } catch (ParseException | NumberFormatException ex) {
-                    Logger.getLogger(MacroManager.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalStateException | NumberFormatException | ParseException ex) {
+                    throw new IllegalStateException("Error on line " + line + ": ", ex);
                 }
             }
         }
@@ -418,7 +422,18 @@ public class MacroManager {
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
                         ExtCodeArea codeArea = fileHandler.getCodeArea();
-                        executeMacro(codeArea, macroIndex);
+                        try {
+                            executeMacro(codeArea, macroIndex);
+                        } catch (Exception ex) {
+                            String message = ex.getMessage();
+                            if (message == null || message.isEmpty()) {
+                                message = ex.toString();
+                            } else if (ex.getCause() != null) {
+                                message += ex.getCause().getMessage();
+                            }
+                                    
+                            JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             };

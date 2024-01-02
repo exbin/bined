@@ -55,6 +55,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea = new ExtCodeArea();
         codeArea.setPainter(new BinEdCodeAreaPainter(codeArea));
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        codeArea.setFocusTraversalKeysEnabled(false);
 
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new EmptyBinaryDataUndoHandler());
         codeArea.setCommandHandler(commandHandler);

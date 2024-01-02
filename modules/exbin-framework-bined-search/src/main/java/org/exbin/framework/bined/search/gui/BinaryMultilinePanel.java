@@ -113,6 +113,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
         } else {
             codeArea = new ExtCodeArea();
             codeArea.setContentData(condition.getBinaryData());
+            codeArea.setFocusTraversalKeysEnabled(false);
             add(codeArea, BorderLayout.CENTER);
             if (codeAreaPopupMenuHandler != null) {
                 attachPopupMenu();
