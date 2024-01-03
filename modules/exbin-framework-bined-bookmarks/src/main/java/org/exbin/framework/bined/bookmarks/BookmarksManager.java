@@ -397,6 +397,7 @@ public class BookmarksManager {
         int recordsLimit = Math.min(bookmarkRecords.size(), 10);
         int metaMask = ActionUtils.getMetaMask();
         String bookmarkActionName = resourceBundle.getString("bookmarkAction.text");
+        String bookmarkActionDescription = resourceBundle.getString("bookmarkAction.shortDescription");
         for (int i = 0; i < recordsLimit; i++) {
             BookmarkRecord bookmarkRecord = bookmarkRecords.get(i);
 
@@ -434,6 +435,7 @@ public class BookmarksManager {
                     return 16;
                 }
             });
+            bookmarkAction.putValue(Action.SHORT_DESCRIPTION, bookmarkActionDescription);
 
             menu.add(ActionUtils.actionToMenuItem(bookmarkAction));
         }
