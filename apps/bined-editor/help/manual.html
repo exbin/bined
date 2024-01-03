@@ -2,7 +2,7 @@
 <body>
 
 <h1 id="user-manual-for-bined">User Manual for BinEd Editor</h1>
-<p>BinEd is free and open source hexadecimal stand-alone viewer/editor written in Java.</p>
+<p>BinEd is free and open source stand-alone hex viewer/editor written in Java.</p>
 <h1 id="features">Features</h1>
 <ul>
 <li>Visualize data as numerical (hexadecimal) codes and text representation</li>
@@ -22,7 +22,7 @@
 <p>Project uses Apache License 2.0, see:</p>
 <p><a class="urlextern"  href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a></p>
 <h2 id="requirements">Requirements</h2>
-<p>Application can be executed on any platform supported by Java 8, including Microsoft Windows, macOS, variants of Linux or BSD and application should have the same minimum requirements as Java. It should be also ok to use any newer version of the Java. DMG installer for macOS requires Java 11. </p>
+<p>Application can be executed on any platform supported by Java 8, including Microsoft Windows, macOS, variants of Linux or BSD and application should have the same minimum requirements as Java. It should be also ok to use any newer version of the Java. DMG installer for macOS requires Java 11.</p>
 <p>For instruction on how to install Java on your operating system please search on Internet or visit:</p>
 <p><a class="urlextern"  href="https://java.com">https://java.com</a></p>
 <h2 id="installation">Installation</h2>
@@ -33,6 +33,8 @@
 <p>For macOS there is installation file (dmg image) available.</p>
 <p>For some Linux variants there are Debian and RPM packages available.</p>
 <p>Alternatively, or for other operating systems, please use general ZIP variant / file. You&#39;ll need to extract content of the file into directory of your choice. This action is different on various operating systems - please search on the Internet for instructions on how to do this step on your operating system.</p>
+<p>You can also run limited version in modern web browser using <a class="urlextern"  href="https://labs.leaningtech.com/cheerpj">CheerpJ</a>:</p>
+<p><a class="urlextern"  href="https://bined.exbin.org/editor/web">https://bined.exbin.org/editor/web</a></p>
 <h3 id="installation-on-windows">Installation on Windows</h3>
 <p>Installation package for Windows is typical wizard dialog (created with Nullsoft NSIS tool).</p>
 <center><img src="images/bined_windows_installer.png" title="Installer - Step 1" alt="Installer - Step 1" /></center>
@@ -69,7 +71,10 @@
 <pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>java -jar bined.jar</code></pre>
 <p>Application also accepts few command line parameters, like for opening specific file on start.</p>
 <p>Usage: &quot;bined &lt;options&gt; &lt;file&gt;&quot;</p>
-<p>&quot;--help&quot; parameter to see available commands  &quot;-multi_file&quot; forces multi file / tab switching mode  &quot;-single_file&quot; forces single file mode</p>
+<p>&quot;--help&quot; parameter to see available commands<br/>
+&quot;-multi_file&quot; forces multi file / tab switching mode<br/>
+&quot;-single_file&quot; forces single file mode<br/>
+&quot;--fullscreen&quot; forces full screen mode</p>
 <h1 id="main-window">Main Window</h1>
 <p>BinEd is desktop application with typical layout.</p>
 <center><img src="images/main_window.png" title="Main Window" alt="Main Window" /></center>
@@ -100,7 +105,7 @@
 <li>Undo / redo actions</li>
 <li>Area selection and clipboard operations</li>
 <li>Find and replace actions</li>
-<li>Tools related to editing, navigation and bookmark</li>
+<li>Tools related to editing, navigation, bookmarking and macro support</li>
 </ul>
 <center><img src="images/view_menu.png" title="View Menu" alt="View Menu" /></center>
 <p>View menu allows adjusting various options related to displaying properties:</p>
@@ -108,6 +113,8 @@
 <li>Toggle visibility of the sections of the main window</li>
 <li>View options for code area - see. <a  href="#view-options">view options</a></li>
 </ul>
+<p>Tools menu provides additional actions like file compare and clipboard/item dragging content tools.</p>
+<p>Help menu provides information about application and access to help / manual content included with application or available online.</p>
 <h2 id="toolbar">Toolbar</h2>
 <p>Toolbar provides access to some of typically used actions.</p>
 <ul>
@@ -129,20 +136,20 @@
 <h2 id="status-bar">Status Bar</h2>
 <p>Status bar is bottom section of the main window.</p>
 <center><img src="images/status_bar.png" title="Status Bar" alt="Status Bar" /></center>
-<p>It has following 5 sections - from left to right.</p>
+<p>It has following 5 sections - from left to right:</p>
 <h3 id="current-encoding">Current Encoding</h3>
 <p>Left click cycles throw set list of encodings.</p>
 <p>Popup menu provides ability to select specific encoding from the list or to manage it.</p>
 <h3 id="document-size">Document Size</h3>
 <p>Shows document size in specific code type and in brackets difference to size of the saved document.</p>
 <p>If there is selection active in the document then it shows size of the selection to size of the document.</p>
-<p>Tooltip shows document size in all three code types.</p>
+<p>Tooltip shows document size in three numeral systems of base 8, 10 and 16.</p>
 <center><img src="images/document_size_tooltip.png" title="Status Bar" alt="Status Bar" /></center>
 <p>Popup menu allows selecting code type or to copy the value.</p>
 <h3 id="cursor-position">Cursor Position</h3>
 <p>Shows current position of the cursor in the document as position in the document and position in the code.</p>
 <p>If there is selection active in the document then it shows start and end position of the selection.</p>
-<p>Tooltip shows cursor position in all three code types.</p>
+<p>Tooltip shows cursor position in three numeral systems of base 8, 10 and 16.</p>
 <p>Popup menu allows selecting code type or to copy the value.</p>
 <h3 id="memory-mode">Memory Mode</h3>
 <p>Shows currently used memory mode.</p>
@@ -196,27 +203,6 @@
 <pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Edit Selection</code></pre>
 <center><img src="images/edit_selection_dialog.png" title="Edit Selection Dialog" alt="Edit Selection Dialog" /></center>
 <p>You can specify position relative to current position, start or end of the document.Position can be specified in octal, decimal or hexadecimal base.</p>
-<h2 id="clipboard-content">Clipboard Content</h2>
-<p>Tool to show available content currently stored in system clipboard.</p>
-<p>It provides list of available data flavors (variants of data representation) and allows to show available information about content.</p>
-<center><img src="images/clipboard_content_dialog.png" title="Clipboard Content Dialog" alt="Clipboard Content Dialog" /></center>
-<h2 id="bookmarks">Bookmarks</h2>
-<p>Bookmarks allow to save specific position / ranges and mark them with color.</p>
-<p>First 10 bookmark records are available for quick access, so that they can be set, cleared and jump to with keyboard shortcuts.</p>
-<p>Bookmark functionality is available in main menu and provides list of quick access bookmarks to jump to and access to bookmarks manager.</p>
-<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Bookmark</code></pre>
-<p>Bookmarks manager allows to edit bookmark records:</p>
-<ul>
-<li>Set start/end position and length</li>
-<li>Assign color to highlight background for specific bookmark</li>
-</ul>
-<center><img src="images/bookmarks_manager_dialog.png" title="Bookmarks Manager Dialog" alt="Bookmarks Manager Dialog" /></center>
-<p>First 10 bookmark records have assigned keyboard shortcuts for activation:</p>
-<ul>
-<li>Ctrl/Meta 0..9 - jump to bookmark&#39;s start position</li>
-<li>Ctrl/Meta+Alt 0..9 - replaces bookmark to current cursor position</li>
-<li>Ctrl/Meta+Alt+Shift 0..9 - clears bookmark</li>
-</ul>
 <h2 id="find-or-replace-data">Find or Replace Data</h2>
 <p>Use this action to find specific text or sequence of codes:</p>
 <pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Find
@@ -232,11 +218,59 @@ Menu / Edit / Replace</code></pre>
 <pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Insert Data</code></pre>
 <p>Data will be inserted or will replace previous data depending on the current edit mode.</p>
 <center><img src="images/insert_data_dialog.png" title="Insert Data Dialog" alt="Insert Data Dialog" /></center>
-<p>Length can be specified in octal, decimal or hexadecimal base.</p>
+<p>On left side there is list of available operations and on right side there are additional parameters and  output preview.</p>
+<h2 id="convert-data-action">Convert Data Action</h2>
+<p>Use this action to convert selected data or whole content into different form:</p>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Convert Data</code></pre>
+<p>Data will be converted and replace previous data or into clipboard / new window.</p>
+<center><img src="images/convert_data_dialog.png" title="Convert Data Dialog" alt="Convert Data Dialog" /></center>
+<p>On left side there is list of available operations and on right side there are additional parameters and  output preview.</p>
+<h2 id="bookmarks">Bookmarks</h2>
+<p>Bookmarks allow to save specific position / range and mark them with color.</p>
+<p>Bookmark functionality is accessible in main edit menu and provides list of quick access bookmarks to jump to and access to bookmarks manager.</p>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Bookmark</code></pre>
+<p>First 10 bookmark records are available for quick access, so that they can be set, cleared and jump to with keyboard shortcuts.</p>
+<ul>
+<li>Ctrl/Meta 0..9 - jump to bookmark&#39;s start position</li>
+<li>Ctrl/Meta+Alt 0..9 - replaces bookmark to current cursor position</li>
+<li>Ctrl/Meta+Alt+Shift 0..9 - clears bookmark</li>
+</ul>
+<p>Bookmarks manager allows to edit all bookmark records:</p>
+<ul>
+<li>Set start/end position and length</li>
+<li>Assign color to highlight background for specific bookmark</li>
+</ul>
+<center><img src="images/bookmarks_manager_dialog.png" title="Bookmarks Manager Dialog" alt="Bookmarks Manager Dialog" /></center>
+<h2 id="macro">Macro</h2>
+<p>Support for macro operations allows to execute sequence of operations with single action.</p>
+<p>Macro functionality is accessible in main edit menu and provides list of first 10 macro records, actions to control action sequence recording and macro manager.</p>
+<pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Edit / Macro</code></pre>
+<p>Macro operation is sequence of steps available from fixed set of commands.</p>
+<p>Syntax of command is: commandname(parameter1, .. parameterX)</p>
+<p>Currently available commands are:</p>
+<ul>
+<li>key-press(T, oN), enter-key, backspace-key, delete-key</li>
+<li>caret-set, caret-move(D, oN)</li>
+<li>clipboard-cut, clipboard-copy, clipboard-copy-as-code, clipboard-paste, clipboard-paste-from-code, clipboard-delete</li>
+<li>selection-set, selection-update(D, oN), selection-select-all, selection-clear</li>
+<li>edit-operation-change</li>
+<li>search-find-text(T), search-find-again</li>
+</ul>
+<p>Parameters can be number, text string or direction (UP, DOWN, LEFT, RIGHT, PAGE_UP, PAGE_DOWN, ROW_START, ROW_END, DOC_START, DOC_END, SWITCH_SECTION), some parameters are optional.</p>
+<p>Macro manager allows to edit steps of macro records.</p>
+<center><img src="images/macro_manager_dialog.png" title="Macro Manager Dialog" alt="Macro Manager Dialog" /></center>
 <h2 id="compare-files-action">Compare Files Action</h2>
 <p>Use this action to compare content of two files:</p>
 <pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Menu / Tools / Compare Files</code></pre>
-<center><img src="images/compare_files_dialog.png" title="Insert Data Dialog" alt="Insert Data Dialog" /></center>
+<center><img src="images/compare_files_dialog.png" title="Compare Files Dialog" alt="Compare Files Dialog" /></center>
+<h2 id="clipboard-content">Clipboard Content</h2>
+<p>Tool to show available content currently stored in system clipboard.</p>
+<p>It provides list of available data flavors (variants of data representation) and allows to show available information about content.</p>
+<center><img src="images/clipboard_content_dialog.png" title="Clipboard Content Dialog" alt="Clipboard Content Dialog" /></center>
+<h2 id="drag-and-drop-content">Drag and Drop Content</h2>
+<p>Tool to show available content transferred by drag &amp; drop operation.</p>
+<p>It provides list of available data flavors (variants of data representation) and allows to show available information about content.</p>
+<center><img src="images/dragdrop_content_dialog.png" title="Drag and Drop Content Dialog" alt="Drag and Drop Content Dialog" /></center>
 <h2 id="print-document">Print Document</h2>
 <p><strike>Not available</strike></p>
 <h1 id="view-options">View Options</h1>
@@ -275,7 +309,7 @@ Menu / Edit / Replace</code></pre>
 </ul>
 <h2 id="choose-font">Choose Font</h2>
 <p>You can change font used in code area.</p>
-<p>	Menu / Tools / Set Font</p>
+<p>	Menu / View / Set Font</p>
 <pre style="background-color: rgb(246, 248, 250); padding: 8px;"><code>Options / Appearance / Text Font</code></pre>
 <center><img src="images/select_font_dialog.png" title="Select Font Dialog" alt="Select Font Dialog" /></center>
 <p>You can select specific family of the font, size in pixels, style parameters like bold and italic.</p>
@@ -291,8 +325,10 @@ Menu / Edit / Replace</code></pre>
 <p>Active encoding can be either selected by popup menu or cycled through by single click in the status bar.</p>
 <h1 id="options-dialog">Options Dialog</h1>
 <center><img src="images/options_dialog.png" title="Options Dialog" alt="Options Dialog" /></center>
+<p>Main section provides options for overall look of the application. Application supports languages switching depending appropriate language plugin is available.</p>
+<p>It&#39;s also possible to choose visual style of the application and tweak rendering options related to antialiasing and scaling.</p>
 <h2 id="code-area">Code Area</h2>
-<p>Code area options allows setting various options related to code area.</p>
+<p>Code area section allows setting various options related to code area.</p>
 <center><img src="images/code_area_options.png" title="Code Area Options" alt="Code Area Options" /></center>
 <p>Maximum bytes per row allows setting how many codes / preview characters will be visible on the page. </p>
 <p>In default mode (16) code area always shows 16 codes per row.</p>
@@ -300,7 +336,7 @@ Menu / Edit / Replace</code></pre>
 <p>Row position length parameters allows setting of behavior of row position codes. </p>
 <p>In default mode (0, 0) row positions will have as many digits as needed for current size of the document.</p>
 <h2 id="status-bar">Status Bar</h2>
-<p>Options for status bar allows to set same options as available in popup menu actions in status bar.</p>
+<p>Section for status bar allows to set same options as available in popup menu actions in status bar.</p>
 <center><img src="images/status_bar_options.png" title="Code Area Options" alt="Code Area Options" /></center>
 <h2 id="layout">Layout</h2>
 <p>Multiple layout profiles are supported. You can define your own or use one from templates.</p>
