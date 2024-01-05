@@ -74,7 +74,12 @@ public class BinEdFileManager {
         fileHandler.setApplication(application);
         fileHandler.setSegmentsRepository(segmentsRepository);
         BinEdComponentPanel componentPanel = fileHandler.getComponent();
+        initComponentPanel(componentPanel);
+    }
 
+    public void initComponentPanel(BinEdComponentPanel componentPanel) {
+        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             componentExtension.ifPresent((extension) -> {
@@ -94,24 +99,26 @@ public class BinEdFileManager {
 
         Preferences preferences = application.getAppPreferences();
         BinaryEditorPreferences binaryEditorPreferences = new BinaryEditorPreferences(preferences);
-        fileHandler.onInitFromPreferences(binaryEditorPreferences);
+        componentPanel.onInitFromPreferences(binaryEditorPreferences);
         String encoding = binaryEditorPreferences.getEncodingPreferences().getSelectedEncoding();
         if (!encoding.isEmpty()) {
-            fileHandler.setCharset(Charset.forName(encoding));
+            codeArea.setCharset(Charset.forName(encoding));
         }
+
         TextFontPreferences textFontPreferences = binaryEditorPreferences.getFontPreferences();
-        ExtCodeArea codeArea = fileHandler.getCodeArea();
         ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
-        binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusPreferences());
+        if (binaryStatusPanel != null) {
+            binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusPreferences());
+        }
     }
 
-    public void initCommandHandler(BinEdFileHandler fileHandler) {
-        ExtCodeArea codeArea = fileHandler.getCodeArea();
+    public void initCommandHandler(BinEdComponentPanel componentPanel) {
+        ExtCodeArea codeArea = componentPanel.getCodeArea();
         CodeAreaOperationCommandHandler commandHandler;
         if (commandHandlerProvider != null) {
-            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, fileHandler.getCodeAreaUndoHandler().orElse(null));
+            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, componentPanel.getUndoHandler().orElse(null));
         } else {
-            commandHandler = new CodeAreaOperationCommandHandler(codeArea, fileHandler.getCodeAreaUndoHandler().orElse(null));
+            commandHandler = new CodeAreaOperationCommandHandler(codeArea, componentPanel.getUndoHandler().orElse(null));
         }
         codeArea.setCommandHandler(commandHandler);
     }
