@@ -8,8 +8,9 @@
   "finish-args": [
      "--share=ipc",
      "--share=network",
-     "--socket=x11",
-     "--filesystem=home"
+     "--socket=wayland",
+     "--socket=fallback-x11",
+     "--filesystem=host"
   ],
   "modules" : [
     {
@@ -26,8 +27,8 @@
       ],
       "sources": [{
         "type": "archive",
-        "url": "https://bined.exbin.org/download/bined-0.2.2.zip",
-        "sha256": "ab485dcf0a70f54fd1d8ec761f3010c0f2cb7ee86650a843c49eecdefe9f766a"
+        "url": "https://bined.exbin.org/download/bined-0.2.3.zip",
+        "sha256": "c32f9757f70731b6afe47115a292f9a6e083df0ee419e3f61c905e6310fa3ff9"
       }]
     },
     {
@@ -41,8 +42,8 @@
       ],
       "sources": [{
         "type": "archive",
-        "url": "https://bined.exbin.org/download/bined-flathub-0.2.2.src.zip",
-        "sha256": "c6703fe6c85f7f46d1576b0dfefb0856c4a7de7be240d144508e73b11c9057d6"
+        "url": "https://bined.exbin.org/download/bined-flathub-0.2.3.src.zip",
+        "sha256": "b21192868196505702284b4db368f6384b18f23994b35bd865e0e676a8a5ff1a"
       }]
     }
   ]

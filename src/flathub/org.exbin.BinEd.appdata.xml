@@ -3,11 +3,11 @@
   <id>org.exbin.BinEd</id>
   <name>BinEd</name>
   <developer_name>ExBin Project</developer_name>
-  <summary>Binary/Hexadecimal Editor</summary>
+  <summary>Binary/Hex Editor</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>Apache-2.0</project_license>
   <url type="homepage">https://bined.exbin.org/editor</url>
-  <description><p>Free and open source hexadecimal viewer/editor written in Java.</p>
+  <description><p>Free and open source hex viewer/editor written in Java.</p>
   <p>Features:</p>
   <ul>
     <li>Visualize data as numerical (hexadecimal) codes and text representation</li>
@@ -33,6 +33,7 @@
     <kudo>HiDpiIcon</kudo>
   </kudos>
   <releases>
+    <release date="2024-01-06" version="0.2.3"/>
     <release date="2023-07-29" version="0.2.2"/>
   </releases>
   <update_contact>exbinproject@gmail.com</update_contact>
