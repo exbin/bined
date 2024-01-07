@@ -8,9 +8,8 @@
   "finish-args": [
      "--share=ipc",
      "--share=network",
-     "--socket=wayland",
-     "--socket=fallback-x11",
-     "--filesystem=host"
+     "--socket=x11",
+     "--filesystem=home"
   ],
   "modules" : [
     {

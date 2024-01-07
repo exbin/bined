@@ -1,0 +1,46 @@
+name: bined
+version: "0.2.3"
+summary: Binary/Hex Editor
+description: |
+  Free and open source hex viewer/editor written in Java.
+  Features:
+  - Visualize data as numerical (hexadecimal) codes and text representation
+  - Codes can be also binary, octal or decimal
+  - Support for Unicode, UTF-8 and other charsets
+  - Insert and overwrite edit modes
+  - Searching for text / hexadecimal code with matching highlighting
+  - Support for undo/redo
+  - Support for files with size up to exabytes
+base: core18
+compression: lzo
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+
+apps:
+  bined:
+    extensions: [ gnome ]
+    command: "bin/bined"
+    environment:
+    plugs:
+      - audio-playback
+      - network
+      - network-bind
+      - home
+      - removable-media
+
+parts:
+  bined:
+    plugin: dump
+    source: https://bined.exbin.org/download/bined-0.2.3.zip
+    override-build: |
+      craftctl default
+  bined-snap:
+    after: [bined]
+    plugin: dump
+    source: https://bined.exbin.org/download/bined-snap-0.2.3.src.zip
+    override-build: |
+      craftctl default
