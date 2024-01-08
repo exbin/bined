@@ -1,5 +1,6 @@
 name: bined
-version: "0.2.3"
+title: BinEd
+version: '0.2.3'
 summary: Binary/Hex Editor
 description: |
   Free and open source hex viewer/editor written in Java.
@@ -11,36 +12,51 @@ description: |
   - Searching for text / hexadecimal code with matching highlighting
   - Support for undo/redo
   - Support for files with size up to exabytes
-base: core18
+website: https://bined.exbin.org/editor
+source-code: https://github.com/exbin/bined
+base: core22
+license: Apache-2.0
 compression: lzo
+icon: bined.svg
 
 grade: stable
 confinement: strict
 
 architectures:
-  - build-on: amd64
+  - build-on: [amd64]
+  - build-on: [arm64]
+  - build-on: [ppc64el]
 
 apps:
   bined:
+    common-id: org.exbin.bined
     extensions: [ gnome ]
-    command: "bin/bined"
     environment:
+      JAVA_HOME: $SNAP/usr/lib/jvm/java-17-openjdk-$CRAFT_ARCH_BUILD_FOR
+      HOME: "$SNAP_USER_COMMON"
+      PATH: $JAVA_HOME/bin:$PATH
+    command: $JAVA_HOME/bin/java -jar /app/bined-0.2.3/bined.jar
+    desktop: $SNAP/app/setup/gui/bined.desktop
     plugs:
+      - desktop
       - audio-playback
       - network
       - network-bind
       - home
+      - x11
+      - opengl
       - removable-media
+      - optical-drive
 
 parts:
   bined:
     plugin: dump
     source: https://bined.exbin.org/download/bined-0.2.3.zip
-    override-build: |
-      craftctl default
+    organize:
+      bined-0.2.3: /app/bined-0.2.3
+    stage-packages:
+      - openjdk-17-jdk
   bined-snap:
     after: [bined]
     plugin: dump
     source: https://bined.exbin.org/download/bined-snap-0.2.3.src.zip
-    override-build: |
-      craftctl default
