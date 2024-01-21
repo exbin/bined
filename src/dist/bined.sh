@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar bined.jar $*
+java -jar bined.jar "$@"

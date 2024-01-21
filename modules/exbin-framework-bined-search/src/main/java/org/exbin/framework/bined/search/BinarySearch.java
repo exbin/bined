@@ -363,6 +363,7 @@ public class BinarySearch {
         private int delay = DEFAULT_DELAY;
 
         public InvokeSearchThread() {
+            super("InvokeSearchThread");
         }
 
         @Override
@@ -383,21 +384,24 @@ public class BinarySearch {
     private class SearchThread extends Thread {
 
         public SearchThread() {
-            super(() -> {
-                switch (currentSearchOperation) {
-                    case FIND:
-                        binarySearchService.performFind(currentSearchParameters, searchStatusListener);
-                        break;
-                    case FIND_AGAIN:
-                        binarySearchService.performFindAgain(searchStatusListener);
-                        break;
-                    case REPLACE:
-                        binarySearchService.performReplace(currentSearchParameters, currentReplaceParameters);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException("Not supported yet.");
-                }
-            });
+            super("SearchThread");
+        }
+
+        @Override
+        public void run() {
+            switch (currentSearchOperation) {
+                case FIND:
+                    binarySearchService.performFind(currentSearchParameters, searchStatusListener);
+                    break;
+                case FIND_AGAIN:
+                    binarySearchService.performFindAgain(searchStatusListener);
+                    break;
+                case REPLACE:
+                    binarySearchService.performReplace(currentSearchParameters, currentReplaceParameters);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Not supported yet.");
+            }
         }
     }
 

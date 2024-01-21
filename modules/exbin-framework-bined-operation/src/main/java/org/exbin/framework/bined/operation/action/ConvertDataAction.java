@@ -152,7 +152,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
                         case CONVERT_TO_CLIPBOARD: {
                             try {
                                 BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
-                                DataFlavor binedDataFlavor = new DataFlavor(DefaultCodeAreaCommandHandler.BINED_CLIPBOARD_MIME_FULL);;
+                                DataFlavor binedDataFlavor = new DataFlavor(DefaultCodeAreaCommandHandler.BINED_CLIPBOARD_MIME_FULL);
                                 DataFlavor binaryDataFlavor = new DataFlavor(CodeAreaUtils.MIME_CLIPBOARD_BINARY);
                                 Clipboard clipboard = CodeAreaSwingUtils.getClipboard();
                                 CodeAreaSwingUtils.BinaryDataClipboardData binaryData = new CodeAreaSwingUtils.BinaryDataClipboardData(outputData, binedDataFlavor, binaryDataFlavor, null);

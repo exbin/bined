@@ -26,4 +26,4 @@ else
 fi
 
 cd $DIR/../app
-exec $_java $VM_ARGS -Dcom.apple.macos.use-file	-dialog-packages=true -Xdock:name="$APP_NAME" -Xdock:icon="$DIR/../Resources/BinEd.icns" -jar "$APP_JAR" $*
+exec $_java $VM_ARGS -Dcom.apple.macos.use-file	-dialog-packages=true -Xdock:name="$APP_NAME" -Xdock:icon="$DIR/../Resources/BinEd.icns" -jar "$APP_JAR" $@

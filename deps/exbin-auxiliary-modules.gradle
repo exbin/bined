@@ -44,7 +44,7 @@ if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
 }
 
 task testJar(type: Jar, dependsOn: testClasses) {
-    classifier "tests"
+    archiveClassifier = 'tests'
     if (VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('5.0')) {
     	archiveBaseName = "test-${project.archivesBaseName}"
     } else {
@@ -62,7 +62,7 @@ artifacts {
 }
 
 task sourceJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.java
 }
 
@@ -73,7 +73,7 @@ javadoc {
 }
 
 task javadocJar (type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 }
 
@@ -82,7 +82,7 @@ publishing {
         maven(MavenPublication) {
             from components.java
             artifact sourceJar {
-                classifier 'sources'
+                archiveClassifier = 'sources'
             }
             artifact (javadocJar) {
                 classifier = 'javadoc'
@@ -135,9 +135,9 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
     uploadArchives {
         repositories {
             mavenDeployer {
-//                beforeDeployment {
-//                    MavenDeployment deployment -> signing.signPom(deployment)
-//                }
+                beforeDeployment {
+                    MavenDeployment deployment -> signing.signPom(deployment)
+                }
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: ossrhUsername, password: ossrhPassword)
