@@ -1,6 +1,6 @@
 // Shared modules build
 
-version = '0.2.2-SNAPSHOT'
+version = '0.2.2'
 def repositoryName = "xbup-java"
 def githubProfile = 'exbin'
 def libraryUrl = 'https://xbup.exbin.org'

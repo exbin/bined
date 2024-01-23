@@ -1,6 +1,6 @@
 // Shared modules build
 
-version = '0.2.2-SNAPSHOT'
+version = '0.2.2'
 def repositoryName = "exbin-framework-java"
 def githubProfile = 'exbin'
 def libraryUrl = 'https://framework.exbin.org'
@@ -22,13 +22,13 @@ ext.depsExbinAuxiliaryJava = [
 ext.depsXbupJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-java',
-    version: '0.2.2-SNAPSHOT'
+    version: '0.2.2'
 ]
 
 ext.depsXbupDataJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-data-java',
-    version: '0.2.2-SNAPSHOT'
+    version: '0.2.2'
 ]
 
 import org.gradle.util.VersionNumber
