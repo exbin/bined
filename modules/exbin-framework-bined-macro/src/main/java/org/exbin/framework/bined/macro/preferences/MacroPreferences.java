@@ -18,7 +18,7 @@ package org.exbin.framework.bined.macro.preferences;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.api.Preferences;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.bined.macro.options.MacroOptions;
 

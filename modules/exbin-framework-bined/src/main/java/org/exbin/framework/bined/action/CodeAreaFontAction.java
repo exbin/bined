@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.editor.text.EditorTextModule;
 import org.exbin.framework.editor.text.action.TextFontAction;
 import org.exbin.framework.utils.ActionUtils;
@@ -40,15 +39,13 @@ public class CodeAreaFontAction extends AbstractAction implements FileDependentA
     public static final String ACTION_ID = "codeAreaFontAction";
 
     private EditorProvider editorProvider;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private TextFontAction textFontAction;
 
     public CodeAreaFontAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
@@ -66,7 +63,7 @@ public class CodeAreaFontAction extends AbstractAction implements FileDependentA
     public void actionPerformed(ActionEvent e) {
         if (textFontAction == null) {
             textFontAction = new TextFontAction();
-            textFontAction.setup(application, editorProvider, LanguageUtils.getResourceBundleByClass(EditorTextModule.class));
+            textFontAction.setup(editorProvider, LanguageUtils.getResourceBundleByClass(EditorTextModule.class));
         }
         textFontAction.actionPerformed(e);
     }

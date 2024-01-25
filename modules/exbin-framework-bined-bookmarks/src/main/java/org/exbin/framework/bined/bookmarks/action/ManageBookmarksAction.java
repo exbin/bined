@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -31,7 +31,7 @@ import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.bookmarks.BookmarksManager;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
 /**
@@ -45,14 +45,12 @@ public class ManageBookmarksAction extends AbstractAction {
     public static final String ACTION_ID = "manageBookmarksAction";
 
     private EditorProvider editorProvider;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public ManageBookmarksAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
@@ -62,7 +60,7 @@ public class ManageBookmarksAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinedBookmarksModule bookmarksModule = application.getModuleRepository().getModuleByInterface(BinedBookmarksModule.class);
+        BinedBookmarksModule bookmarksModule = App.getModule(BinedBookmarksModule.class);
         BookmarksManager bookmarksManager = bookmarksModule.getBookmarksManager();
         final BookmarksManagerPanel bookmarksPanel = bookmarksManager.createBookmarksManagerPanel();
         List<BookmarkRecord> records = new ArrayList<>();
@@ -73,10 +71,10 @@ public class ManageBookmarksAction extends AbstractAction {
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
         WindowUtils.addHeaderPanel(dialog.getWindow(), bookmarksPanel.getClass(), bookmarksPanel.getResourceBundle());
-        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        windowModule.setDialogTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
         controlPanel.setHandler((actionType) -> {

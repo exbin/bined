@@ -19,7 +19,7 @@ import java.awt.BorderLayout;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -40,7 +40,6 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
     private final BinarySearch binarySearch = new BinarySearch();
     private BinarySearchService binarySearchService;
     private boolean binarySearchPanelVisible = false;
-    private XBApplication application;
 
     @Override
     public void onCreate(BinEdComponentPanel componentPanel) {
@@ -51,7 +50,7 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
         binarySearch.setBinarySearchService(binarySearchService);
         binarySearch.setPanelClosingListener(this::hideSearchPanel);
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
 
         binarySearch.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
     }
@@ -113,11 +112,5 @@ public class BinEdComponentSearch implements BinEdComponentPanel.BinEdComponentE
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
         binarySearch.getPanel().setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
-    }
-
-    @Override
-    public void setApplication(XBApplication application) {
-        this.application = application;
-        binarySearch.setApplication(application);
     }
 }

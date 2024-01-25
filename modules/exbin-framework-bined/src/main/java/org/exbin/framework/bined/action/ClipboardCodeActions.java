@@ -25,7 +25,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -40,7 +39,6 @@ public class ClipboardCodeActions implements CodeAreaAction {
     public static final String PASTE_FROM_CODE_ACTION_ID = "pasteFromCodeAction";
 
     private CodeAreaCore codeArea;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     private Action copyAsCodeAction;
@@ -49,8 +47,7 @@ public class ClipboardCodeActions implements CodeAreaAction {
     public ClipboardCodeActions() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 

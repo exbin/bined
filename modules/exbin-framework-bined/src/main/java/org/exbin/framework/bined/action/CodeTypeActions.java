@@ -30,7 +30,6 @@ import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -50,7 +49,6 @@ public class CodeTypeActions implements CodeAreaAction {
     public static final String CODE_TYPE_RADIO_GROUP_ID = "codeTypeRadioGroup";
 
     private CodeAreaCore codeArea;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     private Action binaryCodeTypeAction;
@@ -64,8 +62,7 @@ public class CodeTypeActions implements CodeAreaAction {
     public CodeTypeActions() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 

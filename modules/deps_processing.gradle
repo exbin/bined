@@ -52,9 +52,9 @@ def fetchModule(String svnUrl, targetDir, Long revision) {
 
 // - local maven repository module will be used if available
 // - otherwise module will be download to deps directory
-project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
+project.dependencies.ext.moduleDep = { depsName, packageName, directoryName, moduleName ->
     if ((ext.has('depsRoot') && depsName == ext.depsRoot) || depsName == ext.depsThis) {
-        return project(':modules:' + moduleName)
+        return project(":${directoryName}:${moduleName}")
     }
 
     def depVersion = ext['deps' + depsName].version
@@ -64,7 +64,7 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
     def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + depVersion
     if (new File(mavenModuleDir).isDirectory()) {
         // Use maven package if available
-        return packageName + ':' + moduleName + ':' + depVersion
+        return "${packageName}:${moduleName}:${depVersion}"
     }
 
     def depsDir = rootProject.buildDir.parent + '/deps/'
@@ -75,7 +75,7 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
     def depModuleDir = depsDir + moduleName
     if (!new File(depModuleDir).isDirectory()) {
         // Download module
-        def githubModulePath = 'https://github.com/' + depGithubProfile + '/' + depGithubRepo + '/trunk/modules/' + moduleName
+        def githubModulePath = "https://github.com/${depGithubProfile}/${depGithubRepo}/trunk/${directoryName}/${moduleName}"
         println 'Downloading ' + githubModulePath
 
         fetchModule(githubModulePath, depModuleDir, null)
@@ -94,9 +94,9 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
     return project(':deps:' + moduleName)
 }
 
-project.dependencies.ext.moduleDepPath = { depsName, moduleName ->
+project.dependencies.ext.moduleDepPath = { depsName, directoryName, moduleName ->
     if (!ext.has('depsRoot') || depsName == ext.depsRoot) {
-        return ":modules:${moduleName}"
+        return ":${directoryName}:${moduleName}"
     }
 
     return ":deps:${moduleName}"

@@ -19,18 +19,17 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Binary editor clipboard support module.
@@ -38,13 +37,12 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedToolContentModule implements XBApplicationModule {
+public class BinedToolContentModule implements Module {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedToolContentModule.class);
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedToolContentModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private ClipboardContentAction clipboardContentAction;
@@ -53,20 +51,11 @@ public class BinedToolContentModule implements XBApplicationModule {
     public BinedToolContentModule() {
     }
 
-    @Override
-    public void init(XBModuleHandler application) {
-        this.application = (XBApplication) application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
         if (clipboardContentAction != null) {
             clipboardContentAction.setEditorProvider(editorProvider);
         }
-    }
-
-    @Override
-    public void unregisterModule(String moduleId) {
     }
 
     @Nonnull
@@ -98,7 +87,7 @@ public class BinedToolContentModule implements XBApplicationModule {
         if (clipboardContentAction == null) {
             ensureSetup();
             clipboardContentAction = new ClipboardContentAction();
-            clipboardContentAction.setup(application, resourceBundle);
+            clipboardContentAction.setup(resourceBundle);
             if (editorProvider != null) {
                 clipboardContentAction.setEditorProvider(editorProvider);
             }
@@ -111,7 +100,7 @@ public class BinedToolContentModule implements XBApplicationModule {
         if (dragDropContentAction == null) {
             ensureSetup();
             dragDropContentAction = new DragDropContentAction();
-            dragDropContentAction.setup(application, resourceBundle);
+            dragDropContentAction.setup(resourceBundle);
             if (editorProvider != null) {
                 dragDropContentAction.setEditorProvider(editorProvider);
             }
@@ -121,13 +110,13 @@ public class BinedToolContentModule implements XBApplicationModule {
 
     public void registerClipboardContentMenu() {
         getClipboardContentAction();
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.registerMenuItem(WindowModuleApi.TOOLS_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 
     public void registerDragDropContentMenu() {
         getDragDropContentAction();
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.registerMenuItem(WindowModuleApi.TOOLS_MENU_ID, MODULE_ID, getDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 }

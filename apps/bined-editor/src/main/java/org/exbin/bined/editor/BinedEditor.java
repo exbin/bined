@@ -35,9 +35,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.exbin.framework.XBBaseApplication;
-import org.exbin.framework.api.Preferences;
-import org.exbin.framework.api.XBApplicationModuleRepository;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule;
@@ -52,8 +50,8 @@ import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.about.api.AboutModuleApi;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
-import org.exbin.framework.frame.api.ApplicationFrameHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.ApplicationFrameHandler;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.help.online.api.HelpOnlineModuleApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
@@ -88,7 +86,7 @@ public class BinedEditor {
      * @param args arguments
      */
     public static void main(String[] args) {
-        try {
+/*        try {
             final XBBaseApplication app = new XBBaseApplication();
             app.setAppDirectory(BinedEditor.class);
             Preferences preferences = app.createPreferences(BinedEditor.class);
@@ -301,6 +299,6 @@ public class BinedEditor {
         } catch (ParseException | RuntimeException ex) {
             Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(1);
-        }
+        } */
     }
 }

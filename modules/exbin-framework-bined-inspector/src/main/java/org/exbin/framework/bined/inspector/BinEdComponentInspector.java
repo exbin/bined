@@ -19,7 +19,6 @@ import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
@@ -54,10 +53,6 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
         valuesPanelScrollPane = new JScrollPane(valuesPanel);
         valuesPanelScrollPane.setBorder(null);
         setShowParsingPanel(true);
-    }
-
-    @Override
-    public void setApplication(XBApplication application) {
     }
 
     @Override

@@ -22,16 +22,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Binary data editor bookmarks module.
@@ -39,13 +38,12 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedBookmarksModule implements XBApplicationModule {
+public class BinedBookmarksModule implements Module {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedBookmarksModule.class);
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedBookmarksModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private BookmarksManager bookmarksManager;
@@ -53,22 +51,13 @@ public class BinedBookmarksModule implements XBApplicationModule {
     public BinedBookmarksModule() {
     }
 
-    @Override
-    public void init(XBModuleHandler application) {
-        this.application = (XBApplication) application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
     }
 
-    @Override
-    public void unregisterModule(String moduleId) {
-    }
-
     public void registerBookmarksMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerBookmarksPopupMenuActions() {
@@ -109,7 +98,6 @@ public class BinedBookmarksModule implements XBApplicationModule {
             ensureSetup();
 
             bookmarksManager = new BookmarksManager();
-            bookmarksManager.setApplication(this.application);
             bookmarksManager.setEditorProvider(editorProvider);
             bookmarksManager.init();
         }

@@ -27,7 +27,6 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.operation.undo.EmptyBinaryDataUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
@@ -168,8 +167,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     @ParametersAreNonnullByDefault
     public interface BinEdComponentExtension {
-
-        void setApplication(XBApplication application);
 
         void onCreate(BinEdComponentPanel componentPanel);
         

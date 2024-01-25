@@ -27,11 +27,11 @@ import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.action.InsertDataAction;
@@ -39,9 +39,8 @@ import org.exbin.framework.bined.operation.action.ConvertDataAction;
 import org.exbin.framework.bined.operation.component.RandomDataMethod;
 import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
@@ -53,13 +52,12 @@ import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedOperationModule implements XBApplicationModule {
+public class BinedOperationModule implements Module {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedOperationModule.class);
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedOperationModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private InsertDataAction insertDataAction;
@@ -70,31 +68,19 @@ public class BinedOperationModule implements XBApplicationModule {
     public BinedOperationModule() {
     }
 
-    @Override
-    public void init(XBModuleHandler application) {
-        this.application = (XBApplication) application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
         SimpleFillDataMethod simpleFillDataMethod = new SimpleFillDataMethod();
-        simpleFillDataMethod.setApplication(this.application);
         addInsertDataComponent(simpleFillDataMethod);
         RandomDataMethod randomDataMethod = new RandomDataMethod();
-        randomDataMethod.setApplication(this.application);
         addInsertDataComponent(randomDataMethod);
         BitSwappingDataMethod bitSwappingDataMethod = new BitSwappingDataMethod();
-        bitSwappingDataMethod.setApplication(this.application);
         addConvertDataComponent(bitSwappingDataMethod);
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addActionStatusUpdateListener(this::updateActionStatus);
-    }
-
-    @Override
-    public void unregisterModule(String moduleId) {
     }
 
     @Nonnull
@@ -102,12 +88,12 @@ public class BinedOperationModule implements XBApplicationModule {
         if (insertDataAction == null) {
             ensureSetup();
             insertDataAction = new InsertDataAction();
-            insertDataAction.setup(application, resourceBundle);
+            insertDataAction.setup(resourceBundle);
 
             insertDataAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule binedModule = App.getModule(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
                     ExtCodeArea codeArea = binedModule.getActiveCodeArea();
@@ -128,13 +114,13 @@ public class BinedOperationModule implements XBApplicationModule {
         if (convertDataAction == null) {
             ensureSetup();
             convertDataAction = new ConvertDataAction();
-            convertDataAction.setup(application, resourceBundle);
+            convertDataAction.setup(resourceBundle);
             convertDataAction.setEditorProvider(editorProvider);
 
             convertDataAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule binedModule = App.getModule(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
                     ExtCodeArea codeArea = binedModule.getActiveCodeArea();
@@ -151,13 +137,13 @@ public class BinedOperationModule implements XBApplicationModule {
     }
 
     public void registerBlockEditActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
     }

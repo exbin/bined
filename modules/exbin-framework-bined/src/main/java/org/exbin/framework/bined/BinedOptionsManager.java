@@ -42,8 +42,8 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
-import org.exbin.framework.api.Preferences;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.action.CodeTypeActions;
 import org.exbin.framework.bined.action.HexCharactersCaseActions;
 import org.exbin.framework.bined.action.PositionCodeTypeActions;
@@ -102,8 +102,9 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.text.EncodingsHandler;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.options.api.OptionsComponent;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 
 /**
  * BinEd options manager.
@@ -115,7 +116,6 @@ public class BinedOptionsManager {
 
     private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinedOptionsManager.class);
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private DefaultOptionsPage<TextEncodingOptionsImpl> textEncodingOptionsPage;
@@ -131,17 +131,13 @@ public class BinedOptionsManager {
     public BinedOptionsManager() {
     }
 
-    public void setApplication(XBApplication application) {
-        this.application = application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
     }
 
     public void registerOptionsPanels(EncodingsHandler encodingsHandler, BinEdFileManager fileManager, BinaryAppearanceService binaryAppearanceService, CodeTypeActions codeTypeActions, ShowUnprintablesActions showUnprintablesActions, HexCharactersCaseActions hexCharactersCaseActions, PositionCodeTypeActions positionCodeTypeActions, ViewModeHandlerActions viewModeActions) {
         // TODO: Drop parameters
-        OptionsModuleApi optionsModule = application.getModuleRepository().getModuleByInterface(OptionsModuleApi.class);
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
 
         binaryAppearanceOptionsPage = new DefaultOptionsPage<BinaryAppearanceOptionsImpl>() {
 
@@ -196,11 +192,11 @@ public class BinedOptionsManager {
                     panel.setTextEncodingService(encodingsHandler.getTextEncodingService());
                     panel.setAddEncodingsOperation((List<String> usedEncodings) -> {
                         final List<String> result = new ArrayList<>();
-                        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+                        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
                         final AddEncodingPanel addEncodingPanel = new AddEncodingPanel();
                         addEncodingPanel.setUsedEncodings(usedEncodings);
                         DefaultControlPanel controlPanel = new DefaultControlPanel(addEncodingPanel.getResourceBundle());
-                        final DialogWrapper addEncodingDialog = frameModule.createDialog(addEncodingPanel, controlPanel);
+                        final DialogWrapper addEncodingDialog = windowModule.createDialog(addEncodingPanel, controlPanel);
                         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                             if (actionType == DefaultControlHandler.ControlActionType.OK) {
                                 result.addAll(addEncodingPanel.getEncodings());
@@ -210,7 +206,7 @@ public class BinedOptionsManager {
                             addEncodingDialog.dispose();
                         });
                         WindowUtils.addHeaderPanel(addEncodingDialog.getWindow(), addEncodingPanel.getClass(), addEncodingPanel.getResourceBundle());
-                        frameModule.setDialogTitle(addEncodingDialog, addEncodingPanel.getResourceBundle());
+                        windowModule.setDialogTitle(addEncodingDialog, addEncodingPanel.getResourceBundle());
                         addEncodingDialog.showCentered(panel);
                         return result;
                     });
@@ -289,17 +285,18 @@ public class BinedOptionsManager {
                         @Override
                         public Font changeFont(Font currentFont) {
                             final FontResult result = new FontResult();
-                            FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+                            WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
                             final TextFontPanel fontPanel = new TextFontPanel();
                             fontPanel.setStoredFont(currentFont);
                             DefaultControlPanel controlPanel = new DefaultControlPanel();
-                            final DialogWrapper dialog = frameModule.createDialog(fontPanel, controlPanel);
+                            final DialogWrapper dialog = windowModule.createDialog(fontPanel, controlPanel);
                             WindowUtils.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
-                            frameModule.setDialogTitle(dialog, fontPanel.getResourceBundle());
+                            windowModule.setDialogTitle(dialog, fontPanel.getResourceBundle());
                             controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                                 if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                                     if (actionType == DefaultControlHandler.ControlActionType.OK) {
-                                        TextFontPreferences parameters = new TextFontPreferences(application.getAppPreferences());
+                                        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+                                        TextFontPreferences parameters = new TextFontPreferences(preferencesModule.getAppPreferences());
                                         parameters.setUseDefaultFont(false);
                                         parameters.setFont(fontPanel.getStoredFont());
                                     }
@@ -1143,7 +1140,7 @@ public class BinedOptionsManager {
     }
 
     public void startWithFile(String filePath) {
-        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         URI uri = new File(filePath).toURI();
         fileModule.loadFromFile(uri);
     }

@@ -43,7 +43,6 @@ import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
@@ -96,10 +95,6 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
         defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
     }
 
-    public void setApplication(XBApplication application) {
-        editorComponent.setApplication(application);
-    }
-    
     public void onInitFromPreferences(BinaryEditorPreferences preferences) {
         editorComponent.onInitFromPreferences(preferences);
     }

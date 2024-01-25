@@ -24,7 +24,6 @@ import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.macro.MacroManager;
@@ -43,7 +42,6 @@ public class StopMacroRecordingAction extends AbstractAction implements CodeArea
 
     public static final String ACTION_ID = "stopMacroRecordingAction";
 
-    private XBApplication application;
     private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
     private MacroManager macroManager;
@@ -51,8 +49,7 @@ public class StopMacroRecordingAction extends AbstractAction implements CodeArea
     public StopMacroRecordingAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 

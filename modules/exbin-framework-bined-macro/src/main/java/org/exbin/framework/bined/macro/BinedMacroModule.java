@@ -24,21 +24,20 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Binary editor macro support module.
@@ -46,13 +45,12 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedMacroModule implements XBApplicationModule {
+public class BinedMacroModule implements Module {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedMacroModule.class);
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedMacroModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private MacroManager macroManager;
@@ -60,17 +58,12 @@ public class BinedMacroModule implements XBApplicationModule {
     public BinedMacroModule() {
     }
 
-    @Override
-    public void init(XBModuleHandler application) {
-        this.application = (XBApplication) application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
-        BinedModule binEdModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binEdModule = App.getModule(BinedModule.class);
         binEdModule.registerCodeAreaCommandHandlerProvider((codeArea, undoHandler) -> new CodeAreaMacroCommandHandler(codeArea, undoHandler));
 
-        BinedSearchModule binedSearchModule = application.getModuleRepository().getModuleByInterface(BinedSearchModule.class);
+        BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
         binedSearchModule.getFindReplaceActions().addFindAgainListener(() -> {
             Optional<FileHandler> activeFile = editorProvider.getActiveFile();
             if (activeFile.isPresent()) {
@@ -82,10 +75,6 @@ public class BinedMacroModule implements XBApplicationModule {
                 }
             }
         });
-    }
-
-    @Override
-    public void unregisterModule(String moduleId) {
     }
 
     @Nonnull
@@ -103,8 +92,8 @@ public class BinedMacroModule implements XBApplicationModule {
     }
 
     public void registerMacrosMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getMacrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getMacrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerMacrosPopupMenuActions() {
@@ -125,7 +114,6 @@ public class BinedMacroModule implements XBApplicationModule {
             ensureSetup();
 
             macroManager = new MacroManager();
-            macroManager.setApplication(this.application);
             macroManager.setEditorProvider(editorProvider);
             macroManager.init();
         }

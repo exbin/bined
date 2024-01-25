@@ -28,7 +28,7 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.WindowUtils.DialogWrapper;
@@ -36,7 +36,7 @@ import org.exbin.framework.utils.handler.DefaultControlHandler;
 import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.framework.bined.gui.EditSelectionPanel;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Edit selection action.
@@ -48,15 +48,13 @@ public class EditSelectionAction extends AbstractAction implements CodeAreaActio
 
     public static final String ACTION_ID = "editSelectionAction";
 
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
 
     public EditSelectionAction() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -76,10 +74,10 @@ public class EditSelectionAction extends AbstractAction implements CodeAreaActio
         editSelectionPanel.setMaxPosition(codeArea.getDataSize());
         editSelectionPanel.setSelectionRange(((SelectionCapable) codeArea).getSelection());
         DefaultControlPanel controlPanel = new DefaultControlPanel(editSelectionPanel.getResourceBundle());
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final DialogWrapper dialog = frameModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, editSelectionPanel, controlPanel);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        final DialogWrapper dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, editSelectionPanel, controlPanel);
         WindowUtils.addHeaderPanel(dialog.getWindow(), editSelectionPanel.getClass(), editSelectionPanel.getResourceBundle());
-        frameModule.setDialogTitle(dialog, editSelectionPanel.getResourceBundle());
+        windowModule.setDialogTitle(dialog, editSelectionPanel.getResourceBundle());
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
                 editSelectionPanel.acceptInput();

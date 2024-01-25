@@ -38,7 +38,7 @@ import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
@@ -50,7 +50,7 @@ import org.exbin.framework.bined.operation.gui.ConvertDataControlPanel;
 import org.exbin.framework.bined.operation.gui.ConvertDataPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -65,7 +65,6 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
     private EditorProvider editorProvider;
@@ -75,8 +74,7 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
 
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -109,15 +107,15 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
         ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
         ConvertDataControlPanel controlPanel = new ConvertDataControlPanel();
         JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
-        BinedOperationModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedOperationModule.class);
+        BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
         convertDataPanel.selectActiveMethod(lastMethod);
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         convertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         WindowUtils.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
-        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        windowModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((ConvertDataControlHandler.ControlActionType actionType) -> {
             if (actionType != ConvertDataControlHandler.ControlActionType.CANCEL) {
                 Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();

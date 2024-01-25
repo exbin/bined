@@ -28,7 +28,6 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
@@ -48,13 +47,8 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BitSwappingDataPanel.class);
 
-    private XBApplication application;
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
-
-    public void setApplication(XBApplication application) {
-        this.application = application;
-    }
 
     @Nonnull
     @Override

@@ -42,7 +42,6 @@ import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -71,8 +70,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private BinarySearchComboBoxPanel findComboBoxEditorComponent;
     private ComboBoxEditor replaceComboBoxEditor;
     private BinarySearchComboBoxPanel replaceComboBoxEditorComponent;
-
-    private XBApplication application;
 
     public BinarySearchPanel() {
         initComponents();
@@ -748,10 +745,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     private void comboBoxValueChanged() {
         control.notifySearchChanging();
-    }
-
-    public void setApplication(XBApplication application) {
-        this.application = application;
     }
 
     public void requestSearchFocus() {

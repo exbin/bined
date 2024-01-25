@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -35,14 +34,12 @@ public class RowWrappingAction extends AbstractAction implements CodeAreaAction 
     public static final String ACTION_ID = "viewRowWrappingAction";
 
     private CodeAreaCore codeArea;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public RowWrappingAction() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);

@@ -23,11 +23,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.CodeAreaSelection;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
@@ -41,7 +41,6 @@ public class AddBookmarkAction extends AbstractAction {
 
     public static final String ACTION_ID = "addBookmarkAction";
 
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private BookmarkRecord bookmarkRecord = null;
     private CodeAreaSelection currentSelection;
@@ -49,8 +48,7 @@ public class AddBookmarkAction extends AbstractAction {
     public AddBookmarkAction() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -74,9 +72,9 @@ public class AddBookmarkAction extends AbstractAction {
         ResourceBundle panelResourceBundle = bookmarkEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
-        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(windowModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
+        windowModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
@@ -91,6 +89,6 @@ public class AddBookmarkAction extends AbstractAction {
             dialog.close();
         });
 
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(windowModule.getFrame());
     }
 }

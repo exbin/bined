@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.PropertiesPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -30,7 +30,7 @@ import org.exbin.framework.utils.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Properties action.
@@ -43,14 +43,12 @@ public class PropertiesAction extends AbstractAction implements FileDependentAct
     public static final String ACTION_ID = "propertiesAction";
 
     private EditorProvider editorProvider;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public PropertiesAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
@@ -66,13 +64,13 @@ public class PropertiesAction extends AbstractAction implements FileDependentAct
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         PropertiesPanel propertiesPanel = new PropertiesPanel();
         propertiesPanel.setEditorProvider(editorProvider);
         CloseControlPanel controlPanel = new CloseControlPanel();
-        final DialogWrapper dialog = frameModule.createDialog(propertiesPanel, controlPanel);
+        final DialogWrapper dialog = windowModule.createDialog(propertiesPanel, controlPanel);
         WindowUtils.addHeaderPanel(dialog.getWindow(), propertiesPanel.getClass(), propertiesPanel.getResourceBundle());
-        frameModule.setDialogTitle(dialog, propertiesPanel.getResourceBundle());
+        windowModule.setDialogTitle(dialog, propertiesPanel.getResourceBundle());
         controlPanel.setHandler(() -> {
             dialog.close();
             dialog.dispose();

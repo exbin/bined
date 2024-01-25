@@ -22,15 +22,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuGroup;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.action.api.SeparationMode;
-import org.exbin.framework.api.Preferences;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.framework.api.XBModuleRepositoryUtils;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -39,9 +39,8 @@ import org.exbin.framework.bined.inspector.options.gui.DataInspectorOptionsPanel
 import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
 import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.xbup.plugin.XBModuleHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.options.api.DefaultOptionsPage;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModuleApi;
@@ -52,15 +51,14 @@ import org.exbin.framework.options.api.OptionsModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedInspectorModule implements XBApplicationModule {
+public class BinedInspectorModule implements Module {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedInspectorModule.class);
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedInspectorModule.class);
 
     private static final String VIEW_PARSING_PANEL_MENU_GROUP_ID = MODULE_ID + ".viewParsingPanelMenuGroup";
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private BasicValuesPositionColorModifier basicValuesColorModifier = new BasicValuesPositionColorModifier();
@@ -71,15 +69,10 @@ public class BinedInspectorModule implements XBApplicationModule {
     public BinedInspectorModule() {
     }
 
-    @Override
-    public void init(XBModuleHandler application) {
-        this.application = (XBApplication) application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addPainterColorModifier(basicValuesColorModifier);
         fileManager.addActionStatusUpdateListener(this::updateActionStatus);
@@ -92,10 +85,6 @@ public class BinedInspectorModule implements XBApplicationModule {
                 return Optional.of(binEdComponentInspector);
             }
         });
-    }
-
-    @Override
-    public void unregisterModule(String moduleId) {
     }
 
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
@@ -133,20 +122,20 @@ public class BinedInspectorModule implements XBApplicationModule {
         if (showParsingPanelAction == null) {
             ensureSetup();
             showParsingPanelAction = new ShowParsingPanelAction();
-            showParsingPanelAction.setup(application, editorProvider, resourceBundle);
+            showParsingPanelAction.setup(editorProvider, resourceBundle);
         }
 
         return showParsingPanelAction;
     }
 
     public void registerViewValuesPanelMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
-        actionModule.registerMenuGroup(FrameModuleApi.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(FrameModuleApi.VIEW_MENU_ID, MODULE_ID, getShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.registerMenuGroup(WindowModuleApi.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
+        actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, getShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 
     public void registerOptionsPanels() {
-        OptionsModuleApi optionsModule = application.getModuleRepository().getModuleByInterface(OptionsModuleApi.class);
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
 
         dataInspectorOptionsPage = new DefaultOptionsPage<DataInspectorOptionsImpl>() {
 

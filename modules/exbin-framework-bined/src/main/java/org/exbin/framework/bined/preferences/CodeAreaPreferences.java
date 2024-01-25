@@ -15,7 +15,7 @@
  */
 package org.exbin.framework.bined.preferences;
 
-import org.exbin.framework.api.Preferences;
+import org.exbin.framework.preferences.api.Preferences;
 import java.awt.Font;
 import java.util.logging.Level;
 import java.util.logging.Logger;

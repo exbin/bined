@@ -26,7 +26,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -50,7 +50,6 @@ public class FindReplaceActions implements FileDependentAction {
     public static final String EDIT_REPLACE_ACTION_ID = "editReplaceAction";
 
     private EditorProvider editorProvider;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     private Action editFindAction;
@@ -62,8 +61,7 @@ public class FindReplaceActions implements FileDependentAction {
     public FindReplaceActions() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
     }
@@ -104,7 +102,7 @@ public class FindReplaceActions implements FileDependentAction {
             editFindAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule binedModule = App.getModule(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
                     return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
@@ -143,7 +141,7 @@ public class FindReplaceActions implements FileDependentAction {
             editFindAgainAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule binedModule = App.getModule(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
                     return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
@@ -179,7 +177,7 @@ public class FindReplaceActions implements FileDependentAction {
             editReplaceAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                    BinedModule binedModule = App.getModule(BinedModule.class);
                     BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
                     return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);

@@ -27,8 +27,8 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.Preferences;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
@@ -38,7 +38,8 @@ import org.exbin.framework.bined.preferences.StatusPreferences;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.text.EncodingsHandler;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * File manager for binary editor.
@@ -48,7 +49,6 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 @ParametersAreNonnullByDefault
 public class BinEdFileManager {
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private BinaryStatusPanel binaryStatusPanel;
@@ -62,16 +62,11 @@ public class BinEdFileManager {
     public BinEdFileManager() {
     }
 
-    public void setApplication(XBApplication application) {
-        this.application = application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
     }
 
     public void initFileHandler(BinEdFileHandler fileHandler) {
-        fileHandler.setApplication(application);
         fileHandler.setSegmentsRepository(segmentsRepository);
         BinEdComponentPanel componentPanel = fileHandler.getComponent();
         initComponentPanel(componentPanel);
@@ -83,7 +78,6 @@ public class BinEdFileManager {
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             componentExtension.ifPresent((extension) -> {
-                extension.setApplication(application);
                 extension.onCreate(componentPanel);
                 componentPanel.addComponentExtension(extension);
             });
@@ -97,7 +91,8 @@ public class BinEdFileManager {
             painter.addColorModifier(modifier);
         }
 
-        Preferences preferences = application.getAppPreferences();
+        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+        Preferences preferences = preferencesModule.getAppPreferences();
         BinaryEditorPreferences binaryEditorPreferences = new BinaryEditorPreferences(preferences);
         componentPanel.onInitFromPreferences(binaryEditorPreferences);
         String encoding = binaryEditorPreferences.getEncodingPreferences().getSelectedEncoding();
@@ -141,9 +136,9 @@ public class BinEdFileManager {
 
     public void registerStatusBar() {
         binaryStatusPanel = new BinaryStatusPanel();
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        frameModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
-        frameModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        windowModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
+        windowModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
         ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
         ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
     }

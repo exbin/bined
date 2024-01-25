@@ -41,7 +41,7 @@ import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -63,7 +63,6 @@ import org.exbin.framework.file.api.FileModuleApi;
 @ParametersAreNonnullByDefault
 public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider, UndoFileHandler {
 
-    private XBApplication application;
     private BinEdFileHandler activeFile;
     private FileTypes fileTypes;
     @Nullable
@@ -71,12 +70,11 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     private BinaryStatusApi binaryStatus;
     private EditorModificationListener editorModificationListener;
 
-    public BinaryEditorProvider(XBApplication application, BinEdFileHandler activeFile) {
-        init(application, activeFile);
+    public BinaryEditorProvider(BinEdFileHandler activeFile) {
+        init(activeFile);
     }
 
-    private void init(XBApplication application, BinEdFileHandler activeFile) {
-        this.application = application;
+    private void init(BinEdFileHandler activeFile) {
         this.activeFile = activeFile;
         fileTypes = new AllFileTypes();
 
@@ -227,7 +225,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     public void newFile() {
         if (releaseAllFiles()) {
             activeFile.clearFile();
-            BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+            BinedModule binedModule = App.getModule(BinedModule.class);
             String title = binedModule.getNewFileTitlePrefix() + " " + activeFile.getId();
             activeFile.setTitle(title);
         }
@@ -241,7 +239,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     @Override
     public void openFile() {
         if (releaseAllFiles()) {
-            FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             fileModule.getFileActions().openFile(activeFile, fileTypes, this);
         }
     }
@@ -273,14 +271,14 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     @Override
     public void saveAsFile() {
-        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         fileModule.getFileActions().saveAsFile(activeFile, fileTypes, this);
     }
 
     @Override
     public boolean releaseFile(FileHandler fileHandler) {
         if (fileHandler.isModified()) {
-            FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             return fileModule.getFileActions().showAskForSaveDialog(fileHandler, fileTypes, this);
         }
 
@@ -311,12 +309,12 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     @Override
     public void updateRecentFilesList(URI fileUri, FileType fileType) {
-        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         fileModule.updateRecentFilesList(fileUri, fileType);
     }
 
     private void updateClipboardActionsStatus() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
     }
 }

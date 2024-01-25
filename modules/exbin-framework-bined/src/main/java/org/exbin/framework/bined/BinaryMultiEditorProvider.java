@@ -54,7 +54,7 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.editor.MultiEditorUndoHandler;
@@ -88,7 +88,6 @@ import org.exbin.framework.file.api.FileModuleApi;
 @ParametersAreNonnullByDefault
 public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEditorProvider, UndoFileHandler {
 
-    private final XBApplication application;
     private FileTypes fileTypes;
     private final MultiEditorPanel multiEditorPanel = new MultiEditorPanel();
     private int lastIndex = 0;
@@ -108,8 +107,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Nullable
     private File lastUsedDirectory;
 
-    public BinaryMultiEditorProvider(XBApplication application) {
-        this.application = application;
+    public BinaryMultiEditorProvider() {
         init();
     }
 
@@ -127,7 +125,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                 }
 
                 FileHandler fileHandler = multiEditorPanel.getFileHandler(index);
-                EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
+                EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
                 JPopupMenu fileTabPopupMenu = new EditorPopupMenu(fileHandler);
                 CloseFileAction closeFileAction = (CloseFileAction) editorModule.getCloseFileAction();
                 JMenuItem closeMenuItem = new JMenuItem(closeFileAction);
@@ -198,7 +196,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         BinEdFileHandler newFile = createFileHandler(fileIndex);
         newFile.clearFile();
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         String title = binedModule.getNewFileTitlePrefix() + " " + newFilesMap.get(newFile.getId());
         newFile.setTitle(title);
         multiEditorPanel.addFileHandler(newFile, title);
@@ -215,7 +213,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     private BinEdFileHandler createFileHandler(int id) {
         BinEdFileHandler fileHandler = new BinEdFileHandler(id);
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.initFileHandler(fileHandler);
 
@@ -274,7 +272,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public void openFile() {
-        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         FileActionsApi fileActions = fileModule.getFileActions();
         FileActionsApi.OpenFileResult openFileResult = fileActions.showOpenFileDialog(fileTypes, this);
         if (openFileResult.dialogResult == JFileChooser.APPROVE_OPTION) {
@@ -324,7 +322,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public void saveAsFile(FileHandler fileHandler) {
-        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         fileModule.getFileActions().saveAsFile(fileHandler, fileTypes, this);
     }
 
@@ -352,7 +350,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
 
     @Override
     public void updateRecentFilesList(URI fileUri, FileType fileType) {
-        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         fileModule.updateRecentFilesList(fileUri, fileType);
     }
 
@@ -406,7 +404,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             return true;
         }
 
-        EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
+        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
         EditorActions editorActions = (EditorActions) editorModule.getEditorActions();
         return editorActions.showAskForSaveDialog(modifiedFiles);
     }
@@ -423,7 +421,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     @Override
     public boolean releaseFile(FileHandler fileHandler) {
         if (fileHandler.isModified()) {
-            FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             return fileModule.getFileActions().showAskForSaveDialog(fileHandler, fileTypes, this);
         }
 
@@ -438,7 +436,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             return name;
         }
 
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         return binedModule.getNewFileTitlePrefix() + " " + newFilesMap.get(fileHandler.getId());
     }
 
@@ -498,7 +496,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             return;
         }
 
-        EditorModuleApi editorModule = application.getModuleRepository().getModuleByInterface(EditorModuleApi.class);
+        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
         EditorActions editorActions = (EditorActions) editorModule.getEditorActions();
         editorActions.showAskForSaveDialog(modifiedFiles);
     }
@@ -596,7 +594,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         if (clipboardActionsUpdateListener != null) {
             clipboardActionsUpdateListener.stateChanged();
         }
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
     }
 

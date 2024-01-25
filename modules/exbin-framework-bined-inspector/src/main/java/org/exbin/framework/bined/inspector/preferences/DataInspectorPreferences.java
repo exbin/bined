@@ -15,7 +15,7 @@
  */
 package org.exbin.framework.bined.inspector.preferences;
 
-import org.exbin.framework.api.Preferences;
+import org.exbin.framework.preferences.api.Preferences;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
 

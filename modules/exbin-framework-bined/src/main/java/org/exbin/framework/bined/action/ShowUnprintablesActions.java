@@ -24,7 +24,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.extended.capability.ShowUnprintablesCapable;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -39,7 +38,6 @@ public class ShowUnprintablesActions implements CodeAreaAction {
     public static final String VIEW_UNPRINTABLES_TOOLBAR_ACTION_ID = "viewUnprintablesToolbarAction";
 
     private CodeAreaCore codeArea;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     private Action viewUnprintablesAction;
@@ -48,8 +46,7 @@ public class ShowUnprintablesActions implements CodeAreaAction {
     public ShowUnprintablesActions() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 

@@ -18,11 +18,9 @@ package org.exbin.framework.bined.objectdata;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.framework.api.XBModuleRepositoryUtils;
+import org.exbin.framework.Module;
+import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.utils.LanguageUtils;
-import org.exbin.xbup.plugin.XBModuleHandler;
 
 /**
  * Binary editor object data support module.
@@ -30,24 +28,14 @@ import org.exbin.xbup.plugin.XBModuleHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedObjectDataModule implements XBApplicationModule {
+public class BinedObjectDataModule implements Module {
 
-    public static final String MODULE_ID = XBModuleRepositoryUtils.getModuleIdByApi(BinedObjectDataModule.class);
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedObjectDataModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private XBApplication application;
 
     public BinedObjectDataModule() {
-    }
-
-    @Override
-    public void init(XBModuleHandler application) {
-        this.application = (XBApplication) application;
-    }
-
-    @Override
-    public void unregisterModule(String moduleId) {
     }
 
     @Nonnull

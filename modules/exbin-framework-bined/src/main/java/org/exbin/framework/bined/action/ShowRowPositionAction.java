@@ -24,7 +24,6 @@ import javax.swing.Action;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.capability.LayoutProfileCapable;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -38,14 +37,12 @@ public class ShowRowPositionAction extends AbstractAction implements CodeAreaAct
     public static final String ACTION_ID = "showRowPositionAction";
 
     private CodeAreaCore codeArea;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public ShowRowPositionAction() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);

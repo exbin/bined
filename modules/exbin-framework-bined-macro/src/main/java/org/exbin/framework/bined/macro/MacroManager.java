@@ -38,10 +38,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
-import org.exbin.framework.api.Preferences;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -61,6 +61,7 @@ import org.exbin.framework.bined.macro.preferences.MacroPreferences;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.LanguageUtils;
 
@@ -79,7 +80,6 @@ public class MacroManager {
     private final List<MacroRecord> macroRecords = new ArrayList<>();
     private MacroPreferences macroPreferences;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private final ManageMacrosAction manageMacrosAction = new ManageMacrosAction();
@@ -96,31 +96,28 @@ public class MacroManager {
         manageMacrosAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
     }
 
-    public void setApplication(XBApplication application) {
-        this.application = application;
-    }
-
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
-        addMacroAction.setup(application, resourceBundle);
-        editMacroAction.setup(application, resourceBundle);
-        manageMacrosAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
-        executeLastMacroAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        addMacroAction.setup(resourceBundle);
+        editMacroAction.setup(resourceBundle);
+        manageMacrosAction.setup(editorProvider, resourceBundle);
+        executeLastMacroAction.setup(editorProvider, resourceBundle);
         executeLastMacroAction.setMacroManager(this);
-        startMacroRecordingAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        startMacroRecordingAction.setup(editorProvider, resourceBundle);
         startMacroRecordingAction.setMacroManager(this);
-        stopMacroRecordingAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        stopMacroRecordingAction.setup(editorProvider, resourceBundle);
         stopMacroRecordingAction.setMacroManager(this);
     }
 
     public void init() {
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         binedModule.addCodeAreaAction(executeLastMacroAction);
         binedModule.addCodeAreaAction(startMacroRecordingAction);
         binedModule.addCodeAreaAction(stopMacroRecordingAction);
 
-        Preferences preferences = application.getAppPreferences();
+        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+        Preferences preferences = preferencesModule.getAppPreferences();
         macroPreferences = new MacroPreferences(preferences);
         loadMacroRecords();
         MacroManager.this.updateMacrosMenu();
@@ -256,7 +253,7 @@ public class MacroManager {
     }
 
     public void registerMacrosPopupMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         Action macrosPopupMenuAction = new AbstractAction(resourceBundle.getString("macrosMenu.text")) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -265,7 +262,7 @@ public class MacroManager {
         macrosPopupMenuAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
-                BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 return menuVariant == BinedModule.PopupMenuVariant.EDITOR;
             }

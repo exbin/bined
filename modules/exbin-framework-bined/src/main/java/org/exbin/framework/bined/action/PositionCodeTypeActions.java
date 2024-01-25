@@ -25,7 +25,6 @@ import javax.swing.Action;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.extended.capability.PositionCodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -43,7 +42,6 @@ public class PositionCodeTypeActions implements CodeAreaAction {
     public static final String POSITION_CODE_TYPE_RADIO_GROUP_ID = "positionCodeTypeRadioGroup";
 
     private CodeAreaCore codeArea;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     private Action octalPositionCodeTypeAction;
@@ -55,8 +53,7 @@ public class PositionCodeTypeActions implements CodeAreaAction {
     public PositionCodeTypeActions() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 

@@ -17,7 +17,7 @@ package org.exbin.framework.bined.preferences;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.exbin.framework.api.Preferences;
+import org.exbin.framework.preferences.api.Preferences;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;

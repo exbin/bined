@@ -35,7 +35,7 @@ import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
@@ -45,7 +45,7 @@ import org.exbin.framework.utils.gui.DefaultControlPanel;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Insert data action.
@@ -59,7 +59,6 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
     private InsertDataMethod lastMethod = null;
@@ -68,8 +67,7 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
 
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -98,15 +96,15 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel();
         JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
-        BinedOperationModule binedBlockEditModule = application.getModuleRepository().getModuleByInterface(BinedOperationModule.class);
+        BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         insertDataPanel.setComponents(binedBlockEditModule.getInsertDataComponents());
         insertDataPanel.selectActiveMethod(lastMethod);
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         insertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         WindowUtils.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
-        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        windowModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == DefaultControlHandler.ControlActionType.OK) {
                 Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();

@@ -23,14 +23,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.gui.MacrosManagerPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
@@ -45,14 +45,12 @@ public class ManageMacrosAction extends AbstractAction {
     public static final String ACTION_ID = "manageMacrosAction";
 
     private EditorProvider editorProvider;
-    private XBApplication application;
     private ResourceBundle resourceBundle;
 
     public ManageMacrosAction() {
     }
 
-    public void setup(XBApplication application, EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
@@ -62,7 +60,7 @@ public class ManageMacrosAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinedMacroModule macroModule = application.getModuleRepository().getModuleByInterface(BinedMacroModule.class);
+        BinedMacroModule macroModule = App.getModule(BinedMacroModule.class);
         MacroManager macroManager = macroModule.getMacroManager();
         final MacrosManagerPanel macrosPanel = macroManager.createMacrosManagerPanel();
         List<MacroRecord> records = new ArrayList<>();
@@ -73,10 +71,10 @@ public class ManageMacrosAction extends AbstractAction {
         ResourceBundle panelResourceBundle = macrosPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, macrosPanel, controlPanel);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, macrosPanel, controlPanel);
         WindowUtils.addHeaderPanel(dialog.getWindow(), macrosPanel.getClass(), macrosPanel.getResourceBundle());
-        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        windowModule.setDialogTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
         controlPanel.setHandler((actionType) -> {

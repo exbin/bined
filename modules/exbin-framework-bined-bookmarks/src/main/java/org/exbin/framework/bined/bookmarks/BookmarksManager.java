@@ -41,10 +41,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
-import org.exbin.framework.api.Preferences;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
@@ -56,6 +56,7 @@ import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.preferences.BookmarkPreferences;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.LanguageUtils;
 
@@ -75,7 +76,6 @@ public class BookmarksManager {
     private BookmarkPreferences bookmarkPreferences;
     private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
-    private XBApplication application;
     private EditorProvider editorProvider;
 
     private final ManageBookmarksAction manageBookmarksAction = new ManageBookmarksAction();
@@ -85,25 +85,21 @@ public class BookmarksManager {
 
     public BookmarksManager() {
         manageBookmarksAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
-    }
-
-    public void setApplication(XBApplication application) {
-        this.application = application;
-
-        addBookmarkAction.setup(application, resourceBundle);
-        editBookmarkAction.setup(application, resourceBundle);
+        addBookmarkAction.setup(resourceBundle);
+        editBookmarkAction.setup(resourceBundle);
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
-        manageBookmarksAction.setup(Objects.requireNonNull(application), editorProvider, resourceBundle);
+        manageBookmarksAction.setup(editorProvider, resourceBundle);
     }
 
     public void init() {
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
 
-        Preferences preferences = application.getAppPreferences();
+        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+        Preferences preferences = preferencesModule.getAppPreferences();
         bookmarkPreferences = new BookmarkPreferences(preferences);
         loadBookmarkRecords();
         updateBookmarksMenu();
@@ -255,7 +251,7 @@ public class BookmarksManager {
     }
 
     public void registerBookmarksPopupMenuActions() {
-        ActionModuleApi actionModule = application.getModuleRepository().getModuleByInterface(ActionModuleApi.class);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         Action bookmarksPopupMenuAction = new AbstractAction(resourceBundle.getString("bookmarksMenu.text")) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -264,7 +260,7 @@ public class BookmarksManager {
         bookmarksPopupMenuAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
-                BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+                BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 return menuVariant == BinedModule.PopupMenuVariant.EDITOR;
             }

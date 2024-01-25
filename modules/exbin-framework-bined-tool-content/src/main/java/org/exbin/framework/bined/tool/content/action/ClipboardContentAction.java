@@ -28,14 +28,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.gui.ClipboardContentControlPanel;
 import org.exbin.framework.bined.tool.content.gui.ClipboardContentPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.xbup.core.util.StreamUtils;
@@ -50,15 +50,13 @@ public class ClipboardContentAction extends AbstractAction {
 
     public static final String ACTION_ID = "clipboardContentAction";
 
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
 
     public ClipboardContentAction() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -67,10 +65,10 @@ public class ClipboardContentAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         clipboardContentPanel.loadFromClipboard();
         ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(clipboardContentPanel, controlPanel);
+        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(clipboardContentPanel, controlPanel);
         clipboardContentPanel.setSaveAsFileAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,10 +97,10 @@ public class ClipboardContentAction extends AbstractAction {
                 }
             }
         });
-        BinedModule binedModule = application.getModuleRepository().getModuleByInterface(BinedModule.class);
+        BinedModule binedModule = App.getModule(BinedModule.class);
         clipboardContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 
-        frameModule.setDialogTitle(dialog, clipboardContentPanel.getResourceBundle());
+        windowModule.setDialogTitle(dialog, clipboardContentPanel.getResourceBundle());
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case CLOSE: {
@@ -118,7 +116,7 @@ public class ClipboardContentAction extends AbstractAction {
             }
         });
         WindowUtils.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(windowModule.getFrame());
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {

@@ -22,11 +22,11 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import org.exbin.framework.api.XBApplication;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.macro.gui.MacroEditorPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.gui.DefaultControlPanel;
 
@@ -40,15 +40,13 @@ public class AddMacroAction extends AbstractAction {
 
     public static final String ACTION_ID = "addMacroAction";
 
-    private XBApplication application;
     private ResourceBundle resourceBundle;
     private MacroRecord macroRecord = null;
 
     public AddMacroAction() {
     }
 
-    public void setup(XBApplication application, ResourceBundle resourceBundle) {
-        this.application = application;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
@@ -67,9 +65,9 @@ public class AddMacroAction extends AbstractAction {
         ResourceBundle panelResourceBundle = macroEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
-        FrameModuleApi frameModule = application.getModuleRepository().getModuleByInterface(FrameModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = frameModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
-        frameModule.setDialogTitle(dialog, panelResourceBundle);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(windowModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
+        windowModule.setDialogTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {
@@ -84,6 +82,6 @@ public class AddMacroAction extends AbstractAction {
             dialog.close();
         });
 
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(windowModule.getFrame());
     }
 }
