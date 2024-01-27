@@ -21,9 +21,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.options.impl.EditorOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -36,7 +37,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 @ParametersAreNonnullByDefault
 public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsComponent<EditorOptionsImpl> {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(EditorOptionsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EditorOptionsPanel.class);
 
     public EditorOptionsPanel() {
         initComponents();
@@ -145,7 +146,7 @@ public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsCom
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new EditorOptionsPanel());
+        WindowUtils.invokeWindow(new EditorOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

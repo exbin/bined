@@ -42,9 +42,10 @@ import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
+import org.exbin.framework.App;
 
 /**
  * Find text/binary data panel.
@@ -54,7 +55,7 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 @ParametersAreNonnullByDefault
 public class FindBinaryPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(FindBinaryPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(FindBinaryPanel.class);
     public static final String POPUP_MENU_POSTFIX = ".searchFindBinaryPanel";
 
     private final ExtCodeArea findCodeArea = new ExtCodeArea();
@@ -500,7 +501,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new FindBinaryPanel());
+        WindowUtils.invokeWindow(new FindBinaryPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

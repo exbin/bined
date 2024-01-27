@@ -25,11 +25,11 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.PropertiesPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
-import org.exbin.framework.utils.gui.CloseControlPanel;
+import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
@@ -68,9 +68,9 @@ public class PropertiesAction extends AbstractAction implements FileDependentAct
         PropertiesPanel propertiesPanel = new PropertiesPanel();
         propertiesPanel.setEditorProvider(editorProvider);
         CloseControlPanel controlPanel = new CloseControlPanel();
-        final DialogWrapper dialog = windowModule.createDialog(propertiesPanel, controlPanel);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), propertiesPanel.getClass(), propertiesPanel.getResourceBundle());
-        windowModule.setDialogTitle(dialog, propertiesPanel.getResourceBundle());
+        final WindowHandler dialog = windowModule.createDialog(propertiesPanel, controlPanel);
+        windowModule.addHeaderPanel(dialog.getWindow(), propertiesPanel.getClass(), propertiesPanel.getResourceBundle());
+        windowModule.setWindowTitle(dialog, propertiesPanel.getResourceBundle());
         controlPanel.setHandler(() -> {
             dialog.close();
             dialog.dispose();

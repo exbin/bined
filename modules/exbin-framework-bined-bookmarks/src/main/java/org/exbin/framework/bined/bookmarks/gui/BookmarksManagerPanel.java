@@ -23,9 +23,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JTable;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.model.BookmarksTableModel;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -36,7 +37,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class BookmarksManagerPanel extends javax.swing.JPanel {
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarksManagerPanel.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarksManagerPanel.class);
     private final BookmarksTableModel bookmarksTableModel = new BookmarksTableModel();
     private Control control = null;
 
@@ -227,7 +228,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BookmarksManagerPanel());
+        WindowUtils.invokeWindow(new BookmarksManagerPanel());
     }
 
     @Nonnull

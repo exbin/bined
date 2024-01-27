@@ -35,9 +35,10 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaLayoutOptionsImpl;
 import org.exbin.framework.bined.preferences.CodeAreaLayoutPreferences;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
@@ -50,7 +51,7 @@ import org.exbin.framework.preferences.StreamPreferences;
 @ParametersAreNonnullByDefault
 public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileListPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(LayoutTemplatePanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutTemplatePanel.class);
 
     public LayoutTemplatePanel() {
         initComponents();
@@ -175,7 +176,7 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new LayoutTemplatePanel());
+        WindowUtils.invokeWindow(new LayoutTemplatePanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

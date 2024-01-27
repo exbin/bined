@@ -40,11 +40,12 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
+import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
@@ -95,16 +96,16 @@ public class InsertDataAction extends AbstractAction implements CodeAreaAction {
         });
         ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel();
-        JPanel dialogPanel = WindowUtils.createDialogPanel(insertDataPanel, controlPanel);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        JPanel dialogPanel = windowModule.createDialogPanel(insertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         insertDataPanel.setComponents(binedBlockEditModule.getInsertDataComponents());
         insertDataPanel.selectActiveMethod(lastMethod);
         BinedModule binedModule = App.getModule(BinedModule.class);
         insertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
-        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
-        windowModule.setDialogTitle(dialog, panelResourceBundle);
+        final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
+        windowModule.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
+        windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == DefaultControlHandler.ControlActionType.OK) {
                 Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();

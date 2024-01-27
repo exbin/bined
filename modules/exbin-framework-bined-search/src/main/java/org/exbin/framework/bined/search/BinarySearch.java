@@ -33,10 +33,11 @@ import org.exbin.framework.bined.search.gui.FindBinaryPanel;
 import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.framework.bined.search.service.BinarySearchService.FoundMatches;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.handler.DefaultControlHandler;
 
 /**
  * Binary search.
@@ -46,7 +47,7 @@ import org.exbin.framework.utils.handler.DefaultControlHandler;
 @ParametersAreNonnullByDefault
 public class BinarySearch {
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinarySearch.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinarySearch.class);
     private static final int DEFAULT_DELAY = 500;
 
     private InvokeSearchThread invokeSearchThread;
@@ -211,9 +212,9 @@ public class BinarySearch {
                 findBinaryPanel.setReplaceParameters(currentReplaceParameters);
                 findBinaryPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
                 DefaultControlPanel controlPanel = new DefaultControlPanel(findBinaryPanel.getResourceBundle());
-                final WindowUtils.DialogWrapper dialog = windowModule.createDialog(findBinaryPanel, controlPanel);
-                windowModule.setDialogTitle(dialog, findBinaryPanel.getResourceBundle());
-                WindowUtils.addHeaderPanel(dialog.getWindow(), findBinaryPanel.getClass(), findBinaryPanel.getResourceBundle());
+                final WindowHandler dialog = windowModule.createDialog(findBinaryPanel, controlPanel);
+                windowModule.setWindowTitle(dialog, findBinaryPanel.getResourceBundle());
+                windowModule.addHeaderPanel(dialog.getWindow(), findBinaryPanel.getClass(), findBinaryPanel.getResourceBundle());
                 findBinaryPanel.setMultilineEditorListener(new FindBinaryPanel.MultilineEditorListener() {
                     @Override
                     public SearchCondition multilineEdit(SearchCondition condition) {
@@ -221,11 +222,11 @@ public class BinarySearch {
                         multilinePanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
                         multilinePanel.setCondition(condition);
                         DefaultControlPanel controlPanel = new DefaultControlPanel();
-                        JPanel dialogPanel = WindowUtils.createDialogPanel(multilinePanel, controlPanel);
+                        JPanel dialogPanel = windowModule.createDialogPanel(multilinePanel, controlPanel);
                         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-                        final WindowUtils.DialogWrapper multilineDialog = windowModule.createDialog(dialog.getWindow(), Dialog.ModalityType.APPLICATION_MODAL, dialogPanel);
-                        WindowUtils.addHeaderPanel(multilineDialog.getWindow(), multilinePanel.getClass(), multilinePanel.getResourceBundle());
-                        windowModule.setDialogTitle(multilineDialog, multilinePanel.getResourceBundle());
+                        final WindowHandler multilineDialog = windowModule.createDialog(dialog.getWindow(), Dialog.ModalityType.APPLICATION_MODAL, dialogPanel);
+                        windowModule.addHeaderPanel(multilineDialog.getWindow(), multilinePanel.getClass(), multilinePanel.getResourceBundle());
+                        windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());
                         final SearchConditionResult result = new SearchConditionResult();
                         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                             if (actionType == DefaultControlHandler.ControlActionType.OK) {

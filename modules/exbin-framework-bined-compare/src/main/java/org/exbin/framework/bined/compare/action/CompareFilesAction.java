@@ -38,7 +38,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.gui.CloseControlPanel;
+import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
@@ -47,6 +47,7 @@ import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
@@ -80,8 +81,8 @@ public class CompareFilesAction extends AbstractAction {
         CloseControlPanel controlPanel = new CloseControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);
-        windowModule.setDialogTitle(dialog, panelResourceBundle);
+        final WindowHandler dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);
+        windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setSize(new Dimension(preferredSize.width, preferredSize.height + 450));
         controlPanel.setHandler(dialog::close);

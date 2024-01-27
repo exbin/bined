@@ -30,10 +30,10 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
-import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
@@ -73,9 +73,9 @@ public class GoToPositionAction extends AbstractAction implements CodeAreaAction
         goToPanel.setMaxPosition(codeArea.getDataSize());
         DefaultControlPanel controlPanel = new DefaultControlPanel(goToPanel.getResourceBundle());
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final DialogWrapper dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, goToPanel, controlPanel);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), goToPanel.getClass(), goToPanel.getResourceBundle());
-        windowModule.setDialogTitle(dialog, goToPanel.getResourceBundle());
+        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, goToPanel, controlPanel);
+        windowModule.addHeaderPanel(dialog.getWindow(), goToPanel.getClass(), goToPanel.getResourceBundle());
+        windowModule.setWindowTitle(dialog, goToPanel.getResourceBundle());
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
                 goToPanel.acceptInput();

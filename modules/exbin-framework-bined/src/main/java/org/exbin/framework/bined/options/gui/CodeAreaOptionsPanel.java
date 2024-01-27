@@ -24,8 +24,9 @@ import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.RowWrappingMode;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -38,7 +39,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 @ParametersAreNonnullByDefault
 public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaOptionsImpl> {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(CodeAreaOptionsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaOptionsPanel.class);
 
     public CodeAreaOptionsPanel() {
         initComponents();
@@ -233,7 +234,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new CodeAreaOptionsPanel());
+        WindowUtils.invokeWindow(new CodeAreaOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

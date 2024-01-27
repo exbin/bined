@@ -62,10 +62,10 @@ import org.exbin.framework.editor.text.options.gui.TextEncodingOptionsPanel;
 import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
 import org.exbin.framework.editor.text.gui.TextFontPanel;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.options.gui.CodeAreaOptionsPanel;
 import org.exbin.framework.bined.options.gui.ColorProfilePanel;
 import org.exbin.framework.bined.options.gui.ColorProfilesOptionsPanel;
@@ -91,7 +91,6 @@ import org.exbin.framework.bined.preferences.EditorPreferences;
 import org.exbin.framework.bined.preferences.StatusPreferences;
 import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
 import org.exbin.framework.editor.text.options.impl.TextEncodingOptionsImpl;
 import org.exbin.framework.editor.text.options.impl.TextFontOptionsImpl;
@@ -105,6 +104,7 @@ import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.window.api.WindowHandler;
 
 /**
  * BinEd options manager.
@@ -114,7 +114,7 @@ import org.exbin.framework.preferences.api.PreferencesModuleApi;
 @ParametersAreNonnullByDefault
 public class BinedOptionsManager {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinedOptionsManager.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOptionsManager.class);
 
     private EditorProvider editorProvider;
 
@@ -156,7 +156,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(BinaryAppearanceOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceOptionsPanel.class);
             }
 
             @Nonnull
@@ -196,7 +196,7 @@ public class BinedOptionsManager {
                         final AddEncodingPanel addEncodingPanel = new AddEncodingPanel();
                         addEncodingPanel.setUsedEncodings(usedEncodings);
                         DefaultControlPanel controlPanel = new DefaultControlPanel(addEncodingPanel.getResourceBundle());
-                        final DialogWrapper addEncodingDialog = windowModule.createDialog(addEncodingPanel, controlPanel);
+                        final WindowHandler addEncodingDialog = windowModule.createDialog(addEncodingPanel, controlPanel);
                         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                             if (actionType == DefaultControlHandler.ControlActionType.OK) {
                                 result.addAll(addEncodingPanel.getEncodings());
@@ -205,8 +205,8 @@ public class BinedOptionsManager {
                             addEncodingDialog.close();
                             addEncodingDialog.dispose();
                         });
-                        WindowUtils.addHeaderPanel(addEncodingDialog.getWindow(), addEncodingPanel.getClass(), addEncodingPanel.getResourceBundle());
-                        windowModule.setDialogTitle(addEncodingDialog, addEncodingPanel.getResourceBundle());
+                        windowModule.addHeaderPanel(addEncodingDialog.getWindow(), addEncodingPanel.getClass(), addEncodingPanel.getResourceBundle());
+                        windowModule.setWindowTitle(addEncodingDialog, addEncodingPanel.getResourceBundle());
                         addEncodingDialog.showCentered(panel);
                         return result;
                     });
@@ -218,7 +218,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(TextEncodingOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(TextEncodingOptionsPanel.class);
             }
 
             @Override
@@ -289,9 +289,9 @@ public class BinedOptionsManager {
                             final TextFontPanel fontPanel = new TextFontPanel();
                             fontPanel.setStoredFont(currentFont);
                             DefaultControlPanel controlPanel = new DefaultControlPanel();
-                            final DialogWrapper dialog = windowModule.createDialog(fontPanel, controlPanel);
-                            WindowUtils.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
-                            windowModule.setDialogTitle(dialog, fontPanel.getResourceBundle());
+                            final WindowHandler dialog = windowModule.createDialog(fontPanel, controlPanel);
+                            windowModule.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
+                            windowModule.setWindowTitle(dialog, fontPanel.getResourceBundle());
                             controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                                 if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                                     if (actionType == DefaultControlHandler.ControlActionType.OK) {
@@ -324,7 +324,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(TextFontOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(TextFontOptionsPanel.class);
             }
 
             @Nonnull
@@ -424,7 +424,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(EditorOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(EditorOptionsPanel.class);
             }
 
             @Nonnull
@@ -488,7 +488,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(CodeAreaOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(CodeAreaOptionsPanel.class);
             }
 
             @Nonnull
@@ -559,7 +559,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(StatusOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(StatusOptionsPanel.class);
             }
 
             @Nonnull
@@ -585,6 +585,7 @@ public class BinedOptionsManager {
         };
         optionsModule.addOptionsPage(statusOptionsPage);
 
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         themeProfilesOptionsPage = new DefaultOptionsPage<CodeAreaThemeOptionsImpl>() {
 
             @Nonnull
@@ -597,11 +598,11 @@ public class BinedOptionsManager {
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Add Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
@@ -625,11 +626,11 @@ public class BinedOptionsManager {
                     ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Edit Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Edit Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
                     namedProfilePanel.setProfileName(profileRecord.getProfileName());
                     themeProfilePanel.setThemeProfile(profileRecord.getThemeProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
@@ -656,11 +657,11 @@ public class BinedOptionsManager {
                     themeProfilePanel.setThemeProfile(new ExtendedCodeAreaThemeProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Copy Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Copy Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
                     namedProfilePanel.setProfileName(profileRecord.getProfileName() + " #copy");
                     themeProfilePanel.setThemeProfile(profileRecord.getThemeProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
@@ -691,11 +692,11 @@ public class BinedOptionsManager {
                         namedProfilePanel.setProfileName(selectedTemplate != null ? selectedTemplate.getProfileName() : "");
                     });
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Add Theme Template", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), themeTemplatePanel.getClass(), themeTemplatePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Theme Template", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeTemplatePanel.getClass(), themeTemplatePanel.getResourceBundle());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
@@ -735,7 +736,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(ThemeProfilesOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesOptionsPanel.class);
             }
 
             @Nonnull
@@ -781,11 +782,11 @@ public class BinedOptionsManager {
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(layoutProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Add Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
@@ -809,11 +810,11 @@ public class BinedOptionsManager {
                     LayoutProfilePanel layoutProfilePanel = new LayoutProfilePanel();
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(layoutProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Edit Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Edit Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
                     namedProfilePanel.setProfileName(profileRecord.getProfileName());
                     layoutProfilePanel.setLayoutProfile(profileRecord.getLayoutProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
@@ -840,11 +841,11 @@ public class BinedOptionsManager {
                     layoutProfilePanel.setLayoutProfile(new DefaultExtendedCodeAreaLayoutProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(layoutProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Copy Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Copy Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
                     namedProfilePanel.setProfileName(profileRecord.getProfileName() + " #copy");
                     layoutProfilePanel.setLayoutProfile(profileRecord.getLayoutProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
@@ -875,11 +876,11 @@ public class BinedOptionsManager {
                         namedProfilePanel.setProfileName(selectedTemplate != null ? selectedTemplate.getProfileName() : "");
                     });
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Add Layout Template", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), layoutTemplatePanel.getClass(), layoutTemplatePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Layout Template", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutTemplatePanel.getClass(), layoutTemplatePanel.getResourceBundle());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
@@ -919,7 +920,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(LayoutProfilesOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesOptionsPanel.class);
             }
 
             @Nonnull
@@ -965,11 +966,11 @@ public class BinedOptionsManager {
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ColorProfileResult result = new ColorProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Add Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
@@ -992,11 +993,11 @@ public class BinedOptionsManager {
                     ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ColorProfileResult result = new ColorProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Edit Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Edit Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
                     namedProfilePanel.setProfileName(profileRecord.getProfileName());
                     colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
@@ -1023,11 +1024,11 @@ public class BinedOptionsManager {
                     colorProfilePanel.setColorProfile(new ExtendedCodeAreaColorProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ColorProfileResult result = new ColorProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Copy Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Copy Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
                     namedProfilePanel.setProfileName(profileRecord.getProfileName() + " #copy");
                     colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
@@ -1058,11 +1059,11 @@ public class BinedOptionsManager {
                         namedProfilePanel.setProfileName(selectedTemplate != null ? selectedTemplate.getProfileName() : "");
                     });
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    JPanel dialogPanel = WindowUtils.createDialogPanel(namedProfilePanel, controlPanel);
+                    JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
                     ColorProfileResult result = new ColorProfileResult();
-                    final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, parentComponent, "Add Colors Template", Dialog.ModalityType.APPLICATION_MODAL);
-                    WindowUtils.addHeaderPanel(dialog.getWindow(), colorTemplatePanel.getClass(), colorTemplatePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Colors Template", Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorTemplatePanel.getClass(), colorTemplatePanel.getResourceBundle());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
@@ -1102,7 +1103,7 @@ public class BinedOptionsManager {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(ColorProfilesOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesOptionsPanel.class);
             }
 
             @Nonnull

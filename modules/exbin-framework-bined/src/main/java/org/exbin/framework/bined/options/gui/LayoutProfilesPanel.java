@@ -30,8 +30,9 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaLayoutOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -42,7 +43,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileListPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(LayoutProfilesPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesPanel.class);
 
     private boolean modified = false;
 
@@ -459,7 +460,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new LayoutProfilesPanel());
+        WindowUtils.invokeWindow(new LayoutProfilesPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -18,8 +18,9 @@ package org.exbin.framework.bined.inspector.options.gui;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -33,7 +34,7 @@ import org.exbin.framework.options.api.OptionsModifiedListener;
 public class DataInspectorOptionsPanel extends javax.swing.JPanel implements OptionsComponent<DataInspectorOptionsImpl> {
 
     private OptionsModifiedListener optionsModifiedListener;
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(DataInspectorOptionsPanel.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorOptionsPanel.class);
 
     public DataInspectorOptionsPanel() {
         initComponents();
@@ -96,7 +97,7 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new DataInspectorOptionsPanel());
+        WindowUtils.invokeWindow(new DataInspectorOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

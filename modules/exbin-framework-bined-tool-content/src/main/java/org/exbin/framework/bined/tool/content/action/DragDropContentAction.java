@@ -37,7 +37,8 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.gui.CloseControlPanel;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.xbup.core.util.StreamUtils;
 
 /**
@@ -67,7 +68,7 @@ public class DragDropContentAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         CloseControlPanel controlPanel = new CloseControlPanel();
-        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
         dragDropContentPanel.setSaveAsFileAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,12 +100,12 @@ public class DragDropContentAction extends AbstractAction {
         BinedModule binedModule = App.getModule(BinedModule.class);
         dragDropContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 
-        windowModule.setDialogTitle(dialog, dragDropContentPanel.getResourceBundle());
+        windowModule.setWindowTitle(dialog, dragDropContentPanel.getResourceBundle());
         controlPanel.setHandler(() -> {
             dialog.close();
             dialog.dispose();
         });
-        WindowUtils.addHeaderPanel(dialog.getWindow(), dragDropContentPanel.getClass(), dragDropContentPanel.getResourceBundle());
+        windowModule.addHeaderPanel(dialog.getWindow(), dragDropContentPanel.getClass(), dragDropContentPanel.getResourceBundle());
         dialog.showCentered(windowModule.getFrame());
     }
 

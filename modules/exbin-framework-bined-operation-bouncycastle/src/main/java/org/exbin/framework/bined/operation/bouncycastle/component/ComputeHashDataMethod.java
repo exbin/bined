@@ -52,12 +52,13 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.bouncycastle.component.gui.ComputeHashDataPanel;
 import org.exbin.framework.bined.operation.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.operation.ConvertDataOperation;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
  * Compute Hash digest data component.
@@ -67,7 +68,7 @@ import org.exbin.framework.utils.LanguageUtils;
 @ParametersAreNonnullByDefault
 public class ComputeHashDataMethod implements ConvertDataMethod {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ComputeHashDataPanel.class);
+    private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ComputeHashDataPanel.class);
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;

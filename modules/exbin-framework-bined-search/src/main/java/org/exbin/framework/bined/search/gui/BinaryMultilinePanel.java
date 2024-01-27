@@ -27,9 +27,10 @@ import javax.swing.JTextArea;
 import javax.swing.JViewport;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.framework.App;
 
 /**
  * Multiline search condition editor panel.
@@ -41,7 +42,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     private static final String POPUP_MENU_POSTFIX = ".binaryMultilinePanel";
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinaryMultilinePanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryMultilinePanel.class);
     private SearchCondition condition;
 
     private JTextArea textArea;
@@ -77,7 +78,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinaryMultilinePanel());
+        WindowUtils.invokeWindow(new BinaryMultilinePanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

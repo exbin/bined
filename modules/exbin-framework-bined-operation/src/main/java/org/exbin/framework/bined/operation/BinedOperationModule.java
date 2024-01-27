@@ -38,7 +38,7 @@ import org.exbin.framework.bined.operation.action.InsertDataAction;
 import org.exbin.framework.bined.operation.action.ConvertDataAction;
 import org.exbin.framework.bined.operation.component.RandomDataMethod;
 import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.ActionUtils;
@@ -178,7 +178,7 @@ public class BinedOperationModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedOperationModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOperationModule.class);
         }
 
         return resourceBundle;

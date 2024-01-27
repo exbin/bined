@@ -74,7 +74,7 @@ import org.exbin.framework.action.api.SeparationMode;
 import org.exbin.framework.action.api.ToolBarGroup;
 import org.exbin.framework.action.api.ToolBarPosition;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.bined.preferences.EditorPreferences;
 import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
@@ -188,7 +188,7 @@ public class BinedModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedModule.class);
         }
 
         return resourceBundle;

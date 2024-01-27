@@ -23,7 +23,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.bined.operation.BinedOperationModule;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDataMethod;
 
@@ -56,7 +56,7 @@ public class BinedOperationBouncycastleModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedOperationBouncycastleModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOperationBouncycastleModule.class);
         }
 
         return resourceBundle;

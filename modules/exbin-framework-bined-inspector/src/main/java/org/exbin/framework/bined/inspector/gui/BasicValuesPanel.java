@@ -41,11 +41,12 @@ import org.exbin.bined.operation.swing.command.ModifyDataCommand;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.bined.operation.undo.BinaryDataUndoUpdateListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 
 /**
@@ -66,7 +67,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     public static final String VALUE_OUT_OF_RANGE = "Value is out of range";
     public static int CACHE_SIZE = 250;
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BasicValuesPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BasicValuesPanel.class);
     private ExtCodeArea codeArea;
     private BinaryDataUndoHandler undoHandler;
     private long dataPosition;
@@ -697,7 +698,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BasicValuesPanel());
+        WindowUtils.invokeWindow(new BasicValuesPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

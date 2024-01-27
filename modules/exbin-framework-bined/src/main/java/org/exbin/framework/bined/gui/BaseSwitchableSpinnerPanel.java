@@ -189,7 +189,7 @@ public class BaseSwitchableSpinnerPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BaseSwitchableSpinnerPanel());
+        WindowUtils.invokeWindow(new BaseSwitchableSpinnerPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

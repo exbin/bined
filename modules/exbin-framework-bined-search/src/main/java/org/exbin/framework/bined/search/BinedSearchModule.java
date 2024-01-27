@@ -35,7 +35,7 @@ import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.search.action.FindReplaceActions;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
 
@@ -110,7 +110,7 @@ public class BinedSearchModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedSearchModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedSearchModule.class);
         }
 
         return resourceBundle;

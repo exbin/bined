@@ -19,8 +19,9 @@ import java.awt.BorderLayout;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -33,7 +34,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 @ParametersAreNonnullByDefault
 public class ColorProfilesOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaColorOptionsImpl> {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ColorProfilesOptionsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesOptionsPanel.class);
 
     private final ProfileSelectionPanel selectionPanel;
     private final ColorProfilesPanel profilesPanel;
@@ -102,7 +103,7 @@ public class ColorProfilesOptionsPanel extends javax.swing.JPanel implements Opt
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ColorProfilesOptionsPanel());
+        WindowUtils.invokeWindow(new ColorProfilesOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

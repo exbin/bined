@@ -20,7 +20,10 @@ import java.awt.event.ActionEvent;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import org.exbin.framework.App;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Properties table cell panel.
@@ -57,7 +60,8 @@ public class PropertyTableCellPanel extends ComponentPropertyTableCellPanel {
             }
             InspectComponentPanel inspectComponentPanel = new InspectComponentPanel();
             inspectComponentPanel.setComponent(value, name);
-            final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(inspectComponentPanel, this, "Inspect Component", Dialog.ModalityType.MODELESS);
+            WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+            final WindowHandler dialog = windowModule.createWindow(inspectComponentPanel, this, "Inspect Component", Dialog.ModalityType.MODELESS);
             inspectComponentPanel.setCloseActionListener(e1 -> dialog.close());
             dialog.show();
         });

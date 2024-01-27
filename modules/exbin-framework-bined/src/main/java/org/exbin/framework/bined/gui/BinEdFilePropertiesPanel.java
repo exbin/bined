@@ -17,7 +17,8 @@ package org.exbin.framework.bined.gui;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListModel;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -28,7 +29,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinEdFilePropertiesPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinEdFilePropertiesPanel.class);
 
     public BinEdFilePropertiesPanel() {
         initComponents();
@@ -123,7 +124,7 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinEdFilePropertiesPanel());
+        WindowUtils.invokeWindow(new BinEdFilePropertiesPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

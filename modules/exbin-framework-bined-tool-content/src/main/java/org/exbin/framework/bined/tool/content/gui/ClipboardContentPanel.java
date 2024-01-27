@@ -43,6 +43,7 @@ import javax.swing.JViewport;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EmptyBinaryData;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.tool.content.source.ClipboardFlavorBinaryData;
 import org.exbin.framework.bined.objectdata.ObjectValueConvertor;
 import org.exbin.framework.bined.objectdata.PageProviderBinaryData;
@@ -52,7 +53,7 @@ import org.exbin.framework.bined.objectdata.source.ReaderPageProvider;
 import org.exbin.framework.bined.objectdata.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardUtils;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -64,7 +65,7 @@ import org.exbin.framework.utils.WindowUtils;
 public class ClipboardContentPanel extends javax.swing.JPanel {
 
     public static final String POPUP_MENU_POSTFIX = ".clipboardContentPanel";
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ClipboardContentPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ClipboardContentPanel.class);
 
     private DataFlavor[] dataFlavors;
     private final DefaultComboBoxModel<String> dataListModel = new DefaultComboBoxModel<>();
@@ -518,7 +519,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ClipboardContentPanel());
+        WindowUtils.invokeWindow(new ClipboardContentPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

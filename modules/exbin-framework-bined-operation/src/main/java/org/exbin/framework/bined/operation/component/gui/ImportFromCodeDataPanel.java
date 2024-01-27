@@ -16,7 +16,8 @@
 package org.exbin.framework.bined.operation.component.gui;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -30,7 +31,7 @@ public class ImportFromCodeDataPanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle;
 
     public ImportFromCodeDataPanel() {
-        this(LanguageUtils.getResourceBundleByClass(ImportFromCodeDataPanel.class));
+        this(App.getModule(LanguageModuleApi.class).getBundle(ImportFromCodeDataPanel.class));
         initComponents();
         init();
     }
@@ -88,7 +89,7 @@ public class ImportFromCodeDataPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ImportFromCodeDataPanel());
+        WindowUtils.invokeWindow(new ImportFromCodeDataPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

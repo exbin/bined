@@ -31,11 +31,11 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
-import org.exbin.framework.utils.handler.DefaultControlHandler.ControlActionType;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.gui.EditSelectionPanel;
+import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
@@ -75,9 +75,9 @@ public class EditSelectionAction extends AbstractAction implements CodeAreaActio
         editSelectionPanel.setSelectionRange(((SelectionCapable) codeArea).getSelection());
         DefaultControlPanel controlPanel = new DefaultControlPanel(editSelectionPanel.getResourceBundle());
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final DialogWrapper dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, editSelectionPanel, controlPanel);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), editSelectionPanel.getClass(), editSelectionPanel.getResourceBundle());
-        windowModule.setDialogTitle(dialog, editSelectionPanel.getResourceBundle());
+        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, editSelectionPanel, controlPanel);
+        windowModule.addHeaderPanel(dialog.getWindow(), editSelectionPanel.getClass(), editSelectionPanel.getResourceBundle());
+        windowModule.setWindowTitle(dialog, editSelectionPanel.getResourceBundle());
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
                 editSelectionPanel.acceptInput();

@@ -19,7 +19,8 @@ import java.awt.BorderLayout;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -30,7 +31,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class NamedProfilePanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(NamedProfilePanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(NamedProfilePanel.class);
 
     public NamedProfilePanel(JPanel profilePanel) {
         initComponents();
@@ -97,7 +98,7 @@ public class NamedProfilePanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new NamedProfilePanel(new JPanel()));
+        WindowUtils.invokeWindow(new NamedProfilePanel(new JPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

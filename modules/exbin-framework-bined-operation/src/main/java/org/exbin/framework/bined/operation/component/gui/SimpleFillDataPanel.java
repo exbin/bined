@@ -20,8 +20,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -32,7 +33,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class SimpleFillDataPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(SimpleFillDataPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(SimpleFillDataPanel.class);
 
     private Controller controller;
     private EditableBinaryData sampleBinaryData;
@@ -251,7 +252,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new SimpleFillDataPanel());
+        WindowUtils.invokeWindow(new SimpleFillDataPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

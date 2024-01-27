@@ -43,13 +43,14 @@ import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.color.CodeAreaBasicColors;
 import org.exbin.bined.swing.extended.ExtendedCodeAreaPainter;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.framework.App;
 
 /**
  * Binary editor search panel.
@@ -59,7 +60,7 @@ import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 @ParametersAreNonnullByDefault
 public class BinarySearchPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinarySearchPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinarySearchPanel.class);
 
     private Control control = null;
 
@@ -713,7 +714,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinarySearchPanel());
+        WindowUtils.invokeWindow(new BinarySearchPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -26,8 +26,9 @@ import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.component.gui.RandomDataPanel;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.operation.InsertDataOperation;
@@ -42,7 +43,7 @@ import org.exbin.framework.bined.operation.operation.InsertionDataProvider;
 @ParametersAreNonnullByDefault
 public class RandomDataMethod implements InsertDataMethod {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(RandomDataPanel.class);
+    private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(RandomDataPanel.class);
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;

@@ -28,7 +28,8 @@ import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
  * Add macro record action.
@@ -66,8 +67,8 @@ public class AddMacroAction extends AbstractAction {
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(windowModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
-        windowModule.setDialogTitle(dialog, panelResourceBundle);
+        final WindowHandler dialog = windowModule.createDialog(windowModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
+        windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case OK: {

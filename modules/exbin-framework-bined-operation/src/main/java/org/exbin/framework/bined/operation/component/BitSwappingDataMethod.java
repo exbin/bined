@@ -28,8 +28,9 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.component.gui.BitSwappingDataPanel;
 import org.exbin.framework.bined.operation.operation.ConversionDataProvider;
@@ -45,7 +46,7 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
 
     private static final int BUFFER_SIZE = 4096;
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BitSwappingDataPanel.class);
+    private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BitSwappingDataPanel.class);
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;

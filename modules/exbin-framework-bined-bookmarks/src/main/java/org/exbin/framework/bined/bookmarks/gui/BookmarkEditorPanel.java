@@ -22,9 +22,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.CodeAreaSelection;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.options.gui.ColorCellPanel;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -35,7 +36,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class BookmarkEditorPanel extends javax.swing.JPanel {
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BookmarkEditorPanel.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarkEditorPanel.class);
 
     private Color color = null;
     private volatile boolean spinnerUpdate = false;
@@ -226,7 +227,7 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BookmarkEditorPanel());
+        WindowUtils.invokeWindow(new BookmarkEditorPanel());
     }
 
 

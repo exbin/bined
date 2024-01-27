@@ -34,16 +34,16 @@ import org.exbin.framework.bined.operation.component.gui.SimpleFillDataPanel;
 import org.exbin.framework.bined.search.SearchCondition;
 import org.exbin.framework.bined.search.gui.BinaryMultilinePanel;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.WindowUtils.DialogWrapper;
-import org.exbin.framework.utils.gui.DefaultControlPanel;
-import org.exbin.framework.utils.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.operation.InsertDataOperation;
 import org.exbin.framework.bined.operation.operation.ReplaceDataOperation;
 import org.exbin.framework.bined.operation.operation.InsertionDataProvider;
+import org.exbin.framework.window.api.WindowHandler;
 
 /**
  * Simple fill data method.
@@ -53,7 +53,7 @@ import org.exbin.framework.bined.operation.operation.InsertionDataProvider;
 @ParametersAreNonnullByDefault
 public class SimpleFillDataMethod implements InsertDataMethod {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(SimpleFillDataPanel.class);
+    private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(SimpleFillDataPanel.class);
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
@@ -73,7 +73,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         component.setController(() -> {
             BinedModule binedModule = App.getModule(BinedModule.class);
             final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
-//            final DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
+//            final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
             SearchCondition searchCondition = new SearchCondition();
             EditableBinaryData conditionData = new ByteArrayEditableData();
             EditableBinaryData sampleBinaryData = component.getSampleBinaryData();
@@ -83,9 +83,9 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             multilinePanel.setCondition(searchCondition);
             multilinePanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
             DefaultControlPanel controlPanel = new DefaultControlPanel();
-            JPanel dialogPanel1 = WindowUtils.createDialogPanel(multilinePanel, controlPanel);
-            final DialogWrapper multilineDialog = windowModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, dialogPanel1);
-            windowModule.setDialogTitle(multilineDialog, multilinePanel.getResourceBundle());
+            JPanel dialogPanel = windowModule.createDialogPanel(multilinePanel, controlPanel);
+            final WindowHandler multilineDialog = windowModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, dialogPanel);
+            windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());
             controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                 if (actionType == DefaultControlHandler.ControlActionType.OK) {
                     SearchCondition condition = multilinePanel.getCondition();

@@ -34,8 +34,9 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.SelectionRange;
+import org.exbin.framework.App;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.BinaryStatusApi;
 import org.exbin.framework.bined.options.StatusOptions;
@@ -52,7 +53,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     private static final String BR_TAG = "<br>";
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinaryStatusPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryStatusPanel.class);
 
     private StatusPreferences statusParameters;
     private StatusControlHandler statusControlHandler;
@@ -523,7 +524,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinaryStatusPanel());
+        WindowUtils.invokeWindow(new BinaryStatusPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

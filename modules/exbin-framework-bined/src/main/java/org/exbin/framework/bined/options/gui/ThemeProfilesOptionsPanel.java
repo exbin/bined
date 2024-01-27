@@ -19,8 +19,9 @@ import java.awt.BorderLayout;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaThemeOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -33,7 +34,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 @ParametersAreNonnullByDefault
 public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaThemeOptionsImpl> {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ThemeProfilesOptionsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesOptionsPanel.class);
 
     private final ProfileSelectionPanel selectionPanel;
     private final ThemeProfilesPanel profilesPanel;
@@ -102,7 +103,7 @@ public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements Opt
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ThemeProfilesOptionsPanel());
+        WindowUtils.invokeWindow(new ThemeProfilesOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

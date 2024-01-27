@@ -16,7 +16,7 @@
 package org.exbin.framework.bined.tool.content.gui;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.utils.handler.OkCancelService;
+import org.exbin.framework.window.api.handler.OkCancelService;
 
 /**
  * Handler for clipboard content control panel.

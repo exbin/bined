@@ -16,7 +16,7 @@
 package org.exbin.framework.bined.operation.gui;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.utils.handler.OkCancelService;
+import org.exbin.framework.window.api.handler.OkCancelService;
 
 /**
  * Handler for convert data control panel.

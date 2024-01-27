@@ -18,11 +18,12 @@ package org.exbin.framework.bined.operation.gui;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JButton;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.OkCancelListener;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.UiUtils;
-import org.exbin.framework.utils.handler.OkCancelService;
+import org.exbin.framework.window.api.handler.OkCancelService;
 
 /**
  * Convert data control panel.
@@ -37,7 +38,7 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
     private OkCancelListener okCancelListener;
 
     public ConvertDataControlPanel() {
-        this(LanguageUtils.getResourceBundleByClass(ConvertDataControlPanel.class));
+        this(App.getModule(LanguageModuleApi.class).getBundle(ConvertDataControlPanel.class));
         initComponents();
         init();
     }
@@ -199,7 +200,7 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ConvertDataControlPanel());
+        WindowUtils.invokeWindow(new ConvertDataControlPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

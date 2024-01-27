@@ -38,6 +38,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.xbup.core.util.StreamUtils;
 
 /**
@@ -68,7 +69,7 @@ public class ClipboardContentAction extends AbstractAction {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         clipboardContentPanel.loadFromClipboard();
         ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
-        final WindowUtils.DialogWrapper dialog = windowModule.createDialog(clipboardContentPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(clipboardContentPanel, controlPanel);
         clipboardContentPanel.setSaveAsFileAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,7 +101,7 @@ public class ClipboardContentAction extends AbstractAction {
         BinedModule binedModule = App.getModule(BinedModule.class);
         clipboardContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 
-        windowModule.setDialogTitle(dialog, clipboardContentPanel.getResourceBundle());
+        windowModule.setWindowTitle(dialog, clipboardContentPanel.getResourceBundle());
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
                 case CLOSE: {
@@ -115,7 +116,7 @@ public class ClipboardContentAction extends AbstractAction {
                 }
             }
         });
-        WindowUtils.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
+        windowModule.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
         dialog.showCentered(windowModule.getFrame());
     }
 

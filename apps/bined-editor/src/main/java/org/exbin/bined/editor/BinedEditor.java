@@ -57,7 +57,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.update.api.UpdateModuleApi;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.help.api.HelpModuleApi;
@@ -97,7 +97,7 @@ public class BinedEditor {
             moduleRepository.addModulesFromManifest(BinedEditor.class);
             moduleRepository.loadModulesFromPath(new File(app.getAppDirectory().getAbsoluteFile(), "plugins").toURI());
             moduleRepository.initModules();
-            ResourceBundle bundle = LanguageUtils.getResourceBundleByClass(BinedEditor.class);
+            ResourceBundle bundle = App.getModule(LanguageModuleApi.class).getBundle(BinedEditor.class);
 
             // Parameters processing
             Options opt = new Options();

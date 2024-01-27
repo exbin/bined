@@ -35,9 +35,10 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaThemeOptionsImpl;
 import org.exbin.framework.bined.preferences.CodeAreaThemePreferences;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
@@ -50,7 +51,7 @@ import org.exbin.framework.preferences.StreamPreferences;
 @ParametersAreNonnullByDefault
 public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileListPanel {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ThemeTemplatePanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeTemplatePanel.class);
 
     public ThemeTemplatePanel() {
         initComponents();
@@ -177,7 +178,7 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ThemeTemplatePanel());
+        WindowUtils.invokeWindow(new ThemeTemplatePanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

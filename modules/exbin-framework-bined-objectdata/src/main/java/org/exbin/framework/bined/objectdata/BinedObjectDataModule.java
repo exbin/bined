@@ -18,9 +18,10 @@ package org.exbin.framework.bined.objectdata;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
  * Binary editor object data support module.
@@ -41,7 +42,7 @@ public class BinedObjectDataModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedObjectDataModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedObjectDataModule.class);
         }
 
         return resourceBundle;

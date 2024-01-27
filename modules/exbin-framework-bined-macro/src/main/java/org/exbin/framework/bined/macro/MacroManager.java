@@ -63,7 +63,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
  * Macros manager.
@@ -75,7 +75,7 @@ public class MacroManager {
 
     public static final String MACROS_POPUP_SUBMENU_ID = BinedMacroModule.MODULE_ID + ".macrosPopupSubMenu";
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(MacroManager.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(MacroManager.class);
 
     private final List<MacroRecord> macroRecords = new ArrayList<>();
     private MacroPreferences macroPreferences;

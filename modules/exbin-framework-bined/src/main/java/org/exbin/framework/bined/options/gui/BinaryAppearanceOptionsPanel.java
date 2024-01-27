@@ -18,8 +18,9 @@ package org.exbin.framework.bined.options.gui;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.BinaryAppearanceOptionsImpl;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -33,7 +34,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements OptionsComponent<BinaryAppearanceOptionsImpl> {
 
     private OptionsModifiedListener optionsModifiedListener;
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(BinaryAppearanceOptionsPanel.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceOptionsPanel.class);
 
     public BinaryAppearanceOptionsPanel() {
         initComponents();
@@ -96,7 +97,7 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinaryAppearanceOptionsPanel());
+        WindowUtils.invokeWindow(new BinaryAppearanceOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

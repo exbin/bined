@@ -21,7 +21,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.component.gui.ImportFromCodeDataPanel;
@@ -34,7 +35,7 @@ import org.exbin.framework.bined.operation.component.gui.ImportFromCodeDataPanel
 @ParametersAreNonnullByDefault
 public class ImportFromCodeDataMethod implements InsertDataMethod {
 
-    private java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ImportFromCodeDataPanel.class);
+    private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ImportFromCodeDataPanel.class);
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;

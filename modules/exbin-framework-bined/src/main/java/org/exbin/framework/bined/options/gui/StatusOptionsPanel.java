@@ -20,10 +20,11 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
 import org.exbin.framework.bined.StatusCursorPositionFormat;
 import org.exbin.framework.bined.StatusDocumentSizeFormat;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -36,7 +37,7 @@ import org.exbin.framework.options.api.OptionsComponent;
 @ParametersAreNonnullByDefault
 public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsComponent<StatusOptionsImpl> {
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(StatusOptionsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StatusOptionsPanel.class);
 
     public StatusOptionsPanel() {
         initComponents();
@@ -194,7 +195,7 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new StatusOptionsPanel());
+        WindowUtils.invokeWindow(new StatusOptionsPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

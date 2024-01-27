@@ -34,7 +34,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.search.BinedSearchModule;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
@@ -80,7 +80,7 @@ public class BinedMacroModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedMacroModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedMacroModule.class);
         }
 
         return resourceBundle;

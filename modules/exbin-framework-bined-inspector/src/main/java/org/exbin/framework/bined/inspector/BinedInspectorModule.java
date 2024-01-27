@@ -38,7 +38,7 @@ import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.inspector.options.gui.DataInspectorOptionsPanel;
 import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
 import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.options.api.DefaultOptionsPage;
@@ -96,7 +96,7 @@ public class BinedInspectorModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedInspectorModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedInspectorModule.class);
         }
 
         return resourceBundle;
@@ -154,7 +154,7 @@ public class BinedInspectorModule implements Module {
             @Nonnull
             @Override
             public ResourceBundle getResourceBundle() {
-                return LanguageUtils.getResourceBundleByClass(DataInspectorOptionsPanel.class);
+                return App.getModule(LanguageModuleApi.class).getBundle(DataInspectorOptionsPanel.class);
             }
 
             @Nonnull

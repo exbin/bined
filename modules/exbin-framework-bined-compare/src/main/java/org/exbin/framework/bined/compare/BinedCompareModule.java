@@ -27,7 +27,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.compare.action.CompareFilesAction;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
 
@@ -62,7 +62,7 @@ public class BinedCompareModule implements Module {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
-            resourceBundle = LanguageUtils.getResourceBundleByClass(BinedCompareModule.class);
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedCompareModule.class);
         }
 
         return resourceBundle;

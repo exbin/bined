@@ -52,6 +52,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.window.api.WindowHandler;
 
 /**
  * Convert data action.
@@ -106,16 +107,16 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
         });
         ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
         ConvertDataControlPanel controlPanel = new ConvertDataControlPanel();
-        JPanel dialogPanel = WindowUtils.createDialogPanel(convertDataPanel, controlPanel);
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        JPanel dialogPanel = windowModule.createDialogPanel(convertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
         convertDataPanel.selectActiveMethod(lastMethod);
         BinedModule binedModule = App.getModule(BinedModule.class);
         convertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
-        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowUtils.DialogWrapper dialog = WindowUtils.createDialog(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        WindowUtils.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
-        windowModule.setDialogTitle(dialog, panelResourceBundle);
+        final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
+        windowModule.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
+        windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((ConvertDataControlHandler.ControlActionType actionType) -> {
             if (actionType != ConvertDataControlHandler.ControlActionType.CANCEL) {
                 Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();

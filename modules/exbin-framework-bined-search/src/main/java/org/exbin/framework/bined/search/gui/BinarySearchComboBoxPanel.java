@@ -206,7 +206,7 @@ public class BinarySearchComboBoxPanel extends JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new BinarySearchComboBoxPanel());
+        WindowUtils.invokeWindow(new BinarySearchComboBoxPanel());
     }
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler, String postfix) {

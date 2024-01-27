@@ -23,8 +23,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JTable;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -35,7 +36,7 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class MacrosManagerPanel extends javax.swing.JPanel {
 
-    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(MacrosManagerPanel.class);
+    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(MacrosManagerPanel.class);
     private final MacrosTableModel macrosTableModel = new MacrosTableModel();
     private Control control = null;
 
@@ -225,7 +226,7 @@ public class MacrosManagerPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new MacrosManagerPanel());
+        WindowUtils.invokeWindow(new MacrosManagerPanel());
     }
 
     @Nonnull

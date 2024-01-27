@@ -33,7 +33,8 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.framework.utils.LanguageUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -48,7 +49,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
 
     private static final String POPUP_MENU_POSTFIX = ".convertDataPanel";
 
-    private final java.util.ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(ConvertDataPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ConvertDataPanel.class);
 
     private Controller controller;
     private ExtCodeArea previewCodeArea = new ExtCodeArea();
@@ -227,7 +228,7 @@ public class ConvertDataPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeDialog(new ConvertDataPanel());
+        WindowUtils.invokeWindow(new ConvertDataPanel());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
