@@ -21,6 +21,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -42,8 +46,9 @@ public class RowWrappingAction extends AbstractAction implements CodeAreaAction 
     public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
-        ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
-        putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.CHECK);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(this, resourceBundle, ACTION_ID);
+        putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
     }
 
     @Override

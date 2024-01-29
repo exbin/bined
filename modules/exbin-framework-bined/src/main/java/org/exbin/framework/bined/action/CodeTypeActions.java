@@ -16,11 +16,12 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -30,7 +31,11 @@ import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.utils.ActionUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActionType;
 
 /**
  * Code type handler.
@@ -38,7 +43,7 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeTypeActions implements CodeAreaAction {
+public class CodeTypeActions {
 
     public static final String BINARY_CODE_TYPE_ACTION_ID = "binaryCodeTypeAction";
     public static final String OCTAL_CODE_TYPE_ACTION_ID = "octalCodeTypeAction";
@@ -64,31 +69,6 @@ public class CodeTypeActions implements CodeAreaAction {
 
     public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
-    }
-
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        CodeType activeCodeType = codeArea != null ? ((CodeTypeCapable) codeArea).getCodeType() : null;
-        if (activeCodeType != null) {
-            setCodeType(activeCodeType);
-        }
-
-        if (binaryCodeTypeAction != null) {
-            binaryCodeTypeAction.setEnabled(codeArea != null);
-        }
-        if (octalCodeTypeAction != null) {
-            octalCodeTypeAction.setEnabled(codeArea != null);
-        }
-        if (decimalCodeTypeAction != null) {
-            decimalCodeTypeAction.setEnabled(codeArea != null);
-        }
-        if (hexadecimalCodeTypeAction != null) {
-            hexadecimalCodeTypeAction.setEnabled(codeArea != null);
-        }
-        if (cycleCodeTypesAction != null) {
-            cycleCodeTypesAction.setEnabled(codeArea != null);
-        }
     }
 
     public void setCodeType(CodeType codeType) {
@@ -132,10 +112,28 @@ public class CodeTypeActions implements CodeAreaAction {
                     setCodeType(CodeType.BINARY);
                 }
             };
-            ActionUtils.setupAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
-            binaryCodeTypeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            binaryCodeTypeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
+            binaryCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            binaryCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             binaryCodeTypeAction.putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
+            binaryCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+                @Nonnull
+                @Override
+                public Set<Class<?>> forClasses() {
+                    return Collections.singleton(CodeAreaCore.class);
+                }
+
+                @Override
+                public void componentActive(Set<Object> affectedClasses) {
+                    boolean hasInstance = !affectedClasses.isEmpty();
+                    if (hasInstance) {
+                        CodeAreaCore codeArea = (CodeAreaCore) affectedClasses.iterator().next();
+                        binaryCodeTypeAction.putValue(Action.SELECTED_KEY, ((CodeTypeCapable) codeArea).getCodeType() == CodeType.BINARY);
+                    }
+                    binaryCodeTypeAction.setEnabled(hasInstance);
+                }
+            });
 
         }
         return binaryCodeTypeAction;
@@ -150,10 +148,28 @@ public class CodeTypeActions implements CodeAreaAction {
                     setCodeType(CodeType.OCTAL);
                 }
             };
-            ActionUtils.setupAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
-            octalCodeTypeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            octalCodeTypeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
+            octalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            octalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             octalCodeTypeAction.putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
+            octalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+                @Nonnull
+                @Override
+                public Set<Class<?>> forClasses() {
+                    return Collections.singleton(CodeAreaCore.class);
+                }
+
+                @Override
+                public void componentActive(Set<Object> affectedClasses) {
+                    boolean hasInstance = !affectedClasses.isEmpty();
+                    if (hasInstance) {
+                        CodeAreaCore codeArea = (CodeAreaCore) affectedClasses.iterator().next();
+                        octalCodeTypeAction.putValue(Action.SELECTED_KEY, ((CodeTypeCapable) codeArea).getCodeType() == CodeType.OCTAL);
+                    }
+                    octalCodeTypeAction.setEnabled(hasInstance);
+                }
+            });
         }
         return octalCodeTypeAction;
     }
@@ -167,11 +183,28 @@ public class CodeTypeActions implements CodeAreaAction {
                     setCodeType(CodeType.DECIMAL);
                 }
             };
-            ActionUtils.setupAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
-            decimalCodeTypeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-            decimalCodeTypeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
+            decimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            decimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             decimalCodeTypeAction.putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
+            decimalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+                @Nonnull
+                @Override
+                public Set<Class<?>> forClasses() {
+                    return Collections.singleton(CodeAreaCore.class);
+                }
 
+                @Override
+                public void componentActive(Set<Object> affectedClasses) {
+                    boolean hasInstance = !affectedClasses.isEmpty();
+                    if (hasInstance) {
+                        CodeAreaCore codeArea = (CodeAreaCore) affectedClasses.iterator().next();
+                        decimalCodeTypeAction.putValue(Action.SELECTED_KEY, ((CodeTypeCapable) codeArea).getCodeType() == CodeType.DECIMAL);
+                    }
+                    decimalCodeTypeAction.setEnabled(hasInstance);
+                }
+            });
         }
         return decimalCodeTypeAction;
     }
@@ -185,11 +218,28 @@ public class CodeTypeActions implements CodeAreaAction {
                     setCodeType(CodeType.HEXADECIMAL);
                 }
             };
-            ActionUtils.setupAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
-            hexadecimalCodeTypeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            hexadecimalCodeTypeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
+            hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             hexadecimalCodeTypeAction.putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
+            hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+                @Nonnull
+                @Override
+                public Set<Class<?>> forClasses() {
+                    return Collections.singleton(CodeAreaCore.class);
+                }
 
+                @Override
+                public void componentActive(Set<Object> affectedClasses) {
+                    boolean hasInstance = !affectedClasses.isEmpty();
+                    if (hasInstance) {
+                        CodeAreaCore codeArea = (CodeAreaCore) affectedClasses.iterator().next();
+                        hexadecimalCodeTypeAction.putValue(Action.SELECTED_KEY, ((CodeTypeCapable) codeArea).getCodeType() == CodeType.HEXADECIMAL);
+                    }
+                    hexadecimalCodeTypeAction.setEnabled(hasInstance);
+                }
+            });
         }
         return hexadecimalCodeTypeAction;
     }
@@ -206,17 +256,30 @@ public class CodeTypeActions implements CodeAreaAction {
                     setCodeType(next);
                 }
             };
-            ActionUtils.setupAction(cycleCodeTypesAction, resourceBundle, CYCLE_CODE_TYPES_ACTION_ID);
-            cycleCodeTypesAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.CYCLE);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(cycleCodeTypesAction, resourceBundle, CYCLE_CODE_TYPES_ACTION_ID);
+            cycleCodeTypesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CYCLE);
             ButtonGroup cycleButtonGroup = new ButtonGroup();
             Map<String, ButtonGroup> buttonGroups = new HashMap<>();
             buttonGroups.put(CODE_TYPE_RADIO_GROUP_ID, cycleButtonGroup);
             JPopupMenu cycleCodeTypesPopupMenu = new JPopupMenu();
-            cycleCodeTypesPopupMenu.add(ActionUtils.actionToMenuItem(getBinaryCodeTypeAction(), buttonGroups));
-            cycleCodeTypesPopupMenu.add(ActionUtils.actionToMenuItem(getOctalCodeTypeAction(), buttonGroups));
-            cycleCodeTypesPopupMenu.add(ActionUtils.actionToMenuItem(getDecimalCodeTypeAction(), buttonGroups));
-            cycleCodeTypesPopupMenu.add(ActionUtils.actionToMenuItem(getHexadecimalCodeTypeAction(), buttonGroups));
-            cycleCodeTypesAction.putValue(ActionUtils.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
+            cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(getBinaryCodeTypeAction(), buttonGroups));
+            cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(getOctalCodeTypeAction(), buttonGroups));
+            cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(getDecimalCodeTypeAction(), buttonGroups));
+            cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(getHexadecimalCodeTypeAction(), buttonGroups));
+            cycleCodeTypesAction.putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
+            cycleCodeTypesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+                @Nonnull
+                @Override
+                public Set<Class<?>> forClasses() {
+                    return Collections.singleton(CodeAreaCore.class);
+                }
+
+                @Override
+                public void componentActive(Set<Object> affectedClasses) {
+                    cycleCodeTypesAction.setEnabled(!affectedClasses.isEmpty());
+                }
+            });
             updateCycleButtonName();
         }
         return cycleCodeTypesAction;

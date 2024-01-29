@@ -24,6 +24,10 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.extended.capability.ShowUnprintablesCapable;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -79,8 +83,9 @@ public class ShowUnprintablesActions implements CodeAreaAction {
     public Action getViewUnprintablesAction() {
         if (viewUnprintablesAction == null) {
             viewUnprintablesAction = createViewUnprintablesAction();
-            ActionUtils.setupAction(viewUnprintablesAction, resourceBundle, VIEW_UNPRINTABLES_ACTION_ID);
-            viewUnprintablesAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.CHECK);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(viewUnprintablesAction, resourceBundle, VIEW_UNPRINTABLES_ACTION_ID);
+            viewUnprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
             viewUnprintablesAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, ActionUtils.getMetaMask()));
 
         }
@@ -91,8 +96,9 @@ public class ShowUnprintablesActions implements CodeAreaAction {
     public Action getViewUnprintablesToolbarAction() {
         if (viewUnprintablesToolbarAction == null) {
             viewUnprintablesToolbarAction = createViewUnprintablesAction();
-            ActionUtils.setupAction(viewUnprintablesToolbarAction, resourceBundle, VIEW_UNPRINTABLES_TOOLBAR_ACTION_ID);
-            viewUnprintablesToolbarAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.CHECK);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(viewUnprintablesToolbarAction, resourceBundle, VIEW_UNPRINTABLES_TOOLBAR_ACTION_ID);
+            viewUnprintablesToolbarAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         }
         return viewUnprintablesToolbarAction;
     }

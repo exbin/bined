@@ -25,6 +25,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -78,7 +80,8 @@ public class ClipboardCodeActions implements CodeAreaAction {
                     codeArea.copyAsCode();
                 }
             };
-            ActionUtils.setupAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
         }
         return copyAsCodeAction;
     }
@@ -97,7 +100,8 @@ public class ClipboardCodeActions implements CodeAreaAction {
                     }
                 }
             };
-            ActionUtils.setupAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
         }
         return pasteFromCodeAction;
     }

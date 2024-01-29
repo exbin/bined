@@ -61,6 +61,8 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.action.ShowHeaderAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -89,6 +91,7 @@ import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.action.EditSelectionAction;
@@ -249,7 +252,7 @@ public class BinedModule implements Module {
         EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
         editorModule.updateActionStatus();
         FileDependentAction[] fileDepActions = new FileDependentAction[]{
-            codeAreaFontAction, propertiesAction, reloadFileAction
+            propertiesAction, reloadFileAction
         };
         for (FileDependentAction fileDepAction : fileDepActions) {
             if (fileDepAction != null) {
@@ -258,8 +261,6 @@ public class BinedModule implements Module {
         }
 
         CodeAreaAction[] binedCodeAreaActions = new CodeAreaAction[]{
-            goToPositionAction, editSelectionAction,
-            hexCharactersCaseActions, codeTypeActions, positionCodeTypeActions,
             rowWrappingAction, viewModeActions, showHeaderAction,
             showRowPositionAction, showUnprintablesActions,
             clipboardCodeActions, printAction
@@ -418,7 +419,7 @@ public class BinedModule implements Module {
             ensureSetup();
             showHeaderAction = new ShowHeaderAction();
             showHeaderAction.setup(resourceBundle);
-            showHeaderAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            showHeaderAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(menuId);
@@ -441,7 +442,7 @@ public class BinedModule implements Module {
             ensureSetup();
             showRowPositionAction = new ShowRowPositionAction();
             showRowPositionAction.setup(resourceBundle);
-            showRowPositionAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            showRowPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(menuId);
@@ -463,7 +464,7 @@ public class BinedModule implements Module {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
 
         Action optionsAction = optionsModule.getOptionsAction();
-        optionsAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+        optionsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
                 return popupMenuVariant == PopupMenuVariant.EDITOR;
@@ -515,7 +516,7 @@ public class BinedModule implements Module {
             ensureSetup();
             goToPositionAction = new GoToPositionAction();
             goToPositionAction.setup(resourceBundle);
-            goToPositionAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            goToPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     return popupMenuVariant != PopupMenuVariant.BASIC;
@@ -845,9 +846,10 @@ public class BinedModule implements Module {
                 getActiveCodeArea().setPositionCodeType(PositionCodeType.OCTAL);
             }
         };
-        ActionUtils.setupAction(action, resourceBundle, PositionCodeTypeActions.OCTAL_POSITION_CODE_TYPE_ACTION_ID);
-        action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-        action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(action, resourceBundle, PositionCodeTypeActions.OCTAL_POSITION_CODE_TYPE_ACTION_ID);
+        action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
                 return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
@@ -870,9 +872,10 @@ public class BinedModule implements Module {
                 getActiveCodeArea().setPositionCodeType(PositionCodeType.DECIMAL);
             }
         };
-        ActionUtils.setupAction(action, resourceBundle, PositionCodeTypeActions.DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
-        action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-        action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(action, resourceBundle, PositionCodeTypeActions.DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
+        action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
                 return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
@@ -895,9 +898,10 @@ public class BinedModule implements Module {
                 getActiveCodeArea().setPositionCodeType(PositionCodeType.HEXADECIMAL);
             }
         };
-        ActionUtils.setupAction(action, resourceBundle, PositionCodeTypeActions.HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
-        action.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-        action.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(action, resourceBundle, PositionCodeTypeActions.HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
+        action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
                 return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);

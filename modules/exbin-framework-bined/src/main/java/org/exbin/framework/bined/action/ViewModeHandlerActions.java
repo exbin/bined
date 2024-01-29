@@ -25,6 +25,10 @@ import javax.swing.Action;
 import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.capability.ViewModeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -96,9 +100,10 @@ public class ViewModeHandlerActions implements CodeAreaAction {
                     setViewMode(CodeAreaViewMode.DUAL);
                 }
             };
-            ActionUtils.setupAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
-            dualModeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            dualModeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
+            dualModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            dualModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
             dualModeAction.putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
         }
         return dualModeAction;
@@ -113,9 +118,10 @@ public class ViewModeHandlerActions implements CodeAreaAction {
                     setViewMode(CodeAreaViewMode.CODE_MATRIX);
                 }
             };
-            ActionUtils.setupAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
-            codeMatrixModeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            codeMatrixModeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
+            codeMatrixModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            codeMatrixModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
             codeMatrixModeAction.putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
 
         }
@@ -131,9 +137,10 @@ public class ViewModeHandlerActions implements CodeAreaAction {
                     setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
                 }
             };
-            ActionUtils.setupAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
-            textPreviewModeAction.putValue(ActionUtils.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-            textPreviewModeAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
+            textPreviewModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+            textPreviewModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             textPreviewModeAction.putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
 
         }

@@ -39,6 +39,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.preferences.api.Preferences;
@@ -93,7 +95,7 @@ public class MacroManager {
     private long lastMacroIndex = 0;
 
     public MacroManager() {
-        manageMacrosAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
+        manageMacrosAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
@@ -259,7 +261,7 @@ public class MacroManager {
             public void actionPerformed(ActionEvent e) {
             }
         };
-        macrosPopupMenuAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+        macrosPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
@@ -406,6 +408,7 @@ public class MacroManager {
     public void updateMacrosMenu(JMenu menu) {
         menu.removeAll();
 
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         int recordsLimit = Math.min(macroRecords.size(), 10);
         String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
         String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
@@ -428,7 +431,7 @@ public class MacroManager {
                             } else if (ex.getCause() != null) {
                                 message += ex.getCause().getMessage();
                             }
-                                    
+
                             JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
                         }
                     }
@@ -436,15 +439,15 @@ public class MacroManager {
             };
             macroAction.putValue(Action.SHORT_DESCRIPTION, macroActionDescription);
 
-            menu.add(ActionUtils.actionToMenuItem(macroAction));
+            menu.add(actionModule.actionToMenuItem(macroAction));
         }
 
         if (!macroRecords.isEmpty()) {
             menu.addSeparator();
         }
-        menu.add(ActionUtils.actionToMenuItem(executeLastMacroAction));
-        menu.add(ActionUtils.actionToMenuItem(startMacroRecordingAction));
-        menu.add(ActionUtils.actionToMenuItem(stopMacroRecordingAction));
-        menu.add(ActionUtils.actionToMenuItem(manageMacrosAction));
+        menu.add(actionModule.actionToMenuItem(executeLastMacroAction));
+        menu.add(actionModule.actionToMenuItem(startMacroRecordingAction));
+        menu.add(actionModule.actionToMenuItem(stopMacroRecordingAction));
+        menu.add(actionModule.actionToMenuItem(manageMacrosAction));
     }
 }

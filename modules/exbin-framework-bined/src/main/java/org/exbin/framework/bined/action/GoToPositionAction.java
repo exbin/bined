@@ -17,7 +17,10 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -27,6 +30,9 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -42,7 +48,7 @@ import org.exbin.framework.window.api.WindowModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class GoToPositionAction extends AbstractAction implements CodeAreaAction {
+public class GoToPositionAction extends AbstractAction {
 
     public static final String ACTION_ID = "goToPositionAction";
 
@@ -55,15 +61,24 @@ public class GoToPositionAction extends AbstractAction implements CodeAreaAction
     public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
-        ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, ActionUtils.getMetaMask()));
-        putValue(ActionUtils.ACTION_DIALOG_MODE, true);
-    }
+        putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Nonnull
+            @Override
+            public Set<Class<?>> forClasses() {
+                return Collections.singleton(CodeAreaCore.class);
+            }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        setEnabled(codeArea != null);
+            @Override
+            public void componentActive(Set<Object> affectedClasses) {
+                boolean hasInstance = !affectedClasses.isEmpty();
+                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+                setEnabled(hasInstance);
+            }
+        });
     }
 
     @Override

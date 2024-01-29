@@ -42,6 +42,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.preferences.api.Preferences;
@@ -84,7 +86,7 @@ public class BookmarksManager {
     private JMenu bookmarksMenu;
 
     public BookmarksManager() {
-        manageBookmarksAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
+        manageBookmarksAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         addBookmarkAction.setup(resourceBundle);
         editBookmarkAction.setup(resourceBundle);
     }
@@ -257,7 +259,7 @@ public class BookmarksManager {
             public void actionPerformed(ActionEvent e) {
             }
         };
-        bookmarksPopupMenuAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+        bookmarksPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
@@ -390,6 +392,7 @@ public class BookmarksManager {
     public void updateBookmarksMenu(JMenu menu) {
         menu.removeAll();
 
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         int recordsLimit = Math.min(bookmarkRecords.size(), 10);
         int metaMask = ActionUtils.getMetaMask();
         String bookmarkActionName = resourceBundle.getString("bookmarkAction.text");
@@ -433,12 +436,12 @@ public class BookmarksManager {
             });
             bookmarkAction.putValue(Action.SHORT_DESCRIPTION, bookmarkActionDescription);
 
-            menu.add(ActionUtils.actionToMenuItem(bookmarkAction));
+            menu.add(actionModule.actionToMenuItem(bookmarkAction));
         }
 
         if (!bookmarkRecords.isEmpty()) {
             menu.addSeparator();
         }
-        menu.add(ActionUtils.actionToMenuItem(manageBookmarksAction));
+        menu.add(actionModule.actionToMenuItem(manageBookmarksAction));
     }
 }

@@ -511,7 +511,7 @@ public class BinedOptionsManager {
             public void applyPreferencesChanges(CodeAreaOptionsImpl options) {
                 codeTypeActions.setCodeType(options.getCodeType());
                 showUnprintablesActions.setShowUnprintables(options.isShowUnprintables());
-                hexCharactersCaseActions.setHexCharactersCase(options.getCodeCharactersCase());
+                // TODO codeArea hexCharactersCaseActions.setHexCharactersCase(options.getCodeCharactersCase());
                 positionCodeTypeActions.setCodeType(options.getPositionCodeType());
                 viewModeActions.setViewMode(options.getViewMode());
 

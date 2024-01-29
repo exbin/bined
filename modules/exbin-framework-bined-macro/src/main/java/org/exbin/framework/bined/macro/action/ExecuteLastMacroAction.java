@@ -26,6 +26,8 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.macro.MacroManager;
@@ -55,7 +57,8 @@ public class ExecuteLastMacroAction extends AbstractAction implements CodeAreaAc
         this.editorProvider = editorProvider;
         this.resourceBundle = resourceBundle;
 
-        ActionUtils.setupAction(this, resourceBundle, ACTION_ID);
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, ActionUtils.getMetaMask()));
     }
 

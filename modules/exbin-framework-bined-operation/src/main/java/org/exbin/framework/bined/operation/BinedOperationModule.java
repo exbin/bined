@@ -30,6 +30,8 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.bined.BinEdFileManager;
@@ -90,7 +92,7 @@ public class BinedOperationModule implements Module {
             insertDataAction = new InsertDataAction();
             insertDataAction.setup(resourceBundle);
 
-            insertDataAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            insertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     BinedModule binedModule = App.getModule(BinedModule.class);
@@ -117,7 +119,7 @@ public class BinedOperationModule implements Module {
             convertDataAction.setup(resourceBundle);
             convertDataAction.setEditorProvider(editorProvider);
 
-            convertDataAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     BinedModule binedModule = App.getModule(BinedModule.class);

@@ -16,16 +16,21 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.utils.ActionUtils;
+import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActionType;
 
 /**
  * Hex characters case handler.
@@ -33,19 +38,16 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class HexCharactersCaseActions implements CodeAreaAction {
+public class HexCharactersCaseActions {
 
     public static final String UPPER_HEX_CHARACTERS_ACTION_ID = "upperHexCharactersAction";
     public static final String LOWER_HEX_CHARACTERS_ACTION_ID = "lowerHexCharactersAction";
     public static final String HEX_CHARACTERS_CASE_RADIO_GROUP_ID = "hexCharactersCaseRadioGroup";
 
-    private CodeAreaCore codeArea;
     private ResourceBundle resourceBundle;
 
     private Action upperHexCharsAction;
     private Action lowerHexCharsAction;
-
-    private CodeCharactersCase hexCharactersCase = CodeCharactersCase.UPPER;
 
     public HexCharactersCaseActions() {
     }
@@ -54,44 +56,15 @@ public class HexCharactersCaseActions implements CodeAreaAction {
         this.resourceBundle = resourceBundle;
     }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        CodeCharactersCase codeCharactersCase = codeArea != null ? ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase() : null;
-
-        if (upperHexCharsAction != null) {
-            upperHexCharsAction.setEnabled(codeArea != null);
-            if (codeCharactersCase == CodeCharactersCase.UPPER) {
-                upperHexCharsAction.putValue(Action.SELECTED_KEY, true);
-            }
-        }
-        if (lowerHexCharsAction != null) {
-            lowerHexCharsAction.setEnabled(codeArea != null);
-            if (codeCharactersCase == CodeCharactersCase.LOWER) {
-                lowerHexCharsAction.putValue(Action.SELECTED_KEY, true);
-            }
-        }
-    }
-
-    public void setHexCharactersCase(CodeCharactersCase hexCharactersCase) {
-        this.hexCharactersCase = hexCharactersCase;
-
-        ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(hexCharactersCase);
-    }
-
     @Nonnull
     public Action getUpperHexCharsAction() {
         if (upperHexCharsAction == null) {
-            upperHexCharsAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    setHexCharactersCase(CodeCharactersCase.UPPER);
-                }
-            };
-            ActionUtils.setupAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
-            upperHexCharsAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            upperHexCharsAction.putValue(ActionUtils.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-            upperHexCharsAction.putValue(Action.SELECTED_KEY, hexCharactersCase == CodeCharactersCase.UPPER);
+            upperHexCharsAction = new UpperHexCharsAction();
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
+            upperHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            upperHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
+            upperHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, upperHexCharsAction);
         }
         return upperHexCharsAction;
     }
@@ -99,17 +72,69 @@ public class HexCharactersCaseActions implements CodeAreaAction {
     @Nonnull
     public Action getLowerHexCharsAction() {
         if (lowerHexCharsAction == null) {
-            lowerHexCharsAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    setHexCharactersCase(CodeCharactersCase.LOWER);
-                }
-            };
-            ActionUtils.setupAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
-            lowerHexCharsAction.putValue(ActionUtils.ACTION_TYPE, ActionUtils.ActionType.RADIO);
-            lowerHexCharsAction.putValue(ActionUtils.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-            lowerHexCharsAction.putValue(Action.SELECTED_KEY, hexCharactersCase == CodeCharactersCase.LOWER);
+            lowerHexCharsAction = new LowerHexCharsAction();
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
+            lowerHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            lowerHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
+            lowerHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, lowerHexCharsAction);
         }
         return lowerHexCharsAction;
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class UpperHexCharsAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.UPPER);
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            if (hasInstance) {
+                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+                putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class LowerHexCharsAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.LOWER);
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            if (hasInstance) {
+                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+                putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
+            }
+            setEnabled(hasInstance);
+        }
     }
 }

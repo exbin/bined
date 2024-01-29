@@ -27,6 +27,9 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionMenuCreation;
+import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -96,10 +99,11 @@ public class FindReplaceActions implements FileDependentAction {
                     componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
                 }
             };
-            ActionUtils.setupAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
             editFindAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
-            editFindAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
-            editFindAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            editFindAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+            editFindAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     BinedModule binedModule = App.getModule(BinedModule.class);
@@ -136,9 +140,10 @@ public class FindReplaceActions implements FileDependentAction {
                     }
                 }
             };
-            ActionUtils.setupAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
             editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-            editFindAgainAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            editFindAgainAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     BinedModule binedModule = App.getModule(BinedModule.class);
@@ -171,10 +176,11 @@ public class FindReplaceActions implements FileDependentAction {
                     componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
                 }
             };
-            ActionUtils.setupAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.setupAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
             editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
-            editReplaceAction.putValue(ActionUtils.ACTION_DIALOG_MODE, true);
-            editReplaceAction.putValue(ActionUtils.ACTION_MENU_CREATION, new ActionUtils.MenuCreation() {
+            editReplaceAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+            editReplaceAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId) {
                     BinedModule binedModule = App.getModule(BinedModule.class);
