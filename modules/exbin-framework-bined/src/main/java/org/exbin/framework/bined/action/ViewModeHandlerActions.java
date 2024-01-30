@@ -16,9 +16,10 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -26,10 +27,10 @@ import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.capability.ViewModeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.utils.ActionUtils;
 
 /**
  * View mode actions.
@@ -37,7 +38,7 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ViewModeHandlerActions implements CodeAreaAction {
+public class ViewModeHandlerActions {
 
     public static final String DUAL_VIEW_MODE_ACTION_ID = "dualViewModeAction";
     public static final String CODE_MATRIX_VIEW_MODE_ACTION_ID = "codeMatrixViewModeAction";
@@ -45,14 +46,7 @@ public class ViewModeHandlerActions implements CodeAreaAction {
 
     public static final String VIEW_MODE_RADIO_GROUP_ID = "viewModeRadioGroup";
 
-    private CodeAreaCore codeArea;
     private ResourceBundle resourceBundle;
-
-    private Action dualModeAction;
-    private Action codeMatrixModeAction;
-    private Action textPreviewModeAction;
-
-    private CodeAreaViewMode viewMode = CodeAreaViewMode.DUAL;
 
     public ViewModeHandlerActions() {
     }
@@ -61,89 +55,124 @@ public class ViewModeHandlerActions implements CodeAreaAction {
         this.resourceBundle = resourceBundle;
     }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        CodeAreaViewMode viewMode = codeArea != null ? ((ViewModeCapable) codeArea).getViewMode() : null;
-
-        if (dualModeAction != null) {
-            dualModeAction.setEnabled(codeArea != null);
-            if (viewMode == CodeAreaViewMode.DUAL) {
-                dualModeAction.putValue(Action.SELECTED_KEY, true);
-            }
-        }
-        if (codeMatrixModeAction != null) {
-            codeMatrixModeAction.setEnabled(codeArea != null);
-            if (viewMode == CodeAreaViewMode.CODE_MATRIX) {
-                codeMatrixModeAction.putValue(Action.SELECTED_KEY, true);
-            }
-        }
-        if (textPreviewModeAction != null) {
-            textPreviewModeAction.setEnabled(codeArea != null);
-            if (viewMode == CodeAreaViewMode.TEXT_PREVIEW) {
-                textPreviewModeAction.putValue(Action.SELECTED_KEY, true);
-            }
-        }
-    }
-
-    public void setViewMode(CodeAreaViewMode viewMode) {
-        this.viewMode = viewMode;
-        ((ViewModeCapable) codeArea).setViewMode(viewMode);
-    }
-
     @Nonnull
-    public Action getDualModeAction() {
-        if (dualModeAction == null) {
-            dualModeAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    setViewMode(CodeAreaViewMode.DUAL);
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
-            dualModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            dualModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-            dualModeAction.putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
-        }
+    public Action createDualModeAction() {
+        DualModeAction dualModeAction = new DualModeAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
+        dualModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        dualModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+        dualModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, dualModeAction);
         return dualModeAction;
     }
 
     @Nonnull
     public Action getCodeMatrixModeAction() {
-        if (codeMatrixModeAction == null) {
-            codeMatrixModeAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    setViewMode(CodeAreaViewMode.CODE_MATRIX);
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
-            codeMatrixModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            codeMatrixModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-            codeMatrixModeAction.putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
 
-        }
+        CodeMatrixModeAction codeMatrixModeAction = new CodeMatrixModeAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
+        codeMatrixModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        codeMatrixModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+        codeMatrixModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, codeMatrixModeAction);
         return codeMatrixModeAction;
     }
 
     @Nonnull
     public Action getTextPreviewModeAction() {
-        if (textPreviewModeAction == null) {
-            textPreviewModeAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
-            textPreviewModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-            textPreviewModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            textPreviewModeAction.putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
-
-        }
+        TextPreviewModeAction textPreviewModeAction = new TextPreviewModeAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
+        textPreviewModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+        textPreviewModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        textPreviewModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, textPreviewModeAction);
         return textPreviewModeAction;
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class DualModeAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.DUAL);
+            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            if (hasInstance) {
+                CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class CodeMatrixModeAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.CODE_MATRIX);
+            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            if (hasInstance) {
+                CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class TextPreviewModeAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
+            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            if (hasInstance) {
+                CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
+            }
+            setEnabled(hasInstance);
+        }
     }
 }

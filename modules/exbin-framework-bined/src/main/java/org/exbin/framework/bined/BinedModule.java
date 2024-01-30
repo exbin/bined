@@ -37,8 +37,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -83,7 +81,6 @@ import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
 import org.exbin.framework.bined.service.impl.BinaryAppearanceServiceImpl;
 import org.exbin.framework.editor.text.service.TextEncodingService;
-import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.editor.api.MultiEditorProvider;
@@ -93,7 +90,6 @@ import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
-import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.action.EditSelectionAction;
 import org.exbin.framework.bined.action.ReloadFileAction;
 import org.exbin.framework.editor.api.EditorModuleApi;
@@ -160,8 +156,6 @@ public class BinedModule implements Module {
     private EncodingsHandler encodingsHandler;
     private PopupMenuVariant popupMenuVariant = PopupMenuVariant.NORMAL;
     private BasicCodeAreaZone popupMenuPositionZone = BasicCodeAreaZone.UNKNOWN;
-
-    private final List<CodeAreaAction> codeAreaActions = new ArrayList<>();
 
     public BinedModule() {
     }
@@ -260,23 +254,6 @@ public class BinedModule implements Module {
             }
         }
 
-        CodeAreaAction[] binedCodeAreaActions = new CodeAreaAction[]{
-            rowWrappingAction, viewModeActions, showHeaderAction,
-            showRowPositionAction, showUnprintablesActions,
-            clipboardCodeActions, printAction
-        };
-        for (CodeAreaAction codeAreaAction : binedCodeAreaActions) {
-            if (codeAreaAction != null) {
-                codeAreaAction.updateForActiveCodeArea(codeArea);
-            }
-        }
-
-        for (CodeAreaAction codeAreaAction : codeAreaActions) {
-            if (codeAreaAction != null) {
-                codeAreaAction.updateForActiveCodeArea(codeArea);
-            }
-        }
-
         fileManager.updateActionStatus(codeArea);
 
         FileModuleApi fileModule = App.getModule(FileModuleApi.class);
@@ -293,7 +270,7 @@ public class BinedModule implements Module {
                     codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
                 }
             }
-            clipboardCodeActions.updateForActiveCodeArea(codeArea);
+            // clipboardCodeActions.updateForActiveCodeArea(codeArea);
         }
     }
 
@@ -662,21 +639,21 @@ public class BinedModule implements Module {
         getCodeTypeActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerToolBarGroup(WindowModuleApi.MAIN_TOOL_BAR_ID, new ToolBarGroup(BINED_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.ABOVE));
-        actionModule.registerToolBarItem(WindowModuleApi.MAIN_TOOL_BAR_ID, MODULE_ID, codeTypeActions.getCycleCodeTypesAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
+        actionModule.registerToolBarItem(WindowModuleApi.MAIN_TOOL_BAR_ID, MODULE_ID, codeTypeActions.createCycleCodeTypesAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
     }
 
     public void registerShowUnprintablesToolBarActions() {
         getShowUnprintablesActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerToolBarGroup(WindowModuleApi.MAIN_TOOL_BAR_ID, new ToolBarGroup(BINED_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.NONE));
-        actionModule.registerToolBarItem(WindowModuleApi.MAIN_TOOL_BAR_ID, MODULE_ID, showUnprintablesActions.getViewUnprintablesToolbarAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
+        actionModule.registerToolBarItem(WindowModuleApi.MAIN_TOOL_BAR_ID, MODULE_ID, showUnprintablesActions.createViewUnprintablesToolbarAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
     }
 
     public void registerViewUnprintablesMenuActions() {
         getShowUnprintablesActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerMenuGroup(WindowModuleApi.VIEW_MENU_ID, new MenuGroup(VIEW_UNPRINTABLES_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, showUnprintablesActions.getViewUnprintablesAction(), new MenuPosition(VIEW_UNPRINTABLES_MENU_GROUP_ID));
+        actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, showUnprintablesActions.createViewUnprintablesAction(), new MenuPosition(VIEW_UNPRINTABLES_MENU_GROUP_ID));
     }
 
     public void registerToolsOptionsMenuActions() {
@@ -687,8 +664,8 @@ public class BinedModule implements Module {
     public void registerClipboardCodeActions() {
         getClipboardCodeActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, clipboardCodeActions.getCopyAsCodeAction(), new MenuPosition(NextToMode.AFTER, (String) actionModule.getClipboardActions().getCopyAction().getValue(Action.NAME)));
-        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, clipboardCodeActions.getPasteFromCodeAction(), new MenuPosition(NextToMode.AFTER, (String) actionModule.getClipboardActions().getPasteAction().getValue(Action.NAME)));
+        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, clipboardCodeActions.createCopyAsCodeAction(), new MenuPosition(NextToMode.AFTER, (String) actionModule.getClipboardActions().getCopyAction().getValue(Action.NAME)));
+        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, clipboardCodeActions.createPasteFromCodeAction(), new MenuPosition(NextToMode.AFTER, (String) actionModule.getClipboardActions().getPasteAction().getValue(Action.NAME)));
     }
 
     public void registerPropertiesMenu() {
@@ -720,7 +697,7 @@ public class BinedModule implements Module {
         viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("viewModeSubMenu.shortDescription"));
         actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, VIEW_MODE_SUBMENU_ID, viewSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(VIEW_MODE_SUBMENU_ID, MODULE_ID);
-        actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getDualModeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.createDualModeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getCodeMatrixModeAction(), new MenuPosition(PositionMode.TOP));
         actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getTextPreviewModeAction(), new MenuPosition(PositionMode.TOP));
     }
@@ -742,10 +719,10 @@ public class BinedModule implements Module {
         codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("codeTypeSubMenu.shortDescription"));
         actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(CODE_TYPE_SUBMENU_ID, MODULE_ID);
-        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.getBinaryCodeTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.getOctalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.getDecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.getHexadecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.createBinaryCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.createOctalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.createDecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(CODE_TYPE_SUBMENU_ID, MODULE_ID, codeTypeActions.createHexadecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
     }
 
     public void registerPositionCodeTypeMenu() {
@@ -759,9 +736,9 @@ public class BinedModule implements Module {
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID);
-        actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.getOctalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.getDecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.getHexadecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.createOctalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.createDecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, MODULE_ID, positionCodeTypeActions.createHexadecimalCodeTypeAction(), new MenuPosition(PositionMode.TOP));
     }
 
     public void registerHexCharactersCaseHandlerMenu() {
@@ -775,8 +752,8 @@ public class BinedModule implements Module {
         hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
         actionModule.registerMenuItem(WindowModuleApi.VIEW_MENU_ID, MODULE_ID, HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID);
-        actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.getUpperHexCharsAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.getLowerHexCharsAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.createUpperHexCharsAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, MODULE_ID, hexCharactersCaseActions.createLowerHexCharsAction(), new MenuPosition(PositionMode.TOP));
     }
 
     public void registerEditSelectionAction() {
@@ -814,9 +791,9 @@ public class BinedModule implements Module {
 
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getCutAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getCopyAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getClipboardCodeActions().getCopyAsCodeAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getClipboardCodeActions().createCopyAsCodeAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getPasteAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getClipboardCodeActions().getPasteFromCodeAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
+        actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, getClipboardCodeActions().createPasteFromCodeAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getDeleteAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
 
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.getSelectAllAction(), new MenuPosition(CODE_AREA_POPUP_SELECTION_GROUP_ID));
@@ -1115,14 +1092,6 @@ public class BinedModule implements Module {
 
     public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
         fileManager.setCommandHandlerProvider(commandHandlerProvider);
-    }
-
-    public void addCodeAreaAction(CodeAreaAction codeAreaAction) {
-        codeAreaActions.add(codeAreaAction);
-    }
-
-    public void removeCodeAreaAction(CodeAreaAction codeAreaAction) {
-        codeAreaActions.remove(codeAreaAction);
     }
 
     public enum PopupMenuVariant {

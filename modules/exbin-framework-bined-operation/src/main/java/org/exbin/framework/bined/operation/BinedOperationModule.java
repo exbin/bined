@@ -20,12 +20,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
@@ -43,7 +41,6 @@ import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
@@ -82,7 +79,6 @@ public class BinedOperationModule implements Module {
 
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addActionStatusUpdateListener(this::updateActionStatus);
     }
 
     @Nonnull
@@ -148,15 +144,6 @@ public class BinedOperationModule implements Module {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-    }
-
-    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
-        if (insertDataAction != null) {
-            insertDataAction.updateForActiveCodeArea(codeArea);
-        }
-        if (convertDataAction != null) {
-            convertDataAction.updateForActiveCodeArea(codeArea);
-        }
     }
 
     public void addInsertDataComponent(InsertDataMethod insertDataComponent) {

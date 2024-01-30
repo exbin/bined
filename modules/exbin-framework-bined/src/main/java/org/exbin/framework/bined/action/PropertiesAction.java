@@ -25,8 +25,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.gui.PropertiesPanel;
-import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileDependentAction;

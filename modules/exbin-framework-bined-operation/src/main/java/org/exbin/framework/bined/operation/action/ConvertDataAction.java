@@ -20,11 +20,13 @@ import java.awt.Dialog;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -39,12 +41,12 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.gui.ConvertDataControlHandler;
@@ -53,7 +55,6 @@ import org.exbin.framework.bined.operation.gui.ConvertDataPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
 
 /**
@@ -62,7 +63,7 @@ import org.exbin.framework.window.api.WindowHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ConvertDataAction extends AbstractAction implements CodeAreaAction {
+public class ConvertDataAction extends AbstractAction {
 
     public static final String ACTION_ID = "convertDataAction";
 
@@ -84,12 +85,21 @@ public class ConvertDataAction extends AbstractAction implements CodeAreaAction 
         actionModule.setupAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-    }
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Nonnull
+            @Override
+            public Set<Class<?>> forClasses() {
+                return Collections.singleton(CodeAreaCore.class);
+            }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        setEnabled(codeArea != null);
+            @Override
+            public void componentActive(Set<Object> affectedClasses) {
+                // TODO add EditorProvider
+                boolean hasInstance = !affectedClasses.isEmpty();
+                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+                setEnabled(hasInstance);
+            }
+        });
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {

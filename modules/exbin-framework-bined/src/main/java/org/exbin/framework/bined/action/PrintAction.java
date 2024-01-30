@@ -21,26 +21,31 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Print action.
+ * 
+ * TODO: Move to print module
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PrintAction extends AbstractAction implements CodeAreaAction {
+public class PrintAction extends AbstractAction {
 
     public static final String ACTION_ID = "printAction";
 
@@ -57,12 +62,20 @@ public class PrintAction extends AbstractAction implements CodeAreaAction {
         actionModule.setupAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-    }
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Nonnull
+            @Override
+            public Set<Class<?>> forClasses() {
+                return Collections.singleton(CodeAreaCore.class);
+            }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        setEnabled(codeArea != null);
+            @Override
+            public void componentActive(Set<Object> affectedClasses) {
+                boolean hasInstance = !affectedClasses.isEmpty();
+                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+                setEnabled(hasInstance);
+            }
+        });
     }
 
     @Override

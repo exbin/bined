@@ -16,16 +16,19 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Row wrapping handler.
@@ -33,7 +36,7 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class RowWrappingAction extends AbstractAction implements CodeAreaAction {
+public class RowWrappingAction extends AbstractAction {
 
     public static final String ACTION_ID = "viewRowWrappingAction";
 
@@ -49,17 +52,26 @@ public class RowWrappingAction extends AbstractAction implements CodeAreaAction 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.setupAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
-    }
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Nonnull
+            @Override
+            public Set<Class<?>> forClasses() {
+                return Collections.singleton(CodeAreaCore.class);
+            }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        setEnabled(codeArea != null);
+            @Override
+            public void componentActive(Set<Object> affectedClasses) {
+                boolean hasInstance = !affectedClasses.isEmpty();
+                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+                setEnabled(hasInstance);
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 // TODO        boolean lineWraping = ((BinEdEditorProvider) editorProvider).changeLineWrap();
 //        putValue(Action.SELECTED_KEY, lineWraping);
+//        App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
     }
 }

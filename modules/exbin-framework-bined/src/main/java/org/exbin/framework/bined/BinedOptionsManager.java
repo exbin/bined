@@ -34,7 +34,6 @@ import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
-import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.capability.FontCapable;
@@ -43,6 +42,7 @@ import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.action.CodeTypeActions;
 import org.exbin.framework.bined.action.HexCharactersCaseActions;
@@ -63,7 +63,6 @@ import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
 import org.exbin.framework.editor.text.gui.TextFontPanel;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.options.gui.CodeAreaOptionsPanel;
@@ -509,24 +508,14 @@ public class BinedOptionsManager {
 
             @Override
             public void applyPreferencesChanges(CodeAreaOptionsImpl options) {
-                codeTypeActions.setCodeType(options.getCodeType());
-                showUnprintablesActions.setShowUnprintables(options.isShowUnprintables());
-                // TODO codeArea hexCharactersCaseActions.setHexCharactersCase(options.getCodeCharactersCase());
-                positionCodeTypeActions.setCodeType(options.getPositionCodeType());
-                viewModeActions.setViewMode(options.getViewMode());
-
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (!activeFile.isPresent()) {
                     return;
                 }
 
                 ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-                ((ExtendedHighlightNonAsciiCodeAreaPainter) codeArea.getPainter()).setNonAsciiHighlightingEnabled(options.isCodeColorization());
-                // codeArea.setRowWrapping(options.getRowWrappingMode());
-                codeArea.setMaxBytesPerRow(options.getMaxBytesPerRow());
-                codeArea.setMinRowPositionLength(options.getMinRowPositionLength());
-                codeArea.setMaxRowPositionLength(options.getMaxRowPositionLength());
                 CodeAreaOptionsImpl.applyToCodeArea(options, codeArea);
+                App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
             }
         };
         optionsModule.addOptionsPage(codeAreaOptionsPage);

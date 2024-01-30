@@ -33,7 +33,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 
 /**
- * Hex characters case handler.
+ * Hex characters case actions.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -46,9 +46,6 @@ public class HexCharactersCaseActions {
 
     private ResourceBundle resourceBundle;
 
-    private Action upperHexCharsAction;
-    private Action lowerHexCharsAction;
-
     public HexCharactersCaseActions() {
     }
 
@@ -57,28 +54,24 @@ public class HexCharactersCaseActions {
     }
 
     @Nonnull
-    public Action getUpperHexCharsAction() {
-        if (upperHexCharsAction == null) {
-            upperHexCharsAction = new UpperHexCharsAction();
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
-            upperHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            upperHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-            upperHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, upperHexCharsAction);
-        }
+    public Action createUpperHexCharsAction() {
+        UpperHexCharsAction upperHexCharsAction = new UpperHexCharsAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
+        upperHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        upperHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
+        upperHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, upperHexCharsAction);
         return upperHexCharsAction;
     }
 
     @Nonnull
-    public Action getLowerHexCharsAction() {
-        if (lowerHexCharsAction == null) {
-            lowerHexCharsAction = new LowerHexCharsAction();
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
-            lowerHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            lowerHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-            lowerHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, lowerHexCharsAction);
-        }
+    public Action createLowerHexCharsAction() {
+        LowerHexCharsAction lowerHexCharsAction = new LowerHexCharsAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
+        lowerHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+        lowerHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
+        lowerHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, lowerHexCharsAction);
         return lowerHexCharsAction;
     }
 
@@ -90,6 +83,7 @@ public class HexCharactersCaseActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.UPPER);
+            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
         }
 
         @Nonnull
@@ -118,6 +112,7 @@ public class HexCharactersCaseActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.LOWER);
+            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
         }
 
         @Nonnull

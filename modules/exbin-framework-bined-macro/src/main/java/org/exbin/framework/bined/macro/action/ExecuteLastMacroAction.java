@@ -17,9 +17,10 @@ package org.exbin.framework.bined.macro.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.Optional;
+import java.util.Collections;
 import java.util.ResourceBundle;
-import javax.annotation.Nullable;
+import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -27,13 +28,12 @@ import javax.swing.JOptionPane;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.bined.action.CodeAreaAction;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -42,10 +42,11 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ExecuteLastMacroAction extends AbstractAction implements CodeAreaAction {
+public class ExecuteLastMacroAction extends AbstractAction {
 
     public static final String ACTION_ID = "executeLastMacroAction";
 
+    private CodeAreaCore codeArea;
     private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
     private MacroManager macroManager;
@@ -60,16 +61,25 @@ public class ExecuteLastMacroAction extends AbstractAction implements CodeAreaAc
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.setupAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, ActionUtils.getMetaMask()));
-    }
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Nonnull
+            @Override
+            public Set<Class<?>> forClasses() {
+                return Collections.singleton(CodeAreaCore.class);
+            }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        boolean enabled = false;
-        if (codeArea != null) {
-            CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-            enabled = commandHandler instanceof CodeAreaMacroCommandHandler && !((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording() && (macroManager.getLastActiveMacro() >= 0);
-        }
-        setEnabled(enabled);
+            @Override
+            public void componentActive(Set<Object> affectedClasses) {
+                boolean hasInstance = !affectedClasses.isEmpty();
+                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+                boolean enabled = false;
+                if (hasInstance) {
+                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                    enabled = commandHandler instanceof CodeAreaMacroCommandHandler && !((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording() && (macroManager.getLastActiveMacro() >= 0);
+                }
+                setEnabled(enabled);
+            }
+        });
     }
 
     public void setMacroManager(MacroManager macroManager) {
@@ -78,20 +88,16 @@ public class ExecuteLastMacroAction extends AbstractAction implements CodeAreaAc
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (activeFile.isPresent()) {
-            BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-            try {
-                macroManager.executeMacro(fileHandler.getCodeArea(), macroManager.getLastActiveMacro());
-            } catch (Exception ex) {
-                String message = ex.getMessage();
-                if (message == null || message.isEmpty()) {
-                    message = ex.toString();
-                } else if (ex.getCause() != null) {
-                    message += ex.getCause().getMessage();
-                }
-                JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
+        try {
+            macroManager.executeMacro(codeArea, macroManager.getLastActiveMacro());
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            if (message == null || message.isEmpty()) {
+                message = ex.toString();
+            } else if (ex.getCause() != null) {
+                message += ex.getCause().getMessage();
             }
+            JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
         }
     }
 }

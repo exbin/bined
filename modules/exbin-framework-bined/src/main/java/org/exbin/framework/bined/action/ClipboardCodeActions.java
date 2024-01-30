@@ -17,17 +17,19 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.utils.ActionUtils;
 
 /**
  * Clipboard code actions.
@@ -35,16 +37,12 @@ import org.exbin.framework.utils.ActionUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ClipboardCodeActions implements CodeAreaAction {
+public class ClipboardCodeActions {
 
     public static final String COPY_AS_CODE_ACTION_ID = "copyAsCodeAction";
     public static final String PASTE_FROM_CODE_ACTION_ID = "pasteFromCodeAction";
 
-    private CodeAreaCore codeArea;
     private ResourceBundle resourceBundle;
-
-    private Action copyAsCodeAction;
-    private Action pasteFromCodeAction;
 
     public ClipboardCodeActions() {
     }
@@ -53,56 +51,83 @@ public class ClipboardCodeActions implements CodeAreaAction {
         this.resourceBundle = resourceBundle;
     }
 
-    @Override
-    public void updateForActiveCodeArea(@Nullable CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        boolean hasSelection = false;
-        boolean canPaste = false;
-        if (codeArea != null) {
-            hasSelection = codeArea.hasSelection();
-            canPaste = codeArea.canPaste();
-        }
-        if (copyAsCodeAction != null) {
-            copyAsCodeAction.setEnabled(hasSelection);
-        }
-        if (pasteFromCodeAction != null) {
-            pasteFromCodeAction.setEnabled(canPaste);
-        }
-    }
-
     @Nonnull
-    public Action getCopyAsCodeAction() {
-        if (copyAsCodeAction == null) {
-            copyAsCodeAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // TODO move out of code area
-                    codeArea.copyAsCode();
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
-        }
+    public Action createCopyAsCodeAction() {
+        CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
+        copyAsCodeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, copyAsCodeAction);
         return copyAsCodeAction;
     }
 
     @Nonnull
-    public Action getPasteFromCodeAction() {
-        if (pasteFromCodeAction == null) {
-            pasteFromCodeAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // TODO move out of code area
-                    try {
-                        codeArea.pasteFromCode();
-                    } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog((Component) e.getSource(), ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.setupAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
-        }
+    public Action createPasteFromCodeAction() {
+        PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.setupAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
+        pasteFromCodeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, pasteFromCodeAction);
         return pasteFromCodeAction;
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class CopyAsCodeAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // TODO move out of code area
+            codeArea.copyAsCode();
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            boolean hasSelection = false;
+            if (codeArea != null) {
+                hasSelection = codeArea.hasSelection();
+            }
+            setEnabled(hasSelection);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class PasteFromCodeAction extends AbstractAction implements ActionActiveComponent {
+
+        private CodeAreaCore codeArea;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // TODO move out of code area
+            try {
+                codeArea.pasteFromCode();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog((Component) e.getSource(), ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        @Nonnull
+        @Override
+        public Set<Class<?>> forClasses() {
+            return Collections.singleton(CodeAreaCore.class);
+        }
+
+        @Override
+        public void componentActive(Set<Object> affectedClasses) {
+            boolean hasInstance = !affectedClasses.isEmpty();
+            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
+            boolean canPaste = false;
+            if (codeArea != null) {
+                canPaste = codeArea.canPaste();
+            }
+            setEnabled(canPaste);
+        }
     }
 }

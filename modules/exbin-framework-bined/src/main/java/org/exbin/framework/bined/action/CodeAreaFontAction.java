@@ -77,5 +77,6 @@ public class CodeAreaFontAction extends AbstractAction {
             textFontAction.setup(editorProvider, App.getModule(LanguageModuleApi.class).getBundle(EditorTextModule.class));
         }
         textFontAction.actionPerformed(e);
+        // App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
     }
 }

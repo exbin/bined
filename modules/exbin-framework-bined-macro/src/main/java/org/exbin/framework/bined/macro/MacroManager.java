@@ -21,11 +21,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -37,6 +34,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
@@ -64,7 +62,6 @@ import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
-import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
@@ -113,11 +110,6 @@ public class MacroManager {
     }
 
     public void init() {
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        binedModule.addCodeAreaAction(executeLastMacroAction);
-        binedModule.addCodeAreaAction(startMacroRecordingAction);
-        binedModule.addCodeAreaAction(stopMacroRecordingAction);
-
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
         Preferences preferences = preferencesModule.getAppPreferences();
         macroPreferences = new MacroPreferences(preferences);
@@ -292,7 +284,7 @@ public class MacroManager {
         actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID, macrosPopupMenu, new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
-    public void executeMacro(ExtCodeArea codeArea, int macroIndex) {
+    public void executeMacro(CodeAreaCore codeArea, int macroIndex) {
         if (macroRecords.size() > macroIndex) {
             lastActiveMacro = macroIndex;
             MacroRecord record = macroRecords.get(macroIndex);
@@ -368,7 +360,7 @@ public class MacroManager {
         return lastActiveMacro;
     }
 
-    public void startMacroRecording(ExtCodeArea codeArea) {
+    public void startMacroRecording(CodeAreaCore codeArea) {
         CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
         MacroRecord macroRecord = new MacroRecord();
         macroRecord.setName(resourceBundle.getString("macroAction.defaultNamePrefix") + lastMacroIndex);
@@ -377,7 +369,7 @@ public class MacroManager {
         notifyMacroRecordingChange(codeArea);
     }
 
-    public void stopMacroRecording(ExtCodeArea codeArea) {
+    public void stopMacroRecording(CodeAreaCore codeArea) {
         CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
         Optional<MacroRecord> recordingMacro = commandHandler.getRecordingMacro();
         if (recordingMacro.isPresent()) {
@@ -393,10 +385,8 @@ public class MacroManager {
         notifyMacroRecordingChange(codeArea);
     }
 
-    private void notifyMacroRecordingChange(ExtCodeArea codeArea) {
-        startMacroRecordingAction.updateForActiveCodeArea(codeArea);
-        stopMacroRecordingAction.updateForActiveCodeArea(codeArea);
-        executeLastMacroAction.updateForActiveCodeArea(codeArea);
+    private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
+        App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
     }
 
     public void updateMacrosMenu() {
