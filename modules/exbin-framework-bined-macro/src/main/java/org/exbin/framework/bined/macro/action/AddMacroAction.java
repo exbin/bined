@@ -27,9 +27,8 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.macro.gui.MacroEditorPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import org.exbin.framework.utils.ActionUtils;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
@@ -70,7 +69,8 @@ public class AddMacroAction extends AbstractAction {
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(windowModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
@@ -86,6 +86,6 @@ public class AddMacroAction extends AbstractAction {
             dialog.close();
         });
 
-        dialog.showCentered(windowModule.getFrame());
+        dialog.showCentered(frameModule.getFrame());
     }
 }

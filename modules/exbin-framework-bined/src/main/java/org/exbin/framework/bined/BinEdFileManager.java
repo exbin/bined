@@ -38,6 +38,7 @@ import org.exbin.framework.bined.preferences.StatusPreferences;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.text.EncodingsHandler;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 
@@ -136,9 +137,9 @@ public class BinEdFileManager {
 
     public void registerStatusBar() {
         binaryStatusPanel = new BinaryStatusPanel();
-        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        windowModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
-        windowModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        frameModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
+        frameModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
         ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
         ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
     }

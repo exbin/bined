@@ -30,7 +30,7 @@ import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary data editor bookmarks module.
@@ -57,7 +57,7 @@ public class BinedBookmarksModule implements Module {
 
     public void registerBookmarksMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getBookmarksMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerBookmarksPopupMenuActions() {

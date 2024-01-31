@@ -29,6 +29,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
@@ -77,7 +78,8 @@ public class AddBookmarkAction extends AbstractAction {
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(windowModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setHandler((actionType) -> {
             switch (actionType) {
@@ -93,6 +95,6 @@ public class AddBookmarkAction extends AbstractAction {
             dialog.close();
         });
 
-        dialog.showCentered(windowModule.getFrame());
+        dialog.showCentered(frameModule.getFrame());
     }
 }

@@ -37,7 +37,7 @@ import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor macro support module.
@@ -93,7 +93,7 @@ public class BinedMacroModule implements Module {
 
     public void registerMacrosMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getMacrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getMacrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerMacrosPopupMenuActions() {

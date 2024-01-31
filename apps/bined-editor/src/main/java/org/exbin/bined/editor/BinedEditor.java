@@ -51,7 +51,7 @@ import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.about.api.AboutModuleApi;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
-import org.exbin.framework.window.api.ApplicationFrameHandler;
+import org.exbin.framework.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.help.online.api.HelpOnlineModuleApi;
 import org.exbin.framework.action.api.ActionModuleApi;
@@ -62,9 +62,11 @@ import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * The main class of the BinEd Binary / Hex Editor application.
@@ -127,7 +129,9 @@ public class BinedEditor {
                 String editorProvideType = editorProviderType.getSelected();
 
                 // Thread.currentThread().setContextClassLoader(moduleRepository.getContextClassLoader());
+                final UiModuleApi uiModule = App.getModule(UiModuleApi.class);
                 final WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+                FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
                 EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
                 ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
                 AboutModuleApi aboutModule = App.getModule(AboutModuleApi.class);
@@ -140,6 +144,7 @@ public class BinedEditor {
                 AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
                 languageModule.setAppBundle(bundle);
+                uiModule.initSwingUi();
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
                 boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
@@ -176,7 +181,7 @@ public class BinedEditor {
                 BinedToolContentModule binedToolContentModule = App.getModule(BinedToolContentModule.class);
                 binedToolContentModule.setEditorProvider(editorProvider);
 
-                windowModule.createMainMenu();
+                frameModule.createMainMenu();
                 try {
                     updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
                     updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
@@ -193,8 +198,8 @@ public class BinedEditor {
                 }
                 helpOnlineModule.registerOnlineHelpMenu();
 
-                windowModule.registerExitAction();
-                windowModule.registerBarsVisibilityActions();
+                frameModule.registerExitAction();
+                frameModule.registerBarsVisibilityActions();
 
                 fileModule.registerMenuFileHandlingActions();
                 if (editorProviderVariant == EditorProviderVariant.MULTI) {
@@ -249,7 +254,7 @@ public class BinedEditor {
                 binedModule.registerHexCharactersCaseHandlerMenu();
                 binedModule.registerLayoutMenu();
 
-                final ApplicationFrameHandler frameHandler = windowModule.getFrameHandler();
+                final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
                 undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
@@ -263,8 +268,8 @@ public class BinedEditor {
 
                 binedModule.loadFromPreferences(preferences);
 
-                windowModule.addExitListener((ApplicationFrameHandler afh) -> {
-                    windowModule.saveFramePosition();
+                frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                    frameModule.saveFramePosition();
                     return true;
                 });
 
@@ -274,7 +279,7 @@ public class BinedEditor {
                 binedMacroModule.registerMacrosComponentActions(editorComponent);
 
                 frameHandler.setDefaultSize(new Dimension(600, 400));
-                windowModule.loadFramePosition();
+                frameModule.loadFramePosition();
                 optionsModule.initialLoadFromPreferences();
                 if (fullScreenMode) {
                     JFrame frame = (JFrame) frameHandler.getFrame();

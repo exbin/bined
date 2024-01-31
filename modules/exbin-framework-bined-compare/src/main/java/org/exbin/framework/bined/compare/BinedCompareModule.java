@@ -29,7 +29,7 @@ import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.compare.action.CompareFilesAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor compare module.
@@ -56,7 +56,7 @@ public class BinedCompareModule implements Module {
 
     public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(WindowModuleApi.TOOLS_MENU_ID, MODULE_ID, getCompareFilesAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getCompareFilesAction(), new MenuPosition(PositionMode.TOP));
     }
 
     @Nonnull

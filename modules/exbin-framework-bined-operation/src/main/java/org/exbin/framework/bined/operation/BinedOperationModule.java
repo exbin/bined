@@ -44,6 +44,7 @@ import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary data editor operations module.
@@ -136,8 +137,8 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
-        actionModule.registerMenuItem(WindowModuleApi.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        actionModule.registerMenuItem(FrameModuleApi.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {

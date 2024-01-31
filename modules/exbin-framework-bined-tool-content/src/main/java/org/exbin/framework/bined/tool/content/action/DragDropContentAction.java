@@ -36,6 +36,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.gui.DragDropContentPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.utils.WindowUtils;
@@ -70,6 +71,7 @@ public class DragDropContentAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         CloseControlPanel controlPanel = new CloseControlPanel();
         final WindowHandler dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
         dragDropContentPanel.setSaveAsFileAction(new AbstractAction() {
@@ -109,7 +111,7 @@ public class DragDropContentAction extends AbstractAction {
             dialog.dispose();
         });
         windowModule.addHeaderPanel(dialog.getWindow(), dragDropContentPanel.getClass(), dragDropContentPanel.getResourceBundle());
-        dialog.showCentered(windowModule.getFrame());
+        dialog.showCentered(frameModule.getFrame());
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
