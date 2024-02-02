@@ -315,6 +315,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     private void updateClipboardActionsStatus() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
+        // TODO ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
     }
 }

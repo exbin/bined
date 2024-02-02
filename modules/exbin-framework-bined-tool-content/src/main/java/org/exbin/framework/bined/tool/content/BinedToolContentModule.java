@@ -22,6 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
+import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
@@ -29,7 +30,6 @@ import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor clipboard support module.
@@ -111,12 +111,12 @@ public class BinedToolContentModule implements Module {
     public void registerClipboardContentMenu() {
         getClipboardContentAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 
     public void registerDragDropContentMenu() {
         getDragDropContentAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(FrameModuleApi.TOOLS_MENU_ID, MODULE_ID, getDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, getDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 }

@@ -59,7 +59,7 @@ public class PositionCodeTypeActions {
     public Action createOctalCodeTypeAction() {
         OctalPositionCodeTypeAction octalPositionCodeTypeAction = new OctalPositionCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(octalPositionCodeTypeAction, resourceBundle, OCTAL_POSITION_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(octalPositionCodeTypeAction, resourceBundle, OCTAL_POSITION_CODE_TYPE_ACTION_ID);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, octalPositionCodeTypeAction);
@@ -72,7 +72,7 @@ public class PositionCodeTypeActions {
 
         DecimalPositionCodeTypeAction decimalPositionCodeTypeAction = new DecimalPositionCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(decimalPositionCodeTypeAction, resourceBundle, DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(decimalPositionCodeTypeAction, resourceBundle, DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
         decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         decimalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, decimalPositionCodeTypeAction);
@@ -84,7 +84,7 @@ public class PositionCodeTypeActions {
 
         HexadecimalPositionCodeTypeAction hexadecimalPositionCodeTypeAction = new HexadecimalPositionCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(hexadecimalPositionCodeTypeAction, resourceBundle, HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(hexadecimalPositionCodeTypeAction, resourceBundle, HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
         hexadecimalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, hexadecimalPositionCodeTypeAction);

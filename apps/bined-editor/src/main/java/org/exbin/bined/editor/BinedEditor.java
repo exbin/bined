@@ -16,9 +16,6 @@
 package org.exbin.bined.editor;
 
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -27,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -282,9 +278,7 @@ public class BinedEditor {
                 frameModule.loadFramePosition();
                 optionsModule.initialLoadFromPreferences();
                 if (fullScreenMode) {
-                    JFrame frame = (JFrame) frameHandler.getFrame();
-                    GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-                    device.setFullScreenWindow(frame);
+                    frameModule.saveFramePosition();
                 }
 
                 frameHandler.showFrame();

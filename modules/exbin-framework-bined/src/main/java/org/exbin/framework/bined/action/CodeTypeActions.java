@@ -65,7 +65,7 @@ public class CodeTypeActions {
     public Action createBinaryCodeTypeAction() {
         BinaryCodeTypeAction binaryCodeTypeAction = new BinaryCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
         binaryCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         binaryCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
         binaryCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, binaryCodeTypeAction);
@@ -76,7 +76,7 @@ public class CodeTypeActions {
     public Action createOctalCodeTypeAction() {
         OctalCodeTypeAction octalCodeTypeAction = new OctalCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
         octalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         octalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
         octalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, octalCodeTypeAction);
@@ -87,7 +87,7 @@ public class CodeTypeActions {
     public Action createDecimalCodeTypeAction() {
         DecimalCodeTypeAction decimalCodeTypeAction = new DecimalCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
         decimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
         decimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         decimalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, decimalCodeTypeAction);
@@ -98,7 +98,7 @@ public class CodeTypeActions {
     public Action createHexadecimalCodeTypeAction() {
         HexadecimalCodeTypeAction hexadecimalCodeTypeAction = new HexadecimalCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
         hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
         hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, hexadecimalCodeTypeAction);
@@ -109,7 +109,7 @@ public class CodeTypeActions {
     public Action createCycleCodeTypesAction() {
         CycleCodeTypesAction cycleCodeTypesAction = new CycleCodeTypesAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(cycleCodeTypesAction, resourceBundle, CYCLE_CODE_TYPES_ACTION_ID);
+        actionModule.initAction(cycleCodeTypesAction, resourceBundle, CYCLE_CODE_TYPES_ACTION_ID);
         cycleCodeTypesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CYCLE);
         ButtonGroup cycleButtonGroup = new ButtonGroup();
         Map<String, ButtonGroup> buttonGroups = new HashMap<>();

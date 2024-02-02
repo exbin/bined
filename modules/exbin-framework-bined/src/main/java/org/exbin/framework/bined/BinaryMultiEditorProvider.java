@@ -595,7 +595,7 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
             clipboardActionsUpdateListener.stateChanged();
         }
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
+        // TODO ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
     }
 
     private void updateCurrentDocumentSize() {

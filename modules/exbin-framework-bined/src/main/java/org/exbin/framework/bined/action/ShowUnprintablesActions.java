@@ -56,7 +56,7 @@ public class ShowUnprintablesActions {
     public Action createViewUnprintablesAction() {
         ViewUnprintablesAction viewUnprintablesAction = new ViewUnprintablesAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(viewUnprintablesAction, resourceBundle, VIEW_UNPRINTABLES_ACTION_ID);
+        actionModule.initAction(viewUnprintablesAction, resourceBundle, VIEW_UNPRINTABLES_ACTION_ID);
         viewUnprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         viewUnprintablesAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, ActionUtils.getMetaMask()));
         return viewUnprintablesAction;
@@ -66,7 +66,7 @@ public class ShowUnprintablesActions {
     public Action createViewUnprintablesToolbarAction() {
         ViewUnprintablesAction viewUnprintablesAction = new ViewUnprintablesAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(viewUnprintablesAction, resourceBundle, VIEW_UNPRINTABLES_TOOLBAR_ACTION_ID);
+        actionModule.initAction(viewUnprintablesAction, resourceBundle, VIEW_UNPRINTABLES_TOOLBAR_ACTION_ID);
         viewUnprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         return viewUnprintablesAction;
     }

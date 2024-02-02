@@ -57,7 +57,7 @@ public class HexCharactersCaseActions {
     public Action createUpperHexCharsAction() {
         UpperHexCharsAction upperHexCharsAction = new UpperHexCharsAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
+        actionModule.initAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
         upperHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         upperHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
         upperHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, upperHexCharsAction);
@@ -68,7 +68,7 @@ public class HexCharactersCaseActions {
     public Action createLowerHexCharsAction() {
         LowerHexCharsAction lowerHexCharsAction = new LowerHexCharsAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
+        actionModule.initAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
         lowerHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         lowerHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
         lowerHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, lowerHexCharsAction);

@@ -56,7 +56,6 @@ import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
-import static org.exbin.framework.bined.macro.operation.MacroStep.FIND_TEXT;
 import org.exbin.framework.bined.macro.preferences.MacroPreferences;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.editor.api.EditorProvider;

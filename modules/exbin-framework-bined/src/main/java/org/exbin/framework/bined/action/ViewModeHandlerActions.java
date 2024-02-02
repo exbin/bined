@@ -59,7 +59,7 @@ public class ViewModeHandlerActions {
     public Action createDualModeAction() {
         DualModeAction dualModeAction = new DualModeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
+        actionModule.initAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
         dualModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         dualModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
         dualModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, dualModeAction);
@@ -71,7 +71,7 @@ public class ViewModeHandlerActions {
 
         CodeMatrixModeAction codeMatrixModeAction = new CodeMatrixModeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
+        actionModule.initAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
         codeMatrixModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         codeMatrixModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
         codeMatrixModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, codeMatrixModeAction);
@@ -82,7 +82,7 @@ public class ViewModeHandlerActions {
     public Action getTextPreviewModeAction() {
         TextPreviewModeAction textPreviewModeAction = new TextPreviewModeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
+        actionModule.initAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
         textPreviewModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
         textPreviewModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         textPreviewModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, textPreviewModeAction);

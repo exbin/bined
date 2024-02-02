@@ -55,7 +55,7 @@ public class ClipboardCodeActions {
     public Action createCopyAsCodeAction() {
         CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
+        actionModule.initAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
         copyAsCodeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, copyAsCodeAction);
         return copyAsCodeAction;
     }
@@ -64,7 +64,7 @@ public class ClipboardCodeActions {
     public Action createPasteFromCodeAction() {
         PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.setupAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
+        actionModule.initAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
         pasteFromCodeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, pasteFromCodeAction);
         return pasteFromCodeAction;
     }
