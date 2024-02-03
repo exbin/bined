@@ -55,7 +55,7 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
     public static final String COLOR_CURSOR_COLOR = "cursorColor";
     public static final String COLOR_CURSOR_NEGATIVE_COLOR = "cursorNegativeColor";
 
-    public static final String COLOR_LINE = "decoration.line";
+    public static final String COLOR_DECORATION_LINE = "decoration.line";
     public static final String COLOR_CONTROL_CODES_COLOR = "controlCodesColor";
     public static final String COLOR_CONTROL_CODES_BACKGROUND = "controlCodesBackground";
     public static final String COLOR_UPPER_CODES_COLOR = "upperCodesColor";
@@ -124,7 +124,7 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
         colorProfile.setColor(CodeAreaBasicColors.CURSOR_COLOR, textAsColor(preferences.get(colorProfilePrefix + COLOR_CURSOR_COLOR)));
         colorProfile.setColor(CodeAreaBasicColors.CURSOR_NEGATIVE_COLOR, textAsColor(preferences.get(colorProfilePrefix + COLOR_CURSOR_NEGATIVE_COLOR)));
 
-        colorProfile.setColor(BasicCodeAreaDecorationColorType.LINE, textAsColor(preferences.get(colorProfilePrefix + COLOR_LINE)));
+        colorProfile.setColor(BasicCodeAreaDecorationColorType.LINE, textAsColor(preferences.get(colorProfilePrefix + COLOR_DECORATION_LINE)));
         colorProfile.setColor(CodeAreaColorizationColorType.CONTROL_CODES_COLOR, textAsColor(preferences.get(colorProfilePrefix + COLOR_CONTROL_CODES_COLOR)));
         colorProfile.setColor(CodeAreaColorizationColorType.CONTROL_CODES_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + COLOR_CONTROL_CODES_BACKGROUND)));
         colorProfile.setColor(CodeAreaColorizationColorType.UPPER_CODES_COLOR, textAsColor(preferences.get(colorProfilePrefix + COLOR_UPPER_CODES_COLOR)));
@@ -156,7 +156,7 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
         preferences.put(colorProfilePrefix + COLOR_CURSOR_COLOR, colorAsText(colorProfile.getColor(CodeAreaBasicColors.CURSOR_COLOR)));
         preferences.put(colorProfilePrefix + COLOR_CURSOR_NEGATIVE_COLOR, colorAsText(colorProfile.getColor(CodeAreaBasicColors.CURSOR_NEGATIVE_COLOR)));
 
-        preferences.put(colorProfilePrefix + COLOR_LINE, colorAsText(colorProfile.getColor(BasicCodeAreaDecorationColorType.LINE)));
+        preferences.put(colorProfilePrefix + COLOR_DECORATION_LINE, colorAsText(colorProfile.getColor(BasicCodeAreaDecorationColorType.LINE)));
         preferences.put(colorProfilePrefix + COLOR_CONTROL_CODES_COLOR, colorAsText(colorProfile.getColor(CodeAreaColorizationColorType.CONTROL_CODES_COLOR)));
         preferences.put(colorProfilePrefix + COLOR_CONTROL_CODES_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaColorizationColorType.CONTROL_CODES_BACKGROUND)));
         preferences.put(colorProfilePrefix + COLOR_UPPER_CODES_COLOR, colorAsText(colorProfile.getColor(CodeAreaColorizationColorType.UPPER_CODES_COLOR)));
@@ -186,7 +186,7 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
         preferences.remove(colorProfilePrefix + COLOR_CURSOR_COLOR);
         preferences.remove(colorProfilePrefix + COLOR_CURSOR_NEGATIVE_COLOR);
 
-        preferences.remove(colorProfilePrefix + COLOR_LINE);
+        preferences.remove(colorProfilePrefix + COLOR_DECORATION_LINE);
         preferences.remove(colorProfilePrefix + COLOR_CONTROL_CODES_COLOR);
         preferences.remove(colorProfilePrefix + COLOR_CONTROL_CODES_BACKGROUND);
         preferences.remove(colorProfilePrefix + COLOR_UPPER_CODES_COLOR);

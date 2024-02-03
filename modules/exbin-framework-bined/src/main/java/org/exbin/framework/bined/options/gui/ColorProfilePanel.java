@@ -39,7 +39,7 @@ public class ColorProfilePanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilePanel.class);
 
     private final PreviewPanel previewPanel = new PreviewPanel(PreviewPanel.PreviewType.WITH_SEARCH);
-    private final ColorProfileTableModel colorTableModel = new ColorProfileTableModel();
+    private final ColorProfileTableModel colorTableModel = new ColorProfileTableModel(resourceBundle);
 
     public ColorProfilePanel() {
         initComponents();

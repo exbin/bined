@@ -32,6 +32,7 @@ import org.exbin.bined.extended.color.CodeAreaUnprintablesColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.framework.bined.preferences.CodeAreaColorPreferences;
 
 /**
  * Table model for Color profile panel.
@@ -45,36 +46,43 @@ public class ColorProfileTableModel implements TableModel {
 
     private final List<ColorRow> rows = new ArrayList<>();
     private ExtendedCodeAreaColorProfile colorProfile;
+    private java.util.ResourceBundle resourceBundle;
 
-    public ColorProfileTableModel() {
+    public ColorProfileTableModel(java.util.ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
         init();
     }
 
     private void init() {
-        rows.add(new ColorRow("Text color", CodeAreaBasicColors.TEXT_COLOR));
-        rows.add(new ColorRow("Text background", CodeAreaBasicColors.TEXT_BACKGROUND));
-        rows.add(new ColorRow("Selection text color", CodeAreaBasicColors.SELECTION_COLOR));
-        rows.add(new ColorRow("Selection background", CodeAreaBasicColors.SELECTION_BACKGROUND));
-        rows.add(new ColorRow("Selection mirror text color", CodeAreaBasicColors.SELECTION_MIRROR_COLOR));
-        rows.add(new ColorRow("Selection mirror background", CodeAreaBasicColors.SELECTION_MIRROR_BACKGROUND));
-        rows.add(new ColorRow("Alternate text color", CodeAreaBasicColors.ALTERNATE_COLOR));
-        rows.add(new ColorRow("Alternate background", CodeAreaBasicColors.ALTERNATE_BACKGROUND));
-        rows.add(new ColorRow("Cursor color", CodeAreaBasicColors.CURSOR_COLOR));
-        rows.add(new ColorRow("Cursor negative color", CodeAreaBasicColors.CURSOR_NEGATIVE_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_TEXT_COLOR), CodeAreaBasicColors.TEXT_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_TEXT_BACKGROUND), CodeAreaBasicColors.TEXT_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_COLOR), CodeAreaBasicColors.SELECTION_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_BACKGROUND), CodeAreaBasicColors.SELECTION_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_MIRROR_COLOR), CodeAreaBasicColors.SELECTION_MIRROR_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_MIRROR_BACKGROUND), CodeAreaBasicColors.SELECTION_MIRROR_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_ALTERNATE_COLOR), CodeAreaBasicColors.ALTERNATE_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_ALTERNATE_BACKGROUND), CodeAreaBasicColors.ALTERNATE_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CURSOR_COLOR), CodeAreaBasicColors.CURSOR_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CURSOR_NEGATIVE_COLOR), CodeAreaBasicColors.CURSOR_NEGATIVE_COLOR));
 
-        rows.add(new ColorRow("Decoration line color", BasicCodeAreaDecorationColorType.LINE));
-        rows.add(new ColorRow("Control codes text color", CodeAreaColorizationColorType.CONTROL_CODES_COLOR));
-        rows.add(new ColorRow("Control codes background", CodeAreaColorizationColorType.CONTROL_CODES_BACKGROUND));
-        rows.add(new ColorRow("Upper codes text color", CodeAreaColorizationColorType.UPPER_CODES_COLOR));
-        rows.add(new ColorRow("Upper codes background color", CodeAreaColorizationColorType.UPPER_CODES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_DECORATION_LINE), BasicCodeAreaDecorationColorType.LINE));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CONTROL_CODES_COLOR), CodeAreaColorizationColorType.CONTROL_CODES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CONTROL_CODES_BACKGROUND), CodeAreaColorizationColorType.CONTROL_CODES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_UPPER_CODES_COLOR), CodeAreaColorizationColorType.UPPER_CODES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_UPPER_CODES_BACKGROUND), CodeAreaColorizationColorType.UPPER_CODES_BACKGROUND));
 
-        rows.add(new ColorRow("Search match text color", CodeAreaMatchColorType.MATCH_COLOR));
-        rows.add(new ColorRow("Search match background", CodeAreaMatchColorType.MATCH_BACKGROUND));
-        rows.add(new ColorRow("Active match text color", CodeAreaMatchColorType.ACTIVE_MATCH_COLOR));
-        rows.add(new ColorRow("Active match background", CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.MATCH_COLOR), CodeAreaMatchColorType.MATCH_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.MATCH_BACKGROUND), CodeAreaMatchColorType.MATCH_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.ACTIVE_MATCH_COLOR), CodeAreaMatchColorType.ACTIVE_MATCH_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.ACTIVE_MATCH_BACKGROUND), CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND));
 
-        rows.add(new ColorRow("Unprintable characters text color", CodeAreaUnprintablesColorType.UNPRINTABLES_COLOR));
-        rows.add(new ColorRow("Unprintable characters background", CodeAreaUnprintablesColorType.UNPRINTABLES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.UNPRINTABLES_COLOR), CodeAreaUnprintablesColorType.UNPRINTABLES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.UNPRINTABLES_BACKGROUND), CodeAreaUnprintablesColorType.UNPRINTABLES_BACKGROUND));
+    }
+
+    @Nonnull
+    private String getColorTypeText(String colorType) {
+        return resourceBundle.getString("colorType." + colorType);
     }
 
     @Nullable
@@ -101,9 +109,9 @@ public class ColorProfileTableModel implements TableModel {
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return "Color";
+                return resourceBundle.getString("table.colorColumn");
             case 1:
-                return "Value";
+                return resourceBundle.getString("table.valueColumn");
         }
 
         throw createUnexpectedColumnException(columnIndex);

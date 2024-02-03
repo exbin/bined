@@ -18,6 +18,7 @@ package org.exbin.framework.bined.options.gui;
 import org.exbin.framework.bined.model.ColorProfileTableModel;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -59,9 +60,9 @@ public class ColorCellTableEditor extends AbstractCellEditor implements TableCel
         });
     }
 
-    @Nullable
+    @Nonnull
     @Override
-    public Object getCellEditorValue() {
-        return currentColor;
+    public Optional<Object> getCellEditorValue() {
+        return Optional.ofNullable(currentColor);
     }
 }
