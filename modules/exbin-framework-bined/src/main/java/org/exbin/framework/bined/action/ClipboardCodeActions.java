@@ -17,9 +17,7 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -30,6 +28,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * Clipboard code actions.
@@ -80,21 +79,17 @@ public class ClipboardCodeActions {
             codeArea.copyAsCode();
         }
 
-        @Nonnull
         @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
-        }
-
-        @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            boolean hasSelection = false;
-            if (codeArea != null) {
-                hasSelection = codeArea.hasSelection();
-            }
-            setEnabled(hasSelection);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = codeArea != null;
+                boolean hasSelection = hasInstance;
+                if (hasInstance) {
+                    hasSelection = codeArea.hasSelection();
+                }
+                setEnabled(hasSelection);
+            });
         }
     }
 
@@ -113,21 +108,17 @@ public class ClipboardCodeActions {
             }
         }
 
-        @Nonnull
         @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
-        }
-
-        @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            boolean canPaste = false;
-            if (codeArea != null) {
-                canPaste = codeArea.canPaste();
-            }
-            setEnabled(canPaste);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = codeArea != null;
+                boolean hasSelection = hasInstance;
+                if (hasInstance) {
+                    hasSelection = codeArea.canPaste();
+                }
+                setEnabled(hasSelection);
+            });
         }
     }
 }

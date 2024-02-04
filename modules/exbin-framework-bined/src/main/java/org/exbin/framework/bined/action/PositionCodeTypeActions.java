@@ -16,9 +16,7 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -31,6 +29,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * Position code type actions.
@@ -99,24 +98,20 @@ public class PositionCodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) codeArea).setPositionCodeType(PositionCodeType.OCTAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                PositionCodeType positionCodeType = ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
-                putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.OCTAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    PositionCodeType positionCodeType = ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
+                    putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.OCTAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -128,24 +123,20 @@ public class PositionCodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) codeArea).setPositionCodeType(PositionCodeType.DECIMAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                PositionCodeType positionCodeType = ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
-                putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.DECIMAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    PositionCodeType positionCodeType = ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
+                    putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.DECIMAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -157,24 +148,20 @@ public class PositionCodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) codeArea).setPositionCodeType(PositionCodeType.HEXADECIMAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                PositionCodeType positionCodeType = ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
-                putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.HEXADECIMAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    PositionCodeType positionCodeType = ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
+                    putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.HEXADECIMAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 }

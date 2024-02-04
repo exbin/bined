@@ -30,6 +30,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -80,24 +81,20 @@ public class ShowUnprintablesActions {
         public void actionPerformed(ActionEvent e) {
             boolean showUnprintables = ((ShowUnprintablesCapable) codeArea).isShowUnprintables();
             ((ShowUnprintablesCapable) codeArea).setShowUnprintables(!showUnprintables);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                boolean showUnprintables = ((ShowUnprintablesCapable) codeArea).isShowUnprintables();
-                putValue(Action.SELECTED_KEY, showUnprintables);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = codeArea != null;
+                if (hasInstance) {
+                    boolean showUnprintables = ((ShowUnprintablesCapable) codeArea).isShowUnprintables();
+                    putValue(Action.SELECTED_KEY, showUnprintables);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 }

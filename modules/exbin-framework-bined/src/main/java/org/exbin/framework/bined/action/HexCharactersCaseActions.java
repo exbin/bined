@@ -16,9 +16,7 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -31,6 +29,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * Hex characters case actions.
@@ -83,24 +82,20 @@ public class HexCharactersCaseActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.UPPER);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
-                putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+                    putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -112,24 +107,20 @@ public class HexCharactersCaseActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.LOWER);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
-                putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+                    putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 }

@@ -29,6 +29,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * Row wrapping handler.
@@ -53,17 +54,12 @@ public class RowWrappingAction extends AbstractAction {
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                boolean hasInstance = !affectedClasses.isEmpty();
-                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-                setEnabled(hasInstance);
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    codeArea = instance;
+                    setEnabled(instance != null);
+                });
             }
         });
     }

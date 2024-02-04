@@ -16,10 +16,7 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -27,6 +24,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.editor.text.EditorTextModule;
 import org.exbin.framework.editor.text.action.TextFontAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -57,15 +55,11 @@ public class CodeAreaFontAction extends AbstractAction {
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                setEnabled(!affectedClasses.isEmpty());
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    setEnabled(instance != null);
+                });
             }
         });
     }

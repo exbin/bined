@@ -16,9 +16,7 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -31,6 +29,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * View mode actions.
@@ -97,24 +96,20 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.DUAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
-                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                    putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -126,24 +121,20 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.CODE_MATRIX);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
-                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                    putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -155,24 +146,20 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
-                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                    putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 }

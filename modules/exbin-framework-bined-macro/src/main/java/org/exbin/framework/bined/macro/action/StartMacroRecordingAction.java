@@ -28,6 +28,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -57,22 +58,18 @@ public class StartMacroRecordingAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                boolean hasInstance = !affectedClasses.isEmpty();
-                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-                boolean enabled = false;
-                if (hasInstance) {
-                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                    enabled = commandHandler instanceof CodeAreaMacroCommandHandler && !((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
-                }
-                setEnabled(enabled);
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    codeArea = instance;
+                    boolean hasInstance = instance != null;
+                    boolean enabled = false;
+                    if (hasInstance) {
+                        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                        enabled = commandHandler instanceof CodeAreaMacroCommandHandler && !((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
+                    }
+                    setEnabled(enabled);
+                });
             }
         });
     }

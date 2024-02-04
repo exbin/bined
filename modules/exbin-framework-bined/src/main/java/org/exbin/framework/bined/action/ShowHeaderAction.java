@@ -16,10 +16,7 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -31,6 +28,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * Show header action.
@@ -55,20 +53,16 @@ public class ShowHeaderAction extends AbstractAction {
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                boolean hasInstance = !affectedClasses.isEmpty();
-                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-                setEnabled(hasInstance);
-                if (codeArea != null) {
-                    putValue(Action.SELECTED_KEY, ((LayoutProfileCapable) codeArea).getLayoutProfile().isShowHeader());
-                }
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    codeArea = instance;
+                    boolean hasInstance = instance != null;
+                    if (codeArea != null) {
+                        putValue(Action.SELECTED_KEY, ((LayoutProfileCapable) codeArea).getLayoutProfile().isShowHeader());
+                    }
+                    setEnabled(hasInstance);
+                });
             }
         });
     }
@@ -78,6 +72,6 @@ public class ShowHeaderAction extends AbstractAction {
         ExtendedCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
         layoutProfile.setShowHeader(!layoutProfile.isShowHeader());
         ((LayoutProfileCapable) codeArea).setLayoutProfile(layoutProfile);
-        App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
+        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
     }
 }

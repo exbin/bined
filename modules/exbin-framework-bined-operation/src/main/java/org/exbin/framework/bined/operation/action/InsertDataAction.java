@@ -18,13 +18,10 @@ package org.exbin.framework.bined.operation.action;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -41,6 +38,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
@@ -79,17 +77,13 @@ public class InsertDataAction extends AbstractAction {
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                boolean hasInstance = !affectedClasses.isEmpty();
-                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-                setEnabled(hasInstance);
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    codeArea = instance;
+                    boolean hasInstance = instance != null;
+                    setEnabled(hasInstance);
+                });
             }
         });
     }

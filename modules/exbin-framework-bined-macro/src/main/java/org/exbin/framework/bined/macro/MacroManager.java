@@ -385,7 +385,7 @@ public class MacroManager {
     }
 
     private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
-        App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
+        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
     }
 
     public void updateMacrosMenu() {

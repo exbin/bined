@@ -36,6 +36,7 @@ import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
@@ -515,7 +516,7 @@ public class BinedOptionsManager {
 
                 ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                 CodeAreaOptionsImpl.applyToCodeArea(options, codeArea);
-                App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
+                // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
             }
         };
         optionsModule.addOptionsPage(codeAreaOptionsPage);

@@ -16,11 +16,9 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
@@ -35,6 +33,7 @@ import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationManager;
 
 /**
  * Code type actions.
@@ -121,15 +120,11 @@ public class CodeTypeActions {
         cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(createHexadecimalCodeTypeAction(), buttonGroups));
         cycleCodeTypesAction.putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
         cycleCodeTypesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                cycleCodeTypesAction.setEnabled(!affectedClasses.isEmpty());
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    cycleCodeTypesAction.setEnabled(instance != null);
+                });
             }
         });
         return cycleCodeTypesAction;
@@ -143,24 +138,20 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.BINARY);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -172,24 +163,20 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.OCTAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -201,24 +188,20 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.DECIMAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -230,24 +213,20 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.HEXADECIMAL);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 
@@ -263,25 +242,21 @@ public class CodeTypeActions {
             CodeType[] values = CodeType.values();
             CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
             ((CodeTypeCapable) codeArea).setCodeType(next);
-            App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
-        }
-
-        @Nonnull
-        @Override
-        public Set<Class<?>> forClasses() {
-            return Collections.singleton(CodeAreaCore.class);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
-        public void componentActive(Set<Object> affectedClasses) {
-            boolean hasInstance = !affectedClasses.isEmpty();
-            codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-            if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                // TODO language support
-                putValue(Action.NAME, codeType.name().substring(0, 3));
-            }
-            setEnabled(hasInstance);
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                codeArea = instance;
+                boolean hasInstance = instance != null;
+                if (hasInstance) {
+                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    // TODO language support
+                    putValue(Action.NAME, codeType.name().substring(0, 3));
+                }
+                setEnabled(hasInstance);
+            });
         }
     }
 }

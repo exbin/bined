@@ -17,10 +17,7 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -32,6 +29,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.WindowHandler;
@@ -64,17 +62,12 @@ public class GoToPositionAction extends AbstractAction {
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Nonnull
             @Override
-            public Set<Class<?>> forClasses() {
-                return Collections.singleton(CodeAreaCore.class);
-            }
-
-            @Override
-            public void componentActive(Set<Object> affectedClasses) {
-                boolean hasInstance = !affectedClasses.isEmpty();
-                codeArea = hasInstance ? (CodeAreaCore) affectedClasses.iterator().next() : null;
-                setEnabled(hasInstance);
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    codeArea = instance;
+                    setEnabled(instance != null);
+                });
             }
         });
     }
