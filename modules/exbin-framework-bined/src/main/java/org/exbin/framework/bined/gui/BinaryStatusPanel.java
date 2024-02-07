@@ -836,12 +836,13 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         void changeMemoryMode(MemoryMode memoryMode);
     }
 
+    @ParametersAreNonnullByDefault
     private static class EncodingLabel extends JLabel {
 
         private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
 
         @Override
-        protected void paintComponent(@Nonnull Graphics g) {
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Dimension areaSize = getSize();
 

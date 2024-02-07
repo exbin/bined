@@ -1,5 +1,5 @@
 BinEd - Binary/Hex Editor
-=================================
+=========================
 
 Editor for binary data (hex viewer/editor) written in Java.
 

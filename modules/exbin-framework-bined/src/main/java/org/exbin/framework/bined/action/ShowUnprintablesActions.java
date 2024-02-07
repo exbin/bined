@@ -16,9 +16,7 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;

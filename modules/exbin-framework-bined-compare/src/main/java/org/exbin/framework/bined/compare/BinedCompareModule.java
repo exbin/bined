@@ -45,8 +45,6 @@ public class BinedCompareModule implements Module {
 
     private EditorProvider editorProvider;
 
-    private CompareFilesAction compareFilesAction;
-
     public BinedCompareModule() {
     }
 
@@ -56,7 +54,7 @@ public class BinedCompareModule implements Module {
 
     public void registerToolsOptionsMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, getCompareFilesAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createCompareFilesAction(), new MenuPosition(PositionMode.TOP));
     }
 
     @Nonnull
@@ -69,13 +67,10 @@ public class BinedCompareModule implements Module {
     }
 
     @Nonnull
-    public AbstractAction getCompareFilesAction() {
-        if (compareFilesAction == null) {
-            ensureSetup();
-            compareFilesAction = new CompareFilesAction();
-            compareFilesAction.setup(editorProvider, resourceBundle);
-        }
-
+    public AbstractAction createCompareFilesAction() {
+        ensureSetup();
+        CompareFilesAction compareFilesAction = new CompareFilesAction();
+        compareFilesAction.setup(editorProvider, resourceBundle);
         return compareFilesAction;
     }
 

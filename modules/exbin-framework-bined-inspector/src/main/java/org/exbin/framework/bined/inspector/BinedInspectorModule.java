@@ -19,9 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
@@ -62,7 +60,6 @@ public class BinedInspectorModule implements Module {
     private EditorProvider editorProvider;
 
     private BasicValuesPositionColorModifier basicValuesColorModifier = new BasicValuesPositionColorModifier();
-    private ShowParsingPanelAction showParsingPanelAction;
 
     private DefaultOptionsPage<DataInspectorOptionsImpl> dataInspectorOptionsPage;
 
@@ -75,7 +72,6 @@ public class BinedInspectorModule implements Module {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addPainterColorModifier(basicValuesColorModifier);
-        fileManager.addActionStatusUpdateListener(this::updateActionStatus);
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull
             @Override
@@ -85,12 +81,6 @@ public class BinedInspectorModule implements Module {
                 return Optional.of(binEdComponentInspector);
             }
         });
-    }
-
-    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
-        if (showParsingPanelAction != null) {
-            showParsingPanelAction.updateForActiveFile();
-        }
     }
 
     @Nonnull
@@ -118,20 +108,17 @@ public class BinedInspectorModule implements Module {
     }
 
     @Nonnull
-    public ShowParsingPanelAction getShowParsingPanelAction() {
-        if (showParsingPanelAction == null) {
-            ensureSetup();
-            showParsingPanelAction = new ShowParsingPanelAction();
-            showParsingPanelAction.setup(editorProvider, resourceBundle);
-        }
-
+    public ShowParsingPanelAction createShowParsingPanelAction() {
+        ensureSetup();
+        ShowParsingPanelAction showParsingPanelAction = new ShowParsingPanelAction();
+        showParsingPanelAction.setup(editorProvider, resourceBundle);
         return showParsingPanelAction;
     }
 
     public void registerViewValuesPanelMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerMenuGroup(ActionConsts.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, getShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
+        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, createShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 
     public void registerOptionsPanels() {
@@ -175,7 +162,7 @@ public class BinedInspectorModule implements Module {
 
             @Override
             public void applyPreferencesChanges(DataInspectorOptionsImpl options) {
-                getShowParsingPanelAction().setShowValuesPanel(options.isShowParsingPanel());
+                createShowParsingPanelAction().setShowValuesPanel(options.isShowParsingPanel());
             }
         };
         optionsModule.addOptionsPage(dataInspectorOptionsPage);

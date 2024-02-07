@@ -29,8 +29,10 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.gui.DragDropContentPanel;
@@ -50,12 +52,13 @@ import org.exbin.xbup.core.util.StreamUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class DragDropContentAction extends AbstractAction {
+public class DragDropContentAction extends AbstractAction implements ActionActiveComponent {
 
     public static final String ACTION_ID = "dragDropContentAction";
 
     private ResourceBundle resourceBundle;
     private DragDropContentPanel dragDropContentPanel = new DragDropContentPanel();
+    private EditorProvider editorProvider;
 
     public DragDropContentAction() {
     }
@@ -74,6 +77,21 @@ public class DragDropContentAction extends AbstractAction {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         CloseControlPanel controlPanel = new CloseControlPanel();
         final WindowHandler dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
+        dragDropContentPanel.setOpenAsTabAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Optional<BinaryData> optContentBinaryData = dragDropContentPanel.getContentBinaryData();
+                if (optContentBinaryData.isPresent()) {
+                    BinaryData contentBinaryData = optContentBinaryData.get();
+                    editorProvider.newFile();
+                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                    if (activeFile.isPresent()) {
+                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                        fileHandler.getCodeArea().setContentData(contentBinaryData);
+                    }
+                }
+            }
+        });
         dragDropContentPanel.setSaveAsFileAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,21 +132,11 @@ public class DragDropContentAction extends AbstractAction {
         dialog.showCentered(frameModule.getFrame());
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        dragDropContentPanel.setOpenAsTabAction(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Optional<BinaryData> optContentBinaryData = dragDropContentPanel.getContentBinaryData();
-                if (optContentBinaryData.isPresent()) {
-                    BinaryData contentBinaryData = optContentBinaryData.get();
-                    editorProvider.newFile();
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        fileHandler.getCodeArea().setContentData(contentBinaryData);
-                    }
-                }
-            }
+    @Override
+    public void register(ComponentActivationManager manager) {
+        manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+            editorProvider = instance;
+            setEnabled(instance.getActiveFile().isPresent());
         });
     }
 }

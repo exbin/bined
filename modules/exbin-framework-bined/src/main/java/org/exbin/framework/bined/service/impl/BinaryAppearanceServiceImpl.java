@@ -46,6 +46,6 @@ public class BinaryAppearanceServiceImpl implements BinaryAppearanceService {
     public void setWordWrapMode(boolean mode) {
         //((BinEdEditorProvider) editorProvider).setWordWrapMode(mode);
 
-        binedModule.getRowWrappingAction().putValue(Action.SELECTED_KEY, mode);
+        binedModule.createRowWrappingAction().putValue(Action.SELECTED_KEY, mode);
     }
 }

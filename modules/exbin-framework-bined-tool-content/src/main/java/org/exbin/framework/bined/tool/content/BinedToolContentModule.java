@@ -45,17 +45,7 @@ public class BinedToolContentModule implements Module {
 
     private EditorProvider editorProvider;
 
-    private ClipboardContentAction clipboardContentAction;
-    private DragDropContentAction dragDropContentAction;
-
     public BinedToolContentModule() {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-        if (clipboardContentAction != null) {
-            clipboardContentAction.setEditorProvider(editorProvider);
-        }
     }
 
     @Nonnull
@@ -83,40 +73,30 @@ public class BinedToolContentModule implements Module {
     }
 
     @Nonnull
-    public ClipboardContentAction getClipboardContentAction() {
-        if (clipboardContentAction == null) {
-            ensureSetup();
-            clipboardContentAction = new ClipboardContentAction();
-            clipboardContentAction.setup(resourceBundle);
-            if (editorProvider != null) {
-                clipboardContentAction.setEditorProvider(editorProvider);
-            }
-        }
+    public ClipboardContentAction createClipboardContentAction() {
+        ensureSetup();
+        ClipboardContentAction clipboardContentAction = new ClipboardContentAction();
+        clipboardContentAction.setup(resourceBundle);
         return clipboardContentAction;
     }
 
     @Nonnull
-    public DragDropContentAction getDragDropContentAction() {
-        if (dragDropContentAction == null) {
-            ensureSetup();
-            dragDropContentAction = new DragDropContentAction();
-            dragDropContentAction.setup(resourceBundle);
-            if (editorProvider != null) {
-                dragDropContentAction.setEditorProvider(editorProvider);
-            }
-        }
+    public DragDropContentAction createDragDropContentAction() {
+        ensureSetup();
+        DragDropContentAction dragDropContentAction = new DragDropContentAction();
+        dragDropContentAction.setup(resourceBundle);
         return dragDropContentAction;
     }
 
     public void registerClipboardContentMenu() {
-        getClipboardContentAction();
+        createClipboardContentAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, getClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 
     public void registerDragDropContentMenu() {
-        getDragDropContentAction();
+        createDragDropContentAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, getDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
     }
 }

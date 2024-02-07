@@ -19,9 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
@@ -65,7 +63,6 @@ public class BinedSearchModule implements Module {
 
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addActionStatusUpdateListener(this::updateActionStatus);
         fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new BinEdComponentSearch()));
     }
 
@@ -74,7 +71,7 @@ public class BinedSearchModule implements Module {
         if (findReplaceActions == null) {
             ensureSetup();
             findReplaceActions = new FindReplaceActions();
-            findReplaceActions.setup(editorProvider, resourceBundle);
+            findReplaceActions.setup(resourceBundle);
         }
 
         return findReplaceActions;
@@ -99,12 +96,6 @@ public class BinedSearchModule implements Module {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, new ToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
         actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new ToolBarPosition(EDIT_FIND_TOOL_BAR_GROUP_ID));
-    }
-
-    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
-        if (findReplaceActions != null) {
-            findReplaceActions.updateForActiveFile();
-        }
     }
 
     @Nonnull

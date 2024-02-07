@@ -173,9 +173,7 @@ public class BinedEditor {
                 binedInspectorModule.setEditorProvider(editorProvider);
 
                 BinedObjectDataModule binedObjectDataModule = App.getModule(BinedObjectDataModule.class);
-
                 BinedToolContentModule binedToolContentModule = App.getModule(BinedToolContentModule.class);
-                binedToolContentModule.setEditorProvider(editorProvider);
 
                 frameModule.createMainMenu();
                 try {

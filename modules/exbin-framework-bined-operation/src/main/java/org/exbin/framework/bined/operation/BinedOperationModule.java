@@ -58,8 +58,6 @@ public class BinedOperationModule implements Module {
 
     private EditorProvider editorProvider;
 
-    private InsertDataAction insertDataAction;
-    private ConvertDataAction convertDataAction;
     private final List<InsertDataMethod> insertDataComponents = new ArrayList<>();
     private final List<ConvertDataMethod> convertDataComponents = new ArrayList<>();
 
@@ -81,68 +79,62 @@ public class BinedOperationModule implements Module {
     }
 
     @Nonnull
-    private AbstractAction getInsertDataAction() {
-        if (insertDataAction == null) {
-            ensureSetup();
-            insertDataAction = new InsertDataAction();
-            insertDataAction.setup(resourceBundle);
+    private AbstractAction createInsertDataAction() {
+        ensureSetup();
+        InsertDataAction insertDataAction = new InsertDataAction();
+        insertDataAction.setup(resourceBundle);
 
-            insertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-                @Override
-                public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    ExtCodeArea codeArea = binedModule.getActiveCodeArea();
-                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
+        insertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                ExtCodeArea codeArea = binedModule.getActiveCodeArea();
+                return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+            }
 
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId) {
-                }
-            });
-        }
-
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+            }
+        });
         return insertDataAction;
     }
 
     @Nonnull
-    private AbstractAction getConvertDataAction() {
-        if (convertDataAction == null) {
-            ensureSetup();
-            convertDataAction = new ConvertDataAction();
-            convertDataAction.setup(resourceBundle);
-            convertDataAction.setEditorProvider(editorProvider);
+    private AbstractAction createConvertDataAction() {
+        ensureSetup();
+        ConvertDataAction convertDataAction = new ConvertDataAction();
+        convertDataAction.setup(resourceBundle);
+        convertDataAction.setEditorProvider(editorProvider);
 
-            convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-                @Override
-                public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    ExtCodeArea codeArea = binedModule.getActiveCodeArea();
-                    return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
+        convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                ExtCodeArea codeArea = binedModule.getActiveCodeArea();
+                return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+            }
 
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId) {
-                }
-            });
-        }
-
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+            }
+        });
         return convertDataAction;
     }
 
     public void registerBlockEditActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, createInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, createConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getInsertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getConvertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, createInsertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, createConvertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
     }
 
     public void addInsertDataComponent(InsertDataMethod insertDataComponent) {

@@ -27,9 +27,11 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -37,7 +39,6 @@ import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
-import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 
 /**
@@ -46,154 +47,89 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class FindReplaceActions implements FileDependentAction {
+public class FindReplaceActions {
 
     public static final String EDIT_FIND_ACTION_ID = "editFindAction";
     public static final String EDIT_FIND_AGAIN_ACTION_ID = "editFindAgainAction";
     public static final String EDIT_REPLACE_ACTION_ID = "editReplaceAction";
 
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
-
-    private Action editFindAction;
-    private Action editFindAgainAction;
-    private Action editReplaceAction;
 
     private final List<FindAgainListener> findAgainListeners = new ArrayList<>();
 
     public FindReplaceActions() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
-    }
-
-    @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (editFindAction != null) {
-            editFindAction.setEnabled(activeFile.isPresent());
-        }
-        if (editFindAgainAction != null) {
-            editFindAgainAction.setEnabled(activeFile.isPresent());
-        }
-        if (editReplaceAction != null) {
-            editReplaceAction.setEnabled(activeFile.isPresent());
-        }
     }
 
     @Nonnull
     public Action getEditFindAction() {
-        if (editFindAction == null) {
-            editFindAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (!activeFile.isPresent()) {
-                        throw new IllegalStateException();
-                    }
+        EditFindAction editFindAction = new EditFindAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.initAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
+        editFindAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
+        editFindAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        editFindAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+            }
 
-                    BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
-                    BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                    componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
-            editFindAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
-            editFindAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-            editFindAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-                @Override
-                public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
-
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId) {
-                }
-            });
-        }
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+            }
+        });
+        editFindAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, editFindAction);
         return editFindAction;
     }
 
     @Nonnull
     public Action getEditFindAgainAction() {
-        if (editFindAgainAction == null) {
-            editFindAgainAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (!activeFile.isPresent()) {
-                        throw new IllegalStateException();
-                    }
+        EditFindAgainAction editFindAgainAction = new EditFindAgainAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.initAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
+        editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        editFindAgainAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+            }
 
-                    BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
-                    BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                    componentExtension.performFindAgain();
-
-                    for (FindAgainListener findAgainListener : findAgainListeners) {
-                        findAgainListener.performed();
-                    }
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
-            editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-            editFindAgainAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-                @Override
-                public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
-
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId) {
-                }
-            });
-        }
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+            }
+        });
         return editFindAgainAction;
     }
 
     @Nonnull
     public Action getEditReplaceAction() {
-        if (editReplaceAction == null) {
-            editReplaceAction = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (!activeFile.isPresent()) {
-                        throw new IllegalStateException();
-                    }
+        EditFindAgainAction editReplaceAction = new EditFindAgainAction();
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.initAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
+        editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
+        editReplaceAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        editReplaceAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+            }
 
-                    BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
-                    BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                    componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
-                }
-            };
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
-            editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
-            editReplaceAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-            editReplaceAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-                @Override
-                public boolean shouldCreate(String menuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
-
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId) {
-                }
-            });
-        }
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+            }
+        });
         return editReplaceAction;
     }
 
@@ -208,5 +144,87 @@ public class FindReplaceActions implements FileDependentAction {
     public static interface FindAgainListener {
 
         void performed();
+    }
+
+    @ParametersAreNonnullByDefault
+    public class EditFindAction extends AbstractAction implements ActionActiveComponent {
+
+        private EditorProvider editorProvider;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (!activeFile.isPresent()) {
+                throw new IllegalStateException();
+            }
+
+            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+            componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
+        }
+
+        @Override
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                editorProvider = instance;
+                setEnabled(instance.getActiveFile().isPresent());
+            });
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public class EditFindAgainAction extends AbstractAction implements ActionActiveComponent {
+
+        private EditorProvider editorProvider;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (!activeFile.isPresent()) {
+                throw new IllegalStateException();
+            }
+
+            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+            componentExtension.performFindAgain();
+
+            for (FindAgainListener findAgainListener : findAgainListeners) {
+                findAgainListener.performed();
+            }
+        }
+
+        @Override
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                editorProvider = instance;
+                setEnabled(instance.getActiveFile().isPresent());
+            });
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public class EditReplaceAction extends AbstractAction implements ActionActiveComponent {
+
+        private EditorProvider editorProvider;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (!activeFile.isPresent()) {
+                throw new IllegalStateException();
+            }
+
+            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+            componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
+        }
+
+        @Override
+        public void register(ComponentActivationManager manager) {
+            manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                editorProvider = instance;
+                setEnabled(instance.getActiveFile().isPresent());
+            });
+        }
     }
 }
