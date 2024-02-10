@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.tool.content;
 
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,7 +28,6 @@ import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 
 /**
  * Binary editor clipboard support module.
@@ -42,8 +40,6 @@ public class BinedToolContentModule implements Module {
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedToolContentModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
-
-    private EditorProvider editorProvider;
 
     public BinedToolContentModule() {
     }
@@ -58,18 +54,9 @@ public class BinedToolContentModule implements Module {
     }
 
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }
-    }
-
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
     }
 
     @Nonnull
