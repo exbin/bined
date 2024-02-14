@@ -278,6 +278,8 @@ public class BinedEditor {
                 if (fullScreenMode) {
                     frameModule.saveFramePosition();
                 }
+                frameHandler.loadMainMenu();
+                frameHandler.loadMainToolBar();
 
                 frameHandler.showFrame();
 

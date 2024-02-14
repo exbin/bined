@@ -111,7 +111,7 @@ public class BinedInspectorModule implements Module {
     public ShowParsingPanelAction createShowParsingPanelAction() {
         ensureSetup();
         ShowParsingPanelAction showParsingPanelAction = new ShowParsingPanelAction();
-        showParsingPanelAction.setup(editorProvider, resourceBundle);
+        showParsingPanelAction.setup(resourceBundle);
         return showParsingPanelAction;
     }
 

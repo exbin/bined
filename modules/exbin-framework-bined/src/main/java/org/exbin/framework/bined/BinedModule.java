@@ -232,8 +232,8 @@ public class BinedModule implements Module {
     }
 
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
-        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-        editorModule.updateActionStatus();
+//        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+//        editorModule.updateActionStatus();
 //        FileDependentAction[] fileDepActions = new FileDependentAction[]{
 //            propertiesAction, reloadFileAction
 //        };
@@ -496,7 +496,7 @@ public class BinedModule implements Module {
     public PropertiesAction createPropertiesAction() {
         ensureSetup();
         PropertiesAction propertiesAction = new PropertiesAction();
-        propertiesAction.setup(editorProvider, resourceBundle);
+        propertiesAction.setup(resourceBundle);
         return propertiesAction;
     }
 
@@ -532,7 +532,7 @@ public class BinedModule implements Module {
     private ReloadFileAction createReloadFileAction() {
         ensureSetup();
         ReloadFileAction reloadFileAction = new ReloadFileAction();
-        reloadFileAction.setup(editorProvider, resourceBundle);
+        reloadFileAction.setup(resourceBundle);
         return reloadFileAction;
     }
 

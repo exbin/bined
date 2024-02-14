@@ -16,21 +16,19 @@
 package org.exbin.framework.bined.inspector.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BinEdComponentInspector;
-import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 
 /**
@@ -39,59 +37,57 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ShowParsingPanelAction extends AbstractAction implements FileDependentAction {
+public class ShowParsingPanelAction extends AbstractAction {
 
     public static final String ACTION_ID = "showParsingPanelAction";
 
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
+    private FileHandler fileHandler;
 
     public ShowParsingPanelAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
-    }
-
-    @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        Boolean showParsingPanel = null;
-        if (activeFile.isPresent()) {
-            BinEdComponentPanel component = ((BinEdFileHandler) activeFile.get()).getComponent();
-            BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
-            showParsingPanel = componentExtension.isShowParsingPanel();
-        }
-        setEnabled(activeFile.isPresent());
-        if (showParsingPanel != null) {
-            putValue(Action.SELECTED_KEY, showParsingPanel);
-        }
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Override
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                    fileHandler = instance;
+                    setEnabled(fileHandler instanceof BinEdFileHandler);
+                    boolean showParsingPanel = false;
+                    if (fileHandler instanceof BinEdFileHandler) {
+                        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
+                        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+                        showParsingPanel = componentExtension.isShowParsingPanel();
+                    }
+                    putValue(Action.SELECTED_KEY, showParsingPanel);
+                });
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
+        if (!(fileHandler instanceof BinEdFileHandler)) {
+            return;
         }
 
-        BinEdComponentPanel component = ((BinEdFileHandler) activeFile.get()).getComponent();
+        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
         BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
         setShowValuesPanel(!componentExtension.isShowParsingPanel());
     }
 
     public void setShowValuesPanel(boolean show) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
+        if (!(fileHandler instanceof BinEdFileHandler)) {
+            return;
         }
 
-        BinEdComponentPanel component = ((BinEdFileHandler) activeFile.get()).getComponent();
+        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
         BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
         componentExtension.setShowParsingPanel(show);
         putValue(Action.SELECTED_KEY, show);

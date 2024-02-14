@@ -52,7 +52,6 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -62,7 +61,6 @@ import org.exbin.framework.editor.action.CloseAllFileAction;
 import org.exbin.framework.editor.action.CloseFileAction;
 import org.exbin.framework.editor.action.CloseOtherFileAction;
 import org.exbin.framework.editor.action.EditorActions;
-import org.exbin.framework.editor.api.MultiEditorPopupMenu;
 import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.editor.gui.MultiEditorPanel;
 import org.exbin.framework.file.api.AllFileTypes;
@@ -72,13 +70,14 @@ import org.exbin.framework.file.api.FileTypes;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
-import org.exbin.framework.utils.ClipboardActionsUpdater;
 import org.exbin.xbup.operation.Command;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor provider.
@@ -106,12 +105,15 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     private FileHandler activeFileCache = null;
     @Nullable
     private File lastUsedDirectory;
+    private ComponentActivationListener componentActivationListener;
 
     public BinaryMultiEditorProvider() {
         init();
     }
 
     private void init() {
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         multiEditorPanel.setController(new MultiEditorPanel.Controller() {
             @Override
             public void activeIndexChanged(int index) {
@@ -124,9 +126,8 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                     return;
                 }
 
-                FileHandler fileHandler = multiEditorPanel.getFileHandler(index);
                 EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-                JPopupMenu fileTabPopupMenu = new EditorPopupMenu(fileHandler);
+                JPopupMenu fileTabPopupMenu = new JPopupMenu();
                 CloseFileAction closeFileAction = (CloseFileAction) editorModule.getCloseFileAction();
                 JMenuItem closeMenuItem = new JMenuItem(closeFileAction);
                 fileTabPopupMenu.add(closeMenuItem);
@@ -355,12 +356,13 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     }
 
     private void activeFileChanged() {
-        FileHandler activeFile = multiEditorPanel.getActiveFile().orElse(null);
-        activeFileCache = activeFile;
-        undoHandler.setActiveFile(activeFile);
+        FileHandler fileHandler = multiEditorPanel.getActiveFile().orElse(null);
+        activeFileCache = fileHandler;
+        componentActivationListener.updated(FileHandler.class, fileHandler);
+        undoHandler.setActiveFile(fileHandler);
 
         for (ActiveFileChangeListener listener : activeFileChangeListeners) {
-            listener.activeFileChanged(activeFile);
+            listener.activeFileChanged(fileHandler);
         }
 
         if (clipboardActionsUpdateListener != null) {
@@ -677,23 +679,6 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         Optional<FileHandler> activeFile = getActiveFile();
         if (activeFile.isPresent()) {
             textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile.get()).getCharset().name());
-        }
-    }
-
-    private class EditorPopupMenu extends JPopupMenu implements MultiEditorPopupMenu {
-
-        @Nullable
-        private final FileHandler selectedFile;
-
-        public EditorPopupMenu(@Nullable FileHandler selectedFile) {
-            super();
-            this.selectedFile = selectedFile;
-        }
-
-        @Nonnull
-        @Override
-        public Optional<FileHandler> getSelectedFile() {
-            return Optional.ofNullable(selectedFile);
         }
     }
 }

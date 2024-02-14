@@ -32,6 +32,8 @@ import org.exbin.framework.editor.api.EditorProvider;
 
 /**
  * Code area change font action.
+ * 
+ * TODO: Merge with TextFontAction action
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -68,7 +70,7 @@ public class CodeAreaFontAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if (textFontAction == null) {
             textFontAction = new TextFontAction();
-            textFontAction.setup(editorProvider, App.getModule(LanguageModuleApi.class).getBundle(EditorTextModule.class));
+            textFontAction.setup(App.getModule(LanguageModuleApi.class).getBundle(EditorTextModule.class));
         }
         textFontAction.actionPerformed(e);
         // App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);

@@ -16,15 +16,17 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileDependentAction;
+import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 
 /**
@@ -33,43 +35,43 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ReloadFileAction extends AbstractAction implements FileDependentAction {
+public class ReloadFileAction extends AbstractAction {
 
     public static final String ACTION_ID = "reloadFileAction";
 
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
+    private EditorProvider editorProvider;
+    private FileHandler fileHandler;
 
     public ReloadFileAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
-    }
-
-    @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        boolean canBeReloaded = activeFile.isPresent();
-        if (canBeReloaded) {
-            BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-            canBeReloaded = fileHandler.getFileUri().isPresent();
-        }
-        setEnabled(canBeReloaded);
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Override
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                    fileHandler = instance;
+                    setEnabled(fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider));
+                });
+                manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                    editorProvider = instance;
+                    setEnabled(fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider));
+                });
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Optional<FileHandler> optActiveFile = editorProvider.getActiveFile();
-        if (optActiveFile.isPresent()) {
-            BinEdFileHandler fileHandler = (BinEdFileHandler) optActiveFile.get();
+        if (fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider)) {
             if (editorProvider.releaseFile(fileHandler)) {
                 if (fileHandler.getFileUri().isPresent()) {
-                    fileHandler.reloadFile();
+                    ((BinEdFileHandler) fileHandler).reloadFile();
                 }
             }
         }

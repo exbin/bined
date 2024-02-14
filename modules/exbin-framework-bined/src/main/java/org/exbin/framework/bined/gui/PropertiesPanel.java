@@ -31,9 +31,7 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileHandler;
 
 /**
  * File properties panel.
@@ -151,14 +149,9 @@ public class PropertiesPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane structureScrollPane;
     // End of variables declaration//GEN-END:variables
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            throw new IllegalStateException();
-        }
-
-        ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-        Optional<URI> fileUri = ((BinEdFileHandler) activeFile.get()).getFileUri();
+    public void setFileHandler(BinEdFileHandler fileHandler) {
+        ExtCodeArea codeArea = fileHandler.getCodeArea();
+        Optional<URI> fileUri = fileHandler.getFileUri();
         fileNameTextField.setText(fileUri.isPresent() ? fileUri.get().toString() : "");
         fileSizeTextField.setText(Long.toString(codeArea.getDataSize()));
 

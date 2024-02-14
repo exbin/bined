@@ -17,17 +17,17 @@ package org.exbin.framework.bined.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.PropertiesPanel;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileDependentAction;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
@@ -38,36 +38,42 @@ import org.exbin.framework.window.api.WindowModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PropertiesAction extends AbstractAction implements FileDependentAction {
+public class PropertiesAction extends AbstractAction {
 
     public static final String ACTION_ID = "propertiesAction";
 
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
+    private FileHandler fileHandler;
 
     public PropertiesAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-    }
-
-    @Override
-    public void updateForActiveFile() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        setEnabled(activeFile.isPresent());
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            @Override
+            public void register(ComponentActivationManager manager) {
+                manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                    fileHandler = instance;
+                    setEnabled(fileHandler instanceof BinEdFileHandler);
+                });
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (!(fileHandler instanceof BinEdFileHandler)) {
+            return;
+        }
+
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         PropertiesPanel propertiesPanel = new PropertiesPanel();
-        propertiesPanel.setEditorProvider(editorProvider);
+        propertiesPanel.setFileHandler((BinEdFileHandler) fileHandler);
         CloseControlPanel controlPanel = new CloseControlPanel();
         final WindowHandler dialog = windowModule.createDialog(propertiesPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), propertiesPanel.getClass(), propertiesPanel.getResourceBundle());
