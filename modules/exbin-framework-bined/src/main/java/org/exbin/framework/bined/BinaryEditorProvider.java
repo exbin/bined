@@ -40,6 +40,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -50,10 +51,11 @@ import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileTypes;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
-import org.exbin.framework.utils.ClipboardActionsUpdater;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
  * Binary editor provider.
@@ -69,12 +71,15 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     private File lastUsedDirectory;
     private BinaryStatusApi binaryStatus;
     private EditorModificationListener editorModificationListener;
+    private ComponentActivationListener componentActivationListener;
 
     public BinaryEditorProvider(BinEdFileHandler activeFile) {
         init(activeFile);
     }
 
     private void init(BinEdFileHandler activeFile) {
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         this.activeFile = activeFile;
         fileTypes = new AllFileTypes();
 
@@ -97,6 +102,14 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
                 }
             }
         });
+        componentActivationListener.updated(EditorProvider.class, this);
+        activeFileChanged();
+    }
+
+    private void activeFileChanged() {
+        CodeAreaCore codeArea = activeFile.getCodeArea();
+        componentActivationListener.updated(FileHandler.class, activeFile);
+        componentActivationListener.updated(CodeAreaCore.class, codeArea);
     }
 
     @Nonnull

@@ -52,6 +52,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -76,6 +77,7 @@ import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.editor.api.EditorModuleApi;
+import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
@@ -160,6 +162,34 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                 }
             }
         });
+
+        componentActivationListener.updated(EditorProvider.class, this);
+        activeFileChanged();
+    }
+
+    private void activeFileChanged() {
+        FileHandler activeFile = multiEditorPanel.getActiveFile().orElse(null);
+        activeFileCache = activeFile;
+        CodeAreaCore codeArea = activeFile instanceof BinEdFileHandler ? ((BinEdFileHandler) activeFile).getCodeArea() : null;
+        componentActivationListener.updated(FileHandler.class, activeFile);
+        componentActivationListener.updated(CodeAreaCore.class, codeArea);
+        undoHandler.setActiveFile(activeFile);
+
+        for (ActiveFileChangeListener listener : activeFileChangeListeners) {
+            listener.activeFileChanged(activeFile);
+        }
+
+        if (clipboardActionsUpdateListener != null) {
+            updateClipboardActionsStatus();
+        }
+
+        if (binaryStatus != null) {
+            updateStatus();
+        }
+
+        if (textEncodingStatusApi != null) {
+            updateCurrentEncoding();
+        }
     }
 
     @Nonnull
@@ -353,29 +383,6 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     public void updateRecentFilesList(URI fileUri, FileType fileType) {
         FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         fileModule.updateRecentFilesList(fileUri, fileType);
-    }
-
-    private void activeFileChanged() {
-        FileHandler fileHandler = multiEditorPanel.getActiveFile().orElse(null);
-        activeFileCache = fileHandler;
-        componentActivationListener.updated(FileHandler.class, fileHandler);
-        undoHandler.setActiveFile(fileHandler);
-
-        for (ActiveFileChangeListener listener : activeFileChangeListeners) {
-            listener.activeFileChanged(fileHandler);
-        }
-
-        if (clipboardActionsUpdateListener != null) {
-            updateClipboardActionsStatus();
-        }
-
-        if (binaryStatus != null) {
-            updateStatus();
-        }
-
-        if (textEncodingStatusApi != null) {
-            updateCurrentEncoding();
-        }
     }
 
     @Override
