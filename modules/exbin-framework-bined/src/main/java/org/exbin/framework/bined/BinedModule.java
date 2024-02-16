@@ -88,11 +88,13 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ComponentActivationService;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.bined.action.EditSelectionAction;
 import org.exbin.framework.bined.action.ReloadFileAction;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ObjectUtils;
 
@@ -933,7 +935,9 @@ public class BinedModule implements Module {
         popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
 
         final JPopupMenu popupMenu = new JPopupMenu();
-        actionModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ComponentActivationService componentActivationService = frameModule.getFrameHandler().getComponentActivationService();
+        actionModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, componentActivationService);
         return popupMenu;
     }
 
