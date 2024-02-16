@@ -40,7 +40,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.event.PopupMenuEvent;
@@ -58,9 +57,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.editor.MultiEditorUndoHandler;
-import org.exbin.framework.editor.action.CloseAllFileAction;
-import org.exbin.framework.editor.action.CloseFileAction;
-import org.exbin.framework.editor.action.CloseOtherFileAction;
 import org.exbin.framework.editor.action.EditorActions;
 import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.editor.gui.MultiEditorPanel;
@@ -76,6 +72,9 @@ import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
+import org.exbin.framework.action.api.ComponentActivationService;
+import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -88,6 +87,8 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  */
 @ParametersAreNonnullByDefault
 public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEditorProvider, UndoFileHandler {
+    
+    public static final String FILE_CONTEXT_MENU_ID = "fileContextMenu";
 
     private FileTypes fileTypes;
     private final MultiEditorPanel multiEditorPanel = new MultiEditorPanel();
@@ -116,6 +117,14 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     private void init() {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+        actionModule.registerMenu(FILE_CONTEXT_MENU_ID, BinedModule.MODULE_ID);
+        actionModule.registerMenuItem(FILE_CONTEXT_MENU_ID, BinedModule.MODULE_ID, editorModule.createCloseFileAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(FILE_CONTEXT_MENU_ID, BinedModule.MODULE_ID, editorModule.createCloseAllFilesAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(FILE_CONTEXT_MENU_ID, BinedModule.MODULE_ID, editorModule.createCloseOtherFilesAction(), new MenuPosition(PositionMode.TOP));
+        
         multiEditorPanel.setController(new MultiEditorPanel.Controller() {
             @Override
             public void activeIndexChanged(int index) {
@@ -128,18 +137,13 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
                     return;
                 }
 
-                EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-                JPopupMenu fileTabPopupMenu = new JPopupMenu();
-                CloseFileAction closeFileAction = (CloseFileAction) editorModule.getCloseFileAction();
-                JMenuItem closeMenuItem = new JMenuItem(closeFileAction);
-                fileTabPopupMenu.add(closeMenuItem);
-                CloseAllFileAction closeAllFileAction = (CloseAllFileAction) editorModule.getCloseAllFileAction();
-                JMenuItem closeAllMenuItem = new JMenuItem(closeAllFileAction);
-                fileTabPopupMenu.add(closeAllMenuItem);
-                CloseOtherFileAction closeOtherFileAction = (CloseOtherFileAction) editorModule.getCloseOtherFileAction();
-                JMenuItem closeOtherMenuItem = new JMenuItem(closeOtherFileAction);
-                fileTabPopupMenu.add(closeOtherMenuItem);
-                fileTabPopupMenu.show(component, positionX, positionY);
+                FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+                ComponentActivationService componentActivationService = frameModule.getFrameHandler().getComponentActivationService();
+                ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+                JPopupMenu fileContextPopupMenu = new JPopupMenu();
+                actionModule.buildMenu(fileContextPopupMenu, FILE_CONTEXT_MENU_ID, componentActivationService);
+                fileContextPopupMenu.show(component, positionX, positionY);
+                // TODO dispose?
             }
         });
         fileTypes = new AllFileTypes();

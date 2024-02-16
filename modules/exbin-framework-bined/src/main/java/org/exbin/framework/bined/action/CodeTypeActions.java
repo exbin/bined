@@ -16,7 +16,9 @@
 package org.exbin.framework.bined.action;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -114,35 +116,35 @@ public class CodeTypeActions {
         Map<String, ButtonGroup> buttonGroups = new HashMap<>();
         buttonGroups.put(CODE_TYPE_RADIO_GROUP_ID, cycleButtonGroup);
         JPopupMenu cycleCodeTypesPopupMenu = new JPopupMenu();
-        cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(createBinaryCodeTypeAction(), buttonGroups));
-        cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(createOctalCodeTypeAction(), buttonGroups));
-        cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(createDecimalCodeTypeAction(), buttonGroups));
-        cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(createHexadecimalCodeTypeAction(), buttonGroups));
+        List<Action> dropDownActions = new ArrayList<>();
+        dropDownActions.add(createBinaryCodeTypeAction());
+        dropDownActions.add(createOctalCodeTypeAction());
+        dropDownActions.add(createDecimalCodeTypeAction());
+        dropDownActions.add(createHexadecimalCodeTypeAction());
+        for (Action dropDownAction : dropDownActions) {
+            cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(dropDownAction, buttonGroups));
+        }
+        cycleCodeTypesAction.setDropDownActions(dropDownActions);
         cycleCodeTypesAction.putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
-        cycleCodeTypesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
-            @Override
-            public void register(ComponentActivationManager manager) {
-                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                    cycleCodeTypesAction.setEnabled(instance != null);
-                });
-            }
-        });
+        cycleCodeTypesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, cycleCodeTypesAction);
         return cycleCodeTypesAction;
     }
 
     @ParametersAreNonnullByDefault
     private static class BinaryCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.BINARY);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -158,16 +160,18 @@ public class CodeTypeActions {
     @ParametersAreNonnullByDefault
     private static class OctalCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.OCTAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -183,16 +187,18 @@ public class CodeTypeActions {
     @ParametersAreNonnullByDefault
     private static class DecimalCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.DECIMAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -208,16 +214,18 @@ public class CodeTypeActions {
     @ParametersAreNonnullByDefault
     private static class HexadecimalCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) codeArea).setCodeType(CodeType.HEXADECIMAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -233,7 +241,9 @@ public class CodeTypeActions {
     @ParametersAreNonnullByDefault
     private static class CycleCodeTypesAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
+        private List<Action> dropDownActions;
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -242,11 +252,16 @@ public class CodeTypeActions {
             CodeType[] values = CodeType.values();
             CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
             ((CodeTypeCapable) codeArea).setCodeType(next);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+        }
+
+        public void setDropDownActions(List<Action> dropDownActions) {
+            this.dropDownActions = dropDownActions;
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -257,6 +272,12 @@ public class CodeTypeActions {
                 }
                 setEnabled(hasInstance);
             });
+            if (dropDownActions != null) {
+                for (Action dropDownAction : dropDownActions) {
+                    ActionActiveComponent actionActiveComponent = (ActionActiveComponent) dropDownAction;
+                    actionActiveComponent.register(manager);
+                }
+            }
         }
     }
 }

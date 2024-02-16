@@ -664,8 +664,8 @@ public class BinedModule implements Module {
         actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, VIEW_MODE_SUBMENU_ID, viewSubMenuAction, new MenuPosition(PositionMode.BOTTOM));
         actionModule.registerMenu(VIEW_MODE_SUBMENU_ID, MODULE_ID);
         actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.createDualModeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getCodeMatrixModeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.getTextPreviewModeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.createCodeMatrixModeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(VIEW_MODE_SUBMENU_ID, MODULE_ID, viewModeActions.createTextPreviewModeAction(), new MenuPosition(PositionMode.TOP));
     }
 
     public void registerLayoutMenu() {
@@ -751,9 +751,9 @@ public class BinedModule implements Module {
         };
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, POSITION_CODE_TYPE_POPUP_SUBMENU_ID, positionCodeTypeSubMenuAction, new MenuPosition(CODE_AREA_POPUP_VIEW_GROUP_ID));
-        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getOctalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getDecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
-        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, getHexadecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, createOctalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, createDecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
+        actionModule.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, MODULE_ID, createHexadecimalPositionTypeAction(), new MenuPosition(PositionMode.TOP));
 
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.createCutAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
         actionModule.registerMenuItem(CODE_AREA_POPUP_MENU_ID, MODULE_ID, clipboardActions.createCopyAction(), new MenuPosition(CODE_AREA_POPUP_EDIT_GROUP_ID));
@@ -782,7 +782,7 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private Action getOctalPositionTypeAction() {
+    private Action createOctalPositionTypeAction() {
         Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -808,7 +808,7 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private Action getDecimalPositionTypeAction() {
+    private Action createDecimalPositionTypeAction() {
         Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -834,7 +834,7 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private Action getHexadecimalPositionTypeAction() {
+    private Action createHexadecimalPositionTypeAction() {
         Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

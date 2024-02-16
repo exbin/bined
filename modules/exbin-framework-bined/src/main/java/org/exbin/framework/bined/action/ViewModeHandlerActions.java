@@ -66,8 +66,7 @@ public class ViewModeHandlerActions {
     }
 
     @Nonnull
-    public Action getCodeMatrixModeAction() {
-
+    public Action createCodeMatrixModeAction() {
         CodeMatrixModeAction codeMatrixModeAction = new CodeMatrixModeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
@@ -78,7 +77,7 @@ public class ViewModeHandlerActions {
     }
 
     @Nonnull
-    public Action getTextPreviewModeAction() {
+    public Action createTextPreviewModeAction() {
         TextPreviewModeAction textPreviewModeAction = new TextPreviewModeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
