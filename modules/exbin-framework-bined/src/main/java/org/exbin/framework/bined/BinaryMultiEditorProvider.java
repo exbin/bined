@@ -79,6 +79,8 @@ import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.operation.undo.api.UndoActionsHandler;
+import org.exbin.framework.operation.undo.api.UndoUpdateListener;
 
 /**
  * Binary editor provider.
@@ -96,7 +98,6 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     private int lastNewFileIndex = 0;
     private final Map<Integer, Integer> newFilesMap = new HashMap<>();
     private FileHandlingMode defaultFileHandlingMode = FileHandlingMode.MEMORY;
-    private final List<ActiveFileChangeListener> activeFileChangeListeners = new ArrayList<>();
 
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private JPopupMenu codeAreaPopupMenu;
@@ -177,11 +178,61 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
         CodeAreaCore codeArea = activeFile instanceof BinEdFileHandler ? ((BinEdFileHandler) activeFile).getCodeArea() : null;
         componentActivationListener.updated(FileHandler.class, activeFile);
         componentActivationListener.updated(CodeAreaCore.class, codeArea);
-        undoHandler.setActiveFile(activeFile);
+        UndoActionsHandler undoActionsHandler = null;
+        if (activeFile instanceof UndoFileHandler) {
+            XBUndoHandler undoHandler = ((UndoFileHandler) activeFile).getUndoHandler();
+            undoActionsHandler = new UndoActionsHandler() {
+                @Override
+                public boolean canUndo() {
+                    return undoHandler.canUndo();
+                }
 
-        for (ActiveFileChangeListener listener : activeFileChangeListeners) {
-            listener.activeFileChanged(activeFile);
+                @Override
+                public boolean canRedo() {
+                    return undoHandler.canRedo();
+                }
+
+                @Override
+                public void performUndo() {
+                    try {
+                        undoHandler.performUndo();
+                    } catch (Exception ex) {
+                        Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void performRedo() {
+                    try {
+                        undoHandler.performRedo();
+                    } catch (Exception ex) {
+                        Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void performUndoManager() {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                @Override
+                public void setUndoUpdateListener(UndoUpdateListener undoUpdateListener) {
+                    /* undoHandler.addUndoUpdateListener(new XBUndoUpdateListener() {
+                        @Override
+                        public void undoCommandPositionChanged() {
+                            undoUpdateListener.undoChanged();
+                        }
+
+                        @Override
+                        public void undoCommandAdded(Command command) {
+                            undoUpdateListener.undoChanged();
+                        }
+                    }); */
+                }
+            };
         }
+        componentActivationListener.updated(UndoActionsHandler.class, undoActionsHandler);
+        undoHandler.setActiveFile(activeFile);
 
         if (clipboardActionsUpdateListener != null) {
             updateClipboardActionsStatus();
@@ -538,16 +589,6 @@ public class BinaryMultiEditorProvider implements MultiEditorProvider, BinEdEdit
     public void setClipboardActionsUpdateListener(ClipboardActionsUpdateListener updateListener) {
         clipboardActionsUpdateListener = updateListener;
         updateClipboardActionsStatus();
-    }
-
-    @Override
-    public void addActiveFileChangeListener(ActiveFileChangeListener listener) {
-        activeFileChangeListeners.add(listener);
-    }
-
-    @Override
-    public void removeActiveFileChangeListener(ActiveFileChangeListener listener) {
-        activeFileChangeListeners.remove(listener);
     }
 
     @Nonnull

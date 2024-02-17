@@ -239,7 +239,7 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class CycleCodeTypesAction extends AbstractAction implements ActionActiveComponent {
+    private class CycleCodeTypesAction extends AbstractAction implements ActionActiveComponent {
 
         private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
@@ -267,8 +267,7 @@ public class CodeTypeActions {
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
                     CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                    // TODO language support
-                    putValue(Action.NAME, codeType.name().substring(0, 3));
+                    putValue(Action.NAME, resourceBundle.getString(CYCLE_CODE_TYPES_ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
                 }
                 setEnabled(hasInstance);
             });

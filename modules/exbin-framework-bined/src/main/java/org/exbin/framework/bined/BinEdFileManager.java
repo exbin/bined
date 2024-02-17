@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
@@ -40,7 +39,6 @@ import org.exbin.framework.editor.text.EncodingsHandler;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
-import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * File manager for binary editor.
@@ -55,7 +53,6 @@ public class BinEdFileManager {
     private BinaryStatusPanel binaryStatusPanel;
     private final SegmentsRepository segmentsRepository = new SegmentsRepository();
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
-    private final List<ActionStatusUpdateListener> actionStatusUpdateListeners = new ArrayList<>();
     private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
     private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
     private CodeAreaCommandHandlerProvider commandHandlerProvider = null;
@@ -150,12 +147,6 @@ public class BinEdFileManager {
         }
     }
 
-    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
-        for (ActionStatusUpdateListener listener : actionStatusUpdateListeners) {
-            listener.updateActionStatus(codeArea);
-        }
-    }
-
     public void applyPreferencesChanges(StatusOptionsImpl options) {
         binaryStatusPanel.setStatusOptions(options);
     }
@@ -170,10 +161,6 @@ public class BinEdFileManager {
 
     public void addBinEdComponentExtension(BinEdFileExtension extension) {
         binEdComponentExtensions.add(extension);
-    }
-
-    public void addActionStatusUpdateListener(ActionStatusUpdateListener listener) {
-        actionStatusUpdateListeners.add(listener);
     }
 
     public void loadFromPreferences(Preferences preferences) {
@@ -195,11 +182,5 @@ public class BinEdFileManager {
 
         @Nonnull
         Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface ActionStatusUpdateListener {
-
-        void updateActionStatus(CodeAreaCore codeArea);
     }
 }

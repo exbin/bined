@@ -72,6 +72,10 @@ public class GoToPositionAction extends AbstractAction {
         });
     }
 
+    public void setCodeArea(CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         final GoToPositionPanel goToPanel = new GoToPositionPanel();

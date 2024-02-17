@@ -54,7 +54,6 @@ import javax.swing.event.PopupMenuListener;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
@@ -92,7 +91,6 @@ import org.exbin.framework.action.api.ComponentActivationService;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.bined.action.EditSelectionAction;
 import org.exbin.framework.bined.action.ReloadFileAction;
-import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
@@ -200,7 +198,9 @@ public class BinedModule implements Module {
 
             BinEdComponentPanel componentPanel = editorFile.getComponent();
             ExtCodeArea codeArea = editorFile.getComponent().getCodeArea();
-            codeArea.addSelectionChangedListener(this::updateClipboardActionStatus);
+            codeArea.addSelectionChangedListener(() -> {
+                
+            });
             componentPanel.setPopupMenu(createPopupMenu(editorFile.getId(), codeArea));
         }
 
@@ -219,51 +219,10 @@ public class BinedModule implements Module {
             fileModule.setFileOperations(editorProvider);
             ((BinaryMultiEditorProvider) editorProvider).setCodeAreaPopupMenuHandler(createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR));
 
-            ((MultiEditorProvider) editorProvider).addActiveFileChangeListener(e -> {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                CodeAreaCore codeArea = activeFile.isPresent() ? ((BinEdFileHandler) activeFile.get()).getCodeArea() : null;
-                updateActionStatus(codeArea);
-            });
-            ((BinaryMultiEditorProvider) editorProvider).setClipboardActionsUpdateListener(() -> {
-                updateClipboardActionStatus();
-            });
             fileModule.setFileOperations(editorProvider);
         }
 
         return editorProvider;
-    }
-
-    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
-//        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-//        editorModule.updateActionStatus();
-//        FileDependentAction[] fileDepActions = new FileDependentAction[]{
-//            propertiesAction, reloadFileAction
-//        };
-//        for (FileDependentAction fileDepAction : fileDepActions) {
-//            if (fileDepAction != null) {
-//                fileDepAction.updateForActiveFile();
-//            }
-//        }
-
-        fileManager.updateActionStatus(codeArea);
-
-        //TODO
-//        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-//        fileModule.updateForFileOperations();
-    }
-
-    public void updateClipboardActionStatus() {
-        if (clipboardCodeActions != null) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            CodeAreaCore codeArea = null;
-            if (activeFile.isPresent()) {
-                FileHandler fileHandler = activeFile.get();
-                if (fileHandler instanceof BinEdFileHandler) {
-                    codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
-                }
-            }
-            // clipboardCodeActions.updateForActiveCodeArea(codeArea);
-        }
     }
 
     @Nonnull

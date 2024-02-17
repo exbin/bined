@@ -62,47 +62,46 @@ public class PositionCodeTypeActions {
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, octalPositionCodeTypeAction);
-
         return octalPositionCodeTypeAction;
     }
 
     @Nonnull
     public Action createDecimalCodeTypeAction() {
-
         DecimalPositionCodeTypeAction decimalPositionCodeTypeAction = new DecimalPositionCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(decimalPositionCodeTypeAction, resourceBundle, DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
-        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
         decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        decimalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, decimalPositionCodeTypeAction);
+        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, decimalPositionCodeTypeAction);
         return decimalPositionCodeTypeAction;
     }
 
     @Nonnull
     public Action createHexadecimalCodeTypeAction() {
-
         HexadecimalPositionCodeTypeAction hexadecimalPositionCodeTypeAction = new HexadecimalPositionCodeTypeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(hexadecimalPositionCodeTypeAction, resourceBundle, HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        hexadecimalPositionCodeTypeAction.putValue(Action.SELECTED_KEY, hexadecimalPositionCodeTypeAction);
+        hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, hexadecimalPositionCodeTypeAction);
         return hexadecimalPositionCodeTypeAction;
     }
 
     @ParametersAreNonnullByDefault
     public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) codeArea).setPositionCodeType(PositionCodeType.OCTAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -118,16 +117,18 @@ public class PositionCodeTypeActions {
     @ParametersAreNonnullByDefault
     public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) codeArea).setPositionCodeType(PositionCodeType.DECIMAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -143,16 +144,18 @@ public class PositionCodeTypeActions {
     @ParametersAreNonnullByDefault
     public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionActiveComponent {
 
+        private ComponentActivationManager manager;
         private CodeAreaCore codeArea;
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) codeArea).setPositionCodeType(PositionCodeType.HEXADECIMAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
