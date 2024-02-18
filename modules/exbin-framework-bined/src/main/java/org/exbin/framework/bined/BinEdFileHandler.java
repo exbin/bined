@@ -48,11 +48,11 @@ import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.editor.text.TextCharsetApi;
 import org.exbin.framework.editor.text.TextFontApi;
+import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.utils.ClipboardActionsHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.xbup.core.type.XBData;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 
@@ -62,7 +62,7 @@ import org.exbin.xbup.operation.undo.XBUndoHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
+public class BinEdFileHandler implements EditableFileHandler, UndoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
 
     private SegmentsRepository segmentsRepository;
 
@@ -143,6 +143,11 @@ public class BinEdFileHandler implements FileHandler, UndoFileHandler, BinEdComp
 
         undoHandlerWrapper.clear();
         fileSync();
+    }
+
+    @Override
+    public boolean canSave() {
+        return fileUri != null;
     }
 
     @Override
