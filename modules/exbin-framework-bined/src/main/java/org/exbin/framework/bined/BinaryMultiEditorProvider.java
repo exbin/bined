@@ -41,7 +41,6 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -54,8 +53,6 @@ import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
-import org.exbin.framework.operation.undo.api.UndoActionsHandler;
-import org.exbin.framework.operation.undo.api.UndoUpdateListener;
 
 /**
  * Binary editor provider.
@@ -103,62 +100,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     @Override
     public void activeFileChanged() {
         super.activeFileChanged();
-        CodeAreaCore codeArea = activeFile instanceof BinEdFileHandler ? ((BinEdFileHandler) activeFile).getCodeArea() : null;
-        componentActivationListener.updated(CodeAreaCore.class, codeArea);
-        UndoActionsHandler undoActionsHandler = null;
-        if (activeFile instanceof UndoFileHandler) {
-            XBUndoHandler undoHandler = ((UndoFileHandler) activeFile).getUndoHandler();
-            undoActionsHandler = new UndoActionsHandler() {
-                @Override
-                public boolean canUndo() {
-                    return undoHandler.canUndo();
-                }
 
-                @Override
-                public boolean canRedo() {
-                    return undoHandler.canRedo();
-                }
-
-                @Override
-                public void performUndo() {
-                    try {
-                        undoHandler.performUndo();
-                    } catch (Exception ex) {
-                        Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-                @Override
-                public void performRedo() {
-                    try {
-                        undoHandler.performRedo();
-                    } catch (Exception ex) {
-                        Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-                @Override
-                public void performUndoManager() {
-                    throw new UnsupportedOperationException("Not supported yet.");
-                }
-
-                @Override
-                public void setUndoUpdateListener(UndoUpdateListener undoUpdateListener) {
-                    /* undoHandler.addUndoUpdateListener(new XBUndoUpdateListener() {
-                        @Override
-                        public void undoCommandPositionChanged() {
-                            undoUpdateListener.undoChanged();
-                        }
-
-                        @Override
-                        public void undoCommandAdded(Command command) {
-                            undoUpdateListener.undoChanged();
-                        }
-                    }); */
-                }
-            };
-        }
-        componentActivationListener.updated(UndoActionsHandler.class, undoActionsHandler);
         if (undoHandler != null) {
             undoHandler.setActiveFile(activeFile);
         }
