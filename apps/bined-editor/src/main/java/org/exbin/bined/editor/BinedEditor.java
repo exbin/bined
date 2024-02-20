@@ -251,8 +251,8 @@ public class BinedEditor {
                 final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
-                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-                editorModule.registerUndoHandler();
+//                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
+//                editorModule.registerUndoHandler();
 
                 binedModule.registerStatusBar();
                 binedModule.registerOptionsPanels();

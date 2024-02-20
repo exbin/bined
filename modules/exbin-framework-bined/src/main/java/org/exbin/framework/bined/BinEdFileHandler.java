@@ -59,8 +59,7 @@ import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.framework.action.api.ComponentActivationProvider;
 import org.exbin.framework.action.api.DefaultComponentActivationService;
-import org.exbin.framework.operation.undo.api.UndoActionsHandler;
-import org.exbin.framework.operation.undo.api.UndoUpdateListener;
+import org.exbin.framework.operation.undo.api.UndoRedoHandler;
 
 /**
  * File handler for binary editor.
@@ -101,7 +100,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
         defaultFont = codeArea.getCodeFont();
         defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
         componentActivationService.updated(CodeAreaCore.class, codeArea);
-        UndoActionsHandler undoActionsHandler = new UndoActionsHandler() {
+        UndoRedoHandler undoActionsHandler = new UndoRedoHandler() {
             @Override
             public boolean canUndo() {
                 return undoHandler.canUndo();
@@ -129,28 +128,8 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
                     Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
-            @Override
-            public void performUndoManager() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void setUndoUpdateListener(UndoUpdateListener undoUpdateListener) {
-                /* undoHandler.addUndoUpdateListener(new XBUndoUpdateListener() {
-                    @Override
-                    public void undoCommandPositionChanged() {
-                        undoUpdateListener.undoChanged();
-                    }
-
-                    @Override
-                    public void undoCommandAdded(Command command) {
-                        undoUpdateListener.undoChanged();
-                    }
-                }); */
-            }
         };
-        componentActivationService.updated(UndoActionsHandler.class, undoActionsHandler);
+        componentActivationService.updated(UndoRedoHandler.class, undoActionsHandler);
     }
 
     public void onInitFromPreferences(BinaryEditorPreferences preferences) {

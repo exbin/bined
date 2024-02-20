@@ -167,6 +167,10 @@ public class BinedModule implements Module {
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
+        if (fileManager == null) {
+            fileManager = new BinEdFileManager();
+        }
+
         this.editorProvider = editorProvider;
         fileManager.setEditorProvider(editorProvider);
     }
