@@ -203,7 +203,7 @@ public class BinedModule implements Module {
             BinEdComponentPanel componentPanel = editorFile.getComponent();
             ExtCodeArea codeArea = editorFile.getComponent().getCodeArea();
             codeArea.addSelectionChangedListener(() -> {
-                
+
             });
             componentPanel.setPopupMenu(createPopupMenu(editorFile.getId(), codeArea));
         }
@@ -322,6 +322,10 @@ public class BinedModule implements Module {
     public void registerOptionsPanels() {
         BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
         getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService, getCodeTypeActions(), getShowUnprintablesActions(), getHexCharactersCaseActions(), getPositionCodeTypeActions(), getViewModeActions());
+    }
+
+    public void registerUndoHandler() {
+        ((BinEdEditorProvider) editorProvider).registerUndoHandler();
     }
 
     public void registerWordWrapping() {

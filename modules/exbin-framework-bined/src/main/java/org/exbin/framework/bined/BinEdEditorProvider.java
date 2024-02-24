@@ -44,4 +44,6 @@ public interface BinEdEditorProvider {
      * Requests update of the status for current file.
      */
     void updateStatus();
+
+    void registerUndoHandler();
 }

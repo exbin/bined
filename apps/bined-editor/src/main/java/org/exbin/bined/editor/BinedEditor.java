@@ -252,13 +252,13 @@ public class BinedEditor {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-//                editorModule.registerUndoHandler();
 
                 binedModule.registerStatusBar();
                 binedModule.registerOptionsPanels();
                 binedModule.getBinaryStatusPanel();
                 binedInspectorModule.registerOptionsPanels();
                 updateModule.registerOptionsPanels();
+                binedModule.registerUndoHandler();
 
                 binedModule.loadFromPreferences(preferences);
 

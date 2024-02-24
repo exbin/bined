@@ -54,6 +54,7 @@ import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
+import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -111,6 +112,9 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         CodeAreaCore codeArea = activeFile.getCodeArea();
         componentActivationListener.updated(FileHandler.class, activeFile);
         componentActivationListener.updated(CodeAreaCore.class, codeArea);
+        if (activeFile instanceof EditorFileHandler) {
+            ((EditorFileHandler) activeFile).componentActivated(componentActivationListener);
+        }
     }
 
     @Nonnull
@@ -172,6 +176,11 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         updateCurrentSelectionRange();
         updateCurrentMemoryMode();
         updateCurrentEditMode();
+    }
+
+    @Override
+    public void registerUndoHandler() {
+        activeFile.registerUndoHandler();
     }
 
     private void updateCurrentDocumentSize() {

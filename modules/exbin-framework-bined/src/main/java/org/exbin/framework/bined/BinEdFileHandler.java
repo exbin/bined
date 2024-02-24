@@ -39,11 +39,14 @@ import org.exbin.auxiliary.binary_data.EmptyBinaryData;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.FileDataSource;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
+import org.exbin.bined.operation.BinaryDataCommand;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
+import org.exbin.bined.operation.undo.BinaryDataUndoUpdateListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ComponentActivationService;
 import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -59,6 +62,7 @@ import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.framework.action.api.ComponentActivationProvider;
 import org.exbin.framework.action.api.DefaultComponentActivationService;
+import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedoHandler;
 
 /**
@@ -67,7 +71,7 @@ import org.exbin.framework.operation.undo.api.UndoRedoHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdFileHandler implements EditableFileHandler, ComponentActivationProvider, UndoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
+public class BinEdFileHandler implements EditableFileHandler, ComponentActivationProvider, EditorFileHandler, UndoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
 
     private SegmentsRepository segmentsRepository;
 
@@ -82,6 +86,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
     private ExtendedCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
     private DefaultComponentActivationService componentActivationService = new DefaultComponentActivationService();
+    private UndoRedoHandler undoRedoHandler = null;
 
     public BinEdFileHandler() {
         editorComponent = new BinEdEditorComponent();
@@ -95,12 +100,15 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     private void init() {
         final ExtCodeArea codeArea = getCodeArea();
-        CodeAreaUndoHandler undoHandler = new CodeAreaUndoHandler(editorComponent.getCodeArea());
-        editorComponent.setUndoHandler(undoHandler);
         defaultFont = codeArea.getCodeFont();
         defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
         componentActivationService.updated(CodeAreaCore.class, codeArea);
-        UndoRedoHandler undoActionsHandler = new UndoRedoHandler() {
+    }
+
+    public void registerUndoHandler() {
+        CodeAreaUndoHandler undoHandler = new CodeAreaUndoHandler(editorComponent.getCodeArea());
+        editorComponent.setUndoHandler(undoHandler);
+        undoRedoHandler = new UndoRedoHandler() {
             @Override
             public boolean canUndo() {
                 return undoHandler.canUndo();
@@ -115,6 +123,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
             public void performUndo() {
                 try {
                     undoHandler.performUndo();
+                    notifyUndoChanged();
                 } catch (Exception ex) {
                     Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -124,12 +133,24 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
             public void performRedo() {
                 try {
                     undoHandler.performRedo();
+                    notifyUndoChanged();
                 } catch (Exception ex) {
                     Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         };
-        componentActivationService.updated(UndoRedoHandler.class, undoActionsHandler);
+        undoHandler.addUndoUpdateListener(new BinaryDataUndoUpdateListener() {
+            @Override
+            public void undoCommandPositionChanged() {
+                notifyUndoChanged();
+            }
+
+            @Override
+            public void undoCommandAdded(BinaryDataCommand command) {
+                notifyUndoChanged();
+            }
+        });
+        notifyUndoChanged();
     }
 
     public void onInitFromPreferences(BinaryEditorPreferences preferences) {
@@ -560,5 +581,16 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
     @Override
     public ComponentActivationService getComponentActivationService() {
         return componentActivationService;
+    }
+
+    @Override
+    public void componentActivated(ComponentActivationListener componentActivationListener) {
+        componentActivationService.requestUpdate();
+    }
+
+    private void notifyUndoChanged() {
+        if (undoRedoHandler != null) {
+            componentActivationService.updated(UndoRedoHandler.class, undoRedoHandler);
+        }
     }
 }

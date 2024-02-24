@@ -69,7 +69,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     private ClipboardActionsUpdateListener clipboardActionsUpdateListener;
     private BinaryStatusApi binaryStatus;
     private TextEncodingStatusApi textEncodingStatusApi;
-    private MultiEditorUndoHandler undoHandler = new MultiEditorUndoHandler();
+    private MultiEditorUndoHandler undoHandler = null;
 
     public BinaryMultiEditorProvider() {
         init();
@@ -95,6 +95,14 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                 }
             }
         });
+    }
+
+    @Override
+    public void registerUndoHandler() {
+        undoHandler = new MultiEditorUndoHandler();
+        if (activeFile != null) {
+            ((BinEdFileHandler) activeFile).registerUndoHandler();
+        }
     }
 
     @Override
@@ -137,6 +145,9 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.initFileHandler(fileHandler);
+        if (undoHandler != null) {
+            fileHandler.registerUndoHandler();
+        }
 
         fileHandler.setNewData(defaultFileHandlingMode);
         fileHandler.getUndoHandler().addUndoUpdateListener(new XBUndoUpdateListener() {
