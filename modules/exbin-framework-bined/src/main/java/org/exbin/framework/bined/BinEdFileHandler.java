@@ -103,6 +103,10 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
         defaultFont = codeArea.getCodeFont();
         defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
         componentActivationService.updated(CodeAreaCore.class, codeArea);
+        componentActivationService.updated(ClipboardActionsHandler.class, this);
+        codeArea.addSelectionChangedListener(() -> {
+            componentActivationService.updated(ClipboardActionsHandler.class, this);
+        });
     }
 
     public void registerUndoHandler() {

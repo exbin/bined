@@ -18,7 +18,6 @@ package org.exbin.framework.bined.search.action;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -34,7 +33,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
@@ -42,16 +40,16 @@ import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.file.api.FileHandler;
 
 /**
- * Find/replace actions.
+ * Find/replace actions for binary search.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class FindReplaceActions {
 
-    public static final String EDIT_FIND_ACTION_ID = "editFindAction";
-    public static final String EDIT_FIND_AGAIN_ACTION_ID = "editFindAgainAction";
-    public static final String EDIT_REPLACE_ACTION_ID = "editReplaceAction";
+    public static final String FIND_ACTION_ID = "binarySearchFindAction";
+    public static final String FIND_AGAIN_ACTION_ID = "binarySearchFindAgainAction";
+    public static final String REPLACE_ACTION_ID = "binarySearchReplaceAction";
 
     private ResourceBundle resourceBundle;
 
@@ -68,7 +66,7 @@ public class FindReplaceActions {
     public Action getEditFindAction() {
         EditFindAction editFindAction = new EditFindAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(editFindAction, resourceBundle, EDIT_FIND_ACTION_ID);
+        actionModule.initAction(editFindAction, resourceBundle, FIND_ACTION_ID);
         editFindAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
         editFindAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         editFindAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
@@ -92,7 +90,7 @@ public class FindReplaceActions {
     public Action getEditFindAgainAction() {
         EditFindAgainAction editFindAgainAction = new EditFindAgainAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(editFindAgainAction, resourceBundle, EDIT_FIND_AGAIN_ACTION_ID);
+        actionModule.initAction(editFindAgainAction, resourceBundle, FIND_AGAIN_ACTION_ID);
         editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
         editFindAgainAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
@@ -114,7 +112,7 @@ public class FindReplaceActions {
     public Action getEditReplaceAction() {
         EditFindAgainAction editReplaceAction = new EditFindAgainAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(editReplaceAction, resourceBundle, EDIT_REPLACE_ACTION_ID);
+        actionModule.initAction(editReplaceAction, resourceBundle, REPLACE_ACTION_ID);
         editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
         editReplaceAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         editReplaceAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
@@ -149,25 +147,20 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditFindAction extends AbstractAction implements ActionActiveComponent {
 
-        private EditorProvider editorProvider;
+        private FileHandler fileHandler;
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                throw new IllegalStateException();
-            }
-
-            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
-            manager.registerUpdateListener(EditorProvider.class, (instance) -> {
-                editorProvider = instance;
-                setEnabled(instance.getActiveFile().isPresent());
+            manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                fileHandler = instance;
+                setEnabled(instance != null);
             });
         }
     }
@@ -175,16 +168,11 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditFindAgainAction extends AbstractAction implements ActionActiveComponent {
 
-        private EditorProvider editorProvider;
+        private FileHandler fileHandler;
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                throw new IllegalStateException();
-            }
-
-            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.performFindAgain();
 
@@ -195,9 +183,9 @@ public class FindReplaceActions {
 
         @Override
         public void register(ComponentActivationManager manager) {
-            manager.registerUpdateListener(EditorProvider.class, (instance) -> {
-                editorProvider = instance;
-                setEnabled(instance.getActiveFile().isPresent());
+            manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                fileHandler = instance;
+                setEnabled(instance != null);
             });
         }
     }
@@ -205,25 +193,20 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditReplaceAction extends AbstractAction implements ActionActiveComponent {
 
-        private EditorProvider editorProvider;
+        private FileHandler fileHandler;
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                throw new IllegalStateException();
-            }
-
-            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
         }
 
         @Override
         public void register(ComponentActivationManager manager) {
-            manager.registerUpdateListener(EditorProvider.class, (instance) -> {
-                editorProvider = instance;
-                setEnabled(instance.getActiveFile().isPresent());
+            manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                fileHandler = instance;
+                setEnabled(instance != null);
             });
         }
     }
