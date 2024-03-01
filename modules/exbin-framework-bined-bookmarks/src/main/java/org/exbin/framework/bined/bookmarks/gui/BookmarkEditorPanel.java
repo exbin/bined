@@ -26,6 +26,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.options.gui.ColorCellPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -227,7 +228,7 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new BookmarkEditorPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new BookmarkEditorPanel()));
     }
 
 

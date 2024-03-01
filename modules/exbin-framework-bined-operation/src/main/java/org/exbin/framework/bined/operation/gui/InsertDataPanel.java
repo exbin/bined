@@ -38,6 +38,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Insert data panel.
@@ -228,7 +229,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new InsertDataPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new InsertDataPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -53,14 +53,18 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="nameLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Name"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/macro/gui/resources/MacroEditorPanel.properties" key="nameLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="nameTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="stepsLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Steps"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/macro/gui/resources/MacroEditorPanel.properties" key="stepsLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="stepsScrollPane">

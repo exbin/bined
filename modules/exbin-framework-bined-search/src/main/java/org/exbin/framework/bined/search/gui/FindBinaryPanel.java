@@ -46,6 +46,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.framework.App;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Find text/binary data panel.
@@ -501,7 +502,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new FindBinaryPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new FindBinaryPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

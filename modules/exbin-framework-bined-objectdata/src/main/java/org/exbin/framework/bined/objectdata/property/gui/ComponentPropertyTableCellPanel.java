@@ -26,6 +26,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicBorders;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -107,7 +108,7 @@ public class ComponentPropertyTableCellPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new ComponentPropertyTableCellPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new ComponentPropertyTableCellPanel()));
     }
 
     @Nonnull

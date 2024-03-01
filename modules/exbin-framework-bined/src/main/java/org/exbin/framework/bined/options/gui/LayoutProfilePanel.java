@@ -24,6 +24,7 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -367,7 +368,7 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new LayoutProfilePanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new LayoutProfilePanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

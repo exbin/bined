@@ -33,6 +33,7 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -302,7 +303,7 @@ public class CompareFilesPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new CompareFilesPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new CompareFilesPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

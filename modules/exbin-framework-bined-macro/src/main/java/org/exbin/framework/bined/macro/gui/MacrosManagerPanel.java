@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -226,7 +227,7 @@ public class MacrosManagerPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new MacrosManagerPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new MacrosManagerPanel()));
     }
 
     @Nonnull

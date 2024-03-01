@@ -18,6 +18,7 @@ package org.exbin.framework.bined.operation.component.gui;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -89,7 +90,7 @@ public class ImportFromCodeDataPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new ImportFromCodeDataPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new ImportFromCodeDataPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

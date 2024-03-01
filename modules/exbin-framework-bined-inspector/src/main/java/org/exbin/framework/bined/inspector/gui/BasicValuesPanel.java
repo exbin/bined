@@ -48,6 +48,7 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Values side panel.
@@ -698,7 +699,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new BasicValuesPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new BasicValuesPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

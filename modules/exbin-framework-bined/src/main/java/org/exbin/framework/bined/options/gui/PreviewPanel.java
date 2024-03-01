@@ -32,6 +32,7 @@ import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAre
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -121,7 +122,7 @@ public class PreviewPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new PreviewPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new PreviewPanel()));
     }
 
 

@@ -23,6 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -118,9 +119,9 @@ public class MacroEditorPanel extends javax.swing.JPanel {
         stepsScrollPane = new javax.swing.JScrollPane();
         stepsTextArea = new javax.swing.JTextArea();
 
-        nameLabel.setText("Name");
+        nameLabel.setText(resourceBundle.getString("nameLabel.text")); // NOI18N
 
-        stepsLabel.setText("Steps");
+        stepsLabel.setText(resourceBundle.getString("stepsLabel.text")); // NOI18N
 
         stepsTextArea.setColumns(20);
         stepsTextArea.setRows(5);
@@ -163,7 +164,7 @@ public class MacroEditorPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new MacroEditorPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new MacroEditorPanel()));
     }
 
 

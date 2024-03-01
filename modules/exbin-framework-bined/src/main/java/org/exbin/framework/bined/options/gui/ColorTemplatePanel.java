@@ -42,6 +42,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Manage list of color profiles panel.
@@ -174,7 +175,7 @@ public class ColorTemplatePanel extends javax.swing.JPanel implements ProfileLis
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new ColorTemplatePanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new ColorTemplatePanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

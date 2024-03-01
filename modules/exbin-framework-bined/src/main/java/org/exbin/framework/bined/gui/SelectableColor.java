@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -117,7 +118,7 @@ public class SelectableColor extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new SelectableColor(""));
+        TestApplication.run(() -> WindowUtils.invokeWindow(new SelectableColor("")));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

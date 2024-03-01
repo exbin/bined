@@ -23,6 +23,7 @@ import org.exbin.bined.CodeAreaUtils;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -252,7 +253,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new SimpleFillDataPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new SimpleFillDataPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

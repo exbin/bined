@@ -54,6 +54,7 @@ import org.exbin.framework.bined.objectdata.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -519,7 +520,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new ClipboardContentPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new ClipboardContentPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

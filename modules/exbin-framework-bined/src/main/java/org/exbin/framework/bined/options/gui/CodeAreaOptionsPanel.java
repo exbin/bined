@@ -30,6 +30,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Code area preference parameters panel.
@@ -234,7 +235,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new CodeAreaOptionsPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new CodeAreaOptionsPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

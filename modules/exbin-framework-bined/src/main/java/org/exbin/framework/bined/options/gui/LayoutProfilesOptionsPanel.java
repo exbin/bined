@@ -25,6 +25,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Layout profiles options panel.
@@ -103,7 +104,7 @@ public class LayoutProfilesOptionsPanel extends javax.swing.JPanel implements Op
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new LayoutProfilesOptionsPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new LayoutProfilesOptionsPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

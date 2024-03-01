@@ -24,6 +24,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Binary viewer/editor appearance options panel.
@@ -97,7 +98,7 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new BinaryAppearanceOptionsPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new BinaryAppearanceOptionsPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -25,6 +25,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -163,7 +164,7 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new ProfileSelectionPanel(new JPanel()));
+        TestApplication.run(() -> WindowUtils.invokeWindow(new ProfileSelectionPanel(new JPanel())));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

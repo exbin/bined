@@ -31,6 +31,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Multiline search condition editor panel.
@@ -78,7 +79,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new BinaryMultilinePanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new BinaryMultilinePanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

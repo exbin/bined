@@ -21,6 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -98,7 +99,7 @@ public class NamedProfilePanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new NamedProfilePanel(new JPanel()));
+        TestApplication.run(() -> WindowUtils.invokeWindow(new NamedProfilePanel(new JPanel())));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

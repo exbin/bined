@@ -21,6 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -313,7 +314,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new GoToPositionPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new GoToPositionPanel()));
     }
 
     public void acceptInput() {

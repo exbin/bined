@@ -31,6 +31,7 @@ import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -121,7 +122,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new BinEdComponentPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new BinEdComponentPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

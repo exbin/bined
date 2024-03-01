@@ -51,6 +51,7 @@ import org.exbin.bined.color.CodeAreaBasicColors;
 import org.exbin.bined.swing.extended.ExtendedCodeAreaPainter;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 import org.exbin.framework.App;
+import org.exbin.framework.utils.TestApplication;
 
 /**
  * Binary editor search panel.
@@ -714,7 +715,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new BinarySearchPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new BinarySearchPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

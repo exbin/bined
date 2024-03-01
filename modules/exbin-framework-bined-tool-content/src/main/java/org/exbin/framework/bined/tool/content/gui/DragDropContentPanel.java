@@ -59,6 +59,7 @@ import org.exbin.framework.bined.objectdata.source.ReaderPageProvider;
 import org.exbin.framework.bined.objectdata.property.gui.InspectComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -521,7 +522,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WindowUtils.invokeWindow(new DragDropContentPanel());
+        TestApplication.run(() -> WindowUtils.invokeWindow(new DragDropContentPanel()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
