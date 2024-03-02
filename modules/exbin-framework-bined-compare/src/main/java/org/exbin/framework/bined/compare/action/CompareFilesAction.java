@@ -35,11 +35,11 @@ import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
-import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -58,7 +58,7 @@ import org.exbin.framework.window.api.WindowModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CompareFilesAction extends AbstractAction {
+public class CompareFilesAction extends AbstractAction implements ActionActiveComponent {
 
     public static final String ACTION_ID = "compareFilesAction";
 
@@ -68,13 +68,13 @@ public class CompareFilesAction extends AbstractAction {
     public CompareFilesAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
     }
 
     @Override
@@ -145,5 +145,13 @@ public class CompareFilesAction extends AbstractAction {
             }
         });
         dialog.showCentered(editorProvider.getEditorComponent());
+    }
+
+    @Override
+    public void register(ComponentActivationManager manager) {
+        manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+            editorProvider = instance;
+            setEnabled(instance != null);
+        });
     }
 }

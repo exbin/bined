@@ -99,12 +99,12 @@ public class MacroManager {
 
         addMacroAction.setup(resourceBundle);
         editMacroAction.setup(resourceBundle);
-        manageMacrosAction.setup(editorProvider, resourceBundle);
-        executeLastMacroAction.setup(editorProvider, resourceBundle);
+        manageMacrosAction.setup(resourceBundle);
+        executeLastMacroAction.setup(resourceBundle);
         executeLastMacroAction.setMacroManager(this);
-        startMacroRecordingAction.setup(editorProvider, resourceBundle);
+        startMacroRecordingAction.setup(resourceBundle);
         startMacroRecordingAction.setMacroManager(this);
-        stopMacroRecordingAction.setup(editorProvider, resourceBundle);
+        stopMacroRecordingAction.setup(resourceBundle);
         stopMacroRecordingAction.setMacroManager(this);
     }
 

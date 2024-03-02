@@ -86,18 +86,17 @@ public class BookmarksManager {
     private JMenu bookmarksMenu;
 
     public BookmarksManager() {
-        manageBookmarksAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        addBookmarkAction.setup(resourceBundle);
-        editBookmarkAction.setup(resourceBundle);
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
-
-        manageBookmarksAction.setup(editorProvider, resourceBundle);
     }
 
     public void init() {
+        addBookmarkAction.setup(resourceBundle);
+        editBookmarkAction.setup(resourceBundle);
+        manageBookmarksAction.setup(resourceBundle);
+
         BinedModule binedModule = App.getModule(BinedModule.class);
 
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);

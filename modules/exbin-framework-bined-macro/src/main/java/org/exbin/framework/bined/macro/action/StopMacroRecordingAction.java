@@ -28,7 +28,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
-import org.exbin.framework.editor.api.EditorProvider;
 
 /**
  * Stop macro recording action.
@@ -41,15 +40,13 @@ public class StopMacroRecordingAction extends AbstractAction {
     public static final String ACTION_ID = "stopMacroRecordingAction";
 
     private CodeAreaCore codeArea;
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
     private MacroManager macroManager;
 
     public StopMacroRecordingAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

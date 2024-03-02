@@ -24,16 +24,16 @@ import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.gui.MacrosManagerPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
@@ -43,7 +43,7 @@ import org.exbin.framework.window.api.gui.DefaultControlPanel;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ManageMacrosAction extends AbstractAction {
+public class ManageMacrosAction extends AbstractAction implements ActionActiveComponent {
 
     public static final String ACTION_ID = "manageMacrosAction";
 
@@ -53,13 +53,13 @@ public class ManageMacrosAction extends AbstractAction {
     public ManageMacrosAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
     }
 
     @Override
@@ -97,5 +97,13 @@ public class ManageMacrosAction extends AbstractAction {
         });
 
         dialog.showCentered(editorProvider.getEditorComponent());
+    }
+
+    @Override
+    public void register(ComponentActivationManager manager) {
+        manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+            editorProvider = instance;
+            setEnabled(instance != null);
+        });
     }
 }

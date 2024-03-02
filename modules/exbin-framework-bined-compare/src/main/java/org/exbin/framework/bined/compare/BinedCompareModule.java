@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.compare;
 
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,7 +28,6 @@ import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.compare.action.CompareFilesAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 
 /**
  * Binary editor compare module.
@@ -43,13 +41,7 @@ public class BinedCompareModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-
     public BinedCompareModule() {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     public void registerToolsOptionsMenuActions() {
@@ -70,20 +62,11 @@ public class BinedCompareModule implements Module {
     public AbstractAction createCompareFilesAction() {
         ensureSetup();
         CompareFilesAction compareFilesAction = new CompareFilesAction();
-        compareFilesAction.setup(editorProvider, resourceBundle);
+        compareFilesAction.setup(resourceBundle);
         return compareFilesAction;
     }
 
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }

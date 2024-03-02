@@ -67,6 +67,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionActi
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
     }
 
     @Override
@@ -145,7 +146,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionActi
     public void register(ComponentActivationManager manager) {
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
-            setEnabled(instance.getActiveFile().isPresent());
+            setEnabled(instance != null);
         });
     }
 }

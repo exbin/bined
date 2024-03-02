@@ -16,10 +16,7 @@
 package org.exbin.framework.bined.macro.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.Set;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
@@ -31,7 +28,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
-import org.exbin.framework.editor.api.EditorProvider;
 
 /**
  * Start macro recording action.
@@ -44,15 +40,13 @@ public class StartMacroRecordingAction extends AbstractAction {
     public static final String ACTION_ID = "startMacroRecordingAction";
 
     private CodeAreaCore codeArea;
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
     private MacroManager macroManager;
 
     public StartMacroRecordingAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

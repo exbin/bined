@@ -40,8 +40,6 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.xbup.core.util.StreamUtils;
@@ -69,6 +67,7 @@ public class DragDropContentAction extends AbstractAction implements ActionActiv
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
     }
 
     @Override
@@ -136,7 +135,7 @@ public class DragDropContentAction extends AbstractAction implements ActionActiv
     public void register(ComponentActivationManager manager) {
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
-            setEnabled(instance.getActiveFile().isPresent());
+            setEnabled(instance != null);
         });
     }
 }

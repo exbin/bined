@@ -105,6 +105,7 @@ public class FindReplaceActions {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
+        editFindAgainAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, editFindAgainAction);
         return editFindAgainAction;
     }
 
@@ -128,6 +129,7 @@ public class FindReplaceActions {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
+        editReplaceAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, editReplaceAction);
         return editReplaceAction;
     }
 

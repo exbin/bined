@@ -31,7 +31,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -45,15 +44,13 @@ public class ExecuteLastMacroAction extends AbstractAction {
     public static final String ACTION_ID = "executeLastMacroAction";
 
     private CodeAreaCore codeArea;
-    private EditorProvider editorProvider;
     private ResourceBundle resourceBundle;
     private MacroManager macroManager;
 
     public ExecuteLastMacroAction() {
     }
 
-    public void setup(EditorProvider editorProvider, ResourceBundle resourceBundle) {
-        this.editorProvider = editorProvider;
+    public void setup(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -74,6 +71,7 @@ public class ExecuteLastMacroAction extends AbstractAction {
                 });
             }
         });
+        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
     }
 
     public void setMacroManager(MacroManager macroManager) {

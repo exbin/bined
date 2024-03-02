@@ -161,8 +161,6 @@ public class BinedEditor {
                 binedOperationBouncycastleModule.setEditorProvider(editorProvider);
 
                 BinedCompareModule binedCompareModule = App.getModule(BinedCompareModule.class);
-                binedCompareModule.setEditorProvider(editorProvider);
-
                 BinedBookmarksModule binedBookmarksModule = App.getModule(BinedBookmarksModule.class);
                 binedBookmarksModule.setEditorProvider(editorProvider);
 
