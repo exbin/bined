@@ -112,37 +112,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
     public void registerUndoHandler() {
         CodeAreaUndoHandler undoHandler = new CodeAreaUndoHandler(editorComponent.getCodeArea());
         editorComponent.setUndoHandler(undoHandler);
-        undoRedoHandler = new UndoRedoHandler() {
-            @Override
-            public boolean canUndo() {
-                return undoHandler.canUndo();
-            }
-
-            @Override
-            public boolean canRedo() {
-                return undoHandler.canRedo();
-            }
-
-            @Override
-            public void performUndo() {
-                try {
-                    undoHandler.performUndo();
-                    notifyUndoChanged();
-                } catch (Exception ex) {
-                    Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            @Override
-            public void performRedo() {
-                try {
-                    undoHandler.performRedo();
-                    notifyUndoChanged();
-                } catch (Exception ex) {
-                    Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        };
+        undoRedoHandler = new UndoRedoHandlerImpl(undoHandler);
         undoHandler.addUndoUpdateListener(new BinaryDataUndoUpdateListener() {
             @Override
             public void undoCommandPositionChanged() {
@@ -595,6 +565,52 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
     private void notifyUndoChanged() {
         if (undoRedoHandler != null) {
             componentActivationService.updated(UndoRedoHandler.class, undoRedoHandler);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    private class UndoRedoHandlerImpl implements UndoRedoHandler, UndoFileHandler {
+
+        private final CodeAreaUndoHandler undoHandler;
+
+        public UndoRedoHandlerImpl(CodeAreaUndoHandler undoHandler) {
+            this.undoHandler = undoHandler;
+        }
+
+        @Override
+        public boolean canUndo() {
+            return undoHandler.canUndo();
+        }
+
+        @Override
+        public boolean canRedo() {
+            return undoHandler.canRedo();
+        }
+
+        @Override
+        public void performUndo() {
+            try {
+                undoHandler.performUndo();
+                notifyUndoChanged();
+            } catch (Exception ex) {
+                Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override
+        public void performRedo() {
+            try {
+                undoHandler.performRedo();
+                notifyUndoChanged();
+            } catch (Exception ex) {
+                Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Nonnull
+        @Override
+        public XBUndoHandler getUndoHandler() {
+            return BinEdFileHandler.this.getUndoHandler();
         }
     }
 }
