@@ -16,6 +16,7 @@
 package org.exbin.bined.editor;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -93,6 +94,12 @@ public class BinedEditor {
         app.setAppDirectory(BinedEditor.class);
         app.addClassPathModules();
         app.addModulesFromManifest(BinedEditor.class);
+        File appDirectory = app.getAppDirectory();
+        if ("".equals(appDirectory.getPath())) {
+            app.addModulesFrom(new File("plugins").toURI());
+        } else {
+            app.addModulesFrom(new File(app.getAppDirectory(), "plugins").toURI());
+        }
         app.initModules();
 
         App.launch(() -> {
