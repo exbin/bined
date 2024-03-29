@@ -67,7 +67,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
 
         splitPane = new javax.swing.JSplitPane();
         typePanel = new javax.swing.JPanel();
-        operationTypeLabe = new javax.swing.JLabel();
+        operationTypeLabel = new javax.swing.JLabel();
         operationTypeScrollPane = new javax.swing.JScrollPane();
         operationTypeList = new javax.swing.JList<>();
         parametersPanel = new javax.swing.JPanel();
@@ -76,7 +76,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
 
         splitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        operationTypeLabe.setText(resourceBundle.getString("operationTypeLabel.text")); // NOI18N
+        operationTypeLabel.setText(resourceBundle.getString("operationTypeLabel.text")); // NOI18N
 
         operationTypeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         operationTypeList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -95,7 +95,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
                 .addGroup(typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(operationTypeScrollPane)
                     .addGroup(typePanelLayout.createSequentialGroup()
-                        .addComponent(operationTypeLabe)
+                        .addComponent(operationTypeLabel)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -103,7 +103,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
             typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(typePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(operationTypeLabe)
+                .addComponent(operationTypeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(operationTypeScrollPane)
                 .addContainerGap())
@@ -169,7 +169,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel operationTypeLabe;
+    private javax.swing.JLabel operationTypeLabel;
     private javax.swing.JList<String> operationTypeList;
     private javax.swing.JScrollPane operationTypeScrollPane;
     private javax.swing.JPanel parametersPanel;
