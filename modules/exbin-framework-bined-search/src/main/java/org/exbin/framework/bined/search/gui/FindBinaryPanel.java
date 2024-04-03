@@ -123,7 +123,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
             }
         });
         findComboBoxEditor = new ComboBoxEditor() {
-
+            @Nonnull
             @Override
             public Component getEditorComponent() {
                 return findComboBoxEditorComponent;
