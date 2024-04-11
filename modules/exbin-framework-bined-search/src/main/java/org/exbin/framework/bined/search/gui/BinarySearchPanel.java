@@ -67,7 +67,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     private final ExtCodeArea searchCodeArea = new ExtCodeArea();
 
-    private PanelMode panelMode = PanelMode.REPLACE;
+    private PanelMode panelMode = PanelMode.FIND;
     private ComboBoxEditor findComboBoxEditor;
     private BinarySearchComboBoxPanel findComboBoxEditorComponent;
     private ComboBoxEditor replaceComboBoxEditor;
@@ -338,6 +338,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 remove(replacePanel);
             }
             revalidate();
+            repaint();
         }
     }
 
