@@ -22,6 +22,10 @@ package org.exbin.framework.bined;
  */
 public enum FileHandlingMode {
     /**
+     * Direct access to stream of externally handled file.
+     */
+    DIRECT,
+    /**
      * Whole file is loaded to memory.
      */
     MEMORY,

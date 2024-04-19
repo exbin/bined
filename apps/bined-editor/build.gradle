@@ -131,7 +131,7 @@ jar {
     manifest {
         attributes(
             'Main-Class': mainClass,
-//            'Class-Path': 'lib/commons-cli-1.2.jar'
+//            'Class-Path': 'lib/commons-cli-1.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar lib/exbin-framework-language-0.3.0-SNAPSHOT.jar lib/exbin-framework-language-api-0.3.0-SNAPSHOT.jar'
             'Class-Path': manifestClassPath()
         )
     }
