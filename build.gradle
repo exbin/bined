@@ -80,7 +80,8 @@ if (file('deps/.downloaded').exists()) {
     assemble.dependsOn("depsRebuild_${depsLevel}")
 }
 
-distZip.dependsOn project(':apps:bined-editor').tasks['launch4j']
+distTar.dependsOn project(':apps:bined-editor').tasks['createExe']
+distZip.dependsOn project(':apps:bined-editor').tasks['createExe']
 
 ospackage {
     packageName = 'bined'
@@ -137,7 +138,7 @@ ospackage {
         }
     }
 }
-
+/*
 buildRpm {
     from ('src/ospackage/bined.png') {
         addParentDirs = false
@@ -151,7 +152,7 @@ buildDeb {
     arch = 'all'
     requires('default-jre', '1.8.0', GREATER | EQUAL)
 }
-
+*/
 task("copyDependencies", type: Copy) {
     from(project(':apps:bined-editor').configurations.runtimeClasspath).into("$buildDir/jars")
 }
@@ -190,7 +191,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 //            }
 
                 into('') {
-                    from project(':apps:bined-editor').jar.archivePath
+                    from project(':apps:bined-editor').jar.archiveFile
                     include '*'
                     rename { filename -> "bined.jar" }
                 }

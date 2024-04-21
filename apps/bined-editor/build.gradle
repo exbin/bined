@@ -21,7 +21,7 @@ if (!hasProperty('mainClass')) {
 }
 
 def configureExec(task) {
-    task.main = mainClass
+    task.mainClass = mainClass
     task.classpath = sourceSets.main.runtimeClasspath
     if (hasProperty('appArgs')) {
         task.args appArgs

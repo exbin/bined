@@ -102,6 +102,7 @@ import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.ui.api.UiModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 
 /**
@@ -178,7 +179,8 @@ public class BinedOptionsManager {
                 binaryAppearanceService.setWordWrapMode(options.isLineWrapping());
             }
         };
-        optionsModule.extendAppearanceOptionsPage(binaryAppearanceOptionsPage);
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.extendAppearanceOptionsPage(binaryAppearanceOptionsPage);
 
         textEncodingOptionsPage = new DefaultOptionsPage<TextEncodingOptionsImpl>() {
             private TextEncodingOptionsPanel panel;

@@ -394,7 +394,7 @@ public class BinedModule implements Module {
     private Action getOptionsAction() {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
 
-        Action optionsAction = optionsModule.getOptionsAction();
+        Action optionsAction = optionsModule.createOptionsAction();
         optionsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId) {
@@ -940,6 +940,7 @@ public class BinedModule implements Module {
     @Nonnull
     public CodeAreaPopupMenuHandler createCodeAreaPopupMenuHandler(PopupMenuVariant variant) {
         return new CodeAreaPopupMenuHandler() {
+            @Nonnull
             @Override
             public JPopupMenu createPopupMenu(ExtCodeArea codeArea, String menuPostfix, int x, int y) {
                 return createCodeAreaPopupMenu(codeArea, menuPostfix, variant, x, y);

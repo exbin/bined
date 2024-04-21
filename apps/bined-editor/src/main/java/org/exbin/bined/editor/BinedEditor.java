@@ -211,7 +211,6 @@ public class BinedEditor {
 
                 undoModule.registerMainMenu();
                 undoModule.registerMainToolBar();
-                undoModule.registerUndoManagerInMainMenu();
 
                 // Register clipboard editing actions
                 actionModule.registerClipboardTextActions();
@@ -258,6 +257,7 @@ public class BinedEditor {
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
 
+                uiModule.registerOptionsPanels();
                 binedModule.registerStatusBar();
                 binedModule.registerOptionsPanels();
                 binedModule.getBinaryStatusPanel();
