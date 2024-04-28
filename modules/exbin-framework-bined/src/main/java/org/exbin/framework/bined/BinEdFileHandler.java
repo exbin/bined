@@ -39,10 +39,10 @@ import org.exbin.auxiliary.binary_data.EmptyBinaryData;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.FileDataSource;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
-import org.exbin.bined.operation.BinaryDataCommand;
+import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
 import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoUpdateListener;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
@@ -57,9 +57,7 @@ import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.utils.ClipboardActionsHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
-import org.exbin.xbup.core.type.XBData;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
-import org.exbin.xbup.operation.undo.XBUndoHandler;
 import org.exbin.framework.action.api.ComponentActivationProvider;
 import org.exbin.framework.action.api.DefaultComponentActivationService;
 import org.exbin.framework.editor.api.EditorFileHandler;
@@ -77,7 +75,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     @Nonnull
     private final BinEdEditorComponent editorComponent;
-    private XBUndoHandler undoHandlerWrapper;
+    private UndoHandlerWrapper undoHandlerWrapper;
     private int id = 0;
     private URI fileUri = null;
     private FileType fileType;
@@ -113,17 +111,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
         CodeAreaUndoHandler undoHandler = new CodeAreaUndoHandler(editorComponent.getCodeArea());
         editorComponent.setUndoHandler(undoHandler);
         undoRedoHandler = new UndoRedoHandlerImpl(undoHandler);
-        undoHandler.addUndoUpdateListener(new BinaryDataUndoUpdateListener() {
-            @Override
-            public void undoCommandPositionChanged() {
-                notifyUndoChanged();
-            }
-
-            @Override
-            public void undoCommandAdded(BinaryDataCommand command) {
-                notifyUndoChanged();
-            }
-        });
+        undoHandler.addCommandSequenceListener(this::notifyUndoChanged);
         notifyUndoChanged();
     }
 
@@ -160,8 +148,8 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
             } else {
                 try (FileInputStream fileStream = new FileInputStream(file)) {
                     BinaryData data = editorComponent.getContentData();
-                    if (!(data instanceof XBData)) {
-                        data = new XBData();
+                    if (!(data instanceof PagedData)) {
+                        data = new PagedData();
                         oldData.dispose();
                     }
                     ((EditableBinaryData) data).loadFromStream(fileStream);
@@ -220,7 +208,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     private void fileSync() {
         documentOriginalSize = getCodeArea().getDataSize();
-        undoHandlerWrapper.setSyncPoint();
+        undoHandlerWrapper.setSyncPosition();
     }
 
     public void loadFromStream(InputStream stream) throws IOException {
@@ -378,7 +366,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
             } else {
                 BinaryData oldData = codeArea.getContentData();
                 if (oldData instanceof DeltaDocument) {
-                    XBData data = new XBData();
+                    PagedData data = new PagedData();
                     data.insert(0, oldData);
                     editorComponent.setContentData(data);
                 } else {
@@ -424,14 +412,14 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     @Override
     public boolean isModified() {
-        return undoHandlerWrapper.getCommandPosition() != undoHandlerWrapper.getSyncPoint();
+        return undoHandlerWrapper.getCommandPosition() != undoHandlerWrapper.getSyncPosition();
     }
 
     public void setNewData(FileHandlingMode fileHandlingMode) {
         if (fileHandlingMode == FileHandlingMode.DELTA) {
             editorComponent.setContentData(segmentsRepository.createDocument());
         } else {
-            editorComponent.setContentData(new XBData());
+            editorComponent.setContentData(new PagedData());
         }
     }
 
@@ -445,7 +433,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     @Nonnull
     @Override
-    public XBUndoHandler getUndoHandler() {
+    public UndoHandlerWrapper getUndoHandler() {
         if (undoHandlerWrapper == null) {
             undoHandlerWrapper = new UndoHandlerWrapper();
             ((UndoHandlerWrapper) undoHandlerWrapper).setHandler(editorComponent.getUndoHandler().orElse(null));
@@ -454,7 +442,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
     }
 
     @Nonnull
-    public Optional<BinaryDataUndoHandler> getCodeAreaUndoHandler() {
+    public Optional<BinaryDataUndoableCommandSequence> getCodeAreaUndoHandler() {
         return editorComponent.getUndoHandler();
     }
 
@@ -609,7 +597,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
         @Nonnull
         @Override
-        public XBUndoHandler getUndoHandler() {
+        public UndoRedoHandler getUndoHandler() {
             return BinEdFileHandler.this.getUndoHandler();
         }
     }

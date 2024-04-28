@@ -58,21 +58,21 @@ public class ReplaceDataOperation extends CodeAreaOperation {
 
     @Nullable
     @Override
-    public void execute() throws BinaryDataOperationException {
+    public void execute() {
         execute(false);
     }
 
     @Nullable
     @Override
-    public CodeAreaOperation executeWithUndo() throws BinaryDataOperationException {
+    public CodeAreaOperation executeWithUndo() {
         return execute(true);
     }
 
     @Nullable
-    private CodeAreaOperation execute(boolean withUndo) throws BinaryDataOperationException {
+    private CodeAreaOperation execute(boolean withUndo) {
         long dataSize = codeArea.getDataSize();
         if (position > dataSize) {
-            throw new BinaryDataOperationException("Unable to replace data outside of document");
+            throw new IllegalStateException("Unable to replace data outside of document");
         }
 
         CodeAreaOperation undoOperation = null;
@@ -109,7 +109,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void dispose() throws BinaryDataOperationException {
+    public void dispose() {
         super.dispose();
     }
 
@@ -131,14 +131,14 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         }
 
         @Override
-        public void redo() throws BinaryDataOperationException {
+        public void redo() {
             undoOperation = operation.executeWithUndo();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
 
         @Override
-        public void undo() throws BinaryDataOperationException {
+        public void undo() {
             undoOperation.execute();
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
@@ -151,7 +151,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         }
 
         @Override
-        public void dispose() throws BinaryDataOperationException {
+        public void dispose() {
             super.dispose();
             operation.dispose();
         }

@@ -20,8 +20,6 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -30,7 +28,6 @@ import javax.swing.SwingUtilities;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -122,11 +119,7 @@ public class InsertDataAction extends AbstractAction {
                     EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
                     CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
 
-                    try {
-                        ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
-                    } catch (BinaryDataOperationException ex) {
-                        Logger.getLogger(InsertDataAction.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
                 }
                 lastMethod = optionalActiveMethod.orElse(null);
             }

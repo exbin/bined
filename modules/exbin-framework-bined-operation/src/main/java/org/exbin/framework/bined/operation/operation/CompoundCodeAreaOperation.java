@@ -18,13 +18,10 @@ package org.exbin.framework.bined.operation.operation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaCaretPosition;
-import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -83,22 +80,14 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
         if (executionType == ExecutionType.WITH_UNDO) {
             compoundUndoOperation = new CompoundCodeAreaOperation(codeArea);
             List<CodeAreaOperation> undoOperations = new ArrayList<>();
-            try {
-                for (CodeAreaOperation operation : operations) {
-                    CodeAreaOperation undoOperation = operation.executeWithUndo();
-                    undoOperations.add(0, undoOperation);
-                }
-            } catch (BinaryDataOperationException ex) {
-                Logger.getLogger(CompoundCodeAreaOperation.class.getName()).log(Level.SEVERE, null, ex);
+            for (CodeAreaOperation operation : operations) {
+                CodeAreaOperation undoOperation = operation.executeWithUndo();
+                undoOperations.add(0, undoOperation);
             }
             compoundUndoOperation.appendOperations(undoOperations);
         } else {
-            try {
-                for (CodeAreaOperation operation : operations) {
-                    operation.execute();
-                }
-            } catch (BinaryDataOperationException ex) {
-                Logger.getLogger(CompoundCodeAreaOperation.class.getName()).log(Level.SEVERE, null, ex);
+            for (CodeAreaOperation operation : operations) {
+                operation.execute();
             }
         }
 
@@ -106,7 +95,7 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void dispose() throws BinaryDataOperationException {
+    public void dispose() {
         super.dispose();
         for (CodeAreaOperation operation : operations) {
             operation.dispose();

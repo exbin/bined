@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.CodeAreaUtils;
-import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -134,11 +133,7 @@ public class ConvertDataAction extends AbstractAction {
                         case CONVERT: {
                             CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea);
 
-                            try {
-                                ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
-                            } catch (BinaryDataOperationException ex) {
-                                Logger.getLogger(ConvertDataAction.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
                             break;
                         }
                         case CONVERT_TO_NEW_FILE: {

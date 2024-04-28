@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
@@ -66,11 +66,11 @@ public class BinEdEditorComponent {
     }
 
     @Nonnull
-    public Optional<BinaryDataUndoHandler> getUndoHandler() {
+    public Optional<BinaryDataUndoableCommandSequence> getUndoHandler() {
         return componentPanel.getUndoHandler();
     }
 
-    public void setUndoHandler(BinaryDataUndoHandler undoHandler) {
+    public void setUndoHandler(BinaryDataUndoableCommandSequence undoHandler) {
         componentPanel.setUndoHandler(undoHandler);
     }
 

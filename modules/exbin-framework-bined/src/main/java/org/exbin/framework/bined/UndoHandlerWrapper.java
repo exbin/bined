@@ -16,21 +16,19 @@
 package org.exbin.framework.bined;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.operation.BinaryDataCommand;
-import org.exbin.bined.operation.BinaryDataOperationException;
-import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoUpdateListener;
-import org.exbin.xbup.operation.Command;
-import org.exbin.xbup.operation.undo.XBUndoHandler;
-import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
+import org.exbin.bined.operation.BinaryDataCommandSequenceListener;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
+import org.exbin.framework.operation.api.Command;
+import org.exbin.framework.operation.api.CommandSequenceListener;
+import org.exbin.framework.operation.undo.api.UndoableCommand;
+import org.exbin.framework.operation.undo.api.UndoableCommandSequence;
 
 /**
  * Undo handler wrapper.
@@ -38,24 +36,24 @@ import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class UndoHandlerWrapper implements XBUndoHandler {
+public class UndoHandlerWrapper implements UndoableCommandSequence {
 
-    private BinaryDataUndoHandler handler;
-    private final Map<XBUndoUpdateListener, BinaryDataUndoUpdateListener> listenersMap = new HashMap<>();
+    private BinaryDataUndoableCommandSequence handler;
+    private final Map<CommandSequenceListener, BinaryDataCommandSequenceListener> listenersMap = new HashMap<>();
 
     public UndoHandlerWrapper() {
     }
 
-    public void setHandler(@Nullable BinaryDataUndoHandler newHandler) {
+    public void setHandler(@Nullable BinaryDataUndoableCommandSequence newHandler) {
         if (handler != null) {
-            for (BinaryDataUndoUpdateListener listener : listenersMap.values()) {
-                handler.removeUndoUpdateListener(listener);
+            for (BinaryDataCommandSequenceListener listener : listenersMap.values()) {
+                handler.removeCommandSequenceListener(listener);
             }
         }
 
         this.handler = newHandler;
-        for (BinaryDataUndoUpdateListener listener : listenersMap.values()) {
-            handler.addUndoUpdateListener(listener);
+        for (BinaryDataCommandSequenceListener listener : listenersMap.values()) {
+            handler.addCommandSequenceListener(listener);
         }
     }
 
@@ -75,18 +73,23 @@ public class UndoHandlerWrapper implements XBUndoHandler {
     }
 
     @Override
-    public void doSync() throws Exception {
-        handler.doSync();
+    public void performSync() {
+        handler.performSync();
     }
 
     @Override
-    public void execute(Command cmnd) throws Exception {
-        handler.execute(new BinaryCommandWrapper(cmnd));
+    public void execute(Command command) {
+        handler.execute(new BinaryCommandWrapper(command));
     }
 
     @Override
-    public void addCommand(Command cmnd) {
-        handler.addCommand(new BinaryCommandWrapper(cmnd));
+    public void schedule(Command command) {
+        handler.schedule(new BinaryCommandWrapper(command));
+    }
+
+    @Override
+    public void executeScheduled(int count) {
+        handler.executeScheduled(count);
     }
 
     @Nonnull
@@ -108,84 +111,52 @@ public class UndoHandlerWrapper implements XBUndoHandler {
     }
 
     @Override
-    public long getMaximumUndo() {
-        return handler != null ? handler.getMaximumUndo() : 0;
+    public long getSyncPosition() {
+        return handler != null ? handler.getSyncPosition() : 0;
     }
 
     @Override
-    public long getSyncPoint() {
-        return handler != null ? handler.getSyncPoint() : 0;
-    }
-
-    @Override
-    public long getUndoMaximumSize() {
-        return handler != null ? handler.getUndoMaximumSize() : 0;
-    }
-
-    @Override
-    public long getUsedSize() {
-        return handler != null ? handler.getUsedSize() : 0;
-    }
-
-    @Override
-    public void performRedo() throws Exception {
+    public void performRedo() {
         handler.performRedo();
     }
 
-    @Override
-    public void performRedo(int i) throws Exception {
-        handler.performRedo(i);
+    public void performRedo(int count) {
+        handler.performRedo(count);
     }
 
     @Override
-    public void performUndo() throws Exception {
+    public void performUndo() {
         handler.performUndo();
     }
 
-    @Override
-    public void performUndo(int i) throws Exception {
+    public void performUndo(int i) {
         handler.performUndo(i);
     }
 
     @Override
-    public void setCommandPosition(long l) throws Exception {
-        handler.setCommandPosition(l);
+    public void setSyncPosition(long position) {
+        handler.setSyncPosition(position);
     }
 
     @Override
-    public void setSyncPoint(long l) {
-        handler.setSyncPoint(l);
+    public void setSyncPosition() {
+        handler.setSyncPosition();
     }
 
     @Override
-    public void setSyncPoint() {
-        handler.setSyncPoint();
-    }
-
-    @Override
-    public void addUndoUpdateListener(final XBUndoUpdateListener listener) {
-        BinaryDataUndoUpdateListener binaryListener = new BinaryDataUndoUpdateListener() {
-            @Override
-            public void undoCommandPositionChanged() {
-                listener.undoCommandPositionChanged();
-            }
-
-            @Override
-            public void undoCommandAdded(BinaryDataCommand bdc) {
-                listener.undoCommandAdded(new CommandWrapper(bdc));
-            }
-        };
+    public void addCommandSequenceListener(final CommandSequenceListener listener) {
+        BinaryDataCommandSequenceListener binaryListener = listener::sequenceChanged;
         listenersMap.put(listener, binaryListener);
         if (handler != null) {
-            handler.addUndoUpdateListener(binaryListener);
+            handler.addCommandSequenceListener(binaryListener);
         }
     }
 
     @Override
-    public void removeUndoUpdateListener(XBUndoUpdateListener listener) {
-        BinaryDataUndoUpdateListener binaryListener = listenersMap.remove(listener);
+    public void removeCommandSequenceListener(CommandSequenceListener listener) {
+        BinaryDataCommandSequenceListener binaryListener = listenersMap.remove(listener);
         if (handler != null) {
-            handler.removeUndoUpdateListener(binaryListener);
+            handler.removeCommandSequenceListener(binaryListener);
         }
     }
 
@@ -200,44 +171,56 @@ public class UndoHandlerWrapper implements XBUndoHandler {
 
         @Nonnull
         @Override
-        public String getCaption() {
-            return command.getCaption();
+        public String getName() {
+            return command.getName();
         }
 
         @Override
-        public void execute() throws Exception {
+        public void execute() {
             command.execute();
         }
 
         @Override
-        public void use() {
-            command.use();
+        public void dispose() {
+            command.dispose();
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    private static class UndoableCommandWrapper implements UndoableCommand {
+
+        private final BinaryDataCommand command;
+
+        public UndoableCommandWrapper(BinaryDataCommand command) {
+            this.command = command;
+        }
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return command.getName();
         }
 
         @Override
-        public void redo() throws Exception {
+        public void execute() {
+            command.execute();
+        }
+
+        public void redo() {
             command.redo();
         }
 
-        @Override
-        public void undo() throws Exception {
+        public void undo() {
             command.undo();
         }
 
-        @Override
         public boolean canUndo() {
             return command.canUndo();
         }
 
         @Override
-        public void dispose() throws Exception {
+        public void dispose() {
             command.dispose();
-        }
-
-        @Nonnull
-        @Override
-        public Optional<Date> getExecutionTime() {
-            return command.getExecutionTime();
         }
     }
 
@@ -252,60 +235,36 @@ public class UndoHandlerWrapper implements XBUndoHandler {
 
         @Nonnull
         @Override
-        public String getCaption() {
-            return command.getCaption();
+        public String getName() {
+            return command.getName();
         }
 
         @Override
-        public void execute() throws BinaryDataOperationException {
-            try {
-                command.execute();
-            } catch (Exception ex) {
-                throw new BinaryDataOperationException(ex);
-            }
+        public void execute() {
+            command.execute();
         }
 
         @Override
-        public void use() {
-            command.use();
+        public void redo() {
+            throw new IllegalStateException();
+//            command.redo();
         }
 
         @Override
-        public void redo() throws BinaryDataOperationException {
-            try {
-                command.redo();
-            } catch (Exception ex) {
-                throw new BinaryDataOperationException(ex);
-            }
-        }
-
-        @Override
-        public void undo() throws BinaryDataOperationException {
-            try {
-                command.undo();
-            } catch (Exception ex) {
-                throw new BinaryDataOperationException(ex);
-            }
+        public void undo() {
+            throw new IllegalStateException();
+//            command.undo();
         }
 
         @Override
         public boolean canUndo() {
-            return command.canUndo();
+            return false;
+//            return command.canUndo();
         }
 
         @Override
-        public void dispose() throws BinaryDataOperationException {
-            try {
-                command.dispose();
-            } catch (Exception ex) {
-                throw new BinaryDataOperationException(ex);
-            }
-        }
-
-        @Nonnull
-        @Override
-        public Optional<Date> getExecutionTime() {
-            return command.getExecutionTime();
+        public void dispose() {
+            command.dispose();
         }
     }
 }

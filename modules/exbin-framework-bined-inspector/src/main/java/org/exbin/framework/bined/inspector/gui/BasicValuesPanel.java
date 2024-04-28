@@ -23,8 +23,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -34,18 +32,17 @@ import org.exbin.bined.CaretMovedListener;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.DataChangedListener;
 import org.exbin.bined.operation.BinaryDataCommand;
-import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.command.BinaryCompoundCommand;
 import org.exbin.bined.operation.swing.command.InsertDataCommand;
 import org.exbin.bined.operation.swing.command.ModifyDataCommand;
-import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoUpdateListener;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.bined.operation.BinaryDataCommandSequenceListener;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 import org.exbin.framework.utils.TestApplication;
@@ -70,11 +67,11 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BasicValuesPanel.class);
     private ExtCodeArea codeArea;
-    private BinaryDataUndoHandler undoHandler;
+    private BinaryDataUndoableCommandSequence undoHandler;
     private long dataPosition;
     private DataChangedListener dataChangedListener;
     private CaretMovedListener caretMovedListener;
-    private BinaryDataUndoUpdateListener undoUpdateListener;
+    private BinaryDataCommandSequenceListener undoUpdateListener;
 
     private final byte[] valuesCache = new byte[CACHE_SIZE];
     private final ByteBuffer byteBuffer = ByteBuffer.wrap(valuesCache);
@@ -737,7 +734,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private javax.swing.JTextField wordTextField;
     // End of variables declaration//GEN-END:variables
 
-    public void setCodeArea(ExtCodeArea codeArea, @Nullable BinaryDataUndoHandler undoHandler) {
+    public void setCodeArea(ExtCodeArea codeArea, @Nullable BinaryDataUndoableCommandSequence undoHandler) {
         this.codeArea = codeArea;
         this.undoHandler = undoHandler;
     }
@@ -750,19 +747,14 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         codeArea.addDataChangedListener(dataChangedListener);
         caretMovedListener = (CodeAreaCaretPosition caretPosition) -> updateValues();
         codeArea.addCaretMovedListener(caretMovedListener);
-        undoUpdateListener = new BinaryDataUndoUpdateListener() {
+        undoUpdateListener = new BinaryDataCommandSequenceListener() {
             @Override
-            public void undoCommandPositionChanged() {
-                updateValues();
-            }
-
-            @Override
-            public void undoCommandAdded(BinaryDataCommand command) {
+            public void sequenceChanged() {
                 updateValues();
             }
         };
         if (undoHandler != null) {
-            undoHandler.addUndoUpdateListener(undoUpdateListener);
+            undoHandler.addCommandSequenceListener(undoUpdateListener);
         }
         updateEditMode();
         updateValues();
@@ -772,7 +764,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         codeArea.removeDataChangedListener(dataChangedListener);
         codeArea.removeCaretMovedListener(caretMovedListener);
         if (undoHandler != null) {
-            undoHandler.addUndoUpdateListener(undoUpdateListener);
+            undoHandler.addCommandSequenceListener(undoUpdateListener);
         }
     }
 
@@ -820,11 +812,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         if (dataPosition == codeArea.getDataSize()) {
             InsertDataCommand insertCommand = new InsertDataCommand(codeArea, dataPosition, byteArrayData);
             if (undoHandler != null) {
-                try {
-                    undoHandler.execute(insertCommand);
-                } catch (BinaryDataOperationException ex) {
-                    Logger.getLogger(BasicValuesPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                undoHandler.execute(insertCommand);
             }
         } else {
             BinaryDataCommand command;
@@ -840,11 +828,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
             }
 
             if (undoHandler != null) {
-                try {
-                    undoHandler.execute(command);
-                } catch (BinaryDataOperationException ex) {
-                    Logger.getLogger(BasicValuesPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                undoHandler.execute(command);
             }
         }
         codeArea.setCaretPosition(oldDataPosition);

@@ -28,8 +28,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
+import org.exbin.framework.bined.tool.content.StreamUtils;
 import org.exbin.framework.utils.ClipboardUtils;
-import org.exbin.xbup.core.util.StreamUtils;
 
 /**
  * Binary data access for clipboard flavor.

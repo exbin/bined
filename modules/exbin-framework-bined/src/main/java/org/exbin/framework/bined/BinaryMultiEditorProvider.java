@@ -45,14 +45,12 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
-import org.exbin.framework.editor.MultiEditorUndoHandler;
 import org.exbin.framework.operation.undo.api.UndoFileHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
-import org.exbin.xbup.operation.Command;
-import org.exbin.xbup.operation.undo.XBUndoHandler;
-import org.exbin.xbup.operation.undo.XBUndoUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
+import org.exbin.framework.operation.undo.api.EmptyUndoRedoHandler;
+import org.exbin.framework.operation.undo.api.UndoRedoHandler;
 
 /**
  * Binary editor provider.
@@ -69,7 +67,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     private ClipboardActionsUpdateListener clipboardActionsUpdateListener;
     private BinaryStatusApi binaryStatus;
     private TextEncodingStatusApi textEncodingStatusApi;
-    private MultiEditorUndoHandler undoHandler = null;
+    private UndoRedoHandler undoHandler = null;
 
     public BinaryMultiEditorProvider() {
         init();
@@ -99,7 +97,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
 
     @Override
     public void registerUndoHandler() {
-        undoHandler = new MultiEditorUndoHandler();
+        // TODO
+        undoHandler = new EmptyUndoRedoHandler();
         if (activeFile != null) {
             ((BinEdFileHandler) activeFile).registerUndoHandler();
         }
@@ -110,7 +109,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         super.activeFileChanged();
 
         if (undoHandler != null) {
-            undoHandler.setActiveFile(activeFile);
+            // TODO
+            // undoHandler.setActiveFile(activeFile);
         }
 
         if (clipboardActionsUpdateListener != null) {
@@ -150,20 +150,10 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         fileHandler.setNewData(defaultFileHandlingMode);
-        fileHandler.getUndoHandler().addUndoUpdateListener(new XBUndoUpdateListener() {
-            @Override
-            public void undoCommandPositionChanged() {
-                undoHandler.notifyUndoUpdate();
-                updateCurrentDocumentSize();
-                // notifyModified();
-            }
-
-            @Override
-            public void undoCommandAdded(Command cmnd) {
-                undoHandler.notifyUndoCommandAdded(cmnd);
-                updateCurrentDocumentSize();
-                // notifyModified();
-            }
+        fileHandler.getUndoHandler().addCommandSequenceListener(() -> {
+            // TODO undoHandler.notifyUndoUpdate();
+            updateCurrentDocumentSize();
+            // notifyModified();
         });
         fileManager.initCommandHandler(fileHandler.getComponent());
 
@@ -239,7 +229,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
 
     @Nonnull
     @Override
-    public XBUndoHandler getUndoHandler() {
+    public UndoRedoHandler getUndoHandler() {
         return undoHandler;
     }
 

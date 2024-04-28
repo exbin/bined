@@ -25,22 +25,10 @@ ext.depsExbinAuxiliaryJava = [
     version: '0.2.1'
 ]
 
-ext.depsXbupJava = [
-    githubProfile: 'exbin',
-    githubRepo: 'xbup-java',
-    version: '0.2.2-SNAPSHOT'
-]
-
-ext.depsXbupDataJava = [
-    githubProfile: 'exbin',
-    githubRepo: 'xbup-data-java',
-    version: '0.2.2-SNAPSHOT'
-]
-
 ext.depsBinedLibJava = [
     githubProfile: 'exbin',
     githubRepo: 'bined-lib-java',
-    version: '0.2.1'
+    version: '0.3.0-SNAPSHOT'
 ]
 
 import org.gradle.util.VersionNumber

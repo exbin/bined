@@ -21,7 +21,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
@@ -56,13 +55,13 @@ public class InsertDataOperation extends CodeAreaOperation {
 
     @Nullable
     @Override
-    public void execute() throws BinaryDataOperationException {
+    public void execute() {
         execute(false);
     }
 
     @Nullable
     @Override
-    public CodeAreaOperation executeWithUndo() throws BinaryDataOperationException {
+    public CodeAreaOperation executeWithUndo() {
         return execute(true);
     }
 
@@ -82,7 +81,7 @@ public class InsertDataOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void dispose() throws BinaryDataOperationException {
+    public void dispose() {
         super.dispose();
     }
 
@@ -104,14 +103,14 @@ public class InsertDataOperation extends CodeAreaOperation {
         }
 
         @Override
-        public void redo() throws BinaryDataOperationException {
+        public void redo() {
             undoOperation = operation.executeWithUndo();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
 
         @Override
-        public void undo() throws BinaryDataOperationException {
+        public void undo() {
             undoOperation.execute();
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
@@ -124,7 +123,7 @@ public class InsertDataOperation extends CodeAreaOperation {
         }
 
         @Override
-        public void dispose() throws BinaryDataOperationException {
+        public void dispose() {
             super.dispose();
             operation.dispose();
         }

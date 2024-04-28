@@ -30,11 +30,11 @@ import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.basic.BasicCodeAreaSection;
 import org.exbin.bined.basic.MovementDirection;
 import org.exbin.bined.capability.CaretCapable;
-import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.bined.macro.model.MacroRecord;
@@ -52,7 +52,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     private MacroRecord recordingMacro = null;
     private MacroStep lastMacroStep = null;
 
-    public CodeAreaMacroCommandHandler(CodeAreaCore codeArea, BinaryDataUndoHandler undoHandler) {
+    public CodeAreaMacroCommandHandler(CodeAreaCore codeArea, BinaryDataUndoableCommandSequence undoHandler) {
         super(codeArea, undoHandler);
     }
 

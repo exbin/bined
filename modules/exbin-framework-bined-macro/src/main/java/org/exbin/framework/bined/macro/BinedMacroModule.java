@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
@@ -61,7 +62,7 @@ public class BinedMacroModule implements Module {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
         BinedModule binEdModule = App.getModule(BinedModule.class);
-        binEdModule.registerCodeAreaCommandHandlerProvider((codeArea, undoHandler) -> new CodeAreaMacroCommandHandler(codeArea, undoHandler));
+        binEdModule.registerCodeAreaCommandHandlerProvider((codeArea, undoHandler) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoableCommandSequence) undoHandler));
 
         BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
         binedSearchModule.getFindReplaceActions().addFindAgainListener(() -> {
