@@ -119,7 +119,7 @@ public class InsertDataAction extends AbstractAction {
                     EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
                     CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
 
-                    ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
+                    ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoRedo().execute(command);
                 }
                 lastMethod = optionalActiveMethod.orElse(null);
             }

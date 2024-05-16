@@ -109,9 +109,9 @@ public class BinEdFileManager {
         ExtCodeArea codeArea = componentPanel.getCodeArea();
         CodeAreaOperationCommandHandler commandHandler;
         if (commandHandlerProvider != null) {
-            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, componentPanel.getUndoHandler().orElse(null));
+            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, componentPanel.getUndoRedo().orElse(null));
         } else {
-            commandHandler = new CodeAreaOperationCommandHandler(codeArea, componentPanel.getUndoHandler().orElse(null));
+            commandHandler = new CodeAreaOperationCommandHandler(codeArea, componentPanel.getUndoRedo().orElse(null));
         }
         codeArea.setCommandHandler(commandHandler);
     }

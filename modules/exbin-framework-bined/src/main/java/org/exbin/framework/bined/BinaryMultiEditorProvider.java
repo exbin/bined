@@ -45,12 +45,12 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
-import org.exbin.framework.operation.undo.api.UndoFileHandler;
+import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
-import org.exbin.framework.operation.undo.api.EmptyUndoRedoHandler;
-import org.exbin.framework.operation.undo.api.UndoRedoHandler;
+import org.exbin.framework.operation.undo.api.EmptyUndoRedo;
+import org.exbin.framework.operation.undo.api.UndoRedo;
 
 /**
  * Binary editor provider.
@@ -58,7 +58,7 @@ import org.exbin.framework.operation.undo.api.UndoRedoHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implements BinEdEditorProvider, UndoFileHandler {
+public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implements BinEdEditorProvider, UndoRedoFileHandler {
     
     private FileHandlingMode defaultFileHandlingMode = FileHandlingMode.MEMORY;
 
@@ -67,7 +67,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     private ClipboardActionsUpdateListener clipboardActionsUpdateListener;
     private BinaryStatusApi binaryStatus;
     private TextEncodingStatusApi textEncodingStatusApi;
-    private UndoRedoHandler undoHandler = null;
+    private UndoRedo undoRedo = null;
 
     public BinaryMultiEditorProvider() {
         init();
@@ -98,7 +98,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     @Override
     public void registerUndoHandler() {
         // TODO
-        undoHandler = new EmptyUndoRedoHandler();
+        undoRedo = new EmptyUndoRedo();
         if (activeFile != null) {
             ((BinEdFileHandler) activeFile).registerUndoHandler();
         }
@@ -108,9 +108,9 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     public void activeFileChanged() {
         super.activeFileChanged();
 
-        if (undoHandler != null) {
+        if (undoRedo != null) {
             // TODO
-            // undoHandler.setActiveFile(activeFile);
+            // undoRedo.setActiveFile(activeFile);
         }
 
         if (clipboardActionsUpdateListener != null) {
@@ -145,13 +145,13 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.initFileHandler(fileHandler);
-        if (undoHandler != null) {
+        if (undoRedo != null) {
             fileHandler.registerUndoHandler();
         }
 
         fileHandler.setNewData(defaultFileHandlingMode);
-        fileHandler.getUndoHandler().addCommandSequenceListener(() -> {
-            // TODO undoHandler.notifyUndoUpdate();
+        fileHandler.getUndoRedo().addChangeListener(() -> {
+            // TODO undoRedo.notifyUndoUpdate();
             updateCurrentDocumentSize();
             // notifyModified();
         });
@@ -229,8 +229,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
 
     @Nonnull
     @Override
-    public UndoRedoHandler getUndoHandler() {
-        return undoHandler;
+    public UndoRedo getUndoRedo() {
+        return undoRedo;
     }
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {

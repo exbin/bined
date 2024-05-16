@@ -24,15 +24,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
-import org.exbin.bined.operation.undo.EmptyBinaryDataUndoableCommandSequence;
+import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
+import org.exbin.bined.operation.undo.EmptyBinaryDataUndoRedo;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 
 /**
  * Binary editor component panel.
@@ -43,7 +43,7 @@ import org.exbin.framework.utils.WindowUtils;
 public class BinEdComponentPanel extends javax.swing.JPanel {
 
     private ExtCodeArea codeArea;
-    private BinaryDataUndoableCommandSequence undoHandler;
+    private BinaryDataUndoRedo undoRedo;
     private final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
 
     public BinEdComponentPanel() {
@@ -57,7 +57,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.setFocusTraversalKeysEnabled(false);
 
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new EmptyBinaryDataUndoableCommandSequence());
+        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new EmptyBinaryDataUndoRedo());
         codeArea.setCommandHandler(commandHandler);
 
         add(codeArea);
@@ -82,7 +82,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
             
     public void addComponentExtension(BinEdComponentExtension extension) {
         componentExtensions.add(extension);
-        if (undoHandler != null) {
+        if (undoRedo != null) {
             extension.onUndoHandlerChange();
         }
     }
@@ -129,13 +129,13 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     @Nonnull
-    public Optional<BinaryDataUndoableCommandSequence> getUndoHandler() {
-        return Optional.ofNullable(undoHandler);
+    public Optional<BinaryDataUndoRedo> getUndoRedo() {
+        return Optional.ofNullable(undoRedo);
     }
 
-    public void setUndoHandler(BinaryDataUndoableCommandSequence undoHandler) {
-        this.undoHandler = undoHandler;
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoHandler == null ? new CodeAreaUndoHandler(codeArea) : undoHandler);
+    public void setUndoRedo(BinaryDataUndoRedo undoRedo) {
+        this.undoRedo = undoRedo;
+        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoRedo == null ? new CodeAreaUndoRedo(codeArea) : undoRedo);
         codeArea.setCommandHandler(commandHandler);
 
         for (BinEdComponentExtension extension : componentExtensions) {

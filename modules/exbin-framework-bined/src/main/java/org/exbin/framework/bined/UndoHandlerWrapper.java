@@ -19,85 +19,76 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.operation.BinaryDataCommand;
-import org.exbin.bined.operation.BinaryDataCommandSequenceListener;
-import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.operation.api.Command;
-import org.exbin.framework.operation.api.CommandSequenceListener;
+import org.exbin.framework.operation.undo.api.UndoRedoChangeListener;
 import org.exbin.framework.operation.undo.api.UndoableCommand;
-import org.exbin.framework.operation.undo.api.UndoableCommandSequence;
+import org.exbin.framework.operation.undo.api.UndoRedo;
 
 /**
- * Undo handler wrapper.
+ * Undo undoRedo wrapper.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class UndoHandlerWrapper implements UndoableCommandSequence {
+public class UndoHandlerWrapper implements UndoRedo {
 
-    private BinaryDataUndoableCommandSequence handler;
-    private final Map<CommandSequenceListener, BinaryDataCommandSequenceListener> listenersMap = new HashMap<>();
+    private BinaryDataUndoRedo undoRedo;
+    private final Map<UndoRedoChangeListener, BinaryDataUndoRedoChangeListener> listenersMap = new HashMap<>();
 
     public UndoHandlerWrapper() {
     }
 
-    public void setHandler(@Nullable BinaryDataUndoableCommandSequence newHandler) {
-        if (handler != null) {
-            for (BinaryDataCommandSequenceListener listener : listenersMap.values()) {
-                handler.removeCommandSequenceListener(listener);
+    public void setUndoRedo(@Nullable BinaryDataUndoRedo undoRedo) {
+        if (this.undoRedo != null) {
+            for (BinaryDataUndoRedoChangeListener listener : listenersMap.values()) {
+                this.undoRedo.removeChangeListener(listener);
             }
         }
 
-        this.handler = newHandler;
-        for (BinaryDataCommandSequenceListener listener : listenersMap.values()) {
-            handler.addCommandSequenceListener(listener);
+        this.undoRedo = undoRedo;
+        for (BinaryDataUndoRedoChangeListener listener : listenersMap.values()) {
+            this.undoRedo.addChangeListener(listener);
         }
     }
 
     @Override
     public boolean canRedo() {
-        return handler != null ? handler.canRedo() : false;
+        return undoRedo != null ? undoRedo.canRedo() : false;
     }
 
     @Override
     public boolean canUndo() {
-        return handler != null ? handler.canUndo() : false;
+        return undoRedo != null ? undoRedo.canUndo() : false;
     }
 
     @Override
     public void clear() {
-        handler.clear();
+        undoRedo.clear();
     }
 
     @Override
     public void performSync() {
-        handler.performSync();
+        undoRedo.performSync();
     }
 
     @Override
     public void execute(Command command) {
-        handler.execute(new BinaryCommandWrapper(command));
-    }
-
-    @Override
-    public void schedule(Command command) {
-        handler.schedule(new BinaryCommandWrapper(command));
-    }
-
-    @Override
-    public void executeScheduled(int count) {
-        handler.executeScheduled(count);
+        undoRedo.execute(new BinaryCommandWrapper(command));
     }
 
     @Nonnull
     @Override
     public List<Command> getCommandList() {
         List<Command> result = new ArrayList<>();
-        if (handler != null) {
-            handler.getCommandList().forEach((command) -> {
+        if (undoRedo != null) {
+            undoRedo.getCommandList().forEach((command) -> {
                 result.add(new CommandWrapper(command));
             });
         }
@@ -105,58 +96,79 @@ public class UndoHandlerWrapper implements UndoableCommandSequence {
         return result;
     }
 
+    @Nonnull
+    @Override
+    public Optional<Command> getTopUndoCommand() {
+        Optional<BinaryDataCommand> topUndoCommand = undoRedo.getTopUndoCommand();
+        if (topUndoCommand.isPresent()) {
+            return Optional.of(new CommandWrapper(topUndoCommand.get()));
+        }
+        
+        return Optional.empty();
+    }
+
+    @Override
+    public long getCommandsCount() {
+        return undoRedo.getCommandsCount();
+    }
+
+    @Override
+    public boolean isModified() {
+        return undoRedo.isModified();
+    }
+
     @Override
     public long getCommandPosition() {
-        return handler != null ? handler.getCommandPosition() : 0;
+        return undoRedo != null ? undoRedo.getCommandPosition() : 0;
     }
 
     @Override
     public long getSyncPosition() {
-        return handler != null ? handler.getSyncPosition() : 0;
+        return undoRedo != null ? undoRedo.getSyncPosition() : 0;
     }
 
     @Override
     public void performRedo() {
-        handler.performRedo();
+        undoRedo.performRedo();
     }
 
     public void performRedo(int count) {
-        handler.performRedo(count);
+        undoRedo.performRedo(count);
     }
 
     @Override
     public void performUndo() {
-        handler.performUndo();
+        undoRedo.performUndo();
     }
 
     public void performUndo(int i) {
-        handler.performUndo(i);
+        undoRedo.performUndo(i);
     }
 
     @Override
     public void setSyncPosition(long position) {
-        handler.setSyncPosition(position);
+        undoRedo.setSyncPosition(position);
     }
 
     @Override
     public void setSyncPosition() {
-        handler.setSyncPosition();
+        undoRedo.setSyncPosition();
     }
 
     @Override
-    public void addCommandSequenceListener(final CommandSequenceListener listener) {
-        BinaryDataCommandSequenceListener binaryListener = listener::sequenceChanged;
-        listenersMap.put(listener, binaryListener);
-        if (handler != null) {
-            handler.addCommandSequenceListener(binaryListener);
+    public void addChangeListener(final UndoRedoChangeListener listener) {
+        BinaryDataUndoRedoChangeListener changeListener = listener::undoChanged;
+        listenersMap.put(listener, changeListener);
+        if (undoRedo != null) {
+            undoRedo.addChangeListener(changeListener);
         }
     }
 
     @Override
-    public void removeCommandSequenceListener(CommandSequenceListener listener) {
-        BinaryDataCommandSequenceListener binaryListener = listenersMap.remove(listener);
-        if (handler != null) {
-            handler.removeCommandSequenceListener(binaryListener);
+    public void removeChangeListener(UndoRedoChangeListener listener) {
+        BinaryDataUndoRedoChangeListener changeListener = listenersMap.remove(listener);
+        if (undoRedo != null) {
+            undoRedo.removeChangeListener(changeListener);
         }
     }
 

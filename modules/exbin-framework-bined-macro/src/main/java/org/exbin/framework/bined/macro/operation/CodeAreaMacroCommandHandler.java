@@ -33,8 +33,8 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.swing.CodeAreaUndoHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
+import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.bined.macro.model.MacroRecord;
@@ -52,13 +52,13 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     private MacroRecord recordingMacro = null;
     private MacroStep lastMacroStep = null;
 
-    public CodeAreaMacroCommandHandler(CodeAreaCore codeArea, BinaryDataUndoableCommandSequence undoHandler) {
-        super(codeArea, undoHandler);
+    public CodeAreaMacroCommandHandler(CodeAreaCore codeArea, BinaryDataUndoRedo undoRedo) {
+        super(codeArea, undoRedo);
     }
 
     @Nonnull
     public static CodeAreaCommandHandler.CodeAreaCommandHandlerFactory createDefaultCodeAreaCommandHandlerFactory() {
-        return (CodeAreaCore codeAreaCore) -> new CodeAreaMacroCommandHandler(codeAreaCore, new CodeAreaUndoHandler(codeAreaCore));
+        return (CodeAreaCore codeAreaCore) -> new CodeAreaMacroCommandHandler(codeAreaCore, new CodeAreaUndoRedo(codeAreaCore));
     }
 
     @Nonnull

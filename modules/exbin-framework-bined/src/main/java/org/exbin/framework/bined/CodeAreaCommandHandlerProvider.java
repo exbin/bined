@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoHandler;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
@@ -31,5 +31,5 @@ import org.exbin.bined.swing.CodeAreaCore;
 public interface CodeAreaCommandHandlerProvider {
 
     @Nonnull
-    CodeAreaOperationCommandHandler createCommandHandler(CodeAreaCore codeArea, @Nullable BinaryDataUndoHandler undoHandler);
+    CodeAreaOperationCommandHandler createCommandHandler(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoHandler);
 }

@@ -41,8 +41,8 @@ import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.operation.BinaryDataCommandSequenceListener;
-import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 import org.exbin.framework.utils.TestApplication;
@@ -67,11 +67,11 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BasicValuesPanel.class);
     private ExtCodeArea codeArea;
-    private BinaryDataUndoableCommandSequence undoHandler;
+    private BinaryDataUndoRedo undoRedo;
     private long dataPosition;
     private DataChangedListener dataChangedListener;
     private CaretMovedListener caretMovedListener;
-    private BinaryDataCommandSequenceListener undoUpdateListener;
+    private BinaryDataUndoRedoChangeListener undoRedoChangeListener;
 
     private final byte[] valuesCache = new byte[CACHE_SIZE];
     private final ByteBuffer byteBuffer = ByteBuffer.wrap(valuesCache);
@@ -734,9 +734,9 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private javax.swing.JTextField wordTextField;
     // End of variables declaration//GEN-END:variables
 
-    public void setCodeArea(ExtCodeArea codeArea, @Nullable BinaryDataUndoableCommandSequence undoHandler) {
+    public void setCodeArea(ExtCodeArea codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
         this.codeArea = codeArea;
-        this.undoHandler = undoHandler;
+        this.undoRedo = undoRedo;
     }
 
     public void enableUpdate() {
@@ -747,14 +747,14 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         codeArea.addDataChangedListener(dataChangedListener);
         caretMovedListener = (CodeAreaCaretPosition caretPosition) -> updateValues();
         codeArea.addCaretMovedListener(caretMovedListener);
-        undoUpdateListener = new BinaryDataCommandSequenceListener() {
+        undoRedoChangeListener = new BinaryDataUndoRedoChangeListener() {
             @Override
-            public void sequenceChanged() {
+            public void undoChanged() {
                 updateValues();
             }
         };
-        if (undoHandler != null) {
-            undoHandler.addCommandSequenceListener(undoUpdateListener);
+        if (undoRedo != null) {
+            undoRedo.addChangeListener(undoRedoChangeListener);
         }
         updateEditMode();
         updateValues();
@@ -763,8 +763,8 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     public void disableUpdate() {
         codeArea.removeDataChangedListener(dataChangedListener);
         codeArea.removeCaretMovedListener(caretMovedListener);
-        if (undoHandler != null) {
-            undoHandler.addCommandSequenceListener(undoUpdateListener);
+        if (undoRedo != null) {
+            undoRedo.addChangeListener(undoRedoChangeListener);
         }
     }
 
@@ -811,8 +811,8 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         long oldDataPosition = dataPosition;
         if (dataPosition == codeArea.getDataSize()) {
             InsertDataCommand insertCommand = new InsertDataCommand(codeArea, dataPosition, byteArrayData);
-            if (undoHandler != null) {
-                undoHandler.execute(insertCommand);
+            if (undoRedo != null) {
+                undoRedo.execute(insertCommand);
             }
         } else {
             BinaryDataCommand command;
@@ -827,8 +827,8 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 command = new ModifyDataCommand(codeArea, dataPosition, byteArrayData);
             }
 
-            if (undoHandler != null) {
-                undoHandler.execute(command);
+            if (undoRedo != null) {
+                undoRedo.execute(command);
             }
         }
         codeArea.setCaretPosition(oldDataPosition);

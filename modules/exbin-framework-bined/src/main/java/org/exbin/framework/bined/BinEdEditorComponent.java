@@ -22,7 +22,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoableCommandSequence;
 import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
@@ -33,6 +32,7 @@ import org.exbin.framework.bined.options.CodeAreaThemeOptions;
 import org.exbin.framework.bined.options.EditorOptions;
 import org.exbin.framework.bined.options.impl.CodeAreaOptionsImpl;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 
 /**
  * Component for BinEd editor instances.
@@ -66,12 +66,12 @@ public class BinEdEditorComponent {
     }
 
     @Nonnull
-    public Optional<BinaryDataUndoableCommandSequence> getUndoHandler() {
-        return componentPanel.getUndoHandler();
+    public Optional<BinaryDataUndoRedo> getUndoHandler() {
+        return componentPanel.getUndoRedo();
     }
 
-    public void setUndoHandler(BinaryDataUndoableCommandSequence undoHandler) {
-        componentPanel.setUndoHandler(undoHandler);
+    public void setUndoHandler(BinaryDataUndoRedo undoHandler) {
+        componentPanel.setUndoRedo(undoHandler);
     }
 
     public void onInitFromPreferences(BinaryEditorPreferences preferences) {

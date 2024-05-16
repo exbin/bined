@@ -133,7 +133,7 @@ public class ConvertDataAction extends AbstractAction {
                         case CONVERT: {
                             CodeAreaCommand command = activeMethod.createConvertCommand(activeComponent, codeArea);
 
-                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoHandler().execute(command);
+                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoRedo().execute(command);
                             break;
                         }
                         case CONVERT_TO_NEW_FILE: {
