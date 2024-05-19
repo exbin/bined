@@ -117,7 +117,7 @@ public class ConvertDataOperation extends CodeAreaOperation {
         }
 
         @Override
-        public void redo() {
+        public void execute() {
             undoOperation = operation.executeWithUndo();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
@@ -129,11 +129,6 @@ public class ConvertDataOperation extends CodeAreaOperation {
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
-        }
-
-        @Override
-        public boolean canUndo() {
-            return true;
         }
 
         @Override

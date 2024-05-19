@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.operation.BinaryDataCommand;
+import org.exbin.bined.operation.undo.BinaryDataUndoableCommand;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.operation.api.Command;
@@ -37,12 +38,12 @@ import org.exbin.framework.operation.undo.api.UndoRedo;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class UndoHandlerWrapper implements UndoRedo {
+public class UndoRedoWrapper implements UndoRedo {
 
     private BinaryDataUndoRedo undoRedo;
     private final Map<UndoRedoChangeListener, BinaryDataUndoRedoChangeListener> listenersMap = new HashMap<>();
 
-    public UndoHandlerWrapper() {
+    public UndoRedoWrapper() {
     }
 
     public void setUndoRedo(@Nullable BinaryDataUndoRedo undoRedo) {
@@ -132,6 +133,7 @@ public class UndoHandlerWrapper implements UndoRedo {
         undoRedo.performRedo();
     }
 
+    @Override
     public void performRedo(int count) {
         undoRedo.performRedo(count);
     }
@@ -141,6 +143,7 @@ public class UndoHandlerWrapper implements UndoRedo {
         undoRedo.performUndo();
     }
 
+    @Override
     public void performUndo(int i) {
         undoRedo.performUndo(i);
     }
@@ -201,9 +204,9 @@ public class UndoHandlerWrapper implements UndoRedo {
     @ParametersAreNonnullByDefault
     private static class UndoableCommandWrapper implements UndoableCommand {
 
-        private final BinaryDataCommand command;
+        private final BinaryDataUndoableCommand command;
 
-        public UndoableCommandWrapper(BinaryDataCommand command) {
+        public UndoableCommandWrapper(BinaryDataUndoableCommand command) {
             this.command = command;
         }
 
@@ -224,10 +227,6 @@ public class UndoHandlerWrapper implements UndoRedo {
 
         public void undo() {
             command.undo();
-        }
-
-        public boolean canUndo() {
-            return command.canUndo();
         }
 
         @Override
@@ -254,24 +253,6 @@ public class UndoHandlerWrapper implements UndoRedo {
         @Override
         public void execute() {
             command.execute();
-        }
-
-        @Override
-        public void redo() {
-            throw new IllegalStateException();
-//            command.redo();
-        }
-
-        @Override
-        public void undo() {
-            throw new IllegalStateException();
-//            command.undo();
-        }
-
-        @Override
-        public boolean canUndo() {
-            return false;
-//            return command.canUndo();
         }
 
         @Override

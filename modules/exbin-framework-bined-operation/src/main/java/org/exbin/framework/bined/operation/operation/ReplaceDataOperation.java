@@ -22,7 +22,6 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.operation.BinaryDataOperationException;
 import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.ModifyDataOperation;
@@ -131,7 +130,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         }
 
         @Override
-        public void redo() {
+        public void execute() {
             undoOperation = operation.executeWithUndo();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
@@ -143,11 +142,6 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
-        }
-
-        @Override
-        public boolean canUndo() {
-            return true;
         }
 
         @Override

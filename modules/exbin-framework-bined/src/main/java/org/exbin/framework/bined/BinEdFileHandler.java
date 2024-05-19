@@ -75,7 +75,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     @Nonnull
     private final BinEdEditorComponent editorComponent;
-    private UndoHandlerWrapper undoHandlerWrapper;
+    private UndoRedoWrapper undoHandlerWrapper;
     private int id = 0;
     private URI fileUri = null;
     private FileType fileType;
@@ -433,10 +433,10 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
 
     @Nonnull
     @Override
-    public UndoHandlerWrapper getUndoRedo() {
+    public UndoRedoWrapper getUndoRedo() {
         if (undoHandlerWrapper == null) {
-            undoHandlerWrapper = new UndoHandlerWrapper();
-            ((UndoHandlerWrapper) undoHandlerWrapper).setUndoRedo(editorComponent.getUndoHandler().orElse(null));
+            undoHandlerWrapper = new UndoRedoWrapper();
+            ((UndoRedoWrapper) undoHandlerWrapper).setUndoRedo(editorComponent.getUndoHandler().orElse(null));
         }
         return undoHandlerWrapper;
     }
