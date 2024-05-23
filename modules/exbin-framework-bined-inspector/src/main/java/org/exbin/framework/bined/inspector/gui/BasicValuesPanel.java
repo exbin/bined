@@ -32,7 +32,7 @@ import org.exbin.bined.CaretMovedListener;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.DataChangedListener;
 import org.exbin.bined.operation.BinaryDataCommand;
-import org.exbin.bined.operation.swing.command.BinaryCompoundCommand;
+import org.exbin.bined.operation.swing.command.CodeAreaCompoundCommand;
 import org.exbin.bined.operation.swing.command.InsertDataCommand;
 import org.exbin.bined.operation.swing.command.ModifyDataCommand;
 import org.exbin.bined.swing.extended.ExtCodeArea;
@@ -820,9 +820,9 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 long modifiedDataSize = codeArea.getDataSize() - dataPosition;
                 EditableBinaryData modifiedData = (EditableBinaryData) byteArrayData.copy(0, modifiedDataSize);
                 EditableBinaryData insertedData = (EditableBinaryData) byteArrayData.copy(modifiedDataSize, byteArrayData.getDataSize() - modifiedDataSize);
-                command = new BinaryCompoundCommand(codeArea);
-                ((BinaryCompoundCommand) command).appendCommand(new ModifyDataCommand(codeArea, dataPosition, modifiedData));
-                ((BinaryCompoundCommand) command).appendCommand(new InsertDataCommand(codeArea, dataPosition + modifiedDataSize, insertedData));
+                command = new CodeAreaCompoundCommand(codeArea);
+                ((CodeAreaCompoundCommand) command).addCommand(new ModifyDataCommand(codeArea, dataPosition, modifiedData));
+                ((CodeAreaCompoundCommand) command).addCommand(new InsertDataCommand(codeArea, dataPosition + modifiedDataSize, insertedData));
             } else {
                 command = new ModifyDataCommand(codeArea, dataPosition, byteArrayData);
             }

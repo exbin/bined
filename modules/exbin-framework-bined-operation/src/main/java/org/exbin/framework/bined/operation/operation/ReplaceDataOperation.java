@@ -57,18 +57,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
 
     @Nullable
     @Override
-    public void execute() {
-        execute(false);
-    }
-
-    @Nullable
-    @Override
-    public CodeAreaOperation executeWithUndo() {
-        return execute(true);
-    }
-
-    @Nullable
-    private CodeAreaOperation execute(boolean withUndo) {
+    protected CodeAreaOperation execute(ExecutionType executionType) {
         long dataSize = codeArea.getDataSize();
         if (position > dataSize) {
             throw new IllegalStateException("Unable to replace data outside of document");
@@ -78,23 +67,23 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
 
         if (position == dataSize) {
-            if (withUndo) {
+            if (executionType == ExecutionType.WITH_UNDO) {
                 undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
             } 
             contentData.insertUninitialized(dataSize, length);
         } else if (position + length > dataSize) {
             long diff = position + length - dataSize;
-            if (withUndo) {
+            if (executionType == ExecutionType.WITH_UNDO) {
                 // TODO use copy directly once delta is fixed
                 PagedData origData = new PagedData();
                 origData.insert(0, contentData.copy(position, length - diff));
                 undoOperation = new CompoundCodeAreaOperation(codeArea);
-                ((CompoundCodeAreaOperation) undoOperation).appendOperation(new ModifyDataOperation(codeArea, position, origData));
-                ((CompoundCodeAreaOperation) undoOperation).appendOperation(new RemoveDataOperation(codeArea, dataSize, 0, diff));
+                ((CompoundCodeAreaOperation) undoOperation).addOperation(new ModifyDataOperation(codeArea, position, origData));
+                ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(codeArea, dataSize, 0, diff));
             }
 
             contentData.insertUninitialized(dataSize, diff);
-        } else if (withUndo) {
+        } else if (executionType == ExecutionType.WITH_UNDO) {
             // TODO use copy directly once delta is fixed
             PagedData origData = new PagedData();
             origData.insert(0, contentData.copy(position, length));

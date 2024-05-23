@@ -58,31 +58,17 @@ public class ConvertDataOperation extends CodeAreaOperation {
 
     @Nullable
     @Override
-    public void execute() {
-        execute(false);
-    }
-
-    @Nullable
-    @Override
-    public CodeAreaOperation executeWithUndo() {
-        return execute(true);
-    }
-
-    @Nullable
-    private CodeAreaOperation execute(boolean withUndo) {
+    protected CodeAreaOperation execute(ExecutionType executionType) {
         CodeAreaOperation undoOperation = null;
         EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
 
         CodeAreaOperation originalDataUndoOperation = null;
 
-        if (withUndo) {
+        if (executionType == ExecutionType.WITH_UNDO) {
             originalDataUndoOperation = new org.exbin.bined.operation.swing.InsertDataOperation(codeArea, startPosition, 0, contentData.copy(startPosition, length));
-        }
-
-        if (withUndo) {
             undoOperation = new CompoundCodeAreaOperation(codeArea);
-            ((CompoundCodeAreaOperation) undoOperation).appendOperation(new RemoveDataOperation(codeArea, startPosition, 0, convertedDataLength));
-            ((CompoundCodeAreaOperation) undoOperation).appendOperation(originalDataUndoOperation);
+            ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(codeArea, startPosition, 0, convertedDataLength));
+            ((CompoundCodeAreaOperation) undoOperation).addOperation(originalDataUndoOperation);
         }
 
         conversionDataProvider.provideData(contentData, startPosition, length, startPosition + length);

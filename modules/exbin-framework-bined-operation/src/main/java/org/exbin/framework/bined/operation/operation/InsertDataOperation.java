@@ -55,25 +55,14 @@ public class InsertDataOperation extends CodeAreaOperation {
 
     @Nullable
     @Override
-    public void execute() {
-        execute(false);
-    }
-
-    @Nullable
-    @Override
-    public CodeAreaOperation executeWithUndo() {
-        return execute(true);
-    }
-
-    @Nullable
-    private CodeAreaOperation execute(boolean withUndo) {
+    protected CodeAreaOperation execute(ExecutionType executionType) {
         CodeAreaOperation undoOperation = null;
         EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
 
         contentData.insertUninitialized(position, length);
         dataOperationDataProvider.provideData(contentData, position);
 
-        if (withUndo) {
+        if (executionType == ExecutionType.WITH_UNDO) {
             undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
         }
         ((CaretCapable) codeArea).getCaret().setCaretPosition(position + length, 0);

@@ -50,11 +50,11 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
         return CodeAreaOperationType.MODIFY_DATA;
     }
 
-    public void appendOperation(CodeAreaOperation operation) {
+    public void addOperation(CodeAreaOperation operation) {
         operations.add(operation);
     }
 
-    public void appendOperations(Collection<CodeAreaOperation> operations) {
+    public void addOperations(Collection<CodeAreaOperation> operations) {
         this.operations.addAll(operations);
     }
 
@@ -84,7 +84,7 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
                 CodeAreaOperation undoOperation = operation.executeWithUndo();
                 undoOperations.add(0, undoOperation);
             }
-            compoundUndoOperation.appendOperations(undoOperations);
+            compoundUndoOperation.addOperations(undoOperations);
         } else {
             for (CodeAreaOperation operation : operations) {
                 operation.execute();

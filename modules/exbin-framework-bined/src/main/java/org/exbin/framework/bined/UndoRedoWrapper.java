@@ -33,7 +33,7 @@ import org.exbin.framework.operation.undo.api.UndoableCommand;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 
 /**
- * Undo undoRedo wrapper.
+ * Undo redo wrapper.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -109,7 +109,7 @@ public class UndoRedoWrapper implements UndoRedo {
     }
 
     @Override
-    public long getCommandsCount() {
+    public int getCommandsCount() {
         return undoRedo.getCommandsCount();
     }
 
@@ -119,12 +119,12 @@ public class UndoRedoWrapper implements UndoRedo {
     }
 
     @Override
-    public long getCommandPosition() {
+    public int getCommandPosition() {
         return undoRedo != null ? undoRedo.getCommandPosition() : 0;
     }
 
     @Override
-    public long getSyncPosition() {
+    public int getSyncPosition() {
         return undoRedo != null ? undoRedo.getSyncPosition() : 0;
     }
 
@@ -149,7 +149,7 @@ public class UndoRedoWrapper implements UndoRedo {
     }
 
     @Override
-    public void setSyncPosition(long position) {
+    public void setSyncPosition(int position) {
         undoRedo.setSyncPosition(position);
     }
 
@@ -221,10 +221,12 @@ public class UndoRedoWrapper implements UndoRedo {
             command.execute();
         }
 
+        @Override
         public void redo() {
             command.redo();
         }
 
+        @Override
         public void undo() {
             command.undo();
         }
