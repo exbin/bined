@@ -27,6 +27,7 @@ import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
+import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
@@ -56,15 +57,24 @@ public class ConvertDataOperation extends CodeAreaOperation {
         return CodeAreaOperationType.MODIFY_DATA;
     }
 
-    @Nullable
     @Override
-    protected CodeAreaOperation execute(ExecutionType executionType) {
+    public void execute() {
+        execute(false);
+    }
+
+    @Nonnull
+    @Override
+    public BinaryDataUndoableOperation executeWithUndo() {
+        return execute(true);
+    }
+
+    private CodeAreaOperation execute(boolean withUndo) {
         CodeAreaOperation undoOperation = null;
         EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
 
         CodeAreaOperation originalDataUndoOperation = null;
 
-        if (executionType == ExecutionType.WITH_UNDO) {
+        if (withUndo) {
             originalDataUndoOperation = new org.exbin.bined.operation.swing.InsertDataOperation(codeArea, startPosition, 0, contentData.copy(startPosition, length));
             undoOperation = new CompoundCodeAreaOperation(codeArea);
             ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(codeArea, startPosition, 0, convertedDataLength));
@@ -89,7 +99,7 @@ public class ConvertDataOperation extends CodeAreaOperation {
     public static class ConvertDataCommand extends CodeAreaCommand {
 
         private final ConvertDataOperation operation;
-        private CodeAreaOperation undoOperation;
+        private BinaryDataUndoableOperation undoOperation;
 
         public ConvertDataCommand(ConvertDataOperation operation) {
             super(operation.getCodeArea());

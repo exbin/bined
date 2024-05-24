@@ -16,7 +16,6 @@
 package org.exbin.framework.bined.operation.operation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.capability.CaretCapable;
@@ -26,6 +25,7 @@ import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
+import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
@@ -53,16 +53,25 @@ public class InsertDataOperation extends CodeAreaOperation {
         return CodeAreaOperationType.INSERT_DATA;
     }
 
-    @Nullable
     @Override
-    protected CodeAreaOperation execute(ExecutionType executionType) {
+    public void execute() {
+        execute(false);
+    }
+
+    @Nonnull
+    @Override
+    public BinaryDataUndoableOperation executeWithUndo() {
+        return execute(true);
+    }
+
+    private CodeAreaOperation execute(boolean withUndo) {
         CodeAreaOperation undoOperation = null;
         EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
 
         contentData.insertUninitialized(position, length);
         dataOperationDataProvider.provideData(contentData, position);
 
-        if (executionType == ExecutionType.WITH_UNDO) {
+        if (withUndo) {
             undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
         }
         ((CaretCapable) codeArea).getCaret().setCaretPosition(position + length, 0);
@@ -93,7 +102,7 @@ public class InsertDataOperation extends CodeAreaOperation {
 
         @Override
         public void execute() {
-            undoOperation = operation.executeWithUndo();
+            undoOperation = (CodeAreaOperation) operation.executeWithUndo();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }

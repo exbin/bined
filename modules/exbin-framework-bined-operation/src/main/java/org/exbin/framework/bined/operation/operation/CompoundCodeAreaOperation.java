@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
+import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
@@ -67,22 +67,25 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
         return operations.isEmpty();
     }
 
-    /**
-     * Main operation execution method.
-     *
-     * @param executionType if undo should be included
-     * @return undo operation if requested
-     */
-    @Nullable
     @Override
-    protected CodeAreaOperation execute(ExecutionType executionType) {
+    public void execute() {
+        execute(false);
+    }
+
+    @Nonnull
+    @Override
+    public BinaryDataUndoableOperation executeWithUndo() {
+        return execute(true);
+    }
+
+    private CodeAreaOperation execute(boolean withUndo) {
         CompoundCodeAreaOperation compoundUndoOperation = null;
-        if (executionType == ExecutionType.WITH_UNDO) {
+        if (withUndo) {
             compoundUndoOperation = new CompoundCodeAreaOperation(codeArea);
             List<CodeAreaOperation> undoOperations = new ArrayList<>();
             for (CodeAreaOperation operation : operations) {
-                CodeAreaOperation undoOperation = operation.executeWithUndo();
-                undoOperations.add(0, undoOperation);
+                BinaryDataUndoableOperation undoOperation = operation.executeWithUndo();
+                undoOperations.add(0, (CodeAreaOperation) undoOperation);
             }
             compoundUndoOperation.addOperations(undoOperations);
         } else {

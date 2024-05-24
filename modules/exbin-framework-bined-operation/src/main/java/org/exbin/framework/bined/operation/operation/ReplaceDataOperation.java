@@ -16,7 +16,6 @@
 package org.exbin.framework.bined.operation.operation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
@@ -28,6 +27,7 @@ import org.exbin.bined.operation.swing.ModifyDataOperation;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
+import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
@@ -55,9 +55,18 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         return CodeAreaOperationType.MODIFY_DATA;
     }
 
-    @Nullable
     @Override
-    protected CodeAreaOperation execute(ExecutionType executionType) {
+    public void execute() {
+        execute(false);
+    }
+
+    @Nonnull
+    @Override
+    public BinaryDataUndoableOperation executeWithUndo() {
+        return execute(true);
+    }
+
+    private CodeAreaOperation execute(boolean withUndo) {
         long dataSize = codeArea.getDataSize();
         if (position > dataSize) {
             throw new IllegalStateException("Unable to replace data outside of document");
@@ -67,13 +76,13 @@ public class ReplaceDataOperation extends CodeAreaOperation {
         EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
 
         if (position == dataSize) {
-            if (executionType == ExecutionType.WITH_UNDO) {
+            if (withUndo) {
                 undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
             } 
             contentData.insertUninitialized(dataSize, length);
         } else if (position + length > dataSize) {
             long diff = position + length - dataSize;
-            if (executionType == ExecutionType.WITH_UNDO) {
+            if (withUndo) {
                 // TODO use copy directly once delta is fixed
                 PagedData origData = new PagedData();
                 origData.insert(0, contentData.copy(position, length - diff));
@@ -83,7 +92,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             }
 
             contentData.insertUninitialized(dataSize, diff);
-        } else if (executionType == ExecutionType.WITH_UNDO) {
+        } else if (withUndo) {
             // TODO use copy directly once delta is fixed
             PagedData origData = new PagedData();
             origData.insert(0, contentData.copy(position, length));
@@ -120,7 +129,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
 
         @Override
         public void execute() {
-            undoOperation = operation.executeWithUndo();
+            undoOperation = (CodeAreaOperation) operation.executeWithUndo();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
