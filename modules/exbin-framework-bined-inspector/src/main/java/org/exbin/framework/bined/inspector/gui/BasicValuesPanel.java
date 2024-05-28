@@ -41,6 +41,7 @@ import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.App;
@@ -810,7 +811,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         byteArrayData.insert(0, valuesCache, 0, bytesCount);
         long oldDataPosition = dataPosition;
         if (dataPosition == codeArea.getDataSize()) {
-            InsertDataCommand insertCommand = new InsertDataCommand(codeArea, dataPosition, byteArrayData);
+            InsertDataCommand insertCommand = new InsertDataCommand(codeArea, dataPosition, ((CaretCapable) codeArea).getCodeOffset(), byteArrayData);
             if (undoRedo != null) {
                 undoRedo.execute(insertCommand);
             }
@@ -822,7 +823,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 EditableBinaryData insertedData = (EditableBinaryData) byteArrayData.copy(modifiedDataSize, byteArrayData.getDataSize() - modifiedDataSize);
                 command = new CodeAreaCompoundCommand(codeArea);
                 ((CodeAreaCompoundCommand) command).addCommand(new ModifyDataCommand(codeArea, dataPosition, modifiedData));
-                ((CodeAreaCompoundCommand) command).addCommand(new InsertDataCommand(codeArea, dataPosition + modifiedDataSize, insertedData));
+                ((CodeAreaCompoundCommand) command).addCommand(new InsertDataCommand(codeArea, dataPosition + modifiedDataSize, ((CaretCapable) codeArea).getCodeOffset(), insertedData));
             } else {
                 command = new ModifyDataCommand(codeArea, dataPosition, byteArrayData);
             }
