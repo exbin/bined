@@ -41,6 +41,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -48,7 +49,12 @@ import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
+import org.exbin.framework.editor.api.EditorFileHandler;
+import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.EmptyUndoRedo;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 
@@ -65,6 +71,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private JPopupMenu codeAreaPopupMenu;
     private ClipboardActionsUpdateListener clipboardActionsUpdateListener;
+    private ComponentActivationListener componentActivationListener;
     private BinaryStatusApi binaryStatus;
     private TextEncodingStatusApi textEncodingStatusApi;
     private UndoRedo undoRedo = null;
@@ -74,6 +81,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     }
 
     private void init() {
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.addFlavorListener((FlavorEvent e) -> {
             updateClipboardActionsStatus();
@@ -93,6 +102,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                 }
             }
         });
+        componentActivationListener.updated(EditorProvider.class, this);
     }
 
     @Override
@@ -107,6 +117,13 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     @Override
     public void activeFileChanged() {
         super.activeFileChanged();
+        if (componentActivationListener != null) {
+            componentActivationListener.updated(FileHandler.class, activeFile);
+            componentActivationListener.updated(CodeAreaCore.class, activeFile instanceof BinEdFileHandler ? ((BinEdFileHandler) activeFile).getCodeArea() : null);
+            if (activeFile instanceof EditorFileHandler) {
+                ((EditorFileHandler) activeFile).componentActivated(componentActivationListener);
+            }
+        }
 
         if (undoRedo != null) {
             // TODO
