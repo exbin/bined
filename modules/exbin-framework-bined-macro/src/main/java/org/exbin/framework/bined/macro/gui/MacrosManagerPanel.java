@@ -18,9 +18,9 @@ package org.exbin.framework.bined.macro.gui;
 import org.exbin.framework.bined.macro.model.MacrosTableModel;
 import java.awt.BorderLayout;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JTable;
 import org.exbin.framework.App;
@@ -252,10 +252,10 @@ public class MacrosManagerPanel extends javax.swing.JPanel {
         table.repaint();
     }
 
-    @Nullable
-    public MacroRecord getSelectedRecord() {
+    @Nonnull
+    public Optional<MacroRecord> getSelectedRecord() {
         int selectedRow = table.getSelectedRow();
-        return selectedRow >= 0 ? macrosTableModel.getRecords().get(selectedRow) : null;
+        return selectedRow >= 0 ? Optional.of(macrosTableModel.getRecords().get(selectedRow)) : Optional.empty();
     }
 
     @Nonnull

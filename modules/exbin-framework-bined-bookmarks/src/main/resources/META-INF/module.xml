@@ -4,5 +4,18 @@
   <name>BinEd Hexadecimal Editor Module</name>
   <description>Module supporting editation of binary document in hexadecimal form</description>
   <dependency>
+    <module id="org.exbin.framework.bined.BinedModule" />
+    <module id="org.exbin.framework.frame.api.FrameModuleApi" />
+    <module id="org.exbin.framework.window.api.WindowModuleApi" />
+    <module id="org.exbin.framework.editor.api.EditorModuleApi" />
+    <module id="org.exbin.framework.file.api.FileModuleApi" />
+    <module id="org.exbin.framework.action.api.ActionModuleApi" />
+    <module id="org.exbin.framework.operation.undo.api.OperationUndoModuleApi" />
+    <module id="org.exbin.framework.options.api.OptionsModuleapi" />
+    <module id="org.exbin.framework.preferences.api.PreferencesModuleApi" />
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+    <module id="org.exbin.framework.utils.UtilsModule" />
+    <module id="org.exbin.framework.editor.text.EditorTextModule" />
+    <module id="org.exbin.framework.bined.search.BinedSearchModule" />
   </dependency>
 </module>

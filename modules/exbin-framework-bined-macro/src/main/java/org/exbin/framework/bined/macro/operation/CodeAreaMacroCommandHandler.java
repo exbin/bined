@@ -246,7 +246,6 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         super.clearSelection();
     }
 
-    @Nonnull
     private static boolean isSelecting(KeyEvent keyEvent) {
         return (keyEvent.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) > 0;
     }

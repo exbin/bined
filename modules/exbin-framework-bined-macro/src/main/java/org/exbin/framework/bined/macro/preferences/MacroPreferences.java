@@ -17,6 +17,7 @@ package org.exbin.framework.bined.macro.preferences;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.macro.model.MacroRecord;
@@ -47,6 +48,7 @@ public class MacroPreferences implements MacroOptions {
         return preferences.getInt(PREFERENCES_MACROS_COUNT, 0);
     }
 
+    @Nonnull
     @Override
     public MacroRecord getMacroRecord(int index) {
         String prefix = PREFERENCES_MACRO_VALUE_PREFIX + index + ".";
