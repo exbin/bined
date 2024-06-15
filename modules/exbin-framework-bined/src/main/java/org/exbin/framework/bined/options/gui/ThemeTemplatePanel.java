@@ -43,6 +43,7 @@ import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
 import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UtilsModule;
 
 /**
  * Manage list of theme profiles panel.
@@ -179,7 +180,11 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new ThemeTemplatePanel()));
+        TestApplication testApplication = UtilsModule.createTestApplication();
+        testApplication.launch(() -> {
+            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
+            WindowUtils.invokeWindow(new ThemeTemplatePanel());
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

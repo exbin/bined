@@ -32,6 +32,9 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.objectdata.ObjectValueConvertor;
 
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UtilsModule;
+import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Inspection panel for instance component.
@@ -231,6 +234,18 @@ public class InspectComponentPanel extends javax.swing.JPanel {
         propertyTablePanel.setObject(itemObject);
     }//GEN-LAST:event_showStaticFieldsCheckBoxStateChanged
 
+    /**
+     * Test method for this panel.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        TestApplication testApplication = UtilsModule.createTestApplication();
+        testApplication.launch(() -> {
+            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
+            WindowUtils.invokeWindow(new InspectComponentPanel());
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;

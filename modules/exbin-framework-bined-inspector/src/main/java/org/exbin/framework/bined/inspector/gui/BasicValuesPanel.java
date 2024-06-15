@@ -47,6 +47,7 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UtilsModule;
 
 /**
  * Values side panel.
@@ -697,7 +698,11 @@ public class BasicValuesPanel extends javax.swing.JPanel {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new BasicValuesPanel()));
+        TestApplication testApplication = UtilsModule.createTestApplication();
+        testApplication.launch(() -> {
+            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
+            WindowUtils.invokeWindow(new BasicValuesPanel());
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -26,6 +26,7 @@ import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UtilsModule;
 
 /**
  * Theme profiles options panel.
@@ -104,7 +105,11 @@ public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements Opt
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new ThemeProfilesOptionsPanel()));
+        TestApplication testApplication = UtilsModule.createTestApplication();
+        testApplication.launch(() -> {
+            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
+            WindowUtils.invokeWindow(new ThemeProfilesOptionsPanel());
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

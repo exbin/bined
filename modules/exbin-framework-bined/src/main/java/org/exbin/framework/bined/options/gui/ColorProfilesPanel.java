@@ -35,6 +35,7 @@ import org.exbin.framework.bined.options.gui.PreviewPanel.PreviewType;
 import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
@@ -457,7 +458,11 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new ColorProfilesPanel()));
+        TestApplication testApplication = UtilsModule.createTestApplication();
+        testApplication.launch(() -> {
+            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
+            WindowUtils.invokeWindow(new ColorProfilesPanel());
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
