@@ -90,6 +90,7 @@ import org.exbin.framework.bined.preferences.StatusPreferences;
 import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
+import org.exbin.framework.editor.text.options.gui.TextEncodingPanel;
 import org.exbin.framework.editor.text.options.impl.TextEncodingOptionsImpl;
 import org.exbin.framework.editor.text.options.impl.TextFontOptionsImpl;
 import org.exbin.framework.editor.text.service.TextFontService;
@@ -190,8 +191,7 @@ public class BinedOptionsManager {
                 if (panel == null) {
                     panel = new TextEncodingOptionsPanel();
                     panel.setTextEncodingService(encodingsHandler.getTextEncodingService());
-                    panel.setAddEncodingsOperation((List<String> usedEncodings) -> {
-                        final List<String> result = new ArrayList<>();
+                    panel.setAddEncodingsOperation((List<String> usedEncodings, TextEncodingPanel.EncodingsUpdate encodingsUpdate) -> {
                         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
                         final AddEncodingPanel addEncodingPanel = new AddEncodingPanel();
                         addEncodingPanel.setUsedEncodings(usedEncodings);
@@ -199,7 +199,7 @@ public class BinedOptionsManager {
                         final WindowHandler addEncodingDialog = windowModule.createDialog(addEncodingPanel, controlPanel);
                         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                             if (actionType == DefaultControlHandler.ControlActionType.OK) {
-                                result.addAll(addEncodingPanel.getEncodings());
+                                encodingsUpdate.update(addEncodingPanel.getEncodings());
                             }
 
                             addEncodingDialog.close();
@@ -208,7 +208,6 @@ public class BinedOptionsManager {
                         windowModule.addHeaderPanel(addEncodingDialog.getWindow(), addEncodingPanel.getClass(), addEncodingPanel.getResourceBundle());
                         windowModule.setWindowTitle(addEncodingDialog, addEncodingPanel.getResourceBundle());
                         addEncodingDialog.showCentered(panel);
-                        return result;
                     });
                 }
 
