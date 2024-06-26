@@ -71,6 +71,7 @@ public class CodeAreaFontAction extends AbstractAction {
         if (textFontAction == null) {
             textFontAction = new TextFontAction();
             textFontAction.setup(App.getModule(LanguageModuleApi.class).getBundle(EditorTextModule.class));
+            textFontAction.setFileHandler(editorProvider.getActiveFile().orElse(null));
         }
         textFontAction.actionPerformed(e);
         // App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
