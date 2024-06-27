@@ -1,0 +1,50 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'org.exbin.framework'
+ext.libraryName = 'BinEd KaiTai Support Hexadecimal Editor Framework Library'
+ext.libraryDescription = 'BinEd KaiTai support hexadecimal editor framework library'
+
+apply from: '../bined-plugins.gradle'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+repositories {
+    flatDir {
+        dirs "../../lib"
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-core')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-extended')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing-extended')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-operation-swing')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-highlight-swing')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data-paged')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data-delta')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-language-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-frame-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-editor-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-editor')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-file-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-action-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-operation-undo-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-options-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-utils')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-editor-text')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-search')
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
+}

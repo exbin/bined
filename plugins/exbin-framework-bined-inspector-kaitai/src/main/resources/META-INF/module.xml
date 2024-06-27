@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.bined.inspector.kaitai.BinedInspectorKaitaiModule</id>
+  <name>BinEd Hexadecimal Editor Module</name>
+  <description>Module supporting editation of binary document in hexadecimal form</description>
+  <dependency>
+  </dependency>
+</module>
