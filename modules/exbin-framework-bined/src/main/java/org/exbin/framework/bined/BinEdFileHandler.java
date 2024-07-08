@@ -46,7 +46,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;
-import org.exbin.framework.action.api.ComponentActivationService;
 import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
@@ -57,8 +56,6 @@ import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.utils.ClipboardActionsHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
-import org.exbin.framework.action.api.ComponentActivationProvider;
-import org.exbin.framework.action.api.DefaultComponentActivationService;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedoControl;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
@@ -69,7 +66,7 @@ import org.exbin.framework.operation.undo.api.UndoRedoState;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdFileHandler implements EditableFileHandler, ComponentActivationProvider, EditorFileHandler, UndoRedoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
+public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler, UndoRedoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
 
     private SegmentsRepository segmentsRepository;
 
@@ -83,7 +80,7 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
     private Font defaultFont;
     private ExtendedCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
-    private DefaultComponentActivationService componentActivationService = new DefaultComponentActivationService();
+    private ComponentActivationListener componentActivationListener;
     private UndoRedoState undoRedoHandler = null;
 
     public BinEdFileHandler() {
@@ -100,10 +97,10 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
         final ExtCodeArea codeArea = getCodeArea();
         defaultFont = codeArea.getCodeFont();
         defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
-        componentActivationService.updated(CodeAreaCore.class, codeArea);
-        componentActivationService.updated(ClipboardActionsHandler.class, this);
         codeArea.addSelectionChangedListener(() -> {
-            componentActivationService.updated(ClipboardActionsHandler.class, this);
+            if (componentActivationListener != null) {
+                componentActivationListener.updated(ClipboardActionsHandler.class, this);
+            }
         });
     }
 
@@ -539,20 +536,27 @@ public class BinEdFileHandler implements EditableFileHandler, ComponentActivatio
         // componentPanel.setUpdateListener(updateListener);
     }
 
-    @Nonnull
     @Override
-    public ComponentActivationService getComponentActivationService() {
-        return componentActivationService;
+    public void componentActivated(ComponentActivationListener componentActivationListener) {
+        this.componentActivationListener = componentActivationListener;
+        componentActivationListener.updated(CodeAreaCore.class, getCodeArea());
+        componentActivationListener.updated(UndoRedoState.class, getUndoRedo());
+        componentActivationListener.updated(ClipboardActionsHandler.class, this);
     }
 
     @Override
-    public void componentActivated(ComponentActivationListener componentActivationListener) {
-        componentActivationService.requestUpdate();
+    public void componentDeactivated(ComponentActivationListener componentActivationListener) {
+        this.componentActivationListener = null;
+        componentActivationListener.updated(CodeAreaCore.class, null);
+        componentActivationListener.updated(UndoRedoState.class, null);
+        componentActivationListener.updated(ClipboardActionsHandler.class, null);
     }
 
     private void notifyUndoChanged() {
         if (undoRedoHandler != null) {
-            componentActivationService.updated(UndoRedoState.class, undoRedoHandler);
+            if (componentActivationListener != null) {
+                componentActivationListener.updated(UndoRedoState.class, undoRedoHandler);
+            }
         }
     }
 

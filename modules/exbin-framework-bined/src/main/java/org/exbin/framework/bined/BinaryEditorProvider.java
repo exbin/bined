@@ -40,7 +40,6 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -73,7 +72,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     private File lastUsedDirectory;
     private BinaryStatusApi binaryStatus;
     private EditorModificationListener editorModificationListener;
-    private ComponentActivationListener componentActivationListener;
 
     public BinaryEditorProvider(BinEdFileHandler activeFile) {
         init(activeFile);
@@ -81,7 +79,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     private void init(BinEdFileHandler activeFile) {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         this.activeFile = activeFile;
         fileTypes = new AllFileTypes();
 
@@ -109,9 +107,9 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     }
 
     private void activeFileChanged() {
-        CodeAreaCore codeArea = activeFile.getCodeArea();
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         componentActivationListener.updated(FileHandler.class, activeFile);
-        componentActivationListener.updated(CodeAreaCore.class, codeArea);
         if (activeFile instanceof EditorFileHandler) {
             ((EditorFileHandler) activeFile).componentActivated(componentActivationListener);
         }

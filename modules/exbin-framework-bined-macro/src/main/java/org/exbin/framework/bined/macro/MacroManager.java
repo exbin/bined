@@ -91,7 +91,6 @@ public class MacroManager {
     private long lastMacroIndex = 0;
 
     public MacroManager() {
-        manageMacrosAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {

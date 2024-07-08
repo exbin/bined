@@ -71,7 +71,6 @@ public class ExecuteLastMacroAction extends AbstractAction {
                 });
             }
         });
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
     }
 
     public void setMacroManager(MacroManager macroManager) {
