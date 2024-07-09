@@ -37,9 +37,12 @@ import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.extended.ExtCodeArea;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ComponentActivationListener;
+import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.action.api.MenuPosition;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -58,8 +61,8 @@ import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.preferences.MacroPreferences;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
@@ -78,7 +81,7 @@ public class MacroManager {
     private final List<MacroRecord> macroRecords = new ArrayList<>();
     private MacroPreferences macroPreferences;
 
-    private EditorProvider editorProvider;
+    private FileHandler fileHandler;
 
     private final ManageMacrosAction manageMacrosAction = new ManageMacrosAction();
     private final StartMacroRecordingAction startMacroRecordingAction = new StartMacroRecordingAction();
@@ -93,9 +96,7 @@ public class MacroManager {
     public MacroManager() {
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-
+    public void init() {
         addMacroAction.setup(resourceBundle);
         editMacroAction.setup(resourceBundle);
         manageMacrosAction.setup(resourceBundle);
@@ -105,9 +106,7 @@ public class MacroManager {
         startMacroRecordingAction.setMacroManager(this);
         stopMacroRecordingAction.setup(resourceBundle);
         stopMacroRecordingAction.setMacroManager(this);
-    }
 
-    public void init() {
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
         Preferences preferences = preferencesModule.getAppPreferences();
         macroPreferences = new MacroPreferences(preferences);
@@ -238,6 +237,15 @@ public class MacroManager {
                 }
             };
             macrosMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
+            macrosMenuAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+                @Override
+                public void register(ComponentActivationManager manager) {
+                    manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                        fileHandler = instance;
+                        updateMacrosMenu();
+                    });
+                }
+            });
             macrosMenu = new JMenu(macrosMenuAction);
             updateMacrosMenu();
         }
@@ -319,22 +327,20 @@ public class MacroManager {
                         }
                         case FIND_TEXT: {
                             if (parameters.size() > 1) {
-                                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                                if (!activeFile.isPresent()) {
+                                if (fileHandler == null) {
                                     throw new IllegalStateException("No active file");
                                 }
-                                BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+                                BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
                                 BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                                 componentExtension.performSearchText((String) parameters.get(0));
                             }
                             continue;
                         }
                         case FIND_AGAIN: {
-                            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                            if (!activeFile.isPresent()) {
+                            if (fileHandler == null) {
                                 throw new IllegalStateException("No active file");
                             }
-                            BinEdComponentPanel activePanel = ((BinEdFileHandler) activeFile.get()).getComponent();
+                            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
                             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                             componentExtension.performFindAgain();
                             continue;
@@ -383,8 +389,16 @@ public class MacroManager {
         notifyMacroRecordingChange(codeArea);
     }
 
+    /**
+     * Notifies Macro recording state changed.
+     *
+     * @param codeArea code area
+     */
     private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
-        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+        // TODO Reported as a change of CodeAreaCore - create some kind of macro recording state instead?
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        componentActivationListener.updated(CodeAreaCore.class, codeArea);
     }
 
     public void updateMacrosMenu() {
@@ -400,32 +414,30 @@ public class MacroManager {
         int recordsLimit = Math.min(macroRecords.size(), 10);
         String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
         String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
+        boolean enabled = fileHandler != null;
         for (int i = 0; i < recordsLimit; i++) {
             final int macroIndex = i;
             String macroName = macroRecords.get(i).getName();
             Action macroAction = new AbstractAction(macroName.isEmpty() ? macroActionName + (i + 1) : macroName) {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        ExtCodeArea codeArea = fileHandler.getCodeArea();
-                        try {
-                            executeMacro(codeArea, macroIndex);
-                        } catch (Exception ex) {
-                            String message = ex.getMessage();
-                            if (message == null || message.isEmpty()) {
-                                message = ex.toString();
-                            } else if (ex.getCause() != null) {
-                                message += ex.getCause().getMessage();
-                            }
-
-                            JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
+                    ExtCodeArea codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
+                    try {
+                        executeMacro(codeArea, macroIndex);
+                    } catch (Exception ex) {
+                        String message = ex.getMessage();
+                        if (message == null || message.isEmpty()) {
+                            message = ex.toString();
+                        } else if (ex.getCause() != null) {
+                            message += ex.getCause().getMessage();
                         }
+
+                        JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
                     }
                 }
             };
             macroAction.putValue(Action.SHORT_DESCRIPTION, macroActionDescription);
+            macroAction.setEnabled(enabled);
 
             menu.add(actionModule.actionToMenuItem(macroAction));
         }

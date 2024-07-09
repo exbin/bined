@@ -115,7 +115,6 @@ public class BinedMacroModule implements Module {
             ensureSetup();
 
             macroManager = new MacroManager();
-            macroManager.setEditorProvider(editorProvider);
             macroManager.init();
         }
         return macroManager;

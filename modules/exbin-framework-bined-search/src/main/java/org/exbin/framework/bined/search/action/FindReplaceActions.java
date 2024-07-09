@@ -111,7 +111,7 @@ public class FindReplaceActions {
 
     @Nonnull
     public Action getEditReplaceAction() {
-        EditFindAgainAction editReplaceAction = new EditFindAgainAction();
+        EditReplaceAction editReplaceAction = new EditReplaceAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(editReplaceAction, resourceBundle, REPLACE_ACTION_ID);
         editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
