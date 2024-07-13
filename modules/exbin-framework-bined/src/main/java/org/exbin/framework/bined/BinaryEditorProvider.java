@@ -72,14 +72,20 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     private File lastUsedDirectory;
     private BinaryStatusApi binaryStatus;
     private EditorModificationListener editorModificationListener;
+    private ComponentActivationListener componentActivationListener = new ComponentActivationListener() {
+        @Override
+        public <T> void updated(Class<T> instanceClass, T instance) {
+        }
+    };
 
     public BinaryEditorProvider(BinEdFileHandler activeFile) {
         init(activeFile);
     }
 
     private void init(BinEdFileHandler activeFile) {
+        // TODO: Drop dependency on frame module
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         this.activeFile = activeFile;
         fileTypes = new AllFileTypes();
 
@@ -107,8 +113,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     }
 
     private void activeFileChanged() {
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         componentActivationListener.updated(FileHandler.class, activeFile);
         if (activeFile instanceof EditorFileHandler) {
             ((EditorFileHandler) activeFile).componentActivated(componentActivationListener);
