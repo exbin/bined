@@ -220,7 +220,6 @@ public class BinedModule implements Module {
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(fileHandlingMode);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-            fileModule.setFileOperations(editorProvider);
             ((BinaryMultiEditorProvider) editorProvider).setCodeAreaPopupMenuHandler(createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR));
 
             fileModule.setFileOperations(editorProvider);
