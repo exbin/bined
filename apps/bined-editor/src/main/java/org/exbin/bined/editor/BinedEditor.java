@@ -52,6 +52,8 @@ import org.exbin.framework.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.help.online.api.HelpOnlineModuleApi;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.addon.manager.AddonManagerModule;
+import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.basic.BasicApplication;
 import org.exbin.framework.options.api.OptionsModuleApi;
@@ -179,6 +181,8 @@ public class BinedEditor {
 
                 BinedObjectDataModule binedObjectDataModule = App.getModule(BinedObjectDataModule.class);
                 BinedToolContentModule binedToolContentModule = App.getModule(BinedToolContentModule.class);
+                
+                AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
 
                 frameModule.createMainMenu();
                 try {
@@ -276,6 +280,7 @@ public class BinedEditor {
                 frameHandler.setMainPanel(editorComponent);
                 binedBookmarksModule.registerBookmarksComponentActions(editorComponent);
                 binedMacroModule.registerMacrosComponentActions(editorComponent);
+                addonManagerModule.registerAddonManagerMenuItem();
 
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();
