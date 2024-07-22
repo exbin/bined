@@ -25,10 +25,10 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.color.BasicCodeAreaDecorationColorType;
 import org.exbin.bined.color.CodeAreaBasicColors;
-import org.exbin.bined.extended.color.CodeAreaUnprintablesColorType;
+import org.exbin.bined.section.color.CodeAreaUnprintablesColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.options.CodeAreaColorOptions;
 
 /**
@@ -109,8 +109,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
 
     @Nonnull
     @Override
-    public ExtendedCodeAreaColorProfile getColorsProfile(int profileIndex) {
-        ExtendedCodeAreaColorProfile colorProfile = new ExtendedCodeAreaColorProfile();
+    public SectionCodeAreaColorProfile getColorsProfile(int profileIndex) {
+        SectionCodeAreaColorProfile colorProfile = new SectionCodeAreaColorProfile();
         String colorProfilePrefix = PREFERENCES_COLOR_VALUE_PREFIX + String.valueOf(profileIndex) + ".";
 
         colorProfile.setColor(CodeAreaBasicColors.TEXT_COLOR, textAsColor(preferences.get(colorProfilePrefix + COLOR_TEXT_COLOR)));
@@ -142,7 +142,7 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
     }
 
     @Override
-    public void setColorsProfile(int profileIndex, ExtendedCodeAreaColorProfile colorProfile) {
+    public void setColorsProfile(int profileIndex, SectionCodeAreaColorProfile colorProfile) {
         String colorProfilePrefix = PREFERENCES_COLOR_VALUE_PREFIX + String.valueOf(profileIndex) + ".";
 
         preferences.put(colorProfilePrefix + COLOR_TEXT_COLOR, colorAsText(colorProfile.getColor(CodeAreaBasicColors.TEXT_COLOR)));

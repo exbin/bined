@@ -34,7 +34,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaLayoutOptionsImpl;
 import org.exbin.framework.bined.preferences.CodeAreaLayoutPreferences;
@@ -107,7 +107,7 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
         return ((ProfilesListModel) templatesList.getModel());
     }
 
-    public DefaultExtendedCodeAreaLayoutProfile getProfile(int profileIndex) {
+    public DefaultSectionCodeAreaLayoutProfile getProfile(int profileIndex) {
         return getProfilesListModel().getElementAt(profileIndex).layoutProfile;
     }
 
@@ -195,9 +195,9 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
     public final static class LayoutProfile {
 
         private String profileName;
-        private DefaultExtendedCodeAreaLayoutProfile layoutProfile;
+        private DefaultSectionCodeAreaLayoutProfile layoutProfile;
 
-        public LayoutProfile(String profileName, DefaultExtendedCodeAreaLayoutProfile layoutProfile) {
+        public LayoutProfile(String profileName, DefaultSectionCodeAreaLayoutProfile layoutProfile) {
             this.profileName = profileName;
             this.layoutProfile = layoutProfile;
         }
@@ -208,7 +208,7 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
         }
 
         @Nonnull
-        public DefaultExtendedCodeAreaLayoutProfile getLayoutProfile() {
+        public DefaultSectionCodeAreaLayoutProfile getLayoutProfile() {
             return layoutProfile;
         }
     }

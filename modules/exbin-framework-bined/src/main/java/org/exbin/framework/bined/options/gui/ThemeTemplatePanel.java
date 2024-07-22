@@ -34,7 +34,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.options.impl.CodeAreaThemeOptionsImpl;
 import org.exbin.framework.bined.preferences.CodeAreaThemePreferences;
@@ -107,7 +107,7 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
         getProfilesListModel().addListDataListener(listener);
     }
 
-    public ExtendedCodeAreaThemeProfile getProfile(int profileIndex) {
+    public SectionCodeAreaThemeProfile getProfile(int profileIndex) {
         return getProfilesListModel().getElementAt(profileIndex).themeProfile;
     }
 
@@ -197,9 +197,9 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
     public final static class ThemeProfile {
 
         private String profileName;
-        private ExtendedCodeAreaThemeProfile themeProfile;
+        private SectionCodeAreaThemeProfile themeProfile;
 
-        public ThemeProfile(String profileName, ExtendedCodeAreaThemeProfile themeProfile) {
+        public ThemeProfile(String profileName, SectionCodeAreaThemeProfile themeProfile) {
             this.profileName = profileName;
             this.themeProfile = themeProfile;
         }
@@ -210,7 +210,7 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
         }
 
         @Nonnull
-        public ExtendedCodeAreaThemeProfile getThemeProfile() {
+        public SectionCodeAreaThemeProfile getThemeProfile() {
             return themeProfile;
         }
     }

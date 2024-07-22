@@ -17,7 +17,7 @@ package org.exbin.framework.bined.options;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 
 /**
  * Code area theme options.
@@ -30,12 +30,12 @@ public interface CodeAreaThemeOptions {
     int getSelectedProfile();
 
     @Nonnull
-    ExtendedCodeAreaThemeProfile getThemeProfile(int index);
+    SectionCodeAreaThemeProfile getThemeProfile(int index);
 
     void removeThemeProfile(int index);
 
     void setSelectedProfile(int profileIndex);
 
-    void setThemeProfile(int index, ExtendedCodeAreaThemeProfile themeProfile);
+    void setThemeProfile(int index, SectionCodeAreaThemeProfile themeProfile);
 
 }

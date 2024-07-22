@@ -22,8 +22,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -53,8 +53,8 @@ public class ColorProfilePanel extends javax.swing.JPanel {
         colorsTable.setDefaultEditor(Color.class, new ColorCellTableEditor());
 
         add(previewPanel, BorderLayout.CENTER);
-        ExtCodeArea codeArea = previewPanel.getCodeArea();
-        colorTableModel.setColorProfile((ExtendedCodeAreaColorProfile) codeArea.getColorsProfile());
+        SectCodeArea codeArea = previewPanel.getCodeArea();
+        colorTableModel.setColorProfile((SectionCodeAreaColorProfile) codeArea.getColorsProfile());
     }
 
     @Nonnull
@@ -62,17 +62,17 @@ public class ColorProfilePanel extends javax.swing.JPanel {
         return resourceBundle;
     }
 
-    public void setColorProfile(@Nonnull ExtendedCodeAreaColorProfile colorProfile) {
-        ExtendedCodeAreaColorProfile newColorProfile = colorProfile.createCopy();
-        ExtCodeArea codeArea = previewPanel.getCodeArea();
+    public void setColorProfile(@Nonnull SectionCodeAreaColorProfile colorProfile) {
+        SectionCodeAreaColorProfile newColorProfile = colorProfile.createCopy();
+        SectCodeArea codeArea = previewPanel.getCodeArea();
         codeArea.setColorsProfile(newColorProfile);
         colorTableModel.setColorProfile(newColorProfile);
     }
 
     @Nonnull
-    public ExtendedCodeAreaColorProfile getColorProfile() {
-        ExtCodeArea codeArea = previewPanel.getCodeArea();
-        ExtendedCodeAreaColorProfile profile = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
+    public SectionCodeAreaColorProfile getColorProfile() {
+        SectCodeArea codeArea = previewPanel.getCodeArea();
+        SectionCodeAreaColorProfile profile = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
         return Objects.requireNonNull(profile).createCopy();
     }
 

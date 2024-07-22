@@ -283,7 +283,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         textDataScrollPane = new javax.swing.JScrollPane();
         textDataTextArea = new javax.swing.JTextArea();
         binaryDataPanel = new javax.swing.JPanel();
-        dataCodeArea = new org.exbin.bined.swing.extended.ExtCodeArea();
+        dataCodeArea = new org.exbin.bined.swing.section.SectCodeArea();
         saveAsFileButton = new javax.swing.JButton();
         openAsTabButton = new javax.swing.JButton();
         imageScrollPane = new javax.swing.JScrollPane();
@@ -532,7 +532,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel availableFlavorsLabel;
     private javax.swing.JPanel binaryDataPanel;
-    private org.exbin.bined.swing.extended.ExtCodeArea dataCodeArea;
+    private org.exbin.bined.swing.section.SectCodeArea dataCodeArea;
     private javax.swing.JComboBox<String> dataComboBox;
     private javax.swing.JPanel dataContentPanel;
     private javax.swing.JLabel dataLabel;

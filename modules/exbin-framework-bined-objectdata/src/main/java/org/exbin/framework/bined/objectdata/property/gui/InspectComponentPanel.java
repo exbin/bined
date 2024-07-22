@@ -27,7 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.EditMode;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.objectdata.ObjectValueConvertor;
 
@@ -49,7 +49,7 @@ public class InspectComponentPanel extends javax.swing.JPanel {
     private final ComponentParentsListModel componentParentsListModel = new ComponentParentsListModel();
     private final PropertyTablePanel propertyTablePanel = new PropertyTablePanel();
     private final ObjectValueConvertor objectValueConvertor = new ObjectValueConvertor();
-    private final ExtCodeArea codeArea = new ExtCodeArea();
+    private final SectCodeArea codeArea = new SectCodeArea();
     private Object component;
     private int currentlyShown = 0;
     private boolean showPropertiesOnly = false;

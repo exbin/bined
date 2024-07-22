@@ -43,8 +43,8 @@ import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -78,7 +78,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private FileType fileType;
     private String title;
     private Font defaultFont;
-    private ExtendedCodeAreaColorProfile defaultColors;
+    private SectionCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
     private ComponentActivationListener componentActivationListener;
     private UndoRedoState undoRedoHandler = null;
@@ -94,9 +94,9 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     private void init() {
-        final ExtCodeArea codeArea = getCodeArea();
+        final SectCodeArea codeArea = getCodeArea();
         defaultFont = codeArea.getCodeFont();
-        defaultColors = (ExtendedCodeAreaColorProfile) codeArea.getColorsProfile();
+        defaultColors = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
         codeArea.addSelectionChangedListener(() -> {
             if (componentActivationListener != null) {
                 componentActivationListener.updated(ClipboardActionsHandler.class, this);
@@ -247,7 +247,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     public void clearFile() {
         FileHandlingMode fileHandlingMode = getFileHandlingMode();
         closeData();
-        ExtCodeArea codeArea = editorComponent.getCodeArea();
+        SectCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
         if (data instanceof DeltaDocument) {
             segmentsRepository.dropDocument(Objects.requireNonNull((DeltaDocument) codeArea.getContentData()));
@@ -301,7 +301,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public void saveFile() {
-        ExtCodeArea codeArea = editorComponent.getCodeArea();
+        SectCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
         if (data instanceof DeltaDocument) {
             try {
@@ -329,7 +329,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public void closeData() {
-        ExtCodeArea codeArea = editorComponent.getCodeArea();
+        SectCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
         editorComponent.setContentData(EmptyBinaryData.INSTANCE);
         if (data instanceof DeltaDocument) {
@@ -356,7 +356,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Override
     public void switchFileHandlingMode(FileHandlingMode handlingMode) {
         FileHandlingMode oldFileHandlingMode = getFileHandlingMode();
-        ExtCodeArea codeArea = editorComponent.getCodeArea();
+        SectCodeArea codeArea = editorComponent.getCodeArea();
         if (handlingMode != oldFileHandlingMode) {
             if (fileUri != null) {
                 loadFromFile(fileUri, null, handlingMode);
@@ -393,7 +393,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    public ExtCodeArea getCodeArea() {
+    public SectCodeArea getCodeArea() {
         return editorComponent.getCodeArea();
     }
 
@@ -516,7 +516,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    public ExtendedCodeAreaColorProfile getDefaultColors() {
+    public SectionCodeAreaColorProfile getDefaultColors() {
         return defaultColors;
     }
 

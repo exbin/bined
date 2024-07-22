@@ -23,9 +23,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.RowWrappingMode;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.swing.extended.layout.ExtendedCodeAreaDecorations;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.layout.SectionCodeAreaDecorations;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
@@ -150,7 +150,7 @@ public class BinaryEditorPreferences {
 
         List<String> layoutProfiles = new ArrayList<>();
         layoutProfiles.add("Imported profile");
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = new DefaultExtendedCodeAreaLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = new DefaultSectionCodeAreaLayoutProfile();
         layoutProfile.setShowHeader(legacyPreferences.isShowHeader());
         layoutProfile.setShowRowPosition(legacyPreferences.isShowLineNumbers());
         layoutProfile.setSpaceGroupSize(legacyPreferences.getByteGroupSize());
@@ -160,13 +160,13 @@ public class BinaryEditorPreferences {
 
         List<String> themeProfiles = new ArrayList<>();
         themeProfiles.add("Imported profile");
-        ExtendedCodeAreaThemeProfile themeProfile = new ExtendedCodeAreaThemeProfile();
+        SectionCodeAreaThemeProfile themeProfile = new SectionCodeAreaThemeProfile();
         themeProfile.setBackgroundPaintMode(legacyPreferences.getBackgroundPaintMode());
         themeProfile.setPaintRowPosBackground(legacyPreferences.isPaintRowPosBackground());
-        themeProfile.setDecoration(ExtendedCodeAreaDecorations.HEADER_LINE, legacyPreferences.isDecorationHeaderLine());
-        themeProfile.setDecoration(ExtendedCodeAreaDecorations.ROW_POSITION_LINE, legacyPreferences.isDecorationLineNumLine());
-        themeProfile.setDecoration(ExtendedCodeAreaDecorations.SPLIT_LINE, legacyPreferences.isDecorationPreviewLine());
-        themeProfile.setDecoration(ExtendedCodeAreaDecorations.BOX_LINES, legacyPreferences.isDecorationBox());
+        themeProfile.setDecoration(SectionCodeAreaDecorations.HEADER_LINE, legacyPreferences.isDecorationHeaderLine());
+        themeProfile.setDecoration(SectionCodeAreaDecorations.ROW_POSITION_LINE, legacyPreferences.isDecorationLineNumLine());
+        themeProfile.setDecoration(SectionCodeAreaDecorations.SPLIT_LINE, legacyPreferences.isDecorationPreviewLine());
+        themeProfile.setDecoration(SectionCodeAreaDecorations.BOX_LINES, legacyPreferences.isDecorationBox());
         themePreferences.setThemeProfile(0, themeProfile);
         themePreferences.setThemeProfilesList(themeProfiles);
 

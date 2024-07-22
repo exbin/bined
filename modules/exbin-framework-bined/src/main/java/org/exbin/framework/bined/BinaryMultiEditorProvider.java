@@ -41,7 +41,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
@@ -151,7 +151,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         });
         fileManager.initCommandHandler(fileHandler.getComponent());
 
-        ExtCodeArea codeArea = fileHandler.getCodeArea();
+        SectCodeArea codeArea = fileHandler.getCodeArea();
         codeArea.addDataChangedListener(() -> {
             if (fileHandler == activeFile) {
                 ((BinEdFileHandler) activeFile).getComponent().notifyDataChanged();
@@ -243,8 +243,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                         clickedY += ((JViewport) invoker).getParent().getY();
                     }
 
-                    ExtCodeArea codeArea = invoker instanceof ExtCodeArea ? (ExtCodeArea) invoker
-                            : (ExtCodeArea) ((JViewport) invoker).getParent().getParent();
+                    SectCodeArea codeArea = invoker instanceof SectCodeArea ? (SectCodeArea) invoker
+                            : (SectCodeArea) ((JViewport) invoker).getParent().getParent();
 
                     JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
                     popupMenu.addPopupMenuListener(new PopupMenuListener() {
@@ -282,7 +282,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            ExtCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
             long documentOriginalSize = ((BinEdFileHandler) activeFile).getDocumentOriginalSize();
             long dataSize = codeArea.getDataSize();
             binaryStatus.setCurrentDocumentSize(dataSize, documentOriginalSize);
@@ -295,7 +295,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            ExtCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
             CodeAreaCaretPosition caretPosition = codeArea.getCaretPosition();
             binaryStatus.setCursorPosition(caretPosition);
         }
@@ -307,7 +307,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            ExtCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
             SelectionRange selectionRange = codeArea.getSelection();
             binaryStatus.setSelectionRange(selectionRange);
         }
@@ -319,7 +319,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            ExtCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
             BinaryStatusApi.MemoryMode newMemoryMode = BinaryStatusApi.MemoryMode.RAM_MEMORY;
             if (((EditModeCapable) codeArea).getEditMode() == EditMode.READ_ONLY) {
                 newMemoryMode = BinaryStatusApi.MemoryMode.READ_ONLY;
@@ -337,7 +337,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            ExtCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
             binaryStatus.setEditMode(codeArea.getEditMode(), codeArea.getActiveOperation());
         }
     }

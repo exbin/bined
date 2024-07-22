@@ -27,9 +27,9 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.SelectionRange;
-import org.exbin.bined.highlight.swing.extended.ExtendedHighlightCodeAreaPainter;
-import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.highlight.swing.section.SectionHighlightCodeAreaPainter;
+import org.exbin.bined.highlight.swing.section.SectionHighlightNonAsciiCodeAreaPainter;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -46,7 +46,7 @@ public class PreviewPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PreviewPanel.class);
 
-    private ExtCodeArea codeArea;
+    private SectCodeArea codeArea;
     private final PreviewType previewType;
 
     public PreviewPanel() {
@@ -60,12 +60,12 @@ public class PreviewPanel extends javax.swing.JPanel {
     }
 
     @Nonnull
-    public ExtCodeArea getCodeArea() {
+    public SectCodeArea getCodeArea() {
         return codeArea;
     }
 
     private void init() {
-        codeArea = new ExtCodeArea();
+        codeArea = new SectCodeArea();
         codeArea.setFocusTraversalKeysEnabled(false);
         initPreviewCodeArea();
         this.add(codeArea, BorderLayout.CENTER);
@@ -74,13 +74,13 @@ public class PreviewPanel extends javax.swing.JPanel {
     private void initPreviewCodeArea() {
         codeArea.setEditMode(EditMode.READ_ONLY);
         if (previewType == PreviewType.WITH_SEARCH) {
-            ExtendedHighlightNonAsciiCodeAreaPainter painter = new ExtendedHighlightNonAsciiCodeAreaPainter(codeArea);
+            SectionHighlightNonAsciiCodeAreaPainter painter = new SectionHighlightNonAsciiCodeAreaPainter(codeArea);
             codeArea.setPainter(painter);
-            List<ExtendedHighlightCodeAreaPainter.SearchMatch> exampleMatches = new ArrayList<>();
+            List<SectionHighlightCodeAreaPainter.SearchMatch> exampleMatches = new ArrayList<>();
             // Set manual search matches for "ligula"
-            exampleMatches.add(new ExtendedHighlightCodeAreaPainter.SearchMatch(145, 6));
-            exampleMatches.add(new ExtendedHighlightCodeAreaPainter.SearchMatch(480, 6));
-            exampleMatches.add(new ExtendedHighlightCodeAreaPainter.SearchMatch(1983, 6));
+            exampleMatches.add(new SectionHighlightCodeAreaPainter.SearchMatch(145, 6));
+            exampleMatches.add(new SectionHighlightCodeAreaPainter.SearchMatch(480, 6));
+            exampleMatches.add(new SectionHighlightCodeAreaPainter.SearchMatch(1983, 6));
             painter.setMatches(exampleMatches);
             painter.setCurrentMatchIndex(1);
         }

@@ -28,10 +28,10 @@ import javax.swing.table.TableModel;
 import org.exbin.bined.color.BasicCodeAreaDecorationColorType;
 import org.exbin.bined.color.CodeAreaBasicColors;
 import org.exbin.bined.color.CodeAreaColorType;
-import org.exbin.bined.extended.color.CodeAreaUnprintablesColorType;
+import org.exbin.bined.section.color.CodeAreaUnprintablesColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.preferences.CodeAreaColorPreferences;
 
 /**
@@ -45,7 +45,7 @@ public class ColorProfileTableModel implements TableModel {
     private final List<TableModelListener> listeners = new ArrayList<>();
 
     private final List<ColorRow> rows = new ArrayList<>();
-    private ExtendedCodeAreaColorProfile colorProfile;
+    private SectionCodeAreaColorProfile colorProfile;
     private java.util.ResourceBundle resourceBundle;
 
     public ColorProfileTableModel(java.util.ResourceBundle resourceBundle) {
@@ -86,11 +86,11 @@ public class ColorProfileTableModel implements TableModel {
     }
 
     @Nullable
-    public ExtendedCodeAreaColorProfile getColorProfile() {
+    public SectionCodeAreaColorProfile getColorProfile() {
         return colorProfile;
     }
 
-    public void setColorProfile(ExtendedCodeAreaColorProfile colorProfile) {
+    public void setColorProfile(SectionCodeAreaColorProfile colorProfile) {
         this.colorProfile = colorProfile;
     }
 

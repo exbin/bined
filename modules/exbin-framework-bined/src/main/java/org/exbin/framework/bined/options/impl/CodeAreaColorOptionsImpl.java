@@ -21,7 +21,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.preferences.CodeAreaColorPreferences;
 import org.exbin.framework.options.api.OptionsData;
 
@@ -48,7 +48,7 @@ public class CodeAreaColorOptionsImpl implements OptionsData, CodeAreaColorOptio
 
     @Nonnull
     @Override
-    public ExtendedCodeAreaColorProfile getColorsProfile(int index) {
+    public SectionCodeAreaColorProfile getColorsProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
             // Lazy loading
@@ -60,7 +60,7 @@ public class CodeAreaColorOptionsImpl implements OptionsData, CodeAreaColorOptio
     }
 
     @Override
-    public void setColorsProfile(int index, ExtendedCodeAreaColorProfile colorProfile) {
+    public void setColorsProfile(int index, SectionCodeAreaColorProfile colorProfile) {
         ProfileRecord record = profileRecords.get(index);
         record = new ProfileRecord(record.name, colorProfile);
         profileRecords.set(index, record);
@@ -108,7 +108,7 @@ public class CodeAreaColorOptionsImpl implements OptionsData, CodeAreaColorOptio
         profileRecords.clear();
     }
 
-    public void addProfile(String profileName, ExtendedCodeAreaColorProfile colorProfile) {
+    public void addProfile(String profileName, SectionCodeAreaColorProfile colorProfile) {
         profileRecords.add(new ProfileRecord(profileName, colorProfile));
     }
 
@@ -127,7 +127,7 @@ public class CodeAreaColorOptionsImpl implements OptionsData, CodeAreaColorOptio
         preferences.setColorProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
-            ExtendedCodeAreaColorProfile profile = record.profile;
+            SectionCodeAreaColorProfile profile = record.profile;
             if (profile != null) {
                 preferences.setColorsProfile(i, record.profile);
             }
@@ -139,9 +139,9 @@ public class CodeAreaColorOptionsImpl implements OptionsData, CodeAreaColorOptio
     public static class ProfileRecord {
 
         private final String name;
-        private final ExtendedCodeAreaColorProfile profile;
+        private final SectionCodeAreaColorProfile profile;
 
-        public ProfileRecord(String name, ExtendedCodeAreaColorProfile profile) {
+        public ProfileRecord(String name, SectionCodeAreaColorProfile profile) {
             this.name = name;
             this.profile = profile;
         }
@@ -152,7 +152,7 @@ public class CodeAreaColorOptionsImpl implements OptionsData, CodeAreaColorOptio
         }
 
         @Nonnull
-        public ExtendedCodeAreaColorProfile getProfile() {
+        public SectionCodeAreaColorProfile getProfile() {
             return profile;
         }
     }

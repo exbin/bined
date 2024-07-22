@@ -20,9 +20,9 @@ import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.extended.capability.LayoutProfileCapable;
+import org.exbin.bined.swing.section.capability.LayoutProfileCapable;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
@@ -69,7 +69,7 @@ public class ShowRowPositionAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ExtendedCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
+        SectionCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
         layoutProfile.setShowRowPosition(!layoutProfile.isShowRowPosition());
         ((LayoutProfileCapable) codeArea).setLayoutProfile(layoutProfile);
         // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);

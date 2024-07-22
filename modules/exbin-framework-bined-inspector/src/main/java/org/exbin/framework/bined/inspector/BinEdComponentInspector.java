@@ -18,7 +18,7 @@ package org.exbin.framework.bined.inspector;
 import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
@@ -42,7 +42,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     @Override
     public void onCreate(BinEdComponentPanel componentPanel) {
         this.componentPanel = componentPanel;
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
 
         valuesPanel = new BasicValuesPanel();
         valuesPanel.setCodeArea(codeArea, null);

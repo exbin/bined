@@ -40,7 +40,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.editor.text.TextEncodingStatusApi;
@@ -146,7 +146,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     public void registerBinaryStatus(BinaryStatusApi binaryStatus) {
         this.binaryStatus = binaryStatus;
 
-        ExtCodeArea codeArea = getEditorComponent().getCodeArea();
+        SectCodeArea codeArea = getEditorComponent().getCodeArea();
         codeArea.addDataChangedListener(() -> {
             activeFile.getComponent().notifyDataChanged();
             if (editorModificationListener != null) {
@@ -190,7 +190,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
             return;
         }
 
-        ExtCodeArea codeArea = activeFile.getCodeArea();
+        SectCodeArea codeArea = activeFile.getCodeArea();
         long documentOriginalSize = activeFile.getDocumentOriginalSize();
         long dataSize = codeArea.getDataSize();
         binaryStatus.setCurrentDocumentSize(dataSize, documentOriginalSize);
@@ -201,7 +201,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
             return;
         }
 
-        ExtCodeArea codeArea = activeFile.getCodeArea();
+        SectCodeArea codeArea = activeFile.getCodeArea();
         CodeAreaCaretPosition caretPosition = codeArea.getCaretPosition();
         binaryStatus.setCursorPosition(caretPosition);
     }
@@ -211,7 +211,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
             return;
         }
 
-        ExtCodeArea codeArea = activeFile.getCodeArea();
+        SectCodeArea codeArea = activeFile.getCodeArea();
         SelectionRange selectionRange = codeArea.getSelection();
         binaryStatus.setSelectionRange(selectionRange);
     }
@@ -221,7 +221,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
             return;
         }
 
-        ExtCodeArea codeArea = activeFile.getCodeArea();
+        SectCodeArea codeArea = activeFile.getCodeArea();
         BinaryStatusApi.MemoryMode newMemoryMode = BinaryStatusApi.MemoryMode.RAM_MEMORY;
         if (((EditModeCapable) codeArea).getEditMode() == EditMode.READ_ONLY) {
             newMemoryMode = BinaryStatusApi.MemoryMode.READ_ONLY;
@@ -237,7 +237,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
             return;
         }
 
-        ExtCodeArea codeArea = activeFile.getCodeArea();
+        SectCodeArea codeArea = activeFile.getCodeArea();
         binaryStatus.setEditMode(codeArea.getEditMode(), codeArea.getActiveOperation());
     }
 

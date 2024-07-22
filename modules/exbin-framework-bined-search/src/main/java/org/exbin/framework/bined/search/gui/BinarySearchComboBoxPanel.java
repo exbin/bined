@@ -32,10 +32,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
-import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
@@ -55,7 +55,7 @@ public class BinarySearchComboBoxPanel extends JPanel {
     public static final String BINARY_MODE = "binary";
 
     private final JTextField textField;
-    private final ExtCodeArea codeArea = new ExtCodeArea();
+    private final SectCodeArea codeArea = new SectCodeArea();
 
     private final SearchCondition item = new SearchCondition();
 
@@ -87,7 +87,7 @@ public class BinarySearchComboBoxPanel extends JPanel {
         super.add(textField, TEXT_MODE);
 
         {
-            ExtendedCodeAreaLayoutProfile layoutProfile = codeArea.getLayoutProfile();
+            SectionCodeAreaLayoutProfile layoutProfile = codeArea.getLayoutProfile();
             layoutProfile.setShowHeader(false);
             layoutProfile.setShowRowPosition(false);
             codeArea.setLayoutProfile(layoutProfile);
@@ -95,8 +95,8 @@ public class BinarySearchComboBoxPanel extends JPanel {
         codeArea.setRowWrapping(RowWrappingMode.WRAPPING);
         codeArea.setWrappingBytesGroupSize(0);
         {
-            ExtendedCodeAreaThemeProfile themeProfile = codeArea.getThemeProfile();
-            themeProfile.setBackgroundPaintMode(ExtendedBackgroundPaintMode.PLAIN);
+            SectionCodeAreaThemeProfile themeProfile = codeArea.getThemeProfile();
+            themeProfile.setBackgroundPaintMode(SectionBackgroundPaintMode.PLAIN);
             codeArea.setThemeProfile(themeProfile);
         }
 

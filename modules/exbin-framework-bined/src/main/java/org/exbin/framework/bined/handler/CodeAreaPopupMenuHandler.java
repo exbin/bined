@@ -18,7 +18,7 @@ package org.exbin.framework.bined.handler;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 
 /**
  * Code area popup menu handler.
@@ -29,7 +29,7 @@ import org.exbin.bined.swing.extended.ExtCodeArea;
 public interface CodeAreaPopupMenuHandler {
 
     @Nonnull
-    JPopupMenu createPopupMenu(ExtCodeArea codeArea, String menuPostfix, int x, int y);
+    JPopupMenu createPopupMenu(SectCodeArea codeArea, String menuPostfix, int x, int y);
 
     void dropPopupMenu(String menuPostfix);
 }

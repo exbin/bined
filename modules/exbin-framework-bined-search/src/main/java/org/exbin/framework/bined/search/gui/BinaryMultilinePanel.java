@@ -25,7 +25,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -49,7 +49,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     private JTextArea textArea;
     private JScrollPane scrollPane;
-    private ExtCodeArea codeArea;
+    private SectCodeArea codeArea;
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
 
     public BinaryMultilinePanel() {
@@ -118,7 +118,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
             textArea.setText(condition.getSearchText());
             add(scrollPane, BorderLayout.CENTER);
         } else {
-            codeArea = new ExtCodeArea();
+            codeArea = new SectCodeArea();
             codeArea.setContentData(condition.getBinaryData());
             codeArea.setFocusTraversalKeysEnabled(false);
             add(codeArea, BorderLayout.CENTER);

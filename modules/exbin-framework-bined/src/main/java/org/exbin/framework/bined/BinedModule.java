@@ -54,7 +54,7 @@ import javax.swing.event.PopupMenuListener;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
@@ -201,7 +201,7 @@ public class BinedModule implements Module {
             fileModule.setFileOperations(editorProvider);
 
             BinEdComponentPanel componentPanel = editorFile.getComponent();
-            ExtCodeArea codeArea = editorFile.getComponent().getCodeArea();
+            SectCodeArea codeArea = editorFile.getComponent().getCodeArea();
             codeArea.addSelectionChangedListener(() -> {
 
             });
@@ -848,7 +848,7 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public ExtCodeArea getActiveCodeArea() {
+    public SectCodeArea getActiveCodeArea() {
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         if (activeFile.isPresent()) {
             return ((BinEdFileHandler) activeFile.get()).getComponent().getCodeArea();
@@ -857,7 +857,7 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private JPopupMenu createPopupMenu(int postfix, ExtCodeArea codeArea) {
+    private JPopupMenu createPopupMenu(int postfix, SectCodeArea codeArea) {
         String popupMenuId = BINARY_POPUP_MENU_ID + "." + postfix;
 
         JPopupMenu popupMenu = new JPopupMenu() {
@@ -892,7 +892,7 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private JPopupMenu createCodeAreaPopupMenu(final ExtCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y) {
+    private JPopupMenu createCodeAreaPopupMenu(final SectCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y) {
         getClipboardCodeActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix, MODULE_ID);
@@ -941,7 +941,7 @@ public class BinedModule implements Module {
         return new CodeAreaPopupMenuHandler() {
             @Nonnull
             @Override
-            public JPopupMenu createPopupMenu(ExtCodeArea codeArea, String menuPostfix, int x, int y) {
+            public JPopupMenu createPopupMenu(SectCodeArea codeArea, String menuPostfix, int x, int y) {
                 return createCodeAreaPopupMenu(codeArea, menuPostfix, variant, x, y);
             }
 
@@ -962,8 +962,8 @@ public class BinedModule implements Module {
             @Override
             public boolean dispatchMouseEvent(MouseEvent mouseEvent) {
                 Component component = getSource(mouseEvent);
-                if (component instanceof ExtCodeArea) {
-                    if (((ExtCodeArea) component).getComponentPopupMenu() == null) {
+                if (component instanceof SectCodeArea) {
+                    if (((SectCodeArea) component).getComponentPopupMenu() == null) {
                         CodeAreaPopupMenuHandler handler = createCodeAreaPopupMenuHandler(PopupMenuVariant.NORMAL);
                         if (popupMenu != null) {
                             handler.dropPopupMenu(DEFAULT_MENU_POSTFIX);
@@ -980,7 +980,7 @@ public class BinedModule implements Module {
                             y = mouseEvent.getY();
                         }
 
-                        popupMenu = handler.createPopupMenu((ExtCodeArea) component, DEFAULT_MENU_POSTFIX, x, y);
+                        popupMenu = handler.createPopupMenu((SectCodeArea) component, DEFAULT_MENU_POSTFIX, x, y);
 
                         if (point != null) {
                             popupMenu.show(component, x, y);
@@ -998,8 +998,8 @@ public class BinedModule implements Module {
             public boolean dispatchKeyEvent(KeyEvent keyEvent) {
                 Component component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-                if (component instanceof ExtCodeArea) {
-                    if (((ExtCodeArea) component).getComponentPopupMenu() == null) {
+                if (component instanceof SectCodeArea) {
+                    if (((SectCodeArea) component).getComponentPopupMenu() == null) {
                         CodeAreaPopupMenuHandler handler = createCodeAreaPopupMenuHandler(PopupMenuVariant.NORMAL);
                         if (popupMenu != null) {
                             handler.dropPopupMenu(DEFAULT_MENU_POSTFIX);
@@ -1008,7 +1008,7 @@ public class BinedModule implements Module {
                         Point point = new Point(component.getWidth() / 2, component.getHeight() / 2);
                         int x = (int) point.getX();
                         int y = (int) point.getY();
-                        popupMenu = handler.createPopupMenu((ExtCodeArea) component, DEFAULT_MENU_POSTFIX, x, y);
+                        popupMenu = handler.createPopupMenu((SectCodeArea) component, DEFAULT_MENU_POSTFIX, x, y);
 
                         popupMenu.show(component, x, y);
                         return true;

@@ -37,10 +37,10 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
-import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -60,12 +60,12 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(FindBinaryPanel.class);
     public static final String POPUP_MENU_POSTFIX = ".searchFindBinaryPanel";
 
-    private final ExtCodeArea findCodeArea = new ExtCodeArea();
+    private final SectCodeArea findCodeArea = new SectCodeArea();
     private BinarySearchComboBoxPanel findComboBoxEditorComponent;
     private ComboBoxEditor findComboBoxEditor;
     private List<SearchCondition> searchHistory = new ArrayList<>();
 
-    private final ExtCodeArea replaceCodeArea = new ExtCodeArea();
+    private final SectCodeArea replaceCodeArea = new SectCodeArea();
     private BinarySearchComboBoxPanel replaceComboBoxEditorComponent;
     private ComboBoxEditor replaceComboBoxEditor;
     private List<SearchCondition> replaceHistory = new ArrayList<>();
@@ -80,7 +80,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
 
     private void init() {
         {
-            ExtendedCodeAreaLayoutProfile layoutProfile = Objects.requireNonNull(findCodeArea.getLayoutProfile());
+            SectionCodeAreaLayoutProfile layoutProfile = Objects.requireNonNull(findCodeArea.getLayoutProfile());
             layoutProfile.setShowHeader(false);
             layoutProfile.setShowRowPosition(false);
             findCodeArea.setLayoutProfile(layoutProfile);
@@ -88,8 +88,8 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         findCodeArea.setRowWrapping(RowWrappingMode.WRAPPING);
         findCodeArea.setWrappingBytesGroupSize(0);
         {
-            ExtendedCodeAreaThemeProfile themeProfile = findCodeArea.getThemeProfile();
-            themeProfile.setBackgroundPaintMode(ExtendedBackgroundPaintMode.PLAIN);
+            SectionCodeAreaThemeProfile themeProfile = findCodeArea.getThemeProfile();
+            themeProfile.setBackgroundPaintMode(SectionBackgroundPaintMode.PLAIN);
             findCodeArea.setThemeProfile(themeProfile);
         }
         findCodeArea.setVerticalScrollBarVisibility(ScrollBarVisibility.NEVER);
@@ -158,7 +158,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         findComboBox.setModel(new SearchHistoryModel(searchHistory));
 
         {
-            ExtendedCodeAreaLayoutProfile layoutProfile = Objects.requireNonNull(replaceCodeArea.getLayoutProfile());
+            SectionCodeAreaLayoutProfile layoutProfile = Objects.requireNonNull(replaceCodeArea.getLayoutProfile());
             layoutProfile.setShowHeader(false);
             layoutProfile.setShowRowPosition(false);
             replaceCodeArea.setLayoutProfile(layoutProfile);
@@ -166,8 +166,8 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         replaceCodeArea.setRowWrapping(RowWrappingMode.WRAPPING);
         replaceCodeArea.setWrappingBytesGroupSize(0);
         {
-            ExtendedCodeAreaThemeProfile themeProfile = replaceCodeArea.getThemeProfile();
-            themeProfile.setBackgroundPaintMode(ExtendedBackgroundPaintMode.PLAIN);
+            SectionCodeAreaThemeProfile themeProfile = replaceCodeArea.getThemeProfile();
+            themeProfile.setBackgroundPaintMode(SectionBackgroundPaintMode.PLAIN);
             replaceCodeArea.setThemeProfile(themeProfile);
         }
         replaceCodeArea.setVerticalScrollBarVisibility(ScrollBarVisibility.NEVER);

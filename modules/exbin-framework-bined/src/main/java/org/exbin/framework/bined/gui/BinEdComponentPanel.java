@@ -26,7 +26,7 @@ import javax.swing.JPopupMenu;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.undo.EmptyBinaryDataUndoRedo;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.bined.BinEdCodeAreaPainter;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
@@ -42,7 +42,7 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 @ParametersAreNonnullByDefault
 public class BinEdComponentPanel extends javax.swing.JPanel {
 
-    private ExtCodeArea codeArea;
+    private SectCodeArea codeArea;
     private BinaryDataUndoRedo undoRedo;
     private final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     private void init() {
-        codeArea = new ExtCodeArea();
+        codeArea = new SectCodeArea();
         codeArea.setPainter(new BinEdCodeAreaPainter(codeArea));
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.setFocusTraversalKeysEnabled(false);
@@ -64,7 +64,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     @Nonnull
-    public ExtCodeArea getCodeArea() {
+    public SectCodeArea getCodeArea() {
         return codeArea;
     }
 

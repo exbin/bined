@@ -20,8 +20,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -55,14 +55,14 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
     }
 
     @Nonnull
-    public DefaultExtendedCodeAreaLayoutProfile getLayoutProfile() {
-        ExtCodeArea codeArea = previewPanel.getCodeArea();
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = (DefaultExtendedCodeAreaLayoutProfile) codeArea.getLayoutProfile();
+    public DefaultSectionCodeAreaLayoutProfile getLayoutProfile() {
+        SectCodeArea codeArea = previewPanel.getCodeArea();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = (DefaultSectionCodeAreaLayoutProfile) codeArea.getLayoutProfile();
         return Objects.requireNonNull(layoutProfile).createCopy();
     }
 
-    public void setLayoutProfile(DefaultExtendedCodeAreaLayoutProfile layoutProfile) {
-        DefaultExtendedCodeAreaLayoutProfile newLayoutProfile = layoutProfile.createCopy();
+    public void setLayoutProfile(DefaultSectionCodeAreaLayoutProfile layoutProfile) {
+        DefaultSectionCodeAreaLayoutProfile newLayoutProfile = layoutProfile.createCopy();
         updateLayoutProfile(newLayoutProfile);
         showHeaderCheckBox.setSelected(newLayoutProfile.isShowHeader());
         headerTopSpaceSpinner.setValue(newLayoutProfile.getTopHeaderSpace());
@@ -305,61 +305,61 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showRowPositionCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_showRowPositionCheckBoxItemStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setShowRowPosition(showRowPositionCheckBox.isSelected());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_showRowPositionCheckBoxItemStateChanged
 
     private void rowPositionLeftSpaceSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rowPositionLeftSpaceSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setLeftRowPositionSpace((Integer) rowPositionLeftSpaceSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_rowPositionLeftSpaceSpinnerStateChanged
 
     private void rowPositionRightSpaceSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rowPositionRightSpaceSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setRightRowPositionSpace((Integer) rowPositionRightSpaceSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_rowPositionRightSpaceSpinnerStateChanged
 
     private void halfSpaceGroupSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_halfSpaceGroupSizeSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setHalfSpaceGroupSize((Integer) halfSpaceGroupSizeSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_halfSpaceGroupSizeSpinnerStateChanged
 
     private void spaceGroupSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spaceGroupSizeSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setSpaceGroupSize((Integer) spaceGroupSizeSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_spaceGroupSizeSpinnerStateChanged
 
     private void doubleSpaceGroupSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_doubleSpaceGroupSizeSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setDoubleSpaceGroupSize((Integer) doubleSpaceGroupSizeSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_doubleSpaceGroupSizeSpinnerStateChanged
 
     private void headerBottomSpaceSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_headerBottomSpaceSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setBottomHeaderSpace((Integer) headerBottomSpaceSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_headerBottomSpaceSpinnerStateChanged
 
     private void headerTopSpaceSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_headerTopSpaceSpinnerStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setTopHeaderSpace((Integer) headerTopSpaceSpinner.getValue());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_headerTopSpaceSpinnerStateChanged
 
     private void showHeaderCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_showHeaderCheckBoxItemStateChanged
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = getLayoutProfile();
         layoutProfile.setShowHeader(showHeaderCheckBox.isSelected());
         updateLayoutProfile(layoutProfile);
     }//GEN-LAST:event_showHeaderCheckBoxItemStateChanged
 
-    private void updateLayoutProfile(DefaultExtendedCodeAreaLayoutProfile layoutProfile) {
-        ExtCodeArea codeArea = previewPanel.getCodeArea();
+    private void updateLayoutProfile(DefaultSectionCodeAreaLayoutProfile layoutProfile) {
+        SectCodeArea codeArea = previewPanel.getCodeArea();
         codeArea.setLayoutProfile(layoutProfile);
     }
 

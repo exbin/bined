@@ -35,7 +35,7 @@ import org.exbin.bined.operation.BinaryDataCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCompoundCommand;
 import org.exbin.bined.operation.swing.command.InsertDataCommand;
 import org.exbin.bined.operation.swing.command.ModifyDataCommand;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
@@ -68,7 +68,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     public static int CACHE_SIZE = 250;
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BasicValuesPanel.class);
-    private ExtCodeArea codeArea;
+    private SectCodeArea codeArea;
     private BinaryDataUndoRedo undoRedo;
     private long dataPosition;
     private DataChangedListener dataChangedListener;
@@ -740,7 +740,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private javax.swing.JTextField wordTextField;
     // End of variables declaration//GEN-END:variables
 
-    public void setCodeArea(ExtCodeArea codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
+    public void setCodeArea(SectCodeArea codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
         this.codeArea = codeArea;
         this.undoRedo = undoRedo;
     }

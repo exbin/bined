@@ -20,11 +20,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.options.CodeAreaColorOptions;
 import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
@@ -42,14 +42,14 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 @ParametersAreNonnullByDefault
 public class BinEdEditorComponent {
 
-    private final ExtendedCodeAreaLayoutProfile defaultLayoutProfile;
-    private final ExtendedCodeAreaThemeProfile defaultThemeProfile;
+    private final SectionCodeAreaLayoutProfile defaultLayoutProfile;
+    private final SectionCodeAreaThemeProfile defaultThemeProfile;
     private final CodeAreaColorsProfile defaultColorProfile;
 
     private BinEdComponentPanel componentPanel = new BinEdComponentPanel();
 
     public BinEdEditorComponent() {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         defaultLayoutProfile = codeArea.getLayoutProfile();
         defaultThemeProfile = codeArea.getThemeProfile();
         defaultColorProfile = codeArea.getColorsProfile();
@@ -61,7 +61,7 @@ public class BinEdEditorComponent {
     }
 
     @Nonnull
-    public ExtCodeArea getCodeArea() {
+    public SectCodeArea getCodeArea() {
         return componentPanel.getCodeArea();
     }
 
@@ -77,7 +77,7 @@ public class BinEdEditorComponent {
     public void onInitFromPreferences(BinaryEditorPreferences preferences) {
         componentPanel.onInitFromPreferences(preferences);
 
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         CodeAreaOptionsImpl.applyToCodeArea(preferences.getCodeAreaPreferences(), codeArea);
 
         EditorOptions editorOptions = preferences.getEditorPreferences();
@@ -90,7 +90,7 @@ public class BinEdEditorComponent {
     }
 
     public void applyProfileFromPreferences(BinaryEditorPreferences preferences) {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
 
         CodeAreaLayoutOptions layoutOptions = preferences.getLayoutPreferences();
         int selectedLayoutProfile = layoutOptions.getSelectedProfile();
@@ -119,12 +119,12 @@ public class BinEdEditorComponent {
 
     @Nonnull
     public BinaryData getContentData() {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         return codeArea.getContentData();
     }
 
     public void setContentData(@Nullable BinaryData data) {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         codeArea.setContentData(data);
     }
 }

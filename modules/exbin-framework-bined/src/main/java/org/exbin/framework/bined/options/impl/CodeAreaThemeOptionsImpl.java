@@ -21,7 +21,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.preferences.CodeAreaThemePreferences;
 import org.exbin.framework.options.api.OptionsData;
 
@@ -48,7 +48,7 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
 
     @Nonnull
     @Override
-    public ExtendedCodeAreaThemeProfile getThemeProfile(int index) {
+    public SectionCodeAreaThemeProfile getThemeProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
             // Lazy loading
@@ -60,7 +60,7 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
     }
 
     @Override
-    public void setThemeProfile(int index, ExtendedCodeAreaThemeProfile themeProfile) {
+    public void setThemeProfile(int index, SectionCodeAreaThemeProfile themeProfile) {
         ProfileRecord record = profileRecords.get(index);
         record = new ProfileRecord(record.name, themeProfile);
         profileRecords.set(index, record);
@@ -108,7 +108,7 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
         profileRecords.clear();
     }
 
-    public void addProfile(String profileName, ExtendedCodeAreaThemeProfile themeProfile) {
+    public void addProfile(String profileName, SectionCodeAreaThemeProfile themeProfile) {
         profileRecords.add(new ProfileRecord(profileName, themeProfile));
     }
 
@@ -127,7 +127,7 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
         preferences.setThemeProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
-            ExtendedCodeAreaThemeProfile profile = record.profile;
+            SectionCodeAreaThemeProfile profile = record.profile;
             if (profile != null) {
                 preferences.setThemeProfile(i, record.profile);
             }
@@ -139,9 +139,9 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
     public static class ProfileRecord {
 
         private final String name;
-        private final ExtendedCodeAreaThemeProfile profile;
+        private final SectionCodeAreaThemeProfile profile;
 
-        public ProfileRecord(String name, ExtendedCodeAreaThemeProfile profile) {
+        public ProfileRecord(String name, SectionCodeAreaThemeProfile profile) {
             this.name = name;
             this.profile = profile;
         }
@@ -152,7 +152,7 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
         }
 
         @Nonnull
-        public ExtendedCodeAreaThemeProfile getProfile() {
+        public SectionCodeAreaThemeProfile getProfile() {
             return profile;
         }
     }

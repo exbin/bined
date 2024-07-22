@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.extended.capability.PositionCodeTypeCapable;
+import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;

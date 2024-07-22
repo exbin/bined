@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
 
 /**
@@ -88,8 +88,8 @@ public class CodeAreaLayoutPreferences implements CodeAreaLayoutOptions {
 
     @Nonnull
     @Override
-    public DefaultExtendedCodeAreaLayoutProfile getLayoutProfile(int profileIndex) {
-        DefaultExtendedCodeAreaLayoutProfile layoutProfile = new DefaultExtendedCodeAreaLayoutProfile();
+    public DefaultSectionCodeAreaLayoutProfile getLayoutProfile(int profileIndex) {
+        DefaultSectionCodeAreaLayoutProfile layoutProfile = new DefaultSectionCodeAreaLayoutProfile();
         String layoutPrefix = PREFERENCES_LAYOUT_VALUE_PREFIX + String.valueOf(profileIndex) + ".";
         layoutProfile.setShowHeader(preferences.getBoolean(layoutPrefix + LAYOUT_SHOW_HEADER, layoutProfile.isShowHeader()));
         layoutProfile.setShowRowPosition(preferences.getBoolean(layoutPrefix + LAYOUT_SHOW_ROW_POSITION, layoutProfile.isShowRowPosition()));
@@ -107,7 +107,7 @@ public class CodeAreaLayoutPreferences implements CodeAreaLayoutOptions {
     }
 
     @Override
-    public void setLayoutProfile(int profileIndex, DefaultExtendedCodeAreaLayoutProfile layoutProfile) {
+    public void setLayoutProfile(int profileIndex, DefaultSectionCodeAreaLayoutProfile layoutProfile) {
         String layoutPrefix = PREFERENCES_LAYOUT_VALUE_PREFIX + String.valueOf(profileIndex) + ".";
         preferences.putBoolean(layoutPrefix + LAYOUT_SHOW_HEADER, layoutProfile.isShowHeader());
         preferences.putBoolean(layoutPrefix + LAYOUT_SHOW_ROW_POSITION, layoutProfile.isShowRowPosition());

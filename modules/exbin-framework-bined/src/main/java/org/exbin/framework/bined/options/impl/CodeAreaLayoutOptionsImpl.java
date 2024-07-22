@@ -21,7 +21,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.bined.preferences.CodeAreaLayoutPreferences;
 import org.exbin.framework.options.api.OptionsData;
 
@@ -48,7 +48,7 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
 
     @Nonnull
     @Override
-    public DefaultExtendedCodeAreaLayoutProfile getLayoutProfile(int index) {
+    public DefaultSectionCodeAreaLayoutProfile getLayoutProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
             // Lazy loading
@@ -60,7 +60,7 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
     }
 
     @Override
-    public void setLayoutProfile(int index, DefaultExtendedCodeAreaLayoutProfile layoutProfile) {
+    public void setLayoutProfile(int index, DefaultSectionCodeAreaLayoutProfile layoutProfile) {
         ProfileRecord record = profileRecords.get(index);
         record = new ProfileRecord(record.name, layoutProfile);
         profileRecords.set(index, record);
@@ -108,7 +108,7 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
         profileRecords.clear();
     }
 
-    public void addProfile(String profileName, DefaultExtendedCodeAreaLayoutProfile layoutProfile) {
+    public void addProfile(String profileName, DefaultSectionCodeAreaLayoutProfile layoutProfile) {
         profileRecords.add(new ProfileRecord(profileName, layoutProfile));
     }
 
@@ -127,7 +127,7 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
         preferences.setLayoutProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
-            DefaultExtendedCodeAreaLayoutProfile profile = record.profile;
+            DefaultSectionCodeAreaLayoutProfile profile = record.profile;
             if (profile != null) {
                 preferences.setLayoutProfile(i, record.profile);
             }
@@ -139,9 +139,9 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
     public static class ProfileRecord {
 
         private final String name;
-        private final DefaultExtendedCodeAreaLayoutProfile profile;
+        private final DefaultSectionCodeAreaLayoutProfile profile;
 
-        public ProfileRecord(String name, DefaultExtendedCodeAreaLayoutProfile profile) {
+        public ProfileRecord(String name, DefaultSectionCodeAreaLayoutProfile profile) {
             this.name = name;
             this.profile = profile;
         }
@@ -152,7 +152,7 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
         }
 
         @Nonnull
-        public DefaultExtendedCodeAreaLayoutProfile getProfile() {
+        public DefaultSectionCodeAreaLayoutProfile getProfile() {
             return profile;
         }
     }

@@ -23,7 +23,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -40,7 +39,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
@@ -152,7 +151,7 @@ public class BookmarksManager {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (activeFile.isPresent()) {
                     BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    ExtCodeArea codeArea = fileHandler.getCodeArea();
+                    SectCodeArea codeArea = fileHandler.getCodeArea();
                     addBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
                 }
                 addBookmarkAction.actionPerformed(null);
@@ -169,7 +168,7 @@ public class BookmarksManager {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (activeFile.isPresent()) {
                     BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    ExtCodeArea codeArea = fileHandler.getCodeArea();
+                    SectCodeArea codeArea = fileHandler.getCodeArea();
                     editBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
                 }
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
@@ -302,7 +301,7 @@ public class BookmarksManager {
                     Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        ExtCodeArea codeArea = fileHandler.getCodeArea();
+                        SectCodeArea codeArea = fileHandler.getCodeArea();
                         goToBookmark(codeArea, bookmarkIndex);
                     }
                 }
@@ -317,7 +316,7 @@ public class BookmarksManager {
                     Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        ExtCodeArea codeArea = fileHandler.getCodeArea();
+                        SectCodeArea codeArea = fileHandler.getCodeArea();
                         addBookmark(codeArea, bookmarkIndex);
                     }
                 }
@@ -339,7 +338,7 @@ public class BookmarksManager {
         component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap);
     }
 
-    public void goToBookmark(ExtCodeArea codeArea, int bookmarkIndex) {
+    public void goToBookmark(SectCodeArea codeArea, int bookmarkIndex) {
         if (bookmarkRecords.size() > bookmarkIndex) {
             BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
             if (record.isEmpty()) {
@@ -351,7 +350,7 @@ public class BookmarksManager {
         }
     }
 
-    public void addBookmark(ExtCodeArea codeArea, int bookmarkIndex) {
+    public void addBookmark(SectCodeArea codeArea, int bookmarkIndex) {
         long position = codeArea.getDataPosition();
 
         if (bookmarkRecords.size() <= bookmarkIndex) {
@@ -406,7 +405,7 @@ public class BookmarksManager {
                     Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        ExtCodeArea codeArea = fileHandler.getCodeArea();
+                        SectCodeArea codeArea = fileHandler.getCodeArea();
                         codeArea.setCaretPosition(startPosition);
                         codeArea.centerOnCursor();
                     }

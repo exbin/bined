@@ -32,7 +32,7 @@ import javax.swing.JViewport;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -54,7 +54,7 @@ public class InsertDataPanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InsertDataPanel.class);
 
     private Controller controller;
-    private ExtCodeArea previewCodeArea = new ExtCodeArea();
+    private SectCodeArea previewCodeArea = new SectCodeArea();
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private InsertDataMethod activeMethod;
     private Component activeComponent;

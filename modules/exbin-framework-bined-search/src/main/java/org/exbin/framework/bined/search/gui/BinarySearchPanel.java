@@ -38,18 +38,18 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
-import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.color.CodeAreaBasicColors;
-import org.exbin.bined.swing.extended.ExtendedCodeAreaPainter;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.SectionCodeAreaPainter;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -66,7 +66,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     private Control control = null;
 
-    private final ExtCodeArea searchCodeArea = new ExtCodeArea();
+    private final SectCodeArea searchCodeArea = new SectCodeArea();
 
     private PanelMode panelMode = PanelMode.REPLACE;
     private ComboBoxEditor findComboBoxEditor;
@@ -80,13 +80,13 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }
 
     private void init() {
-        ExtendedCodeAreaLayoutProfile layoutProfile = Objects.requireNonNull(searchCodeArea.getLayoutProfile());
+        SectionCodeAreaLayoutProfile layoutProfile = Objects.requireNonNull(searchCodeArea.getLayoutProfile());
         layoutProfile.setShowHeader(false);
         layoutProfile.setShowRowPosition(false);
 
         searchCodeArea.setLayoutProfile(layoutProfile);
-        ExtendedCodeAreaThemeProfile themeProfile = searchCodeArea.getThemeProfile();
-        themeProfile.setBackgroundPaintMode(ExtendedBackgroundPaintMode.PLAIN);
+        SectionCodeAreaThemeProfile themeProfile = searchCodeArea.getThemeProfile();
+        themeProfile.setBackgroundPaintMode(SectionBackgroundPaintMode.PLAIN);
         searchCodeArea.setThemeProfile(themeProfile);
 
         searchCodeArea.setBorder(null);
@@ -132,8 +132,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                     } else {
                         backgroundColor = list.getBackground();
                     }
-                    ExtendedCodeAreaPainter painter = (ExtendedCodeAreaPainter) searchCodeArea.getPainter();
-                    ExtendedCodeAreaColorProfile colorsProfile = (ExtendedCodeAreaColorProfile) painter.getColorsProfile();
+                    SectionCodeAreaPainter painter = (SectionCodeAreaPainter) searchCodeArea.getPainter();
+                    SectionCodeAreaColorProfile colorsProfile = (SectionCodeAreaColorProfile) painter.getColorsProfile();
                     colorsProfile.setColor(CodeAreaBasicColors.TEXT_BACKGROUND, backgroundColor);
                     return searchCodeArea;
                 }
@@ -212,8 +212,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                     } else {
                         backgroundColor = list.getBackground();
                     }
-                    ExtendedCodeAreaPainter painter = (ExtendedCodeAreaPainter) searchCodeArea.getPainter();
-                    ExtendedCodeAreaColorProfile colorsProfile = (ExtendedCodeAreaColorProfile) painter.getColorsProfile();
+                    SectionCodeAreaPainter painter = (SectionCodeAreaPainter) searchCodeArea.getPainter();
+                    SectionCodeAreaColorProfile colorsProfile = (SectionCodeAreaColorProfile) painter.getColorsProfile();
                     colorsProfile.setColor(CodeAreaBasicColors.TEXT_BACKGROUND, backgroundColor);
                     return searchCodeArea;
                 }

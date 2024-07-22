@@ -23,7 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.CodeAreaSelection;
 import org.exbin.bined.capability.SelectionCapable;
-import org.exbin.bined.highlight.swing.extended.ExtendedHighlightNonAsciiCodeAreaPainter;
+import org.exbin.bined.highlight.swing.section.SectionHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
@@ -32,7 +32,7 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdCodeAreaPainter extends ExtendedHighlightNonAsciiCodeAreaPainter {
+public class BinEdCodeAreaPainter extends SectionHighlightNonAsciiCodeAreaPainter {
 
     private final List<PositionColorModifier> priorityColorModifiers = new ArrayList<>();
     private final List<PositionColorModifier> colorModifiers = new ArrayList<>();

@@ -17,7 +17,7 @@ package org.exbin.framework.bined.options;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 
 /**
  * Code area color options.
@@ -28,13 +28,13 @@ import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
 public interface CodeAreaColorOptions {
 
     @Nonnull
-    ExtendedCodeAreaColorProfile getColorsProfile(int index);
+    SectionCodeAreaColorProfile getColorsProfile(int index);
 
     int getSelectedProfile();
 
     void removeColorsProfile(int index);
 
-    void setColorsProfile(int index, ExtendedCodeAreaColorProfile colorProfile);
+    void setColorsProfile(int index, SectionCodeAreaColorProfile colorProfile);
 
     void setSelectedProfile(int profileIndex);
 

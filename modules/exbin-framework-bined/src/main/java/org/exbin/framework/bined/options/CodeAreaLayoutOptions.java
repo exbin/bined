@@ -17,7 +17,7 @@ package org.exbin.framework.bined.options;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 
 /**
  * Code area layout options.
@@ -28,13 +28,13 @@ import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfil
 public interface CodeAreaLayoutOptions {
 
     @Nonnull
-    DefaultExtendedCodeAreaLayoutProfile getLayoutProfile(int index);
+    DefaultSectionCodeAreaLayoutProfile getLayoutProfile(int index);
 
     int getSelectedProfile();
 
     void removeLayoutProfile(int index);
 
-    void setLayoutProfile(int index, DefaultExtendedCodeAreaLayoutProfile layoutProfile);
+    void setLayoutProfile(int index, DefaultSectionCodeAreaLayoutProfile layoutProfile);
 
     void setSelectedProfile(int profileIndex);
 }

@@ -32,15 +32,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
-import org.exbin.bined.extended.layout.ExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.capability.FontCapable;
-import org.exbin.bined.swing.extended.ExtCodeArea;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
-import org.exbin.bined.swing.extended.layout.DefaultExtendedCodeAreaLayoutProfile;
-import org.exbin.bined.swing.extended.theme.ExtendedCodeAreaThemeProfile;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
+import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.action.CodeTypeActions;
@@ -348,7 +348,7 @@ public class BinedOptionsManager {
 
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (activeFile.isPresent()) {
-                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                     ((FontCapable) codeArea).setCodeFont(options.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : options.getFont(CodeAreaPreferences.DEFAULT_FONT));
                 }
             }
@@ -372,7 +372,7 @@ public class BinedOptionsManager {
             public void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (activeFile.isPresent()) {
-                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                     CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
                     ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
                 }
@@ -382,7 +382,7 @@ public class BinedOptionsManager {
             public void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 if (activeFile.isPresent()) {
-                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                     CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
                     ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
                 }
@@ -513,7 +513,7 @@ public class BinedOptionsManager {
                     return;
                 }
 
-                ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                 CodeAreaOptionsImpl.applyToCodeArea(options, codeArea);
                 // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
             }
@@ -583,7 +583,7 @@ public class BinedOptionsManager {
                 ThemeProfilesOptionsPanel panel = new ThemeProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
                     ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
-                    themeProfilePanel.setThemeProfile(new ExtendedCodeAreaThemeProfile());
+                    themeProfilePanel.setThemeProfile(new SectionCodeAreaThemeProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
@@ -643,7 +643,7 @@ public class BinedOptionsManager {
                 });
                 panel.setCopyProfileOperation((JComponent parentComponent, ThemeProfilesPanel.ThemeProfile profileRecord) -> {
                     ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
-                    themeProfilePanel.setThemeProfile(new ExtendedCodeAreaThemeProfile());
+                    themeProfilePanel.setThemeProfile(new SectionCodeAreaThemeProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(themeProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
@@ -753,8 +753,8 @@ public class BinedOptionsManager {
                         return;
                     }
 
-                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-                    ExtendedCodeAreaThemeProfile profile = options.getThemeProfile(selectedProfile);
+                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    SectionCodeAreaThemeProfile profile = options.getThemeProfile(selectedProfile);
                     codeArea.setThemeProfile(profile);
                 }
             }
@@ -767,7 +767,7 @@ public class BinedOptionsManager {
                 LayoutProfilesOptionsPanel panel = new LayoutProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
                     LayoutProfilePanel layoutProfilePanel = new LayoutProfilePanel();
-                    layoutProfilePanel.setLayoutProfile(new DefaultExtendedCodeAreaLayoutProfile());
+                    layoutProfilePanel.setLayoutProfile(new DefaultSectionCodeAreaLayoutProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(layoutProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
@@ -827,7 +827,7 @@ public class BinedOptionsManager {
                 });
                 panel.setCopyProfileOperation((JComponent parentComponent, LayoutProfilesPanel.LayoutProfile profileRecord) -> {
                     LayoutProfilePanel layoutProfilePanel = new LayoutProfilePanel();
-                    layoutProfilePanel.setLayoutProfile(new DefaultExtendedCodeAreaLayoutProfile());
+                    layoutProfilePanel.setLayoutProfile(new DefaultSectionCodeAreaLayoutProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(layoutProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
@@ -937,8 +937,8 @@ public class BinedOptionsManager {
                         return;
                     }
 
-                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-                    ExtendedCodeAreaLayoutProfile profile = options.getLayoutProfile(selectedProfile);
+                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    SectionCodeAreaLayoutProfile profile = options.getLayoutProfile(selectedProfile);
                     codeArea.setLayoutProfile(profile);
                 }
             }
@@ -951,7 +951,7 @@ public class BinedOptionsManager {
                 ColorProfilesOptionsPanel panel = new ColorProfilesOptionsPanel();
                 panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
                     ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
-                    colorProfilePanel.setColorProfile(new ExtendedCodeAreaColorProfile());
+                    colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
                     namedProfilePanel.setProfileName(profileName);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
@@ -1010,7 +1010,7 @@ public class BinedOptionsManager {
                 });
                 panel.setCopyProfileOperation((JComponent parentComponent, ColorProfilesPanel.ColorProfile profileRecord) -> {
                     ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
-                    colorProfilePanel.setColorProfile(new ExtendedCodeAreaColorProfile());
+                    colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());
                     NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
@@ -1120,8 +1120,8 @@ public class BinedOptionsManager {
                         return;
                     }
 
-                    ExtCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-                    ExtendedCodeAreaColorProfile profile = options.getColorsProfile(selectedProfile);
+                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+                    SectionCodeAreaColorProfile profile = options.getColorsProfile(selectedProfile);
                     codeArea.setColorsProfile(profile);
                 }
             }
@@ -1139,7 +1139,7 @@ public class BinedOptionsManager {
     private ThemeProfilePanel createThemeProfilePanel() {
         ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
         List<String> backgroundModes = new ArrayList<>();
-        for (ExtendedBackgroundPaintMode mode : ExtendedBackgroundPaintMode.values()) {
+        for (SectionBackgroundPaintMode mode : SectionBackgroundPaintMode.values()) {
             backgroundModes.add(resourceBundle.getString("backgroundPaintMode." + mode.name().toLowerCase()));
         }
         themeProfilePanel.setBackgroundModes(backgroundModes);

@@ -27,7 +27,7 @@ import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.FileSegment;
 import org.exbin.auxiliary.binary_data.delta.MemorySegment;
 import org.exbin.auxiliary.binary_data.delta.list.DefaultDoublyLinkedList;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -156,7 +156,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void setFileHandler(BinEdFileHandler fileHandler) {
-        ExtCodeArea codeArea = fileHandler.getCodeArea();
+        SectCodeArea codeArea = fileHandler.getCodeArea();
         Optional<URI> fileUri = fileHandler.getFileUri();
         fileNameTextField.setText(fileUri.isPresent() ? fileUri.get().toString() : "");
         fileSizeTextField.setText(Long.toString(codeArea.getDataSize()));

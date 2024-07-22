@@ -24,7 +24,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
@@ -69,7 +69,7 @@ public class BinedMacroModule implements Module {
             Optional<FileHandler> activeFile = editorProvider.getActiveFile();
             if (activeFile.isPresent()) {
                 BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                ExtCodeArea codeArea = fileHandler.getCodeArea();
+                SectCodeArea codeArea = fileHandler.getCodeArea();
                 CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
                 if (commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording()) {
                     ((CodeAreaMacroCommandHandler) commandHandler).appendMacroOperationStep(MacroStep.FIND_AGAIN);

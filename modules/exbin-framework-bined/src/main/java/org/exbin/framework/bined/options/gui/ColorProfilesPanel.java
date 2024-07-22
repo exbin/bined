@@ -29,7 +29,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
-import org.exbin.bined.swing.extended.color.ExtendedCodeAreaColorProfile;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.options.gui.PreviewPanel.PreviewType;
 import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
@@ -109,7 +109,7 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
         return ((ProfilesListModel) profilesList.getModel());
     }
 
-    public ExtendedCodeAreaColorProfile getProfile(int profileIndex) {
+    public SectionCodeAreaColorProfile getProfile(int profileIndex) {
         return getProfilesListModel().getElementAt(profileIndex).colorProfile;
     }
 
@@ -486,9 +486,9 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
 
         private String profileName;
         private boolean visible = true;
-        private ExtendedCodeAreaColorProfile colorProfile;
+        private SectionCodeAreaColorProfile colorProfile;
 
-        public ColorProfile(String profileName, ExtendedCodeAreaColorProfile colorProfile) {
+        public ColorProfile(String profileName, SectionCodeAreaColorProfile colorProfile) {
             this.profileName = profileName;
             this.colorProfile = colorProfile;
         }
@@ -499,7 +499,7 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
         }
 
         @Nonnull
-        public ExtendedCodeAreaColorProfile getColorProfile() {
+        public SectionCodeAreaColorProfile getColorProfile() {
             return colorProfile;
         }
     }

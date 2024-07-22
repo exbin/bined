@@ -29,7 +29,7 @@ import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.extended.theme.ExtendedBackgroundPaintMode;
+import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.framework.editor.text.preferences.TextFontPreferences;
 
 /**
@@ -109,11 +109,11 @@ public class LegacyPreferences {
     }
 
     @Nonnull
-    private ExtendedBackgroundPaintMode convertBackgroundPaintMode(String value) {
+    private SectionBackgroundPaintMode convertBackgroundPaintMode(String value) {
         if ("STRIPPED".equals(value)) {
-            return ExtendedBackgroundPaintMode.STRIPED;
+            return SectionBackgroundPaintMode.STRIPED;
         }
-        return ExtendedBackgroundPaintMode.valueOf(value);
+        return SectionBackgroundPaintMode.valueOf(value);
     }
 
     @Nonnull
@@ -232,8 +232,8 @@ public class LegacyPreferences {
     }
 
     @Nonnull
-    public ExtendedBackgroundPaintMode getBackgroundPaintMode() {
-        return convertBackgroundPaintMode(preferences.get(PREFERENCES_BACKGROUND_MODE, ExtendedBackgroundPaintMode.STRIPED.name()));
+    public SectionBackgroundPaintMode getBackgroundPaintMode() {
+        return convertBackgroundPaintMode(preferences.get(PREFERENCES_BACKGROUND_MODE, SectionBackgroundPaintMode.STRIPED.name()));
     }
 
     @Nonnull

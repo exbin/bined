@@ -26,8 +26,8 @@ dependencies {
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.78.1'
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-core')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing')
-    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-extended')
-    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing-extended')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-section')
+    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing-section')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-operation-swing')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-highlight-swing')
     implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data')

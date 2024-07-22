@@ -24,7 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
@@ -90,7 +90,7 @@ public class BinedOperationModule implements Module {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                ExtCodeArea codeArea = binedModule.getActiveCodeArea();
+                SectCodeArea codeArea = binedModule.getActiveCodeArea();
                 return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
@@ -114,7 +114,7 @@ public class BinedOperationModule implements Module {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                ExtCodeArea codeArea = binedModule.getActiveCodeArea();
+                SectCodeArea codeArea = binedModule.getActiveCodeArea();
                 return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 

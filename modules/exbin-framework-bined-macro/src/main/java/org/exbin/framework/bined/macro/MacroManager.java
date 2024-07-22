@@ -35,7 +35,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
@@ -421,7 +421,7 @@ public class MacroManager {
             Action macroAction = new AbstractAction(macroName.isEmpty() ? macroActionName + (i + 1) : macroName) {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ExtCodeArea codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
+                    SectCodeArea codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
                     try {
                         executeMacro(codeArea, macroIndex);
                     } catch (Exception ex) {

@@ -58,7 +58,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="org.exbin.bined.swing.extended.ExtCodeArea" name="dataCodeArea">
+        <Component class="org.exbin.bined.swing.section.SectCodeArea" name="dataCodeArea">
         </Component>
         <Component class="javax.swing.JButton" name="saveAsFileButton">
           <Properties>

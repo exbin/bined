@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -159,8 +159,8 @@ public class CompareFilesPanel extends javax.swing.JPanel {
                     clickedY += ((JViewport) invoker).getParent().getY();
                 }
 
-                ExtCodeArea codeArea = invoker instanceof ExtCodeArea ? (ExtCodeArea) invoker
-                        : (ExtCodeArea) ((JViewport) invoker).getParent().getParent();
+                SectCodeArea codeArea = invoker instanceof SectCodeArea ? (SectCodeArea) invoker
+                        : (SectCodeArea) ((JViewport) invoker).getParent().getParent();
 
                 JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
                 popupMenu.addPopupMenuListener(new PopupMenuListener() {
@@ -198,7 +198,7 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         rightLabel = new javax.swing.JLabel();
         rightComboBox = new javax.swing.JComboBox<>();
         rightOpenButton = new javax.swing.JButton();
-        codeAreaDiffPanel = new org.exbin.bined.swing.extended.diff.ExtCodeAreaDiffPanel();
+        codeAreaDiffPanel = new org.exbin.bined.swing.section.diff.SectCodeAreaDiffPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -307,7 +307,7 @@ public class CompareFilesPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.exbin.bined.swing.extended.diff.ExtCodeAreaDiffPanel codeAreaDiffPanel;
+    private org.exbin.bined.swing.section.diff.SectCodeAreaDiffPanel codeAreaDiffPanel;
     private javax.swing.JComboBox<String> leftComboBox;
     private javax.swing.JLabel leftLabel;
     private javax.swing.JButton leftOpenButton;

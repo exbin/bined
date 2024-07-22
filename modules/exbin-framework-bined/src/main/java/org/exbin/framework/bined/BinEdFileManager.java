@@ -25,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.capability.FontCapable;
-import org.exbin.bined.swing.extended.ExtCodeArea;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -71,7 +71,7 @@ public class BinEdFileManager {
     }
 
     public void initComponentPanel(BinEdComponentPanel componentPanel) {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
@@ -106,7 +106,7 @@ public class BinEdFileManager {
     }
 
     public void initCommandHandler(BinEdComponentPanel componentPanel) {
-        ExtCodeArea codeArea = componentPanel.getCodeArea();
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         CodeAreaOperationCommandHandler commandHandler;
         if (commandHandlerProvider != null) {
             commandHandler = commandHandlerProvider.createCommandHandler(codeArea, componentPanel.getUndoRedo().orElse(null));
