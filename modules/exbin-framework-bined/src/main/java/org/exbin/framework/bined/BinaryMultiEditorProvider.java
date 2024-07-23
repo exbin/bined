@@ -296,7 +296,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
 
         if (activeFile instanceof BinEdFileHandler) {
             SectCodeArea codeArea = ((BinEdFileHandler) activeFile).getCodeArea();
-            CodeAreaCaretPosition caretPosition = codeArea.getCaretPosition();
+            CodeAreaCaretPosition caretPosition = codeArea.getActiveCaretPosition();
             binaryStatus.setCursorPosition(caretPosition);
         }
     }

@@ -65,7 +65,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         switch (searchParameters.getSearchDirection()) {
             case FORWARD: {
                 if (searchParameters.isSearchFromCursor()) {
-                    position = codeArea.getCaretPosition().getDataPosition();
+                    position = codeArea.getActiveCaretPosition().getDataPosition();
                 } else {
                     position = 0;
                 }
@@ -73,7 +73,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
             }
             case BACKWARD: {
                 if (searchParameters.isSearchFromCursor()) {
-                    position = codeArea.getCaretPosition().getDataPosition() - 1;
+                    position = codeArea.getActiveCaretPosition().getDataPosition() - 1;
                 } else {
                     long searchDataSize;
                     switch (condition.getSearchMode()) {

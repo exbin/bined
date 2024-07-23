@@ -345,7 +345,7 @@ public class BookmarksManager {
                 return;
             }
 
-            codeArea.setCaretPosition(record.getStartPosition());
+            codeArea.setActiveCaretPosition(record.getStartPosition());
             codeArea.centerOnCursor();
         }
     }
@@ -406,7 +406,7 @@ public class BookmarksManager {
                     if (activeFile.isPresent()) {
                         BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
                         SectCodeArea codeArea = fileHandler.getCodeArea();
-                        codeArea.setCaretPosition(startPosition);
+                        codeArea.setActiveCaretPosition(startPosition);
                         codeArea.centerOnCursor();
                     }
                 }

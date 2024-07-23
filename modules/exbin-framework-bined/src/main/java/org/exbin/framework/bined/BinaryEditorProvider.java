@@ -202,7 +202,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         }
 
         SectCodeArea codeArea = activeFile.getCodeArea();
-        CodeAreaCaretPosition caretPosition = codeArea.getCaretPosition();
+        CodeAreaCaretPosition caretPosition = codeArea.getActiveCaretPosition();
         binaryStatus.setCursorPosition(caretPosition);
     }
 

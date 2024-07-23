@@ -287,7 +287,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         long startPosition;
         if (searchParameters.isSearchFromCursor()) {
-            startPosition = searchCodeArea.getCaretPosition().getDataPosition();
+            startPosition = searchCodeArea.getActiveCaretPosition().getDataPosition();
         } else {
             switch (searchDirection) {
                 case FORWARD: {

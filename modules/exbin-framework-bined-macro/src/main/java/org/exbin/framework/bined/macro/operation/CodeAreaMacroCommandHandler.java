@@ -317,7 +317,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
                 break;
             }
             case SELECTION_SET: {
-                updateSelection(SelectingMode.SELECTING, ((CaretCapable) codeArea).getCaretPosition());
+                updateSelection(SelectingMode.SELECTING, ((CaretCapable) codeArea).getActiveCaretPosition());
                 break;
             }
             case SELECTION_UPDATE: {

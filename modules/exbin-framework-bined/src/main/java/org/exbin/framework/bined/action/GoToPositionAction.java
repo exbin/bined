@@ -89,7 +89,7 @@ public class GoToPositionAction extends AbstractAction {
         controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
             if (actionType == ControlActionType.OK) {
                 goToPanel.acceptInput();
-                ((CaretCapable) codeArea).setCaretPosition(goToPanel.getTargetPosition());
+                ((CaretCapable) codeArea).setActiveCaretPosition(goToPanel.getTargetPosition());
                 ((ScrollingCapable) codeArea).revealCursor();
             }
 

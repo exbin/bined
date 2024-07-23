@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import org.exbin.bined.CaretMovedListener;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.DataChangedListener;
 import org.exbin.bined.operation.BinaryDataCommand;
@@ -48,6 +47,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
+import org.exbin.bined.CodeAreaCaretListener;
 
 /**
  * Values side panel.
@@ -72,7 +72,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private BinaryDataUndoRedo undoRedo;
     private long dataPosition;
     private DataChangedListener dataChangedListener;
-    private CaretMovedListener caretMovedListener;
+    private CodeAreaCaretListener caretMovedListener;
     private BinaryDataUndoRedoChangeListener undoRedoChangeListener;
 
     private final byte[] valuesCache = new byte[CACHE_SIZE];
@@ -795,7 +795,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     }
 
     public void updateValues() {
-        CodeAreaCaretPosition caretPosition = codeArea.getCaretPosition();
+        CodeAreaCaretPosition caretPosition = codeArea.getActiveCaretPosition();
         dataPosition = caretPosition.getDataPosition();
         long dataSize = codeArea.getDataSize();
 
@@ -837,7 +837,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 undoRedo.execute(command);
             }
         }
-        codeArea.setCaretPosition(oldDataPosition);
+        codeArea.setActiveCaretPosition(oldDataPosition);
         codeArea.repaint();
     }
 
