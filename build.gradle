@@ -14,7 +14,7 @@ plugins {
     id 'base'
     id 'distribution'
     id 'maven-publish'
-    id "nebula.ospackage" version "8.4.1"
+    id "nebula.ospackage" version "8.6.3"
 }
 
 version = '0.3.0-SNAPSHOT'
@@ -111,6 +111,7 @@ ospackage {
     }
 
     from ('src/ospackage/bined.png') {
+        addParentDirs = false
         into '/usr/share/pixmaps'
     }
 
@@ -138,9 +139,10 @@ ospackage {
         }
     }
 }
-/*
+
 buildRpm {
     from ('src/ospackage/bined.png') {
+        // Doesn't propagate correctly from ospackage task, so repeat it here
         addParentDirs = false
         into '/usr/share/pixmaps'
     }
@@ -152,7 +154,7 @@ buildDeb {
     arch = 'all'
     requires('default-jre', '1.8.0', GREATER | EQUAL)
 }
-*/
+
 task("copyDependencies", type: Copy) {
     from(project(':apps:bined-editor').configurations.runtimeClasspath).into("$buildDir/jars")
 }
