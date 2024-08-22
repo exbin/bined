@@ -101,6 +101,7 @@ ospackage {
     description = 'Free and open source binary/hex viewer/editor and component written in Java.'
     distribution = 'Linux'
     url = 'https://bined.exbin.org'
+    user = 'root'
 
     from ('src/ospackage/bined') {
         into '/usr/bin'

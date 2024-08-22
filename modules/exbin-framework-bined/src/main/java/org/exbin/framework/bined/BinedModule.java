@@ -189,16 +189,16 @@ public class BinedModule implements Module {
         if (editorProvider == null) {
 
             BinEdFileHandler editorFile = new BinEdFileHandler();
+            editorProvider = new BinaryEditorProvider(editorFile);
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            fileModule.setFileOperations(editorProvider);
+
             fileManager.initFileHandler(editorFile);
 
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
             EditorPreferences editorPreferences = new EditorPreferences(preferencesModule.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             editorFile.setNewData(fileHandlingMode);
-
-            editorProvider = new BinaryEditorProvider(editorFile);
-            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-            fileModule.setFileOperations(editorProvider);
 
             BinEdComponentPanel componentPanel = editorFile.getComponent();
             SectCodeArea codeArea = editorFile.getComponent().getCodeArea();
