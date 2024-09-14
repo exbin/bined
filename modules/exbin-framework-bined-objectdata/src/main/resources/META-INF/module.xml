@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <module>
   <id>org.exbin.framework.bined.objectdata.BinedObjectDataModule</id>
-  <name>BinEd Hexadecimal Editor Module</name>
-  <description>Module supporting editation of binary document in hexadecimal form</description>
+  <name>BinEd Object Data Module</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Support for analysis of object data of various types including binary data</description>
   <dependency>
     <module id="org.exbin.framework.window.api.WindowModuleApi" />
     <module id="org.exbin.framework.editor.api.EditorModuleApi" />

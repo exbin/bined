@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <module>
   <id>org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule</id>
-  <name>BinEd Hexadecimal Editor Module</name>
-  <description>Module supporting editation of binary document in hexadecimal form</description>
+  <name>BinEd Bouncycastle Conversion Plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Support for data conversions using Bouncycastle cryptoraphic library</description>
   <dependency>
     <module id="org.exbin.framework.window.api.WindowModuleApi" />
     <module id="org.exbin.framework.editor.api.EditorModuleApi" />

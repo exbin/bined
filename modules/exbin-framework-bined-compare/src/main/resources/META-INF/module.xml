@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <module>
   <id>org.exbin.framework.bined.compare.BinedCompareModule</id>
-  <name>BinEd Hexadecimal Editor Module</name>
-  <description>Module supporting editation of binary document in hexadecimal form</description>
+  <name>BinEd Compare Support Module</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Support for files comparing</description>
   <dependency>
     <module id="org.exbin.framework.bined.BinedModule" />
     <module id="org.exbin.framework.frame.api.FrameModuleApi" />
