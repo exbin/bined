@@ -140,7 +140,8 @@ ospackage {
         }
     }
 }
-
+// Uncoment for deployment, breaks for Java 8+
+/*
 buildRpm {
     from ('src/ospackage/bined.png') {
         // Doesn't propagate correctly from ospackage task, so repeat it here
@@ -155,7 +156,7 @@ buildDeb {
     arch = 'all'
     requires('default-jre', '1.8.0', GREATER | EQUAL)
 }
-
+*/
 task("copyDependencies", type: Copy) {
     from(project(':apps:bined-editor').configurations.runtimeClasspath).into("$buildDir/jars")
 }
@@ -166,7 +167,7 @@ task("copyJar", type: Copy) {
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
     distZip {
-        archiveFileName = 'bined-' + version + '.zip'
+        archiveFileName = 'bined-' + project.version + '.zip'
     }
 
     distributions {

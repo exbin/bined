@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
-import org.exbin.framework.bined.BinEdCodeAreaPainter;
+import org.exbin.framework.bined.BinEdCodeAreaAssessor;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 
 /**
@@ -29,7 +29,7 @@ import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BookmarksPositionColorModifier implements BinEdCodeAreaPainter.PositionColorModifier {
+public class BookmarksPositionColorModifier implements BinEdCodeAreaAssessor.PositionColorModifier {
 
     private final List<BookmarkRecord> records;
     private final ColorCache colorCache = new ColorCache();

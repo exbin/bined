@@ -41,6 +41,7 @@ public class BinaryEditorPreferences {
     public static final String ENCODING_UTF8 = "UTF-8";
     private final static String PREFERENCES_VERSION = "version";
     private final static String PREFERENCES_VERSION_VALUE = "0.2.1";
+    // TODO unprintables -> nonprintables
 
     private final Preferences preferences;
 

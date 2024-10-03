@@ -19,7 +19,7 @@ import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
-import org.exbin.framework.bined.BinEdCodeAreaPainter;
+import org.exbin.framework.bined.BinEdCodeAreaAssessor;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -28,7 +28,7 @@ import org.exbin.framework.utils.UiUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BasicValuesPositionColorModifier implements BinEdCodeAreaPainter.PositionColorModifier {
+public class BasicValuesPositionColorModifier implements BinEdCodeAreaAssessor.PositionColorModifier {
 
     private long position = -1;
     private long length;

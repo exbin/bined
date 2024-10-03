@@ -26,10 +26,12 @@ import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.capability.ViewModeCapable;
+import org.exbin.bined.highlight.swing.NonAsciiCodeAreaColorAssessor;
 import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.bined.section.capability.ShowUnprintablesCapable;
-import org.exbin.bined.highlight.swing.section.SectionHighlightNonAsciiCodeAreaPainter;
 import org.exbin.bined.swing.CodeAreaPainter;
+import org.exbin.bined.swing.CodeAreaSwingUtils;
+import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.preferences.CodeAreaPreferences;
 import org.exbin.framework.options.api.OptionsData;
@@ -191,8 +193,9 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
         codeAreaOptions.setPositionCodeType(((PositionCodeTypeCapable) codeArea).getPositionCodeType());
         codeAreaOptions.setViewMode(((ViewModeCapable) codeArea).getViewMode());
         CodeAreaPainter painter = codeArea.getPainter();
-        if (painter instanceof SectionHighlightNonAsciiCodeAreaPainter) {
-            codeAreaOptions.setCodeColorization(((SectionHighlightNonAsciiCodeAreaPainter) painter).isNonAsciiHighlightingEnabled());
+        NonAsciiCodeAreaColorAssessor nonAsciiColorAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonAsciiCodeAreaColorAssessor.class);
+        if (nonAsciiColorAssessor != null) {
+            codeAreaOptions.setCodeColorization(nonAsciiColorAssessor.isNonAsciiHighlightingEnabled());
         }
         codeAreaOptions.setRowWrappingMode(codeArea.getRowWrapping());
         codeAreaOptions.setMaxBytesPerRow(codeArea.getMaxBytesPerRow());
@@ -207,8 +210,9 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
         ((PositionCodeTypeCapable) codeArea).setPositionCodeType(codeAreaOptions.getPositionCodeType());
         ((ViewModeCapable) codeArea).setViewMode(codeAreaOptions.getViewMode());
         CodeAreaPainter painter = codeArea.getPainter();
-        if (painter instanceof SectionHighlightNonAsciiCodeAreaPainter) {
-            ((SectionHighlightNonAsciiCodeAreaPainter) painter).setNonAsciiHighlightingEnabled(codeAreaOptions.isCodeColorization());
+        NonAsciiCodeAreaColorAssessor nonAsciiColorAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonAsciiCodeAreaColorAssessor.class);
+        if (nonAsciiColorAssessor != null) {
+            nonAsciiColorAssessor.setNonAsciiHighlightingEnabled(codeAreaOptions.isCodeColorization());
         }
         codeArea.setRowWrapping(codeAreaOptions.getRowWrappingMode());
         codeArea.setMaxBytesPerRow(codeAreaOptions.getMaxBytesPerRow());

@@ -27,8 +27,9 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.SelectionRange;
-import org.exbin.bined.highlight.swing.section.SectionHighlightCodeAreaPainter;
-import org.exbin.bined.highlight.swing.section.SectionHighlightNonAsciiCodeAreaPainter;
+import org.exbin.bined.highlight.swing.SearchCodeAreaColorAssessor;
+import org.exbin.bined.highlight.swing.SearchMatch;
+import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -74,15 +75,16 @@ public class PreviewPanel extends javax.swing.JPanel {
     private void initPreviewCodeArea() {
         codeArea.setEditMode(EditMode.READ_ONLY);
         if (previewType == PreviewType.WITH_SEARCH) {
-            SectionHighlightNonAsciiCodeAreaPainter painter = new SectionHighlightNonAsciiCodeAreaPainter(codeArea);
-            codeArea.setPainter(painter);
-            List<SectionHighlightCodeAreaPainter.SearchMatch> exampleMatches = new ArrayList<>();
+            ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) codeArea.getPainter();
+            SearchCodeAreaColorAssessor matchColorAssessor = new SearchCodeAreaColorAssessor(painter.getColorAssessor());
+            painter.setColorAssessor(matchColorAssessor);
+            List<SearchMatch> exampleMatches = new ArrayList<>();
             // Set manual search matches for "ligula"
-            exampleMatches.add(new SectionHighlightCodeAreaPainter.SearchMatch(145, 6));
-            exampleMatches.add(new SectionHighlightCodeAreaPainter.SearchMatch(480, 6));
-            exampleMatches.add(new SectionHighlightCodeAreaPainter.SearchMatch(1983, 6));
-            painter.setMatches(exampleMatches);
-            painter.setCurrentMatchIndex(1);
+            exampleMatches.add(new SearchMatch(145, 6));
+            exampleMatches.add(new SearchMatch(480, 6));
+            exampleMatches.add(new SearchMatch(1983, 6));
+            matchColorAssessor.setMatches(exampleMatches);
+            matchColorAssessor.setCurrentMatchIndex(1);
         }
         ByteArrayEditableData exampleData = new ByteArrayEditableData();
         try {
@@ -134,7 +136,6 @@ public class PreviewPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel previewLabel;
     // End of variables declaration//GEN-END:variables
-
 
     public enum PreviewType {
         DEFAULT,

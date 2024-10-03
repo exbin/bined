@@ -28,11 +28,14 @@ import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.undo.EmptyBinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.framework.bined.BinEdCodeAreaPainter;
+import org.exbin.framework.bined.BinEdCodeAreaAssessor;
 import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.bined.swing.CodeAreaPainter;
+import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
+import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 
 /**
  * Binary editor component panel.
@@ -53,7 +56,10 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     private void init() {
         codeArea = new SectCodeArea();
-        codeArea.setPainter(new BinEdCodeAreaPainter(codeArea));
+        CodeAreaPainter painter = codeArea.getPainter();
+        BinEdCodeAreaAssessor codeAreaAssessor = new BinEdCodeAreaAssessor(((ColorAssessorPainterCapable) painter).getColorAssessor(), ((CharAssessorPainterCapable) painter).getCharAssessor());
+        ((ColorAssessorPainterCapable) painter).setColorAssessor(codeAreaAssessor);
+        ((CharAssessorPainterCapable) painter).setCharAssessor(codeAreaAssessor);
         codeArea.setCodeFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         codeArea.setFocusTraversalKeysEnabled(false);
 
@@ -79,7 +85,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
             extension.onInitFromPreferences(preferences);
         }
     }
-            
+
     public void addComponentExtension(BinEdComponentExtension extension) {
         componentExtensions.add(extension);
         if (undoRedo != null) {
@@ -127,7 +133,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
     @Nonnull
     public Optional<BinaryDataUndoRedo> getUndoRedo() {
         return Optional.ofNullable(undoRedo);
@@ -170,7 +175,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     public interface BinEdComponentExtension {
 
         void onCreate(BinEdComponentPanel componentPanel);
-        
+
         void onInitFromPreferences(BinaryEditorPreferences preferences);
 
         void onDataChange();

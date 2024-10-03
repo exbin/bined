@@ -24,6 +24,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.swing.CodeAreaSwingUtils;
+import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
@@ -53,8 +55,8 @@ public class BinEdFileManager {
     private BinaryStatusPanel binaryStatusPanel;
     private final SegmentsRepository segmentsRepository = new SegmentsRepository();
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
-    private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
-    private final List<BinEdCodeAreaPainter.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
+    private final List<BinEdCodeAreaAssessor.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
+    private final List<BinEdCodeAreaAssessor.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
     private CodeAreaCommandHandlerProvider commandHandlerProvider = null;
 
     public BinEdFileManager() {
@@ -81,11 +83,11 @@ public class BinEdFileManager {
             });
         }
 
-        BinEdCodeAreaPainter painter = (BinEdCodeAreaPainter) componentPanel.getCodeArea().getPainter();
-        for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPriorityPositionColorModifiers) {
+        BinEdCodeAreaAssessor painter = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) componentPanel.getCodeArea().getPainter(), BinEdCodeAreaAssessor.class);
+        for (BinEdCodeAreaAssessor.PositionColorModifier modifier : painterPriorityPositionColorModifiers) {
             painter.addPriorityColorModifier(modifier);
         }
-        for (BinEdCodeAreaPainter.PositionColorModifier modifier : painterPositionColorModifiers) {
+        for (BinEdCodeAreaAssessor.PositionColorModifier modifier : painterPositionColorModifiers) {
             painter.addColorModifier(modifier);
         }
 
@@ -116,19 +118,19 @@ public class BinEdFileManager {
         codeArea.setCommandHandler(commandHandler);
     }
 
-    public void addPainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+    public void addPainterColorModifier(BinEdCodeAreaAssessor.PositionColorModifier modifier) {
         painterPositionColorModifiers.add(modifier);
     }
 
-    public void removePainterColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+    public void removePainterColorModifier(BinEdCodeAreaAssessor.PositionColorModifier modifier) {
         painterPositionColorModifiers.remove(modifier);
     }
 
-    public void addPainterPriorityColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+    public void addPainterPriorityColorModifier(BinEdCodeAreaAssessor.PositionColorModifier modifier) {
         painterPriorityPositionColorModifiers.add(modifier);
     }
 
-    public void removePainterPriorityColorModifier(BinEdCodeAreaPainter.PositionColorModifier modifier) {
+    public void removePainterPriorityColorModifier(BinEdCodeAreaAssessor.PositionColorModifier modifier) {
         painterPriorityPositionColorModifiers.remove(modifier);
     }
 

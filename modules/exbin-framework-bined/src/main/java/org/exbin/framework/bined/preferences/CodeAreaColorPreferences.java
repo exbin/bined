@@ -25,9 +25,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.color.BasicCodeAreaDecorationColorType;
 import org.exbin.bined.color.CodeAreaBasicColors;
-import org.exbin.bined.section.color.CodeAreaUnprintablesColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
+import org.exbin.bined.highlight.swing.color.CodeAreaNonprintablesColorType;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.options.CodeAreaColorOptions;
 
@@ -66,8 +66,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
     public static final String ACTIVE_MATCH_COLOR = "activeMatchColor";
     public static final String ACTIVE_MATCH_BACKGROUND = "activeMatchBackground";
 
-    public static final String UNPRINTABLES_COLOR = "unprintablesColor";
-    public static final String UNPRINTABLES_BACKGROUND = "unprintablesBackground";
+    public static final String NONPRINTABLES_COLOR = "nonprintablesColor";
+    public static final String NONPRINTABLES_BACKGROUND = "nonprintablesBackground";
 
     private final Preferences preferences;
 
@@ -135,8 +135,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
         colorProfile.setColor(CodeAreaMatchColorType.ACTIVE_MATCH_COLOR, textAsColor(preferences.get(colorProfilePrefix + ACTIVE_MATCH_COLOR)));
         colorProfile.setColor(CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + ACTIVE_MATCH_BACKGROUND)));
 
-        colorProfile.setColor(CodeAreaUnprintablesColorType.UNPRINTABLES_COLOR, textAsColor(preferences.get(colorProfilePrefix + UNPRINTABLES_COLOR)));
-        colorProfile.setColor(CodeAreaUnprintablesColorType.UNPRINTABLES_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + UNPRINTABLES_BACKGROUND)));
+        colorProfile.setColor(CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR, textAsColor(preferences.get(colorProfilePrefix + NONPRINTABLES_COLOR)));
+        colorProfile.setColor(CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + NONPRINTABLES_BACKGROUND)));
 
         return colorProfile;
     }
@@ -167,8 +167,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
         preferences.put(colorProfilePrefix + ACTIVE_MATCH_COLOR, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.ACTIVE_MATCH_COLOR)));
         preferences.put(colorProfilePrefix + ACTIVE_MATCH_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND)));
 
-        preferences.put(colorProfilePrefix + UNPRINTABLES_COLOR, colorAsText(colorProfile.getColor(CodeAreaUnprintablesColorType.UNPRINTABLES_COLOR)));
-        preferences.put(colorProfilePrefix + UNPRINTABLES_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaUnprintablesColorType.UNPRINTABLES_BACKGROUND)));
+        preferences.put(colorProfilePrefix + NONPRINTABLES_COLOR, colorAsText(colorProfile.getColor(CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR)));
+        preferences.put(colorProfilePrefix + NONPRINTABLES_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND)));
     }
 
     @Override
@@ -197,8 +197,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
         preferences.remove(colorProfilePrefix + ACTIVE_MATCH_COLOR);
         preferences.remove(colorProfilePrefix + ACTIVE_MATCH_BACKGROUND);
 
-        preferences.remove(colorProfilePrefix + UNPRINTABLES_COLOR);
-        preferences.remove(colorProfilePrefix + UNPRINTABLES_BACKGROUND);
+        preferences.remove(colorProfilePrefix + NONPRINTABLES_COLOR);
+        preferences.remove(colorProfilePrefix + NONPRINTABLES_BACKGROUND);
     }
 
     /**

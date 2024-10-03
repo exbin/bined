@@ -28,9 +28,9 @@ import javax.swing.table.TableModel;
 import org.exbin.bined.color.BasicCodeAreaDecorationColorType;
 import org.exbin.bined.color.CodeAreaBasicColors;
 import org.exbin.bined.color.CodeAreaColorType;
-import org.exbin.bined.section.color.CodeAreaUnprintablesColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
+import org.exbin.bined.highlight.swing.color.CodeAreaNonprintablesColorType;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.preferences.CodeAreaColorPreferences;
 
@@ -76,8 +76,8 @@ public class ColorProfileTableModel implements TableModel {
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.ACTIVE_MATCH_COLOR), CodeAreaMatchColorType.ACTIVE_MATCH_COLOR));
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.ACTIVE_MATCH_BACKGROUND), CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND));
 
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.UNPRINTABLES_COLOR), CodeAreaUnprintablesColorType.UNPRINTABLES_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.UNPRINTABLES_BACKGROUND), CodeAreaUnprintablesColorType.UNPRINTABLES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.NONPRINTABLES_COLOR), CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.NONPRINTABLES_BACKGROUND), CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND));
     }
 
     @Nonnull
