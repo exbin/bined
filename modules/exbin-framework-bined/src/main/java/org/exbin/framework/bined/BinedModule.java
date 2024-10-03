@@ -22,7 +22,7 @@ import org.exbin.framework.bined.action.CodeTypeActions;
 import org.exbin.framework.bined.action.CodeAreaFontAction;
 import org.exbin.framework.bined.action.ViewModeHandlerActions;
 import org.exbin.framework.bined.action.PrintAction;
-import org.exbin.framework.bined.action.ShowUnprintablesActions;
+import org.exbin.framework.bined.action.ShowNonprintablesActions;
 import org.exbin.framework.bined.action.RowWrappingAction;
 import org.exbin.framework.bined.action.PropertiesAction;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -136,7 +136,7 @@ public class BinedModule implements Module {
     private BinEdFileManager fileManager;
     private BinedOptionsManager binedOptionsManager;
 
-    private ShowUnprintablesActions showUnprintablesActions;
+    private ShowNonprintablesActions showUnprintablesActions;
     private ViewModeHandlerActions viewModeActions;
     private CodeTypeActions codeTypeActions;
     private PositionCodeTypeActions positionCodeTypeActions;
@@ -416,10 +416,10 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public ShowUnprintablesActions getShowUnprintablesActions() {
+    public ShowNonprintablesActions getShowUnprintablesActions() {
         if (showUnprintablesActions == null) {
             ensureSetup();
-            showUnprintablesActions = new ShowUnprintablesActions();
+            showUnprintablesActions = new ShowNonprintablesActions();
             showUnprintablesActions.setup(resourceBundle);
         }
 
@@ -578,14 +578,14 @@ public class BinedModule implements Module {
         getShowUnprintablesActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, new ToolBarGroup(BINED_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.NONE));
-        actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, showUnprintablesActions.createViewUnprintablesToolbarAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
+        actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, showUnprintablesActions.createViewNonprintablesToolbarAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
     }
 
     public void registerViewUnprintablesMenuActions() {
         getShowUnprintablesActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerMenuGroup(ActionConsts.VIEW_MENU_ID, new MenuGroup(VIEW_UNPRINTABLES_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, showUnprintablesActions.createViewUnprintablesAction(), new MenuPosition(VIEW_UNPRINTABLES_MENU_GROUP_ID));
+        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, showUnprintablesActions.createViewNonprintablesAction(), new MenuPosition(VIEW_UNPRINTABLES_MENU_GROUP_ID));
     }
 
     public void registerToolsOptionsMenuActions() {

@@ -27,8 +27,10 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.SelectionRange;
+import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
 import org.exbin.bined.highlight.swing.SearchCodeAreaColorAssessor;
 import org.exbin.bined.highlight.swing.SearchMatch;
+import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
@@ -77,7 +79,9 @@ public class PreviewPanel extends javax.swing.JPanel {
         if (previewType == PreviewType.WITH_SEARCH) {
             ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) codeArea.getPainter();
             SearchCodeAreaColorAssessor matchColorAssessor = new SearchCodeAreaColorAssessor(painter.getColorAssessor());
-            painter.setColorAssessor(matchColorAssessor);
+            NonprintablesCodeAreaAssessor nonprintableColorAssessor = new NonprintablesCodeAreaAssessor(matchColorAssessor, ((CharAssessorPainterCapable) painter).getCharAssessor());
+            painter.setColorAssessor(nonprintableColorAssessor);
+            ((CharAssessorPainterCapable) painter).setCharAssessor(nonprintableColorAssessor);
             List<SearchMatch> exampleMatches = new ArrayList<>();
             // Set manual search matches for "ligula"
             exampleMatches.add(new SearchMatch(145, 6));
@@ -95,7 +99,6 @@ public class PreviewPanel extends javax.swing.JPanel {
         codeArea.setContentData(exampleData);
         codeArea.setRowWrapping(RowWrappingMode.WRAPPING);
         codeArea.setEnabled(false);
-        codeArea.setShowUnprintables(true);
         codeArea.setSelection(new SelectionRange(200, 300));
     }
 

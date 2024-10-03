@@ -139,7 +139,7 @@ public class BinaryEditorPreferences {
         LegacyPreferences legacyPreferences = new LegacyPreferences(preferences);
         codeAreaPreferences.setCodeType(legacyPreferences.getCodeType());
         codeAreaPreferences.setRowWrappingMode(legacyPreferences.isLineWrapping() ? RowWrappingMode.WRAPPING : RowWrappingMode.NO_WRAPPING);
-        codeAreaPreferences.setShowUnprintables(legacyPreferences.isShowNonprintables());
+        codeAreaPreferences.setShowNonprintables(legacyPreferences.isShowNonprintables());
         codeAreaPreferences.setCodeCharactersCase(legacyPreferences.getCodeCharactersCase());
         codeAreaPreferences.setPositionCodeType(legacyPreferences.getPositionCodeType());
         codeAreaPreferences.setViewMode(legacyPreferences.getViewMode());

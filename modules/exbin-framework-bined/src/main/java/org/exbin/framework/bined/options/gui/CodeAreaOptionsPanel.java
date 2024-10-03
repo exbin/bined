@@ -80,7 +80,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     @Override
     public void saveToOptions(CodeAreaOptionsImpl options) {
         options.setCodeType(CodeType.values()[codeTypeComboBox.getSelectedIndex()]);
-        options.setShowUnprintables(showNonprintableCharactersCheckBox.isSelected());
+        options.setShowNonprintables(showNonprintableCharactersCheckBox.isSelected());
         options.setCodeCharactersCase(CodeCharactersCase.values()[codeCharactersModeComboBox.getSelectedIndex()]);
         options.setPositionCodeType(PositionCodeType.values()[positionCodeTypeComboBox.getSelectedIndex()]);
         options.setViewMode(CodeAreaViewMode.values()[viewModeComboBox.getSelectedIndex()]);
@@ -94,7 +94,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     @Override
     public void loadFromOptions(CodeAreaOptionsImpl options) {
         codeTypeComboBox.setSelectedIndex(options.getCodeType().ordinal());
-        showNonprintableCharactersCheckBox.setSelected(options.isShowUnprintables());
+        showNonprintableCharactersCheckBox.setSelected(options.isShowNonprintables());
         codeCharactersModeComboBox.setSelectedIndex(options.getCodeCharactersCase().ordinal());
         positionCodeTypeComboBox.setSelectedIndex(options.getPositionCodeType().ordinal());
         viewModeComboBox.setSelectedIndex(options.getViewMode().ordinal());

@@ -27,8 +27,8 @@ import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.capability.ViewModeCapable;
 import org.exbin.bined.highlight.swing.NonAsciiCodeAreaColorAssessor;
+import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
 import org.exbin.bined.section.capability.PositionCodeTypeCapable;
-import org.exbin.bined.section.capability.ShowUnprintablesCapable;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
@@ -45,7 +45,7 @@ import org.exbin.framework.options.api.OptionsData;
 public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
 
     private CodeType codeType = CodeType.HEXADECIMAL;
-    private boolean showUnprintables = true;
+    private boolean showNonprintables = true;
     private CodeCharactersCase codeCharactersCase = CodeCharactersCase.UPPER;
     private PositionCodeType positionCodeType = PositionCodeType.HEXADECIMAL;
     private CodeAreaViewMode viewMode = CodeAreaViewMode.DUAL;
@@ -67,13 +67,13 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
     }
 
     @Override
-    public boolean isShowUnprintables() {
-        return showUnprintables;
+    public boolean isShowNonprintables() {
+        return showNonprintables;
     }
 
     @Override
-    public void setShowUnprintables(boolean showUnprintables) {
-        this.showUnprintables = showUnprintables;
+    public void setShowNonprintables(boolean showNonprintables) {
+        this.showNonprintables = showNonprintables;
     }
 
     @Nonnull
@@ -162,7 +162,7 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
 
     public void loadFromPreferences(CodeAreaPreferences preferences) {
         codeType = preferences.getCodeType();
-        showUnprintables = preferences.isShowUnprintables();
+        showNonprintables = preferences.isShowNonprintables();
         codeCharactersCase = preferences.getCodeCharactersCase();
         positionCodeType = preferences.getPositionCodeType();
         viewMode = preferences.getViewMode();
@@ -175,7 +175,7 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
 
     public void saveToPreferences(CodeAreaPreferences preferences) {
         preferences.setCodeType(codeType);
-        preferences.setShowUnprintables(showUnprintables);
+        preferences.setShowNonprintables(showNonprintables);
         preferences.setCodeCharactersCase(codeCharactersCase);
         preferences.setPositionCodeType(positionCodeType);
         preferences.setViewMode(viewMode);
@@ -187,12 +187,15 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
     }
 
     public static void applyFromCodeArea(CodeAreaOptions codeAreaOptions, SectCodeArea codeArea) {
+        CodeAreaPainter painter = codeArea.getPainter();
         codeAreaOptions.setCodeType(((CodeTypeCapable) codeArea).getCodeType());
-        codeAreaOptions.setShowUnprintables(((ShowUnprintablesCapable) codeArea).isShowUnprintables());
+        NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonprintablesCodeAreaAssessor.class);
+        if (nonprintablesCodeAreaAssessor != null) {
+            codeAreaOptions.setShowNonprintables(nonprintablesCodeAreaAssessor.isShowNonprintables());
+        }
         codeAreaOptions.setCodeCharactersCase(((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase());
         codeAreaOptions.setPositionCodeType(((PositionCodeTypeCapable) codeArea).getPositionCodeType());
         codeAreaOptions.setViewMode(((ViewModeCapable) codeArea).getViewMode());
-        CodeAreaPainter painter = codeArea.getPainter();
         NonAsciiCodeAreaColorAssessor nonAsciiColorAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonAsciiCodeAreaColorAssessor.class);
         if (nonAsciiColorAssessor != null) {
             codeAreaOptions.setCodeColorization(nonAsciiColorAssessor.isNonAsciiHighlightingEnabled());
@@ -204,12 +207,15 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
     }
 
     public static void applyToCodeArea(CodeAreaOptions codeAreaOptions, SectCodeArea codeArea) {
+        CodeAreaPainter painter = codeArea.getPainter();
         ((CodeTypeCapable) codeArea).setCodeType(codeAreaOptions.getCodeType());
-        ((ShowUnprintablesCapable) codeArea).setShowUnprintables(codeAreaOptions.isShowUnprintables());
+        NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonprintablesCodeAreaAssessor.class);
+        if (nonprintablesCodeAreaAssessor != null) {
+            nonprintablesCodeAreaAssessor.setShowNonprintables(codeAreaOptions.isShowNonprintables());
+        }
         ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeAreaOptions.getCodeCharactersCase());
         ((PositionCodeTypeCapable) codeArea).setPositionCodeType(codeAreaOptions.getPositionCodeType());
         ((ViewModeCapable) codeArea).setViewMode(codeAreaOptions.getViewMode());
-        CodeAreaPainter painter = codeArea.getPainter();
         NonAsciiCodeAreaColorAssessor nonAsciiColorAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonAsciiCodeAreaColorAssessor.class);
         if (nonAsciiColorAssessor != null) {
             nonAsciiColorAssessor.setNonAsciiHighlightingEnabled(codeAreaOptions.isCodeColorization());
@@ -222,7 +228,7 @@ public class CodeAreaOptionsImpl implements OptionsData, CodeAreaOptions {
 
     public void setOptions(CodeAreaOptionsImpl codeAreaOptions) {
         codeType = codeAreaOptions.codeType;
-        showUnprintables = codeAreaOptions.showUnprintables;
+        showNonprintables = codeAreaOptions.showNonprintables;
         codeCharactersCase = codeAreaOptions.codeCharactersCase;
         positionCodeType = codeAreaOptions.positionCodeType;
         viewMode = codeAreaOptions.viewMode;

@@ -37,7 +37,7 @@ import org.exbin.framework.bined.options.CodeAreaOptions;
 public class CodeAreaPreferences implements CodeAreaOptions {
 
     public static final String PREFERENCES_CODE_TYPE = "codeType";
-    public static final String PREFERENCES_SHOW_UNPRINTABLES = "showNonpritables";
+    public static final String PREFERENCES_SHOW_NONPRINTABLES = "showNonpritables";
     public static final String PREFERENCES_BYTES_PER_LINE = "bytesPerLine";
     public static final String PREFERENCES_LINE_NUMBERS_LENGTH_TYPE = "lineNumbersLengthType";
     public static final String PREFERENCES_LINE_NUMBERS_LENGTH = "lineNumbersLength";
@@ -77,13 +77,13 @@ public class CodeAreaPreferences implements CodeAreaOptions {
     }
 
     @Override
-    public boolean isShowUnprintables() {
-        return preferences.getBoolean(PREFERENCES_SHOW_UNPRINTABLES, false);
+    public boolean isShowNonprintables() {
+        return preferences.getBoolean(PREFERENCES_SHOW_NONPRINTABLES, false);
     }
 
     @Override
-    public void setShowUnprintables(boolean showUnprintables) {
-        preferences.putBoolean(PREFERENCES_SHOW_UNPRINTABLES, showUnprintables);
+    public void setShowNonprintables(boolean showNonprintables) {
+        preferences.putBoolean(PREFERENCES_SHOW_NONPRINTABLES, showNonprintables);
     }
 
     @Nonnull
