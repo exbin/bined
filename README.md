@@ -32,9 +32,24 @@ For project compiling Gradle 7.1 build system is used: https://gradle.org
 
 You can either download and install gradle or use gradlew or gradlew.bat scripts to download separate copy of gradle to perform the project build.
 
-On the first build there will be an attempt to download all required dependecy modules and currently it's necessary to execute build twice.
+CURRENTLY BROKEN: On the first build there will be an attempt to download all required dependecy modules and currently it's necessary to execute build twice.
 
-Alternative is to have all dependecy modules stored in local maven repository - Manually download all dependencies from GitHub (clone repositories from github.com/exbin - see. deps directory for names) and run "gradle publish" on each of them.
+Alternative is to deploy all dependecy modules into local maven repository.
+
+You can try to run following commands. Start at parent directory to "bined" repo directory.
+
+    git clone https://github.com/exbin/exbin-auxiliary-java.git
+    cd exbin-auxiliary-java
+    gradlew build publish
+    cd ..
+    git clone https://github.com/exbin/bined-lib-java.git
+    cd bined-lib-java
+    gradlew build publish
+    cd ..
+    git clone https://github.com/exbin/exbin-framework-java.git
+    cd exbin-framework-java
+    gradlew build publish
+    cd .. 
 
 License
 -------
