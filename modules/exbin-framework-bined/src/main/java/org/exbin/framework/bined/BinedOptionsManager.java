@@ -135,7 +135,7 @@ public class BinedOptionsManager {
         this.editorProvider = editorProvider;
     }
 
-    public void registerOptionsPanels(EncodingsHandler encodingsHandler, BinEdFileManager fileManager, BinaryAppearanceService binaryAppearanceService, CodeTypeActions codeTypeActions, ShowNonprintablesActions showUnprintablesActions, HexCharactersCaseActions hexCharactersCaseActions, PositionCodeTypeActions positionCodeTypeActions, ViewModeHandlerActions viewModeActions) {
+    public void registerOptionsPanels(EncodingsHandler encodingsHandler, BinEdFileManager fileManager, BinaryAppearanceService binaryAppearanceService, CodeTypeActions codeTypeActions, ShowNonprintablesActions showNonprintablesActions, HexCharactersCaseActions hexCharactersCaseActions, PositionCodeTypeActions positionCodeTypeActions, ViewModeHandlerActions viewModeActions) {
         // TODO: Drop parameters
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
 

@@ -63,8 +63,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
 
     public static final String MATCH_COLOR = "matchColor";
     public static final String MATCH_BACKGROUND = "matchBackground";
-    public static final String ACTIVE_MATCH_COLOR = "activeMatchColor";
-    public static final String ACTIVE_MATCH_BACKGROUND = "activeMatchBackground";
+    public static final String CURRENT_MATCH_COLOR = "currentMatchColor";
+    public static final String CURRENT_MATCH_BACKGROUND = "currentMatchBackground";
 
     public static final String NONPRINTABLES_COLOR = "nonprintablesColor";
     public static final String NONPRINTABLES_BACKGROUND = "nonprintablesBackground";
@@ -132,8 +132,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
 
         colorProfile.setColor(CodeAreaMatchColorType.MATCH_COLOR, textAsColor(preferences.get(colorProfilePrefix + MATCH_COLOR)));
         colorProfile.setColor(CodeAreaMatchColorType.MATCH_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + MATCH_BACKGROUND)));
-        colorProfile.setColor(CodeAreaMatchColorType.ACTIVE_MATCH_COLOR, textAsColor(preferences.get(colorProfilePrefix + ACTIVE_MATCH_COLOR)));
-        colorProfile.setColor(CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + ACTIVE_MATCH_BACKGROUND)));
+        colorProfile.setColor(CodeAreaMatchColorType.CURRENT_MATCH_COLOR, textAsColor(preferences.get(colorProfilePrefix + CURRENT_MATCH_COLOR)));
+        colorProfile.setColor(CodeAreaMatchColorType.CURRENT_MATCH_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + CURRENT_MATCH_BACKGROUND)));
 
         colorProfile.setColor(CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR, textAsColor(preferences.get(colorProfilePrefix + NONPRINTABLES_COLOR)));
         colorProfile.setColor(CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND, textAsColor(preferences.get(colorProfilePrefix + NONPRINTABLES_BACKGROUND)));
@@ -164,8 +164,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
 
         preferences.put(colorProfilePrefix + MATCH_COLOR, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.MATCH_COLOR)));
         preferences.put(colorProfilePrefix + MATCH_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.MATCH_BACKGROUND)));
-        preferences.put(colorProfilePrefix + ACTIVE_MATCH_COLOR, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.ACTIVE_MATCH_COLOR)));
-        preferences.put(colorProfilePrefix + ACTIVE_MATCH_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND)));
+        preferences.put(colorProfilePrefix + CURRENT_MATCH_COLOR, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.CURRENT_MATCH_COLOR)));
+        preferences.put(colorProfilePrefix + CURRENT_MATCH_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaMatchColorType.CURRENT_MATCH_BACKGROUND)));
 
         preferences.put(colorProfilePrefix + NONPRINTABLES_COLOR, colorAsText(colorProfile.getColor(CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR)));
         preferences.put(colorProfilePrefix + NONPRINTABLES_BACKGROUND, colorAsText(colorProfile.getColor(CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND)));
@@ -194,8 +194,8 @@ public class CodeAreaColorPreferences implements CodeAreaColorOptions {
 
         preferences.remove(colorProfilePrefix + MATCH_COLOR);
         preferences.remove(colorProfilePrefix + MATCH_BACKGROUND);
-        preferences.remove(colorProfilePrefix + ACTIVE_MATCH_COLOR);
-        preferences.remove(colorProfilePrefix + ACTIVE_MATCH_BACKGROUND);
+        preferences.remove(colorProfilePrefix + CURRENT_MATCH_COLOR);
+        preferences.remove(colorProfilePrefix + CURRENT_MATCH_BACKGROUND);
 
         preferences.remove(colorProfilePrefix + NONPRINTABLES_COLOR);
         preferences.remove(colorProfilePrefix + NONPRINTABLES_BACKGROUND);

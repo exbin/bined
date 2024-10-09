@@ -108,7 +108,7 @@ public class BinedModule implements Module {
 
     public static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
     public static final String EDIT_OPERATION_MENU_GROUP_ID = MODULE_ID + ".editOperationMenuGroup";
-    public static final String VIEW_UNPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewUnprintablesMenuGroup";
+    public static final String VIEW_NONPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewNonprintablesMenuGroup";
 
     public static final String BINARY_POPUP_MENU_ID = MODULE_ID + ".binaryPopupMenu";
     public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
@@ -136,7 +136,7 @@ public class BinedModule implements Module {
     private BinEdFileManager fileManager;
     private BinedOptionsManager binedOptionsManager;
 
-    private ShowNonprintablesActions showUnprintablesActions;
+    private ShowNonprintablesActions showNonprintablesActions;
     private ViewModeHandlerActions viewModeActions;
     private CodeTypeActions codeTypeActions;
     private PositionCodeTypeActions positionCodeTypeActions;
@@ -320,7 +320,7 @@ public class BinedModule implements Module {
 
     public void registerOptionsPanels() {
         BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
-        getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService, getCodeTypeActions(), getShowUnprintablesActions(), getHexCharactersCaseActions(), getPositionCodeTypeActions(), getViewModeActions());
+        getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService, getCodeTypeActions(), getShowNonprintablesActions(), getHexCharactersCaseActions(), getPositionCodeTypeActions(), getViewModeActions());
     }
 
     public void registerUndoHandler() {
@@ -416,14 +416,14 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public ShowNonprintablesActions getShowUnprintablesActions() {
-        if (showUnprintablesActions == null) {
+    public ShowNonprintablesActions getShowNonprintablesActions() {
+        if (showNonprintablesActions == null) {
             ensureSetup();
-            showUnprintablesActions = new ShowNonprintablesActions();
-            showUnprintablesActions.setup(resourceBundle);
+            showNonprintablesActions = new ShowNonprintablesActions();
+            showNonprintablesActions.setup(resourceBundle);
         }
 
-        return showUnprintablesActions;
+        return showNonprintablesActions;
     }
 
     @Nonnull
@@ -574,18 +574,18 @@ public class BinedModule implements Module {
         actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, codeTypeActions.createCycleCodeTypesAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
     }
 
-    public void registerShowUnprintablesToolBarActions() {
-        getShowUnprintablesActions();
+    public void registerShowNonprintablesToolBarActions() {
+        getShowNonprintablesActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, new ToolBarGroup(BINED_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.NONE));
-        actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, showUnprintablesActions.createViewNonprintablesToolbarAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
+        actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, showNonprintablesActions.createViewNonprintablesToolbarAction(), new ToolBarPosition(BINED_TOOL_BAR_GROUP_ID));
     }
 
-    public void registerViewUnprintablesMenuActions() {
-        getShowUnprintablesActions();
+    public void registerViewNonprintablesMenuActions() {
+        getShowNonprintablesActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuGroup(ActionConsts.VIEW_MENU_ID, new MenuGroup(VIEW_UNPRINTABLES_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, showUnprintablesActions.createViewNonprintablesAction(), new MenuPosition(VIEW_UNPRINTABLES_MENU_GROUP_ID));
+        actionModule.registerMenuGroup(ActionConsts.VIEW_MENU_ID, new MenuGroup(VIEW_NONPRINTABLES_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
+        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, showNonprintablesActions.createViewNonprintablesAction(), new MenuPosition(VIEW_NONPRINTABLES_MENU_GROUP_ID));
     }
 
     public void registerToolsOptionsMenuActions() {

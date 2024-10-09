@@ -40,7 +40,7 @@ public class BookmarksPositionColorModifier implements BinEdCodeAreaAssessor.Pos
 
     @Nullable
     @Override
-    public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
+    public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
         long dataPosition = rowDataPosition + byteOnRow;
         if (colorCache.start < 0 || colorCache.start > dataPosition || (colorCache.end >= 0 && colorCache.end < dataPosition)) {
             colorCache.fullRange();
@@ -68,7 +68,7 @@ public class BookmarksPositionColorModifier implements BinEdCodeAreaAssessor.Pos
 
     @Nullable
     @Override
-    public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
+    public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
         return null;
     }
 

@@ -40,7 +40,7 @@ public class BasicValuesPositionColorModifier implements BinEdCodeAreaAssessor.P
 
     @Nullable
     @Override
-    public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
+    public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
         if (position >= 0) {
             long dataPosition = rowDataPosition + byteOnRow;
             if (dataPosition >= position && dataPosition < position + length) {
@@ -53,7 +53,7 @@ public class BasicValuesPositionColorModifier implements BinEdCodeAreaAssessor.P
 
     @Nullable
     @Override
-    public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean unprintables) {
+    public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
         return null;
     }
 

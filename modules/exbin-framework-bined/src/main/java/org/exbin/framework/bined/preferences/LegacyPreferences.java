@@ -43,7 +43,7 @@ public class LegacyPreferences {
     public static final String PREFERENCES_MEMORY_DELTA_MODE = "deltaMode";
     public static final String PREFERENCES_CODE_TYPE = "codeType";
     public static final String PREFERENCES_LINE_WRAPPING = "lineWrapping";
-    public static final String PREFERENCES_SHOW_UNPRINTABLES = "showNonpritables";
+    public static final String PREFERENCES_SHOW_NONPRINTABLES = "showNonpritables";
     public static final String PREFERENCES_ENCODING_SELECTED = "selectedEncoding";
     public static final String PREFERENCES_ENCODING_PREFIX = "textEncoding.";
     public static final String PREFERENCES_BYTES_PER_LINE = "bytesPerLine";
@@ -198,11 +198,11 @@ public class LegacyPreferences {
     }
 
     public boolean isShowNonprintables() {
-        return preferences.getBoolean(PREFERENCES_SHOW_UNPRINTABLES, false);
+        return preferences.getBoolean(PREFERENCES_SHOW_NONPRINTABLES, false);
     }
 
-    public void setShowUnprintables(boolean showUnprintables) {
-        preferences.putBoolean(PREFERENCES_SHOW_UNPRINTABLES, showUnprintables);
+    public void setShowNonprintables(boolean showNonprintables) {
+        preferences.putBoolean(PREFERENCES_SHOW_NONPRINTABLES, showNonprintables);
     }
 
     public boolean isShowValuesPanel() {

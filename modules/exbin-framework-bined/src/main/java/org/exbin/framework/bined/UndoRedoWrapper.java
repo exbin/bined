@@ -24,10 +24,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.operation.BinaryDataCommand;
+import org.exbin.bined.operation.BinaryDataCommandType;
 import org.exbin.bined.operation.undo.BinaryDataUndoableCommand;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.operation.api.Command;
+import org.exbin.framework.operation.api.CommandType;
 import org.exbin.framework.operation.undo.api.UndoRedoChangeListener;
 import org.exbin.framework.operation.undo.api.UndoableCommand;
 import org.exbin.framework.operation.undo.api.UndoRedo;
@@ -104,7 +106,7 @@ public class UndoRedoWrapper implements UndoRedo {
         if (topUndoCommand.isPresent()) {
             return Optional.of(new CommandWrapper(topUndoCommand.get()));
         }
-        
+
         return Optional.empty();
     }
 
@@ -186,8 +188,8 @@ public class UndoRedoWrapper implements UndoRedo {
 
         @Nonnull
         @Override
-        public String getName() {
-            return command.getName();
+        public CommandType getType() {
+            return new BinaryCommandWrapperType(command.getType());
         }
 
         @Override
@@ -212,8 +214,8 @@ public class UndoRedoWrapper implements UndoRedo {
 
         @Nonnull
         @Override
-        public String getName() {
-            return command.getName();
+        public CommandType getType() {
+            return new BinaryCommandWrapperType(command.getType());
         }
 
         @Override
@@ -248,8 +250,8 @@ public class UndoRedoWrapper implements UndoRedo {
 
         @Nonnull
         @Override
-        public String getName() {
-            return command.getName();
+        public BinaryDataCommandType getType() {
+            return ((BinaryCommandWrapperType) command.getType()).getCommandType();
         }
 
         @Override
@@ -260,6 +262,21 @@ public class UndoRedoWrapper implements UndoRedo {
         @Override
         public void dispose() {
             command.dispose();
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class BinaryCommandWrapperType implements CommandType {
+
+        private final BinaryDataCommandType commandType;
+
+        public BinaryCommandWrapperType(BinaryDataCommandType commandType) {
+            this.commandType = commandType;
+        }
+
+        @Nonnull
+        public BinaryDataCommandType getCommandType() {
+            return commandType;
         }
     }
 }

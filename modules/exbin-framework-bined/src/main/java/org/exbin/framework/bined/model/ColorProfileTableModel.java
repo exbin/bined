@@ -73,8 +73,8 @@ public class ColorProfileTableModel implements TableModel {
 
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.MATCH_COLOR), CodeAreaMatchColorType.MATCH_COLOR));
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.MATCH_BACKGROUND), CodeAreaMatchColorType.MATCH_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.ACTIVE_MATCH_COLOR), CodeAreaMatchColorType.ACTIVE_MATCH_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.ACTIVE_MATCH_BACKGROUND), CodeAreaMatchColorType.ACTIVE_MATCH_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.CURRENT_MATCH_COLOR), CodeAreaMatchColorType.CURRENT_MATCH_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.CURRENT_MATCH_BACKGROUND), CodeAreaMatchColorType.CURRENT_MATCH_BACKGROUND));
 
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.NONPRINTABLES_COLOR), CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR));
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.NONPRINTABLES_BACKGROUND), CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND));
