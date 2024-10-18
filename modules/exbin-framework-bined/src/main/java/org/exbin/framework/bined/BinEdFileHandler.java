@@ -37,7 +37,7 @@ import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.EmptyBinaryData;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
-import org.exbin.auxiliary.binary_data.delta.FileDataSource;
+import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
@@ -137,14 +137,15 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         try {
             BinaryData oldData = editorComponent.getContentData();
             if (fileHandlingMode == FileHandlingMode.DELTA) {
-                FileDataSource openFileSource = segmentsRepository.openFileSource(file);
+                FileDataSource openFileSource = new FileDataSource(file);
+                segmentsRepository.addDataSource(openFileSource);
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
                 editorComponent.setContentData(document);
                 this.fileUri = fileUri;
                 oldData.dispose();
             } else {
                 try (FileInputStream fileStream = new FileInputStream(file)) {
-                    BinaryData data = editorComponent.getContentData();
+                    BinaryData data = oldData;
                     if (!(data instanceof PagedData)) {
                         data = new PagedData();
                         oldData.dispose();
@@ -158,7 +159,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
             Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        undoHandlerWrapper.clear();
+        getUndoRedo().clear();
         fileSync();
     }
 
@@ -179,10 +180,11 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
             if (contentData instanceof DeltaDocument) {
                 // TODO freezes window / replace with progress bar
                 DeltaDocument document = (DeltaDocument) contentData;
-                FileDataSource fileSource = document.getFileSource();
+                FileDataSource fileSource = (FileDataSource) document.getDataSource();
                 if (fileSource == null || !file.equals(fileSource.getFile())) {
-                    fileSource = segmentsRepository.openFileSource(file);
-                    document.setFileSource(fileSource);
+                    fileSource = new FileDataSource(file);
+                    segmentsRepository.addDataSource(fileSource);
+                    document.setDataSource(fileSource);
                 }
                 segmentsRepository.saveDocument(document);
                 this.fileUri = fileUri;
@@ -205,7 +207,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     private void fileSync() {
         documentOriginalSize = getCodeArea().getDataSize();
-        undoHandlerWrapper.setSyncPosition();
+        getUndoRedo().setSyncPosition();
     }
 
     public void loadFromStream(InputStream stream) throws IOException {
@@ -333,11 +335,15 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         BinaryData data = codeArea.getContentData();
         editorComponent.setContentData(EmptyBinaryData.INSTANCE);
         if (data instanceof DeltaDocument) {
-            FileDataSource fileSource = ((DeltaDocument) data).getFileSource();
+            FileDataSource fileSource = (FileDataSource) ((DeltaDocument) data).getDataSource();
             data.dispose();
             if (fileSource != null) {
                 segmentsRepository.detachFileSource(fileSource);
-                segmentsRepository.closeFileSource(fileSource);
+                try {
+                    fileSource.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else {
             data.dispose();

@@ -24,8 +24,8 @@ import javax.swing.DefaultListModel;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.delta.DataSegment;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
-import org.exbin.auxiliary.binary_data.delta.FileSegment;
 import org.exbin.auxiliary.binary_data.delta.MemorySegment;
+import org.exbin.auxiliary.binary_data.delta.SourceSegment;
 import org.exbin.auxiliary.binary_data.delta.list.DefaultDoublyLinkedList;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
@@ -167,8 +167,8 @@ public class PropertiesPanel extends javax.swing.JPanel {
             DataSegment segment = segments.first();
             DefaultListModel<String> listModel = (DefaultListModel<String>) structureList.getModel();
             while (segment != null) {
-                if (segment instanceof FileSegment) {
-                    listModel.addElement("FILE: " + ((FileSegment) segment).getStartPosition() + ", " + ((FileSegment) segment).getLength());
+                if (segment instanceof SourceSegment) {
+                    listModel.addElement("FILE: " + ((SourceSegment) segment).getStartPosition() + ", " + ((SourceSegment) segment).getLength());
                 } else {
                     listModel.addElement("MEMORY: " + ((MemorySegment) segment).getStartPosition() + ", " + ((MemorySegment) segment).getLength());
                 }
