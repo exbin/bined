@@ -36,6 +36,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.utils.UiUtils;
 
 /**
  * Code type actions.
@@ -115,7 +116,7 @@ public class CodeTypeActions {
         ButtonGroup cycleButtonGroup = new ButtonGroup();
         Map<String, ButtonGroup> buttonGroups = new HashMap<>();
         buttonGroups.put(CODE_TYPE_RADIO_GROUP_ID, cycleButtonGroup);
-        JPopupMenu cycleCodeTypesPopupMenu = new JPopupMenu();
+        JPopupMenu cycleCodeTypesPopupMenu = UiUtils.createPopupMenu();
         List<Action> dropDownActions = new ArrayList<>();
         dropDownActions.add(createBinaryCodeTypeAction());
         dropDownActions.add(createOctalCodeTypeAction());

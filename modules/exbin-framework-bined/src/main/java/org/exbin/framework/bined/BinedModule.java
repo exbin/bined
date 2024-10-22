@@ -95,6 +95,7 @@ import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ObjectUtils;
+import org.exbin.framework.utils.UiUtils;
 
 /**
  * Binary data editor module.
@@ -900,7 +901,7 @@ public class BinedModule implements Module {
         popupMenuVariant = variant;
         popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
 
-        final JPopupMenu popupMenu = new JPopupMenu();
+        final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ComponentActivationService componentActivationService = frameModule.getFrameHandler().getComponentActivationService();
         actionModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, componentActivationService);
