@@ -922,7 +922,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
             if (valuesPanelField.ordinal() == 0) {
                 long dataSize = codeArea.getDataSize();
                 clearFields = dataPosition >= dataSize;
-                byteOrder = littleEndianRadioButton.isSelected() ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;
                 byteOrder = getByteOrder();
                 signed = isSigned();
                 values = valuesCache;
@@ -1056,7 +1055,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 }
                 case CHARACTER: {
                     String strValue = new String(values, codeArea.getCharset());
-                    if (strValue.length() > 0) {
+                    if (!strValue.isEmpty()) {
                         characterTextField.setText(strValue.substring(0, 1));
                     } else {
                         characterTextField.setText("");
