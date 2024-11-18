@@ -71,14 +71,16 @@ public class EditorOptionsPanel extends javax.swing.JPanel implements OptionsCom
 
     @Override
     public void saveToOptions(EditorOptionsImpl options) {
-        options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex()]);
+        // Skip direct file handling mode
+        options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex() + 1]);
         options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
         options.setTabKeyHandlingMode(TabKeyHandlingMode.values()[tabKeyHandlingModeComboBox.getSelectedIndex()]);
     }
 
     @Override
     public void loadFromOptions(EditorOptionsImpl options) {
-        fileHandlingModeComboBox.setSelectedIndex(options.getFileHandlingMode().ordinal());
+        // Skip direct file handling mode
+        fileHandlingModeComboBox.setSelectedIndex(options.getFileHandlingMode().ordinal() - 1);
         enterKeyHandlingModeComboBox.setSelectedIndex(options.getEnterKeyHandlingMode().ordinal());
         tabKeyHandlingModeComboBox.setSelectedIndex(options.getTabKeyHandlingMode().ordinal());
     }

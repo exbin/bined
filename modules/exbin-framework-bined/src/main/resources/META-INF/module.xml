@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <module>
   <id>org.exbin.framework.bined.BinedModule</id>
-  <name>BinEd Hexadecimal Editor Module</name>
+  <name>BinEd Main Module</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>
   <description>Module supporting editation of binary document in hexadecimal form</description>

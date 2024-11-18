@@ -266,10 +266,9 @@ public class BinedModule implements Module {
 
             @Override
             public void changeCursorPosition() {
-                // TODO
-//                if (goToPositionAction != null) {
-//                    goToPositionAction.actionPerformed(null);
-//                }
+                GoToPositionAction action = new GoToPositionAction();
+                action.setCodeArea(getActiveCodeArea());
+                action.actionPerformed(null);
             }
 
             @Override
