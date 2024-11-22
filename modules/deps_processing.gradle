@@ -6,47 +6,24 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        classpath "at.bxm.gradleplugins:gradle-svntools-plugin:2.2"
-        classpath "org.tmatesoft.svnkit:svnkit:1.10.1"
-    }
 }
 
-import at.bxm.gradleplugins.svntools.tasks.SvnExport
-import at.bxm.gradleplugins.svntools.internal.SvnSupport
-import at.bxm.gradleplugins.svntools.internal.SvnProxy
-import at.bxm.gradleplugins.svntools.SvnToolsPluginExtension
-import org.gradle.api.InvalidUserDataException
-import org.tmatesoft.svn.core.SVNDepth
-import org.tmatesoft.svn.core.SVNException
-import org.tmatesoft.svn.core.SVNURL
-import org.tmatesoft.svn.core.wc.SVNRevision
+def fetchModule(String gitProfile, gitRepo, subDir, moduleDir, targetDir) {
+    def repoFile = new File("${targetDir}/${gitRepo}.zip")
+    if (!repoFile.exists()) {
+        def downloadUrl = "https://codeload.github.com/$gitProfile/$gitRepo/zip/refs/heads/master"
+        println "Downloading $gitProfile/$gitRepo"
+        new URL(downloadUrl).withInputStream{ i -> repoFile.withOutputStream{ it << i }}
+    }
 
-def fetchModule(String svnUrl, targetDir, Long revision) {
-    def svnClient = SvnSupport.createSvnClientManager(null, null, new SvnProxy())
-    def rev = SvnSupport.revisionFrom(revision)
-    def repoUrl
-    try {
-      repoUrl = SVNURL.parseURIEncoded(svnUrl)
-    } catch (SVNException e) {
-      throw new InvalidUserDataException("Invalid svnUrl value: $svnUrl", e)
-    }
-    if (!targetDir) {
-      throw new InvalidUserDataException("targetDir must be specified")
-    }
-    def dir = targetDir instanceof File ? targetDir : targetDir.toString() as File
-    if (dir.exists()) {
-      if (!dir.isDirectory()) {
-        throw new InvalidUserDataException("targetDir $dir.absolutePath must be a directory")
-      }
-      if (dir.list()) {
-        throw new InvalidUserDataException("targetDir $dir.absolutePath must be an empty directory")
-      }
-    }
-    try {
-      svnClient.updateClient.doExport(repoUrl, dir, SVNRevision.UNDEFINED, rev, null, true, SVNDepth.INFINITY)
-    } catch (SVNException e) {
-      throw new InvalidUserDataException("svn-export failed for $svnUrl\n" + e.message, e)
+    copy {
+        from zipTree(repoFile)
+    	include "$gitRepo-master/$subDir/$moduleDir/**"
+    	includeEmptyDirs = false
+        eachFile { fcp ->
+            fcp.path = fcp.path.replaceFirst("$gitRepo-master/$subDir/$moduleDir", '')
+        }
+        into "$targetDir/$moduleDir"
     }
 }
 
@@ -74,11 +51,7 @@ project.dependencies.ext.moduleDep = { depsName, packageName, directoryName, mod
 
     def depModuleDir = depsDir + moduleName
     if (!new File(depModuleDir).isDirectory()) {
-        // Download module
-        def githubModulePath = "https://github.com/${depGithubProfile}/${depGithubRepo}/trunk/${directoryName}/${moduleName}"
-        println 'Downloading ' + githubModulePath
-
-        fetchModule(githubModulePath, depModuleDir, null)
+        fetchModule(depGithubProfile, depGithubRepo, directoryName, moduleName, depsDir)
         
         // Reports new module was downloaded -> need another sweep of dependency resolution
         if (!new File(depsDir + ".downloaded").exists()) {

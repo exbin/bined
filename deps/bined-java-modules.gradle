@@ -1,13 +1,13 @@
 // Shared modules build
 
 version = '0.3.0-SNAPSHOT'
-def repositoryName = "bined-java"
+def repositoryName = "bined-lib-java"
 def githubProfile = 'exbin'
 def libraryUrl = 'https://bined.exbin.org/library'
 
-ext.depsThis = 'BinedJava'
+ext.depsThis = 'BinedLibJava'
 
-ext.depsBinedJava = [
+ext.depsBinedLibJava = [
     githubProfile: githubProfile,
     githubRepo   : repositoryName,
     version      : version
@@ -16,7 +16,7 @@ ext.depsBinedJava = [
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-auxiliary-java',
-    version: '0.2.1'
+    version: '0.2.2-SNAPSHOT'
 ]
 
 apply from: '../deps_processing.gradle'
