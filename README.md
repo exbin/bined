@@ -32,7 +32,7 @@ For project compiling Gradle 7.1 build system is used: https://gradle.org
 
 You can either download and install gradle or use gradlew or gradlew.bat scripts to download separate copy of gradle to perform the project build.
 
-CURRENTLY BROKEN: On the first build there will be an attempt to download all required dependecy modules and currently it's necessary to execute build twice.
+On the first build there will be an attempt to download all required dependecy modules.
 
 Alternative is to deploy all dependecy modules into local maven repository.
 

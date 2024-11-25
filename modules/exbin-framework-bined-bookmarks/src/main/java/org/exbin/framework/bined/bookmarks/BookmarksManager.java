@@ -60,6 +60,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.UiUtils;
 
 /**
  * Bookmarks manager.
@@ -244,7 +245,8 @@ public class BookmarksManager {
                 }
             };
             bookmarksMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-            bookmarksMenu = new JMenu(bookmarksMenuAction);
+            bookmarksMenu = UiUtils.createMenu();
+            bookmarksMenu.setAction(bookmarksMenuAction);
             updateBookmarksMenu();
         }
         return bookmarksMenu;
@@ -270,7 +272,8 @@ public class BookmarksManager {
             }
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-        JMenu bookmarksPopupMenu = new JMenu(bookmarksPopupMenuAction);
+        JMenu bookmarksPopupMenu = UiUtils.createMenu();
+        bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);
         bookmarksPopupMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {

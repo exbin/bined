@@ -65,6 +65,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.utils.UiUtils;
 
 /**
  * Macros manager.
@@ -246,7 +247,8 @@ public class MacroManager {
                     });
                 }
             });
-            macrosMenu = new JMenu(macrosMenuAction);
+            macrosMenu = UiUtils.createMenu();
+            macrosMenu.setAction(macrosMenuAction);
             updateMacrosMenu();
         }
         return macrosMenu;
@@ -272,7 +274,8 @@ public class MacroManager {
             }
         });
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
-        JMenu macrosPopupMenu = new JMenu(macrosPopupMenuAction);
+        JMenu macrosPopupMenu = UiUtils.createMenu();
+        macrosPopupMenu.setAction(macrosPopupMenuAction);
         macrosPopupMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
