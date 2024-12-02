@@ -60,10 +60,12 @@ public class BinedSearchModule implements Module {
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
-
+    }
+    
+    public void registerSearchComponent() {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new BinEdComponentSearch()));
+        fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new DefaultBinEdComponentSearch()));
     }
 
     @Nonnull

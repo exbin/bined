@@ -162,6 +162,7 @@ public class BinedEditor {
 
                 BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
                 binedSearchModule.setEditorProvider(editorProvider);
+                binedSearchModule.registerSearchComponent();
 
                 BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
                 binedOperationModule.setEditorProvider(editorProvider);

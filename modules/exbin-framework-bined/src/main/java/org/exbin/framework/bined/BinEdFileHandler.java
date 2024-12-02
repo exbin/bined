@@ -105,7 +105,10 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     public void registerUndoHandler() {
-        CodeAreaUndoRedo undoRedo = new CodeAreaUndoRedo(editorComponent.getCodeArea());
+        setUndoHandler(new CodeAreaUndoRedo(editorComponent.getCodeArea()));
+    }
+
+    public void setUndoHandler(BinaryDataUndoRedo undoRedo) {
         editorComponent.setUndoHandler(undoRedo);
         undoRedoHandler = new UndoRedoControlImpl(undoRedo);
         undoRedo.addChangeListener(this::notifyUndoChanged);
@@ -569,9 +572,9 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @ParametersAreNonnullByDefault
     private class UndoRedoControlImpl implements UndoRedoControl, UndoRedoFileHandler {
 
-        private final CodeAreaUndoRedo undoRedo;
+        private final BinaryDataUndoRedo undoRedo;
 
-        public UndoRedoControlImpl(CodeAreaUndoRedo undoHandler) {
+        public UndoRedoControlImpl(BinaryDataUndoRedo undoHandler) {
             this.undoRedo = undoHandler;
         }
 
