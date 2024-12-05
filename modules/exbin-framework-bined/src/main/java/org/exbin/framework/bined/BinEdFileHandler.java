@@ -40,6 +40,7 @@ import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
+import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -150,7 +151,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
                 try (FileInputStream fileStream = new FileInputStream(file)) {
                     BinaryData data = oldData;
                     if (!(data instanceof PagedData)) {
-                        data = new PagedData();
+                        data = new ByteArrayPagedData();
                         oldData.dispose();
                     }
                     ((EditableBinaryData) data).loadFromStream(fileStream);
@@ -372,7 +373,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
             } else {
                 BinaryData oldData = codeArea.getContentData();
                 if (oldData instanceof DeltaDocument) {
-                    PagedData data = new PagedData();
+                    PagedData data = new ByteArrayPagedData();
                     data.insert(0, oldData);
                     editorComponent.setContentData(data);
                 } else {
@@ -425,7 +426,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         if (fileHandlingMode == FileHandlingMode.DELTA) {
             editorComponent.setContentData(segmentsRepository.createDocument());
         } else {
-            editorComponent.setContentData(new PagedData());
+            editorComponent.setContentData(new ByteArrayPagedData());
         }
     }
 

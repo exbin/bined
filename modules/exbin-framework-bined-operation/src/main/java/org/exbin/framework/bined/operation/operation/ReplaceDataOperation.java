@@ -18,6 +18,7 @@ package org.exbin.framework.bined.operation.operation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
@@ -84,7 +85,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             long diff = position + length - dataSize;
             if (withUndo) {
                 // TODO use copy directly once delta is fixed
-                PagedData origData = new PagedData();
+                PagedData origData = new ByteArrayPagedData();
                 origData.insert(0, contentData.copy(position, length - diff));
                 undoOperation = new CompoundCodeAreaOperation(codeArea);
                 ((CompoundCodeAreaOperation) undoOperation).addOperation(new ModifyDataOperation(codeArea, position, origData));
@@ -94,7 +95,7 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             contentData.insertUninitialized(dataSize, diff);
         } else if (withUndo) {
             // TODO use copy directly once delta is fixed
-            PagedData origData = new PagedData();
+            PagedData origData = new ByteArrayPagedData();
             origData.insert(0, contentData.copy(position, length));
             undoOperation = new ModifyDataOperation(codeArea, position, origData);
         }

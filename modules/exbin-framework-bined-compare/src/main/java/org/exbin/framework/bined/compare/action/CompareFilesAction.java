@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
@@ -128,7 +129,7 @@ public class CompareFilesAction extends AbstractAction implements ActionActiveCo
                 }
 
                 try (FileInputStream stream = new FileInputStream(result[0])) {
-                    PagedData pagedData = new PagedData();
+                    PagedData pagedData = new ByteArrayPagedData();
                     pagedData.loadFromStream(stream);
                     return new CompareFilesPanel.FileRecord(result[0].getAbsolutePath(), pagedData);
                 } catch (IOException ex) {

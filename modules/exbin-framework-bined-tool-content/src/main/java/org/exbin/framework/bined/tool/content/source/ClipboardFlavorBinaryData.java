@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.framework.bined.tool.content.StreamUtils;
 import org.exbin.framework.utils.ClipboardUtils;
@@ -124,7 +125,7 @@ public class ClipboardFlavorBinaryData implements BinaryData {
         long pageIndex = startFrom / PAGE_SIZE;
         int pageOffset = (int) (startFrom % PAGE_SIZE);
 
-        PagedData data = new PagedData();
+        PagedData data = new ByteArrayPagedData();
         long dataPosition = 0;
         while (length > 0) {
             int pageLength = length > PAGE_SIZE - pageOffset ? PAGE_SIZE - pageOffset : (int) length;
