@@ -419,6 +419,10 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public boolean isModified() {
+        if (undoHandlerWrapper == null) {
+            return false;
+        }
+
         return undoHandlerWrapper.getCommandPosition() != undoHandlerWrapper.getSyncPosition();
     }
 
