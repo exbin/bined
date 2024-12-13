@@ -35,7 +35,6 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
-import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
@@ -152,7 +151,7 @@ public class ConvertDataAction extends AbstractAction {
                         case CONVERT_TO_CLIPBOARD: {
                             try {
                                 BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
-                                DataFlavor binedDataFlavor = new DataFlavor(DefaultCodeAreaCommandHandler.BINED_CLIPBOARD_MIME_FULL);
+                                DataFlavor binedDataFlavor = new DataFlavor(CodeAreaUtils.BINED_CLIPBOARD_MIME_FULL);
                                 DataFlavor binaryDataFlavor = new DataFlavor(CodeAreaUtils.MIME_CLIPBOARD_BINARY);
                                 Clipboard clipboard = CodeAreaSwingUtils.getClipboard();
                                 CodeAreaSwingUtils.BinaryDataClipboardData binaryData = new CodeAreaSwingUtils.BinaryDataClipboardData(outputData, binedDataFlavor, binaryDataFlavor, null);

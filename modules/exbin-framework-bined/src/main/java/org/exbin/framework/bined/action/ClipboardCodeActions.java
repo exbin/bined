@@ -23,6 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
@@ -76,7 +77,7 @@ public class ClipboardCodeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO move out of code area
-            codeArea.copyAsCode();
+            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).copyAsCode();
         }
 
         @Override
@@ -102,7 +103,7 @@ public class ClipboardCodeActions {
         public void actionPerformed(ActionEvent e) {
             // TODO move out of code area
             try {
-                codeArea.pasteFromCode();
+                ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).pasteFromCode();
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog((Component) e.getSource(), ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
             }

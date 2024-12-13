@@ -29,6 +29,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.basic.BasicCodeAreaSection;
 import org.exbin.bined.basic.MovementDirection;
+import org.exbin.bined.basic.SelectingMode;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
