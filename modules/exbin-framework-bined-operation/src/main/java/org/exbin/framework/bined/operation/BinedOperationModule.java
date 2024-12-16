@@ -42,6 +42,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
+import org.exbin.framework.bined.operation.component.Base64DataMethod;
 import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
 
 /**
@@ -73,6 +74,8 @@ public class BinedOperationModule implements Module {
         addInsertDataComponent(randomDataMethod);
         BitSwappingDataMethod bitSwappingDataMethod = new BitSwappingDataMethod();
         addConvertDataComponent(bitSwappingDataMethod);
+        Base64DataMethod base64DataMethod = new Base64DataMethod();
+        addConvertDataComponent(base64DataMethod);
 
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
