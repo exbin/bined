@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.tool.content.gui;
 
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JButton;
@@ -143,8 +144,8 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
 
     @Nonnull
     @Override
-    public JButton getDefaultButton() {
-        return closeButton;
+    public Optional<JButton> getDefaultButton() {
+        return Optional.of(closeButton);
     }
 
     @Nonnull

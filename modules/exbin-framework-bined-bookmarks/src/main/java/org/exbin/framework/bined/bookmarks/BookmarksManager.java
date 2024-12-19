@@ -44,7 +44,8 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.GroupMenuContributionRule;
+import org.exbin.framework.action.api.MenuContribution;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
@@ -288,7 +289,8 @@ public class BookmarksManager {
             public void menuCanceled(MenuEvent e) {
             }
         });
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID, bookmarksPopupMenu, new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID, bookmarksPopupMenu);
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void registerBookmarksComponentActions(JComponent component) {

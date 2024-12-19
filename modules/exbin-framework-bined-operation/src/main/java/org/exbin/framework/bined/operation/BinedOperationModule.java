@@ -31,7 +31,8 @@ import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.GroupMenuContributionRule;
+import org.exbin.framework.action.api.MenuContribution;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.action.InsertDataAction;
@@ -130,14 +131,18 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, createInsertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, createConvertDataAction(), new MenuPosition(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, createInsertDataAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        contribution = actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, createConvertDataAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, createInsertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, createConvertDataAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, createInsertDataAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        contribution = actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, createConvertDataAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
     }
 
     public void addInsertDataComponent(InsertDataMethod insertDataComponent) {

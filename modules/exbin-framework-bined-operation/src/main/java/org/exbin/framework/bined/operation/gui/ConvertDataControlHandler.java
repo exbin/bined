@@ -35,7 +35,8 @@ public interface ConvertDataControlHandler {
     }
 
     public static enum ControlActionType {
-        CONVERT, CANCEL,
+        CONVERT,
+        CANCEL,
         CONVERT_TO_NEW_FILE,
         CONVERT_TO_CLIPBOARD
     }

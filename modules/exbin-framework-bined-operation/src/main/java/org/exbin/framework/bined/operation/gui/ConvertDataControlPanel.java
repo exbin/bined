@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.operation.gui;
 
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JButton;
@@ -186,8 +187,8 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
 
     @Nonnull
     @Override
-    public JButton getDefaultButton() {
-        return cancelButton;
+    public Optional<JButton> getDefaultButton() {
+        return Optional.of(cancelButton);
     }
 
     @Nonnull

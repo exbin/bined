@@ -78,6 +78,7 @@ public class Base64DataPanel extends javax.swing.JPanel {
         operationTypeLabel.setText(resourceBundle.getString("operationTypeLabel.text")); // NOI18N
 
         buttonGroup.add(basicEncoderRadioButton);
+        basicEncoderRadioButton.setSelected(true);
         basicEncoderRadioButton.setText(resourceBundle.getString("basicEncoderRadioButton.text")); // NOI18N
         basicEncoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -110,7 +111,6 @@ public class Base64DataPanel extends javax.swing.JPanel {
         });
 
         buttonGroup.add(urlEncoderRadioButton);
-        urlEncoderRadioButton.setSelected(true);
         urlEncoderRadioButton.setText(resourceBundle.getString("urlEncoderRadioButton.text")); // NOI18N
         urlEncoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {

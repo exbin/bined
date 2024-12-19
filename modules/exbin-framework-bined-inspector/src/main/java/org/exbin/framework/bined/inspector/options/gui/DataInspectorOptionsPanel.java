@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
+import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -37,9 +38,16 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
 
     private OptionsModifiedListener optionsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorOptionsPanel.class);
+    private TextFontOptionsPanel textFontOptionsPanel;
 
     public DataInspectorOptionsPanel() {
         initComponents();
+        init();
+    }
+    
+    private void init() {
+        textFontOptionsPanel = new TextFontOptionsPanel();
+        fontChangePanel.add(textFontOptionsPanel);
     }
 
     @Nonnull
@@ -68,6 +76,8 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
     private void initComponents() {
 
         showParsingPanelCheckBox = new javax.swing.JCheckBox();
+        fieldsFontLabel = new javax.swing.JLabel();
+        fontChangePanel = new javax.swing.JPanel();
 
         setName("Form"); // NOI18N
 
@@ -75,13 +85,24 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
         showParsingPanelCheckBox.setText(resourceBundle.getString("showParsingPanelCheckBox.text")); // NOI18N
         showParsingPanelCheckBox.setName("showParsingPanelCheckBox"); // NOI18N
 
+        fieldsFontLabel.setText(resourceBundle.getString("fieldsFontLabel.text")); // NOI18N
+        fieldsFontLabel.setName("fieldsFontLabel"); // NOI18N
+
+        fontChangePanel.setName("fontChangePanel"); // NOI18N
+        fontChangePanel.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(showParsingPanelCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fontChangePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showParsingPanelCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fieldsFontLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -89,6 +110,10 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(showParsingPanelCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fieldsFontLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fontChangePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -107,6 +132,8 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel fieldsFontLabel;
+    private javax.swing.JPanel fontChangePanel;
     private javax.swing.JCheckBox showParsingPanelCheckBox;
     // End of variables declaration//GEN-END:variables
 

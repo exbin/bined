@@ -30,7 +30,8 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.GroupMenuContributionRule;
+import org.exbin.framework.action.api.MenuContribution;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
@@ -94,7 +95,8 @@ public class BinedMacroModule implements Module {
 
     public void registerMacrosMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, getMacrosMenu(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, getMacrosMenu());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerMacrosPopupMenuActions() {

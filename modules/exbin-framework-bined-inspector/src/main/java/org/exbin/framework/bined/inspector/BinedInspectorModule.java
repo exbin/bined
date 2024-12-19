@@ -25,10 +25,10 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.MenuGroup;
-import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.GroupMenuContributionRule;
+import org.exbin.framework.action.api.MenuContribution;
+import org.exbin.framework.action.api.PositionMenuContributionRule;
 import org.exbin.framework.action.api.PositionMode;
-import org.exbin.framework.action.api.SeparationMode;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
@@ -117,8 +117,10 @@ public class BinedInspectorModule implements Module {
 
     public void registerViewValuesPanelMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuGroup(ActionConsts.VIEW_MENU_ID, new MenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID, new MenuPosition(PositionMode.BOTTOM), SeparationMode.NONE));
-        actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, createShowParsingPanelAction(), new MenuPosition(VIEW_PARSING_PANEL_MENU_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuGroup(ActionConsts.VIEW_MENU_ID, MODULE_ID, VIEW_PARSING_PANEL_MENU_GROUP_ID);
+        actionModule.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.BOTTOM));
+        contribution = actionModule.registerMenuItem(ActionConsts.VIEW_MENU_ID, MODULE_ID, createShowParsingPanelAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 
     public void registerOptionsPanels() {

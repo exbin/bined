@@ -25,11 +25,14 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.GroupMenuContributionRule;
+import org.exbin.framework.action.api.GroupToolBarContributionRule;
+import org.exbin.framework.action.api.MenuContribution;
 import org.exbin.framework.action.api.PositionMode;
+import org.exbin.framework.action.api.PositionToolBarContributionRule;
 import org.exbin.framework.action.api.SeparationMode;
-import org.exbin.framework.action.api.ToolBarGroup;
-import org.exbin.framework.action.api.ToolBarPosition;
+import org.exbin.framework.action.api.SeparationToolBarContributionRule;
+import org.exbin.framework.action.api.ToolBarContribution;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -61,7 +64,7 @@ public class BinedSearchModule implements Module {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
     }
-    
+
     public void registerSearchComponent() {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
@@ -82,22 +85,30 @@ public class BinedSearchModule implements Module {
     public void registerEditFindMenuActions() {
         getFindReplaceActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAgainAction(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
-        actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditReplaceAction(), new MenuPosition(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        contribution = actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditFindAgainAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        contribution = actionModule.registerMenuItem(ActionConsts.EDIT_MENU_ID, MODULE_ID, findReplaceActions.getEditReplaceAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerEditFindPopupMenuActions() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getFindReplaceActions().getEditFindAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
-        actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getFindReplaceActions().getEditReplaceAction(), new MenuPosition(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        MenuContribution contribution = actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getFindReplaceActions().getEditFindAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        contribution = actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID, getFindReplaceActions().getEditReplaceAction());
+        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
-    
+
     public void registerEditFindToolBarActions() {
         getFindReplaceActions();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, new ToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID, new ToolBarPosition(PositionMode.MIDDLE), SeparationMode.AROUND));
-        actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, findReplaceActions.getEditFindAction(), new ToolBarPosition(EDIT_FIND_TOOL_BAR_GROUP_ID));
+        ToolBarContribution contribution = actionModule.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, EDIT_FIND_TOOL_BAR_GROUP_ID);
+        actionModule.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionMode.MIDDLE));
+        actionModule.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationMode.AROUND));
+        contribution = actionModule.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID, MODULE_ID, findReplaceActions.getEditFindAction());
+        actionModule.registerToolBarRule(contribution, new GroupToolBarContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
     }
 
     @Nonnull

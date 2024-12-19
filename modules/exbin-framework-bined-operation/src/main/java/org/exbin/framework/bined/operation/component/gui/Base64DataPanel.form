@@ -96,6 +96,7 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup"/>
                 </Property>
+                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="basicEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -148,7 +149,6 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup"/>
                 </Property>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="urlEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>

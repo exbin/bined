@@ -23,7 +23,8 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.MenuPosition;
+import org.exbin.framework.action.api.MenuContribution;
+import org.exbin.framework.action.api.PositionMenuContributionRule;
 import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
@@ -78,12 +79,14 @@ public class BinedToolContentModule implements Module {
     public void registerClipboardContentMenu() {
         createClipboardContentAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createClipboardContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        MenuContribution contribution = actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createClipboardContentAction());
+        actionModule.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.MIDDLE));
     }
 
     public void registerDragDropContentMenu() {
         createDragDropContentAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createDragDropContentAction(), new MenuPosition(PositionMode.MIDDLE));
+        MenuContribution contribution = actionModule.registerMenuItem(ActionConsts.TOOLS_MENU_ID, MODULE_ID, createDragDropContentAction());
+        actionModule.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.MIDDLE));
     }
 }

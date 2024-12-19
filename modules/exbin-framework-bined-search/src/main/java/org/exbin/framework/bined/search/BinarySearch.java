@@ -68,7 +68,6 @@ public class BinarySearch {
     private final BinarySearchService.SearchStatusListener searchStatusListener;
     private final BinarySearchPanel binarySearchPanel = new BinarySearchPanel();
 
-
     public BinarySearch() {
         searchStatusListener = new BinarySearchService.SearchStatusListener() {
             @Override
