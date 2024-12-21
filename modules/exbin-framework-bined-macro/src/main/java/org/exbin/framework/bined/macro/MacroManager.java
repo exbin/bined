@@ -45,6 +45,7 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ComponentActivationManager;
 import org.exbin.framework.action.api.GroupMenuContributionRule;
 import org.exbin.framework.action.api.MenuContribution;
+import org.exbin.framework.action.api.MenuManagement;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
@@ -291,8 +292,9 @@ public class MacroManager {
             public void menuCanceled(MenuEvent e) {
             }
         });
-        MenuContribution contribution = actionModule.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID, macrosPopupMenu);
-        actionModule.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        MenuManagement mgmt = actionModule.getMenuManagement(BinedMacroModule.MODULE_ID);
+        MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, macrosPopupMenu);
+        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void executeMacro(CodeAreaCore codeArea, int macroIndex) {
