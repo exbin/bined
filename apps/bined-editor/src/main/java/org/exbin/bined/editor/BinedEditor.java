@@ -81,6 +81,7 @@ public class BinedEditor {
     private static final String OPTION_HELP = "h";
     private static final String OPTION_VERBOSE = "v";
     private static final String OPTION_DEV = "dev";
+    private static final String OPTION_DEMO = "demo";
     private static final String OPTION_SINGLE_FILE = "single_file";
     private static final String OPTION_MULTI_FILE = "multi_file";
     private static final String OPTION_FULLSCREEN = "fullscreen";
@@ -117,6 +118,7 @@ public class BinedEditor {
                 opt.addOption(OPTION_HELP, "help", false, bundle.getString("cl_option_help"));
                 opt.addOption(OPTION_VERBOSE, false, bundle.getString("cl_option_verbose"));
                 opt.addOption(OPTION_DEV, false, bundle.getString("cl_option_dev"));
+                opt.addOption(OPTION_DEMO, false, bundle.getString("cl_option_demo"));
                 opt.addOption(OPTION_FULLSCREEN, false, bundle.getString("cl_option_fullscreen"));
                 OptionGroup editorProviderType = new OptionGroup();
                 editorProviderType.addOption(new Option(OPTION_SINGLE_FILE, bundle.getString("cl_option_single_file")));
@@ -131,6 +133,7 @@ public class BinedEditor {
                 }
                 boolean verboseMode = cl.hasOption(OPTION_VERBOSE);
                 boolean devMode = cl.hasOption(OPTION_DEV);
+                boolean demoMode = cl.hasOption(OPTION_DEMO);
                 boolean fullScreenMode = cl.hasOption(OPTION_FULLSCREEN);
                 String editorProvideType = editorProviderType.getSelected();
 
@@ -183,19 +186,22 @@ public class BinedEditor {
 
                 BinedObjectDataModule binedObjectDataModule = App.getModule(BinedObjectDataModule.class);
                 BinedToolContentModule binedToolContentModule = App.getModule(BinedToolContentModule.class);
-                
+
                 AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
                 ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
                 actionManagerModule.registerOptionsPanels();
 
                 frameModule.createMainMenu();
-                try {
-                    updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
-                    updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
+                if (!demoMode) {
+                    try {
+                        updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
+                        updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(BinedEditor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    updateModule.registerDefaultMenuItem();
                 }
-                updateModule.registerDefaultMenuItem();
+
                 helpModule.registerMainMenu();
                 aboutModule.registerDefaultMenuItem();
                 try {
@@ -205,7 +211,9 @@ public class BinedEditor {
                 }
                 helpOnlineModule.registerOnlineHelpMenu();
 
-                frameModule.registerExitAction();
+                if (!demoMode) {
+                    frameModule.registerExitAction();
+                }
                 frameModule.registerBarsVisibilityActions();
 
                 fileModule.registerMenuFileHandlingActions();
@@ -264,33 +272,44 @@ public class BinedEditor {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-
-                uiModule.registerOptionsPanels();
+                if (!demoMode) {
+                    uiModule.registerOptionsPanels();
+                }
                 binedModule.registerStatusBar();
                 binedModule.registerOptionsPanels();
                 binedModule.getBinaryStatusPanel();
                 binedInspectorModule.registerOptionsPanels();
-                updateModule.registerOptionsPanels();
+                if (!demoMode) {
+                    updateModule.registerOptionsPanels();
+                }
                 binedModule.registerUndoHandler();
 
                 binedModule.loadFromPreferences(preferences);
 
-                frameModule.addExitListener((ApplicationFrameHandler afh) -> {
-                    frameModule.saveFramePosition();
-                    return true;
-                });
+                if (demoMode) {
+                    frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                        return false;
+                    });
+                } else {
+                    frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                        frameModule.saveFramePosition();
+                        return true;
+                    });
+                }
 
                 JComponent editorComponent = editorModule.getEditorComponent();
                 frameHandler.setMainPanel(editorComponent);
                 binedBookmarksModule.registerBookmarksComponentActions(editorComponent);
                 binedMacroModule.registerMacrosComponentActions(editorComponent);
-                addonManagerModule.registerAddonManagerMenuItem();
+                if (!demoMode) {
+                    addonManagerModule.registerAddonManagerMenuItem();
+                }
 
                 frameHandler.setDefaultSize(new Dimension(600, 400));
                 frameModule.loadFramePosition();
                 optionsModule.initialLoadFromPreferences();
-                if (fullScreenMode) {
-                    frameModule.saveFramePosition();
+                if (fullScreenMode || demoMode) {
+                    frameModule.switchFrameToFullscreen();
                 }
                 frameHandler.loadMainMenu();
                 frameHandler.loadMainToolBar();
