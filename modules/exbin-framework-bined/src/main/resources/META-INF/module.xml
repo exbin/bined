@@ -16,11 +16,20 @@
     <module id="org.exbin.framework.action.popup.api.ActionPopupModuleApi" />
     <module id="org.exbin.framework.operation.api.OperationModuleApi" />
     <module id="org.exbin.framework.operation.undo.api.OperationUndoModuleApi" />
-    <module id="org.exbin.framework.options.api.OptionsModuleapi" />
+    <module id="org.exbin.framework.options.api.OptionsModuleApi" />
     <module id="org.exbin.framework.preferences.api.PreferencesModuleApi" />
     <module id="org.exbin.framework.preferences.PreferencesModule" />
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />
     <module id="org.exbin.framework.editor.text.EditorTextModule" />
+    <library jar="bined-core-0.3.0-SNAPSHOT.jar" />
+    <library jar="bined-swing-0.3.0-SNAPSHOT.jar" />
+    <library jar="bined-section-0.3.0-SNAPSHOT.jar" />
+    <library jar="bined-swing-section-0.3.0-SNAPSHOT.jar" />
+    <library jar="bined-operation-swing-0.3.0-SNAPSHOT.jar" />
+    <library jar="bined-highlight-swing-0.3.0-SNAPSHOT.jar" />
+    <library jar="binary_data-0.2.2-SNAPSHOT.jar" />
+    <library jar="binary_data-array-0.2.2-SNAPSHOT.jar" />
+    <library jar="binary_data-delta-0.2.2-SNAPSHOT.jar" />
   </dependency>
 </module>

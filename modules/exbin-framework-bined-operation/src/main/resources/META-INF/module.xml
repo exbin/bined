@@ -13,7 +13,7 @@
     <module id="org.exbin.framework.editor.text.EditorTextModule" />
     <module id="org.exbin.framework.file.api.FileModuleApi" />
     <module id="org.exbin.framework.action.api.ActionModuleApi" />
-    <module id="org.exbin.framework.options.api.OptionsModuleapi" />
+    <module id="org.exbin.framework.options.api.OptionsModuleApi" />
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.operation.undo.api.OperationUndoModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />

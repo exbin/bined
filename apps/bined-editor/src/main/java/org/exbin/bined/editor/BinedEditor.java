@@ -100,8 +100,10 @@ public class BinedEditor {
         app.addModulesFromManifest(BinedEditor.class);
         File appDirectory = app.getAppDirectory();
         if ("".equals(appDirectory.getPath())) {
+            app.addModulesFrom(new File("lib").toURI());
             app.addModulesFrom(new File(BasicApplication.PLUGINS_DIRECTORY).toURI());
         } else {
+            app.addModulesFrom(new File(app.getAppDirectory(), "lib").toURI());
             app.addModulesFrom(new File(app.getAppDirectory(), BasicApplication.PLUGINS_DIRECTORY).toURI());
         }
         app.initModules();
