@@ -1,49 +1,17 @@
 plugins {
-    id 'java'
-    id 'distribution'
+    id 'java-library'
     id 'maven-publish'
-    id 'edu.sc.seis.launch4j' version '2.5.4'
+    id 'signing'
 }
 
-//dependencyManagement {
-//	imports {
-//        classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:2.5.1'
-//    }
-//}
+group = 'org.exbin.framework'
+ext.libraryName = 'BinEd Hexadecimal Editor Framework Library'
+ext.libraryDescription = 'BinEd hexadecimal editor framework library'
 
-apply from: '../apps.gradle'
-
-ext.depsRoot = 'Bined'
+apply from: '../bined-modules.gradle'
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.bined.editor.BinedEditor'
-    ext.appArgs = '-dev'
-}
-
-def configureExec(task) {
-    task.mainClass = mainClass
-//    task.classpath += files(['/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/classes/java/main',
-//        '/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/resources/main',
-//        '/home/hajdam/Software/Projekty/exbin/bined/modules/exbin-framework-bined-launcher/build/libs/exbin-framework-bined-launcher-0.3.0-SNAPSHOT.jar',
-//        '/home/hajdam/.gradle/caches/modules-2/files-2.1/org.exbin.framework/exbin-framework/0.3.0-SNAPSHOT/7ff52836111ce7c5c1d777a1299124a636c4728d/exbin-framework-0.3.0-SNAPSHOT.jar',
-//        '/home/hajdam/.gradle/caches/modules-2/files-2.1/org.exbin.framework/exbin-framework-basic/0.3.0-SNAPSHOT/8bfa5016c63d2e98a380c34218bf8048622561da/exbin-framework-basic-0.3.0-SNAPSHOT.jar',
-//        'lib/exbin-framework-language-0.3.0-SNAPSHOT.jar',
-//        'lib/exbin-framework-language-api-0.3.0-SNAPSHOT.jar'
-//      ])
-//    task.classpath += files(['/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/classes/java/main', '/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/resources/main', 'lib/commons-cli-1.2.jar', 'lib/exbin-framework-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-language-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-language-api-0.3.0-SNAPSHOT.jar'])
-    task.classpath = sourceSets.main.runtimeClasspath
-    if (hasProperty('appArgs')) {
-        task.args appArgs
-    }
-}
-
-task run(type: JavaExec) {
-    task -> configureExec(task)
-}
-
-task debug(type: JavaExec) {
-    task -> configureExec(task)
-    debug = true
+    ext.mainClass = ''
 }
 
 repositories {
@@ -52,19 +20,10 @@ repositories {
     }
     mavenLocal()
     mavenCentral()
-    maven {
-        url 'https://bits.netbeans.org/maven2/'
-    }
 }
 
 dependencies {
-    //    implementation 'org.dockingframes:docking-frames-common:1.1.1'
-    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-core')
-    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing')
-    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-operation')
-    implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-operation-swing')
-    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data-delta')
-    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
+     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework-basic')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui')
@@ -100,8 +59,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-action-manager')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-help')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-help-online')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-launcher')
+   implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-search')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-operation')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-operation-bouncycastle')
@@ -112,40 +70,6 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-tool-content')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-objectdata')
     implementation 'commons-cli:commons-cli:1.2'
-    implementation 'com.formdev:flatlaf-desktop:3.2'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }
-
-def manifestClassPath() {
-    try {
-        return (configurations.runtimeClasspath.collect { 'lib/' + it.getName() }).join(' ')
-    } catch (Exception) {
-        return ""
-    }
-}
-
-launch4j {
-    outfile = "Bined.exe"
-    mainClassName = project.mainClass
-    //    jar = "../../build/libs/" + project.name + "-${version}.jar"
-
-    productName = "BinEd"
-    companyName = "ExBin Project"
-    version = (project.version.endsWith("-SNAPSHOT") ? project.version.substring(0, project.version.length() - 9) : project.version)
-    textVersion = project.version
-    icon = "../../../../src/icons/icon.ico"
-    copyright = "ExBin Project"
-}
-
-jar {
-    manifest {
-        attributes(
-            'Main-Class': mainClass,
-            'Class-Path': 'lib/commons-cli-1.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar'
-//            'Class-Path': manifestClassPath()
-        )
-    }
-}
-
-// sourceSets.main.runtimeClasspath.collect { println it }

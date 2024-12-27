@@ -19,5 +19,6 @@
     <module id="org.exbin.framework.bined.BinedModule" />
     <module id="org.exbin.framework.bined.search.BinedSearchModule" />
     <module id="org.exbin.framework.bined.operation.BinedOperationModule" />
+    <library jar="bcprov-jdk18on-1.78.1.jar" />
   </dependency>
 </module>

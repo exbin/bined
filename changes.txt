@@ -1,5 +1,8 @@
-0.3.0
+0.2.4
 - Added addon manager
+- Added keymap overview
+- Added Base 64 conversion
+- Fixed another issue with searching 
 
 0.2.3 (2024-01-06)
 - Added convert data action
