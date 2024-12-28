@@ -2,6 +2,7 @@
 - Added addon manager
 - Added keymap overview
 - Added Base 64 conversion
+- Added option for inspector input fields font
 - Fixed another issue with searching 
 
 0.2.3 (2024-01-06)

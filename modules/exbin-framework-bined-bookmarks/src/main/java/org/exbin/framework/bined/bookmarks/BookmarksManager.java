@@ -39,6 +39,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import org.exbin.bined.CodeAreaSelection;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
@@ -157,6 +158,8 @@ public class BookmarksManager {
                     BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
                     SectCodeArea codeArea = fileHandler.getCodeArea();
                     addBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
+                } else {
+                    addBookmarkAction.setCurrentSelection(new CodeAreaSelection());
                 }
                 addBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = addBookmarkAction.getBookmarkRecord();
@@ -174,6 +177,8 @@ public class BookmarksManager {
                     BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
                     SectCodeArea codeArea = fileHandler.getCodeArea();
                     editBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
+                } else {
+                    editBookmarkAction.setCurrentSelection(new CodeAreaSelection());
                 }
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
                 int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();

@@ -629,9 +629,9 @@ public class BinedModule implements Module {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, clipboardCodeActions.createCopyAsCodeAction());
-        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, null)); // (String) actionModule.getClipboardActions().createCopyAction().getValue(Action.NAME)));
+        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, "editCopyAction"));
         contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, clipboardCodeActions.createPasteFromCodeAction());
-        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, null)); // (String) actionModule.getClipboardActions().createPasteAction().getValue(Action.NAME)));
+        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, "editPasteAction"));
     }
 
     public void registerPropertiesMenu() {
@@ -741,7 +741,7 @@ public class BinedModule implements Module {
             }
         };
         hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);        
+        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.VIEW_MENU_ID, HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.BOTTOM));
         mgmt.registerMenu(HEX_CHARACTERS_CASE_SUBMENU_ID);

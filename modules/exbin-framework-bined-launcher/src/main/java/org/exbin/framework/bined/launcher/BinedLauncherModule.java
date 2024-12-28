@@ -40,6 +40,7 @@ import org.exbin.framework.action.manager.ActionManagerModule;
 import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
@@ -48,6 +49,7 @@ import org.exbin.framework.bined.objectdata.BinedObjectDataModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
+import org.exbin.framework.bined.preferences.EditorPreferences;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.tool.content.BinedToolContentModule;
 import org.exbin.framework.editor.api.EditorModuleApi;
@@ -124,6 +126,11 @@ public class BinedLauncherModule implements LauncherModule {
             boolean demoMode = cl.hasOption(OPTION_DEMO);
             boolean fullScreenMode = cl.hasOption(OPTION_FULLSCREEN);
             String editorProvideType = editorProviderType.getSelected();
+
+            if (demoMode) {
+                // Don't use delta mode
+                preferences.put(EditorPreferences.PREFERENCES_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
+            }
 
             final UiModuleApi uiModule = App.getModule(UiModuleApi.class);
             final WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
