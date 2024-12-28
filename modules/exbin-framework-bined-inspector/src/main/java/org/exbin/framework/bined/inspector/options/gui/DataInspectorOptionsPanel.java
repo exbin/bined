@@ -15,12 +15,17 @@
  */
 package org.exbin.framework.bined.inspector.options.gui;
 
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
 import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
+import org.exbin.framework.editor.text.options.impl.TextFontOptionsImpl;
+import org.exbin.framework.editor.text.service.TextFontService;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsComponent;
@@ -39,14 +44,34 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
     private OptionsModifiedListener optionsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorOptionsPanel.class);
     private TextFontOptionsPanel textFontOptionsPanel;
+    private Font defaultFont;
+    private Font currentFont;
 
     public DataInspectorOptionsPanel() {
         initComponents();
         init();
     }
-    
+
     private void init() {
         textFontOptionsPanel = new TextFontOptionsPanel();
+        textFontOptionsPanel.setTextFontService(new TextFontService() {
+            @Nonnull
+            @Override
+            public Font getCurrentFont() {
+                return currentFont;
+            }
+
+            @Nonnull
+            @Override
+            public Font getDefaultFont() {
+                return defaultFont;
+            }
+
+            @Override
+            public void setCurrentFont(Font font) {
+                currentFont = font;
+            }
+        });
         fontChangePanel.add(textFontOptionsPanel);
     }
 
@@ -56,14 +81,39 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
         return resourceBundle;
     }
 
+    public void setTextFontService(TextFontService textFontService) {
+        textFontOptionsPanel.setTextFontService(textFontService);
+    }
+
+    public void setFontChangeAction(TextFontOptionsPanel.FontChangeAction fontChangeAction) {
+        textFontOptionsPanel.setFontChangeAction(fontChangeAction);
+    }
+
+    public void setDefaultFont(Font defaultFont) {
+        this.defaultFont = defaultFont;
+    }
+
+    public void setCurrentFont(Font currentFont) {
+        this.currentFont = currentFont;
+    }
+
     @Override
     public void loadFromOptions(DataInspectorOptionsImpl options) {
         showParsingPanelCheckBox.setSelected(options.isShowParsingPanel());
+        TextFontOptionsImpl textFontOptions = new TextFontOptionsImpl();
+        textFontOptions.setUseDefaultFont(options.isUseDefaultFont());
+        Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
+        textFontOptions.setFontAttributes((fontAttributes == null) ? defaultFont.getAttributes() : fontAttributes);
+        textFontOptionsPanel.loadFromOptions(textFontOptions);
     }
 
     @Override
     public void saveToOptions(DataInspectorOptionsImpl options) {
         options.setShowParsingPanel(showParsingPanelCheckBox.isSelected());
+        TextFontOptionsImpl textFontOptions = new TextFontOptionsImpl();
+        textFontOptionsPanel.saveToOptions(textFontOptions);
+        options.setUseDefaultFont(textFontOptions.isUseDefaultFont());
+        options.setFontAttributes(textFontOptions.getFontAttributes());
     }
 
     /**

@@ -15,10 +15,13 @@
  */
 package org.exbin.framework.bined.inspector.options;
 
+import java.awt.font.TextAttribute;
+import java.util.Map;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * Binary component appearance options.
+ * Data inspector options.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -28,4 +31,13 @@ public interface DataInspectorOptions {
     boolean isShowParsingPanel();
 
     void setShowParsingPanel(boolean showParsingPanel);
+
+    boolean isUseDefaultFont();
+
+    void setUseDefaultFont(boolean useDefaultFont);
+
+    @Nullable
+    Map<TextAttribute, ?> getFontAttributes();
+
+    void setFontAttributes(@Nullable Map<TextAttribute, ?> fontAttributes);
 }

@@ -15,14 +15,17 @@
  */
 package org.exbin.framework.bined.inspector.gui;
 
+import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.font.TextAttribute;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -745,6 +748,26 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         this.undoRedo = undoRedo;
     }
 
+    @Nonnull
+    public Font getInputFieldsFont() {
+        Font font = byteTextField.getFont();
+        if (font == null) {
+            font = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
+        }
+        return font;
+    }
+
+    public void setInputFieldsFont(Font font) {
+        byteTextField.setFont(font);
+        wordTextField.setFont(font);
+        intTextField.setFont(font);
+        longTextField.setFont(font);
+        floatTextField.setFont(font);
+        doubleTextField.setFont(font);
+        characterTextField.setFont(font);
+        stringTextField.setFont(font);
+    }
+
     public void enableUpdate() {
         dataChangedListener = () -> {
             updateEditMode();
@@ -990,6 +1013,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 }
                 case BYTE: {
                     byteTextField.setText(String.valueOf(signed ? values[0] : values[0] & 0xff));
+                    byteTextField.setCaretPosition(0);
                     break;
                 }
                 case WORD: {
@@ -1001,6 +1025,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                                     ? (values[0] & 0xff) | ((values[1] & 0xff) << 8)
                                     : (values[1] & 0xff) | ((values[0] & 0xff) << 8));
                     wordTextField.setText(String.valueOf(wordValue));
+                    wordTextField.setCaretPosition(0);
                     break;
                 }
                 case INTEGER: {
@@ -1012,6 +1037,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                                     ? (values[0] & 0xffL) | ((values[1] & 0xffL) << 8) | ((values[2] & 0xffL) << 16) | ((values[3] & 0xffL) << 24)
                                     : (values[3] & 0xffL) | ((values[2] & 0xffL) << 8) | ((values[1] & 0xffL) << 16) | ((values[0] & 0xffL) << 24));
                     intTextField.setText(String.valueOf(intValue));
+                    intTextField.setCaretPosition(0);
                     break;
                 }
                 case LONG: {
@@ -1033,6 +1059,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                         BigInteger bigInt3 = bigInt2.add(BigInteger.valueOf(longValue));
                         longTextField.setText(bigInt3.toString());
                     }
+                    longTextField.setCaretPosition(0);
                     break;
                 }
                 case FLOAT: {
@@ -1042,6 +1069,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     }
 
                     floatTextField.setText(String.valueOf(byteBuffer.getFloat()));
+                    floatTextField.setCaretPosition(0);
                     break;
                 }
                 case DOUBLE: {
@@ -1051,6 +1079,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     }
 
                     doubleTextField.setText(String.valueOf(byteBuffer.getDouble()));
+                    doubleTextField.setCaretPosition(0);
                     break;
                 }
                 case CHARACTER: {
@@ -1060,6 +1089,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     } else {
                         characterTextField.setText("");
                     }
+                    characterTextField.setCaretPosition(0);
                     break;
                 }
                 case STRING: {

@@ -16,6 +16,10 @@
 package org.exbin.framework.bined.inspector;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
@@ -70,6 +74,11 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public void onInitFromPreferences(BinaryEditorPreferences preferences) {
         DataInspectorPreferences dataInspectorPreferences = new DataInspectorPreferences(preferences.getPreferences());
         setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
+        boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
+        if (!useDefaultFont) {
+            Map<TextAttribute, Object> fontAttributes = dataInspectorPreferences.getFontAttributes();
+            setInputFieldsFont(new Font(fontAttributes));
+        }
     }
 
     @Override
@@ -90,6 +99,15 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
                 parsingPanelVisible = false;
             }
         }
+    }
+
+    @Nonnull
+    public Font getInputFieldsFont() {
+        return valuesPanel.getInputFieldsFont();
+    }
+
+    public void setInputFieldsFont(Font font) {
+        valuesPanel.setInputFieldsFont(font);
     }
 
     public boolean isShowParsingPanel() {
