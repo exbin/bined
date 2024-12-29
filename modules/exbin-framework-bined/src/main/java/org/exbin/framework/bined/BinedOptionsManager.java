@@ -589,13 +589,14 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = themeProfilePanel.getResourceBundle();
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), panelResourceBundle);
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -617,15 +618,16 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = themeProfilePanel.getResourceBundle();
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Edit Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("editProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), panelResourceBundle);
                     namedProfilePanel.setProfileName(profileRecord.getProfileName());
                     themeProfilePanel.setThemeProfile(profileRecord.getThemeProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -648,15 +650,16 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = themeProfilePanel.getResourceBundle();
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Copy Theme Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), themeProfilePanel.getResourceBundle());
-                    namedProfilePanel.setProfileName(profileRecord.getProfileName() + " #copy");
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("copyProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeProfilePanel.getClass(), panelResourceBundle);
+                    namedProfilePanel.setProfileName(profileRecord.getProfileName() + panelResourceBundle.getString("copyProfile.profilePostfix"));
                     themeProfilePanel.setThemeProfile(profileRecord.getThemeProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -683,19 +686,20 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = themeTemplatePanel.getResourceBundle();
                     ThemeProfileResult result = new ThemeProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Theme Template", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), themeTemplatePanel.getClass(), themeTemplatePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addTemplate.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), themeTemplatePanel.getClass(), panelResourceBundle);
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Template Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
                             ThemeTemplatePanel.ThemeProfile selectedTemplate = themeTemplatePanel.getSelectedTemplate();
                             if (selectedTemplate == null) {
-                                JOptionPane.showMessageDialog(parentComponent, "No template selected", "Profile Template Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.noTemplate.message"), panelResourceBundle.getString("error.noTemplate.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -773,13 +777,14 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = layoutProfilePanel.getResourceBundle();
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), panelResourceBundle);
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -801,15 +806,16 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = layoutProfilePanel.getResourceBundle();
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Edit Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("editProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), panelResourceBundle);
                     namedProfilePanel.setProfileName(profileRecord.getProfileName());
                     layoutProfilePanel.setLayoutProfile(profileRecord.getLayoutProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -832,15 +838,16 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = layoutProfilePanel.getResourceBundle();
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Copy Layout Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), layoutProfilePanel.getResourceBundle());
-                    namedProfilePanel.setProfileName(profileRecord.getProfileName() + " #copy");
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("copyProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutProfilePanel.getClass(), panelResourceBundle);
+                    namedProfilePanel.setProfileName(profileRecord.getProfileName() + panelResourceBundle.getString("copyProfile.profilePostfix"));
                     layoutProfilePanel.setLayoutProfile(profileRecord.getLayoutProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -867,19 +874,20 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = layoutTemplatePanel.getResourceBundle();
                     LayoutProfileResult result = new LayoutProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Layout Template", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), layoutTemplatePanel.getClass(), layoutTemplatePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addTemplate.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), layoutTemplatePanel.getClass(), panelResourceBundle);
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Template Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
                             LayoutTemplatePanel.LayoutProfile selectedTemplate = layoutTemplatePanel.getSelectedTemplate();
                             if (selectedTemplate == null) {
-                                JOptionPane.showMessageDialog(parentComponent, "No template selected", "Profile Template Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.noTemplate.message"), panelResourceBundle.getString("error.noTemplate.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -957,13 +965,14 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
                     ColorProfileResult result = new ColorProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -984,15 +993,16 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
                     ColorProfileResult result = new ColorProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Edit Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("editProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
                     namedProfilePanel.setProfileName(profileRecord.getProfileName());
                     colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -1015,15 +1025,16 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
                     ColorProfileResult result = new ColorProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Copy Colors Profile", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), colorProfilePanel.getResourceBundle());
-                    namedProfilePanel.setProfileName(profileRecord.getProfileName() + " #copy");
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("copyProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
+                    namedProfilePanel.setProfileName(profileRecord.getProfileName() + panelResourceBundle.getString("copyProfile.profilePostfix"));
                     colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Edit Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
@@ -1050,19 +1061,20 @@ public class BinedOptionsManager {
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
 
+                    ResourceBundle panelResourceBundle = colorTemplatePanel.getResourceBundle();
                     ColorProfileResult result = new ColorProfileResult();
-                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, "Add Colors Template", Dialog.ModalityType.APPLICATION_MODAL);
-                    windowModule.addHeaderPanel(dialog.getWindow(), colorTemplatePanel.getClass(), colorTemplatePanel.getResourceBundle());
+                    final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addTemplate.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                    windowModule.addHeaderPanel(dialog.getWindow(), colorTemplatePanel.getClass(), panelResourceBundle);
                     controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
                         if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
                             if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                                JOptionPane.showMessageDialog(parentComponent, "Invalid profile name", "Profile Template Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 
                             ColorTemplatePanel.ColorProfile selectedTemplate = colorTemplatePanel.getSelectedTemplate();
                             if (selectedTemplate == null) {
-                                JOptionPane.showMessageDialog(parentComponent, "No template selected", "Profile Template Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.noTemplate.message"), panelResourceBundle.getString("error.noTemplate.title"), JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
 

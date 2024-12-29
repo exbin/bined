@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule</plugin>
+  <name>BinEd Bouncycastle Conversion Plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Support for data conversions using Bouncycastle cryptoraphic library</description>
+  <dependency>
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+    <module id="org.exbin.framework.utils.UtilsModule" />
+    <module id="org.exbin.framework.bined.BinedModule" />
+    <library jar="bcprov-jdk18on-1.78.1.jar" />
+  </dependency>
+</module>

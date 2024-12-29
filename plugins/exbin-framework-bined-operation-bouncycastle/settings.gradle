@@ -6,4 +6,4 @@ if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined-search'
 }
 
-apply from: '../bined-modules-settings.gradle'
+apply from: '../bined-plugins-settings.gradle'

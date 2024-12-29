@@ -47,7 +47,6 @@ import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.objectdata.BinedObjectDataModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
-import org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.bined.preferences.EditorPreferences;
 import org.exbin.framework.bined.search.BinedSearchModule;
@@ -161,12 +160,11 @@ public class BinedLauncherModule implements LauncherModule {
             BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
             binedSearchModule.setEditorProvider(editorProvider);
             binedSearchModule.registerSearchComponent();
+            
+            fileModule.registerOptionsPanels();
 
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.setEditorProvider(editorProvider);
-
-            BinedOperationBouncycastleModule binedOperationBouncycastleModule = App.getModule(BinedOperationBouncycastleModule.class);
-            binedOperationBouncycastleModule.setEditorProvider(editorProvider);
 
             BinedCompareModule binedCompareModule = App.getModule(BinedCompareModule.class);
             BinedBookmarksModule binedBookmarksModule = App.getModule(BinedBookmarksModule.class);

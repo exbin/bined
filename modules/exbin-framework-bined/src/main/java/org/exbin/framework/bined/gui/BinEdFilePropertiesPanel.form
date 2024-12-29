@@ -61,7 +61,7 @@
     <Component class="javax.swing.JLabel" name="fileNameLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/gui/resources/BinaryPropertiesPanel.properties" key="fileNameLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/gui/resources/BinEdFilePropertiesPanel.properties" key="fileNameLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -73,7 +73,7 @@
     <Component class="javax.swing.JLabel" name="fileSizeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/gui/resources/BinaryPropertiesPanel.properties" key="fileSizeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/gui/resources/BinEdFilePropertiesPanel.properties" key="fileSizeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -87,7 +87,7 @@
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Document Structure">
-              <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/gui/resources/BinaryPropertiesPanel.properties" key="structurePanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/gui/resources/BinEdFilePropertiesPanel.properties" key="structurePanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>

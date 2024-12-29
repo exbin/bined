@@ -15,16 +15,14 @@
  */
 package org.exbin.framework.bined.operation.bouncycastle;
 
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDataMethod;
 
 /**
@@ -33,22 +31,19 @@ import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDat
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedOperationBouncycastleModule implements Module {
+public class BinedOperationBouncycastleModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedOperationBouncycastleModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-
     public BinedOperationBouncycastleModule() {
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-
+    @Override
+    public void register() {
         BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
-        
+
         ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
         binedOperationModule.addConvertDataComponent(computeHashDataMethod);
     }
@@ -60,20 +55,5 @@ public class BinedOperationBouncycastleModule implements Module {
         }
 
         return resourceBundle;
-    }
-
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
-    private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 }

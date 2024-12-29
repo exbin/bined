@@ -3,6 +3,8 @@
 - Added keymap overview
 - Added Base 64 conversion
 - Added option for inspector input fields font
+- Added icon set support
+- Added option for legacy SWT file dialogs
 - Fixed another issue with searching 
 
 0.2.3 (2024-01-06)
