@@ -45,12 +45,10 @@ import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.macro.BinedMacroModule;
-import org.exbin.framework.bined.objectdata.BinedObjectDataModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.bined.preferences.EditorPreferences;
 import org.exbin.framework.bined.search.BinedSearchModule;
-import org.exbin.framework.bined.tool.content.BinedToolContentModule;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
@@ -94,7 +92,7 @@ public class BinedLauncherModule implements LauncherModule {
     public void launch(String[] args) {
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
         try {
-            preferencesModule.setupAppPreferences(Class.forName("org.exbin.bined.editor.BinedEditor"));
+            preferencesModule.setupAppPreferences(Class.forName("org.exbin.bined.editor.BinedEditorApp"));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -176,9 +174,6 @@ public class BinedLauncherModule implements LauncherModule {
             BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
             binedInspectorModule.setEditorProvider(editorProvider);
 
-            BinedObjectDataModule binedObjectDataModule = App.getModule(BinedObjectDataModule.class);
-            BinedToolContentModule binedToolContentModule = App.getModule(BinedToolContentModule.class);
-
             AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
             actionManagerModule.registerOptionsPanels();
@@ -251,8 +246,6 @@ public class BinedLauncherModule implements LauncherModule {
 
             binedModule.registerPropertiesMenu();
             binedModule.registerReloadFileMenu();
-            binedToolContentModule.registerClipboardContentMenu();
-            binedToolContentModule.registerDragDropContentMenu();
             // TODO binedModule.registerPrintMenu();
             binedModule.registerViewModeMenu();
             binedModule.registerCodeTypeMenu();

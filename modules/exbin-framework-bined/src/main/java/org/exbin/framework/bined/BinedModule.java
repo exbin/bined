@@ -629,9 +629,9 @@ public class BinedModule implements Module {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, clipboardCodeActions.createCopyAsCodeAction());
-        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, "editCopyAction"));
+        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, "popupCopyAction"));
         contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, clipboardCodeActions.createPasteFromCodeAction());
-        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, "editPasteAction"));
+        mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(NextToMode.AFTER, "popupPasteAction"));
     }
 
     public void registerPropertiesMenu() {

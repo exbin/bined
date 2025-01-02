@@ -16,7 +16,7 @@ apply from: '../apps.gradle'
 ext.depsRoot = 'Bined'
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.bined.editor.BinedEditor'
+    ext.mainClass = 'org.exbin.bined.editor.BinedEditorApp'
     ext.appArgs = '-dev'
 }
 
@@ -104,12 +104,12 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-launcher')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-search')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-operation')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-compare')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-bookmarks')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-macro')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-inspector')
-    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-tool-content')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-objectdata')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-compare')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-bookmarks')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-macro')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-tool-content')
     implementation 'com.formdev:flatlaf-desktop:3.2'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
