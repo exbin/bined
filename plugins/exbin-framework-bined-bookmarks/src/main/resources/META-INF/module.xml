@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <id>org.exbin.framework.bined.bookmarks.BinedBookmarksModule</id>
+  <plugin>org.exbin.framework.bined.bookmarks.BinedBookmarksModule</plugin>
   <name>BinEd Bookmarks Support Module</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>

@@ -37,7 +37,6 @@ public class BinedEditorApp {
         BasicApplication app = BasicApplication.createApplication(BinedEditorApp.class);
         app.init();
         App.launch(() -> {
-
             app.setAppDirectory(BinedEditorApp.class);
             app.addClassPathModules();
             app.addModulesFromManifest(BinedEditorApp.class);

@@ -41,10 +41,7 @@ import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileHandlingMode;
-import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
-import org.exbin.framework.bined.compare.BinedCompareModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
-import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
 import org.exbin.framework.bined.preferences.EditorPreferences;
@@ -91,11 +88,6 @@ public class BinedLauncherModule implements LauncherModule {
     @Override
     public void launch(String[] args) {
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        try {
-            preferencesModule.setupAppPreferences(Class.forName("org.exbin.bined.editor.BinedEditorApp"));
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
-        }
         Preferences preferences = preferencesModule.getAppPreferences();
         ResourceBundle bundle = App.getModule(LanguageModuleApi.class).getBundle(BinedLauncherModule.class);
 
@@ -164,13 +156,6 @@ public class BinedLauncherModule implements LauncherModule {
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.setEditorProvider(editorProvider);
 
-            BinedCompareModule binedCompareModule = App.getModule(BinedCompareModule.class);
-            BinedBookmarksModule binedBookmarksModule = App.getModule(BinedBookmarksModule.class);
-            binedBookmarksModule.setEditorProvider(editorProvider);
-
-            BinedMacroModule binedMacroModule = App.getModule(BinedMacroModule.class);
-            binedMacroModule.setEditorProvider(editorProvider);
-
             BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
             binedInspectorModule.setEditorProvider(editorProvider);
 
@@ -228,20 +213,15 @@ public class BinedLauncherModule implements LauncherModule {
             binedModule.registerViewNonprintablesMenuActions();
             binedInspectorModule.registerViewValuesPanelMenuActions();
             binedModule.registerToolsOptionsMenuActions();
-            binedCompareModule.registerToolsOptionsMenuActions();
             binedModule.registerEditSelectionAction();
             binedModule.registerClipboardCodeActions();
             binedModule.registerEncodings();
             binedModule.registerGoToPosition();
             binedSearchModule.registerEditFindMenuActions();
-            binedBookmarksModule.registerBookmarksMenuActions();
-            binedMacroModule.registerMacrosMenuActions();
             binedOperationModule.registerBlockEditActions();
 
             binedModule.registerCodeAreaPopupMenu();
             binedSearchModule.registerEditFindPopupMenuActions();
-            binedBookmarksModule.registerBookmarksPopupMenuActions();
-            binedMacroModule.registerMacrosPopupMenuActions();
             binedOperationModule.registerBlockEditPopupMenuActions();
 
             binedModule.registerPropertiesMenu();
@@ -284,8 +264,6 @@ public class BinedLauncherModule implements LauncherModule {
 
             JComponent editorComponent = editorModule.getEditorComponent();
             frameHandler.setMainPanel(editorComponent);
-            binedBookmarksModule.registerBookmarksComponentActions(editorComponent);
-            binedMacroModule.registerMacrosComponentActions(editorComponent);
             if (!demoMode) {
                 addonManagerModule.registerAddonManagerMenuItem();
             }

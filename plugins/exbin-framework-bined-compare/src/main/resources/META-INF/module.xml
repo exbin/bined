@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <id>org.exbin.framework.bined.compare.BinedCompareModule</id>
+  <plugin>org.exbin.framework.bined.compare.BinedCompareModule</plugin>
   <name>BinEd Compare Support Module</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>

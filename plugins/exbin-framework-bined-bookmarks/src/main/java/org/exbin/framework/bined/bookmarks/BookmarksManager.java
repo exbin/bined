@@ -52,13 +52,13 @@ import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
-import static org.exbin.framework.bined.bookmarks.BinedBookmarksModule.MODULE_ID;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.preferences.BookmarkPreferences;
+import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
@@ -94,6 +94,9 @@ public class BookmarksManager {
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
+        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+        JComponent editorComponent = editorModule.getEditorComponent();
+        registerBookmarksComponentActions(editorComponent);
     }
 
     public void init() {

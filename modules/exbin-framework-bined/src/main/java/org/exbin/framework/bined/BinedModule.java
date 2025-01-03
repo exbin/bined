@@ -141,7 +141,7 @@ public class BinedModule implements Module {
     private java.util.ResourceBundle resourceBundle = null;
 
     private EditorProvider editorProvider;
-    private BinEdFileManager fileManager;
+    private BinEdFileManager fileManager = new BinEdFileManager();
     private BinedOptionsManager binedOptionsManager;
 
     private ShowNonprintablesActions showNonprintablesActions;
@@ -158,7 +158,6 @@ public class BinedModule implements Module {
     }
 
     public void initEditorProvider(EditorProviderVariant variant) {
-        fileManager = new BinEdFileManager();
         switch (variant) {
             case SINGLE: {
                 editorProvider = createSingleEditorProvider();

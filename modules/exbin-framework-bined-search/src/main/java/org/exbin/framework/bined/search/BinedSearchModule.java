@@ -131,10 +131,6 @@ public class BinedSearchModule implements Module {
     }
 
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }

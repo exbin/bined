@@ -26,7 +26,7 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
@@ -40,6 +40,7 @@ import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileHandler;
 
 /**
@@ -48,7 +49,7 @@ import org.exbin.framework.file.api.FileHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedMacroModule implements Module {
+public class BinedMacroModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedMacroModule.class);
 
@@ -59,6 +60,16 @@ public class BinedMacroModule implements Module {
     private MacroManager macroManager;
 
     public BinedMacroModule() {
+    }
+
+    public void register() {
+        registerMacrosMenuActions();
+        registerMacrosPopupMenuActions();
+
+        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+        editorModule.addEditorProviderChangeListener((editorProvider) -> {
+            setEditorProvider(editorProvider);
+        });
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
@@ -105,9 +116,6 @@ public class BinedMacroModule implements Module {
         getMacroManager().registerMacrosPopupMenuActions();
     }
 
-    public void registerMacrosComponentActions(JComponent component) {
-    }
-
     @Nonnull
     public JMenu getMacrosMenu() {
         return getMacroManager().getMacrosMenu();
@@ -125,10 +133,6 @@ public class BinedMacroModule implements Module {
     }
 
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }

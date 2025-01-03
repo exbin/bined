@@ -15,15 +15,13 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JMenu;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
@@ -31,8 +29,8 @@ import org.exbin.framework.action.api.GroupMenuContributionRule;
 import org.exbin.framework.action.api.MenuContribution;
 import org.exbin.framework.action.api.MenuManagement;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 
 /**
  * Binary data editor bookmarks module.
@@ -40,21 +38,24 @@ import org.exbin.framework.editor.api.EditorProvider;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedBookmarksModule implements Module {
+public class BinedBookmarksModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedBookmarksModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
-
-    private EditorProvider editorProvider;
 
     private BookmarksManager bookmarksManager;
 
     public BinedBookmarksModule() {
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
+    @Override
+    public void register() {
+        registerBookmarksMenuActions();
+        registerBookmarksPopupMenuActions();
+        
+        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+        editorModule.addEditorProviderChangeListener((editorProvider) -> getBookmarksManager().setEditorProvider(editorProvider));
     }
 
     public void registerBookmarksMenuActions() {
@@ -66,10 +67,6 @@ public class BinedBookmarksModule implements Module {
 
     public void registerBookmarksPopupMenuActions() {
         getBookmarksManager().registerBookmarksPopupMenuActions();
-    }
-
-    public void registerBookmarksComponentActions(JComponent component) {
-        getBookmarksManager().registerBookmarksComponentActions(component);
     }
 
     @Nonnull
@@ -87,11 +84,6 @@ public class BinedBookmarksModule implements Module {
     }
 
     @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
-    @Nonnull
     public JMenu getBookmarksMenu() {
         return getBookmarksManager().getBookmarksMenu();
     }
@@ -102,17 +94,12 @@ public class BinedBookmarksModule implements Module {
             ensureSetup();
 
             bookmarksManager = new BookmarksManager();
-            bookmarksManager.setEditorProvider(editorProvider);
             bookmarksManager.init();
         }
         return bookmarksManager;
     }
 
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }
