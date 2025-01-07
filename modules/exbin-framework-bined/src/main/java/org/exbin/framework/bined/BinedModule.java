@@ -95,6 +95,7 @@ import org.exbin.framework.action.api.SeparationToolBarContributionRule;
 import org.exbin.framework.action.api.RelativeMenuContributionRule;
 import org.exbin.framework.action.api.ToolBarContribution;
 import org.exbin.framework.action.api.ToolBarManagement;
+import org.exbin.framework.action.popup.api.ActionPopupModuleApi;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.bined.action.EditSelectionAction;
 import org.exbin.framework.bined.action.ReloadFileAction;
@@ -1051,7 +1052,7 @@ public class BinedModule implements Module {
     }
 
     public void registerCodeAreaPopupEventDispatcher() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        ActionPopupModuleApi actionModule = App.getModule(ActionPopupModuleApi.class);
         actionModule.addComponentPopupEventDispatcher(new ComponentPopupEventDispatcher() {
 
             private static final String DEFAULT_MENU_POSTFIX = ".default";
