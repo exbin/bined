@@ -9,6 +9,6 @@
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />
     <module id="org.exbin.framework.bined.BinedModule" />
-    <library jar="bcprov-jdk18on-1.78.1.jar" />
+    <library maven="org.bouncycastle:bcprov-jdk18on:1.79" />
   </dependency>
 </module>

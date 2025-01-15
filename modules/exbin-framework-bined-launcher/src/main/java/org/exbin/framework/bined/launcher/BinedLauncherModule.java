@@ -160,6 +160,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedInspectorModule.setEditorProvider(editorProvider);
 
             AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
+            addonManagerModule.setDevMode(devMode);
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
             actionManagerModule.registerOptionsPanels();
 

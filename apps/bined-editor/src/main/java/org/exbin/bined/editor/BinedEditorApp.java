@@ -19,6 +19,7 @@ import java.io.File;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.basic.BasicApplication;
+import org.exbin.framework.basic.ModuleFileLocation;
 
 /**
  * The main class of the BinEd Binary / Hex Editor application.
@@ -38,15 +39,16 @@ public class BinedEditorApp {
         app.init();
         App.launch(() -> {
             app.setAppDirectory(BinedEditorApp.class);
+            app.setupAddons();
             app.addClassPathModules();
             app.addModulesFromManifest(BinedEditorApp.class);
             File appDirectory = app.getAppDirectory();
             if ("".equals(appDirectory.getPath())) {
-                app.addModulesFrom(new File("lib").toURI());
-                app.addModulesFrom(new File(BasicApplication.PLUGINS_DIRECTORY).toURI());
+                app.addModulesFrom(new File("lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFrom(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
             } else {
-                app.addModulesFrom(new File(app.getAppDirectory(), "lib").toURI());
-                app.addModulesFrom(new File(app.getAppDirectory(), BasicApplication.PLUGINS_DIRECTORY).toURI());
+                app.addModulesFrom(new File(app.getAppDirectory(), "lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFrom(new File(app.getAppDirectory(), BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
             }
             app.initModules();
 
