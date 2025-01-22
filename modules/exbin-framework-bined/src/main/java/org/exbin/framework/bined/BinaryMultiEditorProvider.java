@@ -48,9 +48,11 @@ import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
+import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 
 /**
  * Binary editor provider.
@@ -180,6 +182,9 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                 binaryStatus.setEditMode(mode, operation);
             }
         });
+
+        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+        fileHandler.onInitFromPreferences(new BinaryEditorPreferences(preferencesModule.getAppPreferences()));
 
         attachFilePopupMenu(fileHandler);
 

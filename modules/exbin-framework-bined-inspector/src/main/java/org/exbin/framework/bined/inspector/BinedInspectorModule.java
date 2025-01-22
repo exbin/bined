@@ -23,7 +23,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JTextField;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
@@ -75,7 +74,7 @@ public class BinedInspectorModule implements Module {
 
     private EditorProvider editorProvider;
 
-    private BasicValuesPositionColorModifier basicValuesColorModifier = new BasicValuesPositionColorModifier();
+    private BasicValuesPositionColorModifier basicValuesColorModifier;
 
     private DefaultOptionsPage<DataInspectorOptionsImpl> dataInspectorOptionsPage;
 
@@ -85,6 +84,7 @@ public class BinedInspectorModule implements Module {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
 
+        basicValuesColorModifier = new BasicValuesPositionColorModifier();
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addPainterColorModifier(basicValuesColorModifier);

@@ -32,6 +32,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -415,46 +416,48 @@ public class MacroManager {
     }
 
     public void updateMacrosMenu(JMenu menu) {
-        menu.removeAll();
+        SwingUtilities.invokeLater(() -> {
+            menu.removeAll();
 
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        int recordsLimit = Math.min(macroRecords.size(), 10);
-        String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
-        String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
-        boolean enabled = fileHandler != null;
-        for (int i = 0; i < recordsLimit; i++) {
-            final int macroIndex = i;
-            String macroName = macroRecords.get(i).getName();
-            Action macroAction = new AbstractAction(macroName.isEmpty() ? macroActionName + (i + 1) : macroName) {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    SectCodeArea codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
-                    try {
-                        executeMacro(codeArea, macroIndex);
-                    } catch (Exception ex) {
-                        String message = ex.getMessage();
-                        if (message == null || message.isEmpty()) {
-                            message = ex.toString();
-                        } else if (ex.getCause() != null) {
-                            message += ex.getCause().getMessage();
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            int recordsLimit = Math.min(macroRecords.size(), 10);
+            String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
+            String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
+            boolean enabled = fileHandler != null;
+            for (int i = 0; i < recordsLimit; i++) {
+                final int macroIndex = i;
+                String macroName = macroRecords.get(i).getName();
+                Action macroAction = new AbstractAction(macroName.isEmpty() ? macroActionName + (i + 1) : macroName) {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SectCodeArea codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
+                        try {
+                            executeMacro(codeArea, macroIndex);
+                        } catch (Exception ex) {
+                            String message = ex.getMessage();
+                            if (message == null || message.isEmpty()) {
+                                message = ex.toString();
+                            } else if (ex.getCause() != null) {
+                                message += ex.getCause().getMessage();
+                            }
+
+                            JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
                         }
-
-                        JOptionPane.showMessageDialog((Component) e.getSource(), message, resourceBundle.getString("macroExecutionFailed"), JOptionPane.ERROR_MESSAGE);
                     }
-                }
-            };
-            macroAction.putValue(Action.SHORT_DESCRIPTION, macroActionDescription);
-            macroAction.setEnabled(enabled);
+                };
+                macroAction.putValue(Action.SHORT_DESCRIPTION, macroActionDescription);
+                macroAction.setEnabled(enabled);
 
-            menu.add(actionModule.actionToMenuItem(macroAction));
-        }
+                menu.add(actionModule.actionToMenuItem(macroAction));
+            }
 
-        if (!macroRecords.isEmpty()) {
-            menu.addSeparator();
-        }
-        menu.add(actionModule.actionToMenuItem(executeLastMacroAction));
-        menu.add(actionModule.actionToMenuItem(startMacroRecordingAction));
-        menu.add(actionModule.actionToMenuItem(stopMacroRecordingAction));
-        menu.add(actionModule.actionToMenuItem(manageMacrosAction));
+            if (!macroRecords.isEmpty()) {
+                menu.addSeparator();
+            }
+            menu.add(actionModule.actionToMenuItem(executeLastMacroAction));
+            menu.add(actionModule.actionToMenuItem(startMacroRecordingAction));
+            menu.add(actionModule.actionToMenuItem(stopMacroRecordingAction));
+            menu.add(actionModule.actionToMenuItem(manageMacrosAction));
+        });
     }
 }

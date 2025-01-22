@@ -7,6 +7,7 @@
   <description>Support for files comparing</description>
   <dependency>
     <module id="org.exbin.framework.bined.BinedModule" />
+    <module id="org.exbin.framework.ui.api.UiModuleApi" />
     <module id="org.exbin.framework.frame.api.FrameModuleApi" />
     <module id="org.exbin.framework.window.api.WindowModuleApi" />
     <module id="org.exbin.framework.editor.api.EditorModuleApi" />

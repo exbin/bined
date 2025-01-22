@@ -1,4 +1,4 @@
-0.2.4
+0.2.4 (2025-01-22)
 - Added addon manager
 - Added keymap overview
 - Added Base 64 conversion

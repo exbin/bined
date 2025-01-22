@@ -204,6 +204,7 @@ public class BinedModule implements Module {
             fileManager.initFileHandler(editorFile);
 
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+            editorFile.onInitFromPreferences(new BinaryEditorPreferences(preferencesModule.getAppPreferences()));
             EditorPreferences editorPreferences = new EditorPreferences(preferencesModule.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             editorFile.setNewData(fileHandlingMode);

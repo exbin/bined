@@ -30,6 +30,7 @@ import org.exbin.framework.action.api.PositionMenuContributionRule;
 import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.compare.action.CompareFilesAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Binary editor compare module.
@@ -48,7 +49,10 @@ public class BinedCompareModule implements PluginModule {
 
     @Override
     public void register() {
-        registerToolsOptionsMenuActions();
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.addPostInitAction(() -> {
+            registerToolsOptionsMenuActions();
+        });
     }
 
     public void registerToolsOptionsMenuActions() {

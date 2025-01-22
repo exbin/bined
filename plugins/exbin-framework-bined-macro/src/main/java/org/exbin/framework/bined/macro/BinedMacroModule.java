@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
 import javax.swing.JMenu;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
@@ -42,6 +41,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Binary editor macro support module.
@@ -62,13 +62,17 @@ public class BinedMacroModule implements PluginModule {
     public BinedMacroModule() {
     }
 
+    @Override
     public void register() {
-        registerMacrosMenuActions();
-        registerMacrosPopupMenuActions();
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.addPostInitAction(() -> {
+            registerMacrosMenuActions();
+            registerMacrosPopupMenuActions();
 
-        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-        editorModule.addEditorProviderChangeListener((editorProvider) -> {
-            setEditorProvider(editorProvider);
+            EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+            editorModule.addEditorProviderChangeListener((editorProvider) -> {
+                setEditorProvider(editorProvider);
+            });
         });
     }
 

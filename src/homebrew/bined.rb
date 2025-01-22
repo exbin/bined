@@ -1,5 +1,5 @@
 cask "bined" do
-  version "0.2.3"
+  version "0.2.4"
   sha256 "ef16ef1583fb93251dfa1bef1527727bfdb5562753d66df764cf0a851c60e97b"
 
   url "https://bined.exbin.org/download/bined-#{version}.dmg"

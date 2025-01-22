@@ -1,9 +1,9 @@
 {
   "app-id" : "org.exbin.BinEd",
   "runtime" : "org.freedesktop.Platform",
-  "runtime-version" : "22.08",
+  "runtime-version" : "24.08",
   "sdk" : "org.freedesktop.Sdk",
-  "sdk-extensions" : [ "org.freedesktop.Sdk.Extension.openjdk11" ],
+  "sdk-extensions" : [ "org.freedesktop.Sdk.Extension.openjdk" ],
   "command": "org.exbin.BinEd",
   "finish-args": [
      "--share=ipc",
@@ -15,7 +15,7 @@
     {
       "name" : "openjdk",
       "buildsystem" : "simple",
-      "build-commands" : [ "/usr/lib/sdk/openjdk11/install.sh" ]
+      "build-commands" : [ "/usr/lib/sdk/openjdk/install.sh" ]
     },
     {
       "name": "bined",
@@ -26,8 +26,8 @@
       ],
       "sources": [{
         "type": "archive",
-        "url": "https://bined.exbin.org/download/bined-0.2.3.zip",
-        "sha256": "c32f9757f70731b6afe47115a292f9a6e083df0ee419e3f61c905e6310fa3ff9"
+        "url": "https://bined.exbin.org/download/bined-0.2.4.zip",
+        "sha256": "7c573862c7cca8082b894042a9c7a2c8d9e57106bccdf54d4b33db94cdc7488f"
       }]
     },
     {
@@ -41,8 +41,8 @@
       ],
       "sources": [{
         "type": "archive",
-        "url": "https://bined.exbin.org/download/bined-flathub-0.2.3.src.zip",
-        "sha256": "b21192868196505702284b4db368f6384b18f23994b35bd865e0e676a8a5ff1a"
+        "url": "https://bined.exbin.org/download/bined-flathub-0.2.4.src.zip",
+        "sha256": "5f92584a331f6ba7f519be985aed91b46b077810917b96de23beb359bfcb01e9"
       }]
     }
   ]

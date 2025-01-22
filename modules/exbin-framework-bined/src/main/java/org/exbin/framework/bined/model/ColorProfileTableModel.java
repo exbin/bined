@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -163,7 +164,18 @@ public class ColorProfileTableModel implements TableModel {
                     throw new IllegalStateException("Editing is not allowed when color profile was not set");
                 }
 
-                colorProfile.setColor(rows.get(rowIndex).colorType, (Color) aValue);
+                Color targetColor;
+                if (aValue instanceof Optional<?>) {
+                    targetColor = (Color) ((Optional<?>) aValue).orElse(null);
+                } else {
+                    targetColor = (Color) aValue;
+                }
+                
+                if (targetColor == null) {
+                    colorProfile.removeColor(rows.get(rowIndex).colorType);
+                } else {
+                    colorProfile.setColor(rows.get(rowIndex).colorType, targetColor);
+                }
                 notifyAllListeners(rowIndex);
                 return;
             }

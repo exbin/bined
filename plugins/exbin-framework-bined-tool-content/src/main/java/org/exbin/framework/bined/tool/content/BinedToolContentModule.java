@@ -30,6 +30,7 @@ import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Binary editor clipboard support module.
@@ -57,8 +58,11 @@ public class BinedToolContentModule implements PluginModule {
 
     @Override
     public void register() {
-        registerClipboardContentMenu();
-        registerDragDropContentMenu();
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.addPostInitAction(() -> {
+            registerClipboardContentMenu();
+            registerDragDropContentMenu();
+        });
     }
     
     private void ensureSetup() {

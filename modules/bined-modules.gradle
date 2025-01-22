@@ -1,6 +1,6 @@
 // Shared modules build
 
-version = '0.2.4-SNAPSHOT'
+version = '0.2.4'
 def repositoryName = "bined"
 def githubProfile = 'exbin'
 def libraryUrl = 'https://bined.exbin.org/editor'

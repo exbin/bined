@@ -31,6 +31,7 @@ import org.exbin.framework.action.api.MenuManagement;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Binary data editor bookmarks module.
@@ -51,11 +52,14 @@ public class BinedBookmarksModule implements PluginModule {
 
     @Override
     public void register() {
-        registerBookmarksMenuActions();
-        registerBookmarksPopupMenuActions();
-        
-        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-        editorModule.addEditorProviderChangeListener((editorProvider) -> getBookmarksManager().setEditorProvider(editorProvider));
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.addPostInitAction(() -> {
+            registerBookmarksMenuActions();
+            registerBookmarksPopupMenuActions();
+
+            EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+            editorModule.addEditorProviderChangeListener((editorProvider) -> getBookmarksManager().setEditorProvider(editorProvider));
+        });
     }
 
     public void registerBookmarksMenuActions() {

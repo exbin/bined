@@ -22,15 +22,8 @@ if (!hasProperty('mainClass')) {
 
 def configureExec(task) {
     task.mainClass = mainClass
-//    task.classpath += files(['/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/classes/java/main',
-//        '/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/resources/main',
-//        '/home/hajdam/Software/Projekty/exbin/bined/modules/exbin-framework-bined-launcher/build/libs/exbin-framework-bined-launcher-0.3.0-SNAPSHOT.jar',
-//        '/home/hajdam/.gradle/caches/modules-2/files-2.1/org.exbin.framework/exbin-framework/0.3.0-SNAPSHOT/7ff52836111ce7c5c1d777a1299124a636c4728d/exbin-framework-0.3.0-SNAPSHOT.jar',
-//        '/home/hajdam/.gradle/caches/modules-2/files-2.1/org.exbin.framework/exbin-framework-basic/0.3.0-SNAPSHOT/8bfa5016c63d2e98a380c34218bf8048622561da/exbin-framework-basic-0.3.0-SNAPSHOT.jar',
-//        'lib/exbin-framework-language-0.3.0-SNAPSHOT.jar',
-//        'lib/exbin-framework-language-api-0.3.0-SNAPSHOT.jar'
-//      ])
-//    task.classpath += files(['/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/classes/java/main', '/home/hajdam/Software/Projekty/exbin/bined/apps/bined-editor/build/resources/main', 'lib/commons-cli-1.2.jar', 'lib/exbin-framework-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-language-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-language-api-0.3.0-SNAPSHOT.jar'])
+//    task.classpath += files(['build/classes/java/main'])
+//    task.classpath += files([''lib/commons-cli-1.2.jar', ...])
     task.classpath = sourceSets.main.runtimeClasspath
     if (hasProperty('appArgs')) {
         task.args appArgs
@@ -126,6 +119,7 @@ def manifestClassPath() {
 launch4j {
     outfile = "Bined.exe"
     mainClassName = project.mainClass
+    classpath = ['lib/commons-cli-1.2.jar', 'lib/flatlaf-desktop-3.2.jar', 'lib/exbin-framework-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar']
     //    jar = "../../build/libs/" + project.name + "-${version}.jar"
 
     productName = "BinEd"
@@ -140,7 +134,7 @@ jar {
     manifest {
         attributes(
             'Main-Class': mainClass,
-            'Class-Path': 'lib/commons-cli-1.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar'
+            'Class-Path': 'lib/commons-cli-1.2.jar lib/flatlaf-desktop-3.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar'
 //            'Class-Path': manifestClassPath()
         )
     }

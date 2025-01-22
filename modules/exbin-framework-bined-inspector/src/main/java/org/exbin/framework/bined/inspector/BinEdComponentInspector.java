@@ -18,11 +18,16 @@ package org.exbin.framework.bined.inspector;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
@@ -46,8 +51,23 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     @Override
     public void onCreate(BinEdComponentPanel componentPanel) {
         this.componentPanel = componentPanel;
-        SectCodeArea codeArea = componentPanel.getCodeArea();
 
+        if (SwingUtilities.isEventDispatchThread()) {
+            onCreateInt();
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(() -> {
+                    onCreateInt();
+                });
+            } catch (InterruptedException | InvocationTargetException ex) {
+                Logger.getLogger(BinEdComponentInspector.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        setShowParsingPanel(true);
+    }
+
+    private void onCreateInt() {
+        SectCodeArea codeArea = componentPanel.getCodeArea();
         valuesPanel = new BasicValuesPanel();
         valuesPanel.setCodeArea(codeArea, null);
         if (basicValuesColorModifier != null) {
@@ -56,7 +76,6 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
         valuesPanelScrollPane = new JScrollPane(valuesPanel);
         valuesPanelScrollPane.setBorder(null);
-        setShowParsingPanel(true);
     }
 
     @Override
@@ -75,7 +94,9 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
         DataInspectorPreferences dataInspectorPreferences = new DataInspectorPreferences(preferences.getPreferences());
         setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
         boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
-        if (!useDefaultFont) {
+        if (useDefaultFont) {
+            setInputFieldsFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+        } else {
             Map<TextAttribute, Object> fontAttributes = dataInspectorPreferences.getFontAttributes();
             setInputFieldsFont(new Font(fontAttributes));
         }

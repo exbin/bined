@@ -60,7 +60,6 @@ import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
-import org.exbin.framework.window.api.WindowModuleApi;
 
 /**
  * Binary editor launcher module.
@@ -121,13 +120,15 @@ public class BinedLauncherModule implements LauncherModule {
                 preferences.put(EditorPreferences.PREFERENCES_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
             }
 
+            LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
+            languageModule.setAppBundle(bundle);
             final UiModuleApi uiModule = App.getModule(UiModuleApi.class);
-            final WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+            uiModule.initSwingUi();
+
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
             EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             AboutModuleApi aboutModule = App.getModule(AboutModuleApi.class);
-            LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
             HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
             HelpOnlineModuleApi helpOnlineModule = App.getModule(HelpOnlineModuleApi.class);
             OperationUndoModuleApi undoModule = App.getModule(OperationUndoModuleApi.class);
@@ -135,8 +136,6 @@ public class BinedLauncherModule implements LauncherModule {
             OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
-            languageModule.setAppBundle(bundle);
-            uiModule.initSwingUi();
             BinedModule binedModule = App.getModule(BinedModule.class);
             BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
@@ -150,7 +149,7 @@ public class BinedLauncherModule implements LauncherModule {
             BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
             binedSearchModule.setEditorProvider(editorProvider);
             binedSearchModule.registerSearchComponent();
-            
+
             fileModule.registerOptionsPanels();
 
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);

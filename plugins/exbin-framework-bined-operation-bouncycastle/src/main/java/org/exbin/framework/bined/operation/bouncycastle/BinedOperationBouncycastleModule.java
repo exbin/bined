@@ -24,6 +24,7 @@ import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDataMethod;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Binary data editor operations module using bouncy castle library.
@@ -42,10 +43,13 @@ public class BinedOperationBouncycastleModule implements PluginModule {
 
     @Override
     public void register() {
-        BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.addPostInitAction(() -> {
+            BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
 
-        ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
-        binedOperationModule.addConvertDataComponent(computeHashDataMethod);
+            ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
+            binedOperationModule.addConvertDataComponent(computeHashDataMethod);
+        });
     }
 
     @Nonnull
