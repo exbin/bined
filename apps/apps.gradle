@@ -1,6 +1,6 @@
 // Shared apps build
 
-version = '0.2.4'
+version = '0.3.0-SNAPSHOT'
 def repositoryName = "bined"
 def libraryUrl = 'https://bined.exbin.org/editor'
 

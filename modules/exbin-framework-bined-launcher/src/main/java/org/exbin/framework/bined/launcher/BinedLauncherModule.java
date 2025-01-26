@@ -126,6 +126,10 @@ public class BinedLauncherModule implements LauncherModule {
             uiModule.initSwingUi();
 
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+            if (demoMode) {
+                frameModule.switchFrameToUndecorated();
+            }
+
             EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             AboutModuleApi aboutModule = App.getModule(AboutModuleApi.class);
@@ -237,9 +241,7 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-            if (!demoMode) {
-                uiModule.registerOptionsPanels();
-            }
+            uiModule.registerOptionsPanels();
             binedModule.registerStatusBar();
             binedModule.registerOptionsPanels();
             binedModule.getBinaryStatusPanel();
@@ -264,9 +266,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             JComponent editorComponent = editorModule.getEditorComponent();
             frameHandler.setMainPanel(editorComponent);
-            if (!demoMode) {
-                addonManagerModule.registerAddonManagerMenuItem();
-            }
+            addonManagerModule.registerAddonManagerMenuItem();
 
             frameHandler.setDefaultSize(new Dimension(600, 400));
             frameModule.loadFramePosition();

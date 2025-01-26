@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <module>
   <plugin>org.exbin.framework.bined.operation.bouncycastle.BinedOperationBouncycastleModule</plugin>
-  <name>BinEd Bouncycastle Conversion</name>
+  <name>BinEd Bouncycastle Support</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>
-  <description>Support for data conversions using Bouncycastle cryptoraphic library</description>
+  <description>Support for data conversions using Bouncycastle cryptographic library</description>
   <dependency>
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />

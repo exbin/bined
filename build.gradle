@@ -13,7 +13,7 @@ plugins {
     id "nebula.ospackage" version "8.6.3"
 }
 
-version = '0.2.4'
+version = '0.3.0-SNAPSHOT'
 
 task cleanDeps {
     if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {

@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.79'
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.80'
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-core')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-swing')
     implementation moduleDep('BinedLibJava', 'org.exbin.bined', 'modules', 'bined-section')
