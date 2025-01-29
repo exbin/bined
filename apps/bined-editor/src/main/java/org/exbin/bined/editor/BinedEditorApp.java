@@ -45,8 +45,8 @@ public class BinedEditorApp {
                 app.addModulesFrom(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
                 app.addModulesFrom(new File("lib").toURI(), ModuleFileLocation.LIBRARY);
             } else {
-                app.addModulesFrom(new File(app.getAppDirectory(), BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
-                app.addModulesFrom(new File(app.getAppDirectory(), "lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFrom(new File(appDirectory, BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
+                app.addModulesFrom(new File(appDirectory, "lib").toURI(), ModuleFileLocation.LIBRARY);
             }
             app.addClassPathModules();
             app.addModulesFromManifest(BinedEditorApp.class);
