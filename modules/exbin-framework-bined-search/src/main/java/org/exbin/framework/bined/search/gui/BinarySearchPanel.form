@@ -49,7 +49,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="findTypeToolBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="findComboBox" pref="519" max="32767" attributes="0"/>
+                  <Component id="findComboBox" pref="629" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="findToolBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -140,8 +140,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="prevMatchButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-left.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new ImageIcon(getClass().getResource(resourceBundle.getString(&quot;prevMatchButton.icon&quot;)))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="prevMatchButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
@@ -158,8 +158,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="nextMatchButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-right.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new ImageIcon(getClass().getResource(resourceBundle.getString(&quot;nextMatchButton.icon&quot;)))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="nextMatchButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
@@ -176,8 +176,8 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="matchCaseToggleButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/case_sensitive.gif"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new ImageIcon(getClass().getResource(resourceBundle.getString(&quot;matchCaseToggleButton.icon&quot;)))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="matchCaseToggleButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
@@ -193,8 +193,8 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="multipleMatchesToggleButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/mark_occurrences.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new ImageIcon(getClass().getResource(resourceBundle.getString(&quot;multipleMatchesToggleButton.icon&quot;)))" type="code"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
@@ -249,8 +249,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="closeButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/dialog-cancel-3.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new ImageIcon(getClass().getResource(resourceBundle.getString(&quot;closeButton.icon&quot;)))" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/exbin/framework/bined/search/gui/resources/BinarySearchPanel.properties" key="closeButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>

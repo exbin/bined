@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
@@ -415,7 +416,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findToolBar.setFocusable(false);
         findToolBar.setName("findToolBar"); // NOI18N
 
-        prevMatchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-left.png"))); // NOI18N
+        prevMatchButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("prevMatchButton.icon"))));
         prevMatchButton.setToolTipText(resourceBundle.getString("prevMatchButton.toolTipText")); // NOI18N
         prevMatchButton.setEnabled(false);
         prevMatchButton.setFocusable(false);
@@ -429,7 +430,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findToolBar.add(prevMatchButton);
 
-        nextMatchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/arrow-right.png"))); // NOI18N
+        nextMatchButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("nextMatchButton.icon"))));
         nextMatchButton.setToolTipText(resourceBundle.getString("nextMatchButton.toolTipText")); // NOI18N
         nextMatchButton.setEnabled(false);
         nextMatchButton.setFocusable(false);
@@ -443,7 +444,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findToolBar.add(nextMatchButton);
 
-        matchCaseToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/case_sensitive.gif"))); // NOI18N
+        matchCaseToggleButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("matchCaseToggleButton.icon"))));
         matchCaseToggleButton.setToolTipText(resourceBundle.getString("matchCaseToggleButton.toolTipText")); // NOI18N
         matchCaseToggleButton.setFocusable(false);
         matchCaseToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -456,7 +457,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findToolBar.add(matchCaseToggleButton);
 
-        multipleMatchesToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/mark_occurrences.png"))); // NOI18N
+        multipleMatchesToggleButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("multipleMatchesToggleButton.icon"))));
         multipleMatchesToggleButton.setSelected(true);
         multipleMatchesToggleButton.setToolTipText(resourceBundle.getString("multipleMatchesToggleButton.toolTipText")); // NOI18N
         multipleMatchesToggleButton.setFocusable(false);
@@ -492,7 +493,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         closeToolBar.setRollover(true);
         closeToolBar.setName("closeToolBar"); // NOI18N
 
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/exbin/framework/bined/search/resources/icons/open_icon_library/icons/png/16x16/actions/dialog-cancel-3.png"))); // NOI18N
+        closeButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("closeButton.icon"))));
         closeButton.setToolTipText(resourceBundle.getString("closeButton.toolTipText")); // NOI18N
         closeButton.setFocusable(false);
         closeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -515,7 +516,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findTypeToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(findComboBox, 0, 519, Short.MAX_VALUE)
+                .addComponent(findComboBox, 0, 629, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
