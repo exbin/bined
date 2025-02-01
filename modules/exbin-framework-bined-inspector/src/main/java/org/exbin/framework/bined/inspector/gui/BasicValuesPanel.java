@@ -19,13 +19,11 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.font.TextAttribute;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -67,7 +65,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     public static final long UINT_MAX_VALUE = 4294967295L;
     public static final BigInteger ULONG_MAX_VALUE = new BigInteger("4294967295");
     public static final BigInteger BIG_INTEGER_BYTE_MASK = BigInteger.valueOf(255);
-    public static final String VALUE_OUT_OF_RANGE = "Value is out of range";
+    public static final String VALUE_OUT_OF_RANGE_EXCEPTION = "Value is out of range";
     public static int CACHE_SIZE = 250;
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BasicValuesPanel.class);
@@ -190,7 +188,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
             }
         });
 
-        wordLabel.setText("Word"); // NOI18N
+        wordLabel.setText(resourceBundle.getString("wordLabel.text")); // NOI18N
 
         wordTextField.setEditable(false);
         wordTextField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -258,7 +256,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         endianButtonGroup.add(bigEndianRadioButton);
         bigEndianRadioButton.setSelected(true);
         bigEndianRadioButton.setText(resourceBundle.getString("bigEndianRadioButton.text")); // NOI18N
-        bigEndianRadioButton.setToolTipText("Big Endian");
+        bigEndianRadioButton.setToolTipText(resourceBundle.getString("bigEndianRadioButton.toolTipText")); // NOI18N
         bigEndianRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 bigEndianRadioButtonStateChanged(evt);
@@ -267,7 +265,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
         endianButtonGroup.add(littleEndianRadioButton);
         littleEndianRadioButton.setText(resourceBundle.getString("littleEndianRadioButton.text")); // NOI18N
-        littleEndianRadioButton.setToolTipText("Little Endian");
+        littleEndianRadioButton.setToolTipText(resourceBundle.getString("littleEndianRadioButton.toolTipText")); // NOI18N
         littleEndianRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 littleEndianRadioButtonStateChanged(evt);
@@ -277,7 +275,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         integerSignButtonGroup.add(signedRadioButton);
         signedRadioButton.setSelected(true);
         signedRadioButton.setText(resourceBundle.getString("signedRadioButton.text")); // NOI18N
-        signedRadioButton.setToolTipText("Signed Integers");
+        signedRadioButton.setToolTipText(resourceBundle.getString("signedRadioButton.toolTipText")); // NOI18N
         signedRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 signedRadioButtonStateChanged(evt);
@@ -286,7 +284,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
         integerSignButtonGroup.add(unsignedRadioButton);
         unsignedRadioButton.setText(resourceBundle.getString("unsignedRadioButton.text")); // NOI18N
-        unsignedRadioButton.setToolTipText("Unsigned Integers");
+        unsignedRadioButton.setToolTipText(resourceBundle.getString("unsignedRadioButton.toolTipText")); // NOI18N
         unsignedRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 unsignedRadioButtonStateChanged(evt);
@@ -487,11 +485,11 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 int intValue = Integer.parseInt(byteTextField.getText());
                 if (isSigned()) {
                     if (intValue < Byte.MIN_VALUE || intValue > Byte.MAX_VALUE) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
                 } else {
                     if (intValue < 0 || intValue > UBYTE_MAX_VALUE) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
                 }
 
@@ -510,11 +508,11 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 int intValue = Integer.parseInt(wordTextField.getText());
                 if (isSigned()) {
                     if (intValue < SWORD_MIN_VALUE || intValue > SWORD_MAX_VALUE) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
                 } else {
                     if (intValue < 0 || intValue > UWORD_MAX_VALUE) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
                 }
 
@@ -539,11 +537,11 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 long longValue = Long.parseLong(intTextField.getText());
                 if (isSigned()) {
                     if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
                 } else {
                     if (longValue < 0 || longValue > UINT_MAX_VALUE) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
                 }
 
@@ -582,7 +580,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 } else {
                     BigInteger bigInteger = new BigInteger(longTextField.getText());
                     if (bigInteger.compareTo(BigInteger.ZERO) == -1 || bigInteger.compareTo(ULONG_MAX_VALUE) == 1) {
-                        throw new NumberFormatException(VALUE_OUT_OF_RANGE);
+                        throw new NumberFormatException(VALUE_OUT_OF_RANGE_EXCEPTION);
                     }
 
                     if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
@@ -878,7 +876,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     }
 
     private void showException(Exception ex) {
-        JOptionPane.showMessageDialog(this, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, ex.getMessage(), resourceBundle.getString("invalidInputError.message"), JOptionPane.ERROR_MESSAGE);
     }
 
     public enum ValuesPanelField {

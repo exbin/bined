@@ -220,7 +220,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="wordLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Word" noResource="true"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="wordLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="wordTextField">
@@ -335,7 +337,9 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="bigEndianRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Big Endian"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="bigEndianRadioButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="bigEndianRadioButtonStateChanged"/>
@@ -349,7 +353,9 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="littleEndianRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Little Endian"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="littleEndianRadioButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="littleEndianRadioButtonStateChanged"/>
@@ -364,7 +370,9 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="signedRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Signed Integers"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="signedRadioButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="signedRadioButtonStateChanged"/>
@@ -378,7 +386,9 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="unsignedRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Unsigned Integers"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="unsignedRadioButton.toolTipText" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="unsignedRadioButtonStateChanged"/>
