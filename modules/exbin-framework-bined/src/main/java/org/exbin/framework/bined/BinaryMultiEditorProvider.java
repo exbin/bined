@@ -52,6 +52,7 @@ import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 
 /**
@@ -146,7 +147,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         fileHandler.registerUndoHandler();
 
         fileHandler.setNewData(defaultFileHandlingMode);
-        fileHandler.getUndoRedo().addChangeListener(() -> {
+        ((UndoRedo) fileHandler.getUndoRedo().get()).addChangeListener(() -> {
             // TODO undoRedo.notifyUndoUpdate();
             updateCurrentDocumentSize();
             // notifyModified();

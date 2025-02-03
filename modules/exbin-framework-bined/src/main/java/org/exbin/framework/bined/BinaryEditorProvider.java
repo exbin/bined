@@ -317,7 +317,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     @Nonnull
     @Override
-    public UndoRedoState getUndoRedo() {
+    public Optional<UndoRedoState> getUndoRedo() {
         return activeFile.getUndoRedo();
     }
 

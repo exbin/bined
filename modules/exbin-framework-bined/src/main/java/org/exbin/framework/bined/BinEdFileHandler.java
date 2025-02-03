@@ -58,7 +58,7 @@ import org.exbin.framework.utils.ClipboardActionsHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
-import org.exbin.framework.operation.undo.api.UndoRedoControl;
+import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
 
 /**
@@ -73,7 +73,6 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Nonnull
     private final BinEdEditorComponent editorComponent;
-    private UndoRedoWrapper undoHandlerWrapper;
     private int id = 0;
     private URI fileUri = null;
     private FileType fileType;
@@ -82,7 +81,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private SectionCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
     private ComponentActivationListener componentActivationListener;
-    private UndoRedoState undoRedoHandler = null;
+    private UndoRedo undoRedo = null;
 
     public BinEdFileHandler() {
         editorComponent = new BinEdEditorComponent();
@@ -111,8 +110,9 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     public void setUndoHandler(BinaryDataUndoRedo undoRedo) {
         editorComponent.setUndoHandler(undoRedo);
-        undoRedoHandler = new UndoRedoControlImpl(undoRedo);
-        undoRedo.addChangeListener(this::notifyUndoChanged);
+        this.undoRedo = new UndoRedoWrapper();
+        ((UndoRedoWrapper) this.undoRedo).setUndoRedo(undoRedo);
+        this.undoRedo.addChangeListener(this::notifyUndoChanged);
         notifyUndoChanged();
     }
 
@@ -163,7 +163,9 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
             Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        getUndoRedo().clear();
+        if (undoRedo != null) {
+            undoRedo.clear();
+        }
         fileSync();
     }
 
@@ -211,7 +213,9 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     private void fileSync() {
         documentOriginalSize = getCodeArea().getDataSize();
-        getUndoRedo().setSyncPosition();
+        if (undoRedo != null) {
+            undoRedo.setSyncPosition();
+        }
     }
 
     public void loadFromStream(InputStream stream) throws IOException {
@@ -260,8 +264,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         }
         setNewData(fileHandlingMode);
         fileUri = null;
-        if (undoHandlerWrapper != null) {
-            undoHandlerWrapper.clear();
+        if (undoRedo != null) {
+            undoRedo.clear();
         }
     }
 
@@ -382,8 +386,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
                     editorComponent.setContentData(document);
                 }
 
-                if (undoHandlerWrapper != null) {
-                    undoHandlerWrapper.clear();
+                if (undoRedo != null) {
+                    undoRedo.clear();
                 }
 
                 oldData.dispose();
@@ -419,11 +423,11 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public boolean isModified() {
-        if (undoHandlerWrapper == null) {
+        if (undoRedo == null) {
             return false;
         }
 
-        return undoHandlerWrapper.getCommandPosition() != undoHandlerWrapper.getSyncPosition();
+        return undoRedo.getCommandPosition() != undoRedo.getSyncPosition();
     }
 
     public void setNewData(FileHandlingMode fileHandlingMode) {
@@ -444,12 +448,12 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Nonnull
     @Override
-    public UndoRedoWrapper getUndoRedo() {
-        if (undoHandlerWrapper == null) {
-            undoHandlerWrapper = new UndoRedoWrapper();
-            ((UndoRedoWrapper) undoHandlerWrapper).setUndoRedo(editorComponent.getUndoHandler().orElse(null));
+    public Optional<UndoRedoState> getUndoRedo() {
+        if (undoRedo == null) {
+            undoRedo = new UndoRedoWrapper();
+            ((UndoRedoWrapper) undoRedo).setUndoRedo(editorComponent.getUndoHandler().orElse(null));
         }
-        return undoHandlerWrapper;
+        return Optional.of(undoRedo);
     }
 
     @Nonnull
@@ -554,7 +558,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     public void componentActivated(ComponentActivationListener componentActivationListener) {
         this.componentActivationListener = componentActivationListener;
         componentActivationListener.updated(CodeAreaCore.class, getCodeArea());
-        componentActivationListener.updated(UndoRedoState.class, getUndoRedo());
+        componentActivationListener.updated(UndoRedoState.class, undoRedo);
         componentActivationListener.updated(ClipboardActionsHandler.class, this);
     }
 
@@ -567,56 +571,10 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     private void notifyUndoChanged() {
-        if (undoRedoHandler != null) {
+        if (undoRedo != null) {
             if (componentActivationListener != null) {
-                componentActivationListener.updated(UndoRedoState.class, undoRedoHandler);
+                componentActivationListener.updated(UndoRedoState.class, undoRedo);
             }
-        }
-    }
-
-    @ParametersAreNonnullByDefault
-    private class UndoRedoControlImpl implements UndoRedoControl, UndoRedoFileHandler {
-
-        private final BinaryDataUndoRedo undoRedo;
-
-        public UndoRedoControlImpl(BinaryDataUndoRedo undoHandler) {
-            this.undoRedo = undoHandler;
-        }
-
-        @Override
-        public boolean canUndo() {
-            return undoRedo.canUndo();
-        }
-
-        @Override
-        public boolean canRedo() {
-            return undoRedo.canRedo();
-        }
-
-        @Override
-        public void performUndo() {
-            try {
-                undoRedo.performUndo();
-                notifyUndoChanged();
-            } catch (Exception ex) {
-                Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        @Override
-        public void performRedo() {
-            try {
-                undoRedo.performRedo();
-                notifyUndoChanged();
-            } catch (Exception ex) {
-                Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        @Nonnull
-        @Override
-        public UndoRedoControl getUndoRedo() {
-            return BinEdFileHandler.this.getUndoRedo();
         }
     }
 }

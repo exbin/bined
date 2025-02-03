@@ -95,8 +95,9 @@ public class BookmarksManager {
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
         EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-        JComponent editorComponent = editorModule.getEditorComponent();
-        registerBookmarksComponentActions(editorComponent);
+        editorModule.addEditorProviderComponentListener((editorComponent) -> {
+            registerBookmarksComponentActions(editorComponent);
+        });
     }
 
     public void init() {

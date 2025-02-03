@@ -493,7 +493,6 @@ public class BinedModule implements Module {
         if (encodingsHandler == null) {
             ensureSetup();
             encodingsHandler = new EncodingsHandler();
-            encodingsHandler.setParentComponent(editorProvider.getEditorComponent());
             fileManager.updateTextEncodingStatus(encodingsHandler);
             encodingsHandler.init();
 
