@@ -84,13 +84,18 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private UndoRedo undoRedo = null;
 
     public BinEdFileHandler() {
-        editorComponent = new BinEdEditorComponent();
+        editorComponent = createEditorComponent();
         init();
     }
 
     public BinEdFileHandler(int id) {
         this();
         this.id = id;
+    }
+
+    @Nonnull
+    protected BinEdEditorComponent createEditorComponent() {
+        return new BinEdEditorComponent();
     }
 
     private void init() {

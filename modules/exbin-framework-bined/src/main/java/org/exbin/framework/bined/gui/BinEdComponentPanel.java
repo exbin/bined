@@ -55,7 +55,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     private void init() {
-        codeArea = new SectCodeArea();
+        codeArea = createCodeArea();
         CodeAreaPainter painter = codeArea.getPainter();
         BinEdCodeAreaAssessor codeAreaAssessor = new BinEdCodeAreaAssessor(((ColorAssessorPainterCapable) painter).getColorAssessor(), ((CharAssessorPainterCapable) painter).getCharAssessor());
         ((ColorAssessorPainterCapable) painter).setColorAssessor(codeAreaAssessor);
@@ -67,6 +67,11 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setCommandHandler(commandHandler);
 
         add(codeArea);
+    }
+    
+    @Nonnull
+    protected SectCodeArea createCodeArea() {
+        return new SectCodeArea();
     }
 
     @Nonnull

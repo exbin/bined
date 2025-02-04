@@ -46,13 +46,18 @@ public class BinEdEditorComponent {
     private final SectionCodeAreaThemeProfile defaultThemeProfile;
     private final CodeAreaColorsProfile defaultColorProfile;
 
-    private BinEdComponentPanel componentPanel = new BinEdComponentPanel();
+    private BinEdComponentPanel componentPanel = createComponentPanel();
 
     public BinEdEditorComponent() {
         SectCodeArea codeArea = componentPanel.getCodeArea();
         defaultLayoutProfile = codeArea.getLayoutProfile();
         defaultThemeProfile = codeArea.getThemeProfile();
         defaultColorProfile = codeArea.getColorsProfile();
+    }
+
+    @Nonnull
+    protected BinEdComponentPanel createComponentPanel() {
+        return new BinEdComponentPanel();
     }
 
     @Nonnull

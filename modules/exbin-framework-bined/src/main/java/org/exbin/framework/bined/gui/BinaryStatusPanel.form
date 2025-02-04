@@ -6,6 +6,9 @@
       <Properties>
         <Property name="name" type="java.lang.String" value="positionPopupMenu" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createPopupMenu()"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
@@ -18,6 +21,9 @@
             </Property>
             <Property name="name" type="java.lang.String" value="cursorPositionCodeTypeMenu" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createMenu()"/>
+          </AuxValues>
           <SubComponents>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="octalCursorPositionModeRadioButtonMenuItem">
               <Properties>
@@ -32,6 +38,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="octalCursorPositionModeRadioButtonMenuItemActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="decimalCursorPositionModeRadioButtonMenuItem">
               <Properties>
@@ -47,6 +56,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="decimalCursorPositionModeRadioButtonMenuItemActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="hexadecimalCursorPositionModeRadioButtonMenuItem">
               <Properties>
@@ -61,6 +73,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hexadecimalCursorPositionModeRadioButtonMenuItemActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+              </AuxValues>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -75,6 +90,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cursorPositionShowOffsetCheckBoxMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createCheckBoxMenuItem()"/>
+          </AuxValues>
         </MenuItem>
         <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
         </Component>
@@ -88,6 +106,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="positionCopyMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createMenuItem()"/>
+          </AuxValues>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="positionGoToMenuItem">
           <Properties>
@@ -99,6 +120,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="positionGoToMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createMenuItem()"/>
+          </AuxValues>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -106,6 +130,9 @@
       <Properties>
         <Property name="name" type="java.lang.String" value="documentSizePopupMenu" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createPopupMenu()"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
@@ -118,6 +145,9 @@
             </Property>
             <Property name="name" type="java.lang.String" value="documentSizeCodeTypeMenu" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createMenu()"/>
+          </AuxValues>
           <SubComponents>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="octalDocumentSizeModeRadioButtonMenuItem">
               <Properties>
@@ -132,6 +162,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="octalDocumentSizeModeRadioButtonMenuItemActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="decimalDocumentSizeModeRadioButtonMenuItem">
               <Properties>
@@ -147,6 +180,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="decimalDocumentSizeModeRadioButtonMenuItemActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="hexadecimalDocumentSizeModeRadioButtonMenuItem">
               <Properties>
@@ -161,6 +197,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hexadecimalDocumentSizeModeRadioButtonMenuItemActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+              </AuxValues>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -175,6 +214,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="documentSizeShowRelativeCheckBoxMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createCheckBoxMenuItem()"/>
+          </AuxValues>
         </MenuItem>
         <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
         </Component>
@@ -188,6 +230,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="documentSizeCopyMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createMenuItem()"/>
+          </AuxValues>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -195,6 +240,9 @@
       <Properties>
         <Property name="name" type="java.lang.String" value="memoryModePopupMenu" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createPopupMenu()"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
@@ -214,6 +262,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deltaMemoryModeRadioButtonMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+          </AuxValues>
         </MenuItem>
         <MenuItem class="javax.swing.JRadioButtonMenuItem" name="ramMemoryModeRadioButtonMenuItem">
           <Properties>
@@ -228,6 +279,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ramMemoryModeRadioButtonMenuItemActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="UiUtils.createRadioButtonMenuItem()"/>
+          </AuxValues>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -303,7 +357,7 @@
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="encodingLabelMouseReleased"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new EncodingLabel()"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createEncodingLabel()"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="documentSizeLabel">
@@ -322,6 +376,9 @@
           <ComponentRef name="documentSizePopupMenu"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="cursorPositionLabel">
       <Properties>
@@ -342,6 +399,9 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cursorPositionLabelMouseClicked"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="memoryModeLabel">
       <Properties>
@@ -361,6 +421,9 @@
           <ComponentRef name="memoryModePopupMenu"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="editModeLabel">
       <Properties>
@@ -378,6 +441,9 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editModeLabelMouseClicked"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

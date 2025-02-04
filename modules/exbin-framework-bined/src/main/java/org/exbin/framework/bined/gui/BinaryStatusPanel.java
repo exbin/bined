@@ -43,6 +43,7 @@ import org.exbin.framework.bined.options.StatusOptions;
 import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
 import org.exbin.framework.bined.preferences.StatusPreferences;
 import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.utils.UtilsModule;
 
 /**
@@ -149,34 +150,34 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        positionPopupMenu = new javax.swing.JPopupMenu();
-        cursorPositionCodeTypeMenu = new javax.swing.JMenu();
-        octalCursorPositionModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        decimalCursorPositionModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        hexadecimalCursorPositionModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        cursorPositionShowOffsetCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        positionPopupMenu = UiUtils.createPopupMenu();
+        cursorPositionCodeTypeMenu = UiUtils.createMenu();
+        octalCursorPositionModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        decimalCursorPositionModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        hexadecimalCursorPositionModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        cursorPositionShowOffsetCheckBoxMenuItem = UiUtils.createCheckBoxMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        positionCopyMenuItem = new javax.swing.JMenuItem();
-        positionGoToMenuItem = new javax.swing.JMenuItem();
-        documentSizePopupMenu = new javax.swing.JPopupMenu();
-        documentSizeCodeTypeMenu = new javax.swing.JMenu();
-        octalDocumentSizeModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        decimalDocumentSizeModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        hexadecimalDocumentSizeModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        documentSizeShowRelativeCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        positionCopyMenuItem = UiUtils.createMenuItem();
+        positionGoToMenuItem = UiUtils.createMenuItem();
+        documentSizePopupMenu = UiUtils.createPopupMenu();
+        documentSizeCodeTypeMenu = UiUtils.createMenu();
+        octalDocumentSizeModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        decimalDocumentSizeModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        hexadecimalDocumentSizeModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        documentSizeShowRelativeCheckBoxMenuItem = UiUtils.createCheckBoxMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        documentSizeCopyMenuItem = new javax.swing.JMenuItem();
-        memoryModePopupMenu = new javax.swing.JPopupMenu();
-        deltaMemoryModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
-        ramMemoryModeRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
+        documentSizeCopyMenuItem = UiUtils.createMenuItem();
+        memoryModePopupMenu = UiUtils.createPopupMenu();
+        deltaMemoryModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
+        ramMemoryModeRadioButtonMenuItem = UiUtils.createRadioButtonMenuItem();
         memoryModeButtonGroup = new javax.swing.ButtonGroup();
         documentSizeModeButtonGroup = new javax.swing.ButtonGroup();
         cursorPositionModeButtonGroup = new javax.swing.ButtonGroup();
-        encodingLabel = new EncodingLabel();
-        documentSizeLabel = new javax.swing.JLabel();
-        cursorPositionLabel = new javax.swing.JLabel();
-        memoryModeLabel = new javax.swing.JLabel();
-        editModeLabel = new javax.swing.JLabel();
+        encodingLabel = createEncodingLabel();
+        documentSizeLabel = createLabel();
+        cursorPositionLabel = createLabel();
+        memoryModeLabel = createLabel();
+        editModeLabel = createLabel();
 
         positionPopupMenu.setName("positionPopupMenu"); // NOI18N
 
@@ -564,6 +565,31 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
     private javax.swing.JRadioButtonMenuItem ramMemoryModeRadioButtonMenuItem;
     // End of variables declaration//GEN-END:variables
 
+    @Nonnull
+    protected JLabel createLabel() {
+        return new JLabel();
+    }
+
+    @Nonnull
+    protected JLabel createEncodingLabel() {
+        return new JLabel() {
+
+            private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Dimension areaSize = getSize();
+
+                int h = areaSize.height;
+                int w = areaSize.width;
+                int size = Math.min(Math.max((h - 4) / 4, 2), 10);
+                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 - (h / 5), size, SwingConstants.NORTH, true);
+                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 + (h / 5), size, SwingConstants.SOUTH, true);
+            }
+        };
+    }
+
     @Override
     public void setCursorPosition(CodeAreaCaretPosition caretPosition) {
         this.caretPosition = caretPosition;
@@ -840,23 +866,5 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
          * @param memoryMode memory mode
          */
         void changeMemoryMode(MemoryMode memoryMode);
-    }
-
-    @ParametersAreNonnullByDefault
-    private static class EncodingLabel extends JLabel {
-
-        private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Dimension areaSize = getSize();
-
-            int h = areaSize.height;
-            int w = areaSize.width;
-            int size = Math.min(Math.max((h - 4) / 4, 2), 10);
-            basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 - (h / 5), size, SwingConstants.NORTH, true);
-            basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 + (h / 5), size, SwingConstants.SOUTH, true);
-        }
     }
 }
