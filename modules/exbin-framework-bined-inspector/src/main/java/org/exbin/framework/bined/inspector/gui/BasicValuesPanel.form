@@ -162,46 +162,73 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="binaryLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox0">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox0ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox1">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox1ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox2">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox2ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox3">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox3ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox4">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox4ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox5">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox5ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox6">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox6ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="binaryCheckBox7">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="binaryCheckBox7ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createCheckBox()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="byteLabel">
       <Properties>
@@ -209,6 +236,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="byteLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="byteTextField">
       <Properties>
@@ -217,6 +247,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="byteTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="wordLabel">
       <Properties>
@@ -224,6 +257,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="wordLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="wordTextField">
       <Properties>
@@ -232,6 +268,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="wordTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="intLabel">
       <Properties>
@@ -239,6 +278,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="intLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="intTextField">
       <Properties>
@@ -247,6 +289,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="intTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="longLabel">
       <Properties>
@@ -254,6 +299,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="longLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="longTextField">
       <Properties>
@@ -262,6 +310,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="longTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="floatLabel">
       <Properties>
@@ -269,6 +320,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="floatLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="floatTextField">
       <Properties>
@@ -277,6 +331,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="floatTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="doubleLabel">
       <Properties>
@@ -284,6 +341,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="doubleLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="doubleTextField">
       <Properties>
@@ -292,6 +352,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="doubleTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="characterLabel">
       <Properties>
@@ -299,6 +362,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="characterLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="characterTextField">
       <Properties>
@@ -307,6 +373,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="characterTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="stringLabel">
       <Properties>
@@ -314,6 +383,9 @@
           <ResourceString bundle="org/exbin/framework/bined/inspector/gui/resources/BasicValuesPanel.properties" key="stringLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createLabel()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="stringTextField">
       <Properties>
@@ -322,6 +394,9 @@
       <Events>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="stringTextFieldKeyReleased"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
       <Properties>
@@ -344,6 +419,9 @@
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="bigEndianRadioButtonStateChanged"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createRadioButton()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JRadioButton" name="littleEndianRadioButton">
       <Properties>
@@ -360,6 +438,9 @@
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="littleEndianRadioButtonStateChanged"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createRadioButton()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JRadioButton" name="signedRadioButton">
       <Properties>
@@ -377,6 +458,9 @@
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="signedRadioButtonStateChanged"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createRadioButton()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JRadioButton" name="unsignedRadioButton">
       <Properties>
@@ -393,6 +477,9 @@
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="unsignedRadioButtonStateChanged"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createRadioButton()"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

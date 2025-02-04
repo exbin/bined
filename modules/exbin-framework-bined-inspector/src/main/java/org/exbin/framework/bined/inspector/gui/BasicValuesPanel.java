@@ -27,7 +27,11 @@ import java.util.InputMismatchException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.DataChangedListener;
@@ -95,36 +99,36 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
         endianButtonGroup = new javax.swing.ButtonGroup();
         integerSignButtonGroup = new javax.swing.ButtonGroup();
-        binaryLabel = new javax.swing.JLabel();
-        binaryCheckBox0 = new javax.swing.JCheckBox();
-        binaryCheckBox1 = new javax.swing.JCheckBox();
-        binaryCheckBox2 = new javax.swing.JCheckBox();
-        binaryCheckBox3 = new javax.swing.JCheckBox();
-        binaryCheckBox4 = new javax.swing.JCheckBox();
-        binaryCheckBox5 = new javax.swing.JCheckBox();
-        binaryCheckBox6 = new javax.swing.JCheckBox();
-        binaryCheckBox7 = new javax.swing.JCheckBox();
-        byteLabel = new javax.swing.JLabel();
-        byteTextField = new javax.swing.JTextField();
-        wordLabel = new javax.swing.JLabel();
-        wordTextField = new javax.swing.JTextField();
-        intLabel = new javax.swing.JLabel();
-        intTextField = new javax.swing.JTextField();
-        longLabel = new javax.swing.JLabel();
-        longTextField = new javax.swing.JTextField();
-        floatLabel = new javax.swing.JLabel();
-        floatTextField = new javax.swing.JTextField();
-        doubleLabel = new javax.swing.JLabel();
-        doubleTextField = new javax.swing.JTextField();
-        characterLabel = new javax.swing.JLabel();
-        characterTextField = new javax.swing.JTextField();
-        stringLabel = new javax.swing.JLabel();
-        stringTextField = new javax.swing.JTextField();
+        binaryLabel = createLabel();
+        binaryCheckBox0 = createCheckBox();
+        binaryCheckBox1 = createCheckBox();
+        binaryCheckBox2 = createCheckBox();
+        binaryCheckBox3 = createCheckBox();
+        binaryCheckBox4 = createCheckBox();
+        binaryCheckBox5 = createCheckBox();
+        binaryCheckBox6 = createCheckBox();
+        binaryCheckBox7 = createCheckBox();
+        byteLabel = createLabel();
+        byteTextField = createTextField();
+        wordLabel = createLabel();
+        wordTextField = createTextField();
+        intLabel = createLabel();
+        intTextField = createTextField();
+        longLabel = createLabel();
+        longTextField = createTextField();
+        floatLabel = createLabel();
+        floatTextField = createTextField();
+        doubleLabel = createLabel();
+        doubleTextField = createTextField();
+        characterLabel = createLabel();
+        characterTextField = createTextField();
+        stringLabel = createLabel();
+        stringTextField = createTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        bigEndianRadioButton = new javax.swing.JRadioButton();
-        littleEndianRadioButton = new javax.swing.JRadioButton();
-        signedRadioButton = new javax.swing.JRadioButton();
-        unsignedRadioButton = new javax.swing.JRadioButton();
+        bigEndianRadioButton = createRadioButton();
+        littleEndianRadioButton = createRadioButton();
+        signedRadioButton = createRadioButton();
+        unsignedRadioButton = createRadioButton();
 
         setMaximumSize(new java.awt.Dimension(246, 447));
         setMinimumSize(new java.awt.Dimension(246, 447));
@@ -1184,6 +1188,26 @@ public class BasicValuesPanel extends javax.swing.JPanel {
             updateInProgress = false;
             updateTerminated = false;
         }
+    }
+    
+    @Nonnull
+    protected JLabel createLabel() {
+        return new JLabel();
+    }
+
+    @Nonnull
+    protected JCheckBox createCheckBox() {
+        return new JCheckBox();
+    }
+
+    @Nonnull
+    protected JTextField createTextField() {
+        return new JTextField();
+    }
+
+    @Nonnull
+    protected JRadioButton createRadioButton() {
+        return new JRadioButton();
     }
 
     @ParametersAreNonnullByDefault

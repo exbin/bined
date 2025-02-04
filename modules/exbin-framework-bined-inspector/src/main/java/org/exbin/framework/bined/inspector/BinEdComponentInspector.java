@@ -27,7 +27,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.swing.section.SectCodeArea;
-import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
@@ -47,6 +46,14 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
     private JScrollPane valuesPanelScrollPane;
     private BasicValuesPositionColorModifier basicValuesColorModifier;
+    private ComponentsProvider componentsProvider = null;
+
+    public BinEdComponentInspector() {
+    }
+
+    public BinEdComponentInspector(ComponentsProvider componentsProvider) {
+        this.componentsProvider = componentsProvider;
+    }
 
     @Override
     public void onCreate(BinEdComponentPanel componentPanel) {
@@ -68,13 +75,14 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
     private void onCreateInt() {
         SectCodeArea codeArea = componentPanel.getCodeArea();
-        valuesPanel = new BasicValuesPanel();
+        this.valuesPanel = componentsProvider == null ? new BasicValuesPanel() : componentsProvider.createValuesPanel();
         valuesPanel.setCodeArea(codeArea, null);
         if (basicValuesColorModifier != null) {
             valuesPanel.registerFocusPainter(basicValuesColorModifier);
         }
 
-        valuesPanelScrollPane = new JScrollPane(valuesPanel);
+        valuesPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
+        valuesPanelScrollPane.setViewportView(valuesPanel);
         valuesPanelScrollPane.setBorder(null);
     }
 
@@ -137,5 +145,14 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
     public void setBasicValuesColorModifier(BasicValuesPositionColorModifier basicValuesColorModifier) {
         this.basicValuesColorModifier = basicValuesColorModifier;
+    }
+
+    public interface ComponentsProvider {
+
+        @Nonnull
+        BasicValuesPanel createValuesPanel();
+
+        @Nonnull
+        JScrollPane createScrollPane();
     }
 }

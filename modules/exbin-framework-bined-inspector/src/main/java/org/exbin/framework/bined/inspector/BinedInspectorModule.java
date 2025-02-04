@@ -82,6 +82,9 @@ public class BinedInspectorModule implements Module {
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
+    }
+
+    public void setEditorProvider(EditorProvider editorProvider, BinEdComponentInspector.ComponentsProvider componentsProvider) {
         this.editorProvider = editorProvider;
 
         basicValuesColorModifier = new BasicValuesPositionColorModifier();
@@ -92,7 +95,7 @@ public class BinedInspectorModule implements Module {
             @Nonnull
             @Override
             public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                BinEdComponentInspector binEdComponentInspector = new BinEdComponentInspector();
+                BinEdComponentInspector binEdComponentInspector = new BinEdComponentInspector(componentsProvider);
                 binEdComponentInspector.setBasicValuesColorModifier(basicValuesColorModifier);
                 return Optional.of(binEdComponentInspector);
             }
