@@ -143,8 +143,10 @@ public class BinEdFileManager {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         frameModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
         frameModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
-        ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
-        ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
+        if (editorProvider instanceof BinEdEditorProvider) {
+            ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
+            ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
+        }
     }
     
     public void updateTextEncodingStatus(EncodingsHandler encodingsHandler) {
@@ -170,7 +172,9 @@ public class BinEdFileManager {
     }
 
     public void loadFromPreferences(Preferences preferences) {
-        binaryStatusPanel.loadFromPreferences(new StatusPreferences(preferences));
+        if (binaryStatusPanel != null) {
+            binaryStatusPanel.loadFromPreferences(new StatusPreferences(preferences));
+        }
     }
 
     @Nonnull

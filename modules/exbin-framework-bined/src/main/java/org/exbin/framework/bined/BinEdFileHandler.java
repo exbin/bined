@@ -216,7 +216,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         fileSync();
     }
 
-    private void fileSync() {
+    public void fileSync() {
         documentOriginalSize = getCodeArea().getDataSize();
         if (undoRedo != null) {
             undoRedo.setSyncPosition();

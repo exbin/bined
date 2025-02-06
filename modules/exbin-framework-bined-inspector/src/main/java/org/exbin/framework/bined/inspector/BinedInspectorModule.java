@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
@@ -82,9 +83,10 @@ public class BinedInspectorModule implements Module {
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
+        setEditorProvider(editorProvider, null);
     }
 
-    public void setEditorProvider(EditorProvider editorProvider, BinEdComponentInspector.ComponentsProvider componentsProvider) {
+    public void setEditorProvider(EditorProvider editorProvider, @Nullable BinEdComponentInspector.ComponentsProvider componentsProvider) {
         this.editorProvider = editorProvider;
 
         basicValuesColorModifier = new BasicValuesPositionColorModifier();

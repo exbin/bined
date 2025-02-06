@@ -79,10 +79,11 @@ public class InsertDataAction extends AbstractAction {
                 manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                     codeArea = instance;
                     boolean hasInstance = instance != null;
-                    setEnabled(hasInstance);
+                    setEnabled(hasInstance && instance.isEditable());
                 });
             }
         });
+        setEnabled(false);
     }
 
     @Override

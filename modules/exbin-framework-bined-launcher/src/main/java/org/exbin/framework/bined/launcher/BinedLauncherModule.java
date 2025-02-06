@@ -157,7 +157,7 @@ public class BinedLauncherModule implements LauncherModule {
             fileModule.registerOptionsPanels();
 
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
-            binedOperationModule.setEditorProvider(editorProvider);
+            binedOperationModule.addBasicMethods();
 
             BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
             binedInspectorModule.setEditorProvider(editorProvider);

@@ -41,7 +41,6 @@ import org.exbin.framework.bined.operation.action.ConvertDataAction;
 import org.exbin.framework.bined.operation.component.RandomDataMethod;
 import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.component.Base64DataMethod;
@@ -59,17 +58,13 @@ public class BinedOperationModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-
     private final List<InsertDataMethod> insertDataComponents = new ArrayList<>();
     private final List<ConvertDataMethod> convertDataComponents = new ArrayList<>();
 
     public BinedOperationModule() {
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-
+    public void addBasicMethods() {
         SimpleFillDataMethod simpleFillDataMethod = new SimpleFillDataMethod();
         addInsertDataComponent(simpleFillDataMethod);
         RandomDataMethod randomDataMethod = new RandomDataMethod();
@@ -78,9 +73,6 @@ public class BinedOperationModule implements Module {
         addConvertDataComponent(bitSwappingDataMethod);
         Base64DataMethod base64DataMethod = new Base64DataMethod();
         addConvertDataComponent(base64DataMethod);
-
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
     }
 
     @Nonnull
@@ -95,8 +87,7 @@ public class BinedOperationModule implements Module {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                SectCodeArea codeArea = binedModule.getActiveCodeArea();
-                return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -111,7 +102,6 @@ public class BinedOperationModule implements Module {
         ensureSetup();
         ConvertDataAction convertDataAction = new ConvertDataAction();
         convertDataAction.setup(resourceBundle);
-        convertDataAction.setEditorProvider(editorProvider);
 
         convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
@@ -119,8 +109,7 @@ public class BinedOperationModule implements Module {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                SectCodeArea codeArea = binedModule.getActiveCodeArea();
-                return menuVariant != BinedModule.PopupMenuVariant.BASIC && codeArea.isEditable() && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -175,16 +164,7 @@ public class BinedOperationModule implements Module {
         return resourceBundle;
     }
 
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -51,7 +52,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public BinEdComponentInspector() {
     }
 
-    public BinEdComponentInspector(ComponentsProvider componentsProvider) {
+    public BinEdComponentInspector(@Nullable ComponentsProvider componentsProvider) {
         this.componentsProvider = componentsProvider;
     }
 
