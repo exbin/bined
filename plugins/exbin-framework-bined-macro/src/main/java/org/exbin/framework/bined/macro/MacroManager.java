@@ -245,6 +245,7 @@ public class MacroManager {
                 @Override
                 public void register(ComponentActivationManager manager) {
                     manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                        // TODO Use codeArea only?
                         fileHandler = instance;
                         updateMacrosMenu();
                     });

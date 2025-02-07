@@ -24,10 +24,13 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JMenuItem;
+import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.GroupMenuContributionRule;
 import org.exbin.framework.action.api.MenuContribution;
@@ -133,6 +136,21 @@ public class BinedInspectorModule implements Module {
         ensureSetup();
         ShowParsingPanelAction showParsingPanelAction = new ShowParsingPanelAction();
         showParsingPanelAction.setup(resourceBundle);
+        showParsingPanelAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+            @Override
+            public boolean shouldCreate(String menuId) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedModule.PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
+                BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
+                boolean inShowSubmenu = BinedModule.SHOW_POPUP_SUBMENU_ID.equals(menuId);
+                return popupMenuVariant == BinedModule.PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
+            }
+
+            @Override
+            public void onCreate(JMenuItem menuItem, String menuId) {
+                // menuItem.setSelected(Objects.requireNonNull(getActiveCodeArea().getLayoutProfile()).isShowHeader());
+            }
+        });
         return showParsingPanelAction;
     }
 
@@ -143,6 +161,16 @@ public class BinedInspectorModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.BOTTOM));
         contribution = mgmt.registerMenuItem(ActionConsts.VIEW_MENU_ID, createShowParsingPanelAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(VIEW_PARSING_PANEL_MENU_GROUP_ID));
+    }
+
+    public void registerViewValuesPanelPopupMenuActions() {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, createShowParsingPanelAction());
+        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+
+        contribution = mgmt.registerMenuItem(BinedModule.SHOW_POPUP_SUBMENU_ID, createShowParsingPanelAction());
+        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.BOTTOM));
     }
 
     public void registerOptionsPanels() {
