@@ -36,7 +36,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionActiveComponent;
 import org.exbin.framework.action.api.ActionConsts;
@@ -85,7 +84,8 @@ public class MacroManager {
     private final List<MacroRecord> macroRecords = new ArrayList<>();
     private MacroPreferences macroPreferences;
 
-    private FileHandler fileHandler;
+    private BinEdFileHandler fileHandler;
+    private CodeAreaCore activeCodeArea;
 
     private final ManageMacrosAction manageMacrosAction = new ManageMacrosAction();
     private final StartMacroRecordingAction startMacroRecordingAction = new StartMacroRecordingAction();
@@ -245,8 +245,10 @@ public class MacroManager {
                 @Override
                 public void register(ComponentActivationManager manager) {
                     manager.registerUpdateListener(FileHandler.class, (instance) -> {
-                        // TODO Use codeArea only?
-                        fileHandler = instance;
+                        fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                    });
+                    manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                        activeCodeArea = instance;
                         updateMacrosMenu();
                     });
                 }
@@ -339,7 +341,7 @@ public class MacroManager {
                                 if (fileHandler == null) {
                                     throw new IllegalStateException("No active file");
                                 }
-                                BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
+                                BinEdComponentPanel activePanel = fileHandler.getComponent();
                                 BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                                 componentExtension.performSearchText((String) parameters.get(0));
                             }
@@ -349,7 +351,7 @@ public class MacroManager {
                             if (fileHandler == null) {
                                 throw new IllegalStateException("No active file");
                             }
-                            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
+                            BinEdComponentPanel activePanel = fileHandler.getComponent();
                             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                             componentExtension.performFindAgain();
                             continue;
@@ -424,16 +426,15 @@ public class MacroManager {
             int recordsLimit = Math.min(macroRecords.size(), 10);
             String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
             String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
-            boolean enabled = fileHandler != null;
+            boolean enabled = activeCodeArea != null;
             for (int i = 0; i < recordsLimit; i++) {
                 final int macroIndex = i;
                 String macroName = macroRecords.get(i).getName();
                 Action macroAction = new AbstractAction(macroName.isEmpty() ? macroActionName + (i + 1) : macroName) {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        SectCodeArea codeArea = ((BinEdFileHandler) fileHandler).getCodeArea();
                         try {
-                            executeMacro(codeArea, macroIndex);
+                            executeMacro(activeCodeArea, macroIndex);
                         } catch (Exception ex) {
                             String message = ex.getMessage();
                             if (message == null || message.isEmpty()) {

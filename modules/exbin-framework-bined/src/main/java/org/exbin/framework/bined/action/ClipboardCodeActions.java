@@ -116,7 +116,7 @@ public class ClipboardCodeActions {
                 boolean hasInstance = codeArea != null;
                 boolean hasSelection = hasInstance;
                 if (hasInstance) {
-                    hasSelection = codeArea.canPaste();
+                    hasSelection = codeArea.canPaste() && codeArea.isEditable();
                 }
                 setEnabled(hasSelection);
             });
