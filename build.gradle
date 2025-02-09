@@ -185,6 +185,14 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                     include 'plugins/*'
                 }
 
+                into('images') {
+                    from ('src/ospackage') {
+                        include 'bined.desktop'
+                        include 'bined.png'
+                        include 'bined.svg'
+                    }
+                }
+                
                 from project(':apps:bined-editor').projectDir.absolutePath + '/build/launch4j'
                 include "Bined.exe"
 
