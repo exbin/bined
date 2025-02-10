@@ -26,10 +26,10 @@ import javax.swing.JOptionPane;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 
 /**
  * Clipboard code actions.
@@ -56,7 +56,7 @@ public class ClipboardCodeActions {
         CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
-        copyAsCodeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, copyAsCodeAction);
+        copyAsCodeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, copyAsCodeAction);
         return copyAsCodeAction;
     }
 
@@ -65,12 +65,12 @@ public class ClipboardCodeActions {
         PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
-        pasteFromCodeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, pasteFromCodeAction);
+        pasteFromCodeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, pasteFromCodeAction);
         return pasteFromCodeAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class CopyAsCodeAction extends AbstractAction implements ActionActiveComponent {
+    private static class CopyAsCodeAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -81,7 +81,7 @@ public class ClipboardCodeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = codeArea != null;
@@ -95,7 +95,7 @@ public class ClipboardCodeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class PasteFromCodeAction extends AbstractAction implements ActionActiveComponent {
+    private static class PasteFromCodeAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -110,7 +110,7 @@ public class ClipboardCodeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = codeArea != null;

@@ -36,10 +36,10 @@ import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -59,7 +59,7 @@ import org.exbin.framework.window.api.WindowModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CompareFilesAction extends AbstractAction implements ActionActiveComponent {
+public class CompareFilesAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "compareFilesAction";
 
@@ -75,7 +75,7 @@ public class CompareFilesAction extends AbstractAction implements ActionActiveCo
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class CompareFilesAction extends AbstractAction implements ActionActiveCo
     }
 
     @Override
-    public void register(ComponentActivationManager manager) {
+    public void register(ActionContextChangeManager manager) {
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(instance != null);

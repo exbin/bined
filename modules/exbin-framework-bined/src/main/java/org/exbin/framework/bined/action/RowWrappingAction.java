@@ -25,11 +25,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 
 /**
  * Row wrapping handler.
@@ -53,9 +53,9 @@ public class RowWrappingAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ComponentActivationManager manager) {
+            public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                     codeArea = instance;
                     setEnabled(instance != null);

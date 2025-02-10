@@ -25,11 +25,11 @@ import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 
 /**
  * Position code type actions.
@@ -61,7 +61,7 @@ public class PositionCodeTypeActions {
         actionModule.initAction(octalPositionCodeTypeAction, resourceBundle, OCTAL_POSITION_CODE_TYPE_ACTION_ID);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, octalPositionCodeTypeAction);
+        octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, octalPositionCodeTypeAction);
         return octalPositionCodeTypeAction;
     }
 
@@ -72,7 +72,7 @@ public class PositionCodeTypeActions {
         actionModule.initAction(decimalPositionCodeTypeAction, resourceBundle, DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, decimalPositionCodeTypeAction);
+        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, decimalPositionCodeTypeAction);
         return decimalPositionCodeTypeAction;
     }
 
@@ -83,14 +83,14 @@ public class PositionCodeTypeActions {
         actionModule.initAction(hexadecimalPositionCodeTypeAction, resourceBundle, HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
         hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, hexadecimalPositionCodeTypeAction);
+        hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, hexadecimalPositionCodeTypeAction);
         return hexadecimalPositionCodeTypeAction;
     }
 
     @ParametersAreNonnullByDefault
-    public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -100,7 +100,7 @@ public class PositionCodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -115,9 +115,9 @@ public class PositionCodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -127,7 +127,7 @@ public class PositionCodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -142,9 +142,9 @@ public class PositionCodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -154,7 +154,7 @@ public class PositionCodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;

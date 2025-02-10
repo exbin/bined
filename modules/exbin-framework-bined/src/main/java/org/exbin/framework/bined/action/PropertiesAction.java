@@ -21,10 +21,10 @@ import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.PropertiesPanel;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
@@ -54,9 +54,9 @@ public class PropertiesAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ComponentActivationManager manager) {
+            public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance;
                     setEnabled(fileHandler instanceof BinEdFileHandler);

@@ -37,12 +37,12 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.GroupMenuContributionRule;
 import org.exbin.framework.action.api.MenuContribution;
 import org.exbin.framework.action.api.MenuManagement;
@@ -241,9 +241,9 @@ public class MacroManager {
                 }
             };
             macrosMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
-            macrosMenuAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+            macrosMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
-                public void register(ComponentActivationManager manager) {
+                public void register(ActionContextChangeManager manager) {
                     manager.registerUpdateListener(FileHandler.class, (instance) -> {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });

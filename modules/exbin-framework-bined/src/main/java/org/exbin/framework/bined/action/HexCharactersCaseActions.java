@@ -25,11 +25,11 @@ import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 
 /**
  * Hex characters case actions.
@@ -59,7 +59,7 @@ public class HexCharactersCaseActions {
         actionModule.initAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
         upperHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         upperHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-        upperHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, upperHexCharsAction);
+        upperHexCharsAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, upperHexCharsAction);
         return upperHexCharsAction;
     }
 
@@ -70,12 +70,12 @@ public class HexCharactersCaseActions {
         actionModule.initAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
         lowerHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         lowerHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-        lowerHexCharsAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, lowerHexCharsAction);
+        lowerHexCharsAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, lowerHexCharsAction);
         return lowerHexCharsAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class UpperHexCharsAction extends AbstractAction implements ActionActiveComponent {
+    private static class UpperHexCharsAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -86,7 +86,7 @@ public class HexCharactersCaseActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -100,7 +100,7 @@ public class HexCharactersCaseActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class LowerHexCharsAction extends AbstractAction implements ActionActiveComponent {
+    private static class LowerHexCharsAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -111,7 +111,7 @@ public class HexCharactersCaseActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;

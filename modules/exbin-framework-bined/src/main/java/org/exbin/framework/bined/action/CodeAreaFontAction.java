@@ -21,10 +21,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.editor.text.EditorTextModule;
 import org.exbin.framework.editor.text.action.TextFontAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -56,9 +56,9 @@ public class CodeAreaFontAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ComponentActivationManager manager) {
+            public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                     setEnabled(instance != null);
                 });

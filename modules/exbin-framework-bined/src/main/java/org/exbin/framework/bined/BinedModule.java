@@ -83,7 +83,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationService;
+import org.exbin.framework.action.api.ActionContextService;
 import org.exbin.framework.action.api.GroupMenuContributionRule;
 import org.exbin.framework.action.api.GroupToolBarContributionRule;
 import org.exbin.framework.action.api.MenuContribution;
@@ -1000,8 +1000,8 @@ public class BinedModule implements Module {
 
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ComponentActivationService componentActivationService = frameModule.getFrameHandler().getComponentActivationService();
-        mgmt.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, componentActivationService);
+        ActionContextService actionContextService = frameModule.getFrameHandler().getActionContextService();
+        mgmt.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionContextService);
         return popupMenu;
     }
 

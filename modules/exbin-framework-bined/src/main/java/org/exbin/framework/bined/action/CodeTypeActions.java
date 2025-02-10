@@ -31,11 +31,11 @@ import org.exbin.bined.CodeType;
 import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -70,7 +70,7 @@ public class CodeTypeActions {
         actionModule.initAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
         binaryCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         binaryCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        binaryCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, binaryCodeTypeAction);
+        binaryCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, binaryCodeTypeAction);
         return binaryCodeTypeAction;
     }
 
@@ -81,7 +81,7 @@ public class CodeTypeActions {
         actionModule.initAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
         octalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         octalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        octalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, octalCodeTypeAction);
+        octalCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, octalCodeTypeAction);
         return octalCodeTypeAction;
     }
 
@@ -92,7 +92,7 @@ public class CodeTypeActions {
         actionModule.initAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
         decimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
         decimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        decimalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, decimalCodeTypeAction);
+        decimalCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, decimalCodeTypeAction);
         return decimalCodeTypeAction;
     }
 
@@ -103,7 +103,7 @@ public class CodeTypeActions {
         actionModule.initAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
         hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, hexadecimalCodeTypeAction);
+        hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, hexadecimalCodeTypeAction);
         return hexadecimalCodeTypeAction;
     }
 
@@ -127,14 +127,14 @@ public class CodeTypeActions {
         }
         cycleCodeTypesAction.setDropDownActions(dropDownActions);
         cycleCodeTypesAction.putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
-        cycleCodeTypesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, cycleCodeTypesAction);
+        cycleCodeTypesAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, cycleCodeTypesAction);
         return cycleCodeTypesAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class BinaryCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    private static class BinaryCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -144,7 +144,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -159,9 +159,9 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class OctalCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    private static class OctalCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -171,7 +171,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -186,9 +186,9 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class DecimalCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    private static class DecimalCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -198,7 +198,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -213,9 +213,9 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class HexadecimalCodeTypeAction extends AbstractAction implements ActionActiveComponent {
+    private static class HexadecimalCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
 
         @Override
@@ -225,7 +225,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -240,9 +240,9 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private class CycleCodeTypesAction extends AbstractAction implements ActionActiveComponent {
+    private class CycleCodeTypesAction extends AbstractAction implements ActionContextChange {
 
-        private ComponentActivationManager manager;
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
         private List<Action> dropDownActions;
 
@@ -261,7 +261,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
@@ -274,8 +274,8 @@ public class CodeTypeActions {
             });
             if (dropDownActions != null) {
                 for (Action dropDownAction : dropDownActions) {
-                    ActionActiveComponent actionActiveComponent = (ActionActiveComponent) dropDownAction;
-                    actionActiveComponent.register(manager);
+                    ActionContextChange ActionContextChange = (ActionContextChange) dropDownAction;
+                    ActionContextChange.register(manager);
                 }
             }
         }

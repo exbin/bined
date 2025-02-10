@@ -25,11 +25,11 @@ import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.capability.ViewModeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 
 /**
  * View mode actions.
@@ -61,7 +61,7 @@ public class ViewModeHandlerActions {
         actionModule.initAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
         dualModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         dualModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-        dualModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, dualModeAction);
+        dualModeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, dualModeAction);
         return dualModeAction;
     }
 
@@ -72,7 +72,7 @@ public class ViewModeHandlerActions {
         actionModule.initAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
         codeMatrixModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         codeMatrixModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-        codeMatrixModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, codeMatrixModeAction);
+        codeMatrixModeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, codeMatrixModeAction);
         return codeMatrixModeAction;
     }
 
@@ -83,12 +83,12 @@ public class ViewModeHandlerActions {
         actionModule.initAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
         textPreviewModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
         textPreviewModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        textPreviewModeAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, textPreviewModeAction);
+        textPreviewModeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, textPreviewModeAction);
         return textPreviewModeAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class DualModeAction extends AbstractAction implements ActionActiveComponent {
+    private static class DualModeAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -99,7 +99,7 @@ public class ViewModeHandlerActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -113,7 +113,7 @@ public class ViewModeHandlerActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class CodeMatrixModeAction extends AbstractAction implements ActionActiveComponent {
+    private static class CodeMatrixModeAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -124,7 +124,7 @@ public class ViewModeHandlerActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -138,7 +138,7 @@ public class ViewModeHandlerActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class TextPreviewModeAction extends AbstractAction implements ActionActiveComponent {
+    private static class TextPreviewModeAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -149,7 +149,7 @@ public class ViewModeHandlerActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;

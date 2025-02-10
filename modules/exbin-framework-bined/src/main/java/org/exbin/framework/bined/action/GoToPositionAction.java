@@ -26,10 +26,10 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.WindowHandler;
@@ -61,9 +61,9 @@ public class GoToPositionAction extends AbstractAction {
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ComponentActivationManager manager) {
+            public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                     codeArea = instance;
                     setEnabled(instance != null);

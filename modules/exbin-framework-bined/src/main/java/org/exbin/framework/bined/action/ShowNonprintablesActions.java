@@ -27,11 +27,11 @@ import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -61,7 +61,7 @@ public class ShowNonprintablesActions {
         actionModule.initAction(viewNonprintablesAction, resourceBundle, VIEW_NONPRINTABLES_ACTION_ID);
         viewNonprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         viewNonprintablesAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, ActionUtils.getMetaMask()));
-        viewNonprintablesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, viewNonprintablesAction);
+        viewNonprintablesAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, viewNonprintablesAction);
         return viewNonprintablesAction;
     }
 
@@ -71,12 +71,12 @@ public class ShowNonprintablesActions {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(viewNonprintablesAction, resourceBundle, VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID);
         viewNonprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
-        viewNonprintablesAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, viewNonprintablesAction);
+        viewNonprintablesAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, viewNonprintablesAction);
         return viewNonprintablesAction;
     }
 
     @ParametersAreNonnullByDefault
-    public static class ViewNonprintablesAction extends AbstractAction implements ActionActiveComponent {
+    public static class ViewNonprintablesAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
 
@@ -93,7 +93,7 @@ public class ShowNonprintablesActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = codeArea != null;

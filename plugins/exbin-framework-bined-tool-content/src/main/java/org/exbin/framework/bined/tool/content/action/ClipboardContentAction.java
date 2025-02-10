@@ -29,10 +29,10 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.StreamUtils;
@@ -50,7 +50,7 @@ import org.exbin.framework.window.api.WindowHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ClipboardContentAction extends AbstractAction implements ActionActiveComponent {
+public class ClipboardContentAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "clipboardContentAction";
 
@@ -67,7 +67,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionActi
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, this);
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionActi
     }
 
     @Override
-    public void register(ComponentActivationManager manager) {
+    public void register(ActionContextChangeManager manager) {
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(instance != null);

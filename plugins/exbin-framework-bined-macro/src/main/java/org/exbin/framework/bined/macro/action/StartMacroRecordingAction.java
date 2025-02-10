@@ -22,10 +22,10 @@ import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 
@@ -51,9 +51,9 @@ public class StartMacroRecordingAction extends AbstractAction {
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
-        putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, new ActionActiveComponent() {
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ComponentActivationManager manager) {
+            public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                     codeArea = instance;
                     boolean hasInstance = instance != null;

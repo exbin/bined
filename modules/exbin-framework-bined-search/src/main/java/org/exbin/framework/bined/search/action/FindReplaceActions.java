@@ -26,11 +26,11 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionActiveComponent;
+import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationManager;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -82,7 +82,7 @@ public class FindReplaceActions {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
-        editFindAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, editFindAction);
+        editFindAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editFindAction);
         return editFindAction;
     }
 
@@ -105,7 +105,7 @@ public class FindReplaceActions {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
-        editFindAgainAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, editFindAgainAction);
+        editFindAgainAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editFindAgainAction);
         return editFindAgainAction;
     }
 
@@ -129,7 +129,7 @@ public class FindReplaceActions {
             public void onCreate(JMenuItem menuItem, String menuId) {
             }
         });
-        editReplaceAction.putValue(ActionConsts.ACTION_ACTIVE_COMPONENT, editReplaceAction);
+        editReplaceAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editReplaceAction);
         return editReplaceAction;
     }
 
@@ -147,7 +147,7 @@ public class FindReplaceActions {
     }
 
     @ParametersAreNonnullByDefault
-    public class EditFindAction extends AbstractAction implements ActionActiveComponent {
+    public class EditFindAction extends AbstractAction implements ActionContextChange {
 
         private FileHandler fileHandler;
 
@@ -159,7 +159,7 @@ public class FindReplaceActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
                 fileHandler = instance;
                 setEnabled(instance != null);
@@ -168,7 +168,7 @@ public class FindReplaceActions {
     }
 
     @ParametersAreNonnullByDefault
-    public class EditFindAgainAction extends AbstractAction implements ActionActiveComponent {
+    public class EditFindAgainAction extends AbstractAction implements ActionContextChange {
 
         private FileHandler fileHandler;
 
@@ -184,7 +184,7 @@ public class FindReplaceActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
                 fileHandler = instance;
                 setEnabled(instance != null);
@@ -193,7 +193,7 @@ public class FindReplaceActions {
     }
 
     @ParametersAreNonnullByDefault
-    public class EditReplaceAction extends AbstractAction implements ActionActiveComponent {
+    public class EditReplaceAction extends AbstractAction implements ActionContextChange {
 
         private FileHandler fileHandler;
 
@@ -205,7 +205,7 @@ public class FindReplaceActions {
         }
 
         @Override
-        public void register(ComponentActivationManager manager) {
+        public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
                 fileHandler = instance;
                 setEnabled(instance != null);

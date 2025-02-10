@@ -178,7 +178,7 @@ public class BinedLauncherModule implements LauncherModule {
                 updateModule.registerDefaultMenuItem();
             }
 
-            helpModule.registerMainMenu();
+            // helpModule.registerMainMenu();
             aboutModule.registerDefaultMenuItem();
             try {
                 helpOnlineModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
