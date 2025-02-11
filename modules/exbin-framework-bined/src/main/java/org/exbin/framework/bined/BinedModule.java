@@ -59,7 +59,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.ActionMenuCreation;
+import org.exbin.framework.action.api.menu.ActionMenuCreation;
 import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.action.ShowHeaderAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -84,17 +84,17 @@ import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextService;
-import org.exbin.framework.action.api.GroupMenuContributionRule;
-import org.exbin.framework.action.api.GroupToolBarContributionRule;
-import org.exbin.framework.action.api.MenuContribution;
-import org.exbin.framework.action.api.MenuManagement;
-import org.exbin.framework.action.api.PositionMenuContributionRule;
-import org.exbin.framework.action.api.PositionToolBarContributionRule;
-import org.exbin.framework.action.api.SeparationMenuContributionRule;
-import org.exbin.framework.action.api.SeparationToolBarContributionRule;
-import org.exbin.framework.action.api.RelativeMenuContributionRule;
-import org.exbin.framework.action.api.ToolBarContribution;
-import org.exbin.framework.action.api.ToolBarManagement;
+import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
+import org.exbin.framework.action.api.toolbar.GroupToolBarContributionRule;
+import org.exbin.framework.action.api.menu.MenuContribution;
+import org.exbin.framework.action.api.menu.MenuManagement;
+import org.exbin.framework.action.api.menu.PositionMenuContributionRule;
+import org.exbin.framework.action.api.toolbar.PositionToolBarContributionRule;
+import org.exbin.framework.action.api.menu.SeparationMenuContributionRule;
+import org.exbin.framework.action.api.toolbar.SeparationToolBarContributionRule;
+import org.exbin.framework.action.api.menu.RelativeMenuContributionRule;
+import org.exbin.framework.action.api.toolbar.ToolBarContribution;
+import org.exbin.framework.action.api.toolbar.ToolBarManagement;
 import org.exbin.framework.action.popup.api.ActionPopupModuleApi;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.bined.action.EditSelectionAction;
@@ -324,7 +324,7 @@ public class BinedModule implements Module {
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.VIEW_MENU_ID, encodingsHandler.getToolsEncodingMenu());
+        MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.VIEW_MENU_ID, () -> encodingsHandler.getToolsEncodingMenu());
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.TOP_LAST));
     }
 

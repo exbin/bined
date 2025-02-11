@@ -28,7 +28,7 @@ import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.ActionMenuCreation;
+import org.exbin.framework.action.api.menu.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
