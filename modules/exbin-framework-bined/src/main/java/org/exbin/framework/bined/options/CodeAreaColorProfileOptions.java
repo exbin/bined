@@ -13,29 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.options.impl;
+package org.exbin.framework.bined.options;
 
-import org.exbin.framework.bined.options.CodeAreaThemeOptions;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
-import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
-import org.exbin.framework.bined.preferences.CodeAreaThemePreferences;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.options.api.OptionsData;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * Code area theme options.
+ * Color layout profile options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptions {
+public class CodeAreaColorProfileOptions implements OptionsData {
 
-    private CodeAreaThemePreferences preferences;
+    private CodeAreaColorOptions options;
     private final List<ProfileRecord> profileRecords = new ArrayList<>();
     private int selectedProfile = -1;
+
+    public CodeAreaColorProfileOptions(OptionsStorage storage) {
+        options = new CodeAreaColorOptions(storage);
+    }
+
+    public CodeAreaColorProfileOptions(CodeAreaColorOptions options) {
+        this.options = options;
+    }
 
     @Nonnull
     public List<String> getProfileNames() {
@@ -47,32 +54,29 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
     }
 
     @Nonnull
-    @Override
-    public SectionCodeAreaThemeProfile getThemeProfile(int index) {
+    public SectionCodeAreaColorProfile getColorsProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
             // Lazy loading
-            record = new ProfileRecord(record.name, preferences.getThemeProfile(index));
+            record = new ProfileRecord(record.name, options.getColorsProfile(index));
             profileRecords.set(index, record);
         }
 
         return record.profile;
     }
 
-    @Override
-    public void setThemeProfile(int index, SectionCodeAreaThemeProfile themeProfile) {
+    public void setColorsProfile(int index, SectionCodeAreaColorProfile colorProfile) {
         ProfileRecord record = profileRecords.get(index);
-        record = new ProfileRecord(record.name, themeProfile);
+        record = new ProfileRecord(record.name, colorProfile);
         profileRecords.set(index, record);
     }
 
-    @Override
-    public void removeThemeProfile(int index) {
+    public void removeColorsProfile(int index) {
         // Load all lazy records after changed index
         for (int i = index + 1; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
             if (record.profile == null) {
-                record = new ProfileRecord(record.name, preferences.getThemeProfile(i));
+                record = new ProfileRecord(record.name, options.getColorsProfile(i));
                 profileRecords.set(i, record);
             }
         }
@@ -88,49 +92,49 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
             if (record.profile == null) {
-                record = new ProfileRecord(record.name, preferences.getThemeProfile(i));
+                record = new ProfileRecord(record.name, options.getColorsProfile(i));
                 profileRecords.set(i, record);
             }
         }
-    }
-
-    @Override
-    public int getSelectedProfile() {
-        return selectedProfile;
-    }
-
-    @Override
-    public void setSelectedProfile(int profileIndex) {
-        selectedProfile = profileIndex;
     }
 
     public void clearProfiles() {
         profileRecords.clear();
     }
 
-    public void addProfile(String profileName, SectionCodeAreaThemeProfile themeProfile) {
-        profileRecords.add(new ProfileRecord(profileName, themeProfile));
+    public void addProfile(String profileName, SectionCodeAreaColorProfile colorProfile) {
+        profileRecords.add(new ProfileRecord(profileName, colorProfile));
     }
 
-    public void loadFromPreferences(CodeAreaThemePreferences preferences) {
-        this.preferences = preferences;
+    public void loadFromPreferences(CodeAreaColorOptions preferences) {
+        this.options = preferences;
         profileRecords.clear();
-        List<String> themeProfilesList = preferences.getThemeProfilesList();
-        themeProfilesList.forEach((name) -> {
+        List<String> colorProfilesList = preferences.getColorProfilesList();
+        colorProfilesList.forEach((name) -> {
             profileRecords.add(new ProfileRecord(name, null));
         });
         selectedProfile = preferences.getSelectedProfile();
     }
 
-    public void saveToPreferences(CodeAreaThemePreferences preferences) {
+    public void saveToPreferences(CodeAreaColorOptions preferences) {
         preferences.setSelectedProfile(selectedProfile);
-        preferences.setThemeProfilesList(getProfileNames());
+        preferences.setColorProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
-            SectionCodeAreaThemeProfile profile = record.profile;
+            SectionCodeAreaColorProfile profile = record.profile;
             if (profile != null) {
-                preferences.setThemeProfile(i, record.profile);
+                preferences.setColorsProfile(i, record.profile);
             }
+        }
+    }
+
+    @Override
+    public void copyTo(OptionsData options) {
+        CodeAreaColorProfileOptions with = (CodeAreaColorProfileOptions) options;
+        with.clearProfiles();
+        for (int i = 0; i < profileRecords.size(); i++) {
+            ProfileRecord record = profileRecords.get(i);
+            with.addProfile(record.name, record.profile);
         }
     }
 
@@ -139,9 +143,9 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
     public static class ProfileRecord {
 
         private final String name;
-        private final SectionCodeAreaThemeProfile profile;
+        private final SectionCodeAreaColorProfile profile;
 
-        public ProfileRecord(String name, SectionCodeAreaThemeProfile profile) {
+        public ProfileRecord(String name, SectionCodeAreaColorProfile profile) {
             this.name = name;
             this.profile = profile;
         }
@@ -152,7 +156,7 @@ public class CodeAreaThemeOptionsImpl implements OptionsData, CodeAreaThemeOptio
         }
 
         @Nonnull
-        public SectionCodeAreaThemeProfile getProfile() {
+        public SectionCodeAreaColorProfile getProfile() {
             return profile;
         }
     }

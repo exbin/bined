@@ -21,9 +21,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
 import org.exbin.framework.bined.StatusCursorPositionFormat;
 import org.exbin.framework.bined.StatusDocumentSizeFormat;
+import org.exbin.framework.bined.options.StatusOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -37,7 +37,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsComponent<StatusOptionsImpl> {
+public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsComponent<StatusOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StatusOptionsPanel.class);
 
@@ -64,7 +64,7 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
     }
 
     @Override
-    public void saveToOptions(StatusOptionsImpl options) {
+    public void saveToOptions(StatusOptions options) {
         StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
         cursorPositionFormat.setCodeType(PositionCodeType.values()[cursorPositionCodeTypeComboBox.getSelectedIndex()]);
         cursorPositionFormat.setShowOffset(cursorPositionShowOffsetCheckBox.isSelected());
@@ -81,7 +81,7 @@ public class StatusOptionsPanel extends javax.swing.JPanel implements OptionsCom
     }
 
     @Override
-    public void loadFromOptions(StatusOptionsImpl options) {
+    public void loadFromOptions(StatusOptions options) {
         StatusCursorPositionFormat cursorPositionFormat = options.getCursorPositionFormat();
         cursorPositionCodeTypeComboBox.setSelectedIndex(cursorPositionFormat.getCodeType().ordinal());
         cursorPositionShowOffsetCheckBox.setSelected(cursorPositionFormat.isShowOffset());

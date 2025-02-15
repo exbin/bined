@@ -13,29 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.options.impl;
+package org.exbin.framework.bined.options;
 
-import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
-import org.exbin.framework.bined.preferences.CodeAreaLayoutPreferences;
 import org.exbin.framework.options.api.OptionsData;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * Code area theme options.
+ * Layout profile options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOptions {
+public class CodeAreaLayoutProfileOptions implements OptionsData {
 
-    private CodeAreaLayoutPreferences preferences;
+    private CodeAreaLayoutOptions options;
     private final List<ProfileRecord> profileRecords = new ArrayList<>();
     private int selectedProfile = -1;
+
+    public CodeAreaLayoutProfileOptions(OptionsStorage storage) {
+        options = new CodeAreaLayoutOptions(storage);
+    }
+
+    public CodeAreaLayoutProfileOptions(CodeAreaLayoutOptions options) {
+        this.options = options;
+    }
 
     @Nonnull
     public List<String> getProfileNames() {
@@ -47,32 +54,29 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
     }
 
     @Nonnull
-    @Override
     public DefaultSectionCodeAreaLayoutProfile getLayoutProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
             // Lazy loading
-            record = new ProfileRecord(record.name, preferences.getLayoutProfile(index));
+            record = new ProfileRecord(record.name, options.getLayoutProfile(index));
             profileRecords.set(index, record);
         }
 
         return record.profile;
     }
 
-    @Override
     public void setLayoutProfile(int index, DefaultSectionCodeAreaLayoutProfile layoutProfile) {
         ProfileRecord record = profileRecords.get(index);
         record = new ProfileRecord(record.name, layoutProfile);
         profileRecords.set(index, record);
     }
 
-    @Override
     public void removeLayoutProfile(int index) {
         // Load all lazy records after changed index
         for (int i = index + 1; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
             if (record.profile == null) {
-                record = new ProfileRecord(record.name, preferences.getLayoutProfile(i));
+                record = new ProfileRecord(record.name, options.getLayoutProfile(i));
                 profileRecords.set(i, record);
             }
         }
@@ -88,18 +92,16 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
             if (record.profile == null) {
-                record = new ProfileRecord(record.name, preferences.getLayoutProfile(i));
+                record = new ProfileRecord(record.name, options.getLayoutProfile(i));
                 profileRecords.set(i, record);
             }
         }
     }
 
-    @Override
     public int getSelectedProfile() {
         return selectedProfile;
     }
 
-    @Override
     public void setSelectedProfile(int profileIndex) {
         selectedProfile = profileIndex;
     }
@@ -112,25 +114,35 @@ public class CodeAreaLayoutOptionsImpl implements OptionsData, CodeAreaLayoutOpt
         profileRecords.add(new ProfileRecord(profileName, layoutProfile));
     }
 
-    public void loadFromPreferences(CodeAreaLayoutPreferences preferences) {
-        this.preferences = preferences;
+    public void loadFromPreferences(CodeAreaLayoutOptions options) {
+        this.options = options;
         profileRecords.clear();
-        List<String> layoutProfilesList = preferences.getLayoutProfilesList();
+        List<String> layoutProfilesList = options.getLayoutProfilesList();
         layoutProfilesList.forEach((name) -> {
             profileRecords.add(new ProfileRecord(name, null));
         });
-        selectedProfile = preferences.getSelectedProfile();
+        selectedProfile = options.getSelectedProfile();
     }
 
-    public void saveToPreferences(CodeAreaLayoutPreferences preferences) {
-        preferences.setSelectedProfile(selectedProfile);
-        preferences.setLayoutProfilesList(getProfileNames());
+    public void saveToPreferences(CodeAreaLayoutOptions options) {
+        options.setSelectedProfile(selectedProfile);
+        options.setLayoutProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
             DefaultSectionCodeAreaLayoutProfile profile = record.profile;
             if (profile != null) {
-                preferences.setLayoutProfile(i, record.profile);
+                options.setLayoutProfile(i, record.profile);
             }
+        }
+    }
+
+    @Override
+    public void copyTo(OptionsData options) {
+        CodeAreaLayoutProfileOptions with = (CodeAreaLayoutProfileOptions) options;
+        with.clearProfiles();
+        for (int i = 0; i < profileRecords.size(); i++) {
+            ProfileRecord record = profileRecords.get(i);
+            with.addProfile(record.name, record.profile);
         }
     }
 

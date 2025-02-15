@@ -20,7 +20,8 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
+import org.exbin.framework.bined.options.CodeAreaColorOptions;
+import org.exbin.framework.bined.options.CodeAreaColorProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -34,7 +35,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ColorProfilesOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaColorOptionsImpl> {
+public class ColorProfilesOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaColorOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesOptionsPanel.class);
 
@@ -76,14 +77,14 @@ public class ColorProfilesOptionsPanel extends javax.swing.JPanel implements Opt
     }
 
     @Override
-    public void loadFromOptions(CodeAreaColorOptionsImpl options) {
-        profilesPanel.loadFromOptions(options);
+    public void loadFromOptions(CodeAreaColorOptions options) {
+        profilesPanel.loadFromOptions(new CodeAreaColorProfileOptions(options));
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
-    public void saveToOptions(CodeAreaColorOptionsImpl options) {
-        profilesPanel.saveToOptions(options);
+    public void saveToOptions(CodeAreaColorOptions options) {
+        profilesPanel.saveToOptions(new CodeAreaColorProfileOptions(options));
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

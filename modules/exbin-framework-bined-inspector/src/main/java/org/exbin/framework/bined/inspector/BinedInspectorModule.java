@@ -15,9 +15,6 @@
  */
 package org.exbin.framework.bined.inspector;
 
-import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -37,30 +34,15 @@ import org.exbin.framework.action.api.menu.MenuContribution;
 import org.exbin.framework.action.api.menu.MenuManagement;
 import org.exbin.framework.action.api.menu.PositionMenuContributionRule;
 import org.exbin.framework.action.api.PositionMode;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
-import org.exbin.framework.bined.inspector.options.gui.DataInspectorOptionsPanel;
-import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
-import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
+import org.exbin.framework.bined.inspector.options.page.DataInspectorOptionsPage;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.text.gui.TextFontPanel;
-import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
-import org.exbin.framework.editor.text.preferences.TextFontPreferences;
-import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
-import org.exbin.framework.options.api.DefaultOptionsPage;
-import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
-import org.exbin.framework.window.api.WindowHandler;
-import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.window.api.gui.DefaultControlPanel;
-import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.options.api.OptionsPageManagement;
 
 /**
  * Binary editor data inspector module.
@@ -80,7 +62,7 @@ public class BinedInspectorModule implements Module {
 
     private BasicValuesPositionColorModifier basicValuesColorModifier;
 
-    private DefaultOptionsPage<DataInspectorOptionsImpl> dataInspectorOptionsPage;
+    private DataInspectorOptionsPage dataInspectorOptionsPage;
 
     public BinedInspectorModule() {
     }
@@ -175,114 +157,10 @@ public class BinedInspectorModule implements Module {
 
     public void registerOptionsPanels() {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(MODULE_ID);
 
-        dataInspectorOptionsPage = new DefaultOptionsPage<DataInspectorOptionsImpl>() {
-
-            private DataInspectorOptionsPanel panel;
-            private Font defaultFont;
-
-            @Nonnull
-            @Override
-            public OptionsComponent<DataInspectorOptionsImpl> createPanel() {
-                if (panel == null) {
-                    panel = new DataInspectorOptionsPanel();
-                    defaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
-                    panel.setDefaultFont(defaultFont);
-                    panel.setFontChangeAction(new TextFontOptionsPanel.FontChangeAction() {
-                        @Override
-                        public Font changeFont(Font currentFont) {
-                            final Result result = new Result();
-                            WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-                            FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-                            final TextFontPanel fontPanel = new TextFontPanel();
-                            fontPanel.setStoredFont(currentFont);
-                            DefaultControlPanel controlPanel = new DefaultControlPanel();
-                            final WindowHandler dialog = windowModule.createDialog(fontPanel, controlPanel);
-                            windowModule.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
-                            windowModule.setWindowTitle(dialog, fontPanel.getResourceBundle());
-                            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                                if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
-                                    if (actionType == DefaultControlHandler.ControlActionType.OK) {
-                                        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-                                        TextFontPreferences textFontParameters = new TextFontPreferences(preferencesModule.getAppPreferences());
-                                        textFontParameters.setUseDefaultFont(true);
-                                        textFontParameters.setFont(fontPanel.getStoredFont());
-                                    }
-                                    result.font = fontPanel.getStoredFont();
-                                }
-
-                                dialog.close();
-                                dialog.dispose();
-                            });
-                            dialog.showCentered(frameModule.getFrame());
-
-                            return result.font;
-                        }
-
-                        class Result {
-
-                            Font font;
-                        }
-                    });
-                }
-
-                Font currentFont = defaultFont;
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    FileHandler fileHandler = activeFile.get();
-                    if (fileHandler instanceof BinEdFileHandler) {
-                        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-                        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
-                        currentFont = componentExtension.getInputFieldsFont();
-                    }
-                }
-
-                panel.setCurrentFont(currentFont);
-                
-                return panel;
-            }
-
-            @Nonnull
-            @Override
-            public ResourceBundle getResourceBundle() {
-                return App.getModule(LanguageModuleApi.class).getBundle(DataInspectorOptionsPanel.class);
-            }
-
-            @Nonnull
-            @Override
-            public DataInspectorOptionsImpl createOptions() {
-                return new DataInspectorOptionsImpl();
-            }
-
-            @Override
-            public void loadFromPreferences(Preferences preferences, DataInspectorOptionsImpl options) {
-                options.loadFromPreferences(new DataInspectorPreferences(preferences));
-            }
-
-            @Override
-            public void saveToPreferences(Preferences preferences, DataInspectorOptionsImpl options) {
-                options.saveToPreferences(new DataInspectorPreferences(preferences));
-            }
-
-            @Override
-            public void applyPreferencesChanges(DataInspectorOptionsImpl options) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (!activeFile.isPresent()) {
-                    return;
-                }
-                FileHandler fileHandler = activeFile.get();
-                if (!(fileHandler instanceof BinEdFileHandler)) {
-                    return;
-                } 
-
-                BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-                BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
-                componentExtension.setShowParsingPanel(options.isShowParsingPanel());
-                boolean useDefaultFont = options.isUseDefaultFont();
-                Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
-                componentExtension.setInputFieldsFont(useDefaultFont || fontAttributes == null ? defaultFont : new Font(fontAttributes));
-            }
-        };
-        optionsModule.addOptionsPage(dataInspectorOptionsPage);
+        dataInspectorOptionsPage = new DataInspectorOptionsPage();
+        dataInspectorOptionsPage.setEditorProvider(editorProvider);
+        optionsPageManagement.registerOptionsPage(dataInspectorOptionsPage);
     }
 }

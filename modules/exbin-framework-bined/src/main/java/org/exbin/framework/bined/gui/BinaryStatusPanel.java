@@ -40,8 +40,6 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.BinaryStatusApi;
 import org.exbin.framework.bined.options.StatusOptions;
-import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
-import org.exbin.framework.bined.preferences.StatusPreferences;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.utils.UtilsModule;
@@ -58,14 +56,14 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryStatusPanel.class);
 
-    private StatusPreferences statusParameters;
+    private StatusOptions statusParameters;
     private StatusControlHandler statusControlHandler;
 
     private StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
     private StatusDocumentSizeFormat documentSizeFormat = new StatusDocumentSizeFormat();
-    private int octalSpaceGroupSize = StatusOptionsImpl.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
-    private int decimalSpaceGroupSize = StatusOptionsImpl.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
-    private int hexadecimalSpaceGroupSize = StatusOptionsImpl.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
+    private int octalSpaceGroupSize = StatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
+    private int decimalSpaceGroupSize = StatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
+    private int hexadecimalSpaceGroupSize = StatusOptions.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
 
     private EditOperation editOperation;
     private CodeAreaCaretPosition caretPosition;
@@ -77,7 +75,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         initComponents();
     }
 
-    public void loadFromPreferences(StatusPreferences statusParameters) {
+    public void loadFromPreferences(StatusOptions statusParameters) {
         this.statusParameters = statusParameters;
         cursorPositionFormat.setCodeType(statusParameters.getCursorPositionCodeType());
         cursorPositionFormat.setShowOffset(statusParameters.isCursorShowOffset());

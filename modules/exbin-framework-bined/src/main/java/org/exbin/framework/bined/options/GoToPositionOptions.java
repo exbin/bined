@@ -13,60 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.preferences;
+package org.exbin.framework.bined.options;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.exbin.framework.preferences.api.Preferences;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.framework.bined.gui.RelativePositionMode;
+import org.exbin.framework.options.api.OptionsData;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * Binary editor preferences.
+ * Go to position options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class GoToPositionPreferences {
+public class GoToPositionOptions implements OptionsData {
 
-    public static final String PREFERENCES_GO_TO_BINARY_POSITION_MODE = "goToBinaryPositionMode";
-    public static final String PREFERENCES_GO_TO_BINARY_POSITION_VALUE_TYPE = "goToBinaryPositionValueType";
+    public static final String KEY_GO_TO_BINARY_POSITION_MODE = "goToBinaryPositionMode";
+    public static final String KEY_GO_TO_BINARY_POSITION_VALUE_TYPE = "goToBinaryPositionValueType";
 
-    private final Preferences preferences;
+    private final OptionsStorage storage;
 
-    public GoToPositionPreferences(Preferences preferences) {
-        this.preferences = preferences;
+    public GoToPositionOptions(OptionsStorage storage) {
+        this.storage = storage;
     }
 
     @Nonnull
     public RelativePositionMode getPositionMode() {
         RelativePositionMode defaultMode = RelativePositionMode.FROM_START;
         try {
-            return RelativePositionMode.valueOf(preferences.get(PREFERENCES_GO_TO_BINARY_POSITION_MODE, defaultMode.name()));
+            return RelativePositionMode.valueOf(storage.get(KEY_GO_TO_BINARY_POSITION_MODE, defaultMode.name()));
         } catch (Exception ex) {
-            Logger.getLogger(GoToPositionPreferences.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GoToPositionOptions.class.getName()).log(Level.SEVERE, null, ex);
             return defaultMode;
         }
     }
 
     public void setPositionMode(RelativePositionMode positionMode) {
-        preferences.put(PREFERENCES_GO_TO_BINARY_POSITION_MODE, positionMode.name());
+        storage.put(KEY_GO_TO_BINARY_POSITION_MODE, positionMode.name());
     }
 
     @Nonnull
     public PositionCodeType getGoToBinaryPositionValueType() {
         PositionCodeType defaultCodeType = PositionCodeType.DECIMAL;
         try {
-            return PositionCodeType.valueOf(preferences.get(PREFERENCES_GO_TO_BINARY_POSITION_VALUE_TYPE, defaultCodeType.name()));
+            return PositionCodeType.valueOf(storage.get(KEY_GO_TO_BINARY_POSITION_VALUE_TYPE, defaultCodeType.name()));
         } catch (Exception ex) {
-            Logger.getLogger(GoToPositionPreferences.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GoToPositionOptions.class.getName()).log(Level.SEVERE, null, ex);
             return defaultCodeType;
         }
     }
 
     public void setGoToBinaryPositionValueType(PositionCodeType goToBinaryPositionValueType) {
-        preferences.put(PREFERENCES_GO_TO_BINARY_POSITION_VALUE_TYPE, goToBinaryPositionValueType.name());
+        storage.put(KEY_GO_TO_BINARY_POSITION_VALUE_TYPE, goToBinaryPositionValueType.name());
+    }
+
+    @Override
+    public void copyTo(OptionsData options) {
+        GoToPositionOptions with = (GoToPositionOptions) options;
+        with.setGoToBinaryPositionValueType(getGoToBinaryPositionValueType());
+        with.setPositionMode(getPositionMode());
     }
 }

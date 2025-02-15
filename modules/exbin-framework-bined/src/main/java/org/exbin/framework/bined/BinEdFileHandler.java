@@ -49,7 +49,7 @@ import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
+import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.framework.editor.text.TextCharsetApi;
 import org.exbin.framework.editor.text.TextFontApi;
 import org.exbin.framework.file.api.EditableFileHandler;
@@ -121,7 +121,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         notifyUndoChanged();
     }
 
-    public void onInitFromPreferences(BinaryEditorPreferences preferences) {
+    public void onInitFromPreferences(BinaryEditorOptions preferences) {
         editorComponent.onInitFromPreferences(preferences);
     }
 

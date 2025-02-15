@@ -36,9 +36,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaThemeOptionsImpl;
-import org.exbin.framework.bined.preferences.CodeAreaThemePreferences;
+import org.exbin.framework.bined.options.CodeAreaThemeOptions;
+import org.exbin.framework.bined.options.CodeAreaThemeProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
@@ -153,10 +154,10 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
     }
 
     private void loadFromOptions() {
-        CodeAreaThemeOptionsImpl options = new CodeAreaThemeOptionsImpl();
+        CodeAreaThemeProfileOptions options = new CodeAreaThemeProfileOptions(new DefaultOptionsStorage());
         try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/resources/templates/themeTemplates.xml")) {
             java.util.prefs.Preferences filePreferences = new StreamPreferences(stream);
-            options.loadFromPreferences(new CodeAreaThemePreferences(new PreferencesWrapper(filePreferences)));
+            options.loadFromPreferences(new CodeAreaThemeOptions(new PreferencesWrapper(filePreferences)));
             List<ThemeProfile> profiles = new ArrayList<>();
             List<String> profileNames = options.getProfileNames();
             for (int index = 0; index < profileNames.size(); index++) {

@@ -25,7 +25,7 @@ import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaOptionsImpl;
+import org.exbin.framework.bined.options.CodeAreaOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -39,7 +39,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaOptionsImpl> {
+public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaOptionsPanel.class);
 
@@ -78,7 +78,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     }
 
     @Override
-    public void saveToOptions(CodeAreaOptionsImpl options) {
+    public void saveToOptions(CodeAreaOptions options) {
         options.setCodeType(CodeType.values()[codeTypeComboBox.getSelectedIndex()]);
         options.setShowNonprintables(showNonprintableCharactersCheckBox.isSelected());
         options.setCodeCharactersCase(CodeCharactersCase.values()[codeCharactersModeComboBox.getSelectedIndex()]);
@@ -92,7 +92,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     }
 
     @Override
-    public void loadFromOptions(CodeAreaOptionsImpl options) {
+    public void loadFromOptions(CodeAreaOptions options) {
         codeTypeComboBox.setSelectedIndex(options.getCodeType().ordinal());
         showNonprintableCharactersCheckBox.setSelected(options.isShowNonprintables());
         codeCharactersModeComboBox.setSelectedIndex(options.getCodeCharactersCase().ordinal());

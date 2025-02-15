@@ -36,9 +36,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
-import org.exbin.framework.bined.preferences.CodeAreaColorPreferences;
+import org.exbin.framework.bined.options.CodeAreaColorOptions;
+import org.exbin.framework.bined.options.CodeAreaColorProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
@@ -149,10 +150,10 @@ public class ColorTemplatePanel extends javax.swing.JPanel implements ProfileLis
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadFromOptions() {
-        CodeAreaColorOptionsImpl options = new CodeAreaColorOptionsImpl();
+        CodeAreaColorProfileOptions options = new CodeAreaColorProfileOptions(new DefaultOptionsStorage());
         try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/resources/templates/colorTemplates.xml")) {
             java.util.prefs.Preferences filePreferences = new StreamPreferences(stream);
-            options.loadFromPreferences(new CodeAreaColorPreferences(new PreferencesWrapper(filePreferences)));
+            options.loadFromPreferences(new CodeAreaColorOptions(new PreferencesWrapper(filePreferences)));
             List<ColorProfile> profiles = new ArrayList<>();
             List<String> profileNames = options.getProfileNames();
             for (int index = 0; index < profileNames.size(); index++) {

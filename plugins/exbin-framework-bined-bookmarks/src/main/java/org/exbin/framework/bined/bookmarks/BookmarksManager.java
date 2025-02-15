@@ -48,7 +48,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
 import org.exbin.framework.action.api.menu.MenuContribution;
 import org.exbin.framework.action.api.menu.MenuManagement;
-import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
@@ -57,13 +56,14 @@ import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.bined.bookmarks.preferences.BookmarkPreferences;
+import org.exbin.framework.bined.bookmarks.options.BookmarkOptions;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -79,7 +79,7 @@ public class BookmarksManager {
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarksManager.class);
 
     private final List<BookmarkRecord> bookmarkRecords = new ArrayList<>();
-    private BookmarkPreferences bookmarkPreferences;
+    private BookmarkOptions bookmarkPreferences;
     private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
     private EditorProvider editorProvider;
@@ -108,8 +108,8 @@ public class BookmarksManager {
         BinedModule binedModule = App.getModule(BinedModule.class);
 
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        Preferences preferences = preferencesModule.getAppPreferences();
-        bookmarkPreferences = new BookmarkPreferences(preferences);
+        OptionsStorage preferences = preferencesModule.getAppPreferences();
+        bookmarkPreferences = new BookmarkOptions(preferences);
         loadBookmarkRecords();
         updateBookmarksMenu();
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);

@@ -30,8 +30,8 @@ import javax.swing.SwingUtilities;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
-import org.exbin.framework.bined.inspector.preferences.DataInspectorPreferences;
-import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
+import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
+import org.exbin.framework.bined.options.BinaryEditorOptions;
 
 /**
  * BinEd component data inspector.
@@ -99,8 +99,8 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     }
 
     @Override
-    public void onInitFromPreferences(BinaryEditorPreferences preferences) {
-        DataInspectorPreferences dataInspectorPreferences = new DataInspectorPreferences(preferences.getPreferences());
+    public void onInitFromPreferences(BinaryEditorOptions preferences) {
+        DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(preferences.getPreferences());
         setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
         boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
         if (useDefaultFont) {

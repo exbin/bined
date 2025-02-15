@@ -20,7 +20,8 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaThemeOptionsImpl;
+import org.exbin.framework.bined.options.CodeAreaThemeOptions;
+import org.exbin.framework.bined.options.CodeAreaThemeProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -34,7 +35,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaThemeOptionsImpl> {
+public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements OptionsComponent<CodeAreaThemeOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesOptionsPanel.class);
 
@@ -76,14 +77,14 @@ public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements Opt
     }
 
     @Override
-    public void loadFromOptions(CodeAreaThemeOptionsImpl options) {
-        profilesPanel.loadFromOptions(options);
+    public void loadFromOptions(CodeAreaThemeOptions options) {
+        profilesPanel.loadFromOptions(new CodeAreaThemeProfileOptions(options));
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
-    public void saveToOptions(CodeAreaThemeOptionsImpl options) {
-        profilesPanel.saveToOptions(options);
+    public void saveToOptions(CodeAreaThemeOptions options) {
+        profilesPanel.saveToOptions(new CodeAreaThemeProfileOptions(options));
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

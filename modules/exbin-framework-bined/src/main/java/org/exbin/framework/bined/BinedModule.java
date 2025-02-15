@@ -60,7 +60,6 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.menu.ActionMenuCreation;
-import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.action.ShowHeaderAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
@@ -70,9 +69,8 @@ import org.exbin.framework.action.api.PositionMode;
 import org.exbin.framework.action.api.SeparationMode;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
-import org.exbin.framework.bined.preferences.EditorPreferences;
-import org.exbin.framework.editor.text.preferences.TextEncodingPreferences;
+import org.exbin.framework.bined.options.BinaryEditorOptions;
+import org.exbin.framework.bined.options.EditorOptions;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
 import org.exbin.framework.bined.service.impl.BinaryAppearanceServiceImpl;
 import org.exbin.framework.editor.text.service.TextEncodingService;
@@ -99,8 +97,10 @@ import org.exbin.framework.action.popup.api.ActionPopupModuleApi;
 import org.exbin.framework.action.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.bined.action.EditSelectionAction;
 import org.exbin.framework.bined.action.ReloadFileAction;
+import org.exbin.framework.editor.text.options.TextEncodingOptions;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ObjectUtils;
 import org.exbin.framework.utils.UiUtils;
@@ -204,8 +204,8 @@ public class BinedModule implements Module {
             fileManager.initFileHandler(editorFile);
 
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            editorFile.onInitFromPreferences(new BinaryEditorPreferences(preferencesModule.getAppPreferences()));
-            EditorPreferences editorPreferences = new EditorPreferences(preferencesModule.getAppPreferences());
+            editorFile.onInitFromPreferences(new BinaryEditorOptions(preferencesModule.getAppPreferences()));
+            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             editorFile.setNewData(fileHandlingMode);
 
@@ -225,7 +225,7 @@ public class BinedModule implements Module {
         if (editorProvider == null) {
             editorProvider = new BinaryMultiEditorProvider();
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            EditorPreferences editorPreferences = new EditorPreferences(preferencesModule.getAppPreferences());
+            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
             FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
             ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(fileHandlingMode);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
@@ -302,10 +302,10 @@ public class BinedModule implements Module {
                     FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
                     if (newHandlingMode != fileHandlingMode) {
                         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-                        BinaryEditorPreferences preferences = new BinaryEditorPreferences(preferencesModule.getAppPreferences());
+                        BinaryEditorOptions preferences = new BinaryEditorOptions(preferencesModule.getAppPreferences());
                         if (editorProvider.releaseFile(fileHandler)) {
                             fileHandler.switchFileHandlingMode(newHandlingMode);
-                            preferences.getEditorPreferences().setFileHandlingMode(newHandlingMode);
+                            preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);
                         }
                         ((BinEdEditorProvider) editorProvider).updateStatus();
                     }
@@ -1030,8 +1030,8 @@ public class BinedModule implements Module {
         mgmt.unregisterMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
     }
 
-    public void loadFromPreferences(Preferences preferences) {
-        encodingsHandler.loadFromPreferences(new TextEncodingPreferences(preferences));
+    public void loadFromPreferences(OptionsStorage preferences) {
+        encodingsHandler.loadFromPreferences(new TextEncodingOptions(preferences));
         fileManager.loadFromPreferences(preferences);
     }
 

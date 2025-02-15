@@ -16,20 +16,46 @@
 package org.exbin.framework.bined.options;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.options.api.OptionsData;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * Binary component appearance options.
+ * Binary appearance options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinaryAppearanceOptions {
+public class BinaryAppearanceOptions implements OptionsData {
 
-    boolean isLineWrapping();
+    public static final String KEY_TEXT_WORD_WRAPPING = "textAppearance.wordWrap";
+    public static final String KEY_MULTIFILE_MODE = "multiFileMode";
 
-    boolean isMultiFileMode();
+    private final OptionsStorage storage;
 
-    void setLineWrapping(boolean lineWrapping);
+    public BinaryAppearanceOptions(OptionsStorage storage) {
+        this.storage = storage;
+    }
 
-    void setMultiFileMode(boolean multiTabMode);
+    public boolean isLineWrapping() {
+        return storage.getBoolean(KEY_TEXT_WORD_WRAPPING, false);
+    }
+
+    public boolean isMultiFileMode() {
+        return storage.getBoolean(KEY_MULTIFILE_MODE, true);
+    }
+
+    public void setLineWrapping(boolean wrapping) {
+        storage.putBoolean(KEY_TEXT_WORD_WRAPPING, wrapping);
+    }
+
+    public void setMultiFileMode(boolean mode) {
+        storage.putBoolean(KEY_MULTIFILE_MODE, mode);
+    }
+
+    @Override
+    public void copyTo(OptionsData options) {
+        BinaryAppearanceOptions with = (BinaryAppearanceOptions) options;
+        with.setLineWrapping(isLineWrapping());
+        with.setMultiFileMode(isMultiFileMode());
+    }
 }

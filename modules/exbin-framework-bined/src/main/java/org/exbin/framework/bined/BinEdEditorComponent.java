@@ -30,9 +30,9 @@ import org.exbin.framework.bined.options.CodeAreaColorOptions;
 import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.options.CodeAreaThemeOptions;
 import org.exbin.framework.bined.options.EditorOptions;
-import org.exbin.framework.bined.options.impl.CodeAreaOptionsImpl;
-import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
+import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.framework.bined.options.CodeAreaOptions;
 
 /**
  * Component for BinEd editor instances.
@@ -79,13 +79,13 @@ public class BinEdEditorComponent {
         componentPanel.setUndoRedo(undoHandler);
     }
 
-    public void onInitFromPreferences(BinaryEditorPreferences preferences) {
+    public void onInitFromPreferences(BinaryEditorOptions preferences) {
         componentPanel.onInitFromPreferences(preferences);
 
         SectCodeArea codeArea = componentPanel.getCodeArea();
-        CodeAreaOptionsImpl.applyToCodeArea(preferences.getCodeAreaPreferences(), codeArea);
+        CodeAreaOptions.applyToCodeArea(preferences.getCodeAreaOptions(), codeArea);
 
-        EditorOptions editorOptions = preferences.getEditorPreferences();
+        EditorOptions editorOptions = preferences.getEditorOptions();
         if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
             ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
             ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
@@ -94,10 +94,10 @@ public class BinEdEditorComponent {
         applyProfileFromPreferences(preferences);
     }
 
-    public void applyProfileFromPreferences(BinaryEditorPreferences preferences) {
+    public void applyProfileFromPreferences(BinaryEditorOptions preferences) {
         SectCodeArea codeArea = componentPanel.getCodeArea();
 
-        CodeAreaLayoutOptions layoutOptions = preferences.getLayoutPreferences();
+        CodeAreaLayoutOptions layoutOptions = preferences.getLayoutOptions();
         int selectedLayoutProfile = layoutOptions.getSelectedProfile();
         if (selectedLayoutProfile >= 0) {
             codeArea.setLayoutProfile(layoutOptions.getLayoutProfile(selectedLayoutProfile));
@@ -105,7 +105,7 @@ public class BinEdEditorComponent {
             codeArea.setLayoutProfile(defaultLayoutProfile);
         }
 
-        CodeAreaThemeOptions themeOptions = preferences.getThemePreferences();
+        CodeAreaThemeOptions themeOptions = preferences.getThemeOptions();
         int selectedThemeProfile = themeOptions.getSelectedProfile();
         if (selectedThemeProfile >= 0) {
             codeArea.setThemeProfile(themeOptions.getThemeProfile(selectedThemeProfile));
@@ -113,7 +113,7 @@ public class BinEdEditorComponent {
             codeArea.setThemeProfile(defaultThemeProfile);
         }
 
-        CodeAreaColorOptions colorOptions = preferences.getColorPreferences();
+        CodeAreaColorOptions colorOptions = preferences.getColorOptions();
         int selectedColorProfile = colorOptions.getSelectedProfile();
         if (selectedColorProfile >= 0) {
             codeArea.setColorsProfile(colorOptions.getColorsProfile(selectedColorProfile));

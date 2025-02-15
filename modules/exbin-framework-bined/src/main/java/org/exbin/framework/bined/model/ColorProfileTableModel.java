@@ -33,7 +33,7 @@ import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaNonprintablesColorType;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
-import org.exbin.framework.bined.preferences.CodeAreaColorPreferences;
+import org.exbin.framework.bined.options.CodeAreaColorOptions;
 
 /**
  * Table model for Color profile panel.
@@ -55,30 +55,30 @@ public class ColorProfileTableModel implements TableModel {
     }
 
     private void init() {
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_TEXT_COLOR), CodeAreaBasicColors.TEXT_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_TEXT_BACKGROUND), CodeAreaBasicColors.TEXT_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_COLOR), CodeAreaBasicColors.SELECTION_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_BACKGROUND), CodeAreaBasicColors.SELECTION_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_MIRROR_COLOR), CodeAreaBasicColors.SELECTION_MIRROR_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_SELECTION_MIRROR_BACKGROUND), CodeAreaBasicColors.SELECTION_MIRROR_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_ALTERNATE_COLOR), CodeAreaBasicColors.ALTERNATE_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_ALTERNATE_BACKGROUND), CodeAreaBasicColors.ALTERNATE_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CURSOR_COLOR), CodeAreaBasicColors.CURSOR_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CURSOR_NEGATIVE_COLOR), CodeAreaBasicColors.CURSOR_NEGATIVE_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_TEXT_COLOR), CodeAreaBasicColors.TEXT_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_TEXT_BACKGROUND), CodeAreaBasicColors.TEXT_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_SELECTION_COLOR), CodeAreaBasicColors.SELECTION_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_SELECTION_BACKGROUND), CodeAreaBasicColors.SELECTION_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_SELECTION_MIRROR_COLOR), CodeAreaBasicColors.SELECTION_MIRROR_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_SELECTION_MIRROR_BACKGROUND), CodeAreaBasicColors.SELECTION_MIRROR_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_ALTERNATE_COLOR), CodeAreaBasicColors.ALTERNATE_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_ALTERNATE_BACKGROUND), CodeAreaBasicColors.ALTERNATE_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_CURSOR_COLOR), CodeAreaBasicColors.CURSOR_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_CURSOR_NEGATIVE_COLOR), CodeAreaBasicColors.CURSOR_NEGATIVE_COLOR));
 
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_DECORATION_LINE), BasicCodeAreaDecorationColorType.LINE));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CONTROL_CODES_COLOR), CodeAreaColorizationColorType.CONTROL_CODES_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_CONTROL_CODES_BACKGROUND), CodeAreaColorizationColorType.CONTROL_CODES_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_UPPER_CODES_COLOR), CodeAreaColorizationColorType.UPPER_CODES_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.COLOR_UPPER_CODES_BACKGROUND), CodeAreaColorizationColorType.UPPER_CODES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_DECORATION_LINE), BasicCodeAreaDecorationColorType.LINE));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_CONTROL_CODES_COLOR), CodeAreaColorizationColorType.CONTROL_CODES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_CONTROL_CODES_BACKGROUND), CodeAreaColorizationColorType.CONTROL_CODES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_UPPER_CODES_COLOR), CodeAreaColorizationColorType.UPPER_CODES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.COLOR_UPPER_CODES_BACKGROUND), CodeAreaColorizationColorType.UPPER_CODES_BACKGROUND));
 
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.MATCH_COLOR), CodeAreaMatchColorType.MATCH_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.MATCH_BACKGROUND), CodeAreaMatchColorType.MATCH_BACKGROUND));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.CURRENT_MATCH_COLOR), CodeAreaMatchColorType.CURRENT_MATCH_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.CURRENT_MATCH_BACKGROUND), CodeAreaMatchColorType.CURRENT_MATCH_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.MATCH_COLOR), CodeAreaMatchColorType.MATCH_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.MATCH_BACKGROUND), CodeAreaMatchColorType.MATCH_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.CURRENT_MATCH_COLOR), CodeAreaMatchColorType.CURRENT_MATCH_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.CURRENT_MATCH_BACKGROUND), CodeAreaMatchColorType.CURRENT_MATCH_BACKGROUND));
 
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.NONPRINTABLES_COLOR), CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR));
-        rows.add(new ColorRow(getColorTypeText(CodeAreaColorPreferences.NONPRINTABLES_BACKGROUND), CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.NONPRINTABLES_COLOR), CodeAreaNonprintablesColorType.NONPRINTABLES_COLOR));
+        rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.NONPRINTABLES_BACKGROUND), CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND));
     }
 
     @Nonnull

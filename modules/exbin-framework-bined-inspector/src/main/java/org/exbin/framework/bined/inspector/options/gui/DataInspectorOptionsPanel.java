@@ -22,11 +22,12 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.inspector.options.impl.DataInspectorOptionsImpl;
+import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
+import org.exbin.framework.editor.text.options.TextFontOptions;
 import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
-import org.exbin.framework.editor.text.options.impl.TextFontOptionsImpl;
 import org.exbin.framework.editor.text.service.TextFontService;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -39,7 +40,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class DataInspectorOptionsPanel extends javax.swing.JPanel implements OptionsComponent<DataInspectorOptionsImpl> {
+public class DataInspectorOptionsPanel extends javax.swing.JPanel implements OptionsComponent<DataInspectorOptions> {
 
     private OptionsModifiedListener optionsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorOptionsPanel.class);
@@ -98,9 +99,9 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
     }
 
     @Override
-    public void loadFromOptions(DataInspectorOptionsImpl options) {
+    public void loadFromOptions(DataInspectorOptions options) {
         showParsingPanelCheckBox.setSelected(options.isShowParsingPanel());
-        TextFontOptionsImpl textFontOptions = new TextFontOptionsImpl();
+        TextFontOptions textFontOptions = new TextFontOptions(new DefaultOptionsStorage());
         textFontOptions.setUseDefaultFont(options.isUseDefaultFont());
         Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
         textFontOptions.setFontAttributes((fontAttributes == null) ? defaultFont.getAttributes() : fontAttributes);
@@ -108,9 +109,9 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
     }
 
     @Override
-    public void saveToOptions(DataInspectorOptionsImpl options) {
+    public void saveToOptions(DataInspectorOptions options) {
         options.setShowParsingPanel(showParsingPanelCheckBox.isSelected());
-        TextFontOptionsImpl textFontOptions = new TextFontOptionsImpl();
+        TextFontOptions textFontOptions = new TextFontOptions(new DefaultOptionsStorage());
         textFontOptionsPanel.saveToOptions(textFontOptions);
         options.setUseDefaultFont(textFontOptions.isUseDefaultFont());
         options.setFontAttributes(textFontOptions.getFontAttributes());

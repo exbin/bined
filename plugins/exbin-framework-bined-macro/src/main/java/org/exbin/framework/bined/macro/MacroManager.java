@@ -46,7 +46,6 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
 import org.exbin.framework.action.api.menu.MenuContribution;
 import org.exbin.framework.action.api.menu.MenuManagement;
-import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -61,12 +60,13 @@ import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
-import org.exbin.framework.bined.macro.preferences.MacroPreferences;
+import org.exbin.framework.bined.macro.options.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -82,7 +82,7 @@ public class MacroManager {
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(MacroManager.class);
 
     private final List<MacroRecord> macroRecords = new ArrayList<>();
-    private MacroPreferences macroPreferences;
+    private MacroOptions macroOptions;
 
     private BinEdFileHandler fileHandler;
     private CodeAreaCore activeCodeArea;
@@ -112,25 +112,25 @@ public class MacroManager {
         stopMacroRecordingAction.setMacroManager(this);
 
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        Preferences preferences = preferencesModule.getAppPreferences();
-        macroPreferences = new MacroPreferences(preferences);
+        OptionsStorage preferences = preferencesModule.getAppPreferences();
+        macroOptions = new MacroOptions(preferences);
         loadMacroRecords();
         MacroManager.this.updateMacrosMenu();
     }
 
     private void loadMacroRecords() {
-        int macrosCount = macroPreferences.getMacrosCount();
+        int macrosCount = macroOptions.getMacrosCount();
         for (int i = 0; i < macrosCount; i++) {
-            MacroRecord macroRecord = macroPreferences.getMacroRecord(i);
+            MacroRecord macroRecord = macroOptions.getMacroRecord(i);
             macroRecords.add(macroRecord);
         }
     }
 
     private void saveMacroRecords() {
         int macrosCount = macroRecords.size();
-        macroPreferences.setMacrosCount(macrosCount);
+        macroOptions.setMacrosCount(macrosCount);
         for (int i = 0; i < macrosCount; i++) {
-            macroPreferences.setMacroRecord(i, macroRecords.get(i));
+            macroOptions.setMacroRecord(i, macroRecords.get(i));
         }
     }
 

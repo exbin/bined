@@ -43,8 +43,8 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
-import org.exbin.framework.bined.preferences.BinaryAppearancePreferences;
-import org.exbin.framework.bined.preferences.EditorPreferences;
+import org.exbin.framework.bined.options.BinaryAppearanceOptions;
+import org.exbin.framework.bined.options.EditorOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -57,7 +57,7 @@ import org.exbin.framework.help.online.api.HelpOnlineModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.preferences.api.Preferences;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 
@@ -87,7 +87,7 @@ public class BinedLauncherModule implements LauncherModule {
     @Override
     public void launch(String[] args) {
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        Preferences preferences = preferencesModule.getAppPreferences();
+        OptionsStorage preferences = preferencesModule.getAppPreferences();
         ResourceBundle bundle = App.getModule(LanguageModuleApi.class).getBundle(BinedLauncherModule.class);
 
         try {
@@ -117,7 +117,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             if (demoMode) {
                 // Don't use delta mode
-                preferences.put(EditorPreferences.PREFERENCES_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
+                preferences.put(EditorOptions.KEY_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
             }
 
             LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
@@ -141,7 +141,7 @@ public class BinedLauncherModule implements LauncherModule {
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
             BinedModule binedModule = App.getModule(BinedModule.class);
-            BinaryAppearancePreferences binaryAppearanceParameters = new BinaryAppearancePreferences(preferences);
+            BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(preferences);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
             EditorProviderVariant editorProviderVariant = editorProvideType != null
                     ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)

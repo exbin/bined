@@ -15,33 +15,82 @@
  */
 package org.exbin.framework.bined.options;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.options.api.OptionsData;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * Binary editor preferences.
+ * Binary editor options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface EditorOptions {
+public class EditorOptions implements OptionsData {
+
+    public static final String KEY_FILE_HANDLING_MODE = "fileHandlingMode";
+    public static final String KEY_ENTER_KEY_HANDLING_MODE = "enterKeyHandlingMode";
+    public static final String KEY_TAB_KEY_HANDLING_MODE = "tabKeyHandlingMode";
+
+    private final OptionsStorage storage;
+
+    public EditorOptions(OptionsStorage optionsStorage) {
+        this.storage = optionsStorage;
+    }
 
     @Nonnull
-    FileHandlingMode getFileHandlingMode();
+    public FileHandlingMode getFileHandlingMode() {
+        FileHandlingMode defaultFileHandlingMode = FileHandlingMode.DELTA;
+        try {
+            return FileHandlingMode.valueOf(storage.get(KEY_FILE_HANDLING_MODE, defaultFileHandlingMode.name()));
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(EditorOptions.class.getName()).log(Level.SEVERE, null, ex);
+            return defaultFileHandlingMode;
+        }
+    }
+
+    public void setFileHandlingMode(FileHandlingMode fileHandlingMode) {
+        storage.put(KEY_FILE_HANDLING_MODE, fileHandlingMode.name());
+    }
 
     @Nonnull
-    EnterKeyHandlingMode getEnterKeyHandlingMode();
+    public EnterKeyHandlingMode getEnterKeyHandlingMode() {
+        EnterKeyHandlingMode defaultValue = EnterKeyHandlingMode.PLATFORM_SPECIFIC;
+        try {
+            return EnterKeyHandlingMode.valueOf(storage.get(KEY_ENTER_KEY_HANDLING_MODE, defaultValue.name()));
+        } catch (IllegalArgumentException ex) {
+            return defaultValue;
+        }
+    }
+
+    public void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode) {
+        storage.put(KEY_ENTER_KEY_HANDLING_MODE, enterKeyHandlingMode.name());
+    }
 
     @Nonnull
-    TabKeyHandlingMode getTabKeyHandlingMode();
+    public TabKeyHandlingMode getTabKeyHandlingMode() {
+        TabKeyHandlingMode defaultValue = TabKeyHandlingMode.PLATFORM_SPECIFIC;
+        try {
+            return TabKeyHandlingMode.valueOf(storage.get(KEY_TAB_KEY_HANDLING_MODE, defaultValue.name()));
+        } catch (IllegalArgumentException ex) {
+            return defaultValue;
+        }
+    }
 
-    void setFileHandlingMode(FileHandlingMode fileHandlingMode);
+    public void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode) {
+        storage.put(KEY_TAB_KEY_HANDLING_MODE, tabKeyHandlingMode.name());
+    }
 
-    void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode);
-
-    void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode);
-
+    @Override
+    public void copyTo(OptionsData options) {
+        EditorOptions with = (EditorOptions) options;
+        with.setEnterKeyHandlingMode(getEnterKeyHandlingMode());
+        with.setFileHandlingMode(getFileHandlingMode());
+        with.setTabKeyHandlingMode(getTabKeyHandlingMode());
+    }
 }

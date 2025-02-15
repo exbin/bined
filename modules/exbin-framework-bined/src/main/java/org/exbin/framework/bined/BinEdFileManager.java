@@ -29,17 +29,16 @@ import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.preferences.api.Preferences;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.bined.options.impl.StatusOptionsImpl;
-import org.exbin.framework.bined.preferences.BinaryEditorPreferences;
-import org.exbin.framework.bined.preferences.CodeAreaPreferences;
-import org.exbin.framework.bined.preferences.StatusPreferences;
+import org.exbin.framework.bined.options.BinaryEditorOptions;
+import org.exbin.framework.bined.options.CodeAreaOptions;
+import org.exbin.framework.bined.options.StatusOptions;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.text.EncodingsHandler;
-import org.exbin.framework.editor.text.preferences.TextFontPreferences;
+import org.exbin.framework.editor.text.options.TextFontOptions;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 
 /**
@@ -92,18 +91,18 @@ public class BinEdFileManager {
         }
 
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        Preferences preferences = preferencesModule.getAppPreferences();
-        BinaryEditorPreferences binaryEditorPreferences = new BinaryEditorPreferences(preferences);
+        OptionsStorage preferences = preferencesModule.getAppPreferences();
+        BinaryEditorOptions binaryEditorPreferences = new BinaryEditorOptions(preferences);
         componentPanel.onInitFromPreferences(binaryEditorPreferences);
-        String encoding = binaryEditorPreferences.getEncodingPreferences().getSelectedEncoding();
+        String encoding = binaryEditorPreferences.getEncodingOptions().getSelectedEncoding();
         if (!encoding.isEmpty()) {
             codeArea.setCharset(Charset.forName(encoding));
         }
 
-        TextFontPreferences textFontPreferences = binaryEditorPreferences.getFontPreferences();
-        ((FontCapable) codeArea).setCodeFont(textFontPreferences.isUseDefaultFont() ? CodeAreaPreferences.DEFAULT_FONT : textFontPreferences.getFont(CodeAreaPreferences.DEFAULT_FONT));
+        TextFontOptions textFontOptions = binaryEditorPreferences.getFontOptions();
+        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
         if (binaryStatusPanel != null) {
-            binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusPreferences());
+            binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusOptions());
         }
     }
 
@@ -155,7 +154,7 @@ public class BinEdFileManager {
         }
     }
 
-    public void applyPreferencesChanges(StatusOptionsImpl options) {
+    public void applyPreferencesChanges(StatusOptions options) {
         binaryStatusPanel.setStatusOptions(options);
     }
 
@@ -171,9 +170,9 @@ public class BinEdFileManager {
         binEdComponentExtensions.add(extension);
     }
 
-    public void loadFromPreferences(Preferences preferences) {
+    public void loadFromPreferences(OptionsStorage preferences) {
         if (binaryStatusPanel != null) {
-            binaryStatusPanel.loadFromPreferences(new StatusPreferences(preferences));
+            binaryStatusPanel.loadFromPreferences(new StatusOptions(preferences));
         }
     }
 

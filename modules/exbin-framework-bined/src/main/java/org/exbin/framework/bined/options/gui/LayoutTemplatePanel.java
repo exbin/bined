@@ -36,9 +36,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaLayoutOptionsImpl;
-import org.exbin.framework.bined.preferences.CodeAreaLayoutPreferences;
+import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
+import org.exbin.framework.bined.options.CodeAreaLayoutProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
 import org.exbin.framework.preferences.StreamPreferences;
@@ -149,11 +150,11 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadFromOptions() {
-        CodeAreaLayoutOptionsImpl options = new CodeAreaLayoutOptionsImpl();
+        CodeAreaLayoutProfileOptions options = new CodeAreaLayoutProfileOptions(new DefaultOptionsStorage());
         try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/resources/templates/layoutTemplates.xml")) {
             java.util.prefs.Preferences filePreferences = new StreamPreferences(stream);
 
-            options.loadFromPreferences(new CodeAreaLayoutPreferences(new PreferencesWrapper(filePreferences)));
+            options.loadFromPreferences(new CodeAreaLayoutOptions(new PreferencesWrapper(filePreferences)));
 
             List<LayoutProfile> profiles = new ArrayList<>();
             List<String> profileNames = options.getProfileNames();

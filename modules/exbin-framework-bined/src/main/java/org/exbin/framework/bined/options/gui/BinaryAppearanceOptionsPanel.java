@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.BinaryAppearanceOptionsImpl;
+import org.exbin.framework.bined.options.BinaryAppearanceOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -33,7 +33,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements OptionsComponent<BinaryAppearanceOptionsImpl> {
+public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements OptionsComponent<BinaryAppearanceOptions> {
 
     private OptionsModifiedListener optionsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceOptionsPanel.class);
@@ -49,12 +49,12 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
     }
 
     @Override
-    public void loadFromOptions(BinaryAppearanceOptionsImpl options) {
+    public void loadFromOptions(BinaryAppearanceOptions options) {
         multiFileModeCheckBox.setSelected(options.isMultiFileMode());
     }
 
     @Override
-    public void saveToOptions(BinaryAppearanceOptionsImpl options) {
+    public void saveToOptions(BinaryAppearanceOptions options) {
         options.setMultiFileMode(multiFileModeCheckBox.isSelected());
     }
 

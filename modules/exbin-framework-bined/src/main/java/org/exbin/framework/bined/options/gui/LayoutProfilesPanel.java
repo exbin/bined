@@ -31,7 +31,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.options.impl.CodeAreaLayoutOptionsImpl;
+import org.exbin.framework.bined.options.CodeAreaLayoutProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -429,7 +429,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    public void loadFromOptions(CodeAreaLayoutOptionsImpl options) {
+    public void loadFromOptions(CodeAreaLayoutProfileOptions options) {
 //        activeOptions = options;
 
         List<LayoutProfile> profiles = new ArrayList<>();
@@ -446,7 +446,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(CodeAreaLayoutOptionsImpl options) {
+    public void saveToOptions(CodeAreaLayoutProfileOptions options) {
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();
         List<LayoutProfile> profiles = model.getProfiles();

@@ -31,8 +31,8 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.options.CodeAreaColorProfileOptions;
 import org.exbin.framework.bined.options.gui.PreviewPanel.PreviewType;
-import org.exbin.framework.bined.options.impl.CodeAreaColorOptionsImpl;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -427,7 +427,7 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
         updateStates();
     }
 
-    public void loadFromOptions(CodeAreaColorOptionsImpl options) {
+    public void loadFromOptions(CodeAreaColorProfileOptions options) {
         List<ColorProfile> profiles = new ArrayList<>();
         List<String> profileNames = options.getProfileNames();
         for (int index = 0; index < profileNames.size(); index++) {
@@ -442,7 +442,7 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(CodeAreaColorOptionsImpl options) {
+    public void saveToOptions(CodeAreaColorProfileOptions options) {
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();
         List<ColorProfile> profiles = model.getProfiles();
