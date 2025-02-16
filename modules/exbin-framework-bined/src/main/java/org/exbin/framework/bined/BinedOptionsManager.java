@@ -50,7 +50,10 @@ import org.exbin.framework.editor.text.EncodingsHandler;
 import org.exbin.framework.editor.text.options.TextFontOptionsPage;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.options.api.GroupOptionsPageRule;
+import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsPageManagement;
+import org.exbin.framework.options.api.ParentOptionsGroupRule;
 
 /**
  * BinEd options manager.
@@ -86,13 +89,18 @@ public class BinedOptionsManager {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedModule.MODULE_ID);
 
+        OptionsGroup binaryAppearanceOptionsGroup = optionsModule.createOptionsGroup("binaryAppearance", resourceBundle);
+        optionsPageManagement.registerGroup(binaryAppearanceOptionsGroup);
+        optionsPageManagement.registerGroupRule(binaryAppearanceOptionsGroup, new ParentOptionsGroupRule("editor"));
+
         binaryAppearanceOptionsPage = new BinaryAppearanceOptionsPage();
         binaryAppearanceOptionsPage.setBinaryAppearanceService(binaryAppearanceService);
-        optionsPageManagement.registerOptionsPage(binaryAppearanceOptionsPage);
+        optionsPageManagement.registerPage(binaryAppearanceOptionsPage);
+        optionsPageManagement.registerPageRule(binaryAppearanceOptionsPage, new GroupOptionsPageRule(binaryAppearanceOptionsGroup));
 
         textEncodingOptionsPage = new TextEncodingOptionsPage();
         textEncodingOptionsPage.setEncodingsHandler(encodingsHandler);
-        optionsPageManagement.registerOptionsPage(textEncodingOptionsPage);
+        optionsPageManagement.registerPage(textEncodingOptionsPage);
 
         textFontOptionsPage = new TextFontOptionsPage();
         textFontOptionsPage.setTextFontService(new TextFontService() {
@@ -124,7 +132,7 @@ public class BinedOptionsManager {
                 }
             }
         });
-        optionsPageManagement.registerOptionsPage(textFontOptionsPage);
+        optionsPageManagement.registerPage(textFontOptionsPage);
 
         editorOptionsPage = new EditorOptionsPage();
         editorOptionsPage.setEditorOptionsService(new EditorOptionsService() {
@@ -161,30 +169,30 @@ public class BinedOptionsManager {
             }
         });
         editorOptionsPage.setResourceBundle(resourceBundle);
-        optionsPageManagement.registerOptionsPage(editorOptionsPage);
+        optionsPageManagement.registerPage(editorOptionsPage);
 
         codeAreaOptionsPage = new CodeAreaOptionsPage();
         codeAreaOptionsPage.setEditorProvider(editorProvider);
         codeAreaOptionsPage.setResourceBundle(resourceBundle);
-        optionsPageManagement.registerOptionsPage(codeAreaOptionsPage);
+        optionsPageManagement.registerPage(codeAreaOptionsPage);
 
         statusOptionsPage = new StatusOptionsPage();
         statusOptionsPage.setResourceBundle(resourceBundle);
         statusOptionsPage.setFileManager(fileManager);
-        optionsPageManagement.registerOptionsPage(statusOptionsPage);
+        optionsPageManagement.registerPage(statusOptionsPage);
 
         themeProfilesOptionsPage = new CodeAreaThemeOptionsPage();
         themeProfilesOptionsPage.setResourceBundle(resourceBundle);
         themeProfilesOptionsPage.setEditorProvider(editorProvider);
-        optionsPageManagement.registerOptionsPage(themeProfilesOptionsPage);
+        optionsPageManagement.registerPage(themeProfilesOptionsPage);
 
         layoutProfilesOptionsPage = new CodeAreaLayoutOptionsPage();
         layoutProfilesOptionsPage.setEditorProvider(editorProvider);
-        optionsPageManagement.registerOptionsPage(layoutProfilesOptionsPage);
+        optionsPageManagement.registerPage(layoutProfilesOptionsPage);
 
         colorProfilesOptionsPage = new CodeAreaColorOptionsPage();
         colorProfilesOptionsPage.setEditorProvider(editorProvider);
-        optionsPageManagement.registerOptionsPage(colorProfilesOptionsPage);
+        optionsPageManagement.registerPage(colorProfilesOptionsPage);
     }
 
     public void startWithFile(String filePath) {

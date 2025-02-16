@@ -41,8 +41,11 @@ import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.inspector.options.page.DataInspectorOptionsPage;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.options.api.GroupOptionsPageRule;
+import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.options.api.OptionsPageManagement;
+import org.exbin.framework.options.api.ParentOptionsGroupRule;
 
 /**
  * Binary editor data inspector module.
@@ -159,8 +162,13 @@ public class BinedInspectorModule implements Module {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(MODULE_ID);
 
+        OptionsGroup inspectorOptionsGroup = optionsModule.createOptionsGroup("inspector", resourceBundle);
+        optionsPageManagement.registerGroup(inspectorOptionsGroup);
+        optionsPageManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("editor"));
+
         dataInspectorOptionsPage = new DataInspectorOptionsPage();
         dataInspectorOptionsPage.setEditorProvider(editorProvider);
-        optionsPageManagement.registerOptionsPage(dataInspectorOptionsPage);
+        optionsPageManagement.registerPage(dataInspectorOptionsPage);
+        optionsPageManagement.registerPageRule(dataInspectorOptionsPage, new GroupOptionsPageRule(inspectorOptionsGroup));
     }
 }

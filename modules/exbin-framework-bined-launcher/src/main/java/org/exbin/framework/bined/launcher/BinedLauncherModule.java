@@ -155,6 +155,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedSearchModule.registerSearchComponent();
 
             fileModule.registerOptionsPanels();
+            editorModule.registerOptionsPanels();
 
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.addBasicMethods();
