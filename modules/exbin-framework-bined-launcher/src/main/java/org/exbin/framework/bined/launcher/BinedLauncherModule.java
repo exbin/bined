@@ -60,6 +60,7 @@ import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
+import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
  * Binary editor launcher module.
@@ -122,7 +123,11 @@ public class BinedLauncherModule implements LauncherModule {
 
             LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
             languageModule.setAppBundle(bundle);
+
             final UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+            final UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
+            themeModule.registerThemeInit();
+
             uiModule.initSwingUi();
 
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
@@ -154,9 +159,6 @@ public class BinedLauncherModule implements LauncherModule {
             binedSearchModule.setEditorProvider(editorProvider);
             binedSearchModule.registerSearchComponent();
 
-            fileModule.registerOptionsPanels();
-            editorModule.registerOptionsPanels();
-
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.addBasicMethods();
 
@@ -166,7 +168,6 @@ public class BinedLauncherModule implements LauncherModule {
             AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
-            actionManagerModule.registerOptionsPanels();
 
             frameModule.createMainMenu();
             if (!demoMode) {
@@ -242,14 +243,20 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
+
             uiModule.registerOptionsPanels();
-            binedModule.registerStatusBar();
+            themeModule.registerOptionsPanels();
+            actionManagerModule.registerOptionsPanels();
+            fileModule.registerOptionsPanels();
+            editorModule.registerOptionsPanels();
             binedModule.registerOptionsPanels();
-            binedModule.getBinaryStatusPanel();
             binedInspectorModule.registerOptionsPanels();
             if (!demoMode) {
                 updateModule.registerOptionsPanels();
             }
+
+            binedModule.registerStatusBar();
+            binedModule.getBinaryStatusPanel();
             binedModule.registerUndoHandler();
 
             binedModule.loadFromPreferences(preferences);

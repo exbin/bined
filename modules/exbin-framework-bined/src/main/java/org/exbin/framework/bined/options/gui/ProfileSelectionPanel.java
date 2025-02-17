@@ -108,7 +108,7 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
     }
 
     public void setDefaultProfile(int profileIndex) {
-        if (profileIndex >= 0) {
+        if (profileIndex >= 0 && profileIndex < defaultProfileComboBox.getItemCount()) {
             defaultProfileComboBox.setSelectedIndex(profileIndex);
         }
     }
