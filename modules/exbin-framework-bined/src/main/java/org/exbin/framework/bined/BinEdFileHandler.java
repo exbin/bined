@@ -346,7 +346,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     public void closeData() {
         SectCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
-        editorComponent.setContentData(EmptyBinaryData.INSTANCE);
+        editorComponent.setContentData(EmptyBinaryData.getInstance());
         if (data instanceof DeltaDocument) {
             FileDataSource fileSource = (FileDataSource) ((DeltaDocument) data).getDataSource();
             data.dispose();

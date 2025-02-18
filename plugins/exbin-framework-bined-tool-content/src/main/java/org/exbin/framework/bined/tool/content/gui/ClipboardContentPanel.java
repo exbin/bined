@@ -101,7 +101,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
 
                 dataListModel.removeAllElements();
                 dataContents.clear();
-                dataCodeArea.setContentData(EmptyBinaryData.INSTANCE);
+                dataCodeArea.setContentData(EmptyBinaryData.getInstance());
 
                 Clipboard clipboard = ClipboardUtils.getClipboard();
                 try {
@@ -183,7 +183,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         dataComboBox.addItemListener((e) -> {
             if (currentDataComponent != null) {
                 if (currentDataComponent == binaryDataPanel) {
-                    dataCodeArea.setContentData(EmptyBinaryData.INSTANCE);
+                    dataCodeArea.setContentData(EmptyBinaryData.getInstance());
                 } else if (currentDataComponent == dataListScrollPane) {
                     DefaultListModel<String> listModel = new DefaultListModel<>();
                     dataList.setModel(listModel);

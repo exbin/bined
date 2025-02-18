@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.options.EditorOptions;
-import org.exbin.framework.bined.options.gui.EditorOptionsPanel;
+import org.exbin.framework.bined.options.gui.CodeAreaEditingOptionsPanel;
 import org.exbin.framework.bined.service.EditorOptionsService;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.DefaultOptionsPage;
@@ -31,16 +31,16 @@ import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * Editor options page.
+ * Code area editing options page.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class EditorOptionsPage implements DefaultOptionsPage<EditorOptions> {
+public class CodeAreaEditingOptionsPage implements DefaultOptionsPage<EditorOptions> {
 
-    public static final String PAGE_ID = "editor";
+    public static final String PAGE_ID = "codeAreaEditing";
 
-    private EditorOptionsPanel panel;
+    private CodeAreaEditingOptionsPanel panel;
     private EditorOptionsService editorOptionsService;
     private java.util.ResourceBundle resourceBundle;
 
@@ -62,7 +62,7 @@ public class EditorOptionsPage implements DefaultOptionsPage<EditorOptions> {
     @Override
     public OptionsComponent<EditorOptions> createPanel() {
         if (panel == null) {
-            panel = new EditorOptionsPanel();
+            panel = new CodeAreaEditingOptionsPanel();
             List<String> fileHandlingModes = new ArrayList<>();
             fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
             fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
@@ -90,7 +90,7 @@ public class EditorOptionsPage implements DefaultOptionsPage<EditorOptions> {
     @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(EditorOptionsPanel.class);
+        return App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingOptionsPanel.class);
     }
 
     @Nonnull

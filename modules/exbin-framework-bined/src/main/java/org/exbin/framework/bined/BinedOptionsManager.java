@@ -39,7 +39,7 @@ import org.exbin.framework.bined.options.page.CodeAreaColorOptionsPage;
 import org.exbin.framework.bined.options.page.CodeAreaLayoutOptionsPage;
 import org.exbin.framework.bined.options.page.CodeAreaOptionsPage;
 import org.exbin.framework.bined.options.page.CodeAreaThemeOptionsPage;
-import org.exbin.framework.bined.options.page.EditorOptionsPage;
+import org.exbin.framework.bined.options.page.CodeAreaEditingOptionsPage;
 import org.exbin.framework.bined.options.page.StatusOptionsPage;
 import org.exbin.framework.bined.options.page.TextEncodingOptionsPage;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
@@ -70,9 +70,9 @@ public class BinedOptionsManager {
     private TextEncodingOptionsPage textEncodingOptionsPage;
     private TextFontOptionsPage textFontOptionsPage;
     private BinaryAppearanceOptionsPage binaryAppearanceOptionsPage;
-    private EditorOptionsPage editorOptionsPage;
+    private CodeAreaEditingOptionsPage codeAreaEditingOptionsPage;
     private CodeAreaOptionsPage codeAreaOptionsPage;
-    private StatusOptionsPage statusOptionsPage;
+    private StatusOptionsPage statusBarOptionsPage;
     private CodeAreaThemeOptionsPage themeProfilesOptionsPage;
     private CodeAreaLayoutOptionsPage layoutProfilesOptionsPage;
     private CodeAreaColorOptionsPage colorProfilesOptionsPage;
@@ -89,53 +89,28 @@ public class BinedOptionsManager {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedModule.MODULE_ID);
 
-        OptionsGroup binaryAppearanceOptionsGroup = optionsModule.createOptionsGroup("binaryAppearance", resourceBundle);
-        optionsPageManagement.registerGroup(binaryAppearanceOptionsGroup);
-        optionsPageManagement.registerGroupRule(binaryAppearanceOptionsGroup, new ParentOptionsGroupRule("editor"));
-
+        OptionsGroup binaryGroup = optionsModule.createOptionsGroup("binary", resourceBundle);
+        optionsPageManagement.registerGroup(binaryGroup);
+        optionsPageManagement.registerGroupRule(binaryGroup, new ParentOptionsGroupRule("editor"));
         binaryAppearanceOptionsPage = new BinaryAppearanceOptionsPage();
         binaryAppearanceOptionsPage.setBinaryAppearanceService(binaryAppearanceService);
         optionsPageManagement.registerPage(binaryAppearanceOptionsPage);
-        optionsPageManagement.registerPageRule(binaryAppearanceOptionsPage, new GroupOptionsPageRule(binaryAppearanceOptionsGroup));
+        optionsPageManagement.registerPageRule(binaryAppearanceOptionsPage, new GroupOptionsPageRule(binaryGroup));
 
-        textEncodingOptionsPage = new TextEncodingOptionsPage();
-        textEncodingOptionsPage.setEncodingsHandler(encodingsHandler);
-        optionsPageManagement.registerPage(textEncodingOptionsPage);
+        OptionsGroup binaryCodeAreaGroup = optionsModule.createOptionsGroup("binaryCodeArea", resourceBundle);
+        optionsPageManagement.registerGroup(binaryCodeAreaGroup);
+        optionsPageManagement.registerGroupRule(binaryCodeAreaGroup, new ParentOptionsGroupRule(binaryGroup));
+        codeAreaOptionsPage = new CodeAreaOptionsPage();
+        codeAreaOptionsPage.setEditorProvider(editorProvider);
+        codeAreaOptionsPage.setResourceBundle(resourceBundle);
+        optionsPageManagement.registerPage(codeAreaOptionsPage);
+        optionsPageManagement.registerPageRule(codeAreaOptionsPage, new GroupOptionsPageRule(binaryCodeAreaGroup));
 
-        textFontOptionsPage = new TextFontOptionsPage();
-        textFontOptionsPage.setTextFontService(new TextFontService() {
-            @Override
-            public Font getCurrentFont() {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    return ((BinEdFileHandler) activeFile.get()).getCurrentFont();
-                }
-
-                return new JLabel().getFont();
-            }
-
-            @Override
-            public Font getDefaultFont() {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    return ((BinEdFileHandler) activeFile.get()).getDefaultFont();
-                }
-
-                return new JLabel().getFont();
-            }
-
-            @Override
-            public void setCurrentFont(Font font) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    ((BinEdFileHandler) activeFile.get()).setCurrentFont(font);
-                }
-            }
-        });
-        optionsPageManagement.registerPage(textFontOptionsPage);
-
-        editorOptionsPage = new EditorOptionsPage();
-        editorOptionsPage.setEditorOptionsService(new EditorOptionsService() {
+        OptionsGroup binaryCodeAreaEditingGroup = optionsModule.createOptionsGroup("binaryEditing", resourceBundle);
+        optionsPageManagement.registerGroup(binaryCodeAreaEditingGroup);
+        optionsPageManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule(binaryGroup));
+        codeAreaEditingOptionsPage = new CodeAreaEditingOptionsPage();
+        codeAreaEditingOptionsPage.setEditorOptionsService(new EditorOptionsService() {
             @Override
             public void setFileHandlingMode(FileHandlingMode fileHandlingMode) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
@@ -168,31 +143,91 @@ public class BinedOptionsManager {
                 }
             }
         });
-        editorOptionsPage.setResourceBundle(resourceBundle);
-        optionsPageManagement.registerPage(editorOptionsPage);
+        codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
+        optionsPageManagement.registerPage(codeAreaEditingOptionsPage);
+        optionsPageManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule(binaryGroup));
 
-        codeAreaOptionsPage = new CodeAreaOptionsPage();
-        codeAreaOptionsPage.setEditorProvider(editorProvider);
-        codeAreaOptionsPage.setResourceBundle(resourceBundle);
-        optionsPageManagement.registerPage(codeAreaOptionsPage);
+        OptionsGroup binaryEncodingGroup = optionsModule.createOptionsGroup("binaryEncoding", resourceBundle);
+        optionsPageManagement.registerGroup(binaryEncodingGroup);
+        optionsPageManagement.registerGroupRule(binaryEncodingGroup, new ParentOptionsGroupRule(binaryGroup));
+        textEncodingOptionsPage = new TextEncodingOptionsPage();
+        textEncodingOptionsPage.setEncodingsHandler(encodingsHandler);
+        optionsPageManagement.registerPage(textEncodingOptionsPage);
+        optionsPageManagement.registerPageRule(textEncodingOptionsPage, new GroupOptionsPageRule(binaryEncodingGroup));
 
-        statusOptionsPage = new StatusOptionsPage();
-        statusOptionsPage.setResourceBundle(resourceBundle);
-        statusOptionsPage.setFileManager(fileManager);
-        optionsPageManagement.registerPage(statusOptionsPage);
+        OptionsGroup binaryFontGroup = optionsModule.createOptionsGroup("binaryFont", resourceBundle);
+        optionsPageManagement.registerGroup(binaryFontGroup);
+        optionsPageManagement.registerGroupRule(binaryFontGroup, new ParentOptionsGroupRule(binaryGroup));
+        textFontOptionsPage = new TextFontOptionsPage();
+        textFontOptionsPage.setTextFontService(new TextFontService() {
+            @Override
+            public Font getCurrentFont() {
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                if (activeFile.isPresent()) {
+                    return ((BinEdFileHandler) activeFile.get()).getCurrentFont();
+                }
 
+                return new JLabel().getFont();
+            }
+
+            @Override
+            public Font getDefaultFont() {
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                if (activeFile.isPresent()) {
+                    return ((BinEdFileHandler) activeFile.get()).getDefaultFont();
+                }
+
+                return new JLabel().getFont();
+            }
+
+            @Override
+            public void setCurrentFont(Font font) {
+                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+                if (activeFile.isPresent()) {
+                    ((BinEdFileHandler) activeFile.get()).setCurrentFont(font);
+                }
+            }
+        });
+        optionsPageManagement.registerPage(textFontOptionsPage);
+        optionsPageManagement.registerPageRule(textFontOptionsPage, new GroupOptionsPageRule(binaryFontGroup));
+
+        OptionsGroup binaryStatusBarGroup = optionsModule.createOptionsGroup("binaryStatusBar", resourceBundle);
+        optionsPageManagement.registerGroup(binaryStatusBarGroup);
+        optionsPageManagement.registerGroupRule(binaryStatusBarGroup, new ParentOptionsGroupRule(binaryGroup));
+        statusBarOptionsPage = new StatusOptionsPage();
+        statusBarOptionsPage.setResourceBundle(resourceBundle);
+        statusBarOptionsPage.setFileManager(fileManager);
+        optionsPageManagement.registerPage(statusBarOptionsPage);
+        optionsPageManagement.registerPageRule(statusBarOptionsPage, new GroupOptionsPageRule(binaryStatusBarGroup));
+
+        OptionsGroup binaryProfileGroup = optionsModule.createOptionsGroup("binaryProfile", resourceBundle);
+        optionsPageManagement.registerGroup(binaryProfileGroup);
+        optionsPageManagement.registerGroupRule(binaryProfileGroup, new ParentOptionsGroupRule(binaryGroup));
+
+        OptionsGroup binaryThemeProfileGroup = optionsModule.createOptionsGroup("binaryThemeProfile", resourceBundle);
+        optionsPageManagement.registerGroup(binaryThemeProfileGroup);
+        optionsPageManagement.registerGroupRule(binaryThemeProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
         themeProfilesOptionsPage = new CodeAreaThemeOptionsPage();
         themeProfilesOptionsPage.setResourceBundle(resourceBundle);
         themeProfilesOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(themeProfilesOptionsPage);
+        optionsPageManagement.registerPageRule(themeProfilesOptionsPage, new GroupOptionsPageRule(binaryThemeProfileGroup));
 
+        OptionsGroup binaryLayoutProfileGroup = optionsModule.createOptionsGroup("binaryLayoutProfile", resourceBundle);
+        optionsPageManagement.registerGroup(binaryLayoutProfileGroup);
+        optionsPageManagement.registerGroupRule(binaryLayoutProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
         layoutProfilesOptionsPage = new CodeAreaLayoutOptionsPage();
         layoutProfilesOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(layoutProfilesOptionsPage);
+        optionsPageManagement.registerPageRule(layoutProfilesOptionsPage, new GroupOptionsPageRule(binaryLayoutProfileGroup));
 
+        OptionsGroup binaryColorProfileGroup = optionsModule.createOptionsGroup("binaryColorProfile", resourceBundle);
+        optionsPageManagement.registerGroup(binaryColorProfileGroup);
+        optionsPageManagement.registerGroupRule(binaryColorProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
         colorProfilesOptionsPage = new CodeAreaColorOptionsPage();
         colorProfilesOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(colorProfilesOptionsPage);
+        optionsPageManagement.registerPageRule(colorProfilesOptionsPage, new GroupOptionsPageRule(binaryColorProfileGroup));
     }
 
     public void startWithFile(String filePath) {

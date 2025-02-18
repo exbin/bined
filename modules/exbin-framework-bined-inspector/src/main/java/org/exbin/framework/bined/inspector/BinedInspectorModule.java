@@ -164,7 +164,7 @@ public class BinedInspectorModule implements Module {
 
         OptionsGroup inspectorOptionsGroup = optionsModule.createOptionsGroup("inspector", resourceBundle);
         optionsPageManagement.registerGroup(inspectorOptionsGroup);
-        optionsPageManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("editor"));
+        optionsPageManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("binary"));
 
         dataInspectorOptionsPage = new DataInspectorOptionsPage();
         dataInspectorOptionsPage.setEditorProvider(editorProvider);
