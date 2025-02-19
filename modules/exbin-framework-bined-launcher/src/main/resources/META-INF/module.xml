@@ -30,6 +30,7 @@
     <module id="org.exbin.framework.preferences.PreferencesModule" />
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />
-    <module id="org.exbin.framework.editor.text.EditorTextModule" />
+    <module id="org.exbin.framework.text.encoding.TextEncodingModule" />
+    <module id="org.exbin.framework.text.font.TextFontModule" />
   </dependency>
 </module>

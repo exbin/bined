@@ -16,7 +16,7 @@
 package org.exbin.framework.bined;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.editor.text.TextEncodingStatusApi;
+import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 
 /**
  * Binary editor provider interface.

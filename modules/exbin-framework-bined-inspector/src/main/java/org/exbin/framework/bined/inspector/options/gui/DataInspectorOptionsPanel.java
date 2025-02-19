@@ -23,14 +23,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
-import org.exbin.framework.editor.text.options.TextFontOptions;
-import org.exbin.framework.editor.text.options.gui.TextFontOptionsPanel;
-import org.exbin.framework.editor.text.service.TextFontService;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModifiedListener;
+import org.exbin.framework.text.font.options.TextFontOptions;
+import org.exbin.framework.text.font.options.gui.TextFontOptionsPanel;
+import org.exbin.framework.text.font.service.TextFontService;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 

@@ -29,7 +29,7 @@ import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
-import org.exbin.framework.editor.text.options.TextFontOptions;
+import org.exbin.framework.text.font.options.TextFontOptions;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**

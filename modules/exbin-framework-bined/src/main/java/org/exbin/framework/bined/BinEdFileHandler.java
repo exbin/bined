@@ -50,8 +50,6 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.options.BinaryEditorOptions;
-import org.exbin.framework.editor.text.TextCharsetApi;
-import org.exbin.framework.editor.text.TextFontApi;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.utils.ClipboardActionsHandler;
@@ -67,7 +65,7 @@ import org.exbin.framework.operation.undo.api.UndoRedoState;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler, UndoRedoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler, TextFontApi, TextCharsetApi {
+public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler, UndoRedoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler {
 
     private SegmentsRepository segmentsRepository;
 
@@ -521,19 +519,16 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         return true;
     }
 
-    @Override
     public void setCurrentFont(Font font) {
         getCodeArea().setCodeFont(font);
     }
 
     @Nonnull
-    @Override
     public Font getCurrentFont() {
         return getCodeArea().getCodeFont();
     }
 
     @Nonnull
-    @Override
     public Font getDefaultFont() {
         return defaultFont;
     }
@@ -544,12 +539,10 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    @Override
     public Charset getCharset() {
         return getCodeArea().getCharset();
     }
 
-    @Override
     public void setCharset(Charset charset) {
         getCodeArea().setCharset(charset);
     }

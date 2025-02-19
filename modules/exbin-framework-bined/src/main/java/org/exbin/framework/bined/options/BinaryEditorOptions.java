@@ -26,8 +26,8 @@ import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.bined.swing.section.layout.SectionCodeAreaDecorations;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.FileHandlingMode;
-import org.exbin.framework.editor.text.options.TextEncodingOptions;
-import org.exbin.framework.editor.text.options.TextFontOptions;
+import org.exbin.framework.text.encoding.options.TextEncodingOptions;
+import org.exbin.framework.text.font.options.TextFontOptions;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**

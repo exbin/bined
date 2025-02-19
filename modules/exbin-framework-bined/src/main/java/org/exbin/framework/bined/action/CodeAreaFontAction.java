@@ -25,10 +25,10 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
-import org.exbin.framework.editor.text.EditorTextModule;
-import org.exbin.framework.editor.text.action.TextFontAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.text.font.TextFontModule;
+import org.exbin.framework.text.font.action.TextFontAction;
 
 /**
  * Code area change font action.
@@ -70,7 +70,7 @@ public class CodeAreaFontAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if (textFontAction == null) {
             textFontAction = new TextFontAction();
-            textFontAction.setup(App.getModule(LanguageModuleApi.class).getBundle(EditorTextModule.class));
+            textFontAction.setup(App.getModule(LanguageModuleApi.class).getBundle(TextFontModule.class));
             textFontAction.setFileHandler(editorProvider.getActiveFile().orElse(null));
         }
         textFontAction.actionPerformed(e);

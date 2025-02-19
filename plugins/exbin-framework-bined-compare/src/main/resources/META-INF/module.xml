@@ -18,6 +18,5 @@
     <module id="org.exbin.framework.options.api.OptionsModuleApi" />
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />
-    <module id="org.exbin.framework.editor.text.EditorTextModule" />
   </dependency>
 </module>

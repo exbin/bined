@@ -43,7 +43,6 @@ import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileType;
@@ -57,6 +56,7 @@ import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
+import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 
 /**
  * Binary editor provider.

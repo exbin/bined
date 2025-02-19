@@ -44,7 +44,6 @@ import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.editor.text.TextEncodingStatusApi;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
@@ -54,6 +53,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 
 /**
  * Binary editor provider.

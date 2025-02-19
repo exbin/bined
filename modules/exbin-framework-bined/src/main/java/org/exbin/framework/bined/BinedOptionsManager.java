@@ -43,17 +43,17 @@ import org.exbin.framework.bined.options.page.CodeAreaEditingOptionsPage;
 import org.exbin.framework.bined.options.page.StatusOptionsPage;
 import org.exbin.framework.bined.options.page.TextEncodingOptionsPage;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
-import org.exbin.framework.editor.text.service.TextFontService;
 import org.exbin.framework.bined.service.EditorOptionsService;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.text.EncodingsHandler;
-import org.exbin.framework.editor.text.options.TextFontOptionsPage;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.options.api.GroupOptionsPageRule;
 import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsPageManagement;
 import org.exbin.framework.options.api.ParentOptionsGroupRule;
+import org.exbin.framework.text.encoding.EncodingsHandler;
+import org.exbin.framework.text.font.options.TextFontOptionsPage;
+import org.exbin.framework.text.font.service.TextFontService;
 
 /**
  * BinEd options manager.

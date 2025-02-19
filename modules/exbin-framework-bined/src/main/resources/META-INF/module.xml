@@ -21,7 +21,8 @@
     <module id="org.exbin.framework.preferences.PreferencesModule" />
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />
-    <module id="org.exbin.framework.editor.text.EditorTextModule" />
+    <module id="org.exbin.framework.text.font.TextFontModule" />
+    <module id="org.exbin.framework.text.encoding.TextEncodingModule" />
     <library jar="bined-core-0.3.0-SNAPSHOT.jar" />
     <library jar="bined-swing-0.3.0-SNAPSHOT.jar" />
     <library jar="bined-section-0.3.0-SNAPSHOT.jar" />
