@@ -89,15 +89,16 @@ public class BinedOptionsManager {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedModule.MODULE_ID);
 
-        OptionsGroup binaryGroup = optionsModule.createOptionsGroup("binary", resourceBundle);
+        OptionsGroup binaryGroup = optionsModule.createOptionsGroup("binaryEditor", resourceBundle);
         optionsPageManagement.registerGroup(binaryGroup);
         optionsPageManagement.registerGroupRule(binaryGroup, new ParentOptionsGroupRule("editor"));
+
         binaryAppearanceOptionsPage = new BinaryAppearanceOptionsPage();
         binaryAppearanceOptionsPage.setBinaryAppearanceService(binaryAppearanceService);
         optionsPageManagement.registerPage(binaryAppearanceOptionsPage);
         optionsPageManagement.registerPageRule(binaryAppearanceOptionsPage, new GroupOptionsPageRule(binaryGroup));
 
-        OptionsGroup binaryCodeAreaGroup = optionsModule.createOptionsGroup("binaryCodeArea", resourceBundle);
+        OptionsGroup binaryCodeAreaGroup = optionsModule.createOptionsGroup("binaryEditorCodeArea", resourceBundle);
         optionsPageManagement.registerGroup(binaryCodeAreaGroup);
         optionsPageManagement.registerGroupRule(binaryCodeAreaGroup, new ParentOptionsGroupRule(binaryGroup));
         codeAreaOptionsPage = new CodeAreaOptionsPage();
@@ -106,7 +107,7 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(codeAreaOptionsPage);
         optionsPageManagement.registerPageRule(codeAreaOptionsPage, new GroupOptionsPageRule(binaryCodeAreaGroup));
 
-        OptionsGroup binaryCodeAreaEditingGroup = optionsModule.createOptionsGroup("binaryEditing", resourceBundle);
+        OptionsGroup binaryCodeAreaEditingGroup = optionsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
         optionsPageManagement.registerGroup(binaryCodeAreaEditingGroup);
         optionsPageManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule(binaryGroup));
         codeAreaEditingOptionsPage = new CodeAreaEditingOptionsPage();
@@ -147,7 +148,7 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(codeAreaEditingOptionsPage);
         optionsPageManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule(binaryGroup));
 
-        OptionsGroup binaryEncodingGroup = optionsModule.createOptionsGroup("binaryEncoding", resourceBundle);
+        OptionsGroup binaryEncodingGroup = optionsModule.createOptionsGroup("binaryEditorEncoding", resourceBundle);
         optionsPageManagement.registerGroup(binaryEncodingGroup);
         optionsPageManagement.registerGroupRule(binaryEncodingGroup, new ParentOptionsGroupRule(binaryGroup));
         textEncodingOptionsPage = new TextEncodingOptionsPage();
@@ -155,7 +156,7 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(textEncodingOptionsPage);
         optionsPageManagement.registerPageRule(textEncodingOptionsPage, new GroupOptionsPageRule(binaryEncodingGroup));
 
-        OptionsGroup binaryFontGroup = optionsModule.createOptionsGroup("binaryFont", resourceBundle);
+        OptionsGroup binaryFontGroup = optionsModule.createOptionsGroup("binaryEditorFont", resourceBundle);
         optionsPageManagement.registerGroup(binaryFontGroup);
         optionsPageManagement.registerGroupRule(binaryFontGroup, new ParentOptionsGroupRule(binaryGroup));
         textFontOptionsPage = new TextFontOptionsPage();
@@ -191,7 +192,7 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(textFontOptionsPage);
         optionsPageManagement.registerPageRule(textFontOptionsPage, new GroupOptionsPageRule(binaryFontGroup));
 
-        OptionsGroup binaryStatusBarGroup = optionsModule.createOptionsGroup("binaryStatusBar", resourceBundle);
+        OptionsGroup binaryStatusBarGroup = optionsModule.createOptionsGroup("binaryEditorStatusBar", resourceBundle);
         optionsPageManagement.registerGroup(binaryStatusBarGroup);
         optionsPageManagement.registerGroupRule(binaryStatusBarGroup, new ParentOptionsGroupRule(binaryGroup));
         statusBarOptionsPage = new StatusOptionsPage();
@@ -200,11 +201,11 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(statusBarOptionsPage);
         optionsPageManagement.registerPageRule(statusBarOptionsPage, new GroupOptionsPageRule(binaryStatusBarGroup));
 
-        OptionsGroup binaryProfileGroup = optionsModule.createOptionsGroup("binaryProfile", resourceBundle);
+        OptionsGroup binaryProfileGroup = optionsModule.createOptionsGroup("binaryEditorProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryProfileGroup);
         optionsPageManagement.registerGroupRule(binaryProfileGroup, new ParentOptionsGroupRule(binaryGroup));
 
-        OptionsGroup binaryThemeProfileGroup = optionsModule.createOptionsGroup("binaryThemeProfile", resourceBundle);
+        OptionsGroup binaryThemeProfileGroup = optionsModule.createOptionsGroup("binaryEditorThemeProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryThemeProfileGroup);
         optionsPageManagement.registerGroupRule(binaryThemeProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
         themeProfilesOptionsPage = new CodeAreaThemeOptionsPage();
@@ -213,7 +214,7 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(themeProfilesOptionsPage);
         optionsPageManagement.registerPageRule(themeProfilesOptionsPage, new GroupOptionsPageRule(binaryThemeProfileGroup));
 
-        OptionsGroup binaryLayoutProfileGroup = optionsModule.createOptionsGroup("binaryLayoutProfile", resourceBundle);
+        OptionsGroup binaryLayoutProfileGroup = optionsModule.createOptionsGroup("binaryEditorLayoutProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryLayoutProfileGroup);
         optionsPageManagement.registerGroupRule(binaryLayoutProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
         layoutProfilesOptionsPage = new CodeAreaLayoutOptionsPage();
@@ -221,7 +222,7 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPage(layoutProfilesOptionsPage);
         optionsPageManagement.registerPageRule(layoutProfilesOptionsPage, new GroupOptionsPageRule(binaryLayoutProfileGroup));
 
-        OptionsGroup binaryColorProfileGroup = optionsModule.createOptionsGroup("binaryColorProfile", resourceBundle);
+        OptionsGroup binaryColorProfileGroup = optionsModule.createOptionsGroup("binaryEditorColorProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryColorProfileGroup);
         optionsPageManagement.registerGroupRule(binaryColorProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
         colorProfilesOptionsPage = new CodeAreaColorOptionsPage();
