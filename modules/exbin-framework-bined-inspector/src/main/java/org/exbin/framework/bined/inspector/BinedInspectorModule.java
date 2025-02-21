@@ -162,7 +162,7 @@ public class BinedInspectorModule implements Module {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(MODULE_ID);
 
-        OptionsGroup inspectorOptionsGroup = optionsModule.createOptionsGroup("inspector", resourceBundle);
+        OptionsGroup inspectorOptionsGroup = optionsModule.createOptionsGroup("inspector", getResourceBundle());
         optionsPageManagement.registerGroup(inspectorOptionsGroup);
         optionsPageManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("binaryEditor"));
 

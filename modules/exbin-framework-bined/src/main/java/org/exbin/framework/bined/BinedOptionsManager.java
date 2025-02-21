@@ -51,6 +51,8 @@ import org.exbin.framework.options.api.GroupOptionsPageRule;
 import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsPageManagement;
 import org.exbin.framework.options.api.ParentOptionsGroupRule;
+import org.exbin.framework.options.api.VisualOptionsPageParams;
+import org.exbin.framework.options.api.VisualOptionsPageRule;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.text.font.options.TextFontOptionsPage;
 import org.exbin.framework.text.font.service.TextFontService;
@@ -213,6 +215,7 @@ public class BinedOptionsManager {
         themeProfilesOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(themeProfilesOptionsPage);
         optionsPageManagement.registerPageRule(themeProfilesOptionsPage, new GroupOptionsPageRule(binaryThemeProfileGroup));
+        optionsPageManagement.registerPageRule(themeProfilesOptionsPage, new VisualOptionsPageRule(new VisualOptionsPageParams(true)));
 
         OptionsGroup binaryLayoutProfileGroup = optionsModule.createOptionsGroup("binaryEditorLayoutProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryLayoutProfileGroup);
@@ -221,6 +224,7 @@ public class BinedOptionsManager {
         layoutProfilesOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(layoutProfilesOptionsPage);
         optionsPageManagement.registerPageRule(layoutProfilesOptionsPage, new GroupOptionsPageRule(binaryLayoutProfileGroup));
+        optionsPageManagement.registerPageRule(layoutProfilesOptionsPage, new VisualOptionsPageRule(new VisualOptionsPageParams(true)));
 
         OptionsGroup binaryColorProfileGroup = optionsModule.createOptionsGroup("binaryEditorColorProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryColorProfileGroup);
@@ -229,6 +233,7 @@ public class BinedOptionsManager {
         colorProfilesOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(colorProfilesOptionsPage);
         optionsPageManagement.registerPageRule(colorProfilesOptionsPage, new GroupOptionsPageRule(binaryColorProfileGroup));
+        optionsPageManagement.registerPageRule(colorProfilesOptionsPage, new VisualOptionsPageRule(new VisualOptionsPageParams(true)));
     }
 
     public void startWithFile(String filePath) {
