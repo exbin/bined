@@ -45,5 +45,8 @@ public interface BinEdEditorProvider {
      */
     void updateStatus();
 
+    /**
+     * Registers undo handler.
+     */
     void registerUndoHandler();
 }

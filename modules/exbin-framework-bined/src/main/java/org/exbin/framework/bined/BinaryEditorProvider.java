@@ -15,10 +15,7 @@
  */
 package org.exbin.framework.bined;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.FlavorEvent;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -49,7 +46,6 @@ import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileTypes;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
-import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.file.api.EditableFileHandler;
@@ -89,10 +85,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         this.activeFile = activeFile;
         fileTypes = new AllFileTypes();
 
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.addFlavorListener((FlavorEvent e) -> {
-            updateClipboardActionsStatus();
-        });
         activeFile.getComponent().setDropTarget(new DropTarget() {
             @Override
             public synchronized void drop(DropTargetDropEvent event) {
@@ -157,7 +149,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
         codeArea.addSelectionChangedListener(() -> {
             binaryStatus.setSelectionRange(codeArea.getSelection());
-            updateClipboardActionsStatus();
         });
 
         codeArea.addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
@@ -336,10 +327,5 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     public void updateRecentFilesList(URI fileUri, FileType fileType) {
         FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         fileModule.updateRecentFilesList(fileUri, fileType);
-    }
-
-    private void updateClipboardActionsStatus() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        // TODO ((ClipboardActionsUpdater) actionModule.getClipboardActions()).updateClipboardActions();
     }
 }
