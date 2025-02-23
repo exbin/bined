@@ -198,7 +198,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
             return false;
         }
 
-        return ((BinEdFileHandler) activeFile).isSaveSupported() && ((BinEdFileHandler) activeFile).isEditable();
+        return ((BinEdFileHandler) activeFile).canSave();
     }
 
     @Override
@@ -354,7 +354,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getCharset().name());
+            textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getTextEncodingHandler().getCharset().name());
         }
     }
 }

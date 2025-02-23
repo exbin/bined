@@ -1189,7 +1189,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
             updateTerminated = false;
         }
     }
-    
+
     @Nonnull
     protected JLabel createLabel() {
         return new JLabel();

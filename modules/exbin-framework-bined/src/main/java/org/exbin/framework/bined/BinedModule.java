@@ -19,7 +19,6 @@ import org.exbin.framework.bined.action.ShowRowPositionAction;
 import org.exbin.framework.bined.action.ClipboardCodeActions;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.action.CodeTypeActions;
-import org.exbin.framework.bined.action.CodeAreaFontAction;
 import org.exbin.framework.bined.action.ViewModeHandlerActions;
 import org.exbin.framework.bined.action.PrintAction;
 import org.exbin.framework.bined.action.ShowNonprintablesActions;
@@ -102,6 +101,7 @@ import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.text.encoding.options.TextEncodingOptions;
 import org.exbin.framework.text.encoding.service.TextEncodingService;
+import org.exbin.framework.text.font.action.TextFontAction;
 import org.exbin.framework.utils.ObjectUtils;
 import org.exbin.framework.utils.UiUtils;
 
@@ -447,11 +447,11 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public CodeAreaFontAction createCodeAreaFontAction() {
+    public TextFontAction createCodeAreaFontAction() {
         ensureSetup();
-        CodeAreaFontAction codeAreaFontAction = new CodeAreaFontAction();
-        codeAreaFontAction.setup(editorProvider, resourceBundle);
-        return codeAreaFontAction;
+        TextFontAction textFontAction = new TextFontAction();
+        textFontAction.setup(resourceBundle);
+        return textFontAction;
     }
 
     @Nonnull
@@ -506,7 +506,7 @@ public class BinedModule implements Module {
                 public void selectedEncodingChanged() {
                     Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                     if (activeFile.isPresent()) {
-                        ((BinEdFileHandler) activeFile.get()).setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
+                        ((BinEdFileHandler) activeFile.get()).getTextEncodingHandler().setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
                     }
                 }
             });

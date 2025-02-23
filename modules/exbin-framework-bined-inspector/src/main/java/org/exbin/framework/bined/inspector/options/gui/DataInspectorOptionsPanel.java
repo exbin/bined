@@ -188,7 +188,7 @@ public class DataInspectorOptionsPanel extends javax.swing.JPanel implements Opt
     private javax.swing.JCheckBox showParsingPanelCheckBox;
     // End of variables declaration//GEN-END:variables
 
-    private void setModified(boolean modified) {
+    private void notifyModified() {
         if (optionsModifiedListener != null) {
             optionsModifiedListener.wasModified();
         }

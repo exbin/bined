@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,7 +48,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;
-import org.exbin.framework.bined.gui.BinEdComponentFileApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.framework.file.api.EditableFileHandler;
@@ -58,6 +58,8 @@ import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
+import org.exbin.framework.text.encoding.TextEncodingHandler;
+import org.exbin.framework.text.font.TextFontHandler;
 
 /**
  * File handler for binary editor.
@@ -65,7 +67,7 @@ import org.exbin.framework.operation.undo.api.UndoRedoState;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler, UndoRedoFileHandler, BinEdComponentFileApi, ClipboardActionsHandler {
+public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler, UndoRedoFileHandler {
 
     private SegmentsRepository segmentsRepository;
 
@@ -80,6 +82,92 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private long documentOriginalSize;
     private ComponentActivationListener componentActivationListener;
     private UndoRedo undoRedo = null;
+    private final TextFontHandler textFontHandler = new TextFontHandler() {
+        @Nonnull
+        @Override
+        public Font getCurrentFont() {
+            return getCodeArea().getCodeFont();
+        }
+
+        @Nonnull
+        @Override
+        public Font getDefaultFont() {
+            return defaultFont;
+        }
+
+        @Override
+        public void setCurrentFont(Font font) {
+            getCodeArea().setCodeFont(font);
+        }
+    };
+    private final TextEncodingHandler textEncodingHandler = new TextEncodingHandler() {
+        @Nonnull
+        @Override
+        public Charset getCharset() {
+            return getCodeArea().getCharset();
+        }
+
+        @Override
+        public void setCharset(Charset charset) {
+            getCodeArea().setCharset(charset);
+        }
+    };
+    private final ClipboardActionsHandler clipboardActionsHandler = new ClipboardActionsHandler() {
+        @Override
+        public void performCut() {
+            getCodeArea().cut();
+        }
+
+        @Override
+        public void performCopy() {
+            getCodeArea().copy();
+        }
+
+        @Override
+        public void performPaste() {
+            getCodeArea().paste();
+        }
+
+        @Override
+        public void performDelete() {
+            getCodeArea().delete();
+        }
+
+        @Override
+        public void performSelectAll() {
+            getCodeArea().selectAll();
+        }
+
+        @Override
+        public boolean isSelection() {
+            return getCodeArea().hasSelection();
+        }
+
+        @Override
+        public boolean isEditable() {
+            return getCodeArea().isEditable();
+        }
+
+        @Override
+        public boolean canSelectAll() {
+            return true;
+        }
+
+        @Override
+        public boolean canPaste() {
+            return getCodeArea().canPaste();
+        }
+
+        @Override
+        public boolean canDelete() {
+            return true;
+        }
+
+        @Override
+        public void setUpdateListener(ClipboardActionsUpdateListener updateListener) {
+            // componentPanel.setUpdateListener(updateListener);
+        }
+    };
 
     public BinEdFileHandler() {
         editorComponent = createEditorComponent();
@@ -102,7 +190,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         defaultColors = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
         codeArea.addSelectionChangedListener(() -> {
             if (componentActivationListener != null) {
-                componentActivationListener.updated(ClipboardActionsHandler.class, this);
+                componentActivationListener.updated(ClipboardActionsHandler.class, clipboardActionsHandler);
             }
         });
     }
@@ -174,7 +262,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public boolean canSave() {
-        return fileUri != null;
+        return getClipboardActionsHandler().isEditable();
     }
 
     @Override
@@ -340,7 +428,6 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         }
     }
 
-    @Override
     public void closeData() {
         SectCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
@@ -361,16 +448,6 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         }
     }
 
-    @Override
-    public void saveDocument() {
-        if (fileUri == null) {
-            return;
-        }
-
-        saveFile();
-    }
-
-    @Override
     public void switchFileHandlingMode(FileHandlingMode handlingMode) {
         FileHandlingMode oldFileHandlingMode = getFileHandlingMode();
         SectCodeArea codeArea = editorComponent.getCodeArea();
@@ -450,6 +527,21 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
+    public TextFontHandler getTextFontHandler() {
+        return textFontHandler;
+    }
+
+    @Nonnull
+    public TextEncodingHandler getTextEncodingHandler() {
+        return textEncodingHandler;
+    }
+
+    @Nonnull
+    public ClipboardActionsHandler getClipboardActionsHandler() {
+        return clipboardActionsHandler;
+    }
+
+    @Nonnull
     @Override
     public Optional<UndoRedoState> getUndoRedo() {
         if (undoRedo == null) {
@@ -464,106 +556,28 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         return editorComponent.getUndoHandler();
     }
 
-    @Override
-    public boolean isSaveSupported() {
-        return true;
-    }
-
-    @Override
-    public void performCut() {
-        getCodeArea().cut();
-    }
-
-    @Override
-    public void performCopy() {
-        getCodeArea().copy();
-    }
-
-    @Override
-    public void performPaste() {
-        getCodeArea().paste();
-    }
-
-    @Override
-    public void performDelete() {
-        getCodeArea().delete();
-    }
-
-    @Override
-    public void performSelectAll() {
-        getCodeArea().selectAll();
-    }
-
-    @Override
-    public boolean isSelection() {
-        return getCodeArea().hasSelection();
-    }
-
-    @Override
-    public boolean isEditable() {
-        return getCodeArea().isEditable();
-    }
-
-    @Override
-    public boolean canSelectAll() {
-        return true;
-    }
-
-    @Override
-    public boolean canPaste() {
-        return getCodeArea().canPaste();
-    }
-
-    @Override
-    public boolean canDelete() {
-        return true;
-    }
-
-    public void setCurrentFont(Font font) {
-        getCodeArea().setCodeFont(font);
-    }
-
-    @Nonnull
-    public Font getCurrentFont() {
-        return getCodeArea().getCodeFont();
-    }
-
-    @Nonnull
-    public Font getDefaultFont() {
-        return defaultFont;
-    }
-
     @Nonnull
     public SectionCodeAreaColorProfile getDefaultColors() {
         return defaultColors;
     }
 
-    @Nonnull
-    public Charset getCharset() {
-        return getCodeArea().getCharset();
-    }
-
-    public void setCharset(Charset charset) {
-        getCodeArea().setCharset(charset);
-    }
-
-    @Override
-    public void setUpdateListener(ClipboardActionsUpdateListener updateListener) {
-        // componentPanel.setUpdateListener(updateListener);
-    }
-
     @Override
     public void componentActivated(ComponentActivationListener componentActivationListener) {
         this.componentActivationListener = componentActivationListener;
-        componentActivationListener.updated(CodeAreaCore.class, getCodeArea());
+        SectCodeArea codeArea = getCodeArea();
+        componentActivationListener.updated(CodeAreaCore.class, codeArea);
+        componentActivationListener.updated(Component.class, codeArea);
+        componentActivationListener.updated(TextFontHandler.class, textFontHandler);
         componentActivationListener.updated(UndoRedoState.class, undoRedo);
-        componentActivationListener.updated(ClipboardActionsHandler.class, this);
+        componentActivationListener.updated(ClipboardActionsHandler.class, clipboardActionsHandler);
     }
 
     @Override
     public void componentDeactivated(ComponentActivationListener componentActivationListener) {
         this.componentActivationListener = null;
         componentActivationListener.updated(CodeAreaCore.class, null);
+        componentActivationListener.updated(Component.class, null);
+        componentActivationListener.updated(TextFontHandler.class, null);
         componentActivationListener.updated(UndoRedoState.class, null);
         componentActivationListener.updated(ClipboardActionsHandler.class, null);
     }

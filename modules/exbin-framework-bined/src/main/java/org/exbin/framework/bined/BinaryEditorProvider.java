@@ -50,6 +50,7 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.file.api.FileOperations;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
 import org.exbin.framework.text.encoding.TextEncodingStatusApi;
@@ -109,6 +110,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         if (activeFile instanceof EditorFileHandler) {
             ((EditorFileHandler) activeFile).componentActivated(componentActivationListener);
         }
+        componentActivationListener.updated(FileOperations.class, this);
     }
 
     @Nonnull
@@ -234,7 +236,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     @Override
     public void registerEncodingStatus(TextEncodingStatusApi encodingStatus) {
-        encodingStatus.setEncoding(activeFile.getCharset().name());
+        encodingStatus.setEncoding(activeFile.getTextEncodingHandler().getCharset().name());
     }
 
     @Override
@@ -273,7 +275,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     @Override
     public boolean canSave() {
-        return activeFile.isSaveSupported() && activeFile.isEditable();
+        return activeFile.canSave();
     }
 
     @Override

@@ -36,7 +36,7 @@ import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.options.CodeAreaColorOptions;
 
 /**
- * Table model for Color profile panel.
+ * Table model for colors profile panel.
  *
  * @author ExBin Project (https://exbin.org)
  */

@@ -110,7 +110,7 @@ public class BinaryAppearanceOptionsPanel extends javax.swing.JPanel implements 
     private javax.swing.JCheckBox multiFileModeCheckBox;
     // End of variables declaration//GEN-END:variables
 
-    private void setModified(boolean modified) {
+    private void notifyModified() {
         if (optionsModifiedListener != null) {
             optionsModifiedListener.wasModified();
         }
