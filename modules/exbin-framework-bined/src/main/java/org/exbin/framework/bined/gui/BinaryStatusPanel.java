@@ -442,7 +442,11 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encodingLabelMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            statusControlHandler.cycleEncodings();
+            if (evt.isShiftDown()) {
+                statusControlHandler.cyclePreviousEncoding();
+            } else {
+                statusControlHandler.cycleNextEncoding();
+            }
         } else {
             handleEncodingPopup(evt);
         }
@@ -849,7 +853,12 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         /**
          * Switches to next encoding in defined list.
          */
-        void cycleEncodings();
+        void cycleNextEncoding();
+
+        /**
+         * Switches to previous encoding in defined list.
+         */
+        void cyclePreviousEncoding();
 
         /**
          * Handles encodings popup menu.

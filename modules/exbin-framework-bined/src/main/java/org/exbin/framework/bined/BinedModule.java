@@ -280,9 +280,16 @@ public class BinedModule implements Module {
             }
 
             @Override
-            public void cycleEncodings() {
+            public void cycleNextEncoding() {
                 if (encodingsHandler != null) {
-                    encodingsHandler.cycleEncodings();
+                    encodingsHandler.cycleNextEncoding();
+                }
+            }
+
+            @Override
+            public void cyclePreviousEncoding() {
+                if (encodingsHandler != null) {
+                    encodingsHandler.cyclePreviousEncoding();
                 }
             }
 
