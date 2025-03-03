@@ -17,9 +17,9 @@ package org.exbin.framework.bined.options.page;
 
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import org.exbin.framework.bined.options.*;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.options.BinaryAppearanceOptions;
 import org.exbin.framework.bined.options.gui.BinaryAppearanceOptionsPanel;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -38,7 +38,6 @@ public class BinaryAppearanceOptionsPage implements DefaultOptionsPage<BinaryApp
 
     public static final String PAGE_ID = "binaryAppearance";
 
-    private BinaryAppearanceOptionsPanel panel;
     private BinaryAppearanceService binaryAppearanceService;
 
     public void setBinaryAppearanceService(BinaryAppearanceService binaryAppearanceService) {
@@ -53,12 +52,8 @@ public class BinaryAppearanceOptionsPage implements DefaultOptionsPage<BinaryApp
 
     @Nonnull
     @Override
-    public OptionsComponent<BinaryAppearanceOptions> createPanel() {
-        if (panel == null) {
-            panel = new BinaryAppearanceOptionsPanel();
-        }
-
-        return panel;
+    public OptionsComponent<BinaryAppearanceOptions> createComponent() {
+        return new BinaryAppearanceOptionsPanel();
     }
 
     @Nonnull

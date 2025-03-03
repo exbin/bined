@@ -63,7 +63,7 @@ public class CodeAreaOptionsPage implements DefaultOptionsPage<CodeAreaOptions> 
 
     @Nonnull
     @Override
-    public OptionsComponent<CodeAreaOptions> createPanel() {
+    public OptionsComponent<CodeAreaOptions> createComponent() {
         CodeAreaOptionsPanel panel = new CodeAreaOptionsPanel();
         List<String> viewModes = new ArrayList<>();
         viewModes.add(resourceBundle.getString("codeAreaViewMode.dual"));

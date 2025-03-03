@@ -55,7 +55,6 @@ public class DataInspectorOptionsPage implements DefaultOptionsPage<DataInspecto
 
     public static final String PAGE_ID = "dataInspector";
 
-    private DataInspectorOptionsPanel panel;
     private EditorProvider editorProvider;
     private Font defaultFont;
 
@@ -71,48 +70,46 @@ public class DataInspectorOptionsPage implements DefaultOptionsPage<DataInspecto
 
     @Nonnull
     @Override
-    public OptionsComponent<DataInspectorOptions> createPanel() {
-        if (panel == null) {
-            panel = new DataInspectorOptionsPanel();
-            defaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
-            panel.setDefaultFont(defaultFont);
-            panel.setFontChangeAction(new TextFontOptionsPanel.FontChangeAction() {
-                @Override
-                public Font changeFont(Font currentFont) {
-                    final Result result = new Result();
-                    WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-                    FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-                    final TextFontPanel fontPanel = new TextFontPanel();
-                    fontPanel.setStoredFont(currentFont);
-                    DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    final WindowHandler dialog = windowModule.createDialog(fontPanel, controlPanel);
-                    windowModule.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
-                    windowModule.setWindowTitle(dialog, fontPanel.getResourceBundle());
-                    controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                        if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
-                            if (actionType == DefaultControlHandler.ControlActionType.OK) {
-                                PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-                                TextFontOptions textFontOptions = new TextFontOptions(preferencesModule.getAppPreferences());
-                                textFontOptions.setUseDefaultFont(true);
-                                textFontOptions.setFont(fontPanel.getStoredFont());
-                            }
-                            result.font = fontPanel.getStoredFont();
+    public OptionsComponent<DataInspectorOptions> createComponent() {
+        DataInspectorOptionsPanel panel = new DataInspectorOptionsPanel();
+        defaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
+        panel.setDefaultFont(defaultFont);
+        panel.setFontChangeAction(new TextFontOptionsPanel.FontChangeAction() {
+            @Override
+            public Font changeFont(Font currentFont) {
+                final Result result = new Result();
+                WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+                FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+                final TextFontPanel fontPanel = new TextFontPanel();
+                fontPanel.setStoredFont(currentFont);
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                final WindowHandler dialog = windowModule.createDialog(fontPanel, controlPanel);
+                windowModule.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
+                windowModule.setWindowTitle(dialog, fontPanel.getResourceBundle());
+                controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
+                    if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
+                        if (actionType == DefaultControlHandler.ControlActionType.OK) {
+                            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+                            TextFontOptions textFontOptions = new TextFontOptions(preferencesModule.getAppPreferences());
+                            textFontOptions.setUseDefaultFont(true);
+                            textFontOptions.setFont(fontPanel.getStoredFont());
                         }
+                        result.font = fontPanel.getStoredFont();
+                    }
 
-                        dialog.close();
-                        dialog.dispose();
-                    });
-                    dialog.showCentered(frameModule.getFrame());
+                    dialog.close();
+                    dialog.dispose();
+                });
+                dialog.showCentered(frameModule.getFrame());
 
-                    return result.font;
-                }
+                return result.font;
+            }
 
-                class Result {
+            class Result {
 
-                    Font font;
-                }
-            });
-        }
+                Font font;
+            }
+        });
 
         Font currentFont = defaultFont;
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();

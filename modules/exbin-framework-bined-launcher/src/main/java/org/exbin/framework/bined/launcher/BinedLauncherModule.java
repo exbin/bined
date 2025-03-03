@@ -167,6 +167,8 @@ public class BinedLauncherModule implements LauncherModule {
 
             AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
+            addonManagerModule.setAddonServiceCoreUrl("https://bined.exbin.org/");
+            addonManagerModule.setManualLegacyGitHubUrl("https://github.com/exbin/bined/releases/tag/");
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
 
             frameModule.createMainMenu();
@@ -243,7 +245,6 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-
             uiModule.registerOptionsPanels();
             themeModule.registerOptionsPanels();
             actionManagerModule.registerOptionsPanels();

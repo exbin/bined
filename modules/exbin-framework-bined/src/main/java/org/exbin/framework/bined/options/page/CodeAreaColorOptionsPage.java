@@ -70,7 +70,7 @@ public class CodeAreaColorOptionsPage implements DefaultOptionsPage<CodeAreaColo
 
     @Nonnull
     @Override
-    public OptionsComponent<CodeAreaColorOptions> createPanel() {
+    public OptionsComponent<CodeAreaColorOptions> createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ColorProfilesOptionsPanel panel = new ColorProfilesOptionsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {

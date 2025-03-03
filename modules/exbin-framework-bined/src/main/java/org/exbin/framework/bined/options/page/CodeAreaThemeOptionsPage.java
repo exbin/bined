@@ -78,7 +78,7 @@ public class CodeAreaThemeOptionsPage implements DefaultOptionsPage<CodeAreaThem
 
     @Nonnull
     @Override
-    public OptionsComponent<CodeAreaThemeOptions> createPanel() {
+    public OptionsComponent<CodeAreaThemeOptions> createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ThemeProfilesOptionsPanel panel = new ThemeProfilesOptionsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {

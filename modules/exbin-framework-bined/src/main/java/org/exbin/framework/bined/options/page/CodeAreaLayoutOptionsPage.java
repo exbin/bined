@@ -71,7 +71,7 @@ public class CodeAreaLayoutOptionsPage implements DefaultOptionsPage<CodeAreaLay
 
     @Nonnull
     @Override
-    public OptionsComponent<CodeAreaLayoutOptions> createPanel() {
+    public OptionsComponent<CodeAreaLayoutOptions> createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         LayoutProfilesOptionsPanel panel = new LayoutProfilesOptionsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {

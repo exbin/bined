@@ -40,7 +40,6 @@ public class StatusOptionsPage implements DefaultOptionsPage<StatusOptions> {
 
     public static final String PAGE_ID = "status";
 
-    private StatusOptionsPanel panel;
     private java.util.ResourceBundle resourceBundle;
     private BinEdFileManager fileManager;
 
@@ -60,22 +59,20 @@ public class StatusOptionsPage implements DefaultOptionsPage<StatusOptions> {
 
     @Nonnull
     @Override
-    public OptionsComponent<StatusOptions> createPanel() {
-        if (panel == null) {
-            panel = new StatusOptionsPanel();
+    public OptionsComponent<StatusOptions> createComponent() {
+        StatusOptionsPanel panel = new StatusOptionsPanel();
 
-            List<String> cursorPositionCodeTypes = new ArrayList<>();
-            cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.octal"));
-            cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.decimal"));
-            cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.hexadecimal"));
-            panel.setCursorPositionCodeTypes(cursorPositionCodeTypes);
+        List<String> cursorPositionCodeTypes = new ArrayList<>();
+        cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.octal"));
+        cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.decimal"));
+        cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.hexadecimal"));
+        panel.setCursorPositionCodeTypes(cursorPositionCodeTypes);
 
-            List<String> documentSizeCodeTypes = new ArrayList<>();
-            documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.octal"));
-            documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.decimal"));
-            documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.hexadecimal"));
-            panel.setDocumentSizeCodeTypes(documentSizeCodeTypes);
-        }
+        List<String> documentSizeCodeTypes = new ArrayList<>();
+        documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.octal"));
+        documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.decimal"));
+        documentSizeCodeTypes.add(resourceBundle.getString("documentSizeCodeType.hexadecimal"));
+        panel.setDocumentSizeCodeTypes(documentSizeCodeTypes);
 
         return panel;
     }

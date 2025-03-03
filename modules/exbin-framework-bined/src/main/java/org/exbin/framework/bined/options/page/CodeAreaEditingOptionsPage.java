@@ -40,7 +40,6 @@ public class CodeAreaEditingOptionsPage implements DefaultOptionsPage<EditorOpti
 
     public static final String PAGE_ID = "codeAreaEditing";
 
-    private CodeAreaEditingOptionsPanel panel;
     private EditorOptionsService editorOptionsService;
     private java.util.ResourceBundle resourceBundle;
 
@@ -60,30 +59,27 @@ public class CodeAreaEditingOptionsPage implements DefaultOptionsPage<EditorOpti
 
     @Nonnull
     @Override
-    public OptionsComponent<EditorOptions> createPanel() {
-        if (panel == null) {
-            panel = new CodeAreaEditingOptionsPanel();
-            List<String> fileHandlingModes = new ArrayList<>();
-            fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
-            fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
-            panel.setFileHandlingModes(fileHandlingModes);
-            List<String> enderKeyHandlingModes = new ArrayList<>();
-            enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.platformSpecific"));
-            enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.cr"));
-            enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.lf"));
-            enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.crlf"));
-            enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.ignore"));
-            panel.setEnterKeyHandlingModes(enderKeyHandlingModes);
-            List<String> tabKeyHandlingModes = new ArrayList<>();
-            tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.platformSpecific"));
-            tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.insertTab"));
-            tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.insertSpaces"));
-            tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.cycleToNextSection"));
-            tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.cycleToPreviousSection"));
-            tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.ignore"));
-            panel.setTabKeyHandlingModes(tabKeyHandlingModes);
-        }
-
+    public OptionsComponent<EditorOptions> createComponent() {
+        CodeAreaEditingOptionsPanel panel = new CodeAreaEditingOptionsPanel();
+        List<String> fileHandlingModes = new ArrayList<>();
+        fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
+        fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
+        panel.setFileHandlingModes(fileHandlingModes);
+        List<String> enderKeyHandlingModes = new ArrayList<>();
+        enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.platformSpecific"));
+        enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.cr"));
+        enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.lf"));
+        enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.crlf"));
+        enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.ignore"));
+        panel.setEnterKeyHandlingModes(enderKeyHandlingModes);
+        List<String> tabKeyHandlingModes = new ArrayList<>();
+        tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.platformSpecific"));
+        tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.insertTab"));
+        tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.insertSpaces"));
+        tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.cycleToNextSection"));
+        tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.cycleToPreviousSection"));
+        tabKeyHandlingModes.add(resourceBundle.getString("tabKeyHandlingMode.ignore"));
+        panel.setTabKeyHandlingModes(tabKeyHandlingModes);
         return panel;
     }
 
