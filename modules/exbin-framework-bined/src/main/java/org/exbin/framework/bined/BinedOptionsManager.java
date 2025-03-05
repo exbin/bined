@@ -19,6 +19,7 @@ import java.awt.Font;
 import java.io.File;
 import java.net.URI;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JLabel;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
@@ -27,11 +28,6 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.action.CodeTypeActions;
-import org.exbin.framework.bined.action.HexCharactersCaseActions;
-import org.exbin.framework.bined.action.PositionCodeTypeActions;
-import org.exbin.framework.bined.action.ShowNonprintablesActions;
-import org.exbin.framework.bined.action.ViewModeHandlerActions;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.options.page.BinaryAppearanceOptionsPage;
@@ -86,7 +82,7 @@ public class BinedOptionsManager {
         this.editorProvider = editorProvider;
     }
 
-    public void registerOptionsPanels(EncodingsHandler encodingsHandler, BinEdFileManager fileManager, BinaryAppearanceService binaryAppearanceService, CodeTypeActions codeTypeActions, ShowNonprintablesActions showNonprintablesActions, HexCharactersCaseActions hexCharactersCaseActions, PositionCodeTypeActions positionCodeTypeActions, ViewModeHandlerActions viewModeActions) {
+    public void registerOptionsPanels(EncodingsHandler encodingsHandler, BinEdFileManager fileManager, BinaryAppearanceService binaryAppearanceService) {
         // TODO: Drop parameters
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedModule.MODULE_ID);
@@ -163,21 +159,25 @@ public class BinedOptionsManager {
         optionsPageManagement.registerGroupRule(binaryFontGroup, new ParentOptionsGroupRule(binaryGroup));
         textFontOptionsPage = new TextFontOptionsPage();
         textFontOptionsPage.setTextFontService(new TextFontService() {
+            @Nonnull
             @Override
             public Font getCurrentFont() {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    return ((BinEdFileHandler) activeFile.get()).getTextFontHandler().getCurrentFont();
+                FileHandler fileHandler = activeFile.orElse(null);
+                if (fileHandler instanceof BinEdFileHandler) {
+                    return ((BinEdFileHandler) fileHandler).getTextFontHandler().getCurrentFont();
                 }
 
                 return new JLabel().getFont();
             }
 
+            @Nonnull
             @Override
             public Font getDefaultFont() {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    return ((BinEdFileHandler) activeFile.get()).getTextFontHandler().getDefaultFont();
+                FileHandler fileHandler = activeFile.orElse(null);
+                if (fileHandler instanceof BinEdFileHandler) {
+                    return ((BinEdFileHandler) fileHandler).getTextFontHandler().getDefaultFont();
                 }
 
                 return new JLabel().getFont();
@@ -186,8 +186,9 @@ public class BinedOptionsManager {
             @Override
             public void setCurrentFont(Font font) {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    ((BinEdFileHandler) activeFile.get()).getTextFontHandler().setCurrentFont(font);
+                FileHandler fileHandler = activeFile.orElse(null);
+                if (fileHandler instanceof BinEdFileHandler) {
+                    ((BinEdFileHandler) fileHandler).getTextFontHandler().setCurrentFont(font);
                 }
             }
         });
