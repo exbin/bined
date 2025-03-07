@@ -22,14 +22,13 @@ import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
-import org.exbin.framework.action.api.menu.PositionMenuContributionRule;
-import org.exbin.framework.action.api.PositionMode;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.PositionMenuContributionRule;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
@@ -89,17 +88,17 @@ public class BinedToolContentModule implements PluginModule {
 
     public void registerClipboardContentMenu() {
         createClipboardContentAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.TOOLS_MENU_ID, createClipboardContentAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.MIDDLE));
+        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.MIDDLE));
     }
 
     public void registerDragDropContentMenu() {
         createDragDropContentAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.TOOLS_MENU_ID, createDragDropContentAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.MIDDLE));
+        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.MIDDLE));
     }
 }

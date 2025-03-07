@@ -28,10 +28,9 @@ import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
+import org.exbin.framework.menu.api.GroupMenuContributionRule;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
@@ -41,6 +40,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
@@ -110,8 +110,8 @@ public class BinedMacroModule implements PluginModule {
     }
 
     public void registerMacrosMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, () -> getMacrosMenu());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }

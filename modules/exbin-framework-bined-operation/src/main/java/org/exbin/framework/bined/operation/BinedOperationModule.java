@@ -17,24 +17,16 @@ package org.exbin.framework.bined.operation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.menu.ActionMenuCreation;
-import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
-import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.action.InsertDataAction;
 import org.exbin.framework.bined.operation.action.ConvertDataAction;
@@ -45,6 +37,11 @@ import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.component.Base64DataMethod;
 import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
+import org.exbin.framework.menu.api.MenuModuleApi;
+import org.exbin.framework.menu.api.ActionMenuCreation;
+import org.exbin.framework.menu.api.GroupMenuContributionRule;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
 
 /**
  * Binary data editor operations module.
@@ -120,8 +117,8 @@ public class BinedOperationModule implements Module {
     }
 
     public void registerBlockEditActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, createInsertDataAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, createConvertDataAction());
@@ -129,8 +126,8 @@ public class BinedOperationModule implements Module {
     }
 
     public void registerBlockEditPopupMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, createInsertDataAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, createConvertDataAction());

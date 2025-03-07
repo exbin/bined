@@ -43,11 +43,11 @@ import org.exbin.bined.CodeAreaSelection;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.menu.ActionMenuCreation;
+import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
+import org.exbin.framework.menu.api.GroupMenuContributionRule;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
@@ -63,6 +63,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
@@ -265,7 +266,7 @@ public class BookmarksManager {
     }
 
     public void registerBookmarksPopupMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         Action bookmarksPopupMenuAction = new AbstractAction(resourceBundle.getString("bookmarksMenu.text")) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -284,7 +285,7 @@ public class BookmarksManager {
             }
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-        MenuManagement mgmt = actionModule.getMenuManagement(BinedBookmarksModule.MODULE_ID);
+        MenuManagement mgmt = menuModule.getMenuManagement(BinedBookmarksModule.MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, () -> {
             JMenu bookmarksPopupMenu = UiUtils.createMenu();
             bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);

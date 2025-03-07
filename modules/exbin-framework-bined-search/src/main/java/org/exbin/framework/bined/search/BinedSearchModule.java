@@ -25,22 +25,22 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
-import org.exbin.framework.action.api.toolbar.GroupToolBarContributionRule;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
-import org.exbin.framework.action.api.PositionMode;
-import org.exbin.framework.action.api.toolbar.PositionToolBarContributionRule;
-import org.exbin.framework.action.api.SeparationMode;
-import org.exbin.framework.action.api.toolbar.SeparationToolBarContributionRule;
-import org.exbin.framework.action.api.toolbar.ToolBarContribution;
-import org.exbin.framework.action.api.toolbar.ToolBarManagement;
+import org.exbin.framework.menu.api.GroupMenuContributionRule;
+import org.exbin.framework.toolbar.api.GroupToolBarContributionRule;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.toolbar.api.PositionToolBarContributionRule;
+import org.exbin.framework.toolbar.api.SeparationToolBarContributionRule;
+import org.exbin.framework.toolbar.api.ToolBarContribution;
+import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.search.action.FindReplaceActions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.menu.api.MenuModuleApi;
+import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 
 /**
  * Binary editor search module.
@@ -86,8 +86,8 @@ public class BinedSearchModule implements Module {
 
     public void registerEditFindMenuActions() {
         getFindReplaceActions();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, findReplaceActions.getEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, findReplaceActions.getEditFindAgainAction());
@@ -97,8 +97,8 @@ public class BinedSearchModule implements Module {
     }
 
     public void registerEditFindPopupMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, getFindReplaceActions().getEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
         contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, getFindReplaceActions().getEditReplaceAction());
@@ -107,11 +107,11 @@ public class BinedSearchModule implements Module {
 
     public void registerEditFindToolBarActions() {
         getFindReplaceActions();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        ToolBarManagement mgmt = actionModule.getToolBarManagement(MODULE_ID);
+        ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
+        ToolBarManagement mgmt = toolBarModule.getToolBarManagement(MODULE_ID);
         ToolBarContribution contribution = mgmt.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, EDIT_FIND_TOOL_BAR_GROUP_ID);
-        mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionMode.MIDDLE));
-        mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationMode.AROUND));
+        mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionToolBarContributionRule.PositionMode.MIDDLE));
+        mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationToolBarContributionRule.SeparationMode.AROUND));
         contribution = mgmt.registerToolBarItem(ActionConsts.MAIN_TOOL_BAR_ID,  findReplaceActions.getEditFindAction());
         mgmt.registerToolBarRule(contribution, new GroupToolBarContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
     }

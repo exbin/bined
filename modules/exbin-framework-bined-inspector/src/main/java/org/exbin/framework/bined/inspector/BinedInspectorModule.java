@@ -27,13 +27,12 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.menu.ActionMenuCreation;
+import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
-import org.exbin.framework.action.api.menu.PositionMenuContributionRule;
-import org.exbin.framework.action.api.PositionMode;
+import org.exbin.framework.menu.api.GroupMenuContributionRule;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.PositionMenuContributionRule;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -41,6 +40,7 @@ import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.inspector.options.page.DataInspectorOptionsPage;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.api.GroupOptionsPageRule;
 import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsModuleApi;
@@ -140,22 +140,22 @@ public class BinedInspectorModule implements Module {
     }
 
     public void registerViewValuesPanelMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuGroup(ActionConsts.VIEW_MENU_ID, VIEW_PARSING_PANEL_MENU_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.BOTTOM));
+        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
         contribution = mgmt.registerMenuItem(ActionConsts.VIEW_MENU_ID, createShowParsingPanelAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 
     public void registerViewValuesPanelPopupMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuManagement mgmt = actionModule.getMenuManagement(MODULE_ID);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, createShowParsingPanelAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         contribution = mgmt.registerMenuItem(BinedModule.SHOW_POPUP_SUBMENU_ID, createShowParsingPanelAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMode.BOTTOM));
+        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
     }
 
     public void registerOptionsPanels() {

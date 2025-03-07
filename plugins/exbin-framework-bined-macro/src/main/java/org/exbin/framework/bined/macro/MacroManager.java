@@ -39,13 +39,13 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.menu.ActionMenuCreation;
+import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ActionContextChangeManager;
-import org.exbin.framework.action.api.menu.GroupMenuContributionRule;
-import org.exbin.framework.action.api.menu.MenuContribution;
-import org.exbin.framework.action.api.menu.MenuManagement;
+import org.exbin.framework.menu.api.GroupMenuContributionRule;
+import org.exbin.framework.menu.api.MenuContribution;
+import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -66,6 +66,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
@@ -261,7 +262,7 @@ public class MacroManager {
     }
 
     public void registerMacrosPopupMenuActions() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         Action macrosPopupMenuAction = new AbstractAction(resourceBundle.getString("macrosMenu.text")) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -280,7 +281,7 @@ public class MacroManager {
             }
         });
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
-        MenuManagement mgmt = actionModule.getMenuManagement(BinedMacroModule.MODULE_ID);
+        MenuManagement mgmt = menuModule.getMenuManagement(BinedMacroModule.MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, () -> {
             JMenu macrosPopupMenu = UiUtils.createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);
