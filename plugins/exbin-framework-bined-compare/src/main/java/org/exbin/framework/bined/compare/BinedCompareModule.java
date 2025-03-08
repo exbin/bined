@@ -56,7 +56,7 @@ public class BinedCompareModule implements PluginModule {
 
     public void registerToolsOptionsMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.TOOLS_MENU_ID, createCompareFilesAction());
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
     }

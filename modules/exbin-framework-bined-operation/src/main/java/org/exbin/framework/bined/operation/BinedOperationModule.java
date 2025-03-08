@@ -118,7 +118,7 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, createInsertDataAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, createConvertDataAction());
@@ -127,7 +127,7 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, createInsertDataAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, createConvertDataAction());

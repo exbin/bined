@@ -281,7 +281,7 @@ public class MacroManager {
             }
         });
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedMacroModule.MODULE_ID);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(BinedMacroModule.MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, () -> {
             JMenu macrosPopupMenu = UiUtils.createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);

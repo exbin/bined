@@ -87,7 +87,7 @@ public class BinedSearchModule implements Module {
     public void registerEditFindMenuActions() {
         getFindReplaceActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, findReplaceActions.getEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, findReplaceActions.getEditFindAgainAction());
@@ -98,7 +98,7 @@ public class BinedSearchModule implements Module {
 
     public void registerEditFindPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(MODULE_ID);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, getFindReplaceActions().getEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
         contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, getFindReplaceActions().getEditReplaceAction());
@@ -108,7 +108,7 @@ public class BinedSearchModule implements Module {
     public void registerEditFindToolBarActions() {
         getFindReplaceActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
-        ToolBarManagement mgmt = toolBarModule.getToolBarManagement(MODULE_ID);
+        ToolBarManagement mgmt = toolBarModule.getMainToolBarManagement(MODULE_ID);
         ToolBarContribution contribution = mgmt.registerToolBarGroup(ActionConsts.MAIN_TOOL_BAR_ID, EDIT_FIND_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionToolBarContributionRule.PositionMode.MIDDLE));
         mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationToolBarContributionRule.SeparationMode.AROUND));
