@@ -762,7 +762,7 @@ public class BinedModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, createEditSelectionAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(ActionModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
     }
 
     public void registerCodeAreaPopupMenu() {

@@ -22,7 +22,7 @@
     <module id="org.exbin.framework.file.FileModule" />
     <module id="org.exbin.framework.editor.EditorModule" />
     <module id="org.exbin.framework.action.api.ActionModuleApi" />
-    <module id="org.exbin.framework.action.popup.api.ActionPopupModuleApi" />
+    <module id="org.exbin.framework.menu.api.MenuModuleApi" />
     <module id="org.exbin.framework.operation.api.OperationModuleApi" />
     <module id="org.exbin.framework.operation.undo.api.OperationUndoModuleApi" />
     <module id="org.exbin.framework.options.api.OptionsModuleApi" />
