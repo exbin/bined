@@ -111,8 +111,8 @@ public class BinedMacroModule implements PluginModule {
 
     public void registerMacrosMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(ActionConsts.EDIT_MENU_ID, () -> getMacrosMenu());
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(ActionConsts.EDIT_SUBMENU_ID);
+        MenuContribution contribution = mgmt.registerMenuItem(() -> getMacrosMenu());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 

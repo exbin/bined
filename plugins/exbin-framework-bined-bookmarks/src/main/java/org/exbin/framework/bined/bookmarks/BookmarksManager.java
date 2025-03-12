@@ -285,8 +285,8 @@ public class BookmarksManager {
             }
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMainMenuManagement(BinedBookmarksModule.MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(BinedModule.CODE_AREA_POPUP_MENU_ID, () -> {
+        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
+        MenuContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu bookmarksPopupMenu = UiUtils.createMenu();
             bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);
             bookmarksPopupMenu.addMenuListener(new MenuListener() {
