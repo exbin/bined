@@ -71,7 +71,7 @@ public class FindReplaceActions {
         editFindAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         editFindAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
@@ -79,7 +79,7 @@ public class FindReplaceActions {
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
         editFindAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editFindAction);
@@ -94,7 +94,7 @@ public class FindReplaceActions {
         editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
         editFindAgainAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
@@ -102,7 +102,7 @@ public class FindReplaceActions {
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
         editFindAgainAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editFindAgainAction);
@@ -118,7 +118,7 @@ public class FindReplaceActions {
         editReplaceAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         editReplaceAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
@@ -126,7 +126,7 @@ public class FindReplaceActions {
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
         editReplaceAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editReplaceAction);

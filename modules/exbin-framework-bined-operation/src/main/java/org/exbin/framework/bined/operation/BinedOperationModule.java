@@ -80,7 +80,7 @@ public class BinedOperationModule implements Module {
 
         insertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
@@ -88,7 +88,7 @@ public class BinedOperationModule implements Module {
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
         return insertDataAction;
@@ -102,7 +102,7 @@ public class BinedOperationModule implements Module {
 
         convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
@@ -110,7 +110,7 @@ public class BinedOperationModule implements Module {
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
         return convertDataAction;

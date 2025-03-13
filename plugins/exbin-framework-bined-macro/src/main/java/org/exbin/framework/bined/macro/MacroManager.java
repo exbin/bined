@@ -270,14 +270,14 @@ public class MacroManager {
         };
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 return menuVariant == BinedModule.PopupMenuVariant.EDITOR;
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));

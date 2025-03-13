@@ -122,16 +122,16 @@ public class BinedInspectorModule implements Module {
         showParsingPanelAction.setup(resourceBundle);
         showParsingPanelAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId) {
+            public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
-                boolean inShowSubmenu = BinedModule.SHOW_POPUP_SUBMENU_ID.equals(menuId);
+                boolean inShowSubmenu = BinedModule.SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
                 return popupMenuVariant == BinedModule.PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
             }
 
             @Override
-            public void onCreate(JMenuItem menuItem, String menuId) {
+            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
                 // menuItem.setSelected(Objects.requireNonNull(getActiveCodeArea().getLayoutProfile()).isShowHeader());
             }
         });
