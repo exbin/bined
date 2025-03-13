@@ -177,7 +177,7 @@ public class BinedLauncherModule implements LauncherModule {
             addonManagerModule.setManualLegacyGitHubUrl("https://github.com/exbin/bined/releases/tag/");
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
 
-            frameModule.createMainMenu();
+            frameModule.init();
             if (!demoMode) {
                 try {
                     updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
