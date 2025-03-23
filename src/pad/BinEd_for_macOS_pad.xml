@@ -107,7 +107,7 @@
       <Application_Order_URL></Application_Order_URL>
       <Application_Screenshot_URL>https://bined.exbin.org/images/editor_screenshot_pad.png</Application_Screenshot_URL>
       <Application_Icon_URL>https://bined.exbin.org/images/icon/bined-icon_32x32.png</Application_Icon_URL>
-      <Application_XML_File_URL>http://repository.appvisor.com/app-a20036ccf701/site-01/BinEd_for_macOS_pad.xml</Application_XML_File_URL>
+      <Application_XML_File_URL>https://bined.exbin.org/update/pad/BinEd_for_macOS_pad.xml</Application_XML_File_URL>
     </Application_URLs>
     <Download_URLs>
       <Primary_Download_URL>https://bined.exbin.org/download/?f=bined-0.2.4.dmg</Primary_Download_URL>
