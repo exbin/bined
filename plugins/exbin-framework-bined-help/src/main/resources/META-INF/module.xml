@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.bined.help.BinedHelpModule</id>
+  <name>BinEd Offline Help Module</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Offline help for BinEd</description>
+  <dependency>
+  </dependency>
+</module>

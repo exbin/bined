@@ -76,10 +76,11 @@ public class BinEdFileManager {
         
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
-            componentExtension.ifPresent((extension) -> {
+            if (componentExtension.isPresent()) {
+                BinEdComponentPanel.BinEdComponentExtension extension = componentExtension.get();
                 extension.onCreate(componentPanel);
                 componentPanel.addComponentExtension(extension);
-            });
+            };
         }
 
         BinEdCodeAreaAssessor painter = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) componentPanel.getCodeArea().getPainter(), BinEdCodeAreaAssessor.class);
