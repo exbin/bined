@@ -764,10 +764,11 @@ public class BinedModule implements Module {
     }
 
     public void registerCodeAreaPopupMenu() {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         MenuManagement mgmt = menuModule.getMenuManagement(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        ClipboardActionsApi clipboardActions = menuModule.getClipboardActions();
+        ClipboardActionsApi clipboardActions = actionModule.getClipboardActions();
 
         MenuContribution contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));

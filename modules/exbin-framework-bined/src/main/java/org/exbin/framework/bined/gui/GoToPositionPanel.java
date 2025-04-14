@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.gui;
 
+import org.exbin.framework.bined.RelativePositionMode;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;

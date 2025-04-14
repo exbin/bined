@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.gui;
+package org.exbin.framework.bined;
 
 /**
  * Mode for calculation of the go-to position in binary document.

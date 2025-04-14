@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.framework.bined.gui.RelativePositionMode;
+import org.exbin.framework.bined.RelativePositionMode;
 import org.exbin.framework.options.api.OptionsData;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
