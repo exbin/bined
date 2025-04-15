@@ -68,7 +68,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     @Nullable
     private File lastUsedDirectory;
     private BinaryStatusApi binaryStatus;
-    private EditorModificationListener editorModificationListener;
     private ComponentActivationListener componentActivationListener = new ComponentActivationListener() {
         @Override
         public <T> void updated(Class<T> instanceClass, T instance) {
@@ -125,11 +124,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         return activeFile.getComponent();
     }
 
-    @Override
-    public void setModificationListener(EditorModificationListener editorModificationListener) {
-        this.editorModificationListener = editorModificationListener;
-    }
-
     @Nonnull
     @Override
     public String getWindowTitle(String parentTitle) {
@@ -143,9 +137,6 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         SectCodeArea codeArea = getEditorComponent().getCodeArea();
         codeArea.addDataChangedListener(() -> {
             activeFile.getComponent().notifyDataChanged();
-            if (editorModificationListener != null) {
-                editorModificationListener.modified();
-            }
             updateCurrentDocumentSize();
         });
 

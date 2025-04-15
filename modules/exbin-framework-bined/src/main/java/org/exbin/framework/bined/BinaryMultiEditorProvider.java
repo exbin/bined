@@ -158,9 +158,6 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         codeArea.addDataChangedListener(() -> {
             if (fileHandler == activeFile) {
                 ((BinEdFileHandler) activeFile).getComponent().notifyDataChanged();
-                if (editorModificationListener != null) {
-                    editorModificationListener.modified();
-                }
                 updateCurrentDocumentSize();
             }
         });
