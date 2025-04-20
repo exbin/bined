@@ -31,12 +31,14 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
 
 /**
  * Go to position action.
@@ -47,16 +49,14 @@ import org.exbin.framework.window.api.WindowModuleApi;
 public class GoToPositionAction extends AbstractAction {
 
     public static final String ACTION_ID = "goToPositionAction";
+    public static final String HELP_ID = "go-to-position";
 
-    private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
 
     public GoToPositionAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, ActionUtils.getMetaMask()));
@@ -81,7 +81,8 @@ public class GoToPositionAction extends AbstractAction {
         final GoToPositionPanel goToPanel = new GoToPositionPanel();
         goToPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         goToPanel.setMaxPosition(codeArea.getDataSize());
-        DefaultControlPanel controlPanel = new DefaultControlPanel(goToPanel.getResourceBundle());
+        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel(goToPanel.getResourceBundle());
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, goToPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), goToPanel.getClass(), goToPanel.getResourceBundle());

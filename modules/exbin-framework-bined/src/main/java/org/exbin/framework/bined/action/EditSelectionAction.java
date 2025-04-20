@@ -36,8 +36,10 @@ import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.gui.EditSelectionPanel;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
 
 /**
  * Edit selection action.
@@ -48,16 +50,14 @@ import org.exbin.framework.window.api.WindowModuleApi;
 public class EditSelectionAction extends AbstractAction {
 
     public static final String ACTION_ID = "editSelectionAction";
+    public static final String HELP_ID = "edit-selection";
 
-    private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
 
     public EditSelectionAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
@@ -78,7 +78,8 @@ public class EditSelectionAction extends AbstractAction {
         editSelectionPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         editSelectionPanel.setMaxPosition(codeArea.getDataSize());
         editSelectionPanel.setSelectionRange(((SelectionCapable) codeArea).getSelection());
-        DefaultControlPanel controlPanel = new DefaultControlPanel(editSelectionPanel.getResourceBundle());
+        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel(editSelectionPanel.getResourceBundle());
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, editSelectionPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), editSelectionPanel.getClass(), editSelectionPanel.getResourceBundle());

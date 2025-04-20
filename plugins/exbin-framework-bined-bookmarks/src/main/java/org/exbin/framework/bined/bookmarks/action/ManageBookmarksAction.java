@@ -31,9 +31,10 @@ import org.exbin.framework.bined.bookmarks.BookmarksManager;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.window.api.gui.DefaultControlPanel;
+import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
 
 /**
  * Manage bookmarks action.
@@ -44,15 +45,12 @@ import org.exbin.framework.window.api.gui.DefaultControlPanel;
 public class ManageBookmarksAction extends AbstractAction {
 
     public static final String ACTION_ID = "manageBookmarksAction";
-
-    private ResourceBundle resourceBundle;
+    public static final String HELP_ID = "bookmarks";
 
     public ManageBookmarksAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
@@ -69,7 +67,8 @@ public class ManageBookmarksAction extends AbstractAction {
         }
         bookmarksPanel.setBookmarkRecords(records);
         ResourceBundle panelResourceBundle = bookmarksPanel.getResourceBundle();
-        DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
+        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel(panelResourceBundle);
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);

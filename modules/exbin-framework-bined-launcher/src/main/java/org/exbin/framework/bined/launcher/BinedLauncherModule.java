@@ -196,6 +196,7 @@ public class BinedLauncherModule implements LauncherModule {
                 Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
             }
             helpOnlineModule.registerOnlineHelpMenu();
+            helpModule.setHelpOpeningHandler((helpLink) -> helpOnlineModule.openHelpLink(helpLink));
 
             if (!demoMode) {
                 frameModule.registerExitAction();
