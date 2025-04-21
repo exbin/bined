@@ -15,11 +15,15 @@
  */
 package org.exbin.framework.bined.operation.gui;
 
+import java.awt.event.ActionEvent;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JButton;
 import org.exbin.framework.App;
+import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpLinkable;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.OkCancelListener;
 import org.exbin.framework.utils.TestApplication;
@@ -34,11 +38,12 @@ import org.exbin.framework.window.api.handler.OkCancelService;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCancelService {
+public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCancelService, HelpLinkable {
 
     private final java.util.ResourceBundle resourceBundle;
     private ConvertDataControlHandler handler;
     private OkCancelListener okCancelListener;
+    private HelpLink helpLink;
 
     public ConvertDataControlPanel() {
         this(App.getModule(LanguageModuleApi.class).getBundle(ConvertDataControlPanel.class));
@@ -64,10 +69,21 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
                 performClick(ConvertDataControlHandler.ControlActionType.CANCEL);
             }
         };
+        helpButton.addActionListener((ActionEvent e) -> {
+            if (helpLink != null) {
+                HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+                helpModule.openHelp(helpLink);
+            }
+        });
     }
 
     public void setHandler(ConvertDataControlHandler handler) {
         this.handler = handler;
+    }
+
+    @Override
+    public void setHelpLink(HelpLink helpLink) {
+        this.helpLink = helpLink;
     }
 
     /**
@@ -79,6 +95,7 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        helpButton = App.getModule(HelpModuleApi.class).createHelpButton();
         convertToNewFileButton = new javax.swing.JButton();
         convertToClipboardButton = new javax.swing.JButton();
         convertButton = new javax.swing.JButton();
@@ -118,6 +135,8 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(helpButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(convertToNewFileButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(convertToClipboardButton)
@@ -131,11 +150,13 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(convertButton)
-                    .addComponent(convertToNewFileButton)
-                    .addComponent(convertToClipboardButton))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(helpButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cancelButton)
+                        .addComponent(convertButton)
+                        .addComponent(convertToNewFileButton)
+                        .addComponent(convertToClipboardButton)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -215,6 +236,7 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
     private javax.swing.JButton convertButton;
     private javax.swing.JButton convertToClipboardButton;
     private javax.swing.JButton convertToNewFileButton;
+    private javax.swing.JButton helpButton;
     // End of variables declaration//GEN-END:variables
 
 }

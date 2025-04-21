@@ -39,10 +39,6 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 @ParametersAreNonnullByDefault
 public class PositionCodeTypeActions {
 
-    public static final String OCTAL_POSITION_CODE_TYPE_ACTION_ID = "octalPositionCodeTypeAction";
-    public static final String DECIMAL_POSITION_CODE_TYPE_ACTION_ID = "decimalPositionCodeTypeAction";
-    public static final String HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID = "hexadecimalPositionCodeTypeAction";
-
     public static final String POSITION_CODE_TYPE_RADIO_GROUP_ID = "positionCodeTypeRadioGroup";
 
     private ResourceBundle resourceBundle;
@@ -55,43 +51,41 @@ public class PositionCodeTypeActions {
     }
 
     @Nonnull
-    public Action createOctalCodeTypeAction() {
+    public OctalPositionCodeTypeAction createOctalCodeTypeAction() {
         OctalPositionCodeTypeAction octalPositionCodeTypeAction = new OctalPositionCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(octalPositionCodeTypeAction, resourceBundle, OCTAL_POSITION_CODE_TYPE_ACTION_ID);
-        octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        octalPositionCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, octalPositionCodeTypeAction);
+        octalPositionCodeTypeAction.setup(resourceBundle);
         return octalPositionCodeTypeAction;
     }
 
     @Nonnull
-    public Action createDecimalCodeTypeAction() {
+    public DecimalPositionCodeTypeAction createDecimalCodeTypeAction() {
         DecimalPositionCodeTypeAction decimalPositionCodeTypeAction = new DecimalPositionCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(decimalPositionCodeTypeAction, resourceBundle, DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
-        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        decimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, decimalPositionCodeTypeAction);
+        decimalPositionCodeTypeAction.setup(resourceBundle);
         return decimalPositionCodeTypeAction;
     }
 
     @Nonnull
-    public Action createHexadecimalCodeTypeAction() {
+    public HexadecimalPositionCodeTypeAction createHexadecimalCodeTypeAction() {
         HexadecimalPositionCodeTypeAction hexadecimalPositionCodeTypeAction = new HexadecimalPositionCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(hexadecimalPositionCodeTypeAction, resourceBundle, HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
-        hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
-        hexadecimalPositionCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, hexadecimalPositionCodeTypeAction);
+        hexadecimalPositionCodeTypeAction.setup(resourceBundle);
         return hexadecimalPositionCodeTypeAction;
     }
 
     @ParametersAreNonnullByDefault
     public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "octalPositionCodeTypeAction";
+
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -117,8 +111,18 @@ public class PositionCodeTypeActions {
     @ParametersAreNonnullByDefault
     public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "decimalPositionCodeTypeAction";
+
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -144,8 +148,18 @@ public class PositionCodeTypeActions {
     @ParametersAreNonnullByDefault
     public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "hexadecimalPositionCodeTypeAction";
+
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {

@@ -39,8 +39,6 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 @ParametersAreNonnullByDefault
 public class HexCharactersCaseActions {
 
-    public static final String UPPER_HEX_CHARACTERS_ACTION_ID = "upperHexCharactersAction";
-    public static final String LOWER_HEX_CHARACTERS_ACTION_ID = "lowerHexCharactersAction";
     public static final String HEX_CHARACTERS_CASE_RADIO_GROUP_ID = "hexCharactersCaseRadioGroup";
 
     private ResourceBundle resourceBundle;
@@ -53,40 +51,44 @@ public class HexCharactersCaseActions {
     }
 
     @Nonnull
-    public Action createUpperHexCharsAction() {
+    public UpperHexCharsAction createUpperHexCharsAction() {
         UpperHexCharsAction upperHexCharsAction = new UpperHexCharsAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(upperHexCharsAction, resourceBundle, UPPER_HEX_CHARACTERS_ACTION_ID);
-        upperHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        upperHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-        upperHexCharsAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, upperHexCharsAction);
+        upperHexCharsAction.setup(resourceBundle);
         return upperHexCharsAction;
     }
 
     @Nonnull
     public Action createLowerHexCharsAction() {
         LowerHexCharsAction lowerHexCharsAction = new LowerHexCharsAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(lowerHexCharsAction, resourceBundle, LOWER_HEX_CHARACTERS_ACTION_ID);
-        lowerHexCharsAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        lowerHexCharsAction.putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
-        lowerHexCharsAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, lowerHexCharsAction);
+        lowerHexCharsAction.setup(resourceBundle);
         return lowerHexCharsAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class UpperHexCharsAction extends AbstractAction implements ActionContextChange {
+    public static class UpperHexCharsAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "upperHexCharactersAction";
+
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.UPPER);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -100,18 +102,30 @@ public class HexCharactersCaseActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class LowerHexCharsAction extends AbstractAction implements ActionContextChange {
+    public static class LowerHexCharsAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "lowerHexCharactersAction";
+
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.LOWER);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;

@@ -44,7 +44,6 @@ public class EditBookmarkAction extends AbstractAction {
 
     public static final String ACTION_ID = "editBookmarkAction";
 
-    private ResourceBundle resourceBundle;
     private BookmarkRecord bookmarkRecord;
     private CodeAreaSelection currentSelection;
 
@@ -52,8 +51,6 @@ public class EditBookmarkAction extends AbstractAction {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);

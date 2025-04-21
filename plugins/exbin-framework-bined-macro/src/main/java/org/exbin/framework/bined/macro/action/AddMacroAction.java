@@ -42,15 +42,12 @@ public class AddMacroAction extends AbstractAction {
 
     public static final String ACTION_ID = "addMacroAction";
 
-    private ResourceBundle resourceBundle;
     private MacroRecord macroRecord = null;
 
     public AddMacroAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);

@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JOptionPane;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -39,9 +38,6 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 @ParametersAreNonnullByDefault
 public class ClipboardCodeActions {
 
-    public static final String COPY_AS_CODE_ACTION_ID = "copyAsCodeAction";
-    public static final String PASTE_FROM_CODE_ACTION_ID = "pasteFromCodeAction";
-
     private ResourceBundle resourceBundle;
 
     public ClipboardCodeActions() {
@@ -52,27 +48,31 @@ public class ClipboardCodeActions {
     }
 
     @Nonnull
-    public Action createCopyAsCodeAction() {
+    public CopyAsCodeAction createCopyAsCodeAction() {
         CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(copyAsCodeAction, resourceBundle, COPY_AS_CODE_ACTION_ID);
-        copyAsCodeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, copyAsCodeAction);
+        copyAsCodeAction.setup(resourceBundle);
         return copyAsCodeAction;
     }
 
     @Nonnull
-    public Action createPasteFromCodeAction() {
+    public PasteFromCodeAction createPasteFromCodeAction() {
         PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(pasteFromCodeAction, resourceBundle, PASTE_FROM_CODE_ACTION_ID);
-        pasteFromCodeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, pasteFromCodeAction);
+        pasteFromCodeAction.setup(resourceBundle);
         return pasteFromCodeAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class CopyAsCodeAction extends AbstractAction implements ActionContextChange {
+    public static class CopyAsCodeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "copyAsCodeAction";
 
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -95,9 +95,17 @@ public class ClipboardCodeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class PasteFromCodeAction extends AbstractAction implements ActionContextChange {
+    public static class PasteFromCodeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "pasteFromCodeAction";
 
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {

@@ -41,14 +41,11 @@ public class ShowHeaderAction extends AbstractAction {
     public static final String ACTION_ID = "showHeaderAction";
 
     private CodeAreaCore codeArea;
-    private ResourceBundle resourceBundle;
 
     public ShowHeaderAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);

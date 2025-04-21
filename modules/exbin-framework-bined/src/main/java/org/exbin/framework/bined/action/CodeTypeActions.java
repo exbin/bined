@@ -46,12 +46,6 @@ import org.exbin.framework.utils.UiUtils;
 @ParametersAreNonnullByDefault
 public class CodeTypeActions {
 
-    public static final String BINARY_CODE_TYPE_ACTION_ID = "binaryCodeTypeAction";
-    public static final String OCTAL_CODE_TYPE_ACTION_ID = "octalCodeTypeAction";
-    public static final String DECIMAL_CODE_TYPE_ACTION_ID = "decimalCodeTypeAction";
-    public static final String HEXADECIMAL_CODE_TYPE_ACTION_ID = "hexadecimalCodeTypeAction";
-    public static final String CYCLE_CODE_TYPES_ACTION_ID = "cycleCodeTypesAction";
-
     public static final String CODE_TYPE_RADIO_GROUP_ID = "codeTypeRadioGroup";
 
     private ResourceBundle resourceBundle;
@@ -66,76 +60,53 @@ public class CodeTypeActions {
     @Nonnull
     public Action createBinaryCodeTypeAction() {
         BinaryCodeTypeAction binaryCodeTypeAction = new BinaryCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(binaryCodeTypeAction, resourceBundle, BINARY_CODE_TYPE_ACTION_ID);
-        binaryCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        binaryCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        binaryCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, binaryCodeTypeAction);
+        binaryCodeTypeAction.setup(resourceBundle);
         return binaryCodeTypeAction;
     }
 
     @Nonnull
     public Action createOctalCodeTypeAction() {
         OctalCodeTypeAction octalCodeTypeAction = new OctalCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(octalCodeTypeAction, resourceBundle, OCTAL_CODE_TYPE_ACTION_ID);
-        octalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        octalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        octalCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, octalCodeTypeAction);
+        octalCodeTypeAction.setup(resourceBundle);
         return octalCodeTypeAction;
     }
 
     @Nonnull
     public Action createDecimalCodeTypeAction() {
         DecimalCodeTypeAction decimalCodeTypeAction = new DecimalCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(decimalCodeTypeAction, resourceBundle, DECIMAL_CODE_TYPE_ACTION_ID);
-        decimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        decimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        decimalCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, decimalCodeTypeAction);
+        decimalCodeTypeAction.setup(resourceBundle);
         return decimalCodeTypeAction;
     }
 
     @Nonnull
     public Action createHexadecimalCodeTypeAction() {
         HexadecimalCodeTypeAction hexadecimalCodeTypeAction = new HexadecimalCodeTypeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(hexadecimalCodeTypeAction, resourceBundle, HEXADECIMAL_CODE_TYPE_ACTION_ID);
-        hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
-        hexadecimalCodeTypeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, hexadecimalCodeTypeAction);
+        hexadecimalCodeTypeAction.setup(resourceBundle);
         return hexadecimalCodeTypeAction;
     }
 
     @Nonnull
-    public Action createCycleCodeTypesAction() {
+    public CycleCodeTypesAction createCycleCodeTypesAction() {
         CycleCodeTypesAction cycleCodeTypesAction = new CycleCodeTypesAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(cycleCodeTypesAction, resourceBundle, CYCLE_CODE_TYPES_ACTION_ID);
-        cycleCodeTypesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CYCLE);
-        ButtonGroup cycleButtonGroup = new ButtonGroup();
-        Map<String, ButtonGroup> buttonGroups = new HashMap<>();
-        buttonGroups.put(CODE_TYPE_RADIO_GROUP_ID, cycleButtonGroup);
-        JPopupMenu cycleCodeTypesPopupMenu = UiUtils.createPopupMenu();
-        List<Action> dropDownActions = new ArrayList<>();
-        dropDownActions.add(createBinaryCodeTypeAction());
-        dropDownActions.add(createOctalCodeTypeAction());
-        dropDownActions.add(createDecimalCodeTypeAction());
-        dropDownActions.add(createHexadecimalCodeTypeAction());
-        for (Action dropDownAction : dropDownActions) {
-            cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(dropDownAction, buttonGroups));
-        }
-        cycleCodeTypesAction.setDropDownActions(dropDownActions);
-        cycleCodeTypesAction.putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
-        cycleCodeTypesAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, cycleCodeTypesAction);
+        cycleCodeTypesAction.setup(resourceBundle);
         return cycleCodeTypesAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class BinaryCodeTypeAction extends AbstractAction implements ActionContextChange {
+    public static class BinaryCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "binaryCodeTypeAction";
 
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -159,10 +130,20 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class OctalCodeTypeAction extends AbstractAction implements ActionContextChange {
+    public static class OctalCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "octalCodeTypeAction";
 
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -186,10 +167,20 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class DecimalCodeTypeAction extends AbstractAction implements ActionContextChange {
+    public static class DecimalCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "decimalCodeTypeAction";
 
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -213,10 +204,20 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class HexadecimalCodeTypeAction extends AbstractAction implements ActionContextChange {
+    public static class HexadecimalCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "hexadecimalCodeTypeAction";
 
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -240,11 +241,34 @@ public class CodeTypeActions {
     }
 
     @ParametersAreNonnullByDefault
-    private class CycleCodeTypesAction extends AbstractAction implements ActionContextChange {
+    public class CycleCodeTypesAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "cycleCodeTypesAction";
 
         private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
         private List<Action> dropDownActions;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.CYCLE);
+            ButtonGroup cycleButtonGroup = new ButtonGroup();
+            Map<String, ButtonGroup> buttonGroups = new HashMap<>();
+            buttonGroups.put(CODE_TYPE_RADIO_GROUP_ID, cycleButtonGroup);
+            JPopupMenu cycleCodeTypesPopupMenu = UiUtils.createPopupMenu();
+            dropDownActions = new ArrayList<>();
+            dropDownActions.add(createBinaryCodeTypeAction());
+            dropDownActions.add(createOctalCodeTypeAction());
+            dropDownActions.add(createDecimalCodeTypeAction());
+            dropDownActions.add(createHexadecimalCodeTypeAction());
+            for (Action dropDownAction : dropDownActions) {
+                cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(dropDownAction, buttonGroups));
+            }
+            setDropDownActions(dropDownActions);
+            putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -268,7 +292,7 @@ public class CodeTypeActions {
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
                     CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
-                    putValue(Action.NAME, resourceBundle.getString(CYCLE_CODE_TYPES_ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
+                    putValue(Action.NAME, resourceBundle.getString(ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
                 }
                 setEnabled(hasInstance);
             });

@@ -34,7 +34,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
-import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.gui.EditSelectionPanel;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowHandler;

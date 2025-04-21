@@ -41,7 +41,6 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
-import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
@@ -50,8 +49,10 @@ import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.window.api.gui.CloseHelpControlPanel;
 
 /**
  * Compare files action.
@@ -62,16 +63,14 @@ import org.exbin.framework.window.api.WindowModuleApi;
 public class CompareFilesAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "compareFilesAction";
+    public static final String HELP_ID = "compare-files-action";
 
     private EditorProvider editorProvider;
-    private ResourceBundle resourceBundle;
 
     public CompareFilesAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
@@ -82,7 +81,8 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public void actionPerformed(ActionEvent e) {
         final CompareFilesPanel compareFilesPanel = new CompareFilesPanel();
         ResourceBundle panelResourceBundle = compareFilesPanel.getResourceBundle();
-        CloseControlPanel controlPanel = new CloseControlPanel(panelResourceBundle);
+        CloseHelpControlPanel controlPanel = new CloseHelpControlPanel(panelResourceBundle);
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);

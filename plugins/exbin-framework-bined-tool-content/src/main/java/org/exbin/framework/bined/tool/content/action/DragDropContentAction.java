@@ -40,9 +40,10 @@ import org.exbin.framework.bined.tool.content.gui.DragDropContentPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
-import org.exbin.framework.window.api.gui.CloseControlPanel;
+import org.exbin.framework.window.api.gui.CloseHelpControlPanel;
 
 /**
  * Drag and drop content action.
@@ -53,8 +54,8 @@ import org.exbin.framework.window.api.gui.CloseControlPanel;
 public class DragDropContentAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "dragDropContentAction";
+    public static final String HELP_ID = "drag-and-drop-content";
 
-    private ResourceBundle resourceBundle;
     private DragDropContentPanel dragDropContentPanel = new DragDropContentPanel();
     private EditorProvider editorProvider;
 
@@ -62,8 +63,6 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
@@ -74,7 +73,8 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        CloseControlPanel controlPanel = new CloseControlPanel();
+        CloseHelpControlPanel controlPanel = new CloseHelpControlPanel();
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
         final WindowHandler dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
         dragDropContentPanel.setOpenAsTabAction(new AbstractAction() {
             @Override

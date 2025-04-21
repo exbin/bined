@@ -195,8 +195,8 @@ public class BinedLauncherModule implements LauncherModule {
             } catch (MalformedURLException ex) {
                 Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
             }
+            helpOnlineModule.registerOpeningHandler();
             helpOnlineModule.registerOnlineHelpMenu();
-            helpModule.setHelpOpeningHandler((helpLink) -> helpOnlineModule.openHelpLink(helpLink));
 
             if (!demoMode) {
                 frameModule.registerExitAction();

@@ -41,15 +41,12 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     public static final String ACTION_ID = "showParsingPanelAction";
 
-    private ResourceBundle resourceBundle;
     private FileHandler fileHandler;
 
     public ShowParsingPanelAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);

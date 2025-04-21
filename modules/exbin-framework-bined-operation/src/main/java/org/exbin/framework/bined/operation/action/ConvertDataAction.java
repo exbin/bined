@@ -50,6 +50,7 @@ import org.exbin.framework.bined.operation.gui.ConvertDataControlPanel;
 import org.exbin.framework.bined.operation.gui.ConvertDataPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 
@@ -62,10 +63,10 @@ import org.exbin.framework.window.api.WindowHandler;
 public class ConvertDataAction extends AbstractAction {
 
     public static final String ACTION_ID = "convertDataAction";
+    public static final String HELP_ID = "convert-data-action";
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
-    private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
     private EditorProvider editorProvider;
     private ConvertDataMethod lastMethod = null;
@@ -75,8 +76,6 @@ public class ConvertDataAction extends AbstractAction {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, ActionUtils.getMetaMask()));
@@ -112,6 +111,7 @@ public class ConvertDataAction extends AbstractAction {
         });
         ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
         ConvertDataControlPanel controlPanel = new ConvertDataControlPanel();
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         JPanel dialogPanel = windowModule.createDialogPanel(convertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);

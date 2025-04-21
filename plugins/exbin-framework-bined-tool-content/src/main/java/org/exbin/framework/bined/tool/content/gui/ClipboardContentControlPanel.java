@@ -15,11 +15,15 @@
  */
 package org.exbin.framework.bined.tool.content.gui;
 
+import java.awt.event.ActionEvent;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JButton;
 import org.exbin.framework.App;
+import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpLinkable;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.OkCancelListener;
 import org.exbin.framework.utils.TestApplication;
@@ -33,11 +37,12 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ClipboardContentControlPanel extends javax.swing.JPanel implements ClipboardContentControlHandler.ClipboardContentControlService {
+public class ClipboardContentControlPanel extends javax.swing.JPanel implements ClipboardContentControlHandler.ClipboardContentControlService, HelpLinkable {
 
     private final java.util.ResourceBundle resourceBundle;
     private ClipboardContentControlHandler handler;
     private OkCancelListener okCancelListener;
+    private HelpLink helpLink;
 
     public ClipboardContentControlPanel() {
         this(App.getModule(LanguageModuleApi.class).getBundle(ClipboardContentControlPanel.class));
@@ -63,10 +68,21 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
                 performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
             }
         };
+        helpButton.addActionListener((ActionEvent e) -> {
+            if (helpLink != null) {
+                HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+                helpModule.openHelp(helpLink);
+            }
+        });
     }
 
     public void setHandler(ClipboardContentControlHandler handler) {
         this.handler = handler;
+    }
+
+    @Override
+    public void setHelpLink(HelpLink helpLink) {
+        this.helpLink = helpLink;
     }
 
     /**
@@ -78,6 +94,7 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        helpButton = App.getModule(HelpModuleApi.class).createHelpButton();
         refreshButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
 
@@ -99,8 +116,10 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(helpButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(refreshButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(closeButton)
@@ -114,6 +133,10 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
                     .addComponent(closeButton)
                     .addComponent(refreshButton))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(helpButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -169,6 +192,7 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
+    private javax.swing.JButton helpButton;
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 

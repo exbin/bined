@@ -55,7 +55,7 @@ public class ShowNonprintablesActions {
     }
 
     @Nonnull
-    public Action createViewNonprintablesAction() {
+    public ViewNonprintablesAction createViewNonprintablesAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(viewNonprintablesAction, resourceBundle, VIEW_NONPRINTABLES_ACTION_ID);
@@ -66,7 +66,7 @@ public class ShowNonprintablesActions {
     }
 
     @Nonnull
-    public Action createViewNonprintablesToolbarAction() {
+    public ViewNonprintablesAction createViewNonprintablesToolbarAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(viewNonprintablesAction, resourceBundle, VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID);

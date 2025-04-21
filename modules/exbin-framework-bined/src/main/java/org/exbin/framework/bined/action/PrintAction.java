@@ -48,14 +48,11 @@ public class PrintAction extends AbstractAction {
     public static final String ACTION_ID = "printAction";
 
     private CodeAreaCore codeArea;
-    private ResourceBundle resourceBundle;
 
     public PrintAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, ActionUtils.getMetaMask()));

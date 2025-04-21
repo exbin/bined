@@ -39,10 +39,6 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 @ParametersAreNonnullByDefault
 public class ViewModeHandlerActions {
 
-    public static final String DUAL_VIEW_MODE_ACTION_ID = "dualViewModeAction";
-    public static final String CODE_MATRIX_VIEW_MODE_ACTION_ID = "codeMatrixViewModeAction";
-    public static final String TEXT_PREVIEW_VIEW_MODE_ACTION_ID = "textPreviewViewModeAction";
-
     public static final String VIEW_MODE_RADIO_GROUP_ID = "viewModeRadioGroup";
 
     private ResourceBundle resourceBundle;
@@ -55,51 +51,51 @@ public class ViewModeHandlerActions {
     }
 
     @Nonnull
-    public Action createDualModeAction() {
+    public DualModeAction createDualModeAction() {
         DualModeAction dualModeAction = new DualModeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(dualModeAction, resourceBundle, DUAL_VIEW_MODE_ACTION_ID);
-        dualModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        dualModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-        dualModeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, dualModeAction);
+        dualModeAction.setup(resourceBundle);
         return dualModeAction;
     }
 
     @Nonnull
-    public Action createCodeMatrixModeAction() {
+    public CodeMatrixModeAction createCodeMatrixModeAction() {
         CodeMatrixModeAction codeMatrixModeAction = new CodeMatrixModeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(codeMatrixModeAction, resourceBundle, CODE_MATRIX_VIEW_MODE_ACTION_ID);
-        codeMatrixModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        codeMatrixModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-        codeMatrixModeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, codeMatrixModeAction);
+        codeMatrixModeAction.setup(resourceBundle);
         return codeMatrixModeAction;
     }
 
     @Nonnull
-    public Action createTextPreviewModeAction() {
+    public TextPreviewModeAction createTextPreviewModeAction() {
         TextPreviewModeAction textPreviewModeAction = new TextPreviewModeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(textPreviewModeAction, resourceBundle, TEXT_PREVIEW_VIEW_MODE_ACTION_ID);
-        textPreviewModeAction.putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
-        textPreviewModeAction.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        textPreviewModeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, textPreviewModeAction);
+        textPreviewModeAction.setup(resourceBundle);
         return textPreviewModeAction;
     }
 
     @ParametersAreNonnullByDefault
-    private static class DualModeAction extends AbstractAction implements ActionContextChange {
+    public static class DualModeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "dualViewModeAction";
+
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.DUAL);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -113,18 +109,31 @@ public class ViewModeHandlerActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class CodeMatrixModeAction extends AbstractAction implements ActionContextChange {
+    public static class CodeMatrixModeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "codeMatrixViewModeAction";
+
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.CODE_MATRIX);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;
@@ -138,18 +147,30 @@ public class ViewModeHandlerActions {
     }
 
     @ParametersAreNonnullByDefault
-    private static class TextPreviewModeAction extends AbstractAction implements ActionContextChange {
+    public static class TextPreviewModeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "textPreviewViewModeAction";
+
+        private ActionContextChangeManager manager;
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
+            this.manager = manager;
             manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
                 codeArea = instance;
                 boolean hasInstance = instance != null;

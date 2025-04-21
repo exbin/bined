@@ -48,14 +48,11 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
     public static final String ACTION_ID = "manageMacrosAction";
 
     private EditorProvider editorProvider;
-    private ResourceBundle resourceBundle;
 
     public ManageMacrosAction() {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);

@@ -63,7 +63,7 @@ public class FindReplaceActions {
     }
 
     @Nonnull
-    public Action getEditFindAction() {
+    public EditFindAction createEditFindAction() {
         EditFindAction editFindAction = new EditFindAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(editFindAction, resourceBundle, FIND_ACTION_ID);
@@ -87,7 +87,7 @@ public class FindReplaceActions {
     }
 
     @Nonnull
-    public Action getEditFindAgainAction() {
+    public EditFindAgainAction createEditFindAgainAction() {
         EditFindAgainAction editFindAgainAction = new EditFindAgainAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(editFindAgainAction, resourceBundle, FIND_AGAIN_ACTION_ID);
@@ -110,7 +110,7 @@ public class FindReplaceActions {
     }
 
     @Nonnull
-    public Action getEditReplaceAction() {
+    public EditReplaceAction createEditReplaceAction() {
         EditReplaceAction editReplaceAction = new EditReplaceAction();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(editReplaceAction, resourceBundle, REPLACE_ACTION_ID);

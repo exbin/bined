@@ -88,20 +88,20 @@ public class BinedSearchModule implements Module {
         // TODO SearchModule
         String groupId = BinedModule.EDIT_FIND_MENU_GROUP_ID;
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(findReplaceActions.getEditFindAction());
+        MenuContribution contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(groupId));
-        contribution = mgmt.registerMenuItem(findReplaceActions.getEditFindAgainAction());
+        contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAgainAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(groupId));
-        contribution = mgmt.registerMenuItem(findReplaceActions.getEditReplaceAction());
+        contribution = mgmt.registerMenuItem(findReplaceActions.createEditReplaceAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(groupId));
     }
 
     public void registerEditFindPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().getEditFindAction());
+        MenuContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
-        contribution = mgmt.registerMenuItem(getFindReplaceActions().getEditReplaceAction());
+        contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditReplaceAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
@@ -112,7 +112,7 @@ public class BinedSearchModule implements Module {
         ToolBarContribution contribution = mgmt.registerToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionToolBarContributionRule.PositionMode.MIDDLE));
         mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationToolBarContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerToolBarItem(findReplaceActions.getEditFindAction());
+        contribution = mgmt.registerToolBarItem(findReplaceActions.createEditFindAction());
         mgmt.registerToolBarRule(contribution, new GroupToolBarContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
     }
 

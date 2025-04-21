@@ -40,11 +40,12 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.handler.DefaultControlHandler;
-import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
+import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
 
 /**
  * Insert data action.
@@ -55,10 +56,10 @@ import org.exbin.framework.window.api.WindowModuleApi;
 public class InsertDataAction extends AbstractAction {
 
     public static final String ACTION_ID = "insertDataAction";
+    public static final String HELP_ID = "insert-data-action";
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
-    private ResourceBundle resourceBundle;
     private CodeAreaCore codeArea;
     private InsertDataMethod lastMethod = null;
 
@@ -67,8 +68,6 @@ public class InsertDataAction extends AbstractAction {
     }
 
     public void setup(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, ActionUtils.getMetaMask()));
@@ -99,7 +98,8 @@ public class InsertDataAction extends AbstractAction {
             }
         });
         ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();
-        DefaultControlPanel controlPanel = new DefaultControlPanel();
+        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel();
+        controlPanel.setHelpLink(new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         JPanel dialogPanel = windowModule.createDialogPanel(insertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
