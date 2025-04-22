@@ -858,7 +858,7 @@ public class BinedModule implements Module {
             }
         };
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.OCTAL_POSITION_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.OctalPositionCodeTypeAction.ACTION_ID);
         action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
@@ -884,7 +884,7 @@ public class BinedModule implements Module {
             }
         };
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.DECIMAL_POSITION_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.DecimalPositionCodeTypeAction.ACTION_ID);
         action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
@@ -910,7 +910,7 @@ public class BinedModule implements Module {
             }
         };
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.HEXADECIMAL_POSITION_CODE_TYPE_ACTION_ID);
+        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.HexadecimalPositionCodeTypeAction.ACTION_ID);
         action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
         action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override

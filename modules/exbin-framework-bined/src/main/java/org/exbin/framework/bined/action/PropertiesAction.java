@@ -26,7 +26,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.bined.gui.PropertiesPanel;
+import org.exbin.framework.bined.gui.BinEdFilePropertiesPanel;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowHandler;
@@ -69,7 +69,7 @@ public class PropertiesAction extends AbstractAction {
         }
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        PropertiesPanel propertiesPanel = new PropertiesPanel();
+        BinEdFilePropertiesPanel propertiesPanel = new BinEdFilePropertiesPanel();
         propertiesPanel.setFileHandler((BinEdFileHandler) fileHandler);
         CloseControlPanel controlPanel = new CloseControlPanel();
         final WindowHandler dialog = windowModule.createDialog(propertiesPanel, controlPanel);

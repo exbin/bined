@@ -15,9 +15,21 @@
  */
 package org.exbin.framework.bined.gui;
 
+import java.net.URI;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListModel;
+import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.delta.DataSegment;
+import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
+import org.exbin.auxiliary.binary_data.delta.MemorySegment;
+import org.exbin.auxiliary.binary_data.delta.SourceSegment;
+import org.exbin.auxiliary.binary_data.delta.list.DefaultDoublyLinkedList;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -35,6 +47,11 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
 
     public BinEdFilePropertiesPanel() {
         initComponents();
+    }
+
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
     }
 
     /**
@@ -142,4 +159,26 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel structurePanel;
     private javax.swing.JScrollPane structureScrollPane;
     // End of variables declaration//GEN-END:variables
+
+    public void setFileHandler(BinEdFileHandler fileHandler) {
+        SectCodeArea codeArea = fileHandler.getCodeArea();
+        Optional<URI> fileUri = fileHandler.getFileUri();
+        fileNameTextField.setText(fileUri.isPresent() ? fileUri.get().toString() : "");
+        fileSizeTextField.setText(Long.toString(codeArea.getDataSize()));
+
+        BinaryData contentData = codeArea.getContentData();
+        if (contentData instanceof DeltaDocument) {
+            DefaultDoublyLinkedList<DataSegment> segments = ((DeltaDocument) contentData).getSegments();
+            DataSegment segment = segments.first();
+            DefaultListModel<String> listModel = (DefaultListModel<String>) structureList.getModel();
+            while (segment != null) {
+                if (segment instanceof SourceSegment) {
+                    listModel.addElement("FILE: " + ((SourceSegment) segment).getStartPosition() + ", " + ((SourceSegment) segment).getLength());
+                } else {
+                    listModel.addElement("MEMORY: " + ((MemorySegment) segment).getStartPosition() + ", " + ((MemorySegment) segment).getLength());
+                }
+                segment = segment.getNext();
+            }
+        }
+    }
 }
