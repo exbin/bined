@@ -43,6 +43,7 @@ import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActionManager;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
@@ -62,6 +63,7 @@ import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.options.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
+import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
@@ -97,20 +99,31 @@ public class MacroManager {
     private JMenu macrosMenu;
     private int lastActiveMacro = -1;
     private long lastMacroIndex = 0;
+    private ActionManager actionManager;
 
     public MacroManager() {
     }
 
     public void init() {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionManager = actionModule.createActionManager();
         addMacroAction.setup(resourceBundle);
         editMacroAction.setup(resourceBundle);
         manageMacrosAction.setup(resourceBundle);
+        actionManager.registerAction(manageMacrosAction);
+        actionManager.initAction(manageMacrosAction);
         executeLastMacroAction.setup(resourceBundle);
         executeLastMacroAction.setMacroManager(this);
+        actionManager.registerAction(executeLastMacroAction);
+        actionManager.initAction(executeLastMacroAction);
         startMacroRecordingAction.setup(resourceBundle);
         startMacroRecordingAction.setMacroManager(this);
+        actionManager.registerAction(startMacroRecordingAction);
+        actionManager.initAction(startMacroRecordingAction);
         stopMacroRecordingAction.setup(resourceBundle);
         stopMacroRecordingAction.setMacroManager(this);
+        actionManager.registerAction(stopMacroRecordingAction);
+        actionManager.initAction(stopMacroRecordingAction);
 
         PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
         OptionsStorage preferences = preferencesModule.getAppPreferences();
@@ -249,8 +262,12 @@ public class MacroManager {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });
                     manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                        ((ComponentActivationListener) actionManager).updated(CodeAreaCore.class, instance);
                         activeCodeArea = instance;
                         updateMacrosMenu();
+                    });
+                    manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                        ((ComponentActivationListener) actionManager).updated(EditorProvider.class, instance);
                     });
                 }
             });
