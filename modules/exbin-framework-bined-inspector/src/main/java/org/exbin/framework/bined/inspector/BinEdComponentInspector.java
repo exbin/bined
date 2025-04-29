@@ -18,20 +18,17 @@ package org.exbin.framework.bined.inspector;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
 import org.exbin.framework.bined.options.BinaryEditorOptions;
+import org.exbin.framework.utils.UiUtils;
 
 /**
  * BinEd component data inspector.
@@ -60,31 +57,19 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public void onCreate(BinEdComponentPanel componentPanel) {
         this.componentPanel = componentPanel;
 
-        if (SwingUtilities.isEventDispatchThread()) {
-            onCreateInt();
-        } else {
-            try {
-                SwingUtilities.invokeAndWait(() -> {
-                    onCreateInt();
-                });
-            } catch (InterruptedException | InvocationTargetException ex) {
-                Logger.getLogger(BinEdComponentInspector.class.getName()).log(Level.SEVERE, null, ex);
+        UiUtils.runInUiThread(() -> {
+            SectCodeArea codeArea = componentPanel.getCodeArea();
+            this.valuesPanel = componentsProvider == null ? new BasicValuesPanel() : componentsProvider.createValuesPanel();
+            valuesPanel.setCodeArea(codeArea, null);
+            if (basicValuesColorModifier != null) {
+                valuesPanel.registerFocusPainter(basicValuesColorModifier);
             }
-        }
+
+            valuesPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
+            valuesPanelScrollPane.setViewportView(valuesPanel);
+            valuesPanelScrollPane.setBorder(null);
+        });
         setShowParsingPanel(true);
-    }
-
-    private void onCreateInt() {
-        SectCodeArea codeArea = componentPanel.getCodeArea();
-        this.valuesPanel = componentsProvider == null ? new BasicValuesPanel() : componentsProvider.createValuesPanel();
-        valuesPanel.setCodeArea(codeArea, null);
-        if (basicValuesColorModifier != null) {
-            valuesPanel.registerFocusPainter(basicValuesColorModifier);
-        }
-
-        valuesPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
-        valuesPanelScrollPane.setViewportView(valuesPanel);
-        valuesPanelScrollPane.setBorder(null);
     }
 
     @Override

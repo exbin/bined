@@ -47,10 +47,6 @@ import org.exbin.framework.file.api.FileHandler;
 @ParametersAreNonnullByDefault
 public class FindReplaceActions {
 
-    public static final String FIND_ACTION_ID = "binarySearchFindAction";
-    public static final String FIND_AGAIN_ACTION_ID = "binarySearchFindAgainAction";
-    public static final String REPLACE_ACTION_ID = "binarySearchReplaceAction";
-
     private ResourceBundle resourceBundle;
 
     private final List<FindAgainListener> findAgainListeners = new ArrayList<>();
@@ -65,71 +61,21 @@ public class FindReplaceActions {
     @Nonnull
     public EditFindAction createEditFindAction() {
         EditFindAction editFindAction = new EditFindAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(editFindAction, resourceBundle, FIND_ACTION_ID);
-        editFindAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
-        editFindAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        editFindAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        editFindAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editFindAction);
+        editFindAction.setup(resourceBundle);
         return editFindAction;
     }
 
     @Nonnull
     public EditFindAgainAction createEditFindAgainAction() {
         EditFindAgainAction editFindAgainAction = new EditFindAgainAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(editFindAgainAction, resourceBundle, FIND_AGAIN_ACTION_ID);
-        editFindAgainAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-        editFindAgainAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        editFindAgainAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editFindAgainAction);
+        editFindAgainAction.setup(resourceBundle);
         return editFindAgainAction;
     }
 
     @Nonnull
     public EditReplaceAction createEditReplaceAction() {
         EditReplaceAction editReplaceAction = new EditReplaceAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(editReplaceAction, resourceBundle, REPLACE_ACTION_ID);
-        editReplaceAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
-        editReplaceAction.putValue(ActionConsts.ACTION_DIALOG_MODE, true);
-        editReplaceAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        editReplaceAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, editReplaceAction);
+        editReplaceAction.setup(resourceBundle);
         return editReplaceAction;
     }
 
@@ -149,7 +95,30 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditFindAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "binarySearchFindAction";
+
         private FileHandler fileHandler;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+            putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId, String subMenuId) {
+                    BinedModule binedModule = App.getModule(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                }
+            });
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -170,7 +139,29 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditFindAgainAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "binarySearchFindAgainAction";
+
         private FileHandler fileHandler;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+            putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId, String subMenuId) {
+                    BinedModule binedModule = App.getModule(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                }
+            });
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -195,7 +186,30 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditReplaceAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "binarySearchReplaceAction";
+
         private FileHandler fileHandler;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+            putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+                @Override
+                public boolean shouldCreate(String menuId, String subMenuId) {
+                    BinedModule binedModule = App.getModule(BinedModule.class);
+                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
+                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                }
+
+                @Override
+                public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                }
+            });
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
