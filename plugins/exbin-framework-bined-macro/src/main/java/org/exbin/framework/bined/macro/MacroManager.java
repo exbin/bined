@@ -298,6 +298,22 @@ public class MacroManager {
             }
         });
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
+        macrosPopupMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
+            @Override
+            public void register(ActionContextChangeManager manager) {
+                manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                    fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                });
+                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
+                    ((ComponentActivationListener) actionManager).updated(CodeAreaCore.class, instance);
+                    activeCodeArea = instance;
+                    updateMacrosMenu();
+                });
+                manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                    ((ComponentActivationListener) actionManager).updated(EditorProvider.class, instance);
+                });
+            }
+        });
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu macrosPopupMenu = UiUtils.createMenu();
