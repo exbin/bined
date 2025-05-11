@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
+import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;

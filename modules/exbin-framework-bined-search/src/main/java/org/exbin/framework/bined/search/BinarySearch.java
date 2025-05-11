@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
-import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
+import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
@@ -31,7 +31,6 @@ import org.exbin.framework.bined.search.gui.BinaryMultilinePanel;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.bined.search.gui.FindBinaryPanel;
 import org.exbin.framework.bined.search.service.BinarySearchService;
-import org.exbin.framework.bined.search.service.BinarySearchService.FoundMatches;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -61,7 +60,7 @@ public class BinarySearch {
     private SearchParameters.SearchDirection currentSearchDirection = SearchParameters.SearchDirection.FORWARD;
     private final SearchParameters currentSearchParameters = new SearchParameters();
     private final ReplaceParameters currentReplaceParameters = new ReplaceParameters();
-    private FoundMatches foundMatches = new FoundMatches();
+    private BinarySearchService.FoundMatches foundMatches = new BinarySearchService.FoundMatches();
 
     private final List<SearchCondition> searchHistory = new ArrayList<>();
     private final List<SearchCondition> replaceHistory = new ArrayList<>();

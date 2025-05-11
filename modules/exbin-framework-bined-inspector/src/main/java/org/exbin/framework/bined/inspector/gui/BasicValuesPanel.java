@@ -43,7 +43,7 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.auxiliary.binary_data.ByteArrayEditableData;
+import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;

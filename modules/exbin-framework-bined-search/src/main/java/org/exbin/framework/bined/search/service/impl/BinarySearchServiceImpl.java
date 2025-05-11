@@ -18,6 +18,7 @@ package org.exbin.framework.bined.search.service.impl;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -199,27 +200,44 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         }
         byte[] charData = new byte[maxBytesPerChar];
         long dataSize = data.getDataSize();
+        long lastPosition = position;
         while (position >= 0 && position <= dataSize - searchDataSize) {
             int matchCharLength = 0;
             int matchLength = 0;
             while (matchCharLength < searchDataSize) {
+                if (Thread.interrupted()) {
+                    return;
+                }
+
                 long searchPosition = position + matchLength;
                 int bytesToUse = maxBytesPerChar;
                 if (searchPosition + bytesToUse > dataSize) {
                     bytesToUse = (int) (dataSize - searchPosition);
                 }
-                data.copyToArray(searchPosition, charData, 0, bytesToUse);
+
+                if (searchPosition == lastPosition + 1) {
+                    System.arraycopy(charData, 1, charData, 0, maxBytesPerChar - 1);
+                    charData[bytesToUse - 1] = data.getByte(searchPosition + bytesToUse - 1);
+                } else if (searchPosition == lastPosition - 1) {
+                    System.arraycopy(charData, 0, charData, 1, maxBytesPerChar - 1);
+                    charData[0] = data.getByte(searchPosition);
+                } else {
+                    data.copyToArray(searchPosition, charData, 0, bytesToUse);
+                }
+                if (bytesToUse < maxBytesPerChar) {
+                    Arrays.fill(charData, bytesToUse, maxBytesPerChar, (byte) 0);
+                }
+                lastPosition = searchPosition;
                 char singleChar = new String(charData, charset).charAt(0);
-                String singleCharString = String.valueOf(singleChar);
-                int characterLength = singleCharString.getBytes(charset).length;
 
                 if (searchParameters.isMatchCase()) {
                     if (singleChar != findText.charAt(matchCharLength)) {
                         break;
                     }
-                } else if (singleCharString.toLowerCase().charAt(0) != findText.charAt(matchCharLength)) {
+                } else if (Character.toLowerCase(singleChar) != findText.charAt(matchCharLength)) {
                     break;
                 }
+                int characterLength = String.valueOf(singleChar).getBytes(charset).length;
                 matchCharLength++;
                 matchLength += characterLength;
             }
@@ -251,6 +269,10 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 default:
                     throw CodeAreaUtils.getInvalidTypeException(searchParameters.getSearchDirection());
             }
+        }
+
+        if (Thread.interrupted()) {
+            return;
         }
 
         searchAssessor.setMatches(foundMatches);

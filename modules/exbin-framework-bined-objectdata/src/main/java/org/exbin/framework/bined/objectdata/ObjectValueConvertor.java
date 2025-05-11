@@ -16,7 +16,7 @@
 package org.exbin.framework.bined.objectdata;
 
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.auxiliary.binary_data.ByteArrayData;
+import org.exbin.auxiliary.binary_data.array.ByteArrayData;
 import org.exbin.framework.bined.objectdata.array.BooleanArrayPageProvider;
 import org.exbin.framework.bined.objectdata.array.BoxedBooleanArrayPageProvider;
 import org.exbin.framework.bined.objectdata.array.BoxedByteArrayPageProvider;

@@ -18,7 +18,7 @@ package org.exbin.framework.bined.operation.operation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.auxiliary.binary_data.paged.ByteArrayPagedData;
+import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
