@@ -69,7 +69,6 @@ public class PreviewPanel extends javax.swing.JPanel {
 
     private void init() {
         codeArea = new SectCodeArea();
-        codeArea.setFocusTraversalKeysEnabled(false);
         initPreviewCodeArea();
         this.add(codeArea, BorderLayout.CENTER);
     }
