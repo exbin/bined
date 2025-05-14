@@ -20,6 +20,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigInteger;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -575,7 +576,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 if (isSigned()) {
                     long longValue = Long.parseLong(longTextField.getText());
 
-                    byteBuffer.rewind();
+                    ((Buffer) byteBuffer).rewind();
                     if (byteBuffer.order() != byteOrder) {
                         byteBuffer.order(byteOrder);
                     }
@@ -616,7 +617,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 ByteOrder byteOrder = getByteOrder();
                 float floatValue = Float.parseFloat(floatTextField.getText());
 
-                byteBuffer.rewind();
+                ((Buffer) byteBuffer).rewind();
                 if (byteBuffer.order() != byteOrder) {
                     byteBuffer.order(byteOrder);
                 }
@@ -637,7 +638,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 ByteOrder byteOrder = getByteOrder();
                 double doubleValue = Double.parseDouble(doubleTextField.getText());
 
-                byteBuffer.rewind();
+                ((Buffer) byteBuffer).rewind();
                 if (byteBuffer.order() != byteOrder) {
                     byteBuffer.order(byteOrder);
                 }
@@ -1044,7 +1045,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 }
                 case LONG: {
                     if (signed) {
-                        byteBuffer.rewind();
+                        ((Buffer) byteBuffer).rewind();
                         if (byteBuffer.order() != byteOrder) {
                             byteBuffer.order(byteOrder);
                         }
@@ -1065,7 +1066,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     break;
                 }
                 case FLOAT: {
-                    byteBuffer.rewind();
+                    ((Buffer) byteBuffer).rewind();
                     if (byteBuffer.order() != byteOrder) {
                         byteBuffer.order(byteOrder);
                     }
@@ -1075,7 +1076,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     break;
                 }
                 case DOUBLE: {
-                    byteBuffer.rewind();
+                    ((Buffer) byteBuffer).rewind();
                     if (byteBuffer.order() != byteOrder) {
                         byteBuffer.order(byteOrder);
                     }

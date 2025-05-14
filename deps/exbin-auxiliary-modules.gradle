@@ -1,6 +1,6 @@
 // Shared modules build
 
-version = '0.2.2-SNAPSHOT'
+version = '0.3.0-SNAPSHOT'
 def repositoryName = "exbin-auxiliary-java"
 def githubProfile = 'exbin'
 def libraryUrl = 'https://exbin.org'
