@@ -111,7 +111,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="org.exbin.framework.bined.options.gui.ColorCellPanel" name="colorCellPanel">
+    <Component class="org.exbin.framework.bined.theme.options.gui.ColorCellPanel" name="colorCellPanel">
     </Component>
   </SubComponents>
 </Form>

@@ -20,16 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
 import org.exbin.bined.swing.section.SectCodeArea;
-import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.options.CodeAreaColorOptions;
-import org.exbin.framework.bined.options.CodeAreaLayoutOptions;
-import org.exbin.framework.bined.options.CodeAreaThemeOptions;
-import org.exbin.framework.bined.options.EditorOptions;
 import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.bined.options.CodeAreaOptions;
@@ -42,17 +34,10 @@ import org.exbin.framework.bined.options.CodeAreaOptions;
 @ParametersAreNonnullByDefault
 public class BinEdEditorComponent {
 
-    private final SectionCodeAreaLayoutProfile defaultLayoutProfile;
-    private final SectionCodeAreaThemeProfile defaultThemeProfile;
-    private final CodeAreaColorsProfile defaultColorProfile;
-
     private BinEdComponentPanel componentPanel = createComponentPanel();
 
     public BinEdEditorComponent() {
         SectCodeArea codeArea = componentPanel.getCodeArea();
-        defaultLayoutProfile = codeArea.getLayoutProfile();
-        defaultThemeProfile = codeArea.getThemeProfile();
-        defaultColorProfile = codeArea.getColorsProfile();
     }
 
     @Nonnull
@@ -85,41 +70,12 @@ public class BinEdEditorComponent {
         SectCodeArea codeArea = componentPanel.getCodeArea();
         CodeAreaOptions.applyToCodeArea(preferences.getCodeAreaOptions(), codeArea);
 
-        EditorOptions editorOptions = preferences.getEditorOptions();
-        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
-            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
-            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
-        }
-
-        applyProfileFromPreferences(preferences);
-    }
-
-    public void applyProfileFromPreferences(BinaryEditorOptions preferences) {
-        SectCodeArea codeArea = componentPanel.getCodeArea();
-
-        CodeAreaLayoutOptions layoutOptions = preferences.getLayoutOptions();
-        int selectedLayoutProfile = layoutOptions.getSelectedProfile();
-        if (selectedLayoutProfile >= 0) {
-            codeArea.setLayoutProfile(layoutOptions.getLayoutProfile(selectedLayoutProfile));
-        } else {
-            codeArea.setLayoutProfile(defaultLayoutProfile);
-        }
-
-        CodeAreaThemeOptions themeOptions = preferences.getThemeOptions();
-        int selectedThemeProfile = themeOptions.getSelectedProfile();
-        if (selectedThemeProfile >= 0) {
-            codeArea.setThemeProfile(themeOptions.getThemeProfile(selectedThemeProfile));
-        } else {
-            codeArea.setThemeProfile(defaultThemeProfile);
-        }
-
-        CodeAreaColorOptions colorOptions = preferences.getColorOptions();
-        int selectedColorProfile = colorOptions.getSelectedProfile();
-        if (selectedColorProfile >= 0) {
-            codeArea.setColorsProfile(colorOptions.getColorsProfile(selectedColorProfile));
-        } else {
-            codeArea.setColorsProfile(defaultColorProfile);
-        }
+        // TODO
+//        EditorOptions editorOptions = preferences.getEditorOptions();
+//        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
+//            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
+//            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
+//        }
     }
 
     @Nonnull

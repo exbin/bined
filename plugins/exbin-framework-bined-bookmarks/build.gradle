@@ -47,6 +47,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-help-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-utils')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-search')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-theme')
 //    implementation 'com.google.guava:guava:31.1-jre'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group : 'junit', name: 'junit', version: '4.13.2'

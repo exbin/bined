@@ -41,11 +41,13 @@ import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.options.BinaryAppearanceOptions;
-import org.exbin.framework.bined.options.EditorOptions;
+import org.exbin.framework.bined.editor.options.EditorOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
+import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
@@ -152,6 +154,8 @@ public class BinedLauncherModule implements LauncherModule {
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
             BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
+            BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(preferences);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
             EditorProviderVariant editorProviderVariant = editorProvideType != null
@@ -228,7 +232,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedModule.registerViewNonprintablesMenuActions();
             binedInspectorModule.registerViewValuesPanelMenuActions();
             binedModule.registerToolsOptionsMenuActions();
-            binedModule.registerEditSelectionAction();
+            binedEditorModule.registerEditSelectionAction();
             binedModule.registerClipboardCodeActions();
             binedModule.registerEncodings();
             binedModule.registerGoToPosition();
@@ -239,8 +243,8 @@ public class BinedLauncherModule implements LauncherModule {
             binedSearchModule.registerEditFindPopupMenuActions();
             binedOperationModule.registerBlockEditPopupMenuActions();
 
-            binedModule.registerPropertiesMenu();
-            binedModule.registerReloadFileMenu();
+            binedEditorModule.registerPropertiesMenu();
+            binedEditorModule.registerReloadFileMenu();
             // TODO binedModule.registerPrintMenu();
             binedModule.registerViewModeMenu();
             binedModule.registerCodeTypeMenu();

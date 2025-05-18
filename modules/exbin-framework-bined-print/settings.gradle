@@ -1,0 +1,6 @@
+rootProject.name = 'exbin-framework-bined-print'
+
+if (rootProject.path == ':') {
+}
+
+apply from: '../bined-modules-settings.gradle'

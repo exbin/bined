@@ -14,6 +14,11 @@ if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined-objectdata'
     include ':modules:exbin-framework-bined-operation'
     include ':modules:exbin-framework-bined-search'
+    include ":modules:exbin-framework-bined-layout"
+    include ":modules:exbin-framework-bined-editor"
+    include ":modules:exbin-framework-bined-theme"
+    include ":modules:exbin-framework-bined-print"
+    include ":modules:exbin-framework-bined-legacy"
     include ':plugins:exbin-framework-bined-bookmarks'
     include ':plugins:exbin-framework-bined-compare'
     include ':plugins:exbin-framework-bined-macro'

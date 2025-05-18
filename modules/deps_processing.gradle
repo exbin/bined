@@ -12,7 +12,7 @@ def fetchModule(String gitProfile, gitRepo, subDir, moduleDir, targetDir) {
     def repoFile = new File("${targetDir}/${gitRepo}.zip")
     if (!repoFile.exists()) {
         def downloadUrl = "https://codeload.github.com/$gitProfile/$gitRepo/zip/refs/heads/master"
-        println "Downloading $gitProfile/$gitRepo"
+        println "Downloading $gitProfile/$gitRepo for $moduleDir"
         new URL(downloadUrl).withInputStream{ i -> repoFile.withOutputStream{ it << i }}
     }
 

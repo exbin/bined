@@ -14,6 +14,10 @@ include ":plugins:exbin-framework-bined-macro"
 include ":plugins:exbin-framework-bined-tool-content"
 include ":plugins:exbin-framework-bined-operation-bouncycastle"
 include ":plugins:exbin-framework-bined-help"
+include ":plugins:exbin-framework-bined-editor"
+include ":plugins:exbin-framework-bined-theme"
+include ":plugins:exbin-framework-bined-print"
+include ":modules:exbin-framework-bined-legacy"
 include ":apps:bined-editor"
 
 File placeholder = file("deps/.downloaded")

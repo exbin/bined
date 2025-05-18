@@ -17,13 +17,10 @@ package org.exbin.framework.bined;
 
 import org.exbin.framework.bined.action.ShowRowPositionAction;
 import org.exbin.framework.bined.action.ClipboardCodeActions;
-import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.action.CodeTypeActions;
 import org.exbin.framework.bined.action.ViewModeHandlerActions;
-import org.exbin.framework.bined.action.PrintAction;
 import org.exbin.framework.bined.action.ShowNonprintablesActions;
 import org.exbin.framework.bined.action.RowWrappingAction;
-import org.exbin.framework.bined.action.PropertiesAction;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.action.HexCharactersCaseActions;
 import org.exbin.framework.bined.action.PositionCodeTypeActions;
@@ -65,7 +62,6 @@ import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.options.BinaryEditorOptions;
-import org.exbin.framework.bined.options.EditorOptions;
 import org.exbin.framework.bined.service.BinaryAppearanceService;
 import org.exbin.framework.bined.service.impl.BinaryAppearanceServiceImpl;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -76,6 +72,7 @@ import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextService;
+import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.toolbar.api.GroupToolBarContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
@@ -89,8 +86,6 @@ import org.exbin.framework.toolbar.api.ToolBarContribution;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.menu.popup.api.ComponentPopupEventDispatcher;
-import org.exbin.framework.bined.action.EditSelectionAction;
-import org.exbin.framework.bined.action.ReloadFileAction;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -204,9 +199,10 @@ public class BinedModule implements Module {
 
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
             editorFile.onInitFromPreferences(new BinaryEditorOptions(preferencesModule.getAppPreferences()));
-            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
-            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
-            editorFile.setNewData(fileHandlingMode);
+//            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
+//            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
+//            editorFile.setNewData(fileHandlingMode);
+            editorFile.setNewData(FileHandlingMode.MEMORY);
 
             BinEdComponentPanel componentPanel = editorFile.getComponent();
             SectCodeArea codeArea = editorFile.getComponent().getCodeArea();
@@ -223,10 +219,11 @@ public class BinedModule implements Module {
     private EditorProvider createMultiEditorProvider() {
         if (editorProvider == null) {
             editorProvider = new BinaryMultiEditorProvider();
-            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
-            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
-            ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(fileHandlingMode);
+//            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+//            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
+//            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
+//            ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(fileHandlingMode);
+            ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(FileHandlingMode.MEMORY);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             ((BinaryMultiEditorProvider) editorProvider).setCodeAreaPopupMenuHandler(createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR));
 
@@ -311,7 +308,7 @@ public class BinedModule implements Module {
                         BinaryEditorOptions preferences = new BinaryEditorOptions(preferencesModule.getAppPreferences());
                         if (editorProvider.releaseFile(fileHandler)) {
                             fileHandler.switchFileHandlingMode(newHandlingMode);
-                            preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);
+                            // TODO preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);
                         }
                         ((BinEdEditorProvider) editorProvider).updateStatus();
                     }
@@ -361,13 +358,6 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new SeparationMenuContributionRule(SeparationMenuContributionRule.SeparationMode.AROUND));
         contribution = mgmt.registerMenuItem(createGoToPositionAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(EDIT_FIND_MENU_GROUP_ID));
-    }
-
-    public void registerEditSelection() {
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
     }
 
     @Nullable
@@ -479,22 +469,6 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public EditSelectionAction createEditSelectionAction() {
-        ensureSetup();
-        EditSelectionAction editSelectionAction = new EditSelectionAction();
-        editSelectionAction.setup(resourceBundle);
-        return editSelectionAction;
-    }
-
-    @Nonnull
-    public PropertiesAction createPropertiesAction() {
-        ensureSetup();
-        PropertiesAction propertiesAction = new PropertiesAction();
-        propertiesAction.setup(resourceBundle);
-        return propertiesAction;
-    }
-
-    @Nonnull
     public EncodingsHandler getEncodingsHandler() {
         if (encodingsHandler == null) {
             ensureSetup();
@@ -519,22 +493,6 @@ public class BinedModule implements Module {
         }
 
         return encodingsHandler;
-    }
-
-    @Nonnull
-    private ReloadFileAction createReloadFileAction() {
-        ensureSetup();
-        ReloadFileAction reloadFileAction = new ReloadFileAction();
-        reloadFileAction.setup(resourceBundle);
-        return reloadFileAction;
-    }
-
-    @Nonnull
-    public PrintAction createPrintAction() {
-        ensureSetup();
-        PrintAction printAction = new PrintAction();
-        printAction.setup(resourceBundle);
-        return printAction;
     }
 
     @Nonnull
@@ -642,30 +600,6 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(RelativeMenuContributionRule.NextToMode.AFTER, "pasteAction"));
     }
 
-    public void registerPropertiesMenu() {
-        createPropertiesAction();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createPropertiesAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
-    }
-
-    public void registerReloadFileMenu() {
-        createReloadFileAction();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createReloadFileAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
-    }
-
-    public void registerPrintMenu() {
-        createPrintAction();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createPrintAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
-    }
-
     public void registerViewModeMenu() {
         getViewModeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -755,14 +689,6 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
     }
 
-    public void registerEditSelectionAction() {
-        createEditSelectionAction();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-    }
-
     public void registerCodeAreaPopupMenu() {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -825,8 +751,8 @@ public class BinedModule implements Module {
 
         contribution = mgmt.registerMenuItem(clipboardActions.createSelectAllAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createEditSelectionAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
+        // contribution = mgmt.registerMenuItem(createEditSelectionAction());
+        // mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
 
         contribution = mgmt.registerMenuItem(createGoToPositionAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));

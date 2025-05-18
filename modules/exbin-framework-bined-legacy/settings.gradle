@@ -1,0 +1,9 @@
+rootProject.name = 'exbin-framework-bined-legacy'
+
+if (rootProject.path == ':') {
+    include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-editor'
+    include ':modules:exbin-framework-bined-theme'
+}
+
+apply from: '../bined-modules-settings.gradle'
