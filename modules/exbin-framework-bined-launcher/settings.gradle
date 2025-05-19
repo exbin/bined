@@ -6,6 +6,7 @@ if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined-objectdata'
     include ':modules:exbin-framework-bined-operation'
     include ':modules:exbin-framework-bined-search'
+    include ':modules:exbin-framework-bined-viewer'
     include ':modules:exbin-framework-bined-editor'
     include ':modules:exbin-framework-bined-theme'
     include ':modules:exbin-framework-bined-legacy'

@@ -47,7 +47,6 @@ import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -181,8 +180,9 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
             }
         });
 
-        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        fileHandler.onInitFromPreferences(new BinaryEditorOptions(preferencesModule.getAppPreferences()));
+        // TODO
+        // PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+        // fileHandler.onInitFromPreferences(new BinaryViewerOptions(preferencesModule.getAppPreferences()));
 
         attachFilePopupMenu(fileHandler);
 

@@ -49,7 +49,6 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.utils.ClipboardActionsHandler;
@@ -205,10 +204,6 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         ((UndoRedoWrapper) this.undoRedo).setUndoRedo(undoRedo);
         this.undoRedo.addChangeListener(this::notifyUndoChanged);
         notifyUndoChanged();
-    }
-
-    public void onInitFromPreferences(BinaryEditorOptions preferences) {
-        editorComponent.onInitFromPreferences(preferences);
     }
 
     @Override

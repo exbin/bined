@@ -15,31 +15,22 @@
  */
 package org.exbin.framework.bined;
 
-import org.exbin.framework.bined.action.ShowRowPositionAction;
 import org.exbin.framework.bined.action.ClipboardCodeActions;
-import org.exbin.framework.bined.action.CodeTypeActions;
-import org.exbin.framework.bined.action.ViewModeHandlerActions;
 import org.exbin.framework.bined.action.ShowNonprintablesActions;
-import org.exbin.framework.bined.action.RowWrappingAction;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.bined.action.HexCharactersCaseActions;
-import org.exbin.framework.bined.action.PositionCodeTypeActions;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -47,30 +38,23 @@ import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import org.exbin.bined.EditOperation;
 import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
-import org.exbin.framework.bined.action.ShowHeaderAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
-import org.exbin.framework.bined.service.BinaryAppearanceService;
-import org.exbin.framework.bined.service.impl.BinaryAppearanceServiceImpl;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
 import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.utils.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextService;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
@@ -80,7 +64,6 @@ import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.menu.api.PositionMenuContributionRule;
 import org.exbin.framework.toolbar.api.PositionToolBarContributionRule;
 import org.exbin.framework.menu.api.SeparationMenuContributionRule;
-import org.exbin.framework.toolbar.api.SeparationToolBarContributionRule;
 import org.exbin.framework.menu.api.RelativeMenuContributionRule;
 import org.exbin.framework.toolbar.api.ToolBarContribution;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
@@ -91,10 +74,6 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
-import org.exbin.framework.text.encoding.EncodingsHandler;
-import org.exbin.framework.text.encoding.options.TextEncodingOptions;
-import org.exbin.framework.text.encoding.service.TextEncodingService;
-import org.exbin.framework.text.font.action.TextFontAction;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.utils.ObjectUtils;
 import org.exbin.framework.utils.UiUtils;
@@ -122,30 +101,17 @@ public class BinedModule implements Module {
     public static final String CODE_AREA_POPUP_FIND_GROUP_ID = MODULE_ID + ".findPopupMenuGroup";
     public static final String CODE_AREA_POPUP_TOOLS_GROUP_ID = MODULE_ID + ".toolsPopupMenuGroup";
 
-    public static final String VIEW_MODE_SUBMENU_ID = MODULE_ID + ".viewModeSubMenu";
-    public static final String CODE_TYPE_SUBMENU_ID = MODULE_ID + ".codeTypeSubMenu";
-    public static final String POSITION_CODE_TYPE_SUBMENU_ID = MODULE_ID + ".positionCodeTypeSubMenu";
-    public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
-    public static final String POSITION_CODE_TYPE_POPUP_SUBMENU_ID = MODULE_ID + ".positionCodeTypePopupSubMenu";
-    public static final String SHOW_POPUP_SUBMENU_ID = MODULE_ID + ".showPopupSubMenu";
-
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
-
+    
     private java.util.ResourceBundle resourceBundle = null;
 
     private EditorProvider editorProvider;
     private BinEdFileManager fileManager = new BinEdFileManager();
-    private BinedOptionsManager binedOptionsManager;
 
     private ShowNonprintablesActions showNonprintablesActions;
-    private ViewModeHandlerActions viewModeActions;
-    private CodeTypeActions codeTypeActions;
-    private PositionCodeTypeActions positionCodeTypeActions;
-    private HexCharactersCaseActions hexCharactersCaseActions;
     private ClipboardCodeActions clipboardCodeActions;
-    private EncodingsHandler encodingsHandler;
     private PopupMenuVariant popupMenuVariant = PopupMenuVariant.NORMAL;
     private BasicCodeAreaZone popupMenuPositionZone = BasicCodeAreaZone.UNKNOWN;
 
@@ -198,7 +164,7 @@ public class BinedModule implements Module {
             fileManager.initFileHandler(editorFile);
 
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            editorFile.onInitFromPreferences(new BinaryEditorOptions(preferencesModule.getAppPreferences()));
+//            editorFile.onInitFromPreferences(new BinaryViewerOptions(preferencesModule.getAppPreferences()));
 //            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
 //            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
 //            editorFile.setNewData(fileHandlingMode);
@@ -248,103 +214,8 @@ public class BinedModule implements Module {
         }
     }
 
-    @Nonnull
-    public BinedOptionsManager getMainOptionsManager() {
-        if (binedOptionsManager == null) {
-            binedOptionsManager = new BinedOptionsManager();
-            binedOptionsManager.setEditorProvider(editorProvider);
-        }
-        return binedOptionsManager;
-    }
-
-    public void registerStatusBar() {
-        fileManager.registerStatusBar();
-        fileManager.setStatusControlHandler(new BinaryStatusPanel.StatusControlHandler() {
-            @Override
-            public void changeEditOperation(EditOperation editOperation) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    ((BinEdFileHandler) activeFile.get()).getCodeArea().setEditOperation(editOperation);
-                }
-            }
-
-            @Override
-            public void changeCursorPosition() {
-                GoToPositionAction action = new GoToPositionAction();
-                action.setCodeArea(getActiveCodeArea());
-                action.actionPerformed(null);
-            }
-
-            @Override
-            public void cycleNextEncoding() {
-                if (encodingsHandler != null) {
-                    encodingsHandler.cycleNextEncoding();
-                }
-            }
-
-            @Override
-            public void cyclePreviousEncoding() {
-                if (encodingsHandler != null) {
-                    encodingsHandler.cyclePreviousEncoding();
-                }
-            }
-
-            @Override
-            public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
-                if (encodingsHandler != null) {
-                    encodingsHandler.popupEncodingsMenu(mouseEvent);
-                }
-            }
-
-            @Override
-            public void changeMemoryMode(BinaryStatusApi.MemoryMode memoryMode) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    FileHandlingMode fileHandlingMode = fileHandler.getFileHandlingMode();
-                    FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
-                    if (newHandlingMode != fileHandlingMode) {
-                        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-                        BinaryEditorOptions preferences = new BinaryEditorOptions(preferencesModule.getAppPreferences());
-                        if (editorProvider.releaseFile(fileHandler)) {
-                            fileHandler.switchFileHandlingMode(newHandlingMode);
-                            // TODO preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);
-                        }
-                        ((BinEdEditorProvider) editorProvider).updateStatus();
-                    }
-                }
-            }
-        });
-
-        if (encodingsHandler != null) {
-            fileManager.updateTextEncodingStatus(encodingsHandler);
-        }
-    }
-
-    public void registerEncodings() {
-        getEncodingsHandler();
-        encodingsHandler.rebuildEncodings();
-
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(() -> encodingsHandler.getToolsEncodingMenu());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP_LAST));
-    }
-
-    public void registerOptionsPanels() {
-        BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
-        getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService);
-    }
-
     public void registerUndoHandler() {
         ((BinEdEditorProvider) editorProvider).registerUndoHandler();
-    }
-
-    public void registerWordWrapping() {
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createRowWrappingAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
     }
 
     public void registerGoToPosition() {
@@ -366,46 +237,6 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private AbstractAction createShowHeaderAction() {
-        ensureSetup();
-        ShowHeaderAction showHeaderAction = new ShowHeaderAction();
-        showHeaderAction.setup(resourceBundle);
-        showHeaderAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
-                return popupMenuVariant == PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-                menuItem.setSelected(Objects.requireNonNull(getActiveCodeArea().getLayoutProfile()).isShowHeader());
-            }
-        });
-        return showHeaderAction;
-    }
-
-    @Nonnull
-    private AbstractAction createShowRowPositionAction() {
-        ensureSetup();
-        ShowRowPositionAction showRowPositionAction = new ShowRowPositionAction();
-        showRowPositionAction.setup(resourceBundle);
-        showRowPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
-                return popupMenuVariant == PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-                menuItem.setSelected(Objects.requireNonNull(getActiveCodeArea().getLayoutProfile()).isShowRowPosition());
-            }
-        });
-        return showRowPositionAction;
-    }
-
-    @Nonnull
     private Action getOptionsAction() {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
 
@@ -424,14 +255,6 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public RowWrappingAction createRowWrappingAction() {
-        ensureSetup();
-        RowWrappingAction rowWrappingAction = new RowWrappingAction();
-        rowWrappingAction.setup(resourceBundle);
-        return rowWrappingAction;
-    }
-
-    @Nonnull
     public ShowNonprintablesActions getShowNonprintablesActions() {
         if (showNonprintablesActions == null) {
             ensureSetup();
@@ -440,14 +263,6 @@ public class BinedModule implements Module {
         }
 
         return showNonprintablesActions;
-    }
-
-    @Nonnull
-    public TextFontAction createCodeAreaFontAction() {
-        ensureSetup();
-        TextFontAction textFontAction = new TextFontAction();
-        textFontAction.setup(resourceBundle);
-        return textFontAction;
     }
 
     @Nonnull
@@ -469,77 +284,6 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    public EncodingsHandler getEncodingsHandler() {
-        if (encodingsHandler == null) {
-            ensureSetup();
-            encodingsHandler = new EncodingsHandler();
-            fileManager.updateTextEncodingStatus(encodingsHandler);
-            encodingsHandler.init();
-
-            encodingsHandler.setEncodingChangeListener(new TextEncodingService.EncodingChangeListener() {
-                @Override
-                public void encodingListChanged() {
-                    encodingsHandler.rebuildEncodings();
-                }
-
-                @Override
-                public void selectedEncodingChanged() {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        ((BinEdFileHandler) activeFile.get()).getTextEncodingHandler().setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
-                    }
-                }
-            });
-        }
-
-        return encodingsHandler;
-    }
-
-    @Nonnull
-    public ViewModeHandlerActions getViewModeActions() {
-        if (viewModeActions == null) {
-            ensureSetup();
-            viewModeActions = new ViewModeHandlerActions();
-            viewModeActions.setup(resourceBundle);
-        }
-
-        return viewModeActions;
-    }
-
-    @Nonnull
-    public CodeTypeActions getCodeTypeActions() {
-        if (codeTypeActions == null) {
-            ensureSetup();
-            codeTypeActions = new CodeTypeActions();
-            codeTypeActions.setup(resourceBundle);
-        }
-
-        return codeTypeActions;
-    }
-
-    @Nonnull
-    public PositionCodeTypeActions getPositionCodeTypeActions() {
-        if (positionCodeTypeActions == null) {
-            ensureSetup();
-            positionCodeTypeActions = new PositionCodeTypeActions();
-            positionCodeTypeActions.setup(resourceBundle);
-        }
-
-        return positionCodeTypeActions;
-    }
-
-    @Nonnull
-    public HexCharactersCaseActions getHexCharactersCaseActions() {
-        if (hexCharactersCaseActions == null) {
-            ensureSetup();
-            hexCharactersCaseActions = new HexCharactersCaseActions();
-            hexCharactersCaseActions.setup(resourceBundle);
-        }
-
-        return hexCharactersCaseActions;
-    }
-
-    @Nonnull
     public ClipboardCodeActions getClipboardCodeActions() {
         if (clipboardCodeActions == null) {
             ensureSetup();
@@ -548,17 +292,6 @@ public class BinedModule implements Module {
         }
 
         return clipboardCodeActions;
-    }
-
-    public void registerCodeTypeToolBarActions() {
-        getCodeTypeActions();
-        ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
-        ToolBarManagement mgmt = toolBarModule.getMainToolBarManagement(MODULE_ID);
-        ToolBarContribution contribution = mgmt.registerToolBarGroup(BINED_TOOL_BAR_GROUP_ID);
-        mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionToolBarContributionRule.PositionMode.MIDDLE));
-        mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationToolBarContributionRule.SeparationMode.ABOVE));
-        contribution = mgmt.registerToolBarItem(codeTypeActions.createCycleCodeTypesAction());
-        mgmt.registerToolBarRule(contribution, new GroupToolBarContributionRule(BINED_TOOL_BAR_GROUP_ID));
     }
 
     public void registerShowNonprintablesToolBarActions() {
@@ -581,13 +314,6 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(VIEW_NONPRINTABLES_MENU_GROUP_ID));
     }
 
-    public void registerToolsOptionsMenuActions() {
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createCodeAreaFontAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM_LAST));
-    }
-
     public void registerClipboardCodeActions() {
         getClipboardCodeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -598,95 +324,6 @@ public class BinedModule implements Module {
         contribution = mgmt.registerMenuItem(clipboardCodeActions.createPasteFromCodeAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
         mgmt.registerMenuRule(contribution, new RelativeMenuContributionRule(RelativeMenuContributionRule.NextToMode.AFTER, "pasteAction"));
-    }
-
-    public void registerViewModeMenu() {
-        getViewModeActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        Action viewSubMenuAction = new AbstractAction(resourceBundle.getString("viewModeSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("viewModeSubMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(VIEW_MODE_SUBMENU_ID, viewSubMenuAction);
-        mgmt = mgmt.getSubMenu(VIEW_MODE_SUBMENU_ID);
-        contribution = mgmt.registerMenuItem(viewModeActions.createDualModeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(viewModeActions.createCodeMatrixModeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(viewModeActions.createTextPreviewModeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-    }
-
-    public void registerLayoutMenu() {
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createShowHeaderAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
-        contribution = mgmt.registerMenuItem(createShowRowPositionAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
-    }
-
-    public void registerCodeTypeMenu() {
-        getCodeTypeActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        Action codeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("codeTypeSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("codeTypeSubMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
-        mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
-        contribution = mgmt.registerMenuItem(codeTypeActions.createBinaryCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(codeTypeActions.createOctalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(codeTypeActions.createDecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(codeTypeActions.createHexadecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-    }
-
-    public void registerPositionCodeTypeMenu() {
-        getPositionCodeTypeActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction);
-        mgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_SUBMENU_ID);
-        contribution = mgmt.registerMenuItem(positionCodeTypeActions.createOctalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(positionCodeTypeActions.createDecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(positionCodeTypeActions.createHexadecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-    }
-
-    public void registerHexCharactersCaseHandlerMenu() {
-        getHexCharactersCaseActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        Action hexCharsCaseSubMenuAction = new AbstractAction(resourceBundle.getString("hexCharsCaseSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
-        mgmt = mgmt.getSubMenu(HEX_CHARACTERS_CASE_SUBMENU_ID);
-        contribution = mgmt.registerMenuItem(hexCharactersCaseActions.createUpperHexCharsAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = mgmt.registerMenuItem(hexCharactersCaseActions.createLowerHexCharsAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
     }
 
     public void registerCodeAreaPopupMenu() {
@@ -715,27 +352,6 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.MIDDLE));
         mgmt.registerMenuRule(contribution, new SeparationMenuContributionRule(SeparationMenuContributionRule.SeparationMode.AROUND));
 
-        contribution = mgmt.registerMenuItem(createShowHeaderAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_VIEW_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createShowRowPositionAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_VIEW_GROUP_ID));
-
-        Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
-        contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, positionCodeTypeSubMenuAction);
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_VIEW_GROUP_ID));
-        MenuManagement subMgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_POPUP_SUBMENU_ID);
-        contribution = subMgmt.registerMenuItem(createOctalPositionTypeAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = subMgmt.registerMenuItem(createDecimalPositionTypeAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = subMgmt.registerMenuItem(createHexadecimalPositionTypeAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-
         contribution = mgmt.registerMenuItem(clipboardActions.createCutAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
         contribution = mgmt.registerMenuItem(clipboardActions.createCopyAction());
@@ -751,106 +367,12 @@ public class BinedModule implements Module {
 
         contribution = mgmt.registerMenuItem(clipboardActions.createSelectAllAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
-        // contribution = mgmt.registerMenuItem(createEditSelectionAction());
-        // mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
 
         contribution = mgmt.registerMenuItem(createGoToPositionAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
 
-        Action popupShowSubMenuAction = new AbstractAction(resourceBundle.getString("popupShowSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        popupShowSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("popupShowSubMenu.shortDescription"));
-        contribution = mgmt.registerMenuItem(SHOW_POPUP_SUBMENU_ID, popupShowSubMenuAction);
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_VIEW_GROUP_ID));
-        subMgmt = mgmt.getSubMenu(SHOW_POPUP_SUBMENU_ID);
-        contribution = subMgmt.registerMenuItem(createShowHeaderAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-        contribution = subMgmt.registerMenuItem(createShowRowPositionAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
-
         contribution = mgmt.registerMenuItem(getOptionsAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID));
-    }
-
-    @Nonnull
-    private Action createOctalPositionTypeAction() {
-        Action action = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getActiveCodeArea().setPositionCodeType(PositionCodeType.OCTAL);
-            }
-        };
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.OctalPositionCodeTypeAction.ACTION_ID);
-        action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-                menuItem.setSelected(getActiveCodeArea().getPositionCodeType() == PositionCodeType.OCTAL);
-            }
-        });
-
-        return action;
-    }
-
-    @Nonnull
-    private Action createDecimalPositionTypeAction() {
-        Action action = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getActiveCodeArea().setPositionCodeType(PositionCodeType.DECIMAL);
-            }
-        };
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.DecimalPositionCodeTypeAction.ACTION_ID);
-        action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-                menuItem.setSelected(getActiveCodeArea().getPositionCodeType() == PositionCodeType.DECIMAL);
-            }
-        });
-
-        return action;
-    }
-
-    @Nonnull
-    private Action createHexadecimalPositionTypeAction() {
-        Action action = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getActiveCodeArea().setPositionCodeType(PositionCodeType.HEXADECIMAL);
-            }
-        };
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(action, resourceBundle, PositionCodeTypeActions.HexadecimalPositionCodeTypeAction.ACTION_ID);
-        action.putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-        action.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-                menuItem.setSelected(getActiveCodeArea().getPositionCodeType() == PositionCodeType.HEXADECIMAL);
-            }
-        });
-
-        return action;
     }
 
     public void start() {
@@ -962,7 +484,7 @@ public class BinedModule implements Module {
     }
 
     public void loadFromPreferences(OptionsStorage preferences) {
-        encodingsHandler.loadFromPreferences(new TextEncodingOptions(preferences));
+        // TODO encodingsHandler.loadFromPreferences(new TextEncodingOptions(preferences));
         fileManager.loadFromPreferences(preferences);
     }
 

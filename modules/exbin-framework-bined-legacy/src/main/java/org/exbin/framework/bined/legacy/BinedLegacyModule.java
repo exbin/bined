@@ -34,7 +34,7 @@ import org.exbin.framework.bined.editor.options.EditorOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaThemeOptions;
-import org.exbin.framework.bined.options.CodeAreaOptions;
+import org.exbin.framework.bined.viewer.options.CodeAreaOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.text.encoding.options.TextEncodingOptions;

@@ -29,13 +29,13 @@ import org.exbin.bined.operation.undo.EmptyBinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.bined.BinEdCodeAreaAssessor;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
  * Binary editor component panel.
@@ -84,9 +84,9 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         }
     }
 
-    public void onInitFromPreferences(BinaryEditorOptions preferences) {
+    public void onInitFromPreferences(OptionsStorage options) {
         for (BinEdComponentExtension extension : componentExtensions) {
-            extension.onInitFromPreferences(preferences);
+            extension.onInitFromOptions(options);
         }
     }
 
@@ -180,7 +180,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
         void onCreate(BinEdComponentPanel componentPanel);
 
-        void onInitFromPreferences(BinaryEditorOptions preferences);
+        void onInitFromOptions(OptionsStorage options);
 
         void onDataChange();
 

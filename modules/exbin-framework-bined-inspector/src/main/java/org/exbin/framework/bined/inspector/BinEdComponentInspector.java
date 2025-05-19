@@ -27,7 +27,7 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -84,8 +84,8 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     }
 
     @Override
-    public void onInitFromPreferences(BinaryEditorOptions preferences) {
-        DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(preferences.getPreferences());
+    public void onInitFromOptions(OptionsStorage options) {
+        DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(options);
         setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
         boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
         if (useDefaultFont) {

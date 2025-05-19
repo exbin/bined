@@ -151,7 +151,7 @@ public class ColorTemplatePanel extends javax.swing.JPanel implements ProfileLis
 
     private void loadFromOptions() {
         CodeAreaColorProfileOptions options = new CodeAreaColorProfileOptions(new DefaultOptionsStorage());
-        try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/resources/templates/colorTemplates.xml")) {
+        try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/colorTemplates.xml")) {
             java.util.prefs.Preferences filePreferences = new StreamPreferences(stream);
             options.loadFromPreferences(new CodeAreaColorOptions(new PreferencesWrapper(filePreferences)));
             List<ColorProfile> profiles = new ArrayList<>();

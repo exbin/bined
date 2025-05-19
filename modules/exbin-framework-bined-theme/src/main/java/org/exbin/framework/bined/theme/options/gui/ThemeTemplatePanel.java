@@ -155,7 +155,7 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
 
     private void loadFromOptions() {
         CodeAreaThemeProfileOptions options = new CodeAreaThemeProfileOptions(new DefaultOptionsStorage());
-        try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/resources/templates/themeTemplates.xml")) {
+        try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/themeTemplates.xml")) {
             java.util.prefs.Preferences filePreferences = new StreamPreferences(stream);
             options.loadFromPreferences(new CodeAreaThemeOptions(new PreferencesWrapper(filePreferences)));
             List<ThemeProfile> profiles = new ArrayList<>();

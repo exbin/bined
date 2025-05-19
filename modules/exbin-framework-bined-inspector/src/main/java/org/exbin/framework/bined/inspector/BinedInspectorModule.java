@@ -37,6 +37,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.inspector.options.page.DataInspectorOptionsPage;
+import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -126,7 +127,7 @@ public class BinedInspectorModule implements Module {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 BinedModule.PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
-                boolean inShowSubmenu = BinedModule.SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
+                boolean inShowSubmenu = BinedViewerModule.SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
                 return popupMenuVariant == BinedModule.PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
             }
 
@@ -153,7 +154,7 @@ public class BinedInspectorModule implements Module {
         MenuContribution contribution = mgmt.registerMenuItem(createShowParsingPanelAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
-        MenuManagement subMgmt = mgmt.getSubMenu(BinedModule.SHOW_POPUP_SUBMENU_ID);
+        MenuManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
         contribution = subMgmt.registerMenuItem(createShowParsingPanelAction());
         subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
     }

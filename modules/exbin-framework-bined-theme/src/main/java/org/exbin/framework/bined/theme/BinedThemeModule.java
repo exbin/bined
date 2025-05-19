@@ -15,9 +15,6 @@
  */
 package org.exbin.framework.bined.theme;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -27,11 +24,9 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
@@ -46,8 +41,7 @@ public class BinedThemeModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-    private BinedOptionsManager binedOptionsManager;
+    private BinedThemeManager binedThemeManager;
 
     public BinedThemeModule() {
     }
@@ -61,49 +55,30 @@ public class BinedThemeModule implements Module {
         return resourceBundle;
     }
 
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }
     }
 
     @Nonnull
-    public BinedOptionsManager getMainOptionsManager() {
-        if (binedOptionsManager == null) {
-            binedOptionsManager = new BinedOptionsManager();
-            binedOptionsManager.setEditorProvider(editorProvider);
+    public BinedThemeManager getThemeManager() {
+        if (binedThemeManager == null) {
+            binedThemeManager = new BinedThemeManager();
+            BinedModule binedModule = App.getModule(BinedModule.class);
+            binedThemeManager.setEditorProvider(binedModule.getEditorProvider());
         }
-        return binedOptionsManager;
+        return binedThemeManager;
     }
 
     public void registerOptionsPanels() {
-        // TODO
-    }
-
-    public void start() {
-        if (editorProvider instanceof MultiEditorProvider) {
-            editorProvider.newFile();
-        }
-    }
-
-    public void startWithFile(String filePath) {
-        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-        URI uri = new File(filePath).toURI();
-        fileModule.loadFromFile(uri);
+        getThemeManager().registerOptionsPanels();
     }
 
     @Nonnull
     public SectCodeArea getActiveCodeArea() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+        BinedModule binedModule = App.getModule(BinedModule.class);
+        Optional<FileHandler> activeFile = binedModule.getEditorProvider().getActiveFile();
         if (activeFile.isPresent()) {
             return ((BinEdFileHandler) activeFile.get()).getComponent().getCodeArea();
         }

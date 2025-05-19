@@ -22,9 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
-import org.exbin.framework.bined.options.CodeAreaOptions;
 
 /**
  * Component for BinEd editor instances.
@@ -37,7 +35,6 @@ public class BinEdEditorComponent {
     private BinEdComponentPanel componentPanel = createComponentPanel();
 
     public BinEdEditorComponent() {
-        SectCodeArea codeArea = componentPanel.getCodeArea();
     }
 
     @Nonnull
@@ -64,19 +61,19 @@ public class BinEdEditorComponent {
         componentPanel.setUndoRedo(undoHandler);
     }
 
-    public void onInitFromPreferences(BinaryEditorOptions preferences) {
-        componentPanel.onInitFromPreferences(preferences);
-
-        SectCodeArea codeArea = componentPanel.getCodeArea();
-        CodeAreaOptions.applyToCodeArea(preferences.getCodeAreaOptions(), codeArea);
-
         // TODO
+//    public void onInitFromPreferences(BinaryViewerOptions preferences) {
+//        componentPanel.onInitFromPreferences(preferences);
+//
+//        SectCodeArea codeArea = componentPanel.getCodeArea();
+//        CodeAreaOptions.applyToCodeArea(preferences.getCodeAreaOptions(), codeArea);
+//
 //        EditorOptions editorOptions = preferences.getEditorOptions();
 //        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
 //            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
 //            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
 //        }
-    }
+//    }
 
     @Nonnull
     public BinaryData getContentData() {

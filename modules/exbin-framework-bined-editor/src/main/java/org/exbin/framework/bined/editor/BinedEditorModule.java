@@ -31,7 +31,6 @@ import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.BinEdEditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
@@ -44,7 +43,6 @@ import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
 import org.exbin.framework.bined.editor.options.page.CodeAreaEditingOptionsPage;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
-import org.exbin.framework.bined.options.page.CodeAreaOptionsPage;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.api.GroupOptionsPageRule;
@@ -91,15 +89,6 @@ public class BinedEditorModule implements Module {
         OptionsGroup binaryGroup = optionsModule.createOptionsGroup("binaryEditor", resourceBundle);
         optionsPageManagement.registerGroup(binaryGroup);
         optionsPageManagement.registerGroupRule(binaryGroup, new ParentOptionsGroupRule("editor"));
-
-        OptionsGroup binaryCodeAreaGroup = optionsModule.createOptionsGroup("binaryEditorCodeArea", resourceBundle);
-        optionsPageManagement.registerGroup(binaryCodeAreaGroup);
-        optionsPageManagement.registerGroupRule(binaryCodeAreaGroup, new ParentOptionsGroupRule(binaryGroup));
-        CodeAreaOptionsPage codeAreaOptionsPage = new CodeAreaOptionsPage();
-        codeAreaOptionsPage.setEditorProvider(editorProvider);
-        codeAreaOptionsPage.setResourceBundle(resourceBundle);
-        optionsPageManagement.registerPage(codeAreaOptionsPage);
-        optionsPageManagement.registerPageRule(codeAreaOptionsPage, new GroupOptionsPageRule(binaryCodeAreaGroup));
 
         OptionsGroup binaryCodeAreaEditingGroup = optionsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
         optionsPageManagement.registerGroup(binaryCodeAreaEditingGroup);
@@ -199,16 +188,14 @@ public class BinedEditorModule implements Module {
     }
 
     public void registerCodeAreaPopupMenu() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        menuModule.registerMenu(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-
-        MenuContribution contribution = mgmt.registerMenuGroup(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID);
-        contribution = mgmt.registerMenuItem(createEditSelectionAction());
+        MenuContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_SELECTION_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
     }
 
+    // TODO
     /* public void onInitFromPreferences(BinaryEditorOptions preferences) {
         componentPanel.onInitFromPreferences(preferences);
 

@@ -44,10 +44,11 @@ import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
-import org.exbin.framework.bined.options.BinaryAppearanceOptions;
+import org.exbin.framework.bined.viewer.options.BinaryAppearanceOptions;
 import org.exbin.framework.bined.editor.options.EditorOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
+import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
@@ -154,6 +155,7 @@ public class BinedLauncherModule implements LauncherModule {
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
             BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(preferences);
@@ -226,31 +228,33 @@ public class BinedLauncherModule implements LauncherModule {
 
             optionsModule.registerMenuAction();
 
-            binedModule.registerCodeTypeToolBarActions();
+            binedViewerModule.registerCodeTypeToolBarActions();
             binedModule.registerShowNonprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
             binedModule.registerViewNonprintablesMenuActions();
             binedInspectorModule.registerViewValuesPanelMenuActions();
-            binedModule.registerToolsOptionsMenuActions();
+            binedViewerModule.registerToolsOptionsMenuActions();
             binedEditorModule.registerEditSelectionAction();
             binedModule.registerClipboardCodeActions();
-            binedModule.registerEncodings();
+            binedViewerModule.registerEncodings();
             binedModule.registerGoToPosition();
             binedSearchModule.registerEditFindMenuActions();
             binedOperationModule.registerBlockEditActions();
 
             binedModule.registerCodeAreaPopupMenu();
+            binedViewerModule.registerCodeAreaPopupMenu();
+            binedEditorModule.registerCodeAreaPopupMenu();
             binedSearchModule.registerEditFindPopupMenuActions();
             binedOperationModule.registerBlockEditPopupMenuActions();
 
             binedEditorModule.registerPropertiesMenu();
             binedEditorModule.registerReloadFileMenu();
             // TODO binedModule.registerPrintMenu();
-            binedModule.registerViewModeMenu();
-            binedModule.registerCodeTypeMenu();
-            binedModule.registerPositionCodeTypeMenu();
-            binedModule.registerHexCharactersCaseHandlerMenu();
-            binedModule.registerLayoutMenu();
+            binedViewerModule.registerViewModeMenu();
+            binedViewerModule.registerCodeTypeMenu();
+            binedViewerModule.registerPositionCodeTypeMenu();
+            binedViewerModule.registerHexCharactersCaseHandlerMenu();
+            binedViewerModule.registerLayoutMenu();
 
             final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
@@ -261,14 +265,15 @@ public class BinedLauncherModule implements LauncherModule {
             actionManagerModule.registerOptionsPanels();
             fileModule.registerOptionsPanels();
             editorModule.registerOptionsPanels();
-            binedModule.registerOptionsPanels();
+            binedViewerModule.registerOptionsPanels();
+            binedEditorModule.registerOptionsPanels();
+            binedThemeModule.registerOptionsPanels();
             binedInspectorModule.registerOptionsPanels();
             if (!demoMode) {
                 updateModule.registerOptionsPanels();
             }
 
-            binedModule.registerStatusBar();
-            binedModule.getBinaryStatusPanel();
+            binedViewerModule.registerStatusBar();
             binedModule.registerUndoHandler();
 
             binedModule.loadFromPreferences(preferences);

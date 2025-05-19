@@ -22,10 +22,10 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.bined.options.BinaryEditorOptions;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
  * Bined component search.
@@ -66,7 +66,7 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
     }
 
     @Override
-    public void onInitFromPreferences(BinaryEditorOptions preferences) {
+    public void onInitFromOptions(OptionsStorage options) {
     }
 
     @Override

@@ -54,6 +54,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-text-font')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-text-encoding')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-viewer')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-editor')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-theme')
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'

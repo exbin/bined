@@ -151,7 +151,7 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
 
     private void loadFromOptions() {
         CodeAreaLayoutProfileOptions options = new CodeAreaLayoutProfileOptions(new DefaultOptionsStorage());
-        try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/resources/templates/layoutTemplates.xml")) {
+        try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/layoutTemplates.xml")) {
             java.util.prefs.Preferences filePreferences = new StreamPreferences(stream);
 
             options.loadFromPreferences(new CodeAreaLayoutOptions(new PreferencesWrapper(filePreferences)));

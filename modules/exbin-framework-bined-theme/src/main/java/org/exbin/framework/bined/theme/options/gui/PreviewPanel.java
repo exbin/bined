@@ -91,7 +91,7 @@ public class PreviewPanel extends javax.swing.JPanel {
         }
         ByteArrayEditableData exampleData = new ByteArrayEditableData();
         try {
-            exampleData.loadFromStream(getClass().getResourceAsStream("/org/exbin/framework/bined/resources/preview/lorem.txt"));
+            exampleData.loadFromStream(getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/preview/lorem.txt"));
         } catch (IOException ex) {
             Logger.getLogger(PreviewPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
