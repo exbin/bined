@@ -15,17 +15,22 @@
  */
 package org.exbin.framework.bined.theme;
 
-import java.io.File;
-import java.net.URI;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.theme.options.BinaryEditorOptions;
+import org.exbin.framework.bined.theme.options.CodeAreaColorOptions;
+import org.exbin.framework.bined.theme.options.CodeAreaLayoutOptions;
+import org.exbin.framework.bined.theme.options.CodeAreaThemeOptions;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.theme.options.page.CodeAreaColorOptionsPage;
 import org.exbin.framework.bined.theme.options.page.CodeAreaLayoutOptionsPage;
 import org.exbin.framework.bined.theme.options.page.CodeAreaThemeOptionsPage;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.options.api.GroupOptionsPageRule;
 import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsPageManagement;
@@ -45,6 +50,10 @@ public class BinedOptionsManager {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOptionsManager.class);
 
     private EditorProvider editorProvider;
+
+    private SectionCodeAreaLayoutProfile defaultLayoutProfile;
+    private SectionCodeAreaThemeProfile defaultThemeProfile;
+    private CodeAreaColorsProfile defaultColorProfile;
 
     private CodeAreaThemeOptionsPage themeProfilesOptionsPage;
     private CodeAreaLayoutOptionsPage layoutProfilesOptionsPage;
@@ -98,9 +107,35 @@ public class BinedOptionsManager {
         optionsPageManagement.registerPageRule(colorProfilesOptionsPage, new VisualOptionsPageRule(new VisualOptionsPageParams(true)));
     }
 
-    public void startWithFile(String filePath) {
-        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-        URI uri = new File(filePath).toURI();
-        fileModule.loadFromFile(uri);
+    public void loadDefaults(SectCodeArea codeArea) {
+        defaultLayoutProfile = codeArea.getLayoutProfile();
+        defaultThemeProfile = codeArea.getThemeProfile();
+        defaultColorProfile = codeArea.getColorsProfile();
+    }
+
+    public void applyProfileFromPreferences(SectCodeArea codeArea, BinaryEditorOptions preferences) {
+        CodeAreaLayoutOptions layoutOptions = preferences.getLayoutOptions();
+        int selectedLayoutProfile = layoutOptions.getSelectedProfile();
+        if (selectedLayoutProfile >= 0) {
+            codeArea.setLayoutProfile(layoutOptions.getLayoutProfile(selectedLayoutProfile));
+        } else {
+            codeArea.setLayoutProfile(defaultLayoutProfile);
+        }
+
+        CodeAreaThemeOptions themeOptions = preferences.getThemeOptions();
+        int selectedThemeProfile = themeOptions.getSelectedProfile();
+        if (selectedThemeProfile >= 0) {
+            codeArea.setThemeProfile(themeOptions.getThemeProfile(selectedThemeProfile));
+        } else {
+            codeArea.setThemeProfile(defaultThemeProfile);
+        }
+
+        CodeAreaColorOptions colorOptions = preferences.getColorOptions();
+        int selectedColorProfile = colorOptions.getSelectedProfile();
+        if (selectedColorProfile >= 0) {
+            codeArea.setColorsProfile(colorOptions.getColorsProfile(selectedColorProfile));
+        } else {
+            codeArea.setColorsProfile(defaultColorProfile);
+        }
     }
 }

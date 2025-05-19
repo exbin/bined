@@ -4,7 +4,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
-    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel"/>
+    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel"/>
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="true"/>
@@ -108,7 +108,7 @@
         <Component class="javax.swing.JButton" name="addButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="addButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="addButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>
@@ -118,7 +118,7 @@
         <Component class="javax.swing.JButton" name="fromTemplateButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="fromTemplateButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="fromTemplateButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>
@@ -128,7 +128,7 @@
         <Component class="javax.swing.JButton" name="editButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="editButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="editButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -139,7 +139,7 @@
         <Component class="javax.swing.JButton" name="copyButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="copyButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="copyButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -150,7 +150,7 @@
         <Component class="javax.swing.JButton" name="upButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="upButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="upButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -161,7 +161,7 @@
         <Component class="javax.swing.JButton" name="downButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="downButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="downButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -172,7 +172,7 @@
         <Component class="javax.swing.JButton" name="selectAllButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="selectAllButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="selectAllButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -183,7 +183,7 @@
         <Component class="javax.swing.JButton" name="removeButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="removeButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="removeButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -194,7 +194,7 @@
         <Component class="javax.swing.JButton" name="hideButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ThemeProfilesPanel.properties" key="hideButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ThemeProfilesPanel.properties" key="hideButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>

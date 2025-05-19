@@ -17,8 +17,6 @@ package org.exbin.framework.bined.theme.options;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.text.encoding.options.TextEncodingOptions;
-import org.exbin.framework.text.font.options.TextFontOptions;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
@@ -29,13 +27,8 @@ import org.exbin.framework.preferences.api.OptionsStorage;
 @ParametersAreNonnullByDefault
 public class BinaryEditorOptions {
 
-    public static final String ENCODING_UTF8 = "UTF-8";
-
     private final OptionsStorage storage;
 
-    private final CodeAreaOptions codeAreaOptions;
-    private final TextEncodingOptions encodingOptions;
-    private final TextFontOptions fontOptions;
     private final CodeAreaLayoutOptions layoutOptions;
     private final CodeAreaThemeOptions themeOptions;
     private final CodeAreaColorOptions colorOptions;
@@ -43,9 +36,6 @@ public class BinaryEditorOptions {
     public BinaryEditorOptions(OptionsStorage storage) {
         this.storage = storage;
 
-        codeAreaOptions = new CodeAreaOptions(storage);
-        encodingOptions = new TextEncodingOptions(storage);
-        fontOptions = new TextFontOptions(storage);
         layoutOptions = new CodeAreaLayoutOptions(storage);
         themeOptions = new CodeAreaThemeOptions(storage);
         colorOptions = new CodeAreaColorOptions(storage);
@@ -54,21 +44,6 @@ public class BinaryEditorOptions {
     @Nonnull
     public OptionsStorage getPreferences() {
         return storage;
-    }
-
-    @Nonnull
-    public CodeAreaOptions getCodeAreaOptions() {
-        return codeAreaOptions;
-    }
-
-    @Nonnull
-    public TextEncodingOptions getEncodingOptions() {
-        return encodingOptions;
-    }
-
-    @Nonnull
-    public TextFontOptions getFontOptions() {
-        return fontOptions;
     }
 
     @Nonnull

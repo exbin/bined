@@ -112,7 +112,7 @@
         <Component class="javax.swing.JButton" name="addButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="addButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="addButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>
@@ -122,7 +122,7 @@
         <Component class="javax.swing.JButton" name="fromTemplateButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="fromTemplateButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="fromTemplateButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>
@@ -132,7 +132,7 @@
         <Component class="javax.swing.JButton" name="editButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="editButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="editButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -143,7 +143,7 @@
         <Component class="javax.swing.JButton" name="copyButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="copyButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="copyButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -154,7 +154,7 @@
         <Component class="javax.swing.JButton" name="upButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="upButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="upButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -165,7 +165,7 @@
         <Component class="javax.swing.JButton" name="downButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="downButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="downButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -176,7 +176,7 @@
         <Component class="javax.swing.JButton" name="selectAllButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="selectAllButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="selectAllButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -187,7 +187,7 @@
         <Component class="javax.swing.JButton" name="removeButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="removeButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="removeButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -198,7 +198,7 @@
         <Component class="javax.swing.JButton" name="hideButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="org/exbin/framework/bined/options/gui/resources/ColorProfilesPanel.properties" key="hideButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="org/exbin/framework/bined/theme/options/gui/resources/ColorProfilesPanel.properties" key="hideButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
