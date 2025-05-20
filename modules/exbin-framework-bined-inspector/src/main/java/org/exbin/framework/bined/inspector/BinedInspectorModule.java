@@ -139,7 +139,7 @@ public class BinedInspectorModule implements Module {
         return showParsingPanelAction;
     }
 
-    public void registerViewValuesPanelMenuActions() {
+    public void registerShowParsingPanelMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         MenuContribution contribution = mgmt.registerMenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID);
@@ -148,7 +148,7 @@ public class BinedInspectorModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 
-    public void registerViewValuesPanelPopupMenuActions() {
+    public void registerShowParsingPanelPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         MenuContribution contribution = mgmt.registerMenuItem(createShowParsingPanelAction());

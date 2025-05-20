@@ -76,10 +76,10 @@ public class ShowParsingPanelAction extends AbstractAction {
 
         BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
         BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
-        setShowValuesPanel(!componentExtension.isShowParsingPanel());
+        setShowParsingPanel(!componentExtension.isShowParsingPanel());
     }
 
-    public void setShowValuesPanel(boolean show) {
+    public void setShowParsingPanel(boolean show) {
         if (!(fileHandler instanceof BinEdFileHandler)) {
             return;
         }
