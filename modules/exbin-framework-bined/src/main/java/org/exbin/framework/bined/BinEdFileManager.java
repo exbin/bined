@@ -15,18 +15,17 @@
  */
 package org.exbin.framework.bined;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
-import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -34,10 +33,8 @@ import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.bined.options.StatusOptions;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.text.encoding.EncodingsHandler;
-import org.exbin.framework.text.font.options.TextFontOptions;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
 
 /**
  * File manager for binary editor.
@@ -50,7 +47,7 @@ public class BinEdFileManager {
     private EditorProvider editorProvider;
 
     private BinaryStatusPanel binaryStatusPanel;
-    private final SegmentsRepository segmentsRepository = new SegmentsRepository();
+    private final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
     private final List<BinEdCodeAreaAssessor.PositionColorModifier> painterPositionColorModifiers = new ArrayList<>();
     private final List<BinEdCodeAreaAssessor.PositionColorModifier> painterPriorityPositionColorModifiers = new ArrayList<>();
@@ -78,7 +75,7 @@ public class BinEdFileManager {
                 BinEdComponentPanel.BinEdComponentExtension extension = componentExtension.get();
                 extension.onCreate(componentPanel);
                 componentPanel.addComponentExtension(extension);
-            };
+            }
         }
 
         BinEdCodeAreaAssessor painter = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) componentPanel.getCodeArea().getPainter(), BinEdCodeAreaAssessor.class);
