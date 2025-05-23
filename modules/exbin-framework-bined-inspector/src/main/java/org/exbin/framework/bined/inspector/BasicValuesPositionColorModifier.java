@@ -16,10 +16,13 @@
 package org.exbin.framework.bined.inspector;
 
 import java.awt.Color;
+import java.util.Optional;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
-import org.exbin.framework.bined.BinEdCodeAreaAssessor;
+import org.exbin.bined.swing.CodeAreaColorAssessor;
+import org.exbin.bined.swing.CodeAreaPaintState;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -28,14 +31,19 @@ import org.exbin.framework.utils.UiUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BasicValuesPositionColorModifier implements BinEdCodeAreaAssessor.PositionColorModifier {
+public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {
 
-    private long position = -1;
-    private long length;
-    private Color color;
+    protected CodeAreaColorAssessor parentAssessor;
+    protected long position = -1;
+    protected long length;
+    protected Color color;
 
     public BasicValuesPositionColorModifier() {
-        resetColors();
+        this(null);
+    }
+
+    public BasicValuesPositionColorModifier(@Nullable CodeAreaColorAssessor parentAssessor) {
+        this.parentAssessor = parentAssessor;
     }
 
     @Nullable
@@ -57,8 +65,14 @@ public class BasicValuesPositionColorModifier implements BinEdCodeAreaAssessor.P
         return null;
     }
 
+    @Nonnull
     @Override
-    public void resetColors() {
+    public Optional<CodeAreaColorAssessor> getParentColorAssessor() {
+        return Optional.ofNullable(parentAssessor);
+    }
+
+    @Override
+    public void startPaint(CodeAreaPaintState codeAreaPaintState) {
         color = UiUtils.isDarkUI() ? Color.YELLOW.darker().darker() : Color.YELLOW;
     }
 
@@ -76,5 +90,5 @@ public class BasicValuesPositionColorModifier implements BinEdCodeAreaAssessor.P
     public void setColor(Color color) {
         this.color = color;
     }
-    */
+     */
 }

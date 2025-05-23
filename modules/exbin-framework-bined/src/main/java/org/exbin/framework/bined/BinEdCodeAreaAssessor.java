@@ -38,11 +38,11 @@ import org.exbin.bined.swing.CodeAreaPaintState;
 @ParametersAreNonnullByDefault
 public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCharAssessor {
 
-    private final List<PositionColorModifier> priorityColorModifiers = new ArrayList<>();
-    private final List<PositionColorModifier> colorModifiers = new ArrayList<>();
+    protected final List<CodeAreaColorAssessor> priorityColorModifiers = new ArrayList<>();
+    protected final List<CodeAreaColorAssessor> colorModifiers = new ArrayList<>();
 
-    private final CodeAreaColorAssessor parentColorAssessor;
-    private final CodeAreaCharAssessor parentCharAssessor;
+    protected final CodeAreaColorAssessor parentColorAssessor;
+    protected final CodeAreaCharAssessor parentCharAssessor;
 
     public BinEdCodeAreaAssessor(@Nullable CodeAreaColorAssessor parentColorAssessor, @Nullable CodeAreaCharAssessor parentCharAssessor) {
         NonAsciiCodeAreaColorAssessor nonAsciiCodeAreaColorAssessor = new NonAsciiCodeAreaColorAssessor(parentColorAssessor);
@@ -52,30 +52,30 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
         this.parentCharAssessor = nonprintablesCodeAreaAssessor;
     }
 
-    public void addColorModifier(PositionColorModifier colorModifier) {
+    public void addColorModifier(CodeAreaColorAssessor colorModifier) {
         colorModifiers.add(colorModifier);
     }
 
-    public void removeColorModifier(PositionColorModifier colorModifier) {
+    public void removeColorModifier(CodeAreaColorAssessor colorModifier) {
         colorModifiers.remove(colorModifier);
     }
 
-    public void addPriorityColorModifier(PositionColorModifier colorModifier) {
+    public void addPriorityColorModifier(CodeAreaColorAssessor colorModifier) {
         priorityColorModifiers.add(colorModifier);
     }
 
-    public void removePriorityColorModifier(PositionColorModifier colorModifier) {
+    public void removePriorityColorModifier(CodeAreaColorAssessor colorModifier) {
         priorityColorModifiers.remove(colorModifier);
     }
 
     @Override
     public void startPaint(CodeAreaPaintState codeAreaPaintState) {
-        for (PositionColorModifier colorModifier : priorityColorModifiers) {
-            colorModifier.resetColors();
+        for (CodeAreaColorAssessor colorModifier : priorityColorModifiers) {
+            colorModifier.startPaint(codeAreaPaintState);
         }
 
-        for (PositionColorModifier colorModifier : colorModifiers) {
-            colorModifier.resetColors();
+        for (CodeAreaColorAssessor colorModifier : colorModifiers) {
+            colorModifier.startPaint(codeAreaPaintState);
         }
 
         if (parentColorAssessor != null) {
@@ -86,7 +86,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
     @Nullable
     @Override
     public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
-        for (PositionColorModifier colorModifier : priorityColorModifiers) {
+        for (CodeAreaColorAssessor colorModifier : priorityColorModifiers) {
             Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
             if (positionBackgroundColor != null) {
                 return positionBackgroundColor;
@@ -94,7 +94,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
         }
 
         if (!inSelection) {
-            for (PositionColorModifier colorModifier : colorModifiers) {
+            for (CodeAreaColorAssessor colorModifier : colorModifiers) {
                 Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
                 if (positionBackgroundColor != null) {
                     return positionBackgroundColor;
@@ -124,7 +124,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
     @Nullable
     @Override
     public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
-        for (PositionColorModifier colorModifier : priorityColorModifiers) {
+        for (CodeAreaColorAssessor colorModifier : priorityColorModifiers) {
             Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
             if (positionTextColor != null) {
                 return positionTextColor;
@@ -132,7 +132,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
         }
 
         if (!inSelection) {
-            for (PositionColorModifier colorModifier : colorModifiers) {
+            for (CodeAreaColorAssessor colorModifier : colorModifiers) {
                 Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
                 if (positionTextColor != null) {
                     return positionTextColor;
@@ -167,17 +167,5 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
     @Override
     public Optional<CodeAreaColorAssessor> getParentColorAssessor() {
         return Optional.ofNullable(parentColorAssessor);
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface PositionColorModifier {
-
-        @Nullable
-        Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection);
-
-        @Nullable
-        Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection);
-
-        void resetColors();
     }
 }

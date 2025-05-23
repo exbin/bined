@@ -17,10 +17,13 @@ package org.exbin.framework.bined.bookmarks;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Optional;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaSection;
-import org.exbin.framework.bined.BinEdCodeAreaAssessor;
+import org.exbin.bined.swing.CodeAreaColorAssessor;
+import org.exbin.bined.swing.CodeAreaPaintState;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 
 /**
@@ -29,13 +32,19 @@ import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BookmarksPositionColorModifier implements BinEdCodeAreaAssessor.PositionColorModifier {
+public class BookmarksPositionColorModifier implements CodeAreaColorAssessor {
 
-    private final List<BookmarkRecord> records;
-    private final ColorCache colorCache = new ColorCache();
+    protected CodeAreaColorAssessor parentAssessor;
+    protected final List<BookmarkRecord> records;
+    protected final ColorCache colorCache = new ColorCache();
 
     public BookmarksPositionColorModifier(List<BookmarkRecord> records) {
+        this(records, null);
+    }
+
+    public BookmarksPositionColorModifier(List<BookmarkRecord> records, @Nullable CodeAreaColorAssessor parentAssessor) {
         this.records = records;
+        this.parentAssessor = parentAssessor;
     }
 
     @Nullable
@@ -72,8 +81,14 @@ public class BookmarksPositionColorModifier implements BinEdCodeAreaAssessor.Pos
         return null;
     }
 
+    @Nonnull
     @Override
-    public void resetColors() {
+    public Optional<CodeAreaColorAssessor> getParentColorAssessor() {
+        return Optional.ofNullable(parentAssessor);
+    }
+
+    @Override
+    public void startPaint(CodeAreaPaintState codeAreaPaintState) {
         // do nothing, maybe invert colors?
     }
 
