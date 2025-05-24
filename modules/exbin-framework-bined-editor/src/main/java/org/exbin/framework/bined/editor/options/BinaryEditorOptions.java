@@ -31,7 +31,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class EditorOptions implements OptionsData {
+public class BinaryEditorOptions implements OptionsData {
 
     public static final String KEY_FILE_HANDLING_MODE = "fileHandlingMode";
     public static final String KEY_ENTER_KEY_HANDLING_MODE = "enterKeyHandlingMode";
@@ -39,7 +39,7 @@ public class EditorOptions implements OptionsData {
 
     private final OptionsStorage storage;
 
-    public EditorOptions(OptionsStorage optionsStorage) {
+    public BinaryEditorOptions(OptionsStorage optionsStorage) {
         this.storage = optionsStorage;
     }
 
@@ -49,7 +49,7 @@ public class EditorOptions implements OptionsData {
         try {
             return FileHandlingMode.valueOf(storage.get(KEY_FILE_HANDLING_MODE, defaultFileHandlingMode.name()));
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(EditorOptions.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BinaryEditorOptions.class.getName()).log(Level.SEVERE, null, ex);
             return defaultFileHandlingMode;
         }
     }
@@ -88,7 +88,7 @@ public class EditorOptions implements OptionsData {
 
     @Override
     public void copyTo(OptionsData options) {
-        EditorOptions with = (EditorOptions) options;
+        BinaryEditorOptions with = (BinaryEditorOptions) options;
         with.setEnterKeyHandlingMode(getEnterKeyHandlingMode());
         with.setFileHandlingMode(getFileHandlingMode());
         with.setTabKeyHandlingMode(getTabKeyHandlingMode());

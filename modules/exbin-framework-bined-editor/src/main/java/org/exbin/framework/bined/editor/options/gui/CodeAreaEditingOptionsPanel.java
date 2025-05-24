@@ -23,7 +23,7 @@ import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.FileHandlingMode;
-import org.exbin.framework.bined.editor.options.EditorOptions;
+import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModifiedListener;
@@ -37,7 +37,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaEditingOptionsPanel extends javax.swing.JPanel implements OptionsComponent<EditorOptions> {
+public class CodeAreaEditingOptionsPanel extends javax.swing.JPanel implements OptionsComponent<BinaryEditorOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingOptionsPanel.class);
 
@@ -70,7 +70,7 @@ public class CodeAreaEditingOptionsPanel extends javax.swing.JPanel implements O
     }
 
     @Override
-    public void saveToOptions(EditorOptions options) {
+    public void saveToOptions(BinaryEditorOptions options) {
         // Skip direct file handling mode
         options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex() + 1]);
         options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
@@ -78,7 +78,7 @@ public class CodeAreaEditingOptionsPanel extends javax.swing.JPanel implements O
     }
 
     @Override
-    public void loadFromOptions(EditorOptions options) {
+    public void loadFromOptions(BinaryEditorOptions options) {
         // Skip direct file handling mode
         fileHandlingModeComboBox.setSelectedIndex(options.getFileHandlingMode().ordinal() - 1);
         enterKeyHandlingModeComboBox.setSelectedIndex(options.getEnterKeyHandlingMode().ordinal());

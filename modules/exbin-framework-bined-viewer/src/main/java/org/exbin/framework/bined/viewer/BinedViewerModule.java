@@ -623,7 +623,7 @@ public class BinedViewerModule implements Module {
     public void loadFromPreferences(OptionsStorage preferences) {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        encodingsHandler.loadFromPreferences(new TextEncodingOptions(preferences));
-        fileManager.loadFromPreferences(preferences);
+        encodingsHandler.loadFromOptions(new TextEncodingOptions(preferences));
+        fileManager.loadFromOptions(preferences);
     }
 }

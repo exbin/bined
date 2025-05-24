@@ -45,7 +45,7 @@ import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.viewer.options.BinaryAppearanceOptions;
-import org.exbin.framework.bined.editor.options.EditorOptions;
+import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
@@ -124,7 +124,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             if (demoMode) {
                 // Don't use delta mode
-                preferences.put(EditorOptions.KEY_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
+                preferences.put(BinaryEditorOptions.KEY_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
             }
 
             LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
@@ -277,7 +277,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerStatusBar();
             binedModule.registerUndoHandler();
 
-            binedModule.loadFromPreferences(preferences);
+            binedModule.loadFromOptions(preferences);
 
             if (demoMode) {
                 frameModule.addExitListener((ApplicationFrameHandler afh) -> {

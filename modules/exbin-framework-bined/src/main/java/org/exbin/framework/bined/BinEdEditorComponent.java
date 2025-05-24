@@ -32,7 +32,7 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 @ParametersAreNonnullByDefault
 public class BinEdEditorComponent {
 
-    private BinEdComponentPanel componentPanel = createComponentPanel();
+    protected BinEdComponentPanel componentPanel = createComponentPanel();
 
     public BinEdEditorComponent() {
     }

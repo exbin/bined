@@ -100,7 +100,7 @@ public class BinEdFileManager {
 //        TextFontOptions textFontOptions = binaryEditorPreferences.getFontOptions();
 //        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
 //        if (binaryStatusPanel != null) {
-//            binaryStatusPanel.loadFromPreferences(binaryEditorPreferences.getStatusOptions());
+//            binaryStatusPanel.loadFromOptions(binaryEditorPreferences.getStatusOptions());
 //        }
     }
 
@@ -168,9 +168,9 @@ public class BinEdFileManager {
         binEdComponentExtensions.add(extension);
     }
 
-    public void loadFromPreferences(OptionsStorage preferences) {
+    public void loadFromOptions(OptionsStorage options) {
         if (binaryStatusPanel != null) {
-            binaryStatusPanel.loadFromPreferences(new StatusOptions(preferences));
+            binaryStatusPanel.loadFromOptions(new StatusOptions(options));
         }
     }
 

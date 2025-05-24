@@ -25,7 +25,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryEditorOptions {
+public class BinaryThemeOptions {
 
     private final OptionsStorage storage;
 
@@ -33,7 +33,7 @@ public class BinaryEditorOptions {
     private final CodeAreaThemeOptions themeOptions;
     private final CodeAreaColorOptions colorOptions;
 
-    public BinaryEditorOptions(OptionsStorage storage) {
+    public BinaryThemeOptions(OptionsStorage storage) {
         this.storage = storage;
 
         layoutOptions = new CodeAreaLayoutOptions(storage);

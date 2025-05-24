@@ -75,15 +75,15 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         initComponents();
     }
 
-    public void loadFromPreferences(StatusOptions statusParameters) {
-        this.statusParameters = statusParameters;
-        cursorPositionFormat.setCodeType(statusParameters.getCursorPositionCodeType());
-        cursorPositionFormat.setShowOffset(statusParameters.isCursorShowOffset());
-        documentSizeFormat.setCodeType(statusParameters.getDocumentSizeCodeType());
-        documentSizeFormat.setShowRelative(statusParameters.isDocumentSizeShowRelative());
-        octalSpaceGroupSize = statusParameters.getOctalSpaceGroupSize();
-        decimalSpaceGroupSize = statusParameters.getDecimalSpaceGroupSize();
-        hexadecimalSpaceGroupSize = statusParameters.getHexadecimalSpaceGroupSize();
+    public void loadFromOptions(StatusOptions statusOptions) {
+        this.statusParameters = statusOptions;
+        cursorPositionFormat.setCodeType(statusOptions.getCursorPositionCodeType());
+        cursorPositionFormat.setShowOffset(statusOptions.isCursorShowOffset());
+        documentSizeFormat.setCodeType(statusOptions.getDocumentSizeCodeType());
+        documentSizeFormat.setShowRelative(statusOptions.isDocumentSizeShowRelative());
+        octalSpaceGroupSize = statusOptions.getOctalSpaceGroupSize();
+        decimalSpaceGroupSize = statusOptions.getDecimalSpaceGroupSize();
+        hexadecimalSpaceGroupSize = statusOptions.getHexadecimalSpaceGroupSize();
         updateStatus();
     }
 

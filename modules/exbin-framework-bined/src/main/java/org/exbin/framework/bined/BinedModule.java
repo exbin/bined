@@ -483,9 +483,9 @@ public class BinedModule implements Module {
 //        mgmt.unregisterMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
     }
 
-    public void loadFromPreferences(OptionsStorage preferences) {
-        // TODO encodingsHandler.loadFromPreferences(new TextEncodingOptions(preferences));
-        fileManager.loadFromPreferences(preferences);
+    public void loadFromOptions(OptionsStorage options) {
+        // TODO encodingsHandler.loadFromOptions(new TextEncodingOptions(options));
+        fileManager.loadFromOptions(options);
     }
 
     @Nonnull

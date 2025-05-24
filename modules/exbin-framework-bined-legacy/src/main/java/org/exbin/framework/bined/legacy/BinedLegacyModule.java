@@ -30,7 +30,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.bined.FileHandlingMode;
-import org.exbin.framework.bined.editor.options.EditorOptions;
+import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaThemeOptions;
@@ -55,7 +55,7 @@ public class BinedLegacyModule implements Module {
     private java.util.ResourceBundle resourceBundle = null;
     private OptionsStorage storage;
     private CodeAreaOptions codeAreaOptions;
-    private EditorOptions editorOptions;
+    private BinaryEditorOptions editorOptions;
     private TextEncodingOptions encodingOptions;
     private TextFontOptions fontOptions;
     private CodeAreaLayoutOptions layoutOptions;

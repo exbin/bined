@@ -21,7 +21,7 @@ import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.theme.options.BinaryEditorOptions;
+import org.exbin.framework.bined.theme.options.BinaryThemeOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.options.CodeAreaThemeOptions;
@@ -112,7 +112,7 @@ public class BinedThemeManager {
         defaultColorProfile = codeArea.getColorsProfile();
     }
 
-    public void applyProfileFromPreferences(SectCodeArea codeArea, BinaryEditorOptions preferences) {
+    public void applyProfileFromPreferences(SectCodeArea codeArea, BinaryThemeOptions preferences) {
         CodeAreaLayoutOptions layoutOptions = preferences.getLayoutOptions();
         int selectedLayoutProfile = layoutOptions.getSelectedProfile();
         if (selectedLayoutProfile >= 0) {
