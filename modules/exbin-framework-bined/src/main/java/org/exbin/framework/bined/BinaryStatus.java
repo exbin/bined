@@ -15,22 +15,12 @@
  */
 package org.exbin.framework.bined;
 
-import javax.annotation.Nonnull;
-import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.framework.ui.api.Document;
-
 /**
- * Binary document.
+ * Binary status.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public interface BinaryDocument extends Document {
+public class BinaryStatus {
 
-    /**
-     * Returns document binary data.
-     *
-     * @return binary data
-     */
-    @Nonnull
-    BinaryData getBinaryData();
+    // TODO
 }

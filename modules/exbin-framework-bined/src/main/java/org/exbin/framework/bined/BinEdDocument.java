@@ -15,22 +15,36 @@
  */
 package org.exbin.framework.bined;
 
+import java.net.URI;
+import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.framework.ui.api.Document;
+import org.exbin.framework.file.api.FileDocument;
 
 /**
- * Binary document.
+ * BinEd binary document.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public interface BinaryDocument extends Document {
+@ParametersAreNonnullByDefault
+public class BinEdDocument implements BinaryDocument, FileDocument {
 
-    /**
-     * Returns document binary data.
-     *
-     * @return binary data
-     */
+    protected URI fileUri = null;
+    protected BinaryData binaryData;
+
+    public BinEdDocument() {
+    }
+
     @Nonnull
-    BinaryData getBinaryData();
+    @Override
+    public Optional<URI> getFileUri() {
+        return Optional.ofNullable(fileUri);
+    }
+
+    @Nonnull
+    @Override
+    public BinaryData getBinaryData() {
+        return binaryData;
+    }
 }

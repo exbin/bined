@@ -71,7 +71,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private SegmentsRepository segmentsRepository;
 
     @Nonnull
-    private final BinEdEditorComponent editorComponent;
+    private final BinEdDocumentView editorComponent;
     private int id = 0;
     private URI fileUri = null;
     private FileType fileType;
@@ -179,8 +179,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    protected BinEdEditorComponent createEditorComponent() {
-        return new BinEdEditorComponent();
+    protected BinEdDocumentView createEditorComponent() {
+        return new BinEdDocumentView();
     }
 
     private void init() {
@@ -215,7 +215,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         this.fileType = fileType;
         File file = new File(fileUri);
         if (!file.isFile()) {
-            JOptionPane.showOptionDialog(editorComponent.getComponentPanel(),
+            JOptionPane.showOptionDialog(editorComponent.getComponent(),
                     "File not found",
                     "Unable to load file",
                     JOptionPane.CLOSED_OPTION,
@@ -478,7 +478,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Nonnull
     @Override
     public BinEdComponentPanel getComponent() {
-        return editorComponent.getComponentPanel();
+        return (BinEdComponentPanel) editorComponent.getComponent();
     }
 
     @Nonnull

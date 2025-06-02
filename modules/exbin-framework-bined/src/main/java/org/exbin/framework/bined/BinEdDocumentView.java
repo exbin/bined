@@ -19,23 +19,24 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JComponent;
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.framework.ui.api.Document;
+import org.exbin.framework.ui.api.DocumentView;
 
 /**
- * Component for BinEd editor instances.
+ * BinEd binary document view.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdEditorComponent {
+public class BinEdDocumentView implements DocumentView {
 
+    private BinEdDocument document;
     protected BinEdComponentPanel componentPanel = createComponentPanel();
-
-    public BinEdEditorComponent() {
-    }
 
     @Nonnull
     protected BinEdComponentPanel createComponentPanel() {
@@ -43,7 +44,19 @@ public class BinEdEditorComponent {
     }
 
     @Nonnull
-    public BinEdComponentPanel getComponentPanel() {
+    @Override
+    public BinEdDocument getDocument() {
+        return document;
+    }
+
+    @Override
+    public void setDocument(Document document) {
+        this.document = (BinEdDocument) document;
+    }
+
+    @Nonnull
+    @Override
+    public JComponent getComponent() {
         return componentPanel;
     }
 
