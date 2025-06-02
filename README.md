@@ -7,7 +7,7 @@ Homepage: https://bined.exbin.org/editor
 
 Downloads:
 
-[<img src="images/button-windows.png?raw=true" alt="Download for Windows" height="36">](https://bined.exbin.org/download/?group=editor&variant=0) [<img src="images/button-macos.png?raw=true" alt="Download for macOS" height="36">](https://bined.exbin.org/download/?group=editor&variant=1) [<img src="images/button-zip.png?raw=true" alt="Download ZIP" height="36">](https://bined.exbin.org/download/?group=editor&variant=2)
+[<img src="images/button-windows.png?raw=true" alt="Download for Windows" height="42">](https://bined.exbin.org/download/?group=editor&variant=0) [<img src="images/button-macos.png?raw=true" alt="Download for macOS" height="42">](https://bined.exbin.org/download/?group=editor&variant=1) [<img src="images/button-zip.png?raw=true" alt="Download ZIP" height="42">](https://bined.exbin.org/download/?group=editor&variant=2)
 
 Screenshot
 ----------
