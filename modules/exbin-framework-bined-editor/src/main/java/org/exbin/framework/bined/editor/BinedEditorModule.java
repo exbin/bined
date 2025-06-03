@@ -33,6 +33,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.bined.BinEdEditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
@@ -41,14 +42,17 @@ import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.menu.api.PositionMenuContributionRule;
 import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
+import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
 import org.exbin.framework.bined.editor.options.page.CodeAreaEditingOptionsPage;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.api.GroupOptionsPageRule;
 import org.exbin.framework.options.api.OptionsGroup;
 import org.exbin.framework.options.api.OptionsPageManagement;
 import org.exbin.framework.options.api.ParentOptionsGroupRule;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
  * Binary data editor module.
@@ -130,6 +134,41 @@ public class BinedEditorModule implements Module {
         codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
         optionsPageManagement.registerPage(codeAreaEditingOptionsPage);
         optionsPageManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule(binaryGroup));
+        BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
+            @Nonnull
+            @Override
+            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                return Optional.of(new BinEdComponentPanel.BinEdComponentExtension() {
+                    @Override
+                    public void onCreate(BinEdComponentPanel componentPanel) {
+                    }
+
+                    @Override
+                    public void onInitFromOptions(OptionsStorage options) {
+                        component.onInitFromPreferences(options);
+                        SectCodeArea codeArea = component.getCodeArea();
+                        BinaryEditorOptions editorOptions = new BinaryEditorOptions(options);
+                        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
+                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
+                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
+                        }
+                    }
+
+                    @Override
+                    public void onDataChange() {
+                    }
+
+                    @Override
+                    public void onClose() {
+                    }
+
+                    @Override
+                    public void onUndoHandlerChange() {
+                    }
+                });
+            }
+        });
     }
 
     public void registerEditSelection() {
@@ -194,20 +233,4 @@ public class BinedEditorModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_SELECTION_GROUP_ID));
         mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
     }
-
-    // TODO
-    /* public void onInitFromPreferences(BinaryEditorOptions preferences) {
-        componentPanel.onInitFromPreferences(preferences);
-
-        SectCodeArea codeArea = componentPanel.getCodeArea();
-        CodeAreaOptions.applyToCodeArea(preferences.getCodeAreaOptions(), codeArea);
-
-        EditorOptions editorOptions = preferences.getEditorOptions();
-        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
-            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
-            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
-        }
-
-        applyProfileFromPreferences(preferences);
-    } */
 }

@@ -57,7 +57,9 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinedModule.PopupMenuVariant;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.action.GoToPositionAction;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
+import org.exbin.framework.bined.viewer.options.CodeAreaOptions;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.toolbar.api.GroupToolBarContributionRule;
@@ -220,6 +222,37 @@ public class BinedViewerModule implements Module {
         EditorProvider editorProvider = binedModule.getEditorProvider();
         BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
         getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService);
+        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
+            @Nonnull
+            @Override
+            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                return Optional.of(new BinEdComponentPanel.BinEdComponentExtension() {
+                    @Override
+                    public void onCreate(BinEdComponentPanel componentPanel) {
+                    }
+
+                    @Override
+                    public void onInitFromOptions(OptionsStorage options) {
+                        component.onInitFromPreferences(options);
+
+                        SectCodeArea codeArea = component.getCodeArea();
+                        CodeAreaOptions.applyToCodeArea(new CodeAreaOptions(options), codeArea);
+                    }
+
+                    @Override
+                    public void onDataChange() {
+                    }
+
+                    @Override
+                    public void onClose() {
+                    }
+
+                    @Override
+                    public void onUndoHandlerChange() {
+                    }
+                });
+            }
+        });
     }
 
     public void registerWordWrapping() {
@@ -620,10 +653,10 @@ public class BinedViewerModule implements Module {
 //        mgmt.unregisterMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
     }
 
-    public void loadFromPreferences(OptionsStorage preferences) {
+    public void loadFromPreferences(OptionsStorage options) {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        encodingsHandler.loadFromOptions(new TextEncodingOptions(preferences));
-        fileManager.loadFromOptions(preferences);
+        encodingsHandler.loadFromOptions(new TextEncodingOptions(options));
+        fileManager.loadFromOptions(options);
     }
 }

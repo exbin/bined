@@ -35,7 +35,7 @@ import org.exbin.framework.ui.api.DocumentView;
 @ParametersAreNonnullByDefault
 public class BinEdDocumentView implements DocumentView {
 
-    private BinEdDocument document;
+    protected BinEdDocument document;
     protected BinEdComponentPanel componentPanel = createComponentPanel();
 
     @Nonnull
@@ -73,20 +73,6 @@ public class BinEdDocumentView implements DocumentView {
     public void setUndoHandler(BinaryDataUndoRedo undoHandler) {
         componentPanel.setUndoRedo(undoHandler);
     }
-
-        // TODO
-//    public void onInitFromPreferences(BinaryViewerOptions preferences) {
-//        componentPanel.onInitFromPreferences(preferences);
-//
-//        SectCodeArea codeArea = componentPanel.getCodeArea();
-//        CodeAreaOptions.applyToCodeArea(preferences.getCodeAreaOptions(), codeArea);
-//
-//        EditorOptions editorOptions = preferences.getEditorOptions();
-//        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
-//            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
-//            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
-//        }
-//    }
 
     @Nonnull
     public BinaryData getContentData() {
