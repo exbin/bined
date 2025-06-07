@@ -32,12 +32,13 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
  * Go to position action.
@@ -80,8 +81,9 @@ public class GoToPositionAction extends AbstractAction {
         final GoToPositionPanel goToPanel = new GoToPositionPanel();
         goToPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         goToPanel.setMaxPosition(codeArea.getDataSize());
-        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel(goToPanel.getResourceBundle());
-        controlPanel.setHelpLink(new HelpLink(HELP_ID));
+        DefaultControlPanel controlPanel = new DefaultControlPanel(goToPanel.getResourceBundle());
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, goToPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), goToPanel.getClass(), goToPanel.getResourceBundle());

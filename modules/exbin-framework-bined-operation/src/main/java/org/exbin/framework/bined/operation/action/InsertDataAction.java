@@ -43,9 +43,10 @@ import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
  * Insert data action.
@@ -98,8 +99,9 @@ public class InsertDataAction extends AbstractAction {
             }
         });
         ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();
-        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel();
-        controlPanel.setHelpLink(new HelpLink(HELP_ID));
+        DefaultControlPanel controlPanel = new DefaultControlPanel();
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         JPanel dialogPanel = windowModule.createDialogPanel(insertDataPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);

@@ -36,9 +36,10 @@ import org.exbin.framework.window.api.handler.DefaultControlHandler;
 import org.exbin.framework.window.api.handler.DefaultControlHandler.ControlActionType;
 import org.exbin.framework.bined.editor.gui.EditSelectionPanel;
 import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
  * Edit selection action.
@@ -77,8 +78,9 @@ public class EditSelectionAction extends AbstractAction {
         editSelectionPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         editSelectionPanel.setMaxPosition(codeArea.getDataSize());
         editSelectionPanel.setSelectionRange(((SelectionCapable) codeArea).getSelection());
-        DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel(editSelectionPanel.getResourceBundle());
-        controlPanel.setHelpLink(new HelpLink(HELP_ID));
+        DefaultControlPanel controlPanel = new DefaultControlPanel(editSelectionPanel.getResourceBundle());
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, editSelectionPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), editSelectionPanel.getClass(), editSelectionPanel.getResourceBundle());

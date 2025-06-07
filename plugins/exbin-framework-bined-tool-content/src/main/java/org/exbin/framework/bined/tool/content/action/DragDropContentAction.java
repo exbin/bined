@@ -41,9 +41,10 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
-import org.exbin.framework.window.api.gui.CloseHelpControlPanel;
+import org.exbin.framework.window.api.gui.CloseControlPanel;
 
 /**
  * Drag and drop content action.
@@ -73,8 +74,9 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        CloseHelpControlPanel controlPanel = new CloseHelpControlPanel();
-        controlPanel.setHelpLink(new HelpLink(HELP_ID));
+        CloseControlPanel controlPanel = new CloseControlPanel();
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         final WindowHandler dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
         dragDropContentPanel.setOpenAsTabAction(new AbstractAction() {
             @Override

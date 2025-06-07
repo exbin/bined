@@ -50,9 +50,10 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
-import org.exbin.framework.window.api.gui.CloseHelpControlPanel;
+import org.exbin.framework.window.api.gui.CloseControlPanel;
 
 /**
  * Compare files action.
@@ -81,8 +82,9 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public void actionPerformed(ActionEvent e) {
         final CompareFilesPanel compareFilesPanel = new CompareFilesPanel();
         ResourceBundle panelResourceBundle = compareFilesPanel.getResourceBundle();
-        CloseHelpControlPanel controlPanel = new CloseHelpControlPanel(panelResourceBundle);
-        controlPanel.setHelpLink(new HelpLink(HELP_ID));
+        CloseControlPanel controlPanel = new CloseControlPanel(panelResourceBundle);
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);

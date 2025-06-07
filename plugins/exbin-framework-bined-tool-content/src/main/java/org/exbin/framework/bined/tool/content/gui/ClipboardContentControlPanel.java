@@ -25,7 +25,6 @@ import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpLinkable;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.OkCancelListener;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.UiUtils;
@@ -41,7 +40,6 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
 
     private final java.util.ResourceBundle resourceBundle;
     private ClipboardContentControlHandler handler;
-    private OkCancelListener okCancelListener;
     private HelpLink helpLink;
 
     public ClipboardContentControlPanel() {
@@ -57,17 +55,6 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
     }
 
     private void init() {
-        okCancelListener = new OkCancelListener() {
-            @Override
-            public void okEvent() {
-                performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
-            }
-
-            @Override
-            public void cancelEvent() {
-                performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
-            }
-        };
         helpButton.addActionListener((ActionEvent e) -> {
             if (helpLink != null) {
                 HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
@@ -171,10 +158,14 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
         return Optional.of(closeButton);
     }
 
-    @Nonnull
     @Override
-    public OkCancelListener getOkCancelListener() {
-        return okCancelListener;
+    public void invokeOkEvent() {
+        performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
+    }
+
+    @Override
+    public void invokeCancelEvent() {
+        performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
     }
 
     /**

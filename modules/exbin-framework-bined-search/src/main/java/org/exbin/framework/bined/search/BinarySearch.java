@@ -32,12 +32,12 @@ import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.bined.search.gui.FindBinaryPanel;
 import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.framework.help.api.HelpLink;
+import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
-import org.exbin.framework.window.api.gui.DefaultHelpControlPanel;
 import org.exbin.framework.window.api.handler.DefaultControlHandler;
 
 /**
@@ -213,8 +213,9 @@ public class BinarySearch {
                 findBinaryPanel.setSearchParameters(currentSearchParameters);
                 findBinaryPanel.setReplaceParameters(currentReplaceParameters);
                 findBinaryPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
-                DefaultHelpControlPanel controlPanel = new DefaultHelpControlPanel(findBinaryPanel.getResourceBundle());
-                controlPanel.setHelpLink(new HelpLink(HELP_ID));
+                DefaultControlPanel controlPanel = new DefaultControlPanel(findBinaryPanel.getResourceBundle());
+                HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+                helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
                 final WindowHandler dialog = windowModule.createDialog(findBinaryPanel, controlPanel);
                 windowModule.setWindowTitle(dialog, findBinaryPanel.getResourceBundle());
                 windowModule.addHeaderPanel(dialog.getWindow(), findBinaryPanel.getClass(), findBinaryPanel.getResourceBundle());
