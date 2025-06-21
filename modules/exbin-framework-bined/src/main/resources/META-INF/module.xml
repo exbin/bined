@@ -30,8 +30,8 @@
     <library jar="bined-operation-0.3.0-SNAPSHOT.jar" />
     <library jar="bined-operation-swing-0.3.0-SNAPSHOT.jar" />
     <library jar="bined-highlight-swing-0.3.0-SNAPSHOT.jar" />
-    <library jar="binary_data-0.2.2-SNAPSHOT.jar" />
-    <library jar="binary_data-array-0.2.2-SNAPSHOT.jar" />
-    <library jar="binary_data-delta-0.2.2-SNAPSHOT.jar" />
+    <library jar="binary_data-0.3.0-SNAPSHOT.jar" />
+    <library jar="binary_data-array-0.3.0-SNAPSHOT.jar" />
+    <library jar="binary_data-delta-0.3.0-SNAPSHOT.jar" />
   </dependency>
 </module>

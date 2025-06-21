@@ -7,6 +7,10 @@
   <description>Module supporting editation of binary document in hexadecimal form</description>
   <dependency>
     <module id="org.exbin.framework.bined.BinedModule" />
+    <module id="org.exbin.framework.bined.viewer.BinedViewerModule" />
+    <module id="org.exbin.framework.bined.editor.BinedEditorModule" />
+    <module id="org.exbin.framework.bined.theme.BinedThemeModule" />
+    <module id="org.exbin.framework.bined.legacy.BinedLegacyModule" />
     <module id="org.exbin.framework.bined.bookmarks.BinedBookmarksModule" />
     <module id="org.exbin.framework.bined.compare.BinedCompareModule" />
     <module id="org.exbin.framework.bined.inspector.BinedInspectorModule" />

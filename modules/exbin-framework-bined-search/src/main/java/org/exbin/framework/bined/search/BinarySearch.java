@@ -326,7 +326,9 @@ public class BinarySearch {
         invokeSearchThread.delay = delay;
         currentSearchOperation = searchOperation;
         currentSearchParameters.setFromParameters(searchParameters);
-        currentReplaceParameters.setFromParameters(replaceParameters);
+        if (replaceParameters != null) {
+            currentReplaceParameters.setFromParameters(replaceParameters);
+        }
         invokeSearchThread.start();
     }
 

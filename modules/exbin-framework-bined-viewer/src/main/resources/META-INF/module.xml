@@ -6,6 +6,7 @@
   <homepage>https://bined.exbin.org</homepage>
   <description>Module supporting editation of binary document in hexadecimal form</description>
   <dependency>
+    <module id="org.exbin.framework.bined.BinedModule" />
     <module id="org.exbin.framework.ui.api.UiModuleApi" />
     <module id="org.exbin.framework.frame.api.FrameModuleApi" />
     <module id="org.exbin.framework.window.api.WindowModuleApi" />
