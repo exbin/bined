@@ -144,62 +144,7 @@ public class BinedViewerModule implements Module {
         BinEdFileManager fileManager = binedModule.getFileManager();
         EditorProvider editorProvider = binedModule.getEditorProvider();
         fileManager.registerStatusBar();
-        fileManager.setStatusControlHandler(new BinaryStatusPanel.StatusControlHandler() {
-            @Override
-            public void changeEditOperation(EditOperation editOperation) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    ((BinEdFileHandler) activeFile.get()).getCodeArea().setEditOperation(editOperation);
-                }
-            }
-
-            @Override
-            public void changeCursorPosition() {
-                GoToPositionAction action = new GoToPositionAction();
-                action.setCodeArea(getActiveCodeArea());
-                action.actionPerformed(null);
-            }
-
-            @Override
-            public void cycleNextEncoding() {
-                if (encodingsHandler != null) {
-                    encodingsHandler.cycleNextEncoding();
-                }
-            }
-
-            @Override
-            public void cyclePreviousEncoding() {
-                if (encodingsHandler != null) {
-                    encodingsHandler.cyclePreviousEncoding();
-                }
-            }
-
-            @Override
-            public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
-                if (encodingsHandler != null) {
-                    encodingsHandler.popupEncodingsMenu(mouseEvent);
-                }
-            }
-
-            @Override
-            public void changeMemoryMode(BinaryStatusApi.MemoryMode memoryMode) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    FileHandlingMode fileHandlingMode = fileHandler.getFileHandlingMode();
-                    FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
-                    if (newHandlingMode != fileHandlingMode) {
-                        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-                        BinaryViewerOptions preferences = new BinaryViewerOptions(preferencesModule.getAppPreferences());
-                        if (editorProvider.releaseFile(fileHandler)) {
-                            fileHandler.switchFileHandlingMode(newHandlingMode);
-                            // TODO preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);
-                        }
-                        ((BinEdEditorProvider) editorProvider).updateStatus();
-                    }
-                }
-            }
-        });
+        fileManager.setStatusControlHandler(new BinaryStatusController(editorProvider));
 
         if (encodingsHandler != null) {
             fileManager.updateTextEncodingStatus(encodingsHandler);
@@ -658,5 +603,70 @@ public class BinedViewerModule implements Module {
         BinEdFileManager fileManager = binedModule.getFileManager();
         encodingsHandler.loadFromOptions(new TextEncodingOptions(options));
         fileManager.loadFromOptions(options);
+    }
+
+    @ParametersAreNonnullByDefault
+    private class BinaryStatusController implements BinaryStatusPanel.Controller, BinaryStatusPanel.EncodingsController, BinaryStatusPanel.MemoryModeController {
+
+        private final EditorProvider editorProvider;
+
+        public BinaryStatusController(EditorProvider editorProvider) {
+            this.editorProvider = editorProvider;
+        }
+
+        @Override
+        public void changeEditOperation(EditOperation editOperation) {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (activeFile.isPresent()) {
+                ((BinEdFileHandler) activeFile.get()).getCodeArea().setEditOperation(editOperation);
+            }
+        }
+
+        @Override
+        public void changeCursorPosition() {
+            GoToPositionAction action = new GoToPositionAction();
+            action.setCodeArea(getActiveCodeArea());
+            action.actionPerformed(null);
+        }
+
+        @Override
+        public void cycleNextEncoding() {
+            if (encodingsHandler != null) {
+                encodingsHandler.cycleNextEncoding();
+            }
+        }
+
+        @Override
+        public void cyclePreviousEncoding() {
+            if (encodingsHandler != null) {
+                encodingsHandler.cyclePreviousEncoding();
+            }
+        }
+
+        @Override
+        public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
+            if (encodingsHandler != null) {
+                encodingsHandler.popupEncodingsMenu(mouseEvent);
+            }
+        }
+
+        @Override
+        public void changeMemoryMode(BinaryStatusApi.MemoryMode memoryMode) {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (activeFile.isPresent()) {
+                BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
+                FileHandlingMode fileHandlingMode = fileHandler.getFileHandlingMode();
+                FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
+                if (newHandlingMode != fileHandlingMode) {
+                    PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+                    BinaryViewerOptions preferences = new BinaryViewerOptions(preferencesModule.getAppPreferences());
+                    if (editorProvider.releaseFile(fileHandler)) {
+                        fileHandler.switchFileHandlingMode(newHandlingMode);
+                        // TODO preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);
+                    }
+                    ((BinEdEditorProvider) editorProvider).updateStatus();
+                }
+            }
+        }
     }
 }

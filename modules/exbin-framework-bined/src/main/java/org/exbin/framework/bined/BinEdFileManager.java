@@ -156,8 +156,8 @@ public class BinEdFileManager {
         binaryStatusPanel.setStatusOptions(options);
     }
 
-    public void setStatusControlHandler(BinaryStatusPanel.StatusControlHandler statusControlHandler) {
-        binaryStatusPanel.setStatusControlHandler(statusControlHandler);
+    public void setStatusControlHandler(BinaryStatusPanel.Controller statusControlHandler) {
+        binaryStatusPanel.setController(statusControlHandler);
     }
 
     public void setCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
