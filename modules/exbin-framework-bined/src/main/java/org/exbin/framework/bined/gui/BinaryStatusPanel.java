@@ -25,6 +25,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -662,12 +663,39 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     public void setController(Controller controller) {
         this.controller = controller;
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        GroupLayout.SequentialGroup horizontalGroup = layout.createSequentialGroup();
+        horizontalGroup.addContainerGap(195, Short.MAX_VALUE);
         if (controller instanceof EncodingsController) {
-            // TODO
+            horizontalGroup.addComponent(encodingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0);
         }
+        horizontalGroup.addComponent(documentSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(cursorPositionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0);
         if (controller instanceof MemoryModeController) {
-            // TODO
+            horizontalGroup.addComponent(memoryModeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0);
         }
+        horizontalGroup.addComponent(editModeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, horizontalGroup)
+        );
+
+        GroupLayout.ParallelGroup verticalGroup = layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+        verticalGroup.addComponent(editModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(documentSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        if (controller instanceof MemoryModeController) {
+            verticalGroup.addComponent(memoryModeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        }
+        verticalGroup.addComponent(cursorPositionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        if (controller instanceof EncodingsController) {
+            verticalGroup.addComponent(encodingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        }
+        layout.setVerticalGroup(verticalGroup);
     }
 
     @Override
