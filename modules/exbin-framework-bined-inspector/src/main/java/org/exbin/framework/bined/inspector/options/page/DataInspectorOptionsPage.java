@@ -43,7 +43,7 @@ import org.exbin.framework.text.font.options.gui.TextFontOptionsPanel;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
-import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.controller.DefaultControlController;
 
 /**
  * Data inspector options page.
@@ -86,9 +86,9 @@ public class DataInspectorOptionsPage implements DefaultOptionsPage<DataInspecto
                 final WindowHandler dialog = windowModule.createDialog(fontPanel, controlPanel);
                 windowModule.addHeaderPanel(dialog.getWindow(), fontPanel.getClass(), fontPanel.getResourceBundle());
                 windowModule.setWindowTitle(dialog, fontPanel.getResourceBundle());
-                controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                    if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
-                        if (actionType == DefaultControlHandler.ControlActionType.OK) {
+                controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                    if (actionType != DefaultControlController.ControlActionType.CANCEL) {
+                        if (actionType == DefaultControlController.ControlActionType.OK) {
                             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
                             TextFontOptions textFontOptions = new TextFontOptions(preferencesModule.getAppPreferences());
                             textFontOptions.setUseDefaultFont(true);

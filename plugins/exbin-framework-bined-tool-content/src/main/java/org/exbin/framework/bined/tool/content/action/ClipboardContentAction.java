@@ -124,7 +124,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
         clipboardContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 
         windowModule.setWindowTitle(dialog, clipboardContentPanel.getResourceBundle());
-        controlPanel.setHandler((actionType) -> {
+        controlPanel.setController((actionType) -> {
             switch (actionType) {
                 case CLOSE: {
                     dialog.close();

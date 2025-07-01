@@ -125,7 +125,7 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
         dragDropContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 
         windowModule.setWindowTitle(dialog, dragDropContentPanel.getResourceBundle());
-        controlPanel.setHandler(() -> {
+        controlPanel.setController(() -> {
             dialog.close();
             dialog.dispose();
         });

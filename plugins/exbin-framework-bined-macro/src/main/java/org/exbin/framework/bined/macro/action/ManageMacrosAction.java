@@ -79,7 +79,7 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
-        controlPanel.setHandler((actionType) -> {
+        controlPanel.setController((actionType) -> {
             switch (actionType) {
                 case OK: {
                     List<MacroRecord> bookmarkRecords = macrosPanel.getMacroRecords();

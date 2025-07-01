@@ -44,7 +44,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
-import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.controller.DefaultControlController;
 
 /**
  * Color profiles options page.
@@ -85,8 +85,8 @@ public class CodeAreaColorOptionsPage implements DefaultOptionsPage<CodeAreaColo
             ColorProfileResult result = new ColorProfileResult();
             final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
             windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
-            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
+            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
                     if (!isValidProfileName(namedProfilePanel.getProfileName())) {
                         JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                         return;
@@ -115,8 +115,8 @@ public class CodeAreaColorOptionsPage implements DefaultOptionsPage<CodeAreaColo
             windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
             namedProfilePanel.setProfileName(profileRecord.getProfileName());
             colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
-            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
+            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
                     if (!isValidProfileName(namedProfilePanel.getProfileName())) {
                         JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                         return;
@@ -147,8 +147,8 @@ public class CodeAreaColorOptionsPage implements DefaultOptionsPage<CodeAreaColo
             windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
             namedProfilePanel.setProfileName(profileRecord.getProfileName() + panelResourceBundle.getString("copyProfile.profilePostfix"));
             colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
-            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
+            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
                     if (!isValidProfileName(namedProfilePanel.getProfileName())) {
                         JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                         return;
@@ -181,8 +181,8 @@ public class CodeAreaColorOptionsPage implements DefaultOptionsPage<CodeAreaColo
             ColorProfileResult result = new ColorProfileResult();
             final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addTemplate.title"), Dialog.ModalityType.APPLICATION_MODAL);
             windowModule.addHeaderPanel(dialog.getWindow(), colorTemplatePanel.getClass(), panelResourceBundle);
-            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                if (actionType != DefaultControlHandler.ControlActionType.CANCEL) {
+            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
                     if (!isValidProfileName(namedProfilePanel.getProfileName())) {
                         JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
                         return;

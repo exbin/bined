@@ -79,7 +79,7 @@ public class AddBookmarkAction extends AbstractAction {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
-        controlPanel.setHandler((actionType) -> {
+        controlPanel.setController((actionType) -> {
             switch (actionType) {
                 case OK: {
                     bookmarkRecord = bookmarkEditorPanel.getBookmarkRecord();

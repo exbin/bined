@@ -69,7 +69,7 @@ public class AddMacroAction extends AbstractAction {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
-        controlPanel.setHandler((actionType) -> {
+        controlPanel.setController((actionType) -> {
             switch (actionType) {
                 case OK: {
                     macroRecord = macroEditorPanel.getMacroRecord();

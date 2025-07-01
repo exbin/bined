@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.tool.content.gui;
+package org.exbin.framework.bined.operation.gui;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.window.api.handler.OkCancelService;
+import org.exbin.framework.utils.OkCancelControlComponent;
 
 /**
- * Handler for clipboard content control panel.
+ * Handler for convert data control panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface ClipboardContentControlHandler {
+public interface ConvertDataControlController {
 
     void controlActionPerformed(ControlActionType actionType);
 
     @ParametersAreNonnullByDefault
-    public interface ClipboardContentControlService extends OkCancelService {
+    public interface ConvertDataControlComponent extends OkCancelControlComponent {
 
         void performClick(ControlActionType actionType);
     }
 
     public static enum ControlActionType {
-        REFRESH, CLOSE
+        CONVERT,
+        CANCEL,
+        CONVERT_TO_NEW_FILE,
+        CONVERT_TO_CLIPBOARD
     }
 }

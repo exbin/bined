@@ -38,7 +38,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
-import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.controller.DefaultControlController;
 
 /**
  * Binary search.
@@ -232,8 +232,8 @@ public class BinarySearch {
                         windowModule.addHeaderPanel(multilineDialog.getWindow(), multilinePanel.getClass(), multilinePanel.getResourceBundle());
                         windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());
                         final SearchConditionResult result = new SearchConditionResult();
-                        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                            if (actionType == DefaultControlHandler.ControlActionType.OK) {
+                        controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                            if (actionType == DefaultControlController.ControlActionType.OK) {
                                 result.searchCondition = multilinePanel.getCondition();
                                 binarySearchPanel.updateFindStatus();
                             }
@@ -251,8 +251,8 @@ public class BinarySearch {
                         SearchCondition searchCondition = null;
                     }
                 });
-                controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                    if (actionType == DefaultControlHandler.ControlActionType.OK) {
+                controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                    if (actionType == DefaultControlController.ControlActionType.OK) {
                         SearchParameters dialogSearchParameters = findBinaryPanel.getSearchParameters();
                         dialogSearchParameters.setFromParameters(dialogSearchParameters);
                         currentSearchDirection = dialogSearchParameters.getSearchDirection();

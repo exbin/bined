@@ -29,7 +29,7 @@ import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.utils.UtilsModule;
-import org.exbin.framework.window.api.handler.OkCancelService;
+import org.exbin.framework.utils.OkCancelControlComponent;
 
 /**
  * Convert data control panel.
@@ -37,10 +37,10 @@ import org.exbin.framework.window.api.handler.OkCancelService;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCancelService, HelpLinkable {
+public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCancelControlComponent, HelpLinkable {
 
     private final java.util.ResourceBundle resourceBundle;
-    private ConvertDataControlHandler handler;
+    private ConvertDataControlController controller;
     private HelpLink helpLink;
 
     public ConvertDataControlPanel() {
@@ -64,8 +64,8 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
         });
     }
 
-    public void setHandler(ConvertDataControlHandler handler) {
-        this.handler = handler;
+    public void setController(ConvertDataControlController controller) {
+        this.controller = controller;
     }
 
     @Override
@@ -149,30 +149,30 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
     }// </editor-fold>//GEN-END:initComponents
 
     private void convertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_convertButtonActionPerformed
-        if (handler != null) {
-            handler.controlActionPerformed(ConvertDataControlHandler.ControlActionType.CONVERT);
+        if (controller != null) {
+            controller.controlActionPerformed(ConvertDataControlController.ControlActionType.CONVERT);
         }
     }//GEN-LAST:event_convertButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        if (handler != null) {
-            handler.controlActionPerformed(ConvertDataControlHandler.ControlActionType.CANCEL);
+        if (controller != null) {
+            controller.controlActionPerformed(ConvertDataControlController.ControlActionType.CANCEL);
         }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void convertToNewFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_convertToNewFileButtonActionPerformed
-        if (handler != null) {
-            handler.controlActionPerformed(ConvertDataControlHandler.ControlActionType.CONVERT_TO_NEW_FILE);
+        if (controller != null) {
+            controller.controlActionPerformed(ConvertDataControlController.ControlActionType.CONVERT_TO_NEW_FILE);
         }
     }//GEN-LAST:event_convertToNewFileButtonActionPerformed
 
     private void convertToClipboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_convertToClipboardButtonActionPerformed
-        if (handler != null) {
-            handler.controlActionPerformed(ConvertDataControlHandler.ControlActionType.CONVERT_TO_CLIPBOARD);
+        if (controller != null) {
+            controller.controlActionPerformed(ConvertDataControlController.ControlActionType.CONVERT_TO_CLIPBOARD);
         }
     }//GEN-LAST:event_convertToClipboardButtonActionPerformed
 
-    public void performClick(ConvertDataControlHandler.ControlActionType actionType) {
+    public void performClick(ConvertDataControlController.ControlActionType actionType) {
         switch (actionType) {
             case CONVERT: {
                 UiUtils.doButtonClick(convertButton);
@@ -201,12 +201,12 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
 
     @Override
     public void invokeOkEvent() {
-        performClick(ConvertDataControlHandler.ControlActionType.CONVERT);
+        performClick(ConvertDataControlController.ControlActionType.CONVERT);
     }
 
     @Override
     public void invokeCancelEvent() {
-        performClick(ConvertDataControlHandler.ControlActionType.CANCEL);
+        performClick(ConvertDataControlController.ControlActionType.CANCEL);
     }
 
     /**

@@ -51,7 +51,7 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
-import org.exbin.framework.utils.ClipboardActionsHandler;
+import org.exbin.framework.utils.ClipboardActionsController;
 import org.exbin.framework.utils.ClipboardActionsUpdateListener;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
@@ -111,7 +111,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
             getCodeArea().setCharset(charset);
         }
     };
-    private final ClipboardActionsHandler clipboardActionsHandler = new ClipboardActionsHandler() {
+    private final ClipboardActionsController clipboardActionsController = new ClipboardActionsController() {
         @Override
         public void performCut() {
             getCodeArea().cut();
@@ -189,7 +189,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         defaultColors = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
         codeArea.addSelectionChangedListener(() -> {
             if (componentActivationListener != null) {
-                componentActivationListener.updated(ClipboardActionsHandler.class, clipboardActionsHandler);
+                componentActivationListener.updated(ClipboardActionsController.class, clipboardActionsController);
             }
         });
     }
@@ -257,7 +257,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public boolean canSave() {
-        return getClipboardActionsHandler().isEditable();
+        return getClipboardActionsController().isEditable();
     }
 
     @Override
@@ -532,8 +532,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    public ClipboardActionsHandler getClipboardActionsHandler() {
-        return clipboardActionsHandler;
+    public ClipboardActionsController getClipboardActionsController() {
+        return clipboardActionsController;
     }
 
     @Nonnull
@@ -564,7 +564,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(Component.class, codeArea);
         componentActivationListener.updated(TextFontHandler.class, textFontHandler);
         componentActivationListener.updated(UndoRedoState.class, undoRedo);
-        componentActivationListener.updated(ClipboardActionsHandler.class, clipboardActionsHandler);
+        componentActivationListener.updated(ClipboardActionsController.class, clipboardActionsController);
     }
 
     @Override
@@ -574,7 +574,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(Component.class, null);
         componentActivationListener.updated(TextFontHandler.class, null);
         componentActivationListener.updated(UndoRedoState.class, null);
-        componentActivationListener.updated(ClipboardActionsHandler.class, null);
+        componentActivationListener.updated(ClipboardActionsController.class, null);
     }
 
     private void notifyUndoChanged() {

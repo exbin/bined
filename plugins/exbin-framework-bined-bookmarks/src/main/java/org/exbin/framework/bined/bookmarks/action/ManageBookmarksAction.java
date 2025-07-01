@@ -79,7 +79,7 @@ public class ManageBookmarksAction extends AbstractAction {
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setPreferredSize(new Dimension(preferredSize.width, preferredSize.height + 450));
-        controlPanel.setHandler((actionType) -> {
+        controlPanel.setController((actionType) -> {
             switch (actionType) {
                 case OK: {
                     List<BookmarkRecord> bookmarkRecords = bookmarksPanel.getBookmarkRecords();

@@ -39,7 +39,7 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.controller.DefaultControlController;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.help.api.HelpLink;
@@ -112,8 +112,8 @@ public class InsertDataAction extends AbstractAction {
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         windowModule.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
-        controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-            if (actionType == DefaultControlHandler.ControlActionType.OK) {
+        controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+            if (actionType == DefaultControlController.ControlActionType.OK) {
                 Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = insertDataPanel.getActiveComponent().get();

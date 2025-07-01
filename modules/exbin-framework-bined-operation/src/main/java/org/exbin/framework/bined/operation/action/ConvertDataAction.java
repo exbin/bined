@@ -45,7 +45,6 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
-import org.exbin.framework.bined.operation.gui.ConvertDataControlHandler;
 import org.exbin.framework.bined.operation.gui.ConvertDataControlPanel;
 import org.exbin.framework.bined.operation.gui.ConvertDataPanel;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -53,6 +52,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.bined.operation.gui.ConvertDataControlController;
 
 /**
  * Convert data action.
@@ -122,8 +122,8 @@ public class ConvertDataAction extends AbstractAction {
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         windowModule.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
-        controlPanel.setHandler((ConvertDataControlHandler.ControlActionType actionType) -> {
-            if (actionType != ConvertDataControlHandler.ControlActionType.CANCEL) {
+        controlPanel.setController((ConvertDataControlController.ControlActionType actionType) -> {
+            if (actionType != ConvertDataControlController.ControlActionType.CANCEL) {
                 Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = convertDataPanel.getActiveComponent().get();

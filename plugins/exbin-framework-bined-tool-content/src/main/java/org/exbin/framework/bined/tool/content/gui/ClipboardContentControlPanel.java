@@ -36,10 +36,10 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ClipboardContentControlPanel extends javax.swing.JPanel implements ClipboardContentControlHandler.ClipboardContentControlService, HelpLinkable {
+public class ClipboardContentControlPanel extends javax.swing.JPanel implements ClipboardContentControlController.ClipboardContentControlComponent, HelpLinkable {
 
     private final java.util.ResourceBundle resourceBundle;
-    private ClipboardContentControlHandler handler;
+    private ClipboardContentControlController controller;
     private HelpLink helpLink;
 
     public ClipboardContentControlPanel() {
@@ -63,8 +63,8 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
         });
     }
 
-    public void setHandler(ClipboardContentControlHandler handler) {
-        this.handler = handler;
+    public void setController(ClipboardContentControlController controller) {
+        this.controller = controller;
     }
 
     @Override
@@ -128,19 +128,19 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        if (handler != null) {
-            handler.controlActionPerformed(ClipboardContentControlHandler.ControlActionType.REFRESH);
+        if (controller != null) {
+            controller.controlActionPerformed(ClipboardContentControlController.ControlActionType.REFRESH);
         }
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        if (handler != null) {
-            handler.controlActionPerformed(ClipboardContentControlHandler.ControlActionType.CLOSE);
+        if (controller != null) {
+            controller.controlActionPerformed(ClipboardContentControlController.ControlActionType.CLOSE);
         }
     }//GEN-LAST:event_closeButtonActionPerformed
 
     @Override
-    public void performClick(ClipboardContentControlHandler.ControlActionType actionType) {
+    public void performClick(ClipboardContentControlController.ControlActionType actionType) {
         switch (actionType) {
             case REFRESH: {
                 UiUtils.doButtonClick(refreshButton);
@@ -160,12 +160,12 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
 
     @Override
     public void invokeOkEvent() {
-        performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
+        performClick(ClipboardContentControlController.ControlActionType.CLOSE);
     }
 
     @Override
     public void invokeCancelEvent() {
-        performClick(ClipboardContentControlHandler.ControlActionType.CLOSE);
+        performClick(ClipboardContentControlController.ControlActionType.CLOSE);
     }
 
     /**

@@ -91,7 +91,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setSize(new Dimension(preferredSize.width, preferredSize.height + 450));
-        controlPanel.setHandler(dialog::close);
+        controlPanel.setController(dialog::close);
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         if (activeFile.isPresent()) {
             compareFilesPanel.setLeftFile(((BinEdFileHandler) activeFile.get()).getCodeArea().getContentData());

@@ -35,9 +35,8 @@ import org.exbin.framework.bined.search.SearchCondition;
 import org.exbin.framework.bined.search.gui.BinaryMultilinePanel;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
-import org.exbin.framework.window.api.handler.DefaultControlHandler;
+import org.exbin.framework.window.api.controller.DefaultControlController;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.operation.InsertDataOperation;
@@ -86,8 +85,8 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             JPanel dialogPanel = windowModule.createDialogPanel(multilinePanel, controlPanel);
             final WindowHandler multilineDialog = windowModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, dialogPanel);
             windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());
-            controlPanel.setHandler((DefaultControlHandler.ControlActionType actionType) -> {
-                if (actionType == DefaultControlHandler.ControlActionType.OK) {
+            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                if (actionType == DefaultControlController.ControlActionType.OK) {
                     SearchCondition condition = multilinePanel.getCondition();
                     sampleBinaryData.clear();
                     sampleBinaryData.insert(0, condition.getBinaryData());
