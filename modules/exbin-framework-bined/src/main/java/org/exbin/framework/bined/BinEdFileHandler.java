@@ -51,8 +51,9 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
-import org.exbin.framework.utils.ClipboardActionsController;
-import org.exbin.framework.utils.ClipboardActionsUpdateListener;
+import org.exbin.framework.action.api.clipboard.ClipboardSupported;
+import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
+import org.exbin.framework.action.api.clipboard.TextClipboardSupported;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
@@ -111,7 +112,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
             getCodeArea().setCharset(charset);
         }
     };
-    private final ClipboardActionsController clipboardActionsController = new ClipboardActionsController() {
+    private final TextClipboardSupported clipboardActionsController = new TextClipboardSupported() {
         @Override
         public void performCut() {
             getCodeArea().cut();
@@ -138,8 +139,13 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         }
 
         @Override
-        public boolean isSelection() {
+        public boolean hasSelection() {
             return getCodeArea().hasSelection();
+        }
+
+        @Override
+        public boolean hasDataToCopy() {
+            return hasSelection();
         }
 
         @Override
@@ -163,7 +169,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         }
 
         @Override
-        public void setUpdateListener(ClipboardActionsUpdateListener updateListener) {
+        public void setUpdateListener(ClipboardStateListener updateListener) {
             // componentPanel.setUpdateListener(updateListener);
         }
     };
@@ -189,7 +195,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         defaultColors = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
         codeArea.addSelectionChangedListener(() -> {
             if (componentActivationListener != null) {
-                componentActivationListener.updated(ClipboardActionsController.class, clipboardActionsController);
+                componentActivationListener.updated(ClipboardSupported.class, clipboardActionsController);
             }
         });
     }
@@ -532,7 +538,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    public ClipboardActionsController getClipboardActionsController() {
+    public TextClipboardSupported getClipboardActionsController() {
         return clipboardActionsController;
     }
 
@@ -564,7 +570,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(Component.class, codeArea);
         componentActivationListener.updated(TextFontHandler.class, textFontHandler);
         componentActivationListener.updated(UndoRedoState.class, undoRedo);
-        componentActivationListener.updated(ClipboardActionsController.class, clipboardActionsController);
+        componentActivationListener.updated(ClipboardSupported.class, clipboardActionsController);
     }
 
     @Override
@@ -574,7 +580,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(Component.class, null);
         componentActivationListener.updated(TextFontHandler.class, null);
         componentActivationListener.updated(UndoRedoState.class, null);
-        componentActivationListener.updated(ClipboardActionsController.class, null);
+        componentActivationListener.updated(ClipboardSupported.class, null);
     }
 
     private void notifyUndoChanged() {
