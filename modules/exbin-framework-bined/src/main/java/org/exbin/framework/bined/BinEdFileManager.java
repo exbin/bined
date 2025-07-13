@@ -153,7 +153,9 @@ public class BinEdFileManager {
     }
 
     public void applyPreferencesChanges(StatusOptions options) {
-        binaryStatusPanel.setStatusOptions(options);
+        if (binaryStatusPanel != null) {
+            binaryStatusPanel.setStatusOptions(options);
+        }
     }
 
     public void setStatusControlHandler(BinaryStatusPanel.Controller statusControlHandler) {

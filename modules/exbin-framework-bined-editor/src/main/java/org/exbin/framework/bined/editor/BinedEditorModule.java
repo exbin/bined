@@ -90,13 +90,9 @@ public class BinedEditorModule implements Module {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedEditorModule.MODULE_ID);
 
-        OptionsGroup binaryGroup = optionsModule.createOptionsGroup("binaryEditor", resourceBundle);
-        optionsPageManagement.registerGroup(binaryGroup);
-        optionsPageManagement.registerGroupRule(binaryGroup, new ParentOptionsGroupRule("editor"));
-
         OptionsGroup binaryCodeAreaEditingGroup = optionsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
         optionsPageManagement.registerGroup(binaryCodeAreaEditingGroup);
-        optionsPageManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule(binaryGroup));
+        optionsPageManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule("binaryEditor"));
         CodeAreaEditingOptionsPage codeAreaEditingOptionsPage = new CodeAreaEditingOptionsPage();
         codeAreaEditingOptionsPage.setEditorOptionsService(new EditorOptionsService() {
             @Override
@@ -133,7 +129,7 @@ public class BinedEditorModule implements Module {
         });
         codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
         optionsPageManagement.registerPage(codeAreaEditingOptionsPage);
-        optionsPageManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule(binaryGroup));
+        optionsPageManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule("binaryEditor"));
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull

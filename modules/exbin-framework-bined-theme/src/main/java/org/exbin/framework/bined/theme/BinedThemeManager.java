@@ -69,13 +69,9 @@ public class BinedThemeManager {
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedThemeModule.MODULE_ID);
 
-        OptionsGroup binaryGroup = optionsModule.createOptionsGroup("binaryEditor", resourceBundle);
-        optionsPageManagement.registerGroup(binaryGroup);
-        optionsPageManagement.registerGroupRule(binaryGroup, new ParentOptionsGroupRule("editor"));
-
         OptionsGroup binaryProfileGroup = optionsModule.createOptionsGroup("binaryEditorProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryProfileGroup);
-        optionsPageManagement.registerGroupRule(binaryProfileGroup, new ParentOptionsGroupRule(binaryGroup));
+        optionsPageManagement.registerGroupRule(binaryProfileGroup, new ParentOptionsGroupRule("binaryEditor"));
 
         OptionsGroup binaryThemeProfileGroup = optionsModule.createOptionsGroup("binaryEditorThemeProfile", resourceBundle);
         optionsPageManagement.registerGroup(binaryThemeProfileGroup);
