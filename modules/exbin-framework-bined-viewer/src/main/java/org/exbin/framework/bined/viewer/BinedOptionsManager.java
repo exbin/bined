@@ -114,7 +114,7 @@ public class BinedOptionsManager {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 FileHandler fileHandler = activeFile.orElse(null);
                 if (fileHandler instanceof BinEdFileHandler) {
-                    return ((BinEdFileHandler) fileHandler).getTextFontHandler().getCurrentFont();
+                    return ((BinEdFileHandler) fileHandler).getBinaryDataComponent().getCurrentFont();
                 }
 
                 return new JLabel().getFont();
@@ -126,7 +126,7 @@ public class BinedOptionsManager {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 FileHandler fileHandler = activeFile.orElse(null);
                 if (fileHandler instanceof BinEdFileHandler) {
-                    return ((BinEdFileHandler) fileHandler).getTextFontHandler().getDefaultFont();
+                    return ((BinEdFileHandler) fileHandler).getBinaryDataComponent().getDefaultFont();
                 }
 
                 return new JLabel().getFont();
@@ -137,7 +137,7 @@ public class BinedOptionsManager {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                 FileHandler fileHandler = activeFile.orElse(null);
                 if (fileHandler instanceof BinEdFileHandler) {
-                    ((BinEdFileHandler) fileHandler).getTextFontHandler().setCurrentFont(font);
+                    ((BinEdFileHandler) fileHandler).getBinaryDataComponent().setCurrentFont(font);
                 }
             }
         });

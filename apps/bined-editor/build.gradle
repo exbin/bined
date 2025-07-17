@@ -13,7 +13,11 @@ plugins {
 
 apply from: '../apps.gradle'
 
-ext.depsRoot = 'Bined'
+ext {
+    depsRoot = 'Bined'
+    appName = 'BinEd'
+    vendor = 'ExBin Project'
+}
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.exbin.bined.editor.BinedEditorApp'
@@ -130,8 +134,8 @@ launch4j {
     classpath = ['lib/commons-cli-1.2.jar', 'lib/flatlaf-desktop-3.2.jar', 'lib/exbin-framework-0.3.0-SNAPSHOT.jar', 'lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar']
     //    jar = "../../build/libs/" + project.name + "-${version}.jar"
 
-    productName = "BinEd"
-    companyName = "ExBin Project"
+    productName = project.appName
+    companyName = project.vendor
     version = (project.version.endsWith("-SNAPSHOT") ? project.version.substring(0, project.version.length() - 9) : project.version)
     textVersion = project.version
     icon = "../../../../src/icons/icon.ico"
@@ -142,7 +146,11 @@ jar {
     manifest {
         attributes(
             'Main-Class': mainClass,
-            'Class-Path': 'lib/commons-cli-1.2.jar lib/flatlaf-desktop-3.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar'
+            'Class-Path': 'lib/commons-cli-1.2.jar lib/flatlaf-desktop-3.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar',
+            'Build-JDK': System.getProperty('java.version'),
+            'Specification-Title': project.appName,
+            'Specification-Version': project.version,
+            'Specification-Vendor': project.vendor
 //            'Class-Path': manifestClassPath()
         )
     }

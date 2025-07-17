@@ -227,7 +227,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
 
     @Override
     public void registerEncodingStatus(TextEncodingStatusApi encodingStatus) {
-        encodingStatus.setEncoding(activeFile.getTextEncodingHandler().getCharset().name());
+        encodingStatus.setEncoding(activeFile.getBinaryDataComponent().getCharset().name());
     }
 
     @Override

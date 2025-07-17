@@ -291,7 +291,7 @@ public class BinedViewerModule implements Module {
                     EditorProvider editorProvider = binedModule.getEditorProvider();
                     Optional<FileHandler> activeFile = editorProvider.getActiveFile();
                     if (activeFile.isPresent()) {
-                        ((BinEdFileHandler) activeFile.get()).getTextEncodingHandler().setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
+                        ((BinEdFileHandler) activeFile.get()).getBinaryDataComponent().setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
                     }
                 }
             });

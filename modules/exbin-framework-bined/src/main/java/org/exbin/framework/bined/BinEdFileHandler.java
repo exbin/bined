@@ -15,8 +15,6 @@
  */
 package org.exbin.framework.bined;
 
-import java.awt.Component;
-import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -44,22 +41,19 @@ import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
-import org.exbin.framework.action.api.clipboard.ClipboardSupported;
-import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
-import org.exbin.framework.action.api.clipboard.TextClipboardSupported;
+import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
-import org.exbin.framework.text.encoding.TextEncodingHandler;
-import org.exbin.framework.text.font.TextFontHandler;
+import org.exbin.framework.text.encoding.TextEncodingController;
+import org.exbin.framework.text.font.TextFontController;
 
 /**
  * File handler for binary editor.
@@ -77,102 +71,11 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private URI fileUri = null;
     private FileType fileType;
     private String title;
-    private Font defaultFont;
     private SectionCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
     private ComponentActivationListener componentActivationListener;
+    private BinEdDataComponent binaryDataComponent;
     private UndoRedo undoRedo = null;
-    private final TextFontHandler textFontHandler = new TextFontHandler() {
-        @Nonnull
-        @Override
-        public Font getCurrentFont() {
-            return getCodeArea().getCodeFont();
-        }
-
-        @Nonnull
-        @Override
-        public Font getDefaultFont() {
-            return defaultFont;
-        }
-
-        @Override
-        public void setCurrentFont(Font font) {
-            getCodeArea().setCodeFont(font);
-        }
-    };
-    private final TextEncodingHandler textEncodingHandler = new TextEncodingHandler() {
-        @Nonnull
-        @Override
-        public Charset getCharset() {
-            return getCodeArea().getCharset();
-        }
-
-        @Override
-        public void setCharset(Charset charset) {
-            getCodeArea().setCharset(charset);
-        }
-    };
-    private final TextClipboardSupported clipboardActionsController = new TextClipboardSupported() {
-        @Override
-        public void performCut() {
-            getCodeArea().cut();
-        }
-
-        @Override
-        public void performCopy() {
-            getCodeArea().copy();
-        }
-
-        @Override
-        public void performPaste() {
-            getCodeArea().paste();
-        }
-
-        @Override
-        public void performDelete() {
-            getCodeArea().delete();
-        }
-
-        @Override
-        public void performSelectAll() {
-            getCodeArea().selectAll();
-        }
-
-        @Override
-        public boolean hasSelection() {
-            return getCodeArea().hasSelection();
-        }
-
-        @Override
-        public boolean hasDataToCopy() {
-            return hasSelection();
-        }
-
-        @Override
-        public boolean isEditable() {
-            return getCodeArea().isEditable();
-        }
-
-        @Override
-        public boolean canSelectAll() {
-            return true;
-        }
-
-        @Override
-        public boolean canPaste() {
-            return getCodeArea().canPaste();
-        }
-
-        @Override
-        public boolean canDelete() {
-            return true;
-        }
-
-        @Override
-        public void setUpdateListener(ClipboardStateListener updateListener) {
-            // componentPanel.setUpdateListener(updateListener);
-        }
-    };
 
     public BinEdFileHandler() {
         editorComponent = createEditorComponent();
@@ -191,11 +94,11 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     private void init() {
         final SectCodeArea codeArea = getCodeArea();
-        defaultFont = codeArea.getCodeFont();
         defaultColors = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
+        binaryDataComponent = new BinEdDataComponent(codeArea);
         codeArea.addSelectionChangedListener(() -> {
             if (componentActivationListener != null) {
-                componentActivationListener.updated(ClipboardSupported.class, clipboardActionsController);
+                componentActivationListener.updated(ActiveComponent.class, binaryDataComponent);
             }
         });
     }
@@ -528,18 +431,13 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    public TextFontHandler getTextFontHandler() {
-        return textFontHandler;
+    public BinEdDataComponent getClipboardActionsController() {
+        return binaryDataComponent;
     }
 
     @Nonnull
-    public TextEncodingHandler getTextEncodingHandler() {
-        return textEncodingHandler;
-    }
-
-    @Nonnull
-    public TextClipboardSupported getClipboardActionsController() {
-        return clipboardActionsController;
+    public BinEdDataComponent getBinaryDataComponent() {
+        return binaryDataComponent;
     }
 
     @Nonnull
@@ -565,22 +463,19 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Override
     public void componentActivated(ComponentActivationListener componentActivationListener) {
         this.componentActivationListener = componentActivationListener;
-        SectCodeArea codeArea = getCodeArea();
-        componentActivationListener.updated(CodeAreaCore.class, codeArea);
-        componentActivationListener.updated(Component.class, codeArea);
-        componentActivationListener.updated(TextFontHandler.class, textFontHandler);
+        componentActivationListener.updated(TextFontController.class, binaryDataComponent);
+        componentActivationListener.updated(TextEncodingController.class, binaryDataComponent);
         componentActivationListener.updated(UndoRedoState.class, undoRedo);
-        componentActivationListener.updated(ClipboardSupported.class, clipboardActionsController);
+        componentActivationListener.updated(ActiveComponent.class, binaryDataComponent);
     }
 
     @Override
     public void componentDeactivated(ComponentActivationListener componentActivationListener) {
         this.componentActivationListener = null;
-        componentActivationListener.updated(CodeAreaCore.class, null);
-        componentActivationListener.updated(Component.class, null);
-        componentActivationListener.updated(TextFontHandler.class, null);
+        componentActivationListener.updated(TextFontController.class, null);
+        componentActivationListener.updated(TextEncodingController.class, null);
         componentActivationListener.updated(UndoRedoState.class, null);
-        componentActivationListener.updated(ClipboardSupported.class, null);
+        componentActivationListener.updated(ActiveComponent.class, null);
     }
 
     private void notifyUndoChanged() {

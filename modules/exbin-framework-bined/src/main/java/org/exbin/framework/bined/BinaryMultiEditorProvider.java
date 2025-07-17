@@ -351,7 +351,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getTextEncodingHandler().getCharset().name());
+            textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getBinaryDataComponent().getCharset().name());
         }
     }
 }
