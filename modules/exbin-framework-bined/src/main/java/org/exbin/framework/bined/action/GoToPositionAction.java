@@ -30,6 +30,8 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.gui.GoToPositionPanel;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
@@ -64,8 +66,8 @@ public class GoToPositionAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ActionContextChangeManager manager) {
-                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                    codeArea = instance;
+                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     setEnabled(instance != null);
                 });
             }

@@ -26,6 +26,8 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 
@@ -51,8 +53,8 @@ public class StartMacroRecordingAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ActionContextChangeManager manager) {
-                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                    codeArea = instance;
+                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     boolean hasInstance = instance != null;
                     boolean enabled = false;
                     if (hasInstance) {

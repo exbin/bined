@@ -32,6 +32,8 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -89,13 +91,13 @@ public class ShowNonprintablesActions {
                 nonprintablesCodeAreaAssessor.setShowNonprintables(!showNonprintables);
                 codeArea.repaint();
             }
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ActiveComponent.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 if (hasInstance) {
                     ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();

@@ -123,6 +123,6 @@ public class CodeAreaOptionsPage implements DefaultOptionsPage<CodeAreaOptions> 
 
         SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
         CodeAreaOptions.applyToCodeArea(options, codeArea);
-        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(CodeAreaCore.class, codeArea);
+        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ActiveComponent.class, codeArea);
     }
 }

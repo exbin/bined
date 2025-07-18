@@ -44,10 +44,12 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionManager;
+import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.macro.action.AddMacroAction;
@@ -261,9 +263,9 @@ public class MacroManager {
                     manager.registerUpdateListener(FileHandler.class, (instance) -> {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });
-                    manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                        ((ComponentActivationListener) actionManager).updated(CodeAreaCore.class, instance);
-                        activeCodeArea = instance;
+                    manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                        ((ComponentActivationListener) actionManager).updated(ActiveComponent.class, instance);
+                        activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                         updateMacrosMenu();
                     });
                     manager.registerUpdateListener(EditorProvider.class, (instance) -> {
@@ -304,9 +306,9 @@ public class MacroManager {
                 manager.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 });
-                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                    ((ComponentActivationListener) actionManager).updated(CodeAreaCore.class, instance);
-                    activeCodeArea = instance;
+                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    ((ComponentActivationListener) actionManager).updated(ActiveComponent.class, instance);
+                    activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     updateMacrosMenu();
                 });
                 manager.registerUpdateListener(EditorProvider.class, (instance) -> {

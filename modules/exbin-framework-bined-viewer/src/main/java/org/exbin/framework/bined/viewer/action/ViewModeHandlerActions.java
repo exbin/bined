@@ -30,6 +30,8 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 
 /**
  * View mode actions.
@@ -77,7 +79,7 @@ public class ViewModeHandlerActions {
         public static final String ACTION_ID = "dualViewModeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -89,18 +91,18 @@ public class ViewModeHandlerActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.DUAL);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.DUAL);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                    CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
                     putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
                 }
                 setEnabled(hasInstance);
@@ -114,7 +116,7 @@ public class ViewModeHandlerActions {
         public static final String ACTION_ID = "codeMatrixViewModeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -127,18 +129,18 @@ public class ViewModeHandlerActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.CODE_MATRIX);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.CODE_MATRIX);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                    CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
                     putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
                 }
                 setEnabled(hasInstance);
@@ -152,7 +154,7 @@ public class ViewModeHandlerActions {
         public static final String ACTION_ID = "textPreviewViewModeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -164,18 +166,18 @@ public class ViewModeHandlerActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((ViewModeCapable) codeArea).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeAreaViewMode viewMode = ((ViewModeCapable) codeArea).getViewMode();
+                    CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
                     putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
                 }
                 setEnabled(hasInstance);

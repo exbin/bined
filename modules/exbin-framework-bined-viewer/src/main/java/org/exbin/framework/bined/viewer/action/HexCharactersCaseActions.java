@@ -30,6 +30,8 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 
 /**
  * Hex characters case actions.
@@ -70,7 +72,7 @@ public class HexCharactersCaseActions {
         public static final String ACTION_ID = "upperHexCharactersAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -82,18 +84,18 @@ public class HexCharactersCaseActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.UPPER);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(CodeCharactersCase.UPPER);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
                     putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
                 }
                 setEnabled(hasInstance);
@@ -107,7 +109,7 @@ public class HexCharactersCaseActions {
         public static final String ACTION_ID = "lowerHexCharactersAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -119,18 +121,18 @@ public class HexCharactersCaseActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(CodeCharactersCase.LOWER);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(CodeCharactersCase.LOWER);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
                     putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
                 }
                 setEnabled(hasInstance);

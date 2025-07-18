@@ -36,6 +36,8 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
@@ -76,10 +78,10 @@ public class InsertDataAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ActionContextChangeManager manager) {
-                manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                    codeArea = instance;
+                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     boolean hasInstance = instance != null;
-                    setEnabled(hasInstance && instance.isEditable());
+                    setEnabled(hasInstance && codeArea.isEditable());
                 });
             }
         });

@@ -29,6 +29,8 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 
 /**
  * Clipboard code actions.
@@ -82,8 +84,8 @@ public class ClipboardCodeActions {
 
         @Override
         public void register(ActionContextChangeManager manager) {
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 boolean hasSelection = hasInstance;
                 if (hasInstance) {
@@ -119,8 +121,8 @@ public class ClipboardCodeActions {
 
         @Override
         public void register(ActionContextChangeManager manager) {
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 boolean hasSelection = hasInstance;
                 if (hasInstance) {

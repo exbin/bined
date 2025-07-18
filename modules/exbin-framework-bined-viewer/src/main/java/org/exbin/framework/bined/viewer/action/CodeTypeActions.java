@@ -29,13 +29,14 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.capability.CodeTypeCapable;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -98,7 +99,7 @@ public class CodeTypeActions {
         public static final String ACTION_ID = "binaryCodeTypeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -110,18 +111,18 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) codeArea).setCodeType(CodeType.BINARY);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.BINARY);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
                     putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
                 }
                 setEnabled(hasInstance);
@@ -135,7 +136,7 @@ public class CodeTypeActions {
         public static final String ACTION_ID = "octalCodeTypeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -147,18 +148,18 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) codeArea).setCodeType(CodeType.OCTAL);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.OCTAL);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
                     putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
                 }
                 setEnabled(hasInstance);
@@ -172,7 +173,7 @@ public class CodeTypeActions {
         public static final String ACTION_ID = "decimalCodeTypeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -184,18 +185,18 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) codeArea).setCodeType(CodeType.DECIMAL);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.DECIMAL);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
                     putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
                 }
                 setEnabled(hasInstance);
@@ -209,7 +210,7 @@ public class CodeTypeActions {
         public static final String ACTION_ID = "hexadecimalCodeTypeAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -221,18 +222,18 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) codeArea).setCodeType(CodeType.HEXADECIMAL);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.HEXADECIMAL);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
                     putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
                 }
                 setEnabled(hasInstance);
@@ -246,7 +247,7 @@ public class CodeTypeActions {
         public static final String ACTION_ID = "cycleCodeTypesAction";
 
         private ActionContextChangeManager manager;
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
         private List<Action> dropDownActions;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -272,12 +273,12 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+            CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
             int codeTypePos = codeType.ordinal();
             CodeType[] values = CodeType.values();
             CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
-            ((CodeTypeCapable) codeArea).setCodeType(next);
-            manager.updateActionsForComponent(CodeAreaCore.class, codeArea);
+            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(next);
+            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         public void setDropDownActions(List<Action> dropDownActions) {
@@ -287,11 +288,11 @@ public class CodeTypeActions {
         @Override
         public void register(ActionContextChangeManager manager) {
             this.manager = manager;
-            manager.registerUpdateListener(CodeAreaCore.class, (instance) -> {
-                codeArea = instance;
+            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) codeArea).getCodeType();
+                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
                     putValue(Action.NAME, resourceBundle.getString(ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
                 }
                 setEnabled(hasInstance);
