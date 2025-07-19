@@ -155,7 +155,7 @@ public class BookmarksManager {
     @Nonnull
     public BookmarksManagerPanel createBookmarksManagerPanel() {
         final BookmarksManagerPanel bookmarksManagerPanel = new BookmarksManagerPanel();
-        bookmarksManagerPanel.setControl(new BookmarksManagerPanel.Control() {
+        bookmarksManagerPanel.setController(new BookmarksManagerPanel.Controller() {
             @Override
             public void addRecord() {
                 Optional<FileHandler> activeFile = editorProvider.getActiveFile();

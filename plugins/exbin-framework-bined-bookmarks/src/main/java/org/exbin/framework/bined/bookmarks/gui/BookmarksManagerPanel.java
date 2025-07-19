@@ -41,7 +41,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarksManagerPanel.class);
     private final BookmarksTableModel bookmarksTableModel = new BookmarksTableModel();
-    private Control control = null;
+    private Controller controller = null;
 
     public BookmarksManagerPanel() {
         initComponents();
@@ -67,8 +67,8 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
         return resourceBundle;
     }
 
-    public void setControl(Control control) {
-        this.control = control;
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     /**
@@ -201,27 +201,27 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
-        control.moveUp();
+        controller.moveUp();
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
-        control.moveDown();
+        controller.moveDown();
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        control.addRecord();
+        controller.addRecord();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        control.removeRecord();
+        controller.removeRecord();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
-        control.selectAll();
+        controller.selectAll();
     }//GEN-LAST:event_selectAllButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        control.editRecord();
+        controller.editRecord();
     }//GEN-LAST:event_editButtonActionPerformed
 
     /**
@@ -283,7 +283,7 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
     private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables
 
-    public interface Control {
+    public interface Controller {
 
         void addRecord();
 

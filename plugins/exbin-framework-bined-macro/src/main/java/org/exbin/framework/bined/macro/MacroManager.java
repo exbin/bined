@@ -170,7 +170,7 @@ public class MacroManager {
     @Nonnull
     public MacrosManagerPanel createMacrosManagerPanel() {
         final MacrosManagerPanel macrosManagerPanel = new MacrosManagerPanel();
-        macrosManagerPanel.setControl(new MacrosManagerPanel.Control() {
+        macrosManagerPanel.setController(new MacrosManagerPanel.Controller() {
             @Override
             public void addRecord() {
                 addMacroAction.actionPerformed(null);

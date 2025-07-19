@@ -65,7 +65,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinarySearchPanel.class);
 
-    private Control control = null;
+    private Controller controller = null;
 
     private final SectCodeArea searchCodeArea = new SectCodeArea();
 
@@ -102,10 +102,10 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             @Override
             public void keyPressed(@Nonnull KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    control.performEscape();
+                    controller.performEscape();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    control.performFind();
+                    controller.performFind();
                 }
             }
         };
@@ -270,8 +270,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         replaceComboBoxEditorComponent.addValueKeyListener(editorKeyListener);
     }
 
-    public void setControl(Control control) {
-        this.control = control;
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     public void setInfoLabel(String text) {
@@ -283,7 +283,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.setMatchCase(matchCaseToggleButton.isSelected());
         searchParameters.setMatchMode(SearchParameters.MatchMode.fromBoolean(multipleMatchesToggleButton.isSelected()));
-        SearchParameters.SearchDirection searchDirection = control.getSearchDirection();
+        SearchParameters.SearchDirection searchDirection = controller.getSearchDirection();
         searchParameters.setSearchDirection(searchDirection);
 
         long startPosition;
@@ -626,23 +626,23 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void optionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsButtonActionPerformed
-        control.searchOptions();
+        controller.searchOptions();
     }//GEN-LAST:event_optionsButtonActionPerformed
 
     private void prevMatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevMatchButtonActionPerformed
-        control.prevMatch();
+        controller.prevMatch();
     }//GEN-LAST:event_prevMatchButtonActionPerformed
 
     private void nextMatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMatchButtonActionPerformed
-        control.nextMatch();
+        controller.nextMatch();
     }//GEN-LAST:event_nextMatchButtonActionPerformed
 
     private void multipleMatchesToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multipleMatchesToggleButtonActionPerformed
-        control.notifySearchChanged();
+        controller.notifySearchChanged();
     }//GEN-LAST:event_multipleMatchesToggleButtonActionPerformed
 
     private void matchCaseToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matchCaseToggleButtonActionPerformed
-        control.notifySearchChanged();
+        controller.notifySearchChanged();
     }//GEN-LAST:event_matchCaseToggleButtonActionPerformed
 
     private void findTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findTypeButtonActionPerformed
@@ -658,7 +658,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findComboBox.invalidate();
         findComboBox.repaint();
         updateFindStatus();
-        control.notifySearchChanged();
+        controller.notifySearchChanged();
     }//GEN-LAST:event_findTypeButtonActionPerformed
 
     public void updateFindStatus() {
@@ -686,7 +686,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        control.close();
+        controller.close();
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void replaceTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceTypeButtonActionPerformed
@@ -705,11 +705,11 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_replaceTypeButtonActionPerformed
 
     private void replaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceButtonActionPerformed
-        control.performReplace();
+        controller.performReplace();
     }//GEN-LAST:event_replaceButtonActionPerformed
 
     private void replaceAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceAllButtonActionPerformed
-        control.performReplaceAll();
+        controller.performReplaceAll();
     }//GEN-LAST:event_replaceAllButtonActionPerformed
 
     /**
@@ -753,7 +753,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void comboBoxValueChanged() {
-        control.notifySearchChanging();
+        controller.notifySearchChanging();
     }
 
     public void requestSearchFocus() {
@@ -769,7 +769,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findComboBoxEditorComponent.exclusiveUpdate(() -> ((SearchHistoryModel) findComboBox.getModel()).addSearchCondition(condition));
     }
 
-    public interface Control {
+    public interface Controller {
 
         void prevMatch();
 
