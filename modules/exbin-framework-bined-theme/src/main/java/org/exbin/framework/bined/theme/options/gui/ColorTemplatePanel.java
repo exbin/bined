@@ -167,7 +167,7 @@ public class ColorTemplatePanel extends javax.swing.JPanel implements ProfileLis
             ProfilesListModel model = getProfilesListModel();
             model.setProfiles(profiles);
         } catch (IOException ex) {
-            Logger.getLogger(LayoutTemplatePanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ColorTemplatePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

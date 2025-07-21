@@ -171,7 +171,7 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
             ProfilesListModel model = getProfilesListModel();
             model.setProfiles(profiles);
         } catch (IOException ex) {
-            Logger.getLogger(LayoutTemplatePanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ThemeTemplatePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
