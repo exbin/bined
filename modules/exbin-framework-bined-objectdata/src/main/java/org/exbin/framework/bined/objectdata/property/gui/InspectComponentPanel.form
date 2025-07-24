@@ -123,7 +123,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="showStaticFieldsCheckBoxStateChanged"/>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="showStaticFieldsCheckBoxItemStateChanged"/>
       </Events>
     </Component>
   </SubComponents>

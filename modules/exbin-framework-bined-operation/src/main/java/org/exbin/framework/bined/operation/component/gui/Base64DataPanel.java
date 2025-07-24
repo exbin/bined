@@ -80,49 +80,49 @@ public class Base64DataPanel extends javax.swing.JPanel {
         buttonGroup.add(basicEncoderRadioButton);
         basicEncoderRadioButton.setSelected(true);
         basicEncoderRadioButton.setText(resourceBundle.getString("basicEncoderRadioButton.text")); // NOI18N
-        basicEncoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                basicEncoderRadioButtonStateChanged(evt);
+        basicEncoderRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                basicEncoderRadioButtonItemStateChanged(evt);
             }
         });
 
         buttonGroup.add(basicDecoderRadioButton);
         basicDecoderRadioButton.setText(resourceBundle.getString("basicDecoderRadioButton.text")); // NOI18N
-        basicDecoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                basicDecoderRadioButtonStateChanged(evt);
+        basicDecoderRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                basicDecoderRadioButtonItemStateChanged(evt);
             }
         });
 
         buttonGroup.add(mimeEncoderRadioButton);
         mimeEncoderRadioButton.setText(resourceBundle.getString("mimeEncoderRadioButton.text")); // NOI18N
-        mimeEncoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                mimeEncoderRadioButtonStateChanged(evt);
+        mimeEncoderRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mimeEncoderRadioButtonItemStateChanged(evt);
             }
         });
 
         buttonGroup.add(mimeDecoderRadioButton);
         mimeDecoderRadioButton.setText(resourceBundle.getString("mimeDecoderRadioButton.text")); // NOI18N
-        mimeDecoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                mimeDecoderRadioButtonStateChanged(evt);
+        mimeDecoderRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mimeDecoderRadioButtonItemStateChanged(evt);
             }
         });
 
         buttonGroup.add(urlEncoderRadioButton);
         urlEncoderRadioButton.setText(resourceBundle.getString("urlEncoderRadioButton.text")); // NOI18N
-        urlEncoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                urlEncoderRadioButtonStateChanged(evt);
+        urlEncoderRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                urlEncoderRadioButtonItemStateChanged(evt);
             }
         });
 
         buttonGroup.add(urlDecoderRadioButton);
         urlDecoderRadioButton.setText(resourceBundle.getString("urlDecoderRadioButton.text")); // NOI18N
-        urlDecoderRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                urlDecoderRadioButtonStateChanged(evt);
+        urlDecoderRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                urlDecoderRadioButtonItemStateChanged(evt);
             }
         });
 
@@ -182,29 +182,29 @@ public class Base64DataPanel extends javax.swing.JPanel {
         add(splitPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void basicEncoderRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_basicEncoderRadioButtonStateChanged
+    private void basicEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_basicEncoderRadioButtonItemStateChanged
         modeChanged();
-    }//GEN-LAST:event_basicEncoderRadioButtonStateChanged
+    }//GEN-LAST:event_basicEncoderRadioButtonItemStateChanged
 
-    private void basicDecoderRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_basicDecoderRadioButtonStateChanged
+    private void basicDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_basicDecoderRadioButtonItemStateChanged
         modeChanged();
-    }//GEN-LAST:event_basicDecoderRadioButtonStateChanged
+    }//GEN-LAST:event_basicDecoderRadioButtonItemStateChanged
 
-    private void mimeEncoderRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mimeEncoderRadioButtonStateChanged
+    private void mimeEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mimeEncoderRadioButtonItemStateChanged
         modeChanged();
-    }//GEN-LAST:event_mimeEncoderRadioButtonStateChanged
+    }//GEN-LAST:event_mimeEncoderRadioButtonItemStateChanged
 
-    private void mimeDecoderRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mimeDecoderRadioButtonStateChanged
+    private void mimeDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mimeDecoderRadioButtonItemStateChanged
         modeChanged();
-    }//GEN-LAST:event_mimeDecoderRadioButtonStateChanged
+    }//GEN-LAST:event_mimeDecoderRadioButtonItemStateChanged
 
-    private void urlEncoderRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_urlEncoderRadioButtonStateChanged
+    private void urlEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_urlEncoderRadioButtonItemStateChanged
         modeChanged();
-    }//GEN-LAST:event_urlEncoderRadioButtonStateChanged
+    }//GEN-LAST:event_urlEncoderRadioButtonItemStateChanged
 
-    private void urlDecoderRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_urlDecoderRadioButtonStateChanged
+    private void urlDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_urlDecoderRadioButtonItemStateChanged
         modeChanged();
-    }//GEN-LAST:event_urlDecoderRadioButtonStateChanged
+    }//GEN-LAST:event_urlDecoderRadioButtonItemStateChanged
 
     private void modeChanged() {
         if (modeChangeListener != null) {

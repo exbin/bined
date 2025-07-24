@@ -187,9 +187,9 @@ public class InspectComponentPanel extends javax.swing.JPanel {
         closeButton.setText(resourceBundle.getString("closeButton.text")); // NOI18N
 
         showStaticFieldsCheckBox.setText(resourceBundle.getString("showStaticFieldsCheckBox.text")); // NOI18N
-        showStaticFieldsCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                showStaticFieldsCheckBoxStateChanged(evt);
+        showStaticFieldsCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                showStaticFieldsCheckBoxItemStateChanged(evt);
             }
         });
 
@@ -228,11 +228,11 @@ public class InspectComponentPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void showStaticFieldsCheckBoxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_showStaticFieldsCheckBoxStateChanged
+    private void showStaticFieldsCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_showStaticFieldsCheckBoxItemStateChanged
         propertyTablePanel.setShowStaticFields(showStaticFieldsCheckBox.isSelected());
         Object itemObject = componentParentsListModel.getItemObject(currentlyShown);
         propertyTablePanel.setObject(itemObject);
-    }//GEN-LAST:event_showStaticFieldsCheckBoxStateChanged
+    }//GEN-LAST:event_showStaticFieldsCheckBoxItemStateChanged
 
     /**
      * Test method for this panel.

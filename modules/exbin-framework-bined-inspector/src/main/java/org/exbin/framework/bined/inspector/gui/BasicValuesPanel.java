@@ -262,18 +262,18 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         bigEndianRadioButton.setSelected(true);
         bigEndianRadioButton.setText(resourceBundle.getString("bigEndianRadioButton.text")); // NOI18N
         bigEndianRadioButton.setToolTipText(resourceBundle.getString("bigEndianRadioButton.toolTipText")); // NOI18N
-        bigEndianRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                bigEndianRadioButtonStateChanged(evt);
+        bigEndianRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                bigEndianRadioButtonItemStateChanged(evt);
             }
         });
 
         endianButtonGroup.add(littleEndianRadioButton);
         littleEndianRadioButton.setText(resourceBundle.getString("littleEndianRadioButton.text")); // NOI18N
         littleEndianRadioButton.setToolTipText(resourceBundle.getString("littleEndianRadioButton.toolTipText")); // NOI18N
-        littleEndianRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                littleEndianRadioButtonStateChanged(evt);
+        littleEndianRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                littleEndianRadioButtonItemStateChanged(evt);
             }
         });
 
@@ -281,18 +281,18 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         signedRadioButton.setSelected(true);
         signedRadioButton.setText(resourceBundle.getString("signedRadioButton.text")); // NOI18N
         signedRadioButton.setToolTipText(resourceBundle.getString("signedRadioButton.toolTipText")); // NOI18N
-        signedRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                signedRadioButtonStateChanged(evt);
+        signedRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                signedRadioButtonItemStateChanged(evt);
             }
         });
 
         integerSignButtonGroup.add(unsignedRadioButton);
         unsignedRadioButton.setText(resourceBundle.getString("unsignedRadioButton.text")); // NOI18N
         unsignedRadioButton.setToolTipText(resourceBundle.getString("unsignedRadioButton.toolTipText")); // NOI18N
-        unsignedRadioButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                unsignedRadioButtonStateChanged(evt);
+        unsignedRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                unsignedRadioButtonItemStateChanged(evt);
             }
         });
 
@@ -411,22 +411,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void littleEndianRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_littleEndianRadioButtonStateChanged
-        updateValues();
-    }//GEN-LAST:event_littleEndianRadioButtonStateChanged
-
-    private void bigEndianRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bigEndianRadioButtonStateChanged
-        updateValues();
-    }//GEN-LAST:event_bigEndianRadioButtonStateChanged
-
-    private void signedRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_signedRadioButtonStateChanged
-        updateValues();
-    }//GEN-LAST:event_signedRadioButtonStateChanged
-
-    private void unsignedRadioButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_unsignedRadioButtonStateChanged
-        updateValues();
-    }//GEN-LAST:event_unsignedRadioButtonStateChanged
 
     private void binaryCheckBox0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binaryCheckBox0ActionPerformed
         if (!valuesUpdater.isUpdateInProgress() && ((valuesCache[0] & 0x80) > 0 != binaryCheckBox0.isSelected())) {
@@ -697,6 +681,22 @@ public class BasicValuesPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_stringTextFieldKeyReleased
+
+    private void bigEndianRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_bigEndianRadioButtonItemStateChanged
+        updateValues();
+    }//GEN-LAST:event_bigEndianRadioButtonItemStateChanged
+
+    private void littleEndianRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_littleEndianRadioButtonItemStateChanged
+        updateValues();
+    }//GEN-LAST:event_littleEndianRadioButtonItemStateChanged
+
+    private void signedRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_signedRadioButtonItemStateChanged
+        updateValues();
+    }//GEN-LAST:event_signedRadioButtonItemStateChanged
+
+    private void unsignedRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_unsignedRadioButtonItemStateChanged
+        updateValues();
+    }//GEN-LAST:event_unsignedRadioButtonItemStateChanged
 
     /**
      * Test method for this panel.

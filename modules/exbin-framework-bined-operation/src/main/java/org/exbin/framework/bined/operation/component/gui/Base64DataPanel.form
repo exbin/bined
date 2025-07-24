@@ -102,7 +102,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="basicEncoderRadioButtonStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="basicEncoderRadioButtonItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="basicDecoderRadioButton">
@@ -115,7 +115,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="basicDecoderRadioButtonStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="basicDecoderRadioButtonItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="mimeEncoderRadioButton">
@@ -128,7 +128,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="mimeEncoderRadioButtonStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="mimeEncoderRadioButtonItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="mimeDecoderRadioButton">
@@ -141,7 +141,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="mimeDecoderRadioButtonStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="mimeDecoderRadioButtonItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="urlEncoderRadioButton">
@@ -154,7 +154,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="urlEncoderRadioButtonStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="urlEncoderRadioButtonItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="urlDecoderRadioButton">
@@ -167,7 +167,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="urlDecoderRadioButtonStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="urlDecoderRadioButtonItemStateChanged"/>
               </Events>
             </Component>
           </SubComponents>
