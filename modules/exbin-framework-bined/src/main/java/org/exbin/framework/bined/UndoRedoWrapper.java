@@ -61,6 +61,11 @@ public class UndoRedoWrapper implements UndoRedo {
         }
     }
 
+    @Nullable
+    public BinaryDataUndoRedo getUndoRedo() {
+        return undoRedo;
+    }
+
     @Override
     public boolean canRedo() {
         return undoRedo != null ? undoRedo.canRedo() : false;
