@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
@@ -66,6 +67,7 @@ public class BinedInspectorModule implements Module {
     private BasicValuesPositionColorModifier basicValuesColorModifier;
 
     private DataInspectorOptionsPage dataInspectorOptionsPage;
+    private InspectorComponent altInspector = null;
 
     public BinedInspectorModule() {
     }
@@ -171,5 +173,13 @@ public class BinedInspectorModule implements Module {
         dataInspectorOptionsPage.setEditorProvider(editorProvider);
         optionsPageManagement.registerPage(dataInspectorOptionsPage);
         optionsPageManagement.registerPageRule(dataInspectorOptionsPage, new GroupOptionsPageRule(inspectorOptionsGroup));
+    }
+
+    public InspectorComponent getAltInspector() {
+        return altInspector;
+    }
+
+    public void setAltInspector(InspectorComponent altInspector) {
+        this.altInspector = altInspector;
     }
 }

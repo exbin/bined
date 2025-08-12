@@ -15,19 +15,14 @@
  */
 package org.exbin.framework.bined.inspector.table;
 
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.bined.BinEdFileManager;
-import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
@@ -36,40 +31,18 @@ import org.exbin.framework.language.api.LanguageModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinedInspectorTableModule implements Module {
+public class BinedInspectorTableModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedInspectorTableModule.class);
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-
     public BinedInspectorTableModule() {
     }
 
-    public void initEditorProvider(EditorProviderVariant variant) {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-//        fileManager.addPainterColorModifier(basicValuesColorModifier);
-//        fileManager.addActionStatusUpdateListener(this::updateActionStatus);
-//        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-//            @Nonnull
-//            @Override
-//            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-//                BinEdComponentInspector binEdComponentInspector = new BinEdComponentInspector();
-//                binEdComponentInspector.setBasicValuesColorModifier(basicValuesColorModifier);
-//                return Optional.of(binEdComponentInspector);
-//            }
-//
-//            @Override
-//            public void onPopupMenuCreation(JPopupMenu popupMenu, ExtCodeArea codeArea, String menuPostfix, BinedModule.PopupMenuVariant variant, int x, int y) {
-//            }
-//        });
+    @Override
+    public void register() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
@@ -84,16 +57,7 @@ public class BinedInspectorTableModule implements Module {
         return resourceBundle;
     }
 
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }

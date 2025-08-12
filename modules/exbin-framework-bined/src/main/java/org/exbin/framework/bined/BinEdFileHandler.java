@@ -324,6 +324,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
                 Logger.getLogger(BinEdFileHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        fileSync();
     }
 
     public void reloadFile() {

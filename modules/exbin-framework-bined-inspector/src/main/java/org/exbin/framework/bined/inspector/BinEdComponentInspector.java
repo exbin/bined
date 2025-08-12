@@ -25,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
+import org.exbin.framework.bined.inspector.gui.InspectorPanel;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
@@ -39,7 +39,7 @@ import org.exbin.framework.utils.UiUtils;
 public class BinEdComponentInspector implements BinEdComponentPanel.BinEdComponentExtension {
 
     private BinEdComponentPanel componentPanel;
-    private BasicValuesPanel valuesPanel;
+    private InspectorPanel inspectorPanel;
     private boolean parsingPanelVisible = false;
 
     private JScrollPane valuesPanelScrollPane;
@@ -59,14 +59,14 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
         UiUtils.runInUiThread(() -> {
             SectCodeArea codeArea = componentPanel.getCodeArea();
-            this.valuesPanel = componentsProvider == null ? new BasicValuesPanel() : componentsProvider.createValuesPanel();
-            valuesPanel.setCodeArea(codeArea, null);
+            this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createValuesPanel();
+            inspectorPanel.setCodeArea(codeArea, null);
             if (basicValuesColorModifier != null) {
-                valuesPanel.registerFocusPainter(basicValuesColorModifier);
+                // TODO inspectorPanel.registerFocusPainter(basicValuesColorModifier);
             }
 
             valuesPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
-            valuesPanelScrollPane.setViewportView(valuesPanel);
+            valuesPanelScrollPane.setViewportView(inspectorPanel);
             valuesPanelScrollPane.setBorder(null);
         });
         setShowParsingPanel(true);
@@ -78,8 +78,8 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
     @Override
     public void onUndoHandlerChange() {
-        if (valuesPanel != null) {
-            valuesPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoRedo().orElse(null));
+        if (inspectorPanel != null) {
+            inspectorPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoRedo().orElse(null));
         }
     }
 
@@ -106,9 +106,9 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
                 componentPanel.add(valuesPanelScrollPane, BorderLayout.EAST);
                 componentPanel.revalidate();
                 parsingPanelVisible = true;
-                valuesPanel.enableUpdate();
+                inspectorPanel.enableUpdate();
             } else {
-                valuesPanel.disableUpdate();
+                inspectorPanel.disableUpdate();
                 componentPanel.remove(valuesPanelScrollPane);
                 componentPanel.revalidate();
                 parsingPanelVisible = false;
@@ -118,11 +118,12 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
     @Nonnull
     public Font getInputFieldsFont() {
-        return valuesPanel.getInputFieldsFont();
+        return Font.getFont(Font.DIALOG);
+        // TODO return inspectorPanel.getInputFieldsFont();
     }
 
     public void setInputFieldsFont(Font font) {
-        valuesPanel.setInputFieldsFont(font);
+        // TODO inspectorPanel.setInputFieldsFont(font);
     }
 
     public boolean isShowParsingPanel() {
@@ -136,7 +137,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public interface ComponentsProvider {
 
         @Nonnull
-        BasicValuesPanel createValuesPanel();
+        InspectorPanel createValuesPanel();
 
         @Nonnull
         JScrollPane createScrollPane();

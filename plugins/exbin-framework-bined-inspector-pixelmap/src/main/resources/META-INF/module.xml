@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.bined.inspector.table.BinedInspectorTableModule</plugin>
-  <name>BinEd Table Inspector Module</name>
+  <plugin>org.exbin.framework.bined.inspector.pixelmap.BinedInspectorPixelMapModule</plugin>
+  <name>BinEd Pixel Map Inspector Module</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>
-  <description>Data inspector presenting data as configurable table</description>
+  <description>Data inspector presenting data as pixel map</description>
   <dependency>
     <module id="org.exbin.framework.bined.inspector.BinedInspectorModule" />
   </dependency>

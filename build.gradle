@@ -185,7 +185,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                     include 'plugins/*'
                 }
 
-                into('images') {
+                into('dist/images') {
                     from ('src/ospackage') {
                         include 'bined.desktop'
                         include 'bined.png'
@@ -193,6 +193,15 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                     }
                 }
                 
+                into('dist/flathub') {
+                    from ('src/flathub') {
+                        include 'org.exbin.BinEd'
+                        include 'org.exbin.BinEd.desktop'
+                        include 'org.exbin.BinEd.svg'
+                        include 'org.exbin.BinEd.appdata.xml'
+                    }
+                }
+
                 from project(':apps:bined-editor').projectDir.absolutePath + '/build/launch4j'
                 include "Bined.exe"
 

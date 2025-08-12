@@ -1,0 +1,10 @@
+rootProject.name = 'exbin-framework-bined-inspector-pixelmap'
+
+if (rootProject.path == ':') {
+    include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-inspector'
+    include ':modules:exbin-framework-bined-viewer'
+    include ':modules:exbin-framework-bined-search'
+}
+
+apply from: '../bined-plugins-settings.gradle'
