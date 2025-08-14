@@ -20,15 +20,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
-import org.exbin.framework.bined.inspector.InspectorComponent;
 import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.bined.inspector.BinEdInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorManager;
+import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 
 /**
  * Binary editor data pixel map inspector plugin.
@@ -60,21 +62,51 @@ public class BinedInspectorPixelMapModule implements PluginModule {
     @Override
     public void register() {
         BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
-        binedInspectorModule.setAltInspector(new InspectorComponent() {
+        BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+        inspectorManager.addInspector(new BinEdInspectorProvider() {
             
-            private PixelMapPanel component;
+            private BinEdInspector inspector;
 
-            public JComponent createComponent() {
-                if (component == null) {
-                    component = new PixelMapPanel();
-                }
-                return component;
+            @Nonnull
+            @Override
+            public String getName() {
+                return "Pixel Map";
             }
 
-            public void setCodeArea(SectCodeArea codeArea) {
-                if (component != null) {
-                    component.setCodeArea(codeArea);
+            @Nonnull
+            @Override
+            public BinEdInspector createInspector() {
+                if (inspector == null) {
+                    inspector = new BinEdInspector() {
+
+                        private PixelMapPanel component;
+
+                        @Nonnull
+                        @Override
+                        public JComponent getComponent() {
+                            if (component == null) {
+                                component = new PixelMapPanel();
+                            }
+                            return component;
+                        }
+
+                        @Override
+                        public void setCodeArea(CodeAreaCore codeArea, BinaryDataUndoRedo undoRedo) {
+                            component.setCodeArea(codeArea);
+                        }
+
+                        @Override
+                        public void activateSync() {
+                            // TODO
+                        }
+
+                        @Override
+                        public void deactivateSync() {
+                            // TODO
+                        }
+                    };
                 }
+                return inspector;
             }
         });
     }

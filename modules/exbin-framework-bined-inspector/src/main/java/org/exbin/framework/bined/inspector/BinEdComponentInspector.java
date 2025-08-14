@@ -59,7 +59,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
 
         UiUtils.runInUiThread(() -> {
             SectCodeArea codeArea = componentPanel.getCodeArea();
-            this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createValuesPanel();
+            this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createInspectorPanel();
             inspectorPanel.setCodeArea(codeArea, null);
             if (basicValuesColorModifier != null) {
                 // TODO inspectorPanel.registerFocusPainter(basicValuesColorModifier);
@@ -106,9 +106,9 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
                 componentPanel.add(valuesPanelScrollPane, BorderLayout.EAST);
                 componentPanel.revalidate();
                 parsingPanelVisible = true;
-                inspectorPanel.enableUpdate();
+                inspectorPanel.activateSync();
             } else {
-                inspectorPanel.disableUpdate();
+                inspectorPanel.deactivateSync();
                 componentPanel.remove(valuesPanelScrollPane);
                 componentPanel.revalidate();
                 parsingPanelVisible = false;
@@ -137,7 +137,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public interface ComponentsProvider {
 
         @Nonnull
-        InspectorPanel createValuesPanel();
+        InspectorPanel createInspectorPanel();
 
         @Nonnull
         JScrollPane createScrollPane();

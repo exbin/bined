@@ -40,7 +40,6 @@ import org.exbin.bined.operation.BinaryDataCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCompoundCommand;
 import org.exbin.bined.operation.swing.command.InsertDataCommand;
 import org.exbin.bined.operation.swing.command.ModifyDataCommand;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
@@ -54,6 +53,8 @@ import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.bined.CodeAreaCaretListener;
+import org.exbin.bined.capability.CharsetCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Values side panel.
@@ -74,7 +75,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     public static int CACHE_SIZE = 250;
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BasicValuesPanel.class);
-    private SectCodeArea codeArea;
+    private CodeAreaCore codeArea;
     private BinaryDataUndoRedo undoRedo;
     private long dataPosition;
     private DataChangedListener dataChangedListener;
@@ -87,6 +88,16 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
     public BasicValuesPanel() {
         initComponents();
+        init();
+    }
+    
+    private void init() {
+        dataChangedListener = () -> {
+            updateEditMode();
+            updateValues();
+        };
+        caretMovedListener = (CodeAreaCaretPosition caretPosition) -> updateValues();
+        undoRedoChangeListener = this::updateValues;
     }
 
     /**
@@ -130,9 +141,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         littleEndianRadioButton = createRadioButton();
         signedRadioButton = createRadioButton();
         unsignedRadioButton = createRadioButton();
-
-        setMaximumSize(new java.awt.Dimension(246, 447));
-        setMinimumSize(new java.awt.Dimension(246, 447));
 
         binaryLabel.setText(resourceBundle.getString("binaryLabel.text")); // NOI18N
 
@@ -649,7 +657,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     throw new InputMismatchException("Only single character allowed");
                 }
 
-                byte[] bytes = characterText.getBytes(codeArea.getCharset());
+                byte[] bytes = characterText.getBytes(((CharsetCapable) codeArea).getCharset());
                 System.arraycopy(bytes, 0, valuesCache, 0, bytes.length);
 
                 modifyValues(bytes.length);
@@ -668,7 +676,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     throw new InputMismatchException("Empty value not valid");
                 }
 
-                byte[] bytes = characterText.getBytes(codeArea.getCharset());
+                byte[] bytes = characterText.getBytes(((CharsetCapable) codeArea).getCharset());
                 if (bytes.length > CACHE_SIZE) {
                     throw new InputMismatchException("String is too long");
                 }
@@ -746,7 +754,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private javax.swing.JTextField wordTextField;
     // End of variables declaration//GEN-END:variables
 
-    public void setCodeArea(SectCodeArea codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
+    public void setCodeArea(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
         this.codeArea = codeArea;
         this.undoRedo = undoRedo;
     }
@@ -771,20 +779,9 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         stringTextField.setFont(font);
     }
 
-    public void enableUpdate() {
-        dataChangedListener = () -> {
-            updateEditMode();
-            updateValues();
-        };
+    public void activateSync() {
         codeArea.addDataChangedListener(dataChangedListener);
-        caretMovedListener = (CodeAreaCaretPosition caretPosition) -> updateValues();
-        codeArea.addCaretMovedListener(caretMovedListener);
-        undoRedoChangeListener = new BinaryDataUndoRedoChangeListener() {
-            @Override
-            public void undoChanged() {
-                updateValues();
-            }
-        };
+        ((CaretCapable) codeArea).addCaretMovedListener(caretMovedListener);
         if (undoRedo != null) {
             undoRedo.addChangeListener(undoRedoChangeListener);
         }
@@ -792,9 +789,9 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         updateValues();
     }
 
-    public void disableUpdate() {
+    public void deactivateSync() {
         codeArea.removeDataChangedListener(dataChangedListener);
-        codeArea.removeCaretMovedListener(caretMovedListener);
+        ((CaretCapable) codeArea).removeCaretMovedListener(caretMovedListener);
         if (undoRedo != null) {
             undoRedo.addChangeListener(undoRedoChangeListener);
         }
@@ -821,7 +818,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     }
 
     public void updateValues() {
-        CodeAreaCaretPosition caretPosition = codeArea.getActiveCaretPosition();
+        CodeAreaCaretPosition caretPosition = ((CaretCapable) codeArea).getActiveCaretPosition();
         dataPosition = caretPosition.getDataPosition();
         long dataSize = codeArea.getDataSize();
 
@@ -863,7 +860,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                 undoRedo.execute(command);
             }
         }
-        codeArea.setActiveCaretPosition(oldDataPosition);
+        ((CaretCapable) codeArea).setActiveCaretPosition(oldDataPosition);
         codeArea.repaint();
     }
 
@@ -1086,7 +1083,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     break;
                 }
                 case CHARACTER: {
-                    String strValue = new String(values, codeArea.getCharset());
+                    String strValue = new String(values, ((CharsetCapable) codeArea).getCharset());
                     if (!strValue.isEmpty()) {
                         characterTextField.setText(strValue.substring(0, 1));
                     } else {
@@ -1096,7 +1093,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
                     break;
                 }
                 case STRING: {
-                    String strValue = new String(values, codeArea.getCharset());
+                    String strValue = new String(values, ((CharsetCapable) codeArea).getCharset());
                     for (int i = 0; i < strValue.length(); i++) {
                         char charAt = strValue.charAt(i);
                         if (charAt == '\r' || charAt == '\n' || charAt == 0) {

@@ -147,7 +147,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             case SAMPLE: {
                 if (sampleBinaryData.isEmpty()) {
                     for (long pos = position; pos < position + length; pos++) {
-                        binaryData.setByte(pos, (byte) 0xFF);
+                        binaryData.setByte(pos, (byte) 0xff);
                     }
                 } else {
                     long sampleDataSize = sampleBinaryData.getDataSize();

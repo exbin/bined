@@ -24,7 +24,9 @@ import java.awt.event.MouseEvent;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.ScrollingCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Pixel map component.
@@ -36,7 +38,7 @@ public class PixelMapComponent extends JComponent {
 
     private int pixelSize = 5;
     private int pixelPerRow = 16;
-    private SectCodeArea codeArea;
+    private CodeAreaCore codeArea;
 
     public PixelMapComponent() {
         addMouseListener(new MouseAdapter() {
@@ -53,8 +55,8 @@ public class PixelMapComponent extends JComponent {
                     if (position >= dataSize) {
                         position = dataSize - 1;
                     }
-                    codeArea.getCodeAreaCaret().setCaretPosition(position);
-                    codeArea.revealCursor();
+                    ((CaretCapable) codeArea).getCodeAreaCaret().setCaretPosition(position);
+                    ((ScrollingCapable) codeArea).revealCursor();
                     codeArea.requestFocus();
                     codeArea.repaint();
                 }
@@ -79,8 +81,8 @@ public class PixelMapComponent extends JComponent {
             for (int x = 0; x < pixelPerRow; x++) {
                 int color = 0;
                 if (position < dataSize) {
-                    int byteValue = contentData.getByte(position) & 0xFF;
-                    color = ((byteValue & 0xE0) << 16) + ((byteValue & 0x1C) << 11) + ((byteValue & 0x3) << 6);
+                    int byteValue = contentData.getByte(position) & 0xff;
+                    color = ((byteValue & 0xe0) << 16) + ((byteValue & 0x1c) << 11) + ((byteValue & 0x3) << 6);
                 }
                 g.setColor(new Color(color));
                 g.drawRect(x * pixelSize, rowY, pixelSize, pixelSize);
@@ -91,7 +93,7 @@ public class PixelMapComponent extends JComponent {
         }
     }
 
-    public void setCodeArea(SectCodeArea codeArea) {
+    public void setCodeArea(CodeAreaCore codeArea) {
         this.codeArea = codeArea;
         long dataSize = codeArea.getDataSize();
         long height = (dataSize + pixelPerRow - 1) / pixelPerRow * pixelSize;

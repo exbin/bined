@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.framework.App;
@@ -64,10 +63,10 @@ public class BinedInspectorModule implements Module {
 
     private EditorProvider editorProvider;
 
+    private BinEdInspectorManager binEdInspectorManager;
     private BasicValuesPositionColorModifier basicValuesColorModifier;
 
     private DataInspectorOptionsPage dataInspectorOptionsPage;
-    private InspectorComponent altInspector = null;
 
     public BinedInspectorModule() {
     }
@@ -79,6 +78,8 @@ public class BinedInspectorModule implements Module {
     public void setEditorProvider(EditorProvider editorProvider, @Nullable BinEdComponentInspector.ComponentsProvider componentsProvider) {
         this.editorProvider = editorProvider;
 
+        BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
+        inspectorManager.addInspector(new BasicValuesInspectorProvider());
         basicValuesColorModifier = new BasicValuesPositionColorModifier();
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
@@ -175,11 +176,11 @@ public class BinedInspectorModule implements Module {
         optionsPageManagement.registerPageRule(dataInspectorOptionsPage, new GroupOptionsPageRule(inspectorOptionsGroup));
     }
 
-    public InspectorComponent getAltInspector() {
-        return altInspector;
-    }
-
-    public void setAltInspector(InspectorComponent altInspector) {
-        this.altInspector = altInspector;
+    @Nonnull
+    public BinEdInspectorManager getBinEdInspectorManager() {
+        if (binEdInspectorManager == null) {
+            binEdInspectorManager = new BinEdInspectorManager();
+        }
+        return binEdInspectorManager;
     }
 }

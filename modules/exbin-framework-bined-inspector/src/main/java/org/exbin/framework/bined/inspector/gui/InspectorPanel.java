@@ -18,6 +18,8 @@ package org.exbin.framework.bined.inspector.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
@@ -27,12 +29,14 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
-import org.exbin.framework.bined.inspector.InspectorComponent;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
+import org.exbin.framework.bined.inspector.BinEdInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorManager;
+import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 
 /**
- * Inspector side panel.
+ * BinEd inspector right side panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -42,57 +46,59 @@ public class InspectorPanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorPanel.class);
     private SectCodeArea codeArea;
     private BinaryDataUndoRedo undoRedo;
-    private JComponent component = null;
-    private boolean syncUpdate = false;
+    private List<BinEdInspector> inspectors = new ArrayList<>();
+    private BinEdInspector currentInspector = null;
+    private JComponent currentComponent = null;
 
     public InspectorPanel() {
         initComponents();
         init();
     }
-    
+
     private void init() {
         Dimension dimension = new java.awt.Dimension(250, 10);
         setMinimumSize(dimension);
         setPreferredSize(dimension);
-        inspectorComboBox.addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                pageChanged();
+        BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+        BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+        List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
+        if (inspectorProviders.size() > 1) {
+            for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
+                inspectors.add(inspectorProvider.createInspector());
+                inspectorComboBox.addItem(inspectorProvider.getName());
             }
-        });
-        pageChanged();
+            add(inspectorComboBox, BorderLayout.NORTH);
+            inspectorComboBox.addItemListener((ItemEvent e) -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    pageChanged(inspectorComboBox.getSelectedIndex());
+                }
+            });
+            pageChanged(inspectorComboBox.getSelectedIndex());
+        } else if (inspectorProviders.size() == 1) {
+            inspectors.add(inspectorProviders.get(0).createInspector());
+            pageChanged(0);
+        }
     }
-    
-    private void pageChanged() {
-        if (component != null) {
-            remove(component);
-        }
-        component = null;
-        switch (inspectorComboBox.getSelectedIndex()) {
-            case 0:
-                BasicValuesPanel valuesPanel = new BasicValuesPanel();
-                valuesPanel.setCodeArea(codeArea, undoRedo);
-                if (syncUpdate) {
-                    valuesPanel.enableUpdate();
-                }
-                component = valuesPanel;
-                break;
-            case 1:
-                BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
-                InspectorComponent altInspector = binedInspectorModule.getAltInspector();
-                if (altInspector != null) {
-                    component = altInspector.createComponent();
-                    altInspector.setCodeArea(codeArea);
-                } else {
-                    throw new UnsupportedOperationException("Not supported yet.");
-                }
-                
-                break;
 
-            default:
-                throw new AssertionError();
+    private void pageChanged(int inspectorIndex) {
+        if (currentComponent != null) {
+            remove(currentComponent);
+            currentComponent = null;
         }
-        if (component != null) {
-            add(component, BorderLayout.CENTER);
+        if (currentInspector != null) {
+            if (codeArea != null) {
+                currentInspector.deactivateSync();
+            }
+            currentInspector = null;
+        }
+        if (!inspectors.isEmpty()) {
+            currentInspector = inspectors.get(inspectorIndex);
+            currentComponent = currentInspector.getComponent();
+            add(currentComponent, BorderLayout.CENTER);
+            if (codeArea != null) {
+                currentInspector.setCodeArea(codeArea, undoRedo);
+                currentInspector.activateSync();
+            }
         }
         revalidate();
         repaint();
@@ -102,25 +108,24 @@ public class InspectorPanel extends javax.swing.JPanel {
         this.codeArea = codeArea;
         this.undoRedo = undoRedo;
 
-        if (component instanceof BasicValuesPanel) {
-            ((BasicValuesPanel) component).setCodeArea(codeArea, undoRedo);
+        if (currentInspector != null) {
+            currentInspector.setCodeArea(codeArea, undoRedo);
+            currentInspector.activateSync();
         }
     }
 
-    public void enableUpdate() {
-        syncUpdate = true;
-        if (component instanceof BasicValuesPanel) {
-            ((BasicValuesPanel) component).enableUpdate();
+    public void activateSync() {
+        if (currentInspector != null) {
+            currentInspector.activateSync();
         }
     }
 
-    public void disableUpdate() {
-        syncUpdate = false;
-        if (component instanceof BasicValuesPanel) {
-            ((BasicValuesPanel) component).disableUpdate();
+    public void deactivateSync() {
+        if (currentInspector != null) {
+            currentInspector.deactivateSync();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,9 +138,6 @@ public class InspectorPanel extends javax.swing.JPanel {
         inspectorComboBox = new javax.swing.JComboBox<>();
 
         setLayout(new java.awt.BorderLayout());
-
-        inspectorComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Basic Values", "Pixel Map" }));
-        add(inspectorComboBox, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

@@ -15,19 +15,26 @@
  */
 package org.exbin.framework.bined.inspector;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
-import org.exbin.bined.swing.section.SectCodeArea;
 
 /**
- * Inspector component.
+ * BinEd basic values inspector.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface InspectorComponent {
+public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
 
-    JComponent createComponent();
+    @Nonnull
+    @Override
+    public String getName() {
+        return "Basic Values";
+    }
 
-    void setCodeArea(SectCodeArea codeArea);
+    @Nonnull
+    @Override
+    public BinEdInspector createInspector() {
+        return new BasicValuesInspector();
+    }
 }

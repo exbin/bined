@@ -18,7 +18,7 @@ package org.exbin.framework.bined.inspector.pixelmap.gui;
 import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
-import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
@@ -45,7 +45,7 @@ public class PixelMapPanel extends javax.swing.JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
     
-    public void setCodeArea(SectCodeArea codeArea) {
+    public void setCodeArea(CodeAreaCore codeArea) {
         component.setCodeArea(codeArea);
     }
 
