@@ -55,6 +55,7 @@ import org.exbin.framework.utils.UtilsModule;
 import org.exbin.bined.CodeAreaCaretListener;
 import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.bined.inspector.BinedInspectorModule;
 
 /**
  * Values side panel.
@@ -757,6 +758,9 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     public void setCodeArea(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
         this.codeArea = codeArea;
         this.undoRedo = undoRedo;
+
+        BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+        registerFocusPainter(binedInspectorModule.getBasicValuesColorModifier());
     }
 
     @Nonnull

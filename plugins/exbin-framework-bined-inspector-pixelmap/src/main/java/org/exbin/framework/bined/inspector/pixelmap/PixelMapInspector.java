@@ -13,54 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.inspector;
+package org.exbin.framework.bined.inspector.pixelmap;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
+import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * BinEd inspector.
+ * Pixel map inspector.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinEdInspector {
+public class PixelMapInspector implements BinEdInspector {
 
-    /**
-     * Returns visual component.
-     *
-     * @return component
-     */
+    private PixelMapPanel component;
+
     @Nonnull
-    JComponent getComponent();
+    @Override
+    public JComponent getComponent() {
+        if (component == null) {
+            component = new PixelMapPanel();
+        }
+        return component;
+    }
 
-    /**
-     * Sets code area.
-     *
-     * @param codeArea code area
-     * @param undoRedo undo redo
-     */
-    void setCodeArea(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoRedo);
+    @Override
+    public void setCodeArea(CodeAreaCore codeArea, BinaryDataUndoRedo undoRedo) {
+        component.setCodeArea(codeArea);
+    }
 
-    /**
-     * Activates synchronization.
-     */
-    void activateSync();
+    @Override
+    public void activateSync() {
+        // TODO
+    }
 
-    /**
-     * Deactivates synchronization.
-     */
-    void deactivateSync();
+    @Override
+    public void deactivateSync() {
+        // TODO
+    }
 
-    /**
-     * Initializes from provider options.
-     *
-     * @param options options
-     */
-    void onInitFromOptions(OptionsStorage options);
+    @Override
+    public void onInitFromOptions(OptionsStorage options) {
+    }
 }

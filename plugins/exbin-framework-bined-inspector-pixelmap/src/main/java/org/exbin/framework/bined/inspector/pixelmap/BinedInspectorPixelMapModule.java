@@ -19,14 +19,11 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
-import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
-import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorManager;
@@ -64,8 +61,8 @@ public class BinedInspectorPixelMapModule implements PluginModule {
         BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
         BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
         inspectorManager.addInspector(new BinEdInspectorProvider() {
-            
-            private BinEdInspector inspector;
+
+            private PixelMapInspector inspector;
 
             @Nonnull
             @Override
@@ -77,34 +74,7 @@ public class BinedInspectorPixelMapModule implements PluginModule {
             @Override
             public BinEdInspector createInspector() {
                 if (inspector == null) {
-                    inspector = new BinEdInspector() {
-
-                        private PixelMapPanel component;
-
-                        @Nonnull
-                        @Override
-                        public JComponent getComponent() {
-                            if (component == null) {
-                                component = new PixelMapPanel();
-                            }
-                            return component;
-                        }
-
-                        @Override
-                        public void setCodeArea(CodeAreaCore codeArea, BinaryDataUndoRedo undoRedo) {
-                            component.setCodeArea(codeArea);
-                        }
-
-                        @Override
-                        public void activateSync() {
-                            // TODO
-                        }
-
-                        @Override
-                        public void deactivateSync() {
-                            // TODO
-                        }
-                    };
+                    inspector = new PixelMapInspector();
                 }
                 return inspector;
             }

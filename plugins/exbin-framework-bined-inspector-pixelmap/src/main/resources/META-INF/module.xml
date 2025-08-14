@@ -7,5 +7,6 @@
   <description>Data inspector presenting data as pixel map</description>
   <dependency>
     <module id="org.exbin.framework.bined.inspector.BinedInspectorModule" />
+    <module id="org.exbin.framework.references.api.PreferencesModuleApi" />
   </dependency>
 </module>

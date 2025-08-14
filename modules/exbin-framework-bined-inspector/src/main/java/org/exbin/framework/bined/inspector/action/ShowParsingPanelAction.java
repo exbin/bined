@@ -28,7 +28,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.inspector.BinEdComponentInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.file.api.FileHandler;
 
 /**
@@ -59,7 +59,7 @@ public class ShowParsingPanelAction extends AbstractAction {
                     boolean showParsingPanel = false;
                     if (fileHandler instanceof BinEdFileHandler) {
                         BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-                        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+                        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
                         showParsingPanel = componentExtension.isShowParsingPanel();
                     }
                     putValue(Action.SELECTED_KEY, showParsingPanel);
@@ -75,7 +75,7 @@ public class ShowParsingPanelAction extends AbstractAction {
         }
 
         BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         setShowParsingPanel(!componentExtension.isShowParsingPanel());
     }
 
@@ -85,7 +85,7 @@ public class ShowParsingPanelAction extends AbstractAction {
         }
 
         BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(show);
         putValue(Action.SELECTED_KEY, show);
     }

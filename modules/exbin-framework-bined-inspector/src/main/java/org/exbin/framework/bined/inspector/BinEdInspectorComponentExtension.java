@@ -16,9 +16,6 @@
 package org.exbin.framework.bined.inspector;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -36,20 +33,19 @@ import org.exbin.framework.utils.UiUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdComponentInspector implements BinEdComponentPanel.BinEdComponentExtension {
+public class BinEdInspectorComponentExtension implements BinEdComponentPanel.BinEdComponentExtension {
 
     private BinEdComponentPanel componentPanel;
     private InspectorPanel inspectorPanel;
     private boolean parsingPanelVisible = false;
 
-    private JScrollPane valuesPanelScrollPane;
-    private BasicValuesPositionColorModifier basicValuesColorModifier;
+    private JScrollPane parsingPanelScrollPane;
     private ComponentsProvider componentsProvider = null;
 
-    public BinEdComponentInspector() {
+    public BinEdInspectorComponentExtension() {
     }
 
-    public BinEdComponentInspector(@Nullable ComponentsProvider componentsProvider) {
+    public BinEdInspectorComponentExtension(@Nullable ComponentsProvider componentsProvider) {
         this.componentsProvider = componentsProvider;
     }
 
@@ -61,13 +57,10 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
             SectCodeArea codeArea = componentPanel.getCodeArea();
             this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createInspectorPanel();
             inspectorPanel.setCodeArea(codeArea, null);
-            if (basicValuesColorModifier != null) {
-                // TODO inspectorPanel.registerFocusPainter(basicValuesColorModifier);
-            }
 
-            valuesPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
-            valuesPanelScrollPane.setViewportView(inspectorPanel);
-            valuesPanelScrollPane.setBorder(null);
+            parsingPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
+            parsingPanelScrollPane.setViewportView(inspectorPanel);
+            parsingPanelScrollPane.setBorder(null);
         });
         setShowParsingPanel(true);
     }
@@ -87,13 +80,7 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public void onInitFromOptions(OptionsStorage options) {
         DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(options);
         setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
-        boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
-        if (useDefaultFont) {
-            setInputFieldsFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
-        } else {
-            Map<TextAttribute, Object> fontAttributes = dataInspectorPreferences.getFontAttributes();
-            setInputFieldsFont(new Font(fontAttributes));
-        }
+        inspectorPanel.onInitFromOptions(options);
     }
 
     @Override
@@ -103,35 +90,26 @@ public class BinEdComponentInspector implements BinEdComponentPanel.BinEdCompone
     public void setShowParsingPanel(boolean show) {
         if (parsingPanelVisible != show) {
             if (show) {
-                componentPanel.add(valuesPanelScrollPane, BorderLayout.EAST);
+                componentPanel.add(parsingPanelScrollPane, BorderLayout.EAST);
                 componentPanel.revalidate();
                 parsingPanelVisible = true;
                 inspectorPanel.activateSync();
             } else {
                 inspectorPanel.deactivateSync();
-                componentPanel.remove(valuesPanelScrollPane);
+                componentPanel.remove(parsingPanelScrollPane);
                 componentPanel.revalidate();
                 parsingPanelVisible = false;
             }
         }
     }
 
-    @Nonnull
-    public Font getInputFieldsFont() {
-        return Font.getFont(Font.DIALOG);
-        // TODO return inspectorPanel.getInputFieldsFont();
-    }
-
-    public void setInputFieldsFont(Font font) {
-        // TODO inspectorPanel.setInputFieldsFont(font);
-    }
-
     public boolean isShowParsingPanel() {
         return parsingPanelVisible;
     }
 
-    public void setBasicValuesColorModifier(BasicValuesPositionColorModifier basicValuesColorModifier) {
-        this.basicValuesColorModifier = basicValuesColorModifier;
+    @Nullable
+    public <T extends BinEdInspector> T getInspector(Class<T> clazz) {
+        return inspectorPanel.getInspector(clazz);
     }
 
     public interface ComponentsProvider {

@@ -34,6 +34,7 @@ import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorManager;
 import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
+import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
  * BinEd inspector right side panel.
@@ -126,6 +127,12 @@ public class InspectorPanel extends javax.swing.JPanel {
         }
     }
 
+    public void onInitFromOptions(OptionsStorage options) {
+        for (BinEdInspector inspector : inspectors) {
+            inspector.onInitFromOptions(options);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,5 +163,14 @@ public class InspectorPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> inspectorComboBox;
     // End of variables declaration//GEN-END:variables
+
+    public <T extends BinEdInspector> T getInspector(Class<T> clazz) {
+        for (BinEdInspector inspector : inspectors) {
+            if (clazz.isInstance(inspector)) {
+                return clazz.cast(inspector);
+            }
+        }
+        return null;
+    }
 
 }

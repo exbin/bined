@@ -175,6 +175,17 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.removeFocusListener(focusListener);
     }
 
+    @Nonnull
+    public <T extends BinEdComponentExtension> Optional<T> getBinEdComponentExtensions(Class<T> clazz) {
+        for (BinEdComponentExtension binEdComponentExtension : componentExtensions) {
+            if (clazz.isInstance(binEdComponentExtension)) {
+                return Optional.of(clazz.cast(binEdComponentExtension));
+            }
+        }
+
+        return Optional.empty();
+    }
+
     @ParametersAreNonnullByDefault
     public interface BinEdComponentExtension {
 

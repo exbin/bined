@@ -75,7 +75,7 @@ public class BinedInspectorModule implements Module {
         setEditorProvider(editorProvider, null);
     }
 
-    public void setEditorProvider(EditorProvider editorProvider, @Nullable BinEdComponentInspector.ComponentsProvider componentsProvider) {
+    public void setEditorProvider(EditorProvider editorProvider, @Nullable BinEdInspectorComponentExtension.ComponentsProvider componentsProvider) {
         this.editorProvider = editorProvider;
 
         BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
@@ -84,15 +84,7 @@ public class BinedInspectorModule implements Module {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addPainterColorModifier(basicValuesColorModifier);
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
-            @Override
-            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                BinEdComponentInspector binEdComponentInspector = new BinEdComponentInspector(componentsProvider);
-                binEdComponentInspector.setBasicValuesColorModifier(basicValuesColorModifier);
-                return Optional.of(binEdComponentInspector);
-            }
-        });
+        fileManager.addBinEdComponentExtension(new BinEdInspectorFileExtension(componentsProvider));
     }
 
     @Nonnull
@@ -182,5 +174,27 @@ public class BinedInspectorModule implements Module {
             binEdInspectorManager = new BinEdInspectorManager();
         }
         return binEdInspectorManager;
+    }
+
+    @Nonnull
+    public BasicValuesPositionColorModifier getBasicValuesColorModifier() {
+        return Objects.requireNonNull(basicValuesColorModifier);
+    }
+    
+    @ParametersAreNonnullByDefault
+    public static class BinEdInspectorFileExtension implements BinEdFileManager.BinEdFileExtension {
+
+        private final BinEdInspectorComponentExtension.ComponentsProvider componentsProvider;
+
+        public BinEdInspectorFileExtension(@Nullable BinEdInspectorComponentExtension.ComponentsProvider componentsProvider) {
+            this.componentsProvider = componentsProvider;
+        }
+
+        @Nonnull
+        @Override
+        public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+            BinEdInspectorComponentExtension binEdComponentInspector = new BinEdInspectorComponentExtension(componentsProvider);
+            return Optional.of(binEdComponentInspector);
+        }
     }
 }

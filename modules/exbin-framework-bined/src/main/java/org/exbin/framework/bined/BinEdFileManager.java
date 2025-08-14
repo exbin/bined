@@ -69,7 +69,7 @@ public class BinEdFileManager {
 
     public void initComponentPanel(BinEdComponentPanel componentPanel) {
         SectCodeArea codeArea = componentPanel.getCodeArea();
-        
+
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             if (componentExtension.isPresent()) {
@@ -145,7 +145,7 @@ public class BinEdFileManager {
             ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
         }
     }
-    
+
     public void updateTextEncodingStatus(EncodingsHandler encodingsHandler) {
         if (binaryStatusPanel != null) {
             encodingsHandler.setTextEncodingStatus(binaryStatusPanel);

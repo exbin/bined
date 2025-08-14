@@ -21,11 +21,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.inspector.BinEdComponentInspector;
+import org.exbin.framework.bined.inspector.BasicValuesInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
+import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
 import org.exbin.framework.bined.inspector.options.gui.DataInspectorOptionsPanel;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -116,9 +119,10 @@ public class DataInspectorOptionsPage implements DefaultOptionsPage<DataInspecto
         if (activeFile.isPresent()) {
             FileHandler fileHandler = activeFile.get();
             if (fileHandler instanceof BinEdFileHandler) {
-                BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-                BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
-                currentFont = componentExtension.getInputFieldsFont();
+                BasicValuesInspector basicValuesInspector = DataInspectorOptionsPage.getBinEdInspector(((BinEdFileHandler) fileHandler).getComponent());
+                if (basicValuesInspector != null) {
+                    currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
+                }
             }
         }
 
@@ -161,10 +165,19 @@ public class DataInspectorOptionsPage implements DefaultOptionsPage<DataInspecto
         }
 
         BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-        BinEdComponentInspector componentExtension = component.getComponentExtension(BinEdComponentInspector.class);
+        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(options.isShowParsingPanel());
         boolean useDefaultFont = options.isUseDefaultFont();
         Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
-        componentExtension.setInputFieldsFont(useDefaultFont || fontAttributes == null ? defaultFont : new Font(fontAttributes));
+        BasicValuesInspector basicValuesInspector = DataInspectorOptionsPage.getBinEdInspector(component);
+        if (basicValuesInspector != null) {
+            ((BasicValuesPanel) basicValuesInspector.getComponent()).setInputFieldsFont(useDefaultFont || fontAttributes == null ? defaultFont : new Font(fontAttributes));
+        }
+    }
+    
+    @Nullable
+    private static BasicValuesInspector getBinEdInspector(BinEdComponentPanel component) {
+        BinEdInspectorComponentExtension extension = component.getBinEdComponentExtensions(BinEdInspectorComponentExtension.class).orElse(null);
+        return extension != null ? extension.getInspector(BasicValuesInspector.class) : null;
     }
 }
