@@ -19,9 +19,15 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import org.exbin.bined.CodeAreaCaretListener;
+import org.exbin.bined.CodeAreaCaretPosition;
+import org.exbin.bined.DataChangedListener;
+import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
@@ -36,29 +42,53 @@ import org.exbin.framework.preferences.api.OptionsStorage;
 public class BasicValuesInspector implements BinEdInspector {
 
     private BasicValuesPanel component;
+    private CodeAreaCore codeArea;
+    private BinaryDataUndoRedo undoRedo;
+
+    private DataChangedListener dataChangedListener;
+    private CodeAreaCaretListener caretMovedListener;
+    private BinaryDataUndoRedoChangeListener undoRedoChangeListener;
 
     @Nonnull
     @Override
     public JComponent getComponent() {
         if (component == null) {
             component = new BasicValuesPanel();
+            dataChangedListener = () -> {
+                component.updateEditMode();
+                component.updateValues();
+            };
+            caretMovedListener = (CodeAreaCaretPosition caretPosition) -> component.updateValues();
+            undoRedoChangeListener = component::updateValues;
         }
         return component;
     }
 
     @Override
-    public void setCodeArea(CodeAreaCore codeArea, BinaryDataUndoRedo undoRedo) {
+    public void setCodeArea(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
+        this.codeArea = codeArea;
+        this.undoRedo = undoRedo;
         component.setCodeArea(codeArea, undoRedo);
     }
 
     @Override
     public void activateSync() {
-        component.activateSync();
+        codeArea.addDataChangedListener(dataChangedListener);
+        ((CaretCapable) codeArea).addCaretMovedListener(caretMovedListener);
+        if (undoRedo != null) {
+            undoRedo.addChangeListener(undoRedoChangeListener);
+        }
+        component.updateEditMode();
+        component.updateValues();
     }
 
     @Override
     public void deactivateSync() {
-        component.deactivateSync();
+        codeArea.removeDataChangedListener(dataChangedListener);
+        ((CaretCapable) codeArea).removeCaretMovedListener(caretMovedListener);
+        if (undoRedo != null) {
+            undoRedo.addChangeListener(undoRedoChangeListener);
+        }
     }
 
     @Override

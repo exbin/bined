@@ -18,6 +18,7 @@ package org.exbin.framework.bined.inspector.pixelmap;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import org.exbin.bined.DataChangedListener;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
@@ -33,29 +34,34 @@ import org.exbin.framework.preferences.api.OptionsStorage;
 public class PixelMapInspector implements BinEdInspector {
 
     private PixelMapPanel component;
+    private CodeAreaCore codeArea;
 
+    private DataChangedListener dataChangedListener;
+    
     @Nonnull
     @Override
     public JComponent getComponent() {
         if (component == null) {
             component = new PixelMapPanel();
+            dataChangedListener = component::dataChanged;
         }
         return component;
     }
 
     @Override
     public void setCodeArea(CodeAreaCore codeArea, BinaryDataUndoRedo undoRedo) {
+        this.codeArea = codeArea;
         component.setCodeArea(codeArea);
     }
 
     @Override
     public void activateSync() {
-        // TODO
+        codeArea.addDataChangedListener(dataChangedListener);
     }
 
     @Override
     public void deactivateSync() {
-        // TODO
+        codeArea.removeDataChangedListener(dataChangedListener);
     }
 
     @Override

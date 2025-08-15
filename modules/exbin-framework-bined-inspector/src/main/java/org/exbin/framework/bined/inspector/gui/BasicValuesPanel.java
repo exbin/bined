@@ -35,7 +35,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.CodeAreaCaretPosition;
-import org.exbin.bined.DataChangedListener;
 import org.exbin.bined.operation.BinaryDataCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCompoundCommand;
 import org.exbin.bined.operation.swing.command.InsertDataCommand;
@@ -46,13 +45,11 @@ import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.capability.CaretCapable;
-import org.exbin.bined.operation.undo.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
-import org.exbin.bined.CodeAreaCaretListener;
 import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
@@ -79,9 +76,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private CodeAreaCore codeArea;
     private BinaryDataUndoRedo undoRedo;
     private long dataPosition;
-    private DataChangedListener dataChangedListener;
-    private CodeAreaCaretListener caretMovedListener;
-    private BinaryDataUndoRedoChangeListener undoRedoChangeListener;
 
     private final byte[] valuesCache = new byte[CACHE_SIZE];
     private final ByteBuffer byteBuffer = ByteBuffer.wrap(valuesCache);
@@ -89,18 +83,8 @@ public class BasicValuesPanel extends javax.swing.JPanel {
 
     public BasicValuesPanel() {
         initComponents();
-        init();
     }
     
-    private void init() {
-        dataChangedListener = () -> {
-            updateEditMode();
-            updateValues();
-        };
-        caretMovedListener = (CodeAreaCaretPosition caretPosition) -> updateValues();
-        undoRedoChangeListener = this::updateValues;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -781,24 +765,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         doubleTextField.setFont(font);
         characterTextField.setFont(font);
         stringTextField.setFont(font);
-    }
-
-    public void activateSync() {
-        codeArea.addDataChangedListener(dataChangedListener);
-        ((CaretCapable) codeArea).addCaretMovedListener(caretMovedListener);
-        if (undoRedo != null) {
-            undoRedo.addChangeListener(undoRedoChangeListener);
-        }
-        updateEditMode();
-        updateValues();
-    }
-
-    public void deactivateSync() {
-        codeArea.removeDataChangedListener(dataChangedListener);
-        ((CaretCapable) codeArea).removeCaretMovedListener(caretMovedListener);
-        if (undoRedo != null) {
-            undoRedo.addChangeListener(undoRedoChangeListener);
-        }
     }
 
     public void updateEditMode() {

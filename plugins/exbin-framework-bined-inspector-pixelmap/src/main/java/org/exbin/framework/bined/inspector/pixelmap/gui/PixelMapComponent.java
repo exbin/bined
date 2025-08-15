@@ -95,10 +95,16 @@ public class PixelMapComponent extends JComponent {
 
     public void setCodeArea(CodeAreaCore codeArea) {
         this.codeArea = codeArea;
+        dataChanged();
+    }
+
+    public void dataChanged() {
         long dataSize = codeArea.getDataSize();
         long height = (dataSize + pixelPerRow - 1) / pixelPerRow * pixelSize;
         Dimension size = new Dimension(pixelPerRow * pixelSize, height > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) height);
         setMinimumSize(size);
         setPreferredSize(size);
+        revalidate();
+        repaint();
     }
 }

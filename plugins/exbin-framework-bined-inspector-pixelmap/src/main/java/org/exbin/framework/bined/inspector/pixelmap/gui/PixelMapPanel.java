@@ -48,6 +48,10 @@ public class PixelMapPanel extends javax.swing.JPanel {
     public void setCodeArea(CodeAreaCore codeArea) {
         component.setCodeArea(codeArea);
     }
+    
+    public void dataChanged() {
+        component.dataChanged();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
