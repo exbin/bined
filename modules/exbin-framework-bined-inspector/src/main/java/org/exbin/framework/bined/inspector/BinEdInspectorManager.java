@@ -50,4 +50,8 @@ public class BinEdInspectorManager {
 
         return Optional.empty();
     }
+
+    public void removeAllInspectors() {
+        inspectorProviders.clear();
+    }
 }

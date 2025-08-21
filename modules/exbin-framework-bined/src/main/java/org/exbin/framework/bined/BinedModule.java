@@ -56,6 +56,8 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextService;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.DefaultActionContextService;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.toolbar.api.GroupToolBarContributionRule;
@@ -452,8 +454,9 @@ public class BinedModule implements Module {
         popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
 
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActionContextService actionContextService = frameModule.getFrameHandler().getActionContextService();
+        DefaultActionContextService actionContextService = new DefaultActionContextService();
+        actionContextService.updated(ActiveComponent.class, new BinEdDataComponent(codeArea));
+        actionContextService.updated(EditorProvider.class, editorProvider);
         menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionContextService);
         return popupMenu;
     }

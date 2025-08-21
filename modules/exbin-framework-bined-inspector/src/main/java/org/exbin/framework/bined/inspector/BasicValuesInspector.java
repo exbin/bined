@@ -53,7 +53,7 @@ public class BasicValuesInspector implements BinEdInspector {
     @Override
     public JComponent getComponent() {
         if (component == null) {
-            component = new BasicValuesPanel();
+            component = createComponent();
             dataChangedListener = () -> {
                 component.updateEditMode();
                 component.updateValues();
@@ -62,6 +62,11 @@ public class BasicValuesInspector implements BinEdInspector {
             undoRedoChangeListener = component::updateValues;
         }
         return component;
+    }
+
+    @Nonnull
+    protected BasicValuesPanel createComponent() {
+        return new BasicValuesPanel();
     }
 
     @Override
