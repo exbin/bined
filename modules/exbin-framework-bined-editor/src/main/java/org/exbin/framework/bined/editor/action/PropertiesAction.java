@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.editor.action;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -25,6 +24,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.editor.gui.BinEdFilePropertiesPanel;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
@@ -42,6 +42,7 @@ public class PropertiesAction extends AbstractAction {
 
     public static final String ACTION_ID = "propertiesAction";
 
+    private DialogParentComponent dialogParentComponent;
     private FileHandler fileHandler;
 
     public PropertiesAction() {
@@ -57,6 +58,9 @@ public class PropertiesAction extends AbstractAction {
                 manager.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance;
                     setEnabled(fileHandler instanceof BinEdFileHandler);
+                });
+                manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+                    dialogParentComponent = instance;
                 });
             }
         });
@@ -79,6 +83,6 @@ public class PropertiesAction extends AbstractAction {
             dialog.close();
             dialog.dispose();
         });
-        dialog.showCentered((Component) e.getSource());
+        dialog.showCentered(dialogParentComponent.getComponent());
     }
 }

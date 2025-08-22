@@ -33,13 +33,13 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.StreamUtils;
 import org.exbin.framework.bined.tool.content.gui.DragDropContentPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
@@ -58,6 +58,7 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     public static final String HELP_ID = "drag-and-drop-content";
 
     private DragDropContentPanel dragDropContentPanel = new DragDropContentPanel();
+    private DialogParentComponent dialogParentComponent;
     private EditorProvider editorProvider;
 
     public DragDropContentAction() {
@@ -73,7 +74,6 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     @Override
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         CloseControlPanel controlPanel = new CloseControlPanel();
         HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
         helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
@@ -130,7 +130,7 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
             dialog.dispose();
         });
         windowModule.addHeaderPanel(dialog.getWindow(), dragDropContentPanel.getClass(), dragDropContentPanel.getResourceBundle());
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(dialogParentComponent.getComponent());
     }
 
     @Override
@@ -138,6 +138,9 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(instance != null);
+        });
+        manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+            dialogParentComponent = instance;
         });
     }
 }

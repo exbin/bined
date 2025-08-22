@@ -28,11 +28,11 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.macro.MacroManager;
 import org.exbin.framework.bined.macro.gui.MacrosManagerPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
@@ -47,7 +47,7 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
 
     public static final String ACTION_ID = "manageMacrosAction";
 
-    private EditorProvider editorProvider;
+    private DialogParentComponent dialogParentComponent;
 
     public ManageMacrosAction() {
     }
@@ -74,7 +74,7 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, macrosPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(dialogParentComponent.getComponent(), Dialog.ModalityType.APPLICATION_MODAL, macrosPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), macrosPanel.getClass(), macrosPanel.getResourceBundle());
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
@@ -94,13 +94,13 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
             }
         });
 
-        dialog.showCentered(editorProvider.getEditorComponent());
+        dialog.showCentered(dialogParentComponent.getComponent());
     }
 
     @Override
     public void register(ActionContextChangeManager manager) {
-        manager.registerUpdateListener(EditorProvider.class, (instance) -> {
-            editorProvider = instance;
+        manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+            dialogParentComponent = instance;
             setEnabled(instance != null);
         });
     }

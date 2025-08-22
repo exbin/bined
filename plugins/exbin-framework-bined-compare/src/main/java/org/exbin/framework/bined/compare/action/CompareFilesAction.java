@@ -40,6 +40,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -67,6 +68,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public static final String HELP_ID = "compare-files-action";
 
     private EditorProvider editorProvider;
+    private DialogParentComponent dialogParentComponent;
 
     public CompareFilesAction() {
     }
@@ -87,7 +89,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
         helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(editorProvider.getEditorComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(dialogParentComponent.getComponent(), Dialog.ModalityType.APPLICATION_MODAL, compareFilesPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setSize(new Dimension(preferredSize.width, preferredSize.height + 450));
@@ -147,7 +149,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
                 return ((BinEdFileHandler) fileHandlers.get(index)).getCodeArea().getContentData();
             }
         });
-        dialog.showCentered(editorProvider.getEditorComponent());
+        dialog.showCentered(dialogParentComponent.getComponent());
     }
 
     @Override
@@ -155,6 +157,9 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(instance != null);
+        });
+        manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+            dialogParentComponent = instance;
         });
     }
 }

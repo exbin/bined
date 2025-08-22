@@ -24,12 +24,16 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.CodeAreaSelection;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionContextChange;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
@@ -46,6 +50,7 @@ public class EditBookmarkAction extends AbstractAction {
 
     private BookmarkRecord bookmarkRecord;
     private CodeAreaSelection currentSelection;
+    private CodeAreaCore codeArea;
 
     public EditBookmarkAction() {
     }
@@ -54,6 +59,15 @@ public class EditBookmarkAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
+            @Override
+            public void register(ActionContextChangeManager manager) {
+                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                    setEnabled(instance != null);
+                });
+            }
+        });
     }
 
     public void setCurrentSelection(CodeAreaSelection currentSelection) {
@@ -78,8 +92,7 @@ public class EditBookmarkAction extends AbstractAction {
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setController((actionType) -> {
             switch (actionType) {
@@ -95,6 +108,6 @@ public class EditBookmarkAction extends AbstractAction {
             dialog.close();
         });
 
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(codeArea);
     }
 }

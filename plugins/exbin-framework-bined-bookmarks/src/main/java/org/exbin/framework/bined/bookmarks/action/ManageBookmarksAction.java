@@ -23,14 +23,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionContextChange;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.bookmarks.BookmarksManager;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
@@ -47,6 +51,7 @@ public class ManageBookmarksAction extends AbstractAction {
 
     public static final String ACTION_ID = "manageBookmarksAction";
     public static final String HELP_ID = "bookmarks";
+    private CodeAreaCore codeArea;
 
     public ManageBookmarksAction() {
     }
@@ -55,6 +60,15 @@ public class ManageBookmarksAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
+            @Override
+            public void register(ActionContextChangeManager manager) {
+                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                    setEnabled(instance != null);
+                });
+            }
+        });
     }
 
     @Override
@@ -73,8 +87,7 @@ public class ManageBookmarksAction extends AbstractAction {
         helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), bookmarksPanel.getClass(), bookmarksPanel.getResourceBundle());
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
@@ -94,6 +107,6 @@ public class ManageBookmarksAction extends AbstractAction {
             }
         });
 
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(codeArea);
     }
 }

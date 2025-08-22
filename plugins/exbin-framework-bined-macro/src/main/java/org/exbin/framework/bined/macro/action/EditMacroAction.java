@@ -25,7 +25,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionContextChange;
+import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.macro.gui.MacroEditorPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -44,6 +47,7 @@ public class EditMacroAction extends AbstractAction {
     public static final String ACTION_ID = "editMacroAction";
 
     private MacroRecord macroRecord;
+    private DialogParentComponent dialogParentComponent;
 
     public EditMacroAction() {
     }
@@ -52,6 +56,11 @@ public class EditMacroAction extends AbstractAction {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, (ActionContextChange) (ActionContextChangeManager manager) -> {
+            manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+                dialogParentComponent = instance;
+            });
+        });
     }
 
     @Nonnull
@@ -71,8 +80,7 @@ public class EditMacroAction extends AbstractAction {
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(frameModule.getFrame(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(dialogParentComponent.getComponent(), Dialog.ModalityType.APPLICATION_MODAL, macroEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setController((actionType) -> {
             switch (actionType) {
@@ -88,6 +96,6 @@ public class EditMacroAction extends AbstractAction {
             dialog.close();
         });
 
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(dialogParentComponent.getComponent());
     }
 }

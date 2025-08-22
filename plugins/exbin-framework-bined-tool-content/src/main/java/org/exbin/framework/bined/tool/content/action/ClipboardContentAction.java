@@ -33,6 +33,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.StreamUtils;
@@ -57,6 +58,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     public static final String HELP_ID = "clipboard-content";
 
     private ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
+    private DialogParentComponent dialogParentComponent;
     private EditorProvider editorProvider;
 
     public ClipboardContentAction() {
@@ -138,8 +140,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
                 }
             }
         });
-        windowModule.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
-        dialog.showCentered(frameModule.getFrame());
+        dialog.showCentered(dialogParentComponent.getComponent());
     }
 
     @Override
@@ -147,6 +148,9 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(instance != null);
+        });
+        manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+            dialogParentComponent = instance;
         });
     }
 }

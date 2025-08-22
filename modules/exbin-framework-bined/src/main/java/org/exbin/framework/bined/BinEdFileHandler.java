@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -48,6 +49,7 @@ import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
@@ -468,6 +470,13 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(TextEncodingController.class, binaryDataComponent);
         componentActivationListener.updated(UndoRedoState.class, undoRedo);
         componentActivationListener.updated(ActiveComponent.class, binaryDataComponent);
+        componentActivationListener.updated(DialogParentComponent.class, new DialogParentComponent() {
+            @Nonnull
+            @Override
+            public Component getComponent() {
+                return binaryDataComponent.getCodeArea();
+            }
+        });
     }
 
     @Override
@@ -477,6 +486,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(TextEncodingController.class, null);
         componentActivationListener.updated(UndoRedoState.class, null);
         componentActivationListener.updated(ActiveComponent.class, null);
+        componentActivationListener.updated(DialogParentComponent.class, null);
     }
 
     private void notifyUndoChanged() {
