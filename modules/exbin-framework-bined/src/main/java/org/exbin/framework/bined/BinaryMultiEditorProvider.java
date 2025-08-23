@@ -47,11 +47,11 @@ import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ComponentActivationListener;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedo;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 
 /**
@@ -69,6 +69,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     private ClipboardStateListener clipboardActionsUpdateListener;
     private BinaryStatusApi binaryStatus;
     private TextEncodingStatusApi textEncodingStatusApi;
+    private DialogParentComponent dialogParentComponent;
 
     public BinaryMultiEditorProvider() {
         init();
@@ -77,6 +78,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     private void init() {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        dialogParentComponent = () -> frameModule.getFrame();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.addFlavorListener((FlavorEvent e) -> {
             updateClipboardActionsStatus();
@@ -139,6 +141,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     @Override
     public BinEdFileHandler createFileHandler(int id) {
         BinEdFileHandler fileHandler = new BinEdFileHandler(id);
+        fileHandler.setDialogParentComponent(dialogParentComponent);
 
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();

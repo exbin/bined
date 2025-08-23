@@ -78,6 +78,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        setEnabled(false);
     }
 
     @Override
@@ -156,10 +157,11 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public void register(ActionContextChangeManager manager) {
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
-            setEnabled(instance != null);
+            setEnabled(editorProvider != null && dialogParentComponent != null);
         });
         manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
+            setEnabled(editorProvider != null && dialogParentComponent != null);
         });
     }
 }

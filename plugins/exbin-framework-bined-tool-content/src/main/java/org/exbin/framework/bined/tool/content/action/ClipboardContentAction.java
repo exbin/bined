@@ -41,7 +41,6 @@ import org.exbin.framework.bined.tool.content.gui.ClipboardContentControlPanel;
 import org.exbin.framework.bined.tool.content.gui.ClipboardContentPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
@@ -69,12 +68,12 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        setEnabled(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         clipboardContentPanel.loadFromClipboard();
         ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
         controlPanel.setHelpLink(new HelpLink(HELP_ID));
@@ -147,10 +146,11 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     public void register(ActionContextChangeManager manager) {
         manager.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
-            setEnabled(instance != null);
+            setEnabled(editorProvider != null && dialogParentComponent != null);
         });
         manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
+            setEnabled(editorProvider != null && dialogParentComponent != null);
         });
     }
 }

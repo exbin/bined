@@ -83,6 +83,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
         this.activeFile = activeFile;
+        activeFile.setDialogParentComponent(() -> frameModule.getFrame());
         fileTypes = new AllFileTypes();
 
         activeFile.getComponent().setDropTarget(new DropTarget() {

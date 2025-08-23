@@ -77,6 +77,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private long documentOriginalSize;
     private ComponentActivationListener componentActivationListener;
     private BinEdDataComponent binaryDataComponent;
+    private DialogParentComponent dialogParentComponent;
     private UndoRedo undoRedo = null;
 
     public BinEdFileHandler() {
@@ -486,7 +487,12 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         componentActivationListener.updated(TextEncodingController.class, null);
         componentActivationListener.updated(UndoRedoState.class, null);
         componentActivationListener.updated(ActiveComponent.class, null);
-        componentActivationListener.updated(DialogParentComponent.class, null);
+        componentActivationListener.updated(DialogParentComponent.class, dialogParentComponent);
+    }
+
+    @Override
+    public void setDialogParentComponent(DialogParentComponent dialogParentComponent) {
+        this.dialogParentComponent = dialogParentComponent;
     }
 
     private void notifyUndoChanged() {
