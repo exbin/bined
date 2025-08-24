@@ -101,7 +101,7 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
     public void register(ActionContextChangeManager manager) {
         manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
-            setEnabled(instance != null);
+            setEnabled(dialogParentComponent != null);
         });
     }
 }

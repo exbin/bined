@@ -30,6 +30,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.bookmarks.BinedBookmarksModule;
 import org.exbin.framework.bined.bookmarks.BookmarksManager;
@@ -51,6 +52,8 @@ public class ManageBookmarksAction extends AbstractAction {
 
     public static final String ACTION_ID = "manageBookmarksAction";
     public static final String HELP_ID = "bookmarks";
+
+    private DialogParentComponent dialogParentComponent;
     private CodeAreaCore codeArea;
 
     public ManageBookmarksAction() {
@@ -65,10 +68,15 @@ public class ManageBookmarksAction extends AbstractAction {
             public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    setEnabled(instance != null);
+                    setEnabled(codeArea != null && dialogParentComponent != null);
+                });
+                manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+                    dialogParentComponent = instance;
+                    setEnabled(codeArea != null && dialogParentComponent != null);
                 });
             }
         });
+        setEnabled(false);
     }
 
     @Override
@@ -87,7 +95,7 @@ public class ManageBookmarksAction extends AbstractAction {
         helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(dialogParentComponent.getComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarksPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), bookmarksPanel.getClass(), bookmarksPanel.getResourceBundle());
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         Dimension preferredSize = dialog.getWindow().getPreferredSize();

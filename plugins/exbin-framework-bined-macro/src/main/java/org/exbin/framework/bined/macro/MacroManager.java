@@ -45,6 +45,7 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionManager;
 import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
@@ -267,6 +268,9 @@ public class MacroManager {
                         ((ComponentActivationListener) actionManager).updated(ActiveComponent.class, instance);
                         activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                         updateMacrosMenu();
+                    });
+                    manager.registerUpdateListener(DialogParentComponent.class, (instance) -> {
+                        ((ComponentActivationListener) actionManager).updated(DialogParentComponent.class, instance);
                     });
                     manager.registerUpdateListener(EditorProvider.class, (instance) -> {
                         ((ComponentActivationListener) actionManager).updated(EditorProvider.class, instance);

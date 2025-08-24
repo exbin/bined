@@ -97,12 +97,12 @@ public class BinEdDataComponent implements ActiveComponent, BinaryDataComponent,
 
     @Override
     public boolean canPaste() {
-        return codeArea.canPaste();
+        return codeArea.isEditable() && codeArea.canPaste();
     }
 
     @Override
     public boolean canDelete() {
-        return true;
+        return codeArea.isEditable();
     }
 
     @Override

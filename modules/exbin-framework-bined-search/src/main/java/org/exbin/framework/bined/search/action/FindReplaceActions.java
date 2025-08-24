@@ -97,7 +97,7 @@ public class FindReplaceActions {
 
         public static final String ACTION_ID = "binarySearchFindAction";
 
-        private FileHandler fileHandler;
+        private BinEdFileHandler fileHandler;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -118,11 +118,12 @@ public class FindReplaceActions {
                 }
             });
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+            setEnabled(false);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
+            BinEdComponentPanel activePanel = fileHandler.getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
         }
@@ -130,8 +131,8 @@ public class FindReplaceActions {
         @Override
         public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
-                fileHandler = instance;
-                setEnabled(instance != null);
+                fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                setEnabled(fileHandler != null);
             });
         }
     }
@@ -141,7 +142,7 @@ public class FindReplaceActions {
 
         public static final String ACTION_ID = "binarySearchFindAgainAction";
 
-        private FileHandler fileHandler;
+        private BinEdFileHandler fileHandler;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -161,11 +162,12 @@ public class FindReplaceActions {
                 }
             });
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+            setEnabled(false);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
+            BinEdComponentPanel activePanel = fileHandler.getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.performFindAgain();
 
@@ -177,8 +179,8 @@ public class FindReplaceActions {
         @Override
         public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
-                fileHandler = instance;
-                setEnabled(instance != null);
+                fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                setEnabled(fileHandler != null);
             });
         }
     }
@@ -188,7 +190,7 @@ public class FindReplaceActions {
 
         public static final String ACTION_ID = "binarySearchReplaceAction";
 
-        private FileHandler fileHandler;
+        private BinEdFileHandler fileHandler;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -209,11 +211,12 @@ public class FindReplaceActions {
                 }
             });
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+            setEnabled(false);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = ((BinEdFileHandler) fileHandler).getComponent();
+            BinEdComponentPanel activePanel = fileHandler.getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
         }
@@ -221,8 +224,8 @@ public class FindReplaceActions {
         @Override
         public void register(ActionContextChangeManager manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
-                fileHandler = instance;
-                setEnabled(instance != null);
+                fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                setEnabled(fileHandler != null);
             });
         }
     }

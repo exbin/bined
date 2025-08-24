@@ -458,6 +458,7 @@ public class BinedModule implements Module {
         DefaultActionContextService actionContextService = new DefaultActionContextService();
         actionContextService.updated(ActiveComponent.class, new BinEdDataComponent(codeArea));
         actionContextService.updated(EditorProvider.class, editorProvider);
+        actionContextService.updated(FileHandler.class, editorProvider.getActiveFile().orElse(null));
         actionContextService.updated(DialogParentComponent.class, () -> codeArea);
         menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionContextService);
         return popupMenu;
