@@ -30,12 +30,27 @@ import org.exbin.bined.swing.CodeAreaCore;
 @ParametersAreNonnullByDefault
 public interface ConvertDataMethod {
 
+    /**
+     * Returns method name.
+     *
+     * @return method name
+     */
     @Nonnull
     String getName();
 
+    /**
+     * Returns method component.
+     *
+     * @return method component
+     */
     @Nonnull
     Component getComponent();
 
+    /**
+     * Initializes focus.
+     *
+     * @param component component
+     */
     void initFocus(Component component);
 
     /**
@@ -66,6 +81,5 @@ public interface ConvertDataMethod {
      * @param codeArea source code area
      * @param lengthLimit limit to length of set data
      */
-    @Nonnull
     void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit);
 }

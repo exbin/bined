@@ -36,6 +36,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 
 /**
  * File manager for binary editor.
@@ -68,8 +69,6 @@ public class BinEdFileManager {
     }
 
     public void initComponentPanel(BinEdComponentPanel componentPanel) {
-        SectCodeArea codeArea = componentPanel.getCodeArea();
-
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             if (componentExtension.isPresent()) {
@@ -86,22 +85,6 @@ public class BinEdFileManager {
         for (CodeAreaColorAssessor modifier : painterPositionColorModifiers) {
             painter.addColorModifier(modifier);
         }
-
-        // TODO
-//        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-//        OptionsStorage preferences = preferencesModule.getAppPreferences();
-//        BinaryViewerOptions binaryEditorPreferences = new BinaryViewerOptions(preferences);
-//        componentPanel.onInitFromPreferences(binaryEditorPreferences);
-//        String encoding = binaryEditorPreferences.getEncodingOptions().getSelectedEncoding();
-//        if (!encoding.isEmpty()) {
-//            codeArea.setCharset(Charset.forName(encoding));
-//        }
-//
-//        TextFontOptions textFontOptions = binaryEditorPreferences.getFontOptions();
-//        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
-//        if (binaryStatusPanel != null) {
-//            binaryStatusPanel.loadFromOptions(binaryEditorPreferences.getStatusOptions());
-//        }
     }
 
     public void initCommandHandler(BinEdComponentPanel componentPanel) {
@@ -171,6 +154,19 @@ public class BinEdFileManager {
     }
 
     public void loadFromOptions(OptionsStorage options) {
+        // TODO
+//        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+//        OptionsStorage preferences = preferencesModule.getAppPreferences();
+//        BinaryViewerOptions binaryEditorPreferences = new BinaryViewerOptions(preferences);
+//        componentPanel.onInitFromPreferences(binaryEditorPreferences);
+//        String encoding = binaryEditorPreferences.getEncodingOptions().getSelectedEncoding();
+//        if (!encoding.isEmpty()) {
+//            codeArea.setCharset(Charset.forName(encoding));
+//        }
+//
+//        TextFontOptions textFontOptions = binaryEditorPreferences.getFontOptions();
+//        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
+
         if (binaryStatusPanel != null) {
             binaryStatusPanel.loadFromOptions(new StatusOptions(options));
         }

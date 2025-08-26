@@ -65,6 +65,7 @@ public class StopMacroRecordingAction extends AbstractAction {
                 });
             }
         });
+        setEnabled(false);
     }
 
     public void setMacroManager(MacroManager macroManager) {

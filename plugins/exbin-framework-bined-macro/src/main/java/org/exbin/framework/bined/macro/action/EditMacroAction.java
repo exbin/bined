@@ -31,7 +31,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.macro.gui.MacroEditorPanel;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
@@ -59,8 +58,10 @@ public class EditMacroAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, (ActionContextChange) (ActionContextChangeManager manager) -> {
             manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
                 dialogParentComponent = instance;
+                setEnabled(dialogParentComponent != null);
             });
         });
+        setEnabled(false);
     }
 
     @Nonnull
@@ -70,6 +71,10 @@ public class EditMacroAction extends AbstractAction {
 
     public void setMacroRecord(@Nullable MacroRecord macroRecord) {
         this.macroRecord = macroRecord;
+    }
+
+    public void setDialogParentComponent(DialogParentComponent dialogParentComponent) {
+        this.dialogParentComponent = dialogParentComponent;
     }
 
     @Override

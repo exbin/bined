@@ -23,7 +23,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
@@ -79,7 +81,14 @@ public class ClipboardCodeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO move out of code area
-            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).copyAsCode();
+            CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+            if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                ((CodeAreaOperationCommandHandler) commandHandler).copyAsCode();
+            } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
+                ((DefaultCodeAreaCommandHandler) commandHandler).copyAsCode();
+            } else {
+                throw new IllegalStateException();
+            }
         }
 
         @Override
@@ -113,7 +122,14 @@ public class ClipboardCodeActions {
         public void actionPerformed(ActionEvent e) {
             // TODO move out of code area
             try {
-                ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).pasteFromCode();
+                CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                    ((CodeAreaOperationCommandHandler) commandHandler).pasteFromCode();
+                } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
+                    ((DefaultCodeAreaCommandHandler) commandHandler).pasteFromCode();
+                } else {
+                    throw new IllegalStateException();
+                }
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog((Component) e.getSource(), ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
             }

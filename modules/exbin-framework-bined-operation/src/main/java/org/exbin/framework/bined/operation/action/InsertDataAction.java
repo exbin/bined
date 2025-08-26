@@ -30,6 +30,7 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
@@ -124,7 +125,12 @@ public class InsertDataAction extends AbstractAction {
                     EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
                     CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
 
-                    ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).getUndoRedo().execute(command);
+                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                        ((CodeAreaOperationCommandHandler) commandHandler).getUndoRedo().execute(command);
+                    } else {
+                        command.execute();
+                    }
                 }
                 lastMethod = optionalActiveMethod.orElse(null);
             }

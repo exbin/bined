@@ -26,5 +26,10 @@ import org.exbin.auxiliary.binary_data.BinaryData;
 @ParametersAreNonnullByDefault
 public interface PreviewDataHandler {
 
+    /**
+     * Sets preview data.
+     *
+     * @param binaryData binary data
+     */
     void setPreviewData(BinaryData binaryData);
 }

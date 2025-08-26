@@ -30,12 +30,27 @@ import org.exbin.bined.swing.CodeAreaCore;
 @ParametersAreNonnullByDefault
 public interface InsertDataMethod {
 
+    /**
+     * Returns method name.
+     *
+     * @return method name
+     */
     @Nonnull
     String getName();
 
+    /**
+     * Returns method component.
+     *
+     * @return method component
+     */
     @Nonnull
     Component getComponent();
 
+    /**
+     * Initializes focus.
+     *
+     * @param component component
+     */
     void initFocus(Component component);
 
     /**

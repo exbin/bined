@@ -187,12 +187,17 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
 
                 into('dist/images') {
                     from ('src/ospackage') {
-                        include 'bined.desktop'
                         include 'bined.png'
                         include 'bined.svg'
                     }
                 }
                 
+                into('dist/linux') {
+                    from ('src/ospackage') {
+                        include 'bined.desktop'
+                    }
+                }
+
                 into('dist/flathub') {
                     from ('src/flathub') {
                         include 'org.exbin.BinEd'

@@ -171,9 +171,11 @@ public class MacroManager {
     @Nonnull
     public MacrosManagerPanel createMacrosManagerPanel() {
         final MacrosManagerPanel macrosManagerPanel = new MacrosManagerPanel();
+        final DialogParentComponent dialogParentComponent = () -> macrosManagerPanel;
         macrosManagerPanel.setController(new MacrosManagerPanel.Controller() {
             @Override
             public void addRecord() {
+                addMacroAction.setDialogParentComponent(dialogParentComponent);
                 addMacroAction.actionPerformed(null);
                 Optional<MacroRecord> macroRecord = addMacroAction.getMacroRecord();
                 if (macroRecord.isPresent()) {
@@ -188,6 +190,7 @@ public class MacroManager {
                 int selectedRow = macrosManagerPanel.getTable().getSelectedRow();
                 MacroRecord selectedRecord = macrosManagerPanel.getMacroRecords().get(selectedRow);
                 editMacroAction.setMacroRecord(new MacroRecord(selectedRecord));
+                editMacroAction.setDialogParentComponent(dialogParentComponent);
                 editMacroAction.actionPerformed(null);
                 Optional<MacroRecord> macroRecord = editMacroAction.getMacroRecord();
                 if (macroRecord.isPresent()) {

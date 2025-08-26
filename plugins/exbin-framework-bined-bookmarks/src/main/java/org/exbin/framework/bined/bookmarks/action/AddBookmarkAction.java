@@ -30,6 +30,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.bookmarks.gui.BookmarkEditorPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
@@ -50,6 +51,7 @@ public class AddBookmarkAction extends AbstractAction {
     private ResourceBundle resourceBundle;
     private BookmarkRecord bookmarkRecord = null;
     private CodeAreaSelection currentSelection;
+    private DialogParentComponent dialogParentComponent;
     private CodeAreaCore codeArea;
 
     public AddBookmarkAction() {
@@ -66,10 +68,15 @@ public class AddBookmarkAction extends AbstractAction {
             public void register(ActionContextChangeManager manager) {
                 manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    setEnabled(instance != null);
+                    setEnabled(codeArea != null && dialogParentComponent != null);
+                });
+                manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+                    dialogParentComponent = instance;
+                    setEnabled(codeArea != null && dialogParentComponent != null);
                 });
             }
         });
+        setEnabled(false);
     }
 
     public void setCurrentSelection(CodeAreaSelection currentSelection) {
@@ -81,6 +88,10 @@ public class AddBookmarkAction extends AbstractAction {
         return Optional.ofNullable(bookmarkRecord);
     }
 
+    public void setDialogParentComponent(DialogParentComponent dialogParentComponent) {
+        this.dialogParentComponent = dialogParentComponent;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();
@@ -90,7 +101,7 @@ public class AddBookmarkAction extends AbstractAction {
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
+        final WindowHandler dialog = windowModule.createDialog(dialogParentComponent.getComponent(), Dialog.ModalityType.APPLICATION_MODAL, bookmarkEditorPanel, controlPanel);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setController((actionType) -> {
             switch (actionType) {

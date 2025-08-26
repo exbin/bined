@@ -45,6 +45,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
+import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
@@ -155,6 +156,7 @@ public class BookmarksManager {
     @Nonnull
     public BookmarksManagerPanel createBookmarksManagerPanel() {
         final BookmarksManagerPanel bookmarksManagerPanel = new BookmarksManagerPanel();
+        final DialogParentComponent dialogParentComponent = () -> bookmarksManagerPanel;
         bookmarksManagerPanel.setController(new BookmarksManagerPanel.Controller() {
             @Override
             public void addRecord() {
@@ -166,6 +168,7 @@ public class BookmarksManager {
                 } else {
                     addBookmarkAction.setCurrentSelection(new CodeAreaSelection());
                 }
+                addBookmarkAction.setDialogParentComponent(dialogParentComponent);
                 addBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = addBookmarkAction.getBookmarkRecord();
                 if (bookmarkRecord.isPresent()) {
@@ -188,6 +191,7 @@ public class BookmarksManager {
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
                 int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();
                 editBookmarkAction.setBookmarkRecord(new BookmarkRecord(selectedRecord));
+                editBookmarkAction.setDialogParentComponent(dialogParentComponent);
                 editBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = editBookmarkAction.getBookmarkRecord();
                 if (bookmarkRecord.isPresent()) {

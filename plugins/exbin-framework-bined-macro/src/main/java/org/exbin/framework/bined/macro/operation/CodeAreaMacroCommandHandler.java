@@ -39,7 +39,6 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import static org.exbin.framework.bined.macro.operation.MacroStep.CARET_MOVE;
 
 /**
  * Command handler with support for macro recording.

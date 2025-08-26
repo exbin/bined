@@ -24,6 +24,7 @@ import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
+import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
@@ -113,7 +114,11 @@ public class BinedEditorModule implements Module {
                 if (activeFile.isPresent()) {
                     SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                     CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                    ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
+                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                        ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
+                    } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
+                        ((DefaultCodeAreaCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
+                    }
                 }
             }
 
@@ -123,8 +128,12 @@ public class BinedEditorModule implements Module {
                 if (activeFile.isPresent()) {
                     SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
                     CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                    ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
-                }
+                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                        ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
+                    } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
+                        ((DefaultCodeAreaCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
+                    }
+            }
             }
         });
         codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
@@ -145,9 +154,13 @@ public class BinedEditorModule implements Module {
                         component.onInitFromPreferences(options);
                         SectCodeArea codeArea = component.getCodeArea();
                         BinaryEditorOptions editorOptions = new BinaryEditorOptions(options);
-                        if (codeArea.getCommandHandler() instanceof CodeAreaOperationCommandHandler) {
-                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
-                            ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
+                        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                        if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                            ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
+                            ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
+                        } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
+                            ((DefaultCodeAreaCommandHandler) commandHandler).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
+                            ((DefaultCodeAreaCommandHandler) commandHandler).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
                         }
                     }
 
