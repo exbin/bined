@@ -151,7 +151,6 @@ public class BinedEditorModule implements Module {
 
                     @Override
                     public void onInitFromOptions(OptionsStorage options) {
-                        component.onInitFromPreferences(options);
                         SectCodeArea codeArea = component.getCodeArea();
                         BinaryEditorOptions editorOptions = new BinaryEditorOptions(options);
                         CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();

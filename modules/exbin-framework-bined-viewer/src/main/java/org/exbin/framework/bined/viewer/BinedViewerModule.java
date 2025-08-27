@@ -178,8 +178,6 @@ public class BinedViewerModule implements Module {
 
                     @Override
                     public void onInitFromOptions(OptionsStorage options) {
-                        component.onInitFromPreferences(options);
-
                         SectCodeArea codeArea = component.getCodeArea();
                         CodeAreaOptions.applyToCodeArea(new CodeAreaOptions(options), codeArea);
                     }

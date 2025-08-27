@@ -180,7 +180,7 @@ public class BinedInspectorModule implements Module {
     public BasicValuesPositionColorModifier getBasicValuesColorModifier() {
         return Objects.requireNonNull(basicValuesColorModifier);
     }
-    
+
     @ParametersAreNonnullByDefault
     public static class BinEdInspectorFileExtension implements BinEdFileManager.BinEdFileExtension {
 
