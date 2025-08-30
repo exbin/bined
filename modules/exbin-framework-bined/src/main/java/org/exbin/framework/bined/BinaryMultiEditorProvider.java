@@ -52,6 +52,7 @@ import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedo;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 
 /**
@@ -183,9 +184,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
             }
         });
 
-        // TODO
-        // PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        // fileHandler.onInitFromPreferences(new BinaryViewerOptions(preferencesModule.getAppPreferences()));
+        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+        fileHandler.getComponent().onInitFromPreferences(preferencesModule.getAppPreferences());
 
         attachFilePopupMenu(fileHandler);
 
@@ -245,12 +245,12 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                     int clickedX = x;
                     int clickedY = y;
                     if (invoker instanceof JViewport) {
-                        clickedX += ((JViewport) invoker).getParent().getX();
-                        clickedY += ((JViewport) invoker).getParent().getY();
+                        clickedX += invoker.getParent().getX();
+                        clickedY += invoker.getParent().getY();
                     }
 
                     SectCodeArea codeArea = invoker instanceof SectCodeArea ? (SectCodeArea) invoker
-                            : (SectCodeArea) ((JViewport) invoker).getParent().getParent();
+                            : (SectCodeArea) invoker.getParent().getParent();
 
                     JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
                     popupMenu.addPopupMenuListener(new PopupMenuListener() {

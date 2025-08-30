@@ -89,10 +89,10 @@ public class CodeAreaColorOptions implements OptionsData {
     }
 
     public void setColorProfilesList(List<String> colorProfilesNames) {
-        int themesCount = colorProfilesNames.size();
-        storage.putInt(KEY_COLOR_PROFILES_COUNT, themesCount);
+        int profilesCount = colorProfilesNames.size();
+        storage.putInt(KEY_COLOR_PROFILES_COUNT, profilesCount);
 
-        for (int i = 0; i < themesCount; i++) {
+        for (int i = 0; i < profilesCount; i++) {
             storage.put(KEY_COLOR_PROFILE_NAME_PREFIX + String.valueOf(i), colorProfilesNames.get(i));
         }
     }
@@ -231,7 +231,11 @@ public class CodeAreaColorOptions implements OptionsData {
     @Override
     public void copyTo(OptionsData options) {
         CodeAreaColorOptions with = (CodeAreaColorOptions) options;
-        with.setColorProfilesList(getColorProfilesList());
+        List<String> colorProfilesList = getColorProfilesList();
+        with.setColorProfilesList(colorProfilesList);
         with.setSelectedProfile(getSelectedProfile());
+        for (int i = 0; i < colorProfilesList.size(); i++) {
+            with.setColorsProfile(i, getColorsProfile(i));
+        }
     }
 }

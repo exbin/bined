@@ -113,7 +113,7 @@ public class BinedThemeManager {
         int selectedLayoutProfile = layoutOptions.getSelectedProfile();
         if (selectedLayoutProfile >= 0) {
             codeArea.setLayoutProfile(layoutOptions.getLayoutProfile(selectedLayoutProfile));
-        } else {
+        } else if (defaultLayoutProfile != null) {
             codeArea.setLayoutProfile(defaultLayoutProfile);
         }
 
@@ -121,7 +121,7 @@ public class BinedThemeManager {
         int selectedThemeProfile = themeOptions.getSelectedProfile();
         if (selectedThemeProfile >= 0) {
             codeArea.setThemeProfile(themeOptions.getThemeProfile(selectedThemeProfile));
-        } else {
+        } else if (defaultThemeProfile != null) {
             codeArea.setThemeProfile(defaultThemeProfile);
         }
 
@@ -129,7 +129,7 @@ public class BinedThemeManager {
         int selectedColorProfile = colorOptions.getSelectedProfile();
         if (selectedColorProfile >= 0) {
             codeArea.setColorsProfile(colorOptions.getColorsProfile(selectedColorProfile));
-        } else {
+        } else if (defaultColorProfile != null) {
             codeArea.setColorsProfile(defaultColorProfile);
         }
     }

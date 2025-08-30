@@ -222,8 +222,8 @@ public class BinarySearchComboBoxPanel extends JPanel {
                 int clickedX = x;
                 int clickedY = y;
                 if (invoker instanceof JViewport) {
-                    clickedX += ((JViewport) invoker).getParent().getX();
-                    clickedY += ((JViewport) invoker).getParent().getY();
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
                 }
                 JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, ".search" + postfix, clickedX, clickedY);
                 popupMenu.show(invoker, x, y);

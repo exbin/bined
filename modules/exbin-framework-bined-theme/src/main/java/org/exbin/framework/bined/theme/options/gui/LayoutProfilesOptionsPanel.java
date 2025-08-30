@@ -78,13 +78,17 @@ public class LayoutProfilesOptionsPanel extends javax.swing.JPanel implements Op
 
     @Override
     public void loadFromOptions(CodeAreaLayoutOptions options) {
-        profilesPanel.loadFromOptions(new CodeAreaLayoutProfileOptions(options));
+        CodeAreaLayoutProfileOptions layoutProfileOptions = new CodeAreaLayoutProfileOptions(options);
+        layoutProfileOptions.loadFromPreferences(options);
+        profilesPanel.loadFromOptions(layoutProfileOptions);
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
     public void saveToOptions(CodeAreaLayoutOptions options) {
-        profilesPanel.saveToOptions(new CodeAreaLayoutProfileOptions(options));
+        CodeAreaLayoutProfileOptions layoutProfileOptions = new CodeAreaLayoutProfileOptions(options);
+        profilesPanel.saveToOptions(layoutProfileOptions);
+        layoutProfileOptions.saveToPreferences(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

@@ -35,6 +35,7 @@ import javax.swing.JMenuItem;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.PositionCodeType;
+import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
@@ -77,6 +78,7 @@ import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.text.encoding.options.TextEncodingOptions;
 import org.exbin.framework.text.encoding.service.TextEncodingService;
 import org.exbin.framework.text.font.action.TextFontAction;
+import org.exbin.framework.text.font.options.TextFontOptions;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 
 /**
@@ -180,6 +182,14 @@ public class BinedViewerModule implements Module {
                     public void onInitFromOptions(OptionsStorage options) {
                         SectCodeArea codeArea = component.getCodeArea();
                         CodeAreaOptions.applyToCodeArea(new CodeAreaOptions(options), codeArea);
+
+                        String encoding = new TextEncodingOptions(options).getSelectedEncoding();
+                        if (!encoding.isEmpty()) {
+                            codeArea.setCharset(Charset.forName(encoding));
+                        }
+
+                        TextFontOptions textFontOptions = new TextFontOptions(options);
+                        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
                     }
 
                     @Override

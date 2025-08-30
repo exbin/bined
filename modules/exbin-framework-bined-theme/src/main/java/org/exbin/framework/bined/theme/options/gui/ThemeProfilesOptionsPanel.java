@@ -78,13 +78,17 @@ public class ThemeProfilesOptionsPanel extends javax.swing.JPanel implements Opt
 
     @Override
     public void loadFromOptions(CodeAreaThemeOptions options) {
-        profilesPanel.loadFromOptions(new CodeAreaThemeProfileOptions(options));
+        CodeAreaThemeProfileOptions themeProfileOptions = new CodeAreaThemeProfileOptions(options);
+        themeProfileOptions.loadFromPreferences(options);
+        profilesPanel.loadFromOptions(themeProfileOptions);
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
     public void saveToOptions(CodeAreaThemeOptions options) {
-        profilesPanel.saveToOptions(new CodeAreaThemeProfileOptions(options));
+        CodeAreaThemeProfileOptions themeProfileOptions = new CodeAreaThemeProfileOptions(options);
+        profilesPanel.saveToOptions(themeProfileOptions);
+        themeProfileOptions.saveToPreferences(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

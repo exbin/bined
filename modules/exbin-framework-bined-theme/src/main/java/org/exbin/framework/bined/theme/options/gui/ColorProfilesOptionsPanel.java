@@ -78,13 +78,17 @@ public class ColorProfilesOptionsPanel extends javax.swing.JPanel implements Opt
 
     @Override
     public void loadFromOptions(CodeAreaColorOptions options) {
-        profilesPanel.loadFromOptions(new CodeAreaColorProfileOptions(options));
+        CodeAreaColorProfileOptions colorProfileOptions = new CodeAreaColorProfileOptions(options);
+        colorProfileOptions.loadFromPreferences(options);
+        profilesPanel.loadFromOptions(colorProfileOptions);
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
     public void saveToOptions(CodeAreaColorOptions options) {
-        profilesPanel.saveToOptions(new CodeAreaColorProfileOptions(options));
+        CodeAreaColorProfileOptions colorProfileOptions = new CodeAreaColorProfileOptions(options);
+        profilesPanel.saveToOptions(colorProfileOptions);
+        colorProfileOptions.saveToPreferences(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

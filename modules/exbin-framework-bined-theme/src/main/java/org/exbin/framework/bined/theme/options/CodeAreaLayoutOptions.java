@@ -68,10 +68,10 @@ public class CodeAreaLayoutOptions implements OptionsData {
     }
 
     public void setLayoutProfilesList(List<String> layoutNames) {
-        int themesCount = layoutNames.size();
-        storage.putInt(KEY_LAYOUT_PROFILES_COUNT, themesCount);
+        int profilesCount = layoutNames.size();
+        storage.putInt(KEY_LAYOUT_PROFILES_COUNT, profilesCount);
 
-        for (int i = 0; i < themesCount; i++) {
+        for (int i = 0; i < profilesCount; i++) {
             storage.put(KEY_LAYOUT_PROFILE_NAME_PREFIX + String.valueOf(i), layoutNames.get(i));
         }
     }
@@ -136,7 +136,11 @@ public class CodeAreaLayoutOptions implements OptionsData {
     @Override
     public void copyTo(OptionsData options) {
         CodeAreaLayoutOptions with = (CodeAreaLayoutOptions) options;
-        with.setLayoutProfilesList(getLayoutProfilesList());
+        List<String> layoutProfilesList = getLayoutProfilesList();
+        with.setLayoutProfilesList(layoutProfilesList);
         with.setSelectedProfile(getSelectedProfile());
+        for (int i = 0; i < layoutProfilesList.size(); i++) {
+            with.setLayoutProfile(i, getLayoutProfile(i));
+        }
     }
 }

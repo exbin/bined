@@ -27,6 +27,7 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
+import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -37,6 +38,7 @@ import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.text.font.options.TextFontOptions;
 
 /**
  * File manager for binary editor.
@@ -154,19 +156,6 @@ public class BinEdFileManager {
     }
 
     public void loadFromOptions(OptionsStorage options) {
-        // TODO
-//        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-//        OptionsStorage preferences = preferencesModule.getAppPreferences();
-//        BinaryViewerOptions binaryEditorPreferences = new BinaryViewerOptions(preferences);
-//        componentPanel.onInitFromPreferences(binaryEditorPreferences);
-//        String encoding = binaryEditorPreferences.getEncodingOptions().getSelectedEncoding();
-//        if (!encoding.isEmpty()) {
-//            codeArea.setCharset(Charset.forName(encoding));
-//        }
-//
-//        TextFontOptions textFontOptions = binaryEditorPreferences.getFontOptions();
-//        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
-
         if (binaryStatusPanel != null) {
             binaryStatusPanel.loadFromOptions(new StatusOptions(options));
         }

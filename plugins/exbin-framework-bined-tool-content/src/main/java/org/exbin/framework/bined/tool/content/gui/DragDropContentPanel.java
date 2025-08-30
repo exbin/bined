@@ -572,8 +572,8 @@ public class DragDropContentPanel extends javax.swing.JPanel {
                 int clickedX = x;
                 int clickedY = y;
                 if (invoker instanceof JViewport) {
-                    clickedX += ((JViewport) invoker).getParent().getX();
-                    clickedY += ((JViewport) invoker).getParent().getY();
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
                 }
                 JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(dataCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
                 popupMenu.show(invoker, x, y);

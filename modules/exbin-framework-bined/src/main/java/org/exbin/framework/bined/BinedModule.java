@@ -55,7 +55,6 @@ import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActionContextService;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DefaultActionContextService;
 import org.exbin.framework.action.api.DialogParentComponent;
@@ -73,7 +72,6 @@ import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.menu.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.file.api.FileModuleApi;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
@@ -166,14 +164,14 @@ public class BinedModule implements Module {
 
             fileManager.initFileHandler(editorFile);
 
+            BinEdComponentPanel componentPanel = editorFile.getComponent();
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-//            editorFile.onInitFromPreferences(new BinaryViewerOptions(preferencesModule.getAppPreferences()));
-//            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
+            componentPanel.onInitFromPreferences(preferencesModule.getAppPreferences());
+
 //            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
 //            editorFile.setNewData(fileHandlingMode);
             editorFile.setNewData(FileHandlingMode.MEMORY);
 
-            BinEdComponentPanel componentPanel = editorFile.getComponent();
             SectCodeArea codeArea = editorFile.getComponent().getCodeArea();
             codeArea.addSelectionChangedListener(() -> {
 
@@ -419,8 +417,8 @@ public class BinedModule implements Module {
                 int clickedX = x;
                 int clickedY = y;
                 if (invoker instanceof JViewport) {
-                    clickedX += ((JViewport) invoker).getParent().getX();
-                    clickedY += ((JViewport) invoker).getParent().getY();
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
                 }
                 CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR);
                 JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);

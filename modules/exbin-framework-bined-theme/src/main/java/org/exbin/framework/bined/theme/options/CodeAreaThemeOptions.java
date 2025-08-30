@@ -69,10 +69,10 @@ public class CodeAreaThemeOptions implements OptionsData {
     }
 
     public void setThemeProfilesList(List<String> themesNames) {
-        int themesCount = themesNames.size();
-        storage.putInt(KEY_THEMES_COUNT, themesCount);
+        int profilesCount = themesNames.size();
+        storage.putInt(KEY_THEMES_COUNT, profilesCount);
 
-        for (int i = 0; i < themesCount; i++) {
+        for (int i = 0; i < profilesCount; i++) {
             storage.put(KEY_THEME_NAME_PREFIX + String.valueOf(i), themesNames.get(i));
         }
     }
@@ -130,7 +130,11 @@ public class CodeAreaThemeOptions implements OptionsData {
     @Override
     public void copyTo(OptionsData options) {
         CodeAreaThemeOptions with = (CodeAreaThemeOptions) options;
-        with.setThemeProfilesList(getThemeProfilesList());
+        List<String> themeProfilesList = getThemeProfilesList();
+        with.setThemeProfilesList(themeProfilesList);
         with.setSelectedProfile(getSelectedProfile());
+        for (int i = 0; i < themeProfilesList.size(); i++) {
+            with.setThemeProfile(i, getThemeProfile(i));
+        }
     }
 }
