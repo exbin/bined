@@ -38,7 +38,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
 
     private long cursorPosition;
     private long maxPosition;
-    private RelativePositionMode goToMode = RelativePositionMode.FROM_START;
+    private RelativePositionMode relativePositionMode = RelativePositionMode.FROM_START;
 
     public GoToPositionPanel() {
         initComponents();
@@ -176,19 +176,19 @@ public class GoToPositionPanel extends javax.swing.JPanel {
 
     private void fromStartRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromStartRadioButtonItemStateChanged
         if (fromStartRadioButton.isSelected()) {
-            switchGoToMode(RelativePositionMode.FROM_START);
+            switchRelativePositionMode(RelativePositionMode.FROM_START);
         }
     }//GEN-LAST:event_fromStartRadioButtonItemStateChanged
 
     private void fromEndRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromEndRadioButtonItemStateChanged
         if (fromEndRadioButton.isSelected()) {
-            switchGoToMode(RelativePositionMode.FROM_END);
+            switchRelativePositionMode(RelativePositionMode.FROM_END);
         }
     }//GEN-LAST:event_fromEndRadioButtonItemStateChanged
 
     private void fromCursorRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromCursorRadioButtonItemStateChanged
         if (fromCursorRadioButton.isSelected()) {
-            switchGoToMode(RelativePositionMode.FROM_CURSOR);
+            switchRelativePositionMode(RelativePositionMode.FROM_CURSOR);
         }
     }//GEN-LAST:event_fromCursorRadioButtonItemStateChanged
 
@@ -203,7 +203,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
     public long getTargetPosition() {
         long absolutePosition;
         long position = getPositionValue();
-        switch (goToMode) {
+        switch (relativePositionMode) {
             case FROM_START:
                 absolutePosition = position;
                 break;
@@ -214,7 +214,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
                 absolutePosition = cursorPosition + position;
                 break;
             default:
-                throw CodeAreaUtils.getInvalidTypeException(goToMode);
+                throw CodeAreaUtils.getInvalidTypeException(relativePositionMode);
         }
 
         if (absolutePosition < 0) {
@@ -231,7 +231,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
         } else if (absolutePosition > maxPosition) {
             absolutePosition = maxPosition;
         }
-        switch (goToMode) {
+        switch (relativePositionMode) {
             case FROM_START:
                 setPositionValue(absolutePosition);
                 break;
@@ -242,7 +242,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
                 setPositionValue(absolutePosition - cursorPosition);
                 break;
             default:
-                throw CodeAreaUtils.getInvalidTypeException(goToMode);
+                throw CodeAreaUtils.getInvalidTypeException(relativePositionMode);
         }
         updateTargetPosition();
     }
@@ -272,14 +272,14 @@ public class GoToPositionPanel extends javax.swing.JPanel {
         return resourceBundle;
     }
 
-    private void switchGoToMode(RelativePositionMode goToMode) {
-        if (this.goToMode == goToMode) {
+    private void switchRelativePositionMode(RelativePositionMode relativePositionMode) {
+        if (this.relativePositionMode == relativePositionMode) {
             return;
         }
 
         long absolutePosition = getTargetPosition();
-        this.goToMode = goToMode;
-        switch (goToMode) {
+        this.relativePositionMode = relativePositionMode;
+        switch (relativePositionMode) {
             case FROM_START:
             case FROM_END: {
                 setPositionValue(0L);
@@ -296,7 +296,7 @@ public class GoToPositionPanel extends javax.swing.JPanel {
                 break;
             }
             default:
-                throw CodeAreaUtils.getInvalidTypeException(goToMode);
+                throw CodeAreaUtils.getInvalidTypeException(relativePositionMode);
         }
         setTargetPosition(absolutePosition);
     }

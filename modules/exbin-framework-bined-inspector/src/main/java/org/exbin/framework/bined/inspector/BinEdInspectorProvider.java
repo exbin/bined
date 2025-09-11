@@ -39,5 +39,6 @@ public interface BinEdInspectorProvider {
      *
      * @return component
      */
+    @Nonnull
     BinEdInspector createInspector();
 }

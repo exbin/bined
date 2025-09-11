@@ -17,6 +17,7 @@ package org.exbin.framework.bined.bookmarks.options;
 
 import java.awt.Color;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
@@ -48,6 +49,7 @@ public class BookmarkOptions implements OptionsData {
         return storage.getInt(KEY_BOOKMARK_COUNT, 0);
     }
 
+    @Nonnull
     public BookmarkRecord getBookmarkRecord(int index) {
         String prefix = KEY_BOOKMARK_VALUE_PREFIX + index + ".";
         long startPosition = storage.getLong(prefix + BOOKMARK_START_POSITION, 0);

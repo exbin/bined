@@ -164,6 +164,7 @@ public class InspectorPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> inspectorComboBox;
     // End of variables declaration//GEN-END:variables
 
+    @Nullable
     public <T extends BinEdInspector> T getInspector(Class<T> clazz) {
         for (BinEdInspector inspector : inspectors) {
             if (clazz.isInstance(inspector)) {
@@ -172,5 +173,4 @@ public class InspectorPanel extends javax.swing.JPanel {
         }
         return null;
     }
-
 }

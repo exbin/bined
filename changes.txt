@@ -1,4 +1,6 @@
 0.3.0
+- TODO: Added sidebar support
+- Added tabs support for inspector panel 
 
 0.2.4 (2025-01-22)
 - Added addon manager
