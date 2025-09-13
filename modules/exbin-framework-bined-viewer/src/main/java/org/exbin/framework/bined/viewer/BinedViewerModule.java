@@ -61,15 +61,15 @@ import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.bined.viewer.options.CodeAreaOptions;
+import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
+import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
+import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
+import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.toolbar.api.GroupToolBarContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.menu.api.PositionMenuContributionRule;
-import org.exbin.framework.toolbar.api.PositionToolBarContributionRule;
-import org.exbin.framework.toolbar.api.SeparationToolBarContributionRule;
-import org.exbin.framework.toolbar.api.ToolBarContribution;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
@@ -356,11 +356,11 @@ public class BinedViewerModule implements Module {
         getCodeTypeActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
         ToolBarManagement mgmt = toolBarModule.getMainToolBarManagement(MODULE_ID);
-        ToolBarContribution contribution = mgmt.registerToolBarGroup(BINED_TOOL_BAR_GROUP_ID);
-        mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionToolBarContributionRule.PositionMode.MIDDLE));
-        mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationToolBarContributionRule.SeparationMode.ABOVE));
+        SequenceContribution contribution = mgmt.registerToolBarGroup(BINED_TOOL_BAR_GROUP_ID);
+        mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
+        mgmt.registerToolBarRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.ABOVE));
         contribution = mgmt.registerToolBarItem(codeTypeActions.createCycleCodeTypesAction());
-        mgmt.registerToolBarRule(contribution, new GroupToolBarContributionRule(BINED_TOOL_BAR_GROUP_ID));
+        mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(BINED_TOOL_BAR_GROUP_ID));
     }
 
     public void registerToolsOptionsMenuActions() {

@@ -24,17 +24,17 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.toolbar.api.GroupToolBarContributionRule;
 import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
-import org.exbin.framework.toolbar.api.PositionToolBarContributionRule;
-import org.exbin.framework.toolbar.api.SeparationToolBarContributionRule;
-import org.exbin.framework.toolbar.api.ToolBarContribution;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.search.action.FindReplaceActions;
+import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
+import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
+import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
+import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -109,11 +109,11 @@ public class BinedSearchModule implements Module {
         getFindReplaceActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
         ToolBarManagement mgmt = toolBarModule.getMainToolBarManagement(MODULE_ID);
-        ToolBarContribution contribution = mgmt.registerToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID);
-        mgmt.registerToolBarRule(contribution, new PositionToolBarContributionRule(PositionToolBarContributionRule.PositionMode.MIDDLE));
-        mgmt.registerToolBarRule(contribution, new SeparationToolBarContributionRule(SeparationToolBarContributionRule.SeparationMode.AROUND));
+        SequenceContribution contribution = mgmt.registerToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID);
+        mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
+        mgmt.registerToolBarRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
         contribution = mgmt.registerToolBarItem(findReplaceActions.createEditFindAction());
-        mgmt.registerToolBarRule(contribution, new GroupToolBarContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
+        mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
     }
 
     @Nonnull
