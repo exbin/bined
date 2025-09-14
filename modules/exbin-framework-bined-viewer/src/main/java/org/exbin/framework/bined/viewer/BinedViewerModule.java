@@ -66,10 +66,7 @@ import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
-import org.exbin.framework.menu.api.PositionMenuContributionRule;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.preferences.api.OptionsStorage;
@@ -159,8 +156,8 @@ public class BinedViewerModule implements Module {
 
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(() -> encodingsHandler.getToolsEncodingMenu());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP_LAST));
+        SequenceContribution contribution = mgmt.registerMenuItem(() -> encodingsHandler.getToolsEncodingMenu());
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP_LAST));
     }
 
     public void registerOptionsPanels() {
@@ -211,8 +208,8 @@ public class BinedViewerModule implements Module {
     public void registerWordWrapping() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createRowWrappingAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
+        SequenceContribution contribution = mgmt.registerMenuItem(createRowWrappingAction());
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
     @Nonnull
@@ -366,8 +363,8 @@ public class BinedViewerModule implements Module {
     public void registerToolsOptionsMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createCodeAreaFontAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM_LAST));
+        SequenceContribution contribution = mgmt.registerMenuItem(createCodeAreaFontAction());
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM_LAST));
     }
 
     public void registerViewModeMenu() {
@@ -380,23 +377,23 @@ public class BinedViewerModule implements Module {
         };
         viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("viewModeSubMenu.shortDescription"));
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(VIEW_MODE_SUBMENU_ID, viewSubMenuAction);
+        SequenceContribution contribution = mgmt.registerMenuItem(VIEW_MODE_SUBMENU_ID, viewSubMenuAction);
         mgmt = mgmt.getSubMenu(VIEW_MODE_SUBMENU_ID);
         contribution = mgmt.registerMenuItem(viewModeActions.createDualModeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(viewModeActions.createCodeMatrixModeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(viewModeActions.createTextPreviewModeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
     public void registerLayoutMenu() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(createShowHeaderAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
+        SequenceContribution contribution = mgmt.registerMenuItem(createShowHeaderAction());
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
         contribution = mgmt.registerMenuItem(createShowRowPositionAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.BOTTOM));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
     public void registerCodeTypeMenu() {
@@ -409,16 +406,16 @@ public class BinedViewerModule implements Module {
         };
         codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("codeTypeSubMenu.shortDescription"));
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
+        SequenceContribution contribution = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
         mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
         contribution = mgmt.registerMenuItem(codeTypeActions.createBinaryCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(codeTypeActions.createOctalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(codeTypeActions.createDecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(codeTypeActions.createHexadecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
     public void registerPositionCodeTypeMenu() {
@@ -431,14 +428,14 @@ public class BinedViewerModule implements Module {
         };
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction);
+        SequenceContribution contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction);
         mgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_SUBMENU_ID);
         contribution = mgmt.registerMenuItem(positionCodeTypeActions.createOctalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(positionCodeTypeActions.createDecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(positionCodeTypeActions.createHexadecimalCodeTypeAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
     public void registerHexCharactersCaseHandlerMenu() {
@@ -451,22 +448,22 @@ public class BinedViewerModule implements Module {
         };
         hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
+        SequenceContribution contribution = mgmt.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
         mgmt = mgmt.getSubMenu(HEX_CHARACTERS_CASE_SUBMENU_ID);
         contribution = mgmt.registerMenuItem(hexCharactersCaseActions.createUpperHexCharsAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(hexCharactersCaseActions.createLowerHexCharsAction());
-        mgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
     public void registerCodeAreaPopupMenu() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
 
-        MenuContribution contribution = mgmt.registerMenuItem(createShowHeaderAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        SequenceContribution contribution = mgmt.registerMenuItem(createShowHeaderAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
         contribution = mgmt.registerMenuItem(createShowRowPositionAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
             @Override
@@ -475,14 +472,14 @@ public class BinedViewerModule implements Module {
         };
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, positionCodeTypeSubMenuAction);
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
         MenuManagement subMgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_POPUP_SUBMENU_ID);
         contribution = subMgmt.registerMenuItem(createOctalPositionTypeAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = subMgmt.registerMenuItem(createDecimalPositionTypeAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = subMgmt.registerMenuItem(createHexadecimalPositionTypeAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
 
         Action popupShowSubMenuAction = new AbstractAction(resourceBundle.getString("popupShowSubMenu.text")) {
             @Override
@@ -491,12 +488,12 @@ public class BinedViewerModule implements Module {
         };
         popupShowSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("popupShowSubMenu.shortDescription"));
         contribution = mgmt.registerMenuItem(SHOW_POPUP_SUBMENU_ID, popupShowSubMenuAction);
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
         subMgmt = mgmt.getSubMenu(SHOW_POPUP_SUBMENU_ID);
         contribution = subMgmt.registerMenuItem(createShowHeaderAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = subMgmt.registerMenuItem(createShowRowPositionAction());
-        subMgmt.registerMenuRule(contribution, new PositionMenuContributionRule(PositionMenuContributionRule.PositionMode.TOP));
+        subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
     @Nonnull

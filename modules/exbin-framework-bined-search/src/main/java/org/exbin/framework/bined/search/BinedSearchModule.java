@@ -23,8 +23,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.bined.BinEdFileManager;
@@ -88,21 +86,21 @@ public class BinedSearchModule implements Module {
         // TODO SearchModule
         String groupId = BinedModule.EDIT_FIND_MENU_GROUP_ID;
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(groupId));
+        SequenceContribution contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
         contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAgainAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(groupId));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
         contribution = mgmt.registerMenuItem(findReplaceActions.createEditReplaceAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(groupId));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
     }
 
     public void registerEditFindPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditFindAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        SequenceContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditFindAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
         contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditReplaceAction());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void registerEditFindToolBarActions() {

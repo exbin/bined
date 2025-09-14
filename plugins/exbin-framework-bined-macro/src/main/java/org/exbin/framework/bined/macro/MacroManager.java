@@ -46,8 +46,6 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionManager;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinaryDataComponent;
@@ -66,6 +64,8 @@ import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.options.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
+import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
+import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -324,7 +324,7 @@ public class MacroManager {
             }
         });
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(() -> {
+        SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu macrosPopupMenu = UiUtils.createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);
             macrosPopupMenu.addMenuListener(new MenuListener() {
@@ -343,7 +343,7 @@ public class MacroManager {
             });
             return macrosPopupMenu;
         });
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void executeMacro(CodeAreaCore codeArea, int macroIndex) {

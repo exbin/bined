@@ -27,14 +27,14 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.search.BinedSearchModule;
+import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
+import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorModuleApi;
@@ -111,8 +111,8 @@ public class BinedMacroModule implements PluginModule {
     public void registerMacrosMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(() -> getMacrosMenu());
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        SequenceContribution contribution = mgmt.registerMenuItem(() -> getMacrosMenu());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerMacrosPopupMenuActions() {

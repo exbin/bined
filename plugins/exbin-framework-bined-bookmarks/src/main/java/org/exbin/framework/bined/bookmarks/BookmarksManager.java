@@ -46,8 +46,6 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.menu.api.GroupMenuContributionRule;
-import org.exbin.framework.menu.api.MenuContribution;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
@@ -58,6 +56,8 @@ import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.options.BookmarkOptions;
+import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
+import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
@@ -290,7 +290,7 @@ public class BookmarksManager {
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
         MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
-        MenuContribution contribution = mgmt.registerMenuItem(() -> {
+        SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu bookmarksPopupMenu = UiUtils.createMenu();
             bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);
             bookmarksPopupMenu.addMenuListener(new MenuListener() {
@@ -309,7 +309,7 @@ public class BookmarksManager {
             });
             return bookmarksPopupMenu;
         });
-        mgmt.registerMenuRule(contribution, new GroupMenuContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void registerBookmarksComponentActions(JComponent component) {
