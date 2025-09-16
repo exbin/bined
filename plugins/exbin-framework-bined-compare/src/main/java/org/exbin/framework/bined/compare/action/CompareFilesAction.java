@@ -117,8 +117,6 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
             compareFilesPanel.setAvailableFiles(availableFiles);
         }
 
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        compareFilesPanel.setCodeAreaPopupMenu(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
         compareFilesPanel.setController(new CompareFilesPanel.Controller() {
             @Nullable
             @Override

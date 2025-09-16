@@ -7,6 +7,7 @@
   <description>Support for files comparing</description>
   <dependency>
     <module id="org.exbin.framework.bined.BinedModule" />
+    <module id="org.exbin.framework.bined.theme.BinedThemeModule" />
     <module id="org.exbin.framework.ui.api.UiModuleApi" />
     <module id="org.exbin.framework.frame.api.FrameModuleApi" />
     <module id="org.exbin.framework.window.api.WindowModuleApi" />
@@ -18,5 +19,6 @@
     <module id="org.exbin.framework.options.api.OptionsModuleApi" />
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />
+    <library jar="component-dropdownbutton-0.3.0-SNAPSHOT.jar" />
   </dependency>
 </module>

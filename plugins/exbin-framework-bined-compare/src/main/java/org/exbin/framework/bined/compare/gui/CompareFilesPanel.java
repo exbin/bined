@@ -15,7 +15,7 @@
  */
 package org.exbin.framework.bined.compare.gui;
 
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,15 +23,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
@@ -49,6 +43,7 @@ public class CompareFilesPanel extends javax.swing.JPanel {
     private Controller controller;
     private FileRecord leftCustomFile;
     private FileRecord rightCustomFile;
+    private BinEdDiffPanel diffPanel;
 
     public CompareFilesPanel() {
         initComponents();
@@ -56,6 +51,8 @@ public class CompareFilesPanel extends javax.swing.JPanel {
     }
 
     private void init() {
+        diffPanel = new BinEdDiffPanel();
+        add(diffPanel, BorderLayout.CENTER);
         leftComboBox.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 int selectedIndex = leftComboBox.getSelectedIndex();
@@ -131,55 +128,11 @@ public class CompareFilesPanel extends javax.swing.JPanel {
     }
 
     public void setLeftFile(BinaryData contentData) {
-        codeAreaDiffPanel.setLeftContentData(contentData);
+        diffPanel.setLeftContentData(contentData);
     }
 
     public void setRightFile(BinaryData contentData) {
-        codeAreaDiffPanel.setRightContentData(contentData);
-    }
-
-    public void setCodeAreaPopupMenu(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        codeAreaDiffPanel.getLeftCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareLeft"));
-        codeAreaDiffPanel.getRightCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareRight"));
-    }
-
-    @Nonnull
-    private JPopupMenu createPopupMenu(final CodeAreaPopupMenuHandler codeAreaPopupMenuHandler, String popupMenuId) {
-        return new JPopupMenu() {
-            @Override
-            public void show(Component invoker, int x, int y) {
-                if (codeAreaPopupMenuHandler == null || invoker == null) {
-                    return;
-                }
-
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-
-                SectCodeArea codeArea = invoker instanceof SectCodeArea ? (SectCodeArea) invoker
-                        : (SectCodeArea) invoker.getParent().getParent();
-
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
-                popupMenu.addPopupMenuListener(new PopupMenuListener() {
-                    @Override
-                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                    }
-
-                    @Override
-                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                        codeAreaPopupMenuHandler.dropPopupMenu(popupMenuId);
-                    }
-
-                    @Override
-                    public void popupMenuCanceled(PopupMenuEvent e) {
-                    }
-                });
-                popupMenu.show(invoker, x, y);
-            }
-        };
+        diffPanel.setRightContentData(contentData);
     }
 
     /**
@@ -198,7 +151,6 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         rightLabel = new javax.swing.JLabel();
         rightComboBox = new javax.swing.JComboBox<>();
         rightOpenButton = new javax.swing.JButton();
-        codeAreaDiffPanel = new org.exbin.bined.swing.section.diff.SectCodeAreaDiffPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -260,7 +212,6 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         );
 
         add(optionsPanel, java.awt.BorderLayout.PAGE_START);
-        add(codeAreaDiffPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void rightOpenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightOpenButtonActionPerformed
@@ -307,7 +258,6 @@ public class CompareFilesPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.exbin.bined.swing.section.diff.SectCodeAreaDiffPanel codeAreaDiffPanel;
     private javax.swing.JComboBox<String> leftComboBox;
     private javax.swing.JLabel leftLabel;
     private javax.swing.JButton leftOpenButton;

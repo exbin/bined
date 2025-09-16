@@ -2,6 +2,9 @@ rootProject.name = 'exbin-framework-bined-compare'
 
 if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-viewer'
+    include ':modules:exbin-framework-bined-editor'
+    include ':modules:exbin-framework-bined-theme'
 }
 
 apply from: '../bined-plugins-settings.gradle'
