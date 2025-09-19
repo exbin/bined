@@ -26,7 +26,6 @@ import java.awt.event.MouseEvent;
 import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
@@ -70,7 +69,6 @@ import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 import org.exbin.framework.text.encoding.options.TextEncodingOptions;
 import org.exbin.framework.text.font.options.TextFontOptions;
-import org.exbin.framework.utils.DesktopUtils;
 
 /**
  * BinEd diff panel to compare binary files.
@@ -156,21 +154,6 @@ public class BinEdDiffPanel extends JPanel {
                 diffPanel.repaint();
             }
         });
-        /* OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        OptionsAction optionsAction = (OptionsAction) optionsModule.createOptionsAction();
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        optionsAction.setDialogParentComponent(() -> frameModule.getFrame());
-        AbstractAction wrapperAction = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                optionsAction.actionPerformed(e);
-                // TODO Options are not applied due to no active file handler is present
-                toolbarPanel.applyFromCodeArea();
-                leftStatusPanel.updateStatus();
-                rightStatusPanel.updateStatus();
-            }
-        };
-        toolbarPanel.setOptionsAction(wrapperAction); */
 
         init();
     }
@@ -356,17 +339,6 @@ public class BinEdDiffPanel extends JPanel {
         } else {
             codeArea.setColorsProfile(defaultColorProfile);
         }
-    }
-
-    @Nonnull
-    private AbstractAction createOnlineHelpAction() {
-        return new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LanguageModuleApi languageModuleApi = App.getModule(LanguageModuleApi.class);
-                DesktopUtils.openDesktopURL(languageModuleApi.getAppBundle().getString("online_help_url"));
-            }
-        };
     }
 
     public void setLeftContentData(BinaryData contentData) {

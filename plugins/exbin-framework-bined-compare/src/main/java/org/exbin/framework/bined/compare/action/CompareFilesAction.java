@@ -44,7 +44,6 @@ import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileHandler;
