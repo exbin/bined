@@ -32,7 +32,7 @@ Build commands: "gradle build" and "gradle distZip"
 
 Java Development Kit (JDK) version 8 or later is required to build this project.
 
-For project compiling Gradle 7.1 build system is used: https://gradle.org
+For project compiling Gradle 8.1 build system is used: https://gradle.org
 
 You can either download and install gradle or use gradlew or gradlew.bat scripts to download separate copy of gradle to perform the project build.
 

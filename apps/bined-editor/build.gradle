@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'distribution'
     id 'maven-publish'
-    id 'edu.sc.seis.launch4j' version '2.5.4'
+    id 'edu.sc.seis.launch4j' version '3.0.7'
 }
 
 //dependencyManagement {
@@ -50,7 +50,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url 'https://bits.netbeans.org/maven2/'
+        url = 'https://bits.netbeans.org/maven2/'
     }
 }
 

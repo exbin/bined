@@ -21,9 +21,10 @@ ext.depsExbinAuxiliaryJava = [
 
 apply from: '../deps_processing.gradle'
 
-sourceCompatibility = '1.8'
-
-targetCompatibility = '1.8'
+java {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -41,7 +42,9 @@ if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
 
 task testJar(type: Jar, dependsOn: testClasses) {
     archiveClassifier = 'tests'
-    archiveBaseName = "test-${project.archivesBaseName}"
+    base {
+        archivesName = "test-${project.name}"
+    }
     from sourceSets.test.output
 }
 

@@ -3,7 +3,7 @@
 buildscript {
     repositories {
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
 }
@@ -30,6 +30,10 @@ def fetchModule(String gitProfile, gitRepo, subDir, moduleDir, targetDir) {
 // - local maven repository module will be used if available
 // - otherwise module will be download to deps directory
 project.dependencies.ext.moduleDep = { depsName, packageName, directoryName, moduleName ->
+    if ((ext.has('depsRoot') && depsName == ext.depsRoot) || depsName == ext.depsThis) {
+        return project(":${directoryName}:${moduleName}")
+    }
+
     def depVersion = ext['deps' + depsName].version
     def depGithubProfile = ext['deps' + depsName].githubProfile
     def depGithubRepo = ext['deps' + depsName].githubRepo
@@ -64,5 +68,9 @@ project.dependencies.ext.moduleDep = { depsName, packageName, directoryName, mod
 }
 
 project.dependencies.ext.moduleDepPath = { depsName, directoryName, moduleName ->
+    if (!ext.has('depsRoot') || depsName == ext.depsRoot) {
+        return ":${directoryName}:${moduleName}"
+    }
+
     return ":deps:${moduleName}"
 }

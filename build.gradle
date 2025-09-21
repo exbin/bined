@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
 }
@@ -10,8 +10,11 @@ plugins {
     id 'base'
     id 'distribution'
     id 'maven-publish'
-    id "com.netflix.nebula.ospackage" version "11.5.0"
+    id "com.netflix.nebula.ospackage" version "11.11.2"
 }
+
+apply plugin: 'com.netflix.nebula.ospackage-base'
+apply plugin: 'com.netflix.nebula.rpm'
 
 version = '0.3.0-SNAPSHOT'
 
@@ -137,7 +140,7 @@ ospackage {
     }
 }
 
-// Breaks for Java 8+
+// Breaks for Java 8+ and in some Gradle versions :-/
 if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
     buildRpm {
         from ('src/ospackage/bined.png') {
