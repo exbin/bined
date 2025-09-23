@@ -20,11 +20,9 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.CodeAreaCaretPosition;
-import org.exbin.bined.operation.swing.CodeAreaOperation;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
-import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Compound code area operation.
@@ -32,16 +30,12 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CompoundCodeAreaOperation extends CodeAreaOperation {
+public class CompoundCodeAreaOperation implements BinaryDataUndoableOperation {
 
-    private final List<CodeAreaOperation> operations = new ArrayList<>();
+    protected final List<BinaryDataUndoableOperation> operations = new ArrayList<>();
 
-    public CompoundCodeAreaOperation(CodeAreaCore codeArea) {
-        super(codeArea);
-    }
-
-    public CompoundCodeAreaOperation(CodeAreaCore codeArea, CodeAreaCaretPosition backPosition) {
-        super(codeArea, backPosition);
+    public CompoundCodeAreaOperation() {
+        super();
     }
 
     @Nonnull
@@ -50,16 +44,16 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
         return CodeAreaOperationType.MODIFY_DATA;
     }
 
-    public void addOperation(CodeAreaOperation operation) {
+    public void addOperation(BinaryDataUndoableOperation operation) {
         operations.add(operation);
     }
 
-    public void addOperations(Collection<CodeAreaOperation> operations) {
+    public void addOperations(Collection<BinaryDataUndoableOperation> operations) {
         this.operations.addAll(operations);
     }
 
     @Nonnull
-    public Collection<CodeAreaOperation> getOperations() {
+    public Collection<BinaryDataUndoableOperation> getOperations() {
         return operations;
     }
 
@@ -68,29 +62,29 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void execute() {
-        execute(false);
+    public void execute(EditableBinaryData contentData) {
+        execute(contentData, false);
     }
 
     @Nonnull
     @Override
-    public BinaryDataUndoableOperation executeWithUndo() {
-        return execute(true);
+    public BinaryDataUndoableOperation executeWithUndo(EditableBinaryData contentData) {
+        return execute(contentData, true);
     }
 
-    private CodeAreaOperation execute(boolean withUndo) {
+    private BinaryDataUndoableOperation execute(EditableBinaryData contentData, boolean withUndo) {
         CompoundCodeAreaOperation compoundUndoOperation = null;
         if (withUndo) {
-            compoundUndoOperation = new CompoundCodeAreaOperation(codeArea);
-            List<CodeAreaOperation> undoOperations = new ArrayList<>();
-            for (CodeAreaOperation operation : operations) {
-                BinaryDataUndoableOperation undoOperation = operation.executeWithUndo();
-                undoOperations.add(0, (CodeAreaOperation) undoOperation);
+            compoundUndoOperation = new CompoundCodeAreaOperation();
+            List<BinaryDataUndoableOperation> undoOperations = new ArrayList<>();
+            for (BinaryDataUndoableOperation operation : operations) {
+                BinaryDataUndoableOperation undoOperation = operation.executeWithUndo(contentData);
+                undoOperations.add(0, undoOperation);
             }
             compoundUndoOperation.addOperations(undoOperations);
         } else {
-            for (CodeAreaOperation operation : operations) {
-                operation.execute();
+            for (BinaryDataUndoableOperation operation : operations) {
+                operation.execute(contentData);
             }
         }
 
@@ -99,8 +93,7 @@ public class CompoundCodeAreaOperation extends CodeAreaOperation {
 
     @Override
     public void dispose() {
-        super.dispose();
-        for (CodeAreaOperation operation : operations) {
+        for (BinaryDataUndoableOperation operation : operations) {
             operation.dispose();
         }
     }

@@ -18,9 +18,7 @@ package org.exbin.framework.bined.operation.operation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -34,14 +32,13 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class InsertDataOperation extends CodeAreaOperation {
+public class InsertFromProviderOperation implements BinaryDataUndoableOperation {
 
-    private final long position;
-    private final long length;
-    private final InsertionDataProvider dataOperationDataProvider;
+    protected final long position;
+    protected final long length;
+    protected final InsertionDataProvider dataOperationDataProvider;
 
-    public InsertDataOperation(CodeAreaCore codeArea, long position, long length, InsertionDataProvider dataOperationDataProvider) {
-        super(codeArea);
+    public InsertFromProviderOperation(long position, long length, InsertionDataProvider dataOperationDataProvider) {
         this.position = position;
         this.length = length;
         this.dataOperationDataProvider = dataOperationDataProvider;
@@ -54,43 +51,40 @@ public class InsertDataOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void execute() {
-        execute(false);
+    public void execute(EditableBinaryData contentData) {
+        execute(contentData, false);
     }
 
     @Nonnull
     @Override
-    public BinaryDataUndoableOperation executeWithUndo() {
-        return execute(true);
+    public BinaryDataUndoableOperation executeWithUndo(EditableBinaryData contentData) {
+        return execute(contentData, true);
     }
 
-    private CodeAreaOperation execute(boolean withUndo) {
-        CodeAreaOperation undoOperation = null;
-        EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
+    private BinaryDataUndoableOperation execute(EditableBinaryData contentData, boolean withUndo) {
+        BinaryDataUndoableOperation undoOperation = null;
 
         contentData.insertUninitialized(position, length);
         dataOperationDataProvider.provideData(contentData, position);
 
         if (withUndo) {
-            undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
+            undoOperation = new RemoveDataOperation(position, 0, length);
         }
-        ((CaretCapable) codeArea).getCodeAreaCaret().setCaretPosition(position + length, 0);
         return undoOperation;
     }
 
     @Override
     public void dispose() {
-        super.dispose();
     }
 
     @ParametersAreNonnullByDefault
     public static class InsertDataCommand extends CodeAreaCommand {
 
-        private final InsertDataOperation operation;
-        private CodeAreaOperation undoOperation;
+        protected final InsertFromProviderOperation operation;
+        protected BinaryDataUndoableOperation undoOperation;
 
-        public InsertDataCommand(InsertDataOperation operation) {
-            super(operation.getCodeArea());
+        public InsertDataCommand(CodeAreaCore codeArea, InsertFromProviderOperation operation) {
+            super(codeArea);
             this.operation = operation;
         }
 
@@ -102,14 +96,14 @@ public class InsertDataOperation extends CodeAreaOperation {
 
         @Override
         public void execute() {
-            undoOperation = (CodeAreaOperation) operation.executeWithUndo();
+            undoOperation = (BinaryDataUndoableOperation) operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
 
         @Override
         public void undo() {
-            undoOperation.execute();
+            undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();

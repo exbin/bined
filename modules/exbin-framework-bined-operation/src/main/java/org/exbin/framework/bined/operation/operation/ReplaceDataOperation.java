@@ -20,9 +20,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
-import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.ModifyDataOperation;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
@@ -37,14 +35,13 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ReplaceDataOperation extends CodeAreaOperation {
+public class ReplaceDataOperation implements BinaryDataUndoableOperation {
 
-    private final long position;
-    private final long length;
-    private final InsertionDataProvider dataOperationDataProvider;
+    protected final long position;
+    protected final long length;
+    protected final InsertionDataProvider dataOperationDataProvider;
 
-    public ReplaceDataOperation(CodeAreaCore codeArea, long position, long length, InsertionDataProvider dataOperationDataProvider) {
-        super(codeArea);
+    public ReplaceDataOperation(long position, long length, InsertionDataProvider dataOperationDataProvider) {
         this.position = position;
         this.length = length;
         this.dataOperationDataProvider = dataOperationDataProvider;
@@ -57,28 +54,27 @@ public class ReplaceDataOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void execute() {
-        execute(false);
+    public void execute(EditableBinaryData contentData) {
+        execute(contentData, false);
     }
 
     @Nonnull
     @Override
-    public BinaryDataUndoableOperation executeWithUndo() {
-        return execute(true);
+    public BinaryDataUndoableOperation executeWithUndo(EditableBinaryData contentData) {
+        return execute(contentData, true);
     }
 
-    private CodeAreaOperation execute(boolean withUndo) {
-        long dataSize = codeArea.getDataSize();
+    private BinaryDataUndoableOperation execute(EditableBinaryData contentData, boolean withUndo) {
+        long dataSize = contentData.getDataSize();
         if (position > dataSize) {
             throw new IllegalStateException("Unable to replace data outside of document");
         }
 
-        CodeAreaOperation undoOperation = null;
-        EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
+        BinaryDataUndoableOperation undoOperation = null;
 
         if (position == dataSize) {
             if (withUndo) {
-                undoOperation = new RemoveDataOperation(codeArea, position, 0, length);
+                undoOperation = new RemoveDataOperation(position, 0, length);
             } 
             contentData.insertUninitialized(dataSize, length);
         } else if (position + length > dataSize) {
@@ -87,9 +83,9 @@ public class ReplaceDataOperation extends CodeAreaOperation {
                 // TODO use copy directly once delta is fixed
                 PagedData origData = new ByteArrayPagedData();
                 origData.insert(0, contentData.copy(position, length - diff));
-                undoOperation = new CompoundCodeAreaOperation(codeArea);
-                ((CompoundCodeAreaOperation) undoOperation).addOperation(new ModifyDataOperation(codeArea, position, origData));
-                ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(codeArea, dataSize, 0, diff));
+                undoOperation = new CompoundCodeAreaOperation();
+                ((CompoundCodeAreaOperation) undoOperation).addOperation(new ModifyDataOperation(position, origData));
+                ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(dataSize, 0, diff));
             }
 
             contentData.insertUninitialized(dataSize, diff);
@@ -97,28 +93,26 @@ public class ReplaceDataOperation extends CodeAreaOperation {
             // TODO use copy directly once delta is fixed
             PagedData origData = new ByteArrayPagedData();
             origData.insert(0, contentData.copy(position, length));
-            undoOperation = new ModifyDataOperation(codeArea, position, origData);
+            undoOperation = new ModifyDataOperation(position, origData);
         }
 
         dataOperationDataProvider.provideData(contentData, position);
 
-        ((CaretCapable) codeArea).getCodeAreaCaret().setCaretPosition(position + length, 0);
         return undoOperation;
     }
 
     @Override
     public void dispose() {
-        super.dispose();
     }
 
     @ParametersAreNonnullByDefault
     public static class ReplaceDataCommand extends CodeAreaCommand {
 
-        private final ReplaceDataOperation operation;
-        private CodeAreaOperation undoOperation;
+        protected final ReplaceDataOperation operation;
+        protected BinaryDataUndoableOperation undoOperation;
 
-        public ReplaceDataCommand(ReplaceDataOperation operation) {
-            super(operation.getCodeArea());
+        public ReplaceDataCommand(CodeAreaCore codeArea, ReplaceDataOperation operation) {
+            super(codeArea);
             this.operation = operation;
         }
 
@@ -130,14 +124,14 @@ public class ReplaceDataOperation extends CodeAreaOperation {
 
         @Override
         public void execute() {
-            undoOperation = (CodeAreaOperation) operation.executeWithUndo();
+            undoOperation = operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
 
         @Override
         public void undo() {
-            undoOperation.execute();
+            undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();

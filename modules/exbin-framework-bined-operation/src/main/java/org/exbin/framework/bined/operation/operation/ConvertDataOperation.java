@@ -18,10 +18,7 @@ package org.exbin.framework.bined.operation.operation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.capability.SelectionCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperation;
 import org.exbin.bined.operation.swing.CodeAreaOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -35,15 +32,14 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ConvertDataOperation extends CodeAreaOperation {
+public class ConvertDataOperation implements BinaryDataUndoableOperation {
 
-    private final long startPosition;
-    private final long length;
-    private final long convertedDataLength;
-    private final ConversionDataProvider conversionDataProvider;
+    protected final long startPosition;
+    protected final long length;
+    protected final long convertedDataLength;
+    protected final ConversionDataProvider conversionDataProvider;
 
-    public ConvertDataOperation(CodeAreaCore codeArea, long startPosition, long length, long convertedDataLength, ConversionDataProvider conversionDataProvider) {
-        super(codeArea);
+    public ConvertDataOperation(long startPosition, long length, long convertedDataLength, ConversionDataProvider conversionDataProvider) {
         this.startPosition = startPosition;
         this.length = length;
         this.convertedDataLength = convertedDataLength;
@@ -57,51 +53,45 @@ public class ConvertDataOperation extends CodeAreaOperation {
     }
 
     @Override
-    public void execute() {
-        execute(false);
+    public void execute(EditableBinaryData contentData) {
+        execute(contentData, false);
     }
 
     @Nonnull
     @Override
-    public BinaryDataUndoableOperation executeWithUndo() {
-        return execute(true);
+    public BinaryDataUndoableOperation executeWithUndo(EditableBinaryData contentData) {
+        return execute(contentData, true);
     }
 
-    private CodeAreaOperation execute(boolean withUndo) {
-        CodeAreaOperation undoOperation = null;
-        EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
+    private BinaryDataUndoableOperation execute(EditableBinaryData contentData, boolean withUndo) {
+        BinaryDataUndoableOperation undoOperation = null;
 
-        CodeAreaOperation originalDataUndoOperation = null;
+        BinaryDataUndoableOperation originalDataUndoOperation = null;
 
         if (withUndo) {
-            originalDataUndoOperation = new org.exbin.bined.operation.swing.InsertDataOperation(codeArea, startPosition, 0, contentData.copy(startPosition, length));
-            undoOperation = new CompoundCodeAreaOperation(codeArea);
-            ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(codeArea, startPosition, 0, convertedDataLength));
+            originalDataUndoOperation = new org.exbin.bined.operation.swing.InsertDataOperation(startPosition, 0, contentData.copy(startPosition, length));
+            undoOperation = new CompoundCodeAreaOperation();
+            ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(startPosition, 0, convertedDataLength));
             ((CompoundCodeAreaOperation) undoOperation).addOperation(originalDataUndoOperation);
         }
 
         conversionDataProvider.provideData(contentData, startPosition, length, startPosition + length);
         contentData.remove(startPosition, length);
-
-        ((CaretCapable) codeArea).getCodeAreaCaret().setCaretPosition(startPosition + convertedDataLength, 0);
-
-        ((SelectionCapable) codeArea).setSelection(startPosition, convertedDataLength);
         return undoOperation;
     }
 
     @Override
     public void dispose() {
-        super.dispose();
     }
 
     @ParametersAreNonnullByDefault
     public static class ConvertDataCommand extends CodeAreaCommand {
 
-        private final ConvertDataOperation operation;
-        private BinaryDataUndoableOperation undoOperation;
+        protected final ConvertDataOperation operation;
+        protected BinaryDataUndoableOperation undoOperation;
 
-        public ConvertDataCommand(ConvertDataOperation operation) {
-            super(operation.getCodeArea());
+        public ConvertDataCommand(CodeAreaCore codeArea, ConvertDataOperation operation) {
+            super(codeArea);
             this.operation = operation;
         }
 
@@ -113,14 +103,14 @@ public class ConvertDataOperation extends CodeAreaOperation {
 
         @Override
         public void execute() {
-            undoOperation = operation.executeWithUndo();
+            undoOperation = operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
 
         @Override
         public void undo() {
-            undoOperation.execute();
+            undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();

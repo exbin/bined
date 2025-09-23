@@ -88,7 +88,7 @@ public class Base64DataMethod implements ConvertDataMethod {
             convertData(binaryData, sourcePosition, sourceLength, operationType, binaryData, targetPosition);
         };
 
-        return new ConvertDataOperation.ConvertDataCommand(new ConvertDataOperation(codeArea, position, length, length, conversionDataProvider));
+        return new ConvertDataOperation.ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
     }
 
     @Override

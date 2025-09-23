@@ -122,7 +122,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         };
 
         long convertedDataLength = computeDigestLength(hashType.get(), bitSize);
-        return new ConvertDataOperation.ConvertDataCommand(new ConvertDataOperation(codeArea, position, length, convertedDataLength, conversionDataProvider));
+        return new ConvertDataOperation.ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, convertedDataLength, conversionDataProvider));
     }
 
     @Nonnull

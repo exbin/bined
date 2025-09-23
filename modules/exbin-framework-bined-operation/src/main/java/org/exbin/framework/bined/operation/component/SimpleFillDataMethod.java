@@ -39,7 +39,7 @@ import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.window.api.controller.DefaultControlController;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
-import org.exbin.framework.bined.operation.operation.InsertDataOperation;
+import org.exbin.framework.bined.operation.operation.InsertFromProviderOperation;
 import org.exbin.framework.bined.operation.operation.ReplaceDataOperation;
 import org.exbin.framework.bined.operation.operation.InsertionDataProvider;
 import org.exbin.framework.window.api.WindowHandler;
@@ -124,9 +124,9 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         };
 
         if (editOperation == EditOperation.OVERWRITE) {
-            return new ReplaceDataOperation.ReplaceDataCommand(new ReplaceDataOperation(codeArea, position, length, dataOperationDataProvider));
+            return new ReplaceDataOperation.ReplaceDataCommand(codeArea, new ReplaceDataOperation(position, length, dataOperationDataProvider));
         } else {
-            return new InsertDataOperation.InsertDataCommand(new InsertDataOperation(codeArea, position, length, dataOperationDataProvider));
+            return new InsertFromProviderOperation.InsertDataCommand(codeArea, new InsertFromProviderOperation(position, length, dataOperationDataProvider));
         }
     }
 
