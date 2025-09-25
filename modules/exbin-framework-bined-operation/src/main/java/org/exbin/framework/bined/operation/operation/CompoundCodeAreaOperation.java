@@ -21,7 +21,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.operation.swing.CodeAreaOperationType;
+import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
 
 /**
@@ -40,8 +40,8 @@ public class CompoundCodeAreaOperation implements BinaryDataUndoableOperation {
 
     @Nonnull
     @Override
-    public CodeAreaOperationType getType() {
-        return CodeAreaOperationType.MODIFY_DATA;
+    public BasicBinaryDataOperationType getType() {
+        return BasicBinaryDataOperationType.MODIFY_DATA;
     }
 
     public void addOperation(BinaryDataUndoableOperation operation) {

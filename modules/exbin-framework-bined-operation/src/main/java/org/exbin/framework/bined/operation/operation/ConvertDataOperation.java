@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperationType;
+import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
@@ -48,8 +48,8 @@ public class ConvertDataOperation implements BinaryDataUndoableOperation {
 
     @Nonnull
     @Override
-    public CodeAreaOperationType getType() {
-        return CodeAreaOperationType.MODIFY_DATA;
+    public BasicBinaryDataOperationType getType() {
+        return BasicBinaryDataOperationType.MODIFY_DATA;
     }
 
     @Override
@@ -102,14 +102,14 @@ public class ConvertDataOperation implements BinaryDataUndoableOperation {
         }
 
         @Override
-        public void execute() {
+        public void performExecute() {
             undoOperation = operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
             ((ScrollingCapable) codeArea).revealCursor();
             codeArea.notifyDataChanged();
         }
 
         @Override
-        public void undo() {
+        public void performUndo() {
             undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
             undoOperation.dispose();
             ((ScrollingCapable) codeArea).revealCursor();

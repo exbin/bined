@@ -126,7 +126,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         if (editOperation == EditOperation.OVERWRITE) {
             return new ReplaceDataOperation.ReplaceDataCommand(codeArea, new ReplaceDataOperation(position, length, dataOperationDataProvider));
         } else {
-            return new InsertFromProviderOperation.InsertDataCommand(codeArea, new InsertFromProviderOperation(position, length, dataOperationDataProvider));
+            return new InsertFromProviderOperation.InsertFromProviderCommand(codeArea, new InsertFromProviderOperation(position, length, dataOperationDataProvider));
         }
     }
 

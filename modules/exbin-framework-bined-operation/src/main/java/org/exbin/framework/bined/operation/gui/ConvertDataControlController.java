@@ -26,6 +26,11 @@ import org.exbin.framework.utils.OkCancelControlComponent;
 @ParametersAreNonnullByDefault
 public interface ConvertDataControlController {
 
+    /**
+     * Invokes control action.
+     *
+     * @param actionType action type
+     */
     void controlActionPerformed(ControlActionType actionType);
 
     @ParametersAreNonnullByDefault

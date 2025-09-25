@@ -18,8 +18,7 @@ package org.exbin.framework.bined.operation.operation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.capability.ScrollingCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperationType;
+import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
@@ -46,8 +45,8 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
 
     @Nonnull
     @Override
-    public CodeAreaOperationType getType() {
-        return CodeAreaOperationType.INSERT_DATA;
+    public BasicBinaryDataOperationType getType() {
+        return BasicBinaryDataOperationType.INSERT_DATA;
     }
 
     @Override
@@ -78,12 +77,12 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
     }
 
     @ParametersAreNonnullByDefault
-    public static class InsertDataCommand extends CodeAreaCommand {
+    public static class InsertFromProviderCommand extends CodeAreaCommand {
 
         protected final InsertFromProviderOperation operation;
         protected BinaryDataUndoableOperation undoOperation;
 
-        public InsertDataCommand(CodeAreaCore codeArea, InsertFromProviderOperation operation) {
+        public InsertFromProviderCommand(CodeAreaCore codeArea, InsertFromProviderOperation operation) {
             super(codeArea);
             this.operation = operation;
         }
@@ -95,18 +94,14 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
         }
 
         @Override
-        public void execute() {
+        public void performExecute() {
             undoOperation = (BinaryDataUndoableOperation) operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
-            ((ScrollingCapable) codeArea).revealCursor();
-            codeArea.notifyDataChanged();
         }
 
         @Override
-        public void undo() {
+        public void performUndo() {
             undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
             undoOperation.dispose();
-            ((ScrollingCapable) codeArea).revealCursor();
-            codeArea.notifyDataChanged();
         }
 
         @Override
