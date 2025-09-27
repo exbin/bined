@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.operation;
+package org.exbin.framework.bined.operation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
-import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
+import org.exbin.bined.operation.BinaryDataUndoableOperation;
 
 /**
  * Compound code area operation.

@@ -41,7 +41,7 @@ import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
-import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.action.api.ComponentActivationListener;

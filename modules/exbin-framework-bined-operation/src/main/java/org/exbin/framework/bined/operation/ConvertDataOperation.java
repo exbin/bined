@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.operation;
+package org.exbin.framework.bined.operation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.capability.ScrollingCapable;
 import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
-import org.exbin.bined.operation.swing.command.CodeAreaCommand;
-import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
-import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
-import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.operation.BinaryDataUndoableOperation;
 
 /**
  * Operation to convert selection or all data into provided data.
@@ -82,44 +78,5 @@ public class ConvertDataOperation implements BinaryDataUndoableOperation {
 
     @Override
     public void dispose() {
-    }
-
-    @ParametersAreNonnullByDefault
-    public static class ConvertDataCommand extends CodeAreaCommand {
-
-        protected final ConvertDataOperation operation;
-        protected BinaryDataUndoableOperation undoOperation;
-
-        public ConvertDataCommand(CodeAreaCore codeArea, ConvertDataOperation operation) {
-            super(codeArea);
-            this.operation = operation;
-        }
-
-        @Nonnull
-        @Override
-        public CodeAreaCommandType getType() {
-            return CodeAreaCommandType.DATA_MODIFIED;
-        }
-
-        @Override
-        public void performExecute() {
-            undoOperation = operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
-            ((ScrollingCapable) codeArea).revealCursor();
-            codeArea.notifyDataChanged();
-        }
-
-        @Override
-        public void performUndo() {
-            undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
-            undoOperation.dispose();
-            ((ScrollingCapable) codeArea).revealCursor();
-            codeArea.notifyDataChanged();
-        }
-
-        @Override
-        public void dispose() {
-            super.dispose();
-            operation.dispose();
-        }
     }
 }

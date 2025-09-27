@@ -56,8 +56,9 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.bouncycastle.component.gui.ComputeHashDataPanel;
-import org.exbin.framework.bined.operation.operation.ConversionDataProvider;
-import org.exbin.framework.bined.operation.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.ConversionDataProvider;
+import org.exbin.framework.bined.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
@@ -122,7 +123,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         };
 
         long convertedDataLength = computeDigestLength(hashType.get(), bitSize);
-        return new ConvertDataOperation.ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, convertedDataLength, conversionDataProvider));
+        return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, convertedDataLength, conversionDataProvider));
     }
 
     @Nonnull

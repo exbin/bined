@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.operation;
+package org.exbin.framework.bined.operation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
-import org.exbin.bined.operation.swing.command.CodeAreaCommand;
-import org.exbin.bined.operation.swing.command.CodeAreaCommandType;
-import org.exbin.bined.operation.undo.BinaryDataUndoableOperation;
-import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.operation.BinaryDataUndoableOperation;
 
 /**
- * Insert data operation.
+ * Insert data from provider operation.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -76,38 +73,4 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
     public void dispose() {
     }
 
-    @ParametersAreNonnullByDefault
-    public static class InsertFromProviderCommand extends CodeAreaCommand {
-
-        protected final InsertFromProviderOperation operation;
-        protected BinaryDataUndoableOperation undoOperation;
-
-        public InsertFromProviderCommand(CodeAreaCore codeArea, InsertFromProviderOperation operation) {
-            super(codeArea);
-            this.operation = operation;
-        }
-
-        @Nonnull
-        @Override
-        public CodeAreaCommandType getType() {
-            return CodeAreaCommandType.DATA_INSERTED;
-        }
-
-        @Override
-        public void performExecute() {
-            undoOperation = (BinaryDataUndoableOperation) operation.executeWithUndo(((EditableBinaryData) codeArea.getContentData()));
-        }
-
-        @Override
-        public void performUndo() {
-            undoOperation.execute(((EditableBinaryData) codeArea.getContentData()));
-            undoOperation.dispose();
-        }
-
-        @Override
-        public void dispose() {
-            super.dispose();
-            operation.dispose();
-        }
-    }
 }

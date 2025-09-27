@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**

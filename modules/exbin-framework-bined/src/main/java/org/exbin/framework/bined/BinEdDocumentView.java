@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.ui.api.Document;

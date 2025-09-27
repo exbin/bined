@@ -33,8 +33,9 @@ import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.component.gui.BitSwappingDataPanel;
-import org.exbin.framework.bined.operation.operation.ConversionDataProvider;
-import org.exbin.framework.bined.operation.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.ConversionDataProvider;
+import org.exbin.framework.bined.operation.command.ConvertDataCommand;
+import org.exbin.framework.bined.operation.ConvertDataOperation;
 
 /**
  * Bit swapping data method.
@@ -90,7 +91,7 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
             convertData(binaryData, sourcePosition, sourceLength, operationType.get(), binaryData, targetPosition);
         };
 
-        return new ConvertDataOperation.ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
+        return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
     }
 
     @Override
