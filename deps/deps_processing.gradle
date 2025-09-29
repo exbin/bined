@@ -30,7 +30,7 @@ def fetchModule(String gitProfile, gitRepo, subDir, moduleDir, targetDir) {
 // - local maven repository module will be used if available
 // - otherwise module will be download to deps directory
 project.dependencies.ext.moduleDep = { depsName, packageName, directoryName, moduleName ->
-    if ((ext.has('depsRoot') && depsName == ext.depsRoot) || depsName == ext.depsThis) {
+    if (ext.has('depsRoot') && depsName == ext.depsRoot) {
         return project(":${directoryName}:${moduleName}")
     }
 
