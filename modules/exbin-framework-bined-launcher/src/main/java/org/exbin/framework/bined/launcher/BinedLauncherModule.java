@@ -17,6 +17,7 @@ package org.exbin.framework.bined.launcher;
 
 import java.awt.Dimension;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,9 +41,13 @@ import org.exbin.framework.action.manager.ActionManagerModule;
 import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.BinaryMultiEditorProvider;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
+import org.exbin.framework.bined.launcher.options.StartupOptions;
+import org.exbin.framework.bined.launcher.options.StartupOptions.StartupBehavior;
+import org.exbin.framework.bined.launcher.options.page.StartupOptionsPage;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.viewer.options.BinaryAppearanceOptions;
 import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
@@ -62,6 +67,7 @@ import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
+import org.exbin.framework.options.api.OptionsPageManagement;
 import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
@@ -270,6 +276,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedEditorModule.registerOptionsPanels();
             binedThemeModule.registerOptionsPanels();
             binedInspectorModule.registerOptionsPanels();
+            registerOptionsPanels(); // Register startup options
             if (!demoMode) {
                 updateModule.registerOptionsPanels();
             }
@@ -285,7 +292,18 @@ public class BinedLauncherModule implements LauncherModule {
                 });
             } else {
                 frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                    // Save frame position
                     frameModule.saveFramePosition();
+
+                    // Save session files if in multi-file mode
+                    EditorProvider currentProvider = binedModule.getEditorProvider();
+                    if (currentProvider instanceof BinaryMultiEditorProvider) {
+                        BinaryMultiEditorProvider multiProvider = (BinaryMultiEditorProvider) currentProvider;
+                        List<URI> openFiles = multiProvider.getOpenFileUris();
+                        StartupOptions startupOptions = new StartupOptions(preferences);
+                        startupOptions.setLastSessionFiles(openFiles);
+                    }
+
                     return true;
                 });
             }
@@ -312,7 +330,42 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             if (filePath == null) {
-                binedModule.start();
+                // Apply startup behavior from options
+                StartupOptions startupOptions = new StartupOptions(preferences);
+                StartupBehavior startupBehavior = startupOptions.getStartupBehavior();
+
+                switch (startupBehavior) {
+                    case START_EMPTY:
+                        // Do nothing - start empty
+                        break;
+                    case NEW_FILE:
+                        // Start with a single new file
+                        binedModule.start();
+                        break;
+                    case REOPEN_SESSION:
+                        // Reopen last session files (only in multi-file mode)
+                        if (editorProviderVariant == EditorProviderVariant.MULTI) {
+                            List<URI> sessionFiles = startupOptions.getLastSessionFiles();
+                            if (sessionFiles.isEmpty()) {
+                                // No session files, fallback to new file
+                                binedModule.start();
+                            } else {
+                                // Load session files
+                                for (URI fileUri : sessionFiles) {
+                                    try {
+                                        fileModule.loadFromFile(fileUri);
+                                    } catch (Exception ex) {
+                                        Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.WARNING,
+                                            "Failed to load session file: " + fileUri, ex);
+                                    }
+                                }
+                            }
+                        } else {
+                            // Single file mode, fallback to new file
+                            binedModule.start();
+                        }
+                        break;
+                }
             } else {
                 binedModule.startWithFile(filePath);
             }
@@ -324,5 +377,16 @@ public class BinedLauncherModule implements LauncherModule {
             Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
 //                System.exit(1);
         }
+    }
+
+    /**
+     * Registers startup options panels.
+     */
+    public void registerOptionsPanels() {
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(MODULE_ID);
+
+        StartupOptionsPage startupOptionsPage = new StartupOptionsPage();
+        optionsPageManagement.registerPage(startupOptionsPage);
     }
 }

@@ -26,7 +26,10 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
@@ -50,6 +53,7 @@ import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
@@ -356,5 +360,25 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         if (activeFile instanceof BinEdFileHandler) {
             textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getBinaryDataComponent().getCharset().name());
         }
+    }
+
+    /**
+     * Gets URIs of all currently opened files.
+     *
+     * @return list of file URIs
+     */
+    @Nonnull
+    public List<URI> getOpenFileUris() {
+        List<URI> fileUris = new ArrayList<>();
+        List<FileHandler> fileHandlers = getFileHandlers();
+
+        for (FileHandler handler : fileHandlers) {
+            Optional<URI> fileUri = handler.getFileUri();
+            if (fileUri.isPresent()) {
+                fileUris.add(fileUri.get());
+            }
+        }
+
+        return fileUris;
     }
 }
