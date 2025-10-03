@@ -74,8 +74,6 @@ public class PasteFromCodeAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
-        // Temporarily disable shortcut to avoid conflicts
-        // putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, ActionUtils.getMetaMask() | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
@@ -92,8 +90,6 @@ public class PasteFromCodeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("PasteFromCodeAction triggered!"); // Debug
-
         // Create panel
         final PasteFromCodePanel pasteFromCodePanel = new PasteFromCodePanel();
         pasteFromCodePanel.setImportFormats(importFormats);
@@ -108,25 +104,17 @@ public class PasteFromCodeAction extends AbstractAction {
         // Create dialog
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "Paste from Code", Dialog.ModalityType.APPLICATION_MODAL);
         // Don't add header panel or set title from resource bundle - title already set in createWindow
-        // windowModule.addHeaderPanel(dialog.getWindow(), pasteFromCodePanel.getClass(), panelResourceBundle);
-        // windowModule.setWindowTitle(dialog, panelResourceBundle);
 
         // Set controller
         controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
-            System.out.println("PasteFromCodeAction: Control action: " + actionType); // Debug
             if (actionType == DefaultControlController.ControlActionType.OK) {
                 // Insert parsed binary data
                 BinaryData parsedData = pasteFromCodePanel.getParsedData();
-                System.out.println("PasteFromCodeAction: Parsed data: " + (parsedData != null ? parsedData.getDataSize() + " bytes" : "null")); // Debug
                 if (parsedData != null && parsedData.getDataSize() > 0) {
                     insertData(parsedData);
-                    System.out.println("PasteFromCodeAction: Data inserted"); // Debug
-                } else {
-                    System.out.println("PasteFromCodeAction: No data to insert"); // Debug
                 }
             }
 
-            System.out.println("PasteFromCodeAction: Closing dialog"); // Debug
             dialog.close();
             dialog.dispose();
         });
@@ -140,14 +128,6 @@ public class PasteFromCodeAction extends AbstractAction {
         }
 
         long position = ((CaretCapable) codeArea).getDataPosition();
-
-        // Debug: Print data being inserted
-        System.out.println("PasteFromCodeAction: Inserting at position: " + position);
-        StringBuilder hexDump = new StringBuilder("Data to insert (hex): ");
-        for (long i = 0; i < Math.min(data.getDataSize(), 50); i++) {
-            hexDump.append(String.format("%02X ", data.getByte(i)));
-        }
-        System.out.println(hexDump);
 
         // Create copy of data
         ByteArrayEditableData insertData = new ByteArrayEditableData();
@@ -166,10 +146,8 @@ public class PasteFromCodeAction extends AbstractAction {
         // Move cursor to end of inserted data
         long newPosition = position + data.getDataSize();
         ((CaretCapable) codeArea).setActiveCaretPosition(newPosition);
-        System.out.println("PasteFromCodeAction: Moved cursor to position: " + newPosition);
 
         // Force refresh
         codeArea.repaint();
-        System.out.println("PasteFromCodeAction: Data insertion completed");
     }
 }

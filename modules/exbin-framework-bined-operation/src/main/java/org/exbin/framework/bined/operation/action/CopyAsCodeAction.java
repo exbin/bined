@@ -71,8 +71,6 @@ public class CopyAsCodeAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
-        // Temporarily disable shortcut to avoid conflicts
-        // putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, ActionUtils.getMetaMask() | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
@@ -89,8 +87,6 @@ public class CopyAsCodeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("CopyAsCodeAction triggered!"); // Debug
-
         // Get selected data
         BinaryData sourceData = getSelectedData();
         // Don't return early - always show dialog even if no data
@@ -112,24 +108,17 @@ public class CopyAsCodeAction extends AbstractAction {
         // Create dialog
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "Copy as Code", Dialog.ModalityType.APPLICATION_MODAL);
         // Don't add header panel or set title from resource bundle - title already set in createWindow
-        // windowModule.addHeaderPanel(dialog.getWindow(), copyAsCodePanel.getClass(), panelResourceBundle);
-        // windowModule.setWindowTitle(dialog, panelResourceBundle);
 
         // Set controller
         controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
-            System.out.println("CopyAsCodeAction: Control action: " + actionType); // Debug
             if (actionType == DefaultControlController.ControlActionType.OK) {
                 // Copy generated code to clipboard
                 String code = copyAsCodePanel.getGeneratedCode();
-                System.out.println("CopyAsCodeAction: Generated code length: " + code.length()); // Debug
-                System.out.println("CopyAsCodeAction: Code preview: " + code.substring(0, Math.min(100, code.length()))); // Debug
                 StringSelection stringSelection = new StringSelection(code);
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(stringSelection, null);
-                System.out.println("CopyAsCodeAction: Code copied to clipboard"); // Debug
             }
 
-            System.out.println("CopyAsCodeAction: Closing dialog"); // Debug
             dialog.close();
             dialog.dispose();
         });
