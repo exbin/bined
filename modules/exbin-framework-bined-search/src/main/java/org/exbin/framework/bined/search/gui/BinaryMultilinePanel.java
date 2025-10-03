@@ -96,10 +96,10 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     @Nonnull
     public SearchCondition getCondition() {
-        if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            condition.setSearchText(textArea.getText());
-        } else {
+        if (condition.getSearchMode() == SearchCondition.SearchMode.BINARY) {
             condition.setBinaryData((EditableBinaryData) codeArea.getContentData());
+        } else {
+            condition.setSearchText(textArea.getText());
         }
 
         return condition;
@@ -107,7 +107,15 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     public void setCondition(SearchCondition condition) {
         this.condition = condition;
-        if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
+        if (condition.getSearchMode() == SearchCondition.SearchMode.BINARY) {
+            codeArea = new SectCodeArea();
+            codeArea.setContentData(condition.getBinaryData());
+            codeArea.setFocusTraversalKeysEnabled(false);
+            add(codeArea, BorderLayout.CENTER);
+            if (codeAreaPopupMenuHandler != null) {
+                attachPopupMenu();
+            }
+        } else {
             scrollPane = new javax.swing.JScrollPane();
             textArea = new javax.swing.JTextArea();
             textArea.setColumns(20);
@@ -117,16 +125,9 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
             textArea.setText(condition.getSearchText());
             add(scrollPane, BorderLayout.CENTER);
-        } else {
-            codeArea = new SectCodeArea();
-            codeArea.setContentData(condition.getBinaryData());
-            codeArea.setFocusTraversalKeysEnabled(false);
-            add(codeArea, BorderLayout.CENTER);
-            if (codeAreaPopupMenuHandler != null) {
-                attachPopupMenu();
-            }
         }
         revalidate();
+        repaint();
     }
 
     public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {

@@ -82,12 +82,11 @@ public class SearchCondition {
 
     public boolean isEmpty() {
         switch (searchMode) {
-            case TEXT: {
+            case TEXT:
+            case REGEX:
                 return searchText == null || searchText.isEmpty();
-            }
-            case BINARY: {
+            case BINARY:
                 return binaryData == null || binaryData.isEmpty();
-            }
             default:
                 throw CodeAreaUtils.getInvalidTypeException(searchMode);
         }
@@ -114,11 +113,11 @@ public class SearchCondition {
         if (this.searchMode != other.searchMode) {
             return false;
         }
-        if (searchMode == SearchMode.TEXT) {
-            return Objects.equals(this.searchText, other.searchText);
-        } else {
+        if (searchMode == SearchMode.BINARY) {
             return Objects.equals(this.binaryData, other.binaryData);
         }
+
+        return Objects.equals(this.searchText, other.searchText);
     }
 
     public void clear() {
@@ -129,6 +128,6 @@ public class SearchCondition {
     }
 
     public enum SearchMode {
-        TEXT, BINARY
+        TEXT, REGEX, BINARY
     }
 }

@@ -18,7 +18,7 @@ package org.exbin.framework.bined.launcher;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -192,9 +192,9 @@ public class BinedLauncherModule implements LauncherModule {
             frameModule.init();
             if (!demoMode) {
                 try {
-                    updateModule.setUpdateUrl(new URL(bundle.getString("update_url")));
-                    updateModule.setUpdateDownloadUrl(new URL(bundle.getString("update_download_url")));
-                } catch (MalformedURLException ex) {
+                    updateModule.setUpdateUrl(new URI(bundle.getString("update_url")).toURL());
+                    updateModule.setUpdateDownloadUrl(new URI(bundle.getString("update_download_url")).toURL());
+                } catch (MalformedURLException | URISyntaxException ex) {
                     Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 updateModule.registerDefaultMenuItem();
@@ -203,8 +203,8 @@ public class BinedLauncherModule implements LauncherModule {
             // helpModule.registerMainMenu();
             aboutModule.registerDefaultMenuItem();
             try {
-                helpOnlineModule.setOnlineHelpUrl(new URL(bundle.getString("online_help_url")));
-            } catch (MalformedURLException ex) {
+                helpOnlineModule.setOnlineHelpUrl(new URI(bundle.getString("online_help_url")).toURL());
+            } catch (MalformedURLException | URISyntaxException ex) {
                 Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
             }
             helpOnlineModule.registerOpeningHandler();

@@ -111,14 +111,13 @@ public class BinarySearchComboBoxPanel extends JPanel {
     @Nonnull
     public SearchCondition getItem() {
         switch (item.getSearchMode()) {
-            case TEXT: {
+            case TEXT:
+            case REGEX:
                 item.setSearchText(textField.getText());
                 break;
-            }
-            case BINARY: {
+            case BINARY:
                 item.setBinaryData((EditableBinaryData) codeArea.getContentData());
                 break;
-            }
         }
 
         return item;
@@ -141,6 +140,9 @@ public class BinarySearchComboBoxPanel extends JPanel {
                 revalidate();
                 break;
             }
+            case REGEX: {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
             case BINARY: {
                 this.item.setSearchText("");
                 ByteArrayEditableData data = new ByteArrayEditableData();
@@ -161,14 +163,13 @@ public class BinarySearchComboBoxPanel extends JPanel {
 
     public void selectAll() {
         switch (item.getSearchMode()) {
-            case TEXT: {
+            case TEXT:
+            case REGEX:
                 textField.selectAll();
                 break;
-            }
-            case BINARY: {
+            case BINARY:
                 codeArea.selectAll();
                 break;
-            }
         }
     }
 
@@ -191,14 +192,13 @@ public class BinarySearchComboBoxPanel extends JPanel {
     public void requestFocus() {
         super.requestFocus();
         switch (item.getSearchMode()) {
-            case TEXT: {
+            case TEXT:
+            case REGEX:
                 textField.requestFocus();
                 break;
-            }
-            case BINARY: {
+            case BINARY:
                 codeArea.requestFocus();
                 break;
-            }
         }
     }
 
@@ -240,20 +240,19 @@ public class BinarySearchComboBoxPanel extends JPanel {
 
     public void clear() {
         switch (item.getSearchMode()) {
-            case TEXT: {
+            case TEXT:
+            case REGEX:
                 String text = textField.getText();
                 if (!"".equals(text)) {
                     textField.setText("");
                 }
                 break;
-            }
-            case BINARY: {
+            case BINARY:
                 EditableBinaryData contentData = (EditableBinaryData) codeArea.getContentData();
                 if (!contentData.isEmpty()) {
                     contentData.clear();
                 }
                 break;
-            }
         }
     }
 

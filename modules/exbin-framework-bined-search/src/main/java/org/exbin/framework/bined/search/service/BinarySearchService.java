@@ -30,7 +30,7 @@ public interface BinarySearchService {
 
     void performFind(SearchParameters dialogSearchParameters, SearchStatusListener searchStatusListener);
 
-    void setMatchPosition(int matchPosition);
+    void setMatchIndex(int matchIndex);
 
     void performFindAgain(SearchStatusListener searchStatusListener);
 
@@ -46,58 +46,60 @@ public interface BinarySearchService {
 
         void setStatus(FoundMatches foundMatches, SearchParameters.MatchMode matchMode);
 
+        void setProgress(int progress);
+
         void clearStatus();
     }
 
     public static class FoundMatches {
 
         private int matchesCount;
-        private int matchPosition;
+        private int matchIndex;
 
         public FoundMatches() {
             matchesCount = 0;
-            matchPosition = -1;
+            matchIndex = -1;
         }
 
-        public FoundMatches(int matchesCount, int matchPosition) {
-            if (matchPosition >= matchesCount) {
+        public FoundMatches(int matchesCount, int matchIndex) {
+            if (matchIndex >= matchesCount) {
                 throw new IllegalStateException("Match position is out of range");
             }
 
             this.matchesCount = matchesCount;
-            this.matchPosition = matchPosition;
+            this.matchIndex = matchIndex;
         }
 
         public int getMatchesCount() {
             return matchesCount;
         }
 
-        public int getMatchPosition() {
-            return matchPosition;
+        public int getMatchIndex() {
+            return matchIndex;
         }
 
         public void setMatchesCount(int matchesCount) {
             this.matchesCount = matchesCount;
         }
 
-        public void setMatchPosition(int matchPosition) {
-            this.matchPosition = matchPosition;
+        public void setMatchIndex(int matchIndex) {
+            this.matchIndex = matchIndex;
         }
 
         public void next() {
-            if (matchPosition == matchesCount - 1) {
+            if (matchIndex == matchesCount - 1) {
                 throw new IllegalStateException("Cannot find next on last match");
             }
 
-            matchPosition++;
+            matchIndex++;
         }
 
         public void prev() {
-            if (matchPosition == 0) {
+            if (matchIndex == 0) {
                 throw new IllegalStateException("Cannot find previous on first match");
             }
 
-            matchPosition--;
+            matchIndex--;
         }
     }
 }

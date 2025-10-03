@@ -1,4 +1,4 @@
-package org.exbin.bined.editor.search;
+package org.exbin.framework.bined.search.service.impl;
 
 import javax.swing.*;
 import java.nio.charset.Charset;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.concurrent.CancellationException;
 
 /**
+ * TODO: Integrate code
+ * <p>
  * Background search worker. Publishes SearchResult objects incrementally and progress (0..100).
  */
 public class SearchWorker extends SwingWorker<Void, SearchResult> {

@@ -87,11 +87,16 @@ public class BinarySearch {
                         break;
                     default:
                         binarySearchPanel.setInfoLabel(
-                                java.text.MessageFormat.format(resourceBundle.getString("searchStatus.foundMatches"), foundMatches.getMatchPosition() + 1, foundMatches.getMatchesCount())
+                                java.text.MessageFormat.format(resourceBundle.getString("searchStatus.foundMatches"), foundMatches.getMatchIndex() + 1, foundMatches.getMatchesCount())
                         );
                         break;
                 }
                 updateMatchStatus();
+            }
+
+            @Override
+            public void setProgress(int progress) {
+                binarySearchPanel.setProgress(progress);
             }
 
             @Override
@@ -103,10 +108,10 @@ public class BinarySearch {
 
             private void updateMatchStatus() {
                 int matchesCount = foundMatches.getMatchesCount();
-                int matchPosition = foundMatches.getMatchPosition();
+                int matchIndex = foundMatches.getMatchIndex();
                 binarySearchPanel.updateMatchStatus(matchesCount > 0,
-                        matchesCount > 1 && matchPosition > 0,
-                        matchPosition < matchesCount - 1
+                        matchesCount > 1 && matchIndex > 0,
+                        matchIndex < matchesCount - 1
                 );
             }
         };
@@ -114,14 +119,14 @@ public class BinarySearch {
             @Override
             public void prevMatch() {
                 foundMatches.prev();
-                binarySearchService.setMatchPosition(foundMatches.getMatchPosition());
+                binarySearchService.setMatchIndex(foundMatches.getMatchIndex());
                 searchStatusListener.setStatus(foundMatches, binarySearchService.getLastSearchParameters().getMatchMode());
             }
 
             @Override
             public void nextMatch() {
                 foundMatches.next();
-                binarySearchService.setMatchPosition(foundMatches.getMatchPosition());
+                binarySearchService.setMatchIndex(foundMatches.getMatchIndex());
                 searchStatusListener.setStatus(foundMatches, binarySearchService.getLastSearchParameters().getMatchMode());
             }
 
@@ -148,6 +153,11 @@ public class BinarySearch {
             public void performReplaceAll() {
                 invokeSearch(SearchOperation.REPLACE_ALL);
                 binarySearchPanel.updateSearchHistory(currentSearchParameters.getCondition());
+            }
+
+            @Override
+            public void stopSearch() {
+                cancelSearch();
             }
 
             @Override
@@ -181,6 +191,9 @@ public class BinarySearch {
 
                         condition.setSearchText(searchText);
                         break;
+                    }
+                    case REGEX: {
+                        throw new UnsupportedOperationException("Not supported yet.");
                     }
                     case BINARY: {
                         EditableBinaryData searchData = (EditableBinaryData) updatedSearchCondition.getBinaryData();

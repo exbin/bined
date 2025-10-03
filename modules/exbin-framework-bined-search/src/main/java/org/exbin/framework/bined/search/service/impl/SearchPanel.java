@@ -1,4 +1,4 @@
-package org.exbin.bined.editor.search;
+package org.exbin.framework.bined.search.service.impl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.CancellationException;
 
 /**
+ * TODO: Integrate code
+ * <p>
  * Minimal Search UI panel. Add this to BinEd's docking area.
  */
 public class SearchPanel extends JPanel {

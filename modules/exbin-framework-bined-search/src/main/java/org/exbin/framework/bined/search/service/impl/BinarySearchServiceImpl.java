@@ -84,6 +84,9 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                             searchDataSize = condition.getSearchText().length();
                             break;
                         }
+                        case REGEX: {
+                            throw new UnsupportedOperationException("Not supported yet.");
+                        }
                         case BINARY: {
                             searchDataSize = condition.getBinaryData().getDataSize();
                             break;
@@ -101,14 +104,15 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         searchParameters.setStartPosition(position);
 
         switch (condition.getSearchMode()) {
-            case TEXT: {
+            case TEXT:
                 searchForText(searchParameters, searchStatusListener);
                 break;
-            }
-            case BINARY: {
+            case REGEX:
+                searchRegEx(searchParameters, searchStatusListener);
+                break;
+            case BINARY:
                 searchForBinaryData(searchParameters, searchStatusListener);
                 break;
-            }
             default:
                 throw CodeAreaUtils.getInvalidTypeException(condition.getSearchMode());
         }
@@ -290,10 +294,14 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         codeArea.repaint();
     }
 
+    public void searchRegEx(SearchParameters searchParameters, SearchStatusListener searchStatusListener) {
+
+    }
+
     @Override
-    public void setMatchPosition(int matchPosition) {
+    public void setMatchIndex(int matchIndex) {
         SearchCodeAreaColorAssessor searchAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) codeArea.getPainter(), SearchCodeAreaColorAssessor.class);
-        searchAssessor.setCurrentMatchIndex(matchPosition);
+        searchAssessor.setCurrentMatchIndex(matchIndex);
         SearchMatch currentMatch = searchAssessor.getCurrentMatch();
         codeArea.revealPosition(currentMatch.getPosition(), 0, codeArea.getActiveSection());
         codeArea.repaint();
@@ -309,7 +317,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 case MULTIPLE:
                     if (matchesCount > 1) {
                         int currentMatchIndex = searchAssessor.getCurrentMatchIndex();
-                        setMatchPosition(currentMatchIndex < matchesCount - 1 ? currentMatchIndex + 1 : 0);
+                        setMatchIndex(currentMatchIndex < matchesCount - 1 ? currentMatchIndex + 1 : 0);
                         searchStatusListener.setStatus(new FoundMatches(foundMatches.size(), searchAssessor.getCurrentMatchIndex()), lastSearchParameters.getMatchMode());
                     }
 
@@ -329,6 +337,10 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                     switch (condition.getSearchMode()) {
                         case TEXT: {
                             searchForText(lastSearchParameters, searchStatusListener);
+                            break;
+                        }
+                        case REGEX: {
+                            searchRegEx(lastSearchParameters, searchStatusListener);
                             break;
                         }
                         case BINARY: {

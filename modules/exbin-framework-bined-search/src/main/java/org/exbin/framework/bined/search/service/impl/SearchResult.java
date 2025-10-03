@@ -1,5 +1,8 @@
-package org.exbin.bined.editor.search;
+package org.exbin.framework.bined.search.service.impl;
 
+/**
+ * TODO: Integrate code
+ */
 public class SearchResult {
     private final long offset;
     private final int length;

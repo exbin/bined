@@ -1,7 +1,10 @@
-package org.exbin.bined.editor.search;
+package org.exbin.framework.bined.search.service.impl;
 
 import java.io.IOException;
 
+/**
+ * TODO: Integrate code
+ */
 public interface EditorAccessor {
     byte[] readBytes(long offset, int length) throws IOException;
 

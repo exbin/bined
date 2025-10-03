@@ -1,9 +1,11 @@
-package org.exbin.bined.editor.search;
+package org.exbin.framework.bined.search.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * TODO: Integrate code
+ * <p>
  * Represents a byte pattern with optional wildcard bytes.
  * Wildcard byte is represented with null in the pattern array.
  */

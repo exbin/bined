@@ -70,6 +70,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private final SectCodeArea searchCodeArea = new SectCodeArea();
 
     private PanelMode panelMode = PanelMode.REPLACE;
+    private StatusPanelMode statusPanelMode = StatusPanelMode.EMPTY;
     private ComboBoxEditor findComboBoxEditor;
     private BinarySearchComboBoxPanel findComboBoxEditorComponent;
     private ComboBoxEditor replaceComboBoxEditor;
@@ -87,6 +88,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         searchCodeArea.setLayoutProfile(layoutProfile);
         SectionCodeAreaThemeProfile themeProfile = searchCodeArea.getThemeProfile();
+        if (themeProfile == null) {
+            themeProfile = new SectionCodeAreaThemeProfile();
+        }
         themeProfile.setBackgroundPaintMode(SectionBackgroundPaintMode.PLAIN);
         searchCodeArea.setThemeProfile(themeProfile);
 
@@ -142,6 +146,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findComboBoxEditor = new ComboBoxEditor() {
 
+            @Nonnull
             @Override
             public Component getEditorComponent() {
                 return findComboBoxEditorComponent;
@@ -276,6 +281,46 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     public void setInfoLabel(String text) {
         infoLabel.setText(text);
+        setStatusPanelMode(StatusPanelMode.INFO);
+    }
+
+    /**
+     * Sets progress of 0 to 1000.
+     *
+     * @param progress progress value
+     */
+    public void setProgress(int progress) {
+        progressBar.setValue(progress);
+        setStatusPanelMode(StatusPanelMode.PROGRESS);
+    }
+
+    private void setStatusPanelMode(StatusPanelMode statusPanelMode) {
+        if (statusPanelMode == this.statusPanelMode) {
+            return;
+        }
+
+        switch (this.statusPanelMode) {
+            case INFO:
+                statusPanel.remove(infoLabel);
+                break;
+            case PROGRESS:
+                statusPanel.remove(progressBar);
+                statusPanel.remove(progressToolBar);
+                break;
+        }
+
+        switch (statusPanelMode) {
+            case INFO:
+                statusPanel.add(infoLabel, BorderLayout.CENTER);
+                break;
+            case PROGRESS:
+                statusPanel.add(progressBar, BorderLayout.CENTER);
+                statusPanel.add(progressToolBar, BorderLayout.EAST);
+                break;
+        }
+        this.statusPanelMode = statusPanelMode;
+        statusPanel.revalidate();
+        statusPanel.repaint();
     }
 
     @Nonnull
@@ -353,6 +398,10 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        infoLabel = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
+        progressToolBar = new javax.swing.JToolBar();
+        stopSearchButton = new javax.swing.JButton();
         topSeparator = new javax.swing.JSeparator();
         findPanel = new javax.swing.JPanel();
         findLabel = new javax.swing.JLabel();
@@ -366,7 +415,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         multipleMatchesToggleButton = new javax.swing.JToggleButton();
         separator1 = new javax.swing.JToolBar.Separator();
         optionsButton = new javax.swing.JButton();
-        infoLabel = new javax.swing.JLabel();
+        separator2 = new javax.swing.JToolBar.Separator();
+        statusPanel = new javax.swing.JPanel();
         closeToolBar = new javax.swing.JToolBar();
         closeButton = new javax.swing.JButton();
         replacePanel = new javax.swing.JPanel();
@@ -377,6 +427,29 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         replaceToolBar = new javax.swing.JToolBar();
         replaceButton = new javax.swing.JButton();
         replaceAllButton = new javax.swing.JButton();
+
+        infoLabel.setEnabled(false);
+        infoLabel.setName("infoLabel"); // NOI18N
+
+        progressBar.setMaximum(1000);
+        progressBar.setName("progressBar"); // NOI18N
+
+        progressToolBar.setBorder(null);
+        progressToolBar.setRollover(true);
+        progressToolBar.setName("progressToolBar"); // NOI18N
+
+        stopSearchButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("stopSearchButton.icon"))));
+        stopSearchButton.setToolTipText(resourceBundle.getString("stopSearchButton.toolTipText")); // NOI18N
+        stopSearchButton.setFocusable(false);
+        stopSearchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stopSearchButton.setName("stopSearchButton"); // NOI18N
+        stopSearchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stopSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopSearchButtonActionPerformed(evt);
+            }
+        });
+        progressToolBar.add(stopSearchButton);
 
         setName("Form"); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -486,8 +559,11 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findToolBar.add(optionsButton);
 
-        infoLabel.setEnabled(false);
-        infoLabel.setName("infoLabel"); // NOI18N
+        separator2.setName("separator2"); // NOI18N
+        findToolBar.add(separator2);
+
+        statusPanel.setName("statusPanel"); // NOI18N
+        statusPanel.setLayout(new java.awt.BorderLayout());
 
         closeToolBar.setBorder(null);
         closeToolBar.setRollover(true);
@@ -516,22 +592,22 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findTypeToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(findComboBox, 0, 629, Short.MAX_VALUE)
+                .addComponent(findComboBox, 0, 592, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(closeToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         findPanelLayout.setVerticalGroup(
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(closeToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(findToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(findTypeToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(findLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(findComboBox)
+            .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         add(findPanel, java.awt.BorderLayout.CENTER);
@@ -712,6 +788,10 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         controller.performReplaceAll();
     }//GEN-LAST:event_replaceAllButtonActionPerformed
 
+    private void stopSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSearchButtonActionPerformed
+        controller.stopSearch();
+    }//GEN-LAST:event_stopSearchButtonActionPerformed
+
     /**
      * Test method for this panel.
      *
@@ -740,6 +820,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private javax.swing.JButton nextMatchButton;
     private javax.swing.JButton optionsButton;
     private javax.swing.JButton prevMatchButton;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JToolBar progressToolBar;
     private javax.swing.JButton replaceAllButton;
     private javax.swing.JButton replaceButton;
     private javax.swing.JComboBox<SearchCondition> replaceComboBox;
@@ -749,6 +831,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private javax.swing.JButton replaceTypeButton;
     private javax.swing.JToolBar replaceTypeToolBar;
     private javax.swing.JToolBar.Separator separator1;
+    private javax.swing.JToolBar.Separator separator2;
+    private javax.swing.JPanel statusPanel;
+    private javax.swing.JButton stopSearchButton;
     private javax.swing.JSeparator topSeparator;
     // End of variables declaration//GEN-END:variables
 
@@ -783,6 +868,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         void performReplaceAll();
 
+        void stopSearch();
+
         /**
          * Parameters of search have changed.
          */
@@ -806,5 +893,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
     public enum PanelMode {
         FIND, REPLACE
+    }
+
+    private enum StatusPanelMode {
+        EMPTY, INFO, PROGRESS
     }
 }
