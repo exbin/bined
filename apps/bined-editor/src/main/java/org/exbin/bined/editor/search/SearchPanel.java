@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 /**
  * Minimal Search UI panel. Add this to BinEd's docking area.
