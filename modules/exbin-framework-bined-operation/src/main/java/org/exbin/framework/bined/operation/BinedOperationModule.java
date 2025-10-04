@@ -39,17 +39,15 @@ import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
 import org.exbin.framework.bined.operation.component.Base64DataMethod;
 import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
+import org.exbin.framework.bined.operation.component.CompressionDataMethod;
+import org.exbin.framework.bined.operation.component.DateTimeConversionMethod;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.menu.api.MenuManagement;
 
-/**
- * Binary data editor operations module.
- *
- * @author ExBin Project (https://exbin.org)
- */
+
 @ParametersAreNonnullByDefault
 public class BinedOperationModule implements Module {
 
@@ -72,6 +70,10 @@ public class BinedOperationModule implements Module {
         addConvertDataComponent(bitSwappingDataMethod);
         Base64DataMethod base64DataMethod = new Base64DataMethod();
         addConvertDataComponent(base64DataMethod);
+        DateTimeConversionMethod dateTimeConversionMethod = new DateTimeConversionMethod();
+        addConvertDataComponent(dateTimeConversionMethod);
+        CompressionDataMethod compressionDataMethod = new CompressionDataMethod();
+        addConvertDataComponent(compressionDataMethod);
     }
 
     @Nonnull

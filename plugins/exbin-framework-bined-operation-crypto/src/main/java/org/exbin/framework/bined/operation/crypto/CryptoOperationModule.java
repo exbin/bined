@@ -1,0 +1,66 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.framework.bined.operation.crypto;
+
+import java.security.Security;
+import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.exbin.framework.App;
+import org.exbin.framework.ModuleUtils;
+import org.exbin.framework.PluginModule;
+import org.exbin.framework.bined.operation.BinedOperationModule;
+import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.bined.operation.crypto.component.SymmetricEncryptionMethod;
+import org.exbin.framework.ui.api.UiModuleApi;
+
+
+@ParametersAreNonnullByDefault
+public class CryptoOperationModule implements PluginModule {
+
+    public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(CryptoOperationModule.class);
+
+    private java.util.ResourceBundle resourceBundle = null;
+
+    public CryptoOperationModule() {
+    }
+
+    @Override
+    public void register() {
+        // Register Bouncy Castle provider
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+
+        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
+        uiModule.addPostInitAction(() -> {
+            BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
+
+            SymmetricEncryptionMethod encryptionMethod = new SymmetricEncryptionMethod();
+            binedOperationModule.addConvertDataComponent(encryptionMethod);
+        });
+    }
+
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        if (resourceBundle == null) {
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CryptoOperationModule.class);
+        }
+
+        return resourceBundle;
+    }
+}
