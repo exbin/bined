@@ -115,6 +115,7 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-bookmarks')
     implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-macro')
     implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-tool-content')
+    implementation moduleDep('Bined', 'org.exbin.framework', 'plugins', 'exbin-framework-bined-operation-crypto')
     implementation 'com.formdev:flatlaf-desktop:3.2'
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
