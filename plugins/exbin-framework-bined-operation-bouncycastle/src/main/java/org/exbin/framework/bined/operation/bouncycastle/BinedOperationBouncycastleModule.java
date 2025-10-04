@@ -15,15 +15,18 @@
  */
 package org.exbin.framework.bined.operation.bouncycastle;
 
+import java.security.Security;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.exbin.framework.App;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDataMethod;
+import org.exbin.framework.bined.operation.bouncycastle.component.SymmetricEncryptionMethod;
 import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
@@ -43,12 +46,20 @@ public class BinedOperationBouncycastleModule implements PluginModule {
 
     @Override
     public void register() {
+        // Register Bouncy Castle provider
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+
         UiModuleApi uiModule = App.getModule(UiModuleApi.class);
         uiModule.addPostInitAction(() -> {
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
 
             ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
             binedOperationModule.addConvertDataComponent(computeHashDataMethod);
+
+            SymmetricEncryptionMethod encryptionMethod = new SymmetricEncryptionMethod();
+            binedOperationModule.addConvertDataComponent(encryptionMethod);
         });
     }
 
