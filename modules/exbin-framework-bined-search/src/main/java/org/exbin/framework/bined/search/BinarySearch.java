@@ -100,6 +100,13 @@ public class BinarySearch {
             }
 
             @Override
+            public void setCancelled() {
+                binarySearchPanel.setInfoLabel("Cancelled");
+                BinarySearch.this.foundMatches = new BinarySearchService.FoundMatches();
+                updateMatchStatus();
+            }
+
+            @Override
             public void clearStatus() {
                 binarySearchPanel.setInfoLabel("");
                 BinarySearch.this.foundMatches = new BinarySearchService.FoundMatches();
@@ -156,8 +163,8 @@ public class BinarySearch {
             }
 
             @Override
-            public void stopSearch() {
-                cancelSearch();
+            public void cancelSearch() {
+                BinarySearch.this.cancelSearch();
             }
 
             @Override
@@ -177,6 +184,7 @@ public class BinarySearch {
                 SearchCondition updatedSearchCondition = binarySearchPanel.getSearchParameters().getCondition();
 
                 switch (updatedSearchCondition.getSearchMode()) {
+                    case REGEX:
                     case TEXT: {
                         String searchText = updatedSearchCondition.getSearchText();
                         if (searchText.isEmpty()) {
@@ -191,9 +199,6 @@ public class BinarySearch {
 
                         condition.setSearchText(searchText);
                         break;
-                    }
-                    case REGEX: {
-                        throw new UnsupportedOperationException("Not supported yet.");
                     }
                     case BINARY: {
                         EditableBinaryData searchData = (EditableBinaryData) updatedSearchCondition.getBinaryData();

@@ -72,6 +72,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
 
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private MultilineEditorListener multilineEditorListener = null;
+    private final SearchTypeUtils searchTypeUtils = new SearchTypeUtils();
 
     public FindBinaryPanel() {
         initComponents();
@@ -101,15 +102,14 @@ public class FindBinaryPanel extends javax.swing.JPanel {
             private final JPanel emptyPanel = new JPanel();
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
+            @Nonnull
             @Override
             public Component getListCellRendererComponent(JList<? extends SearchCondition> list, SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
                     return emptyPanel;
                 }
 
-                if (value.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-                    return listCellRenderer.getListCellRendererComponent(list, value.getSearchText(), index, isSelected, cellHasFocus);
-                } else {
+                if (value.getSearchMode() == SearchCondition.SearchMode.BINARY) {
                     findCodeArea.setContentData(value.getBinaryData());
                     findCodeArea.setPreferredSize(new Dimension(200, 20));
                     Color backgroundColor;
@@ -121,9 +121,12 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                     findCodeArea.setBackground(backgroundColor);
                     return findCodeArea;
                 }
+
+                return listCellRenderer.getListCellRendererComponent(list, value.getSearchText(), index, isSelected, cellHasFocus);
             }
         });
         findComboBoxEditor = new ComboBoxEditor() {
+
             @Nonnull
             @Override
             public Component getEditorComponent() {
@@ -236,6 +239,13 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         };
         replaceComboBox.setEditor(replaceComboBoxEditor);
         replaceComboBox.setModel(new SearchHistoryModel(replaceHistory));
+
+        searchTypeUtils.setupSearchType(searchTypeButton, () -> {
+            SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
+            return condition.getSearchMode();
+        }, (searchMode) -> {
+            switchSearchCondition(searchMode);
+        });
     }
 
     public void setSelected() {
@@ -252,15 +262,16 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dropDownButtonPanel1 = new org.exbin.auxiliary.dropdownbutton.DropDownButtonPanel();
         findPanel = new javax.swing.JPanel();
         findLabel = new javax.swing.JLabel();
-        searchTypeButton = new javax.swing.JButton();
         findComboBox = new javax.swing.JComboBox<>();
         findMultilineButton = new javax.swing.JButton();
         searchFromCursorCheckBox = new javax.swing.JCheckBox();
         matchCaseCheckBox = new javax.swing.JCheckBox();
         multipleMatchesCheckBox = new javax.swing.JCheckBox();
         searchBackwardCheckBox = new javax.swing.JCheckBox();
+        searchTypeButton = new org.exbin.auxiliary.dropdownbutton.DropDownButton();
         replacePanel = new javax.swing.JPanel();
         performReplaceCheckBox = new javax.swing.JCheckBox();
         replaceLabel = new javax.swing.JLabel();
@@ -274,15 +285,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         findPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceBundle.getString("findPanel.border.title"))); // NOI18N
 
         findLabel.setText(resourceBundle.getString("findLabel.text")); // NOI18N
-
-        searchTypeButton.setText(resourceBundle.getString("searchTypeButton.text")); // NOI18N
-        searchTypeButton.setToolTipText(resourceBundle.getString("searchTypeButton.toolTipText")); // NOI18N
-        searchTypeButton.setFocusable(false);
-        searchTypeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchTypeButtonActionPerformed(evt);
-            }
-        });
 
         findComboBox.setEditable(true);
         findComboBox.setMinimumSize(new java.awt.Dimension(136, 30));
@@ -306,6 +308,10 @@ public class FindBinaryPanel extends javax.swing.JPanel {
 
         searchBackwardCheckBox.setText(resourceBundle.getString("searchBackwardCheckBox.text")); // NOI18N
 
+        searchTypeButton.setText("  T ");
+        searchTypeButton.setMinimumSize(new java.awt.Dimension(33, 23));
+        searchTypeButton.setPreferredSize(new java.awt.Dimension(33, 23));
+
         javax.swing.GroupLayout findPanelLayout = new javax.swing.GroupLayout(findPanel);
         findPanel.setLayout(findPanelLayout);
         findPanelLayout.setHorizontalGroup(
@@ -316,7 +322,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                     .addComponent(matchCaseCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchFromCursorCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(findPanelLayout.createSequentialGroup()
-                        .addComponent(searchTypeButton)
+                        .addComponent(searchTypeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(findComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -334,10 +340,11 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(findLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(findComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(findMultilineButton)
-                    .addComponent(searchTypeButton))
+                .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchTypeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(findComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(findMultilineButton)))
                 .addGap(18, 18, 18)
                 .addComponent(searchFromCursorCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -346,7 +353,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                 .addComponent(multipleMatchesCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchBackwardCheckBox)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         add(findPanel, java.awt.BorderLayout.PAGE_START);
@@ -438,19 +445,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_findMultilineButtonActionPerformed
 
-    private void searchTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTypeButtonActionPerformed
-        SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
-        if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            condition.setSearchMode(SearchCondition.SearchMode.BINARY);
-        } else {
-            condition.setSearchMode(SearchCondition.SearchMode.TEXT);
-        }
-        findComboBoxEditor.setItem(condition);
-        findComboBox.setEditor(findComboBoxEditor);
-        updateFindStatus();
-        findComboBox.repaint();
-    }//GEN-LAST:event_searchTypeButtonActionPerformed
-
     private void performReplaceCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_performReplaceCheckBoxActionPerformed
         updateReplaceEnablement();
     }//GEN-LAST:event_performReplaceCheckBoxActionPerformed
@@ -477,23 +471,38 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_replaceMultilineButtonActionPerformed
 
+    private void switchSearchCondition(SearchCondition.SearchMode searchMode) {
+        SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
+        condition.setSearchMode(searchMode);
+        findComboBoxEditor.setItem(condition);
+        findComboBox.setEditor(findComboBoxEditor);
+        updateFindStatus();
+        findComboBox.repaint();
+    }
+
     private void updateFindStatus() {
         SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
-        if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            searchTypeButton.setText("T");
-            matchCaseCheckBox.setEnabled(true);
-        } else {
-            searchTypeButton.setText("B");
-            matchCaseCheckBox.setEnabled(false);
+        SearchCondition.SearchMode searchMode = condition.getSearchMode();
+        searchTypeUtils.updateSearchType(searchTypeButton, searchMode);
+        switch (searchMode) {
+            case TEXT:
+                matchCaseCheckBox.setEnabled(true);
+                break;
+            case REGEX:
+                matchCaseCheckBox.setEnabled(true);
+                break;
+            default:
+                matchCaseCheckBox.setEnabled(false);
+                break;
         }
     }
 
     private void updateReplaceStatus() {
         SearchCondition condition = (SearchCondition) replaceComboBoxEditor.getItem();
         if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            replaceTypeButton.setText("T");
+            replaceTypeButton.setText(resourceBundle.getString("replaceType.text.code"));
         } else {
-            replaceTypeButton.setText("B");
+            replaceTypeButton.setText(resourceBundle.getString("replaceType.binary.code"));
         }
     }
 
@@ -511,6 +520,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.exbin.auxiliary.dropdownbutton.DropDownButtonPanel dropDownButtonPanel1;
     private javax.swing.JComboBox<SearchCondition> findComboBox;
     private javax.swing.JLabel findLabel;
     private javax.swing.JButton findMultilineButton;
@@ -526,7 +536,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     private javax.swing.JButton replaceTypeButton;
     private javax.swing.JCheckBox searchBackwardCheckBox;
     private javax.swing.JCheckBox searchFromCursorCheckBox;
-    private javax.swing.JButton searchTypeButton;
+    private org.exbin.auxiliary.dropdownbutton.DropDownButton searchTypeButton;
     // End of variables declaration//GEN-END:variables
 
     @Nonnull

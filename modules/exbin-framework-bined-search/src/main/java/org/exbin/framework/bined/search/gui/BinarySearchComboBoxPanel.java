@@ -141,7 +141,15 @@ public class BinarySearchComboBoxPanel extends JPanel {
                 break;
             }
             case REGEX: {
-                throw new UnsupportedOperationException("Not supported yet.");
+                this.item.setSearchText(item.getSearchText());
+                this.item.setBinaryData(null);
+                runningUpdate = true;
+                textField.setText(item.getSearchText());
+                runningUpdate = false;
+                CardLayout layout = (CardLayout) getLayout();
+                layout.show(this, TEXT_MODE);
+                revalidate();
+                break;
             }
             case BINARY: {
                 this.item.setSearchText("");

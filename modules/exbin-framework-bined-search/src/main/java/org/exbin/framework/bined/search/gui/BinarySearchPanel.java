@@ -75,6 +75,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private BinarySearchComboBoxPanel findComboBoxEditorComponent;
     private ComboBoxEditor replaceComboBoxEditor;
     private BinarySearchComboBoxPanel replaceComboBoxEditorComponent;
+    private final SearchTypeUtils searchTypeUtils = new SearchTypeUtils();
 
     public BinarySearchPanel() {
         initComponents();
@@ -116,19 +117,17 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         findComboBoxEditorComponent = new BinarySearchComboBoxPanel();
         findComboBox.setRenderer(new ListCellRenderer<SearchCondition>() {
-            private final JPanel panel = new JPanel();
+            private final JPanel emptyPanel = new JPanel();
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
             @Nonnull
             @Override
             public Component getListCellRendererComponent(JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
-                    return panel;
+                    return emptyPanel;
                 }
 
-                if (value.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-                    return listCellRenderer.getListCellRendererComponent(list, value.getSearchText(), index, isSelected, cellHasFocus);
-                } else {
+                if (value.getSearchMode() == SearchCondition.SearchMode.BINARY) {
                     searchCodeArea.setContentData(value.getBinaryData());
                     searchCodeArea.setPreferredSize(new Dimension(200, 20));
                     Color backgroundColor;
@@ -142,6 +141,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                     colorsProfile.setColor(CodeAreaBasicColors.TEXT_BACKGROUND, backgroundColor);
                     return searchCodeArea;
                 }
+
+                return listCellRenderer.getListCellRendererComponent(list, value.getSearchText(), index, isSelected, cellHasFocus);
             }
         });
         findComboBoxEditor = new ComboBoxEditor() {
@@ -164,11 +165,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 } else {
                     condition = (SearchCondition) item;
                 }
-                SearchCondition currentItem = findComboBoxEditorComponent.getItem();
-                if (item != currentItem) {
-                    findComboBoxEditorComponent.setItem(condition);
-                    updateFindStatus();
-                }
+
+                findComboBoxEditorComponent.setItem(condition);
+                updateFindStatus();
             }
 
             @Nonnull
@@ -273,6 +272,13 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         replaceComboBox.setEditor(replaceComboBoxEditor);
 
         replaceComboBoxEditorComponent.addValueKeyListener(editorKeyListener);
+
+        searchTypeUtils.setupSearchType(searchTypeButton, () -> {
+            SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
+            return condition.getSearchMode();
+        }, (searchMode) -> {
+            switchSearchCondition(searchMode);
+        });
     }
 
     public void setController(Controller controller) {
@@ -401,12 +407,12 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         infoLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
         progressToolBar = new javax.swing.JToolBar();
-        stopSearchButton = new javax.swing.JButton();
+        cancelSearchButton = new javax.swing.JButton();
         topSeparator = new javax.swing.JSeparator();
         findPanel = new javax.swing.JPanel();
         findLabel = new javax.swing.JLabel();
         findTypeToolBar = new javax.swing.JToolBar();
-        findTypeButton = new javax.swing.JButton();
+        searchTypeButton = new org.exbin.auxiliary.dropdownbutton.DropDownButton(org.exbin.auxiliary.dropdownbutton.DropDownButtonVariant.TOOL);
         findComboBox = new javax.swing.JComboBox<>();
         findToolBar = new javax.swing.JToolBar();
         prevMatchButton = new javax.swing.JButton();
@@ -438,18 +444,18 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         progressToolBar.setRollover(true);
         progressToolBar.setName("progressToolBar"); // NOI18N
 
-        stopSearchButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("stopSearchButton.icon"))));
-        stopSearchButton.setToolTipText(resourceBundle.getString("stopSearchButton.toolTipText")); // NOI18N
-        stopSearchButton.setFocusable(false);
-        stopSearchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        stopSearchButton.setName("stopSearchButton"); // NOI18N
-        stopSearchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        stopSearchButton.addActionListener(new java.awt.event.ActionListener() {
+        cancelSearchButton.setIcon(new ImageIcon(getClass().getResource(resourceBundle.getString("cancelSearchButton.icon"))));
+        cancelSearchButton.setToolTipText(resourceBundle.getString("cancelSearchButton.toolTipText")); // NOI18N
+        cancelSearchButton.setFocusable(false);
+        cancelSearchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cancelSearchButton.setName("cancelSearchButton"); // NOI18N
+        cancelSearchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        cancelSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopSearchButtonActionPerformed(evt);
+                cancelSearchButtonActionPerformed(evt);
             }
         });
-        progressToolBar.add(stopSearchButton);
+        progressToolBar.add(cancelSearchButton);
 
         setName("Form"); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -467,19 +473,13 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findTypeToolBar.setFocusable(false);
         findTypeToolBar.setName("findTypeToolBar"); // NOI18N
 
-        findTypeButton.setText(resourceBundle.getString("inputType.text")); // NOI18N
-        findTypeButton.setToolTipText(resourceBundle.getString("findTypeButton.toolTipText")); // NOI18N
-        findTypeButton.setFocusable(false);
-        findTypeButton.setMaximumSize(new java.awt.Dimension(27, 27));
-        findTypeButton.setMinimumSize(new java.awt.Dimension(27, 27));
-        findTypeButton.setName("findTypeButton"); // NOI18N
-        findTypeButton.setPreferredSize(new java.awt.Dimension(27, 27));
-        findTypeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findTypeButtonActionPerformed(evt);
-            }
-        });
-        findTypeToolBar.add(findTypeButton);
+        searchTypeButton.setText(resourceBundle.getString("searchTypeButton.text")); // NOI18N
+        searchTypeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        searchTypeButton.setMinimumSize(new java.awt.Dimension(33, 23));
+        searchTypeButton.setName("searchTypeButton"); // NOI18N
+        searchTypeButton.setPreferredSize(new java.awt.Dimension(33, 23));
+        searchTypeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        findTypeToolBar.add(searchTypeButton);
 
         findComboBox.setEditable(true);
         findComboBox.setName("findComboBox"); // NOI18N
@@ -592,7 +592,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findTypeToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(findComboBox, 0, 592, Short.MAX_VALUE)
+                .addComponent(findComboBox, 0, 586, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
@@ -603,7 +603,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findPanelLayout.setVerticalGroup(
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(closeToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(findToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(findToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(findTypeToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(findLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(findComboBox)
@@ -721,30 +721,30 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         controller.notifySearchChanged();
     }//GEN-LAST:event_matchCaseToggleButtonActionPerformed
 
-    private void findTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findTypeButtonActionPerformed
-        SearchCondition condition = findComboBoxEditorComponent.getItem();
-        if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            condition.setSearchMode(SearchCondition.SearchMode.BINARY);
-        } else {
-            condition.setSearchMode(SearchCondition.SearchMode.TEXT);
-        }
-
-        findComboBoxEditorComponent.setItem(condition);
+    private void switchSearchCondition(SearchCondition.SearchMode searchMode) {
+        SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
+        condition.setSearchMode(searchMode);
+        findComboBoxEditor.setItem(condition);
         findComboBox.setEditor(findComboBoxEditor);
-        findComboBox.invalidate();
-        findComboBox.repaint();
         updateFindStatus();
+        findComboBox.repaint();
         controller.notifySearchChanged();
-    }//GEN-LAST:event_findTypeButtonActionPerformed
+    }
 
     public void updateFindStatus() {
-        SearchCondition condition = findComboBoxEditorComponent.getItem();
-        if (condition.getSearchMode() == SearchCondition.SearchMode.TEXT) {
-            findTypeButton.setText(resourceBundle.getString("inputType.text"));
-            matchCaseToggleButton.setEnabled(true);
-        } else {
-            findTypeButton.setText(resourceBundle.getString("inputType.binary"));
-            matchCaseToggleButton.setEnabled(false);
+        SearchCondition condition = (SearchCondition) findComboBoxEditor.getItem();
+        SearchCondition.SearchMode searchMode = condition.getSearchMode();
+        searchTypeUtils.updateSearchType(searchTypeButton, searchMode);
+        switch (searchMode) {
+            case TEXT:
+                matchCaseToggleButton.setEnabled(true);
+                break;
+            case REGEX:
+                matchCaseToggleButton.setEnabled(true);
+                break;
+            default:
+                matchCaseToggleButton.setEnabled(false);
+                break;
         }
     }
 
@@ -788,9 +788,9 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         controller.performReplaceAll();
     }//GEN-LAST:event_replaceAllButtonActionPerformed
 
-    private void stopSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSearchButtonActionPerformed
-        controller.stopSearch();
-    }//GEN-LAST:event_stopSearchButtonActionPerformed
+    private void cancelSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelSearchButtonActionPerformed
+        controller.cancelSearch();
+    }//GEN-LAST:event_cancelSearchButtonActionPerformed
 
     /**
      * Test method for this panel.
@@ -806,13 +806,13 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelSearchButton;
     private javax.swing.JButton closeButton;
     private javax.swing.JToolBar closeToolBar;
     private javax.swing.JComboBox<SearchCondition> findComboBox;
     private javax.swing.JLabel findLabel;
     private javax.swing.JPanel findPanel;
     private javax.swing.JToolBar findToolBar;
-    private javax.swing.JButton findTypeButton;
     private javax.swing.JToolBar findTypeToolBar;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JToggleButton matchCaseToggleButton;
@@ -830,10 +830,10 @@ public class BinarySearchPanel extends javax.swing.JPanel {
     private javax.swing.JToolBar replaceToolBar;
     private javax.swing.JButton replaceTypeButton;
     private javax.swing.JToolBar replaceTypeToolBar;
+    private org.exbin.auxiliary.dropdownbutton.DropDownButton searchTypeButton;
     private javax.swing.JToolBar.Separator separator1;
     private javax.swing.JToolBar.Separator separator2;
     private javax.swing.JPanel statusPanel;
-    private javax.swing.JButton stopSearchButton;
     private javax.swing.JSeparator topSeparator;
     // End of variables declaration//GEN-END:variables
 
@@ -868,7 +868,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         void performReplaceAll();
 
-        void stopSearch();
+        void cancelSearch();
 
         /**
          * Parameters of search have changed.

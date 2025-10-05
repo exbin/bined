@@ -49,6 +49,8 @@ public interface BinarySearchService {
         void setProgress(int progress);
 
         void clearStatus();
+
+        void setCancelled();
     }
 
     public static class FoundMatches {

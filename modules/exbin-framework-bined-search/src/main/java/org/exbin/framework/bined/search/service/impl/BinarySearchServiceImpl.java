@@ -127,15 +127,29 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         long position = searchParameters.getStartPosition();
 
         BinaryData searchData = condition.getBinaryData();
+        if (searchData == null) {
+            throw new IllegalStateException("Missing data to search");
+        }
         long searchDataSize = searchData.getDataSize();
         BinaryData data = codeArea.getContentData();
 
         List<SearchMatch> foundMatches = new ArrayList<>();
 
         long dataSize = data.getDataSize();
+        int lastProgressState = -1;
         while (position >= 0 && position <= dataSize - searchDataSize) {
+            if (Thread.interrupted()) {
+                searchStatusListener.setCancelled();
+                return;
+            }
+
             int matchLength = 0;
             while (matchLength < searchDataSize) {
+                if (Thread.interrupted()) {
+                    searchStatusListener.setCancelled();
+                    return;
+                }
+
                 if (data.getByte(position + matchLength) != searchData.getByte(matchLength)) {
                     break;
                 }
@@ -157,7 +171,31 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 }
             }
 
-            position++;
+            int progressState;
+            switch (searchParameters.getSearchDirection()) {
+                case FORWARD: {
+                    position++;
+                    progressState = (int) (dataSize > Integer.MAX_VALUE ? position / (dataSize / 1000) : (position * 1000) / dataSize);
+                    break;
+                }
+                case BACKWARD: {
+                    position--;
+                    progressState = (int) (dataSize > Integer.MAX_VALUE ? (dataSize - position) / (dataSize / 1000) : ((dataSize - position) * 1000) / dataSize);
+                    break;
+                }
+                default:
+                    throw CodeAreaUtils.getInvalidTypeException(searchParameters.getSearchDirection());
+            }
+            
+            if (progressState != lastProgressState) {
+                lastProgressState = progressState;
+                searchStatusListener.setProgress(progressState);
+            }
+        }
+
+        if (Thread.interrupted()) {
+            searchStatusListener.setCancelled();
+            return;
         }
 
         searchAssessor.setMatches(foundMatches);
@@ -205,11 +243,13 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         byte[] charData = new byte[maxBytesPerChar];
         long dataSize = data.getDataSize();
         long lastPosition = position;
+        int lastProgressState = -1;
         while (position >= 0 && position <= dataSize - searchDataSize) {
             int matchCharLength = 0;
             int matchLength = 0;
             while (matchCharLength < searchDataSize) {
                 if (Thread.interrupted()) {
+                    searchStatusListener.setCancelled();
                     return;
                 }
 
@@ -261,21 +301,30 @@ public class BinarySearchServiceImpl implements BinarySearchService {
                 }
             }
 
+            int progressState;
             switch (searchParameters.getSearchDirection()) {
                 case FORWARD: {
                     position++;
+                    progressState = (int) (dataSize > Integer.MAX_VALUE ? position / (dataSize / 1000) : (position * 1000) / dataSize);
                     break;
                 }
                 case BACKWARD: {
                     position--;
+                    progressState = (int) (dataSize > Integer.MAX_VALUE ? (dataSize - position) / (dataSize / 1000) : ((dataSize - position) * 1000) / dataSize);
                     break;
                 }
                 default:
                     throw CodeAreaUtils.getInvalidTypeException(searchParameters.getSearchDirection());
             }
+            
+            if (progressState != lastProgressState) {
+                lastProgressState = progressState;
+                searchStatusListener.setProgress(progressState);
+            }
         }
 
         if (Thread.interrupted()) {
+            searchStatusListener.setCancelled();
             return;
         }
 
@@ -295,6 +344,9 @@ public class BinarySearchServiceImpl implements BinarySearchService {
     }
 
     public void searchRegEx(SearchParameters searchParameters, SearchStatusListener searchStatusListener) {
+        throw new UnsupportedOperationException("Not supported yet.");
+//        SearchCodeAreaColorAssessor searchAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) codeArea.getPainter(), SearchCodeAreaColorAssessor.class);
+//        SearchCondition condition = searchParameters.getCondition();
 
     }
 

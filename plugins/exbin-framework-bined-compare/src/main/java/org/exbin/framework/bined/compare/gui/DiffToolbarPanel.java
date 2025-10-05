@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.compare.gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -26,6 +27,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import org.exbin.auxiliary.dropdownbutton.DropDownButton;
+import org.exbin.auxiliary.dropdownbutton.DropDownButtonVariant;
 import org.exbin.bined.CodeType;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.viewer.options.CodeAreaOptions;
@@ -122,7 +124,8 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
         cycleCodeTypesPopupMenu.add(octalCodeTypeMenuItem);
         cycleCodeTypesPopupMenu.add(decimalCodeTypeMenuItem);
         cycleCodeTypesPopupMenu.add(hexadecimalCodeTypeMenuItem);
-        codeTypeDropDown = new DropDownButton(cycleCodeTypesAction, cycleCodeTypesPopupMenu);
+        codeTypeDropDown = new DropDownButton(DropDownButtonVariant.TOOL, cycleCodeTypesAction, cycleCodeTypesPopupMenu);
+        codeTypeDropDown.setMaximumSize(new Dimension(codeTypeDropDown.getPreferredSize().width, Integer.MAX_VALUE));
         toolBar.add(codeTypeDropDown);
         toolBar.setFloatable(false);
     }
