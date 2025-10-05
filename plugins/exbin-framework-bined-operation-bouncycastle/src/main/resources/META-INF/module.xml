@@ -4,7 +4,7 @@
   <name>BinEd Bouncycastle Support</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>
-  <description>Support for data conversions using Bouncycastle cryptographic library</description>
+  <description>Support for data conversions using Bouncy Castle cryptographic library</description>
   <dependency>
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
     <module id="org.exbin.framework.utils.UtilsModule" />

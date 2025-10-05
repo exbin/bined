@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.crypto.component;
+package org.exbin.framework.bined.operation.bouncycastle.component;
 
 import java.awt.Component;
 import java.nio.ByteBuffer;
@@ -31,7 +31,6 @@ import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
-import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -40,12 +39,14 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
-import org.exbin.framework.bined.operation.crypto.component.gui.EncryptionPanel;
 import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.bouncycastle.component.gui.EncryptionPanel;
 
-
+/**
+ * Encyption and decryption data conversion method.
+ */
 @ParametersAreNonnullByDefault
 public class SymmetricEncryptionMethod implements ConvertDataMethod {
 
@@ -103,6 +104,7 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
     }
 
+    @Nonnull
     @Override
     public BinaryData performDirectConvert(Component component, CodeAreaCore codeArea) {
         EncryptionPanel panel = (EncryptionPanel) component;
@@ -198,6 +200,7 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         return cipher.doFinal(encrypted);
     }
 
+    @Nonnull
     private SecretKey deriveKey(char[] password, byte[] salt, int keySize) throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256", PROVIDER);
         KeySpec spec = new PBEKeySpec(password, salt, ITERATION_COUNT, keySize);
@@ -268,6 +271,7 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
             this.keySize = keySize;
         }
 
+        @Nonnull
         public String getTransformation() {
             return transformation;
         }

@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'org.exbin.framework'
-ext.libraryName = 'BinEd operation support Hexadecimal Editor Framework Library'
-ext.libraryDescription = 'BinEd operation support hexadecimal editor framework library'
+ext.libraryName = 'BinEd Crypto Operations Plugin'
+ext.libraryDescription = 'Hashing, encryption and decryption operations for BinEd using Bouncy Castle'
 
 apply from: '../bined-plugins.gradle'
 

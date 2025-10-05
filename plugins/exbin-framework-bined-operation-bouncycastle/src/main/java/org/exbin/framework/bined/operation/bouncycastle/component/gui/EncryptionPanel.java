@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.operation.crypto.component.gui;
+package org.exbin.framework.bined.operation.bouncycastle.component.gui;
 
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.operation.crypto.component.SymmetricEncryptionMethod;
+import org.exbin.framework.bined.operation.bouncycastle.component.SymmetricEncryptionMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
-
+/**
+ * Encryption and decryption conversions component panel.
+ */
 @ParametersAreNonnullByDefault
 public class EncryptionPanel extends javax.swing.JPanel {
 
@@ -86,7 +88,7 @@ public class EncryptionPanel extends javax.swing.JPanel {
 
         algorithmLabel.setText(resourceBundle.getString("algorithmLabel.text")); // NOI18N
 
-        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
+        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{
             resourceBundle.getString("algorithm.aes128"),
             resourceBundle.getString("algorithm.aes256")
         }));
@@ -99,34 +101,34 @@ public class EncryptionPanel extends javax.swing.JPanel {
         javax.swing.GroupLayout operationPanelLayout = new javax.swing.GroupLayout(operationPanel);
         operationPanel.setLayout(operationPanelLayout);
         operationPanelLayout.setHorizontalGroup(
-            operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(operationPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(operationLabel)
-                    .addComponent(algorithmLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(operationPanelLayout.createSequentialGroup()
-                        .addComponent(encryptRadioButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(decryptRadioButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(operationPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(operationLabel)
+                                        .addComponent(algorithmLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(operationPanelLayout.createSequentialGroup()
+                                                .addComponent(encryptRadioButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(decryptRadioButton)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         operationPanelLayout.setVerticalGroup(
-            operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(operationPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(operationLabel)
-                    .addComponent(encryptRadioButton)
-                    .addComponent(decryptRadioButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(algorithmLabel)
-                    .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(operationPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(operationLabel)
+                                        .addComponent(encryptRadioButton)
+                                        .addComponent(decryptRadioButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(operationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(algorithmLabel)
+                                        .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(operationPanel, java.awt.BorderLayout.CENTER);
@@ -144,22 +146,22 @@ public class EncryptionPanel extends javax.swing.JPanel {
         javax.swing.GroupLayout passwordPanelLayout = new javax.swing.GroupLayout(passwordPanel);
         passwordPanel.setLayout(passwordPanelLayout);
         passwordPanelLayout.setHorizontalGroup(
-            passwordPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(passwordPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(passwordLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                .addContainerGap())
+                passwordPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(passwordPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(passwordLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         passwordPanelLayout.setVerticalGroup(
-            passwordPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(passwordPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(passwordPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordLabel)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                passwordPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(passwordPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(passwordPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(passwordLabel)
+                                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(passwordPanel, java.awt.BorderLayout.SOUTH);
@@ -233,8 +235,8 @@ public class EncryptionPanel extends javax.swing.JPanel {
         }
     }
 
-    @ParametersAreNonnullByDefault
     public interface ConfigChangeListener {
+
         void configChanged();
     }
 }
