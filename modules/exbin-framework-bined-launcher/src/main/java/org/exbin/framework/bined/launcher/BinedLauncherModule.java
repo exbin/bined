@@ -238,6 +238,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedModule.registerShowNonprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
             binedModule.registerViewNonprintablesMenuActions();
+            binedModule.registerViewZoomMenuActions();
             binedInspectorModule.registerShowParsingPanelMenuActions();
             binedInspectorModule.registerShowParsingPanelPopupMenuActions();
             binedViewerModule.registerToolsOptionsMenuActions();
