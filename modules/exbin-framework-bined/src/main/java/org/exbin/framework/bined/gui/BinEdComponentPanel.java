@@ -85,6 +85,12 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     public void onInitFromPreferences(OptionsStorage options) {
+        org.exbin.framework.bined.options.FontSizeOptions fontSizeOptions =
+            new org.exbin.framework.bined.options.FontSizeOptions(options);
+        int fontSize = fontSizeOptions.getFontSize();
+        Font currentFont = codeArea.getCodeFont();
+        codeArea.setCodeFont(new Font(currentFont.getName(), currentFont.getStyle(), fontSize));
+
         for (BinEdComponentExtension extension : componentExtensions) {
             extension.onInitFromOptions(options);
         }

@@ -17,6 +17,7 @@ package org.exbin.framework.bined;
 
 import org.exbin.framework.bined.action.ClipboardCodeActions;
 import org.exbin.framework.bined.action.ShowNonprintablesActions;
+import org.exbin.framework.bined.action.ViewFontActions;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
@@ -89,6 +90,7 @@ public class BinedModule implements Module {
     public static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
     public static final String EDIT_OPERATION_MENU_GROUP_ID = MODULE_ID + ".editOperationMenuGroup";
     public static final String VIEW_NONPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewNonprintablesMenuGroup";
+    public static final String VIEW_ZOOM_MENU_GROUP_ID = MODULE_ID + ".viewZoomMenuGroup";
 
     public static final String BINARY_POPUP_MENU_ID = MODULE_ID + ".binaryPopupMenu";
     public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
@@ -110,6 +112,7 @@ public class BinedModule implements Module {
 
     private ShowNonprintablesActions showNonprintablesActions;
     private ClipboardCodeActions clipboardCodeActions;
+    private ViewFontActions viewFontActions;
     private PopupMenuVariant popupMenuVariant = PopupMenuVariant.NORMAL;
     private BasicCodeAreaZone popupMenuPositionZone = BasicCodeAreaZone.UNKNOWN;
 
@@ -292,6 +295,20 @@ public class BinedModule implements Module {
         return clipboardCodeActions;
     }
 
+    @Nonnull
+    public ViewFontActions getViewFontActions() {
+        if (viewFontActions == null) {
+            ensureSetup();
+            viewFontActions = new ViewFontActions();
+            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+            org.exbin.framework.bined.options.FontSizeOptions fontSizeOptions =
+                new org.exbin.framework.bined.options.FontSizeOptions(preferencesModule.getAppPreferences());
+            viewFontActions.setup(resourceBundle, fontSizeOptions);
+        }
+
+        return viewFontActions;
+    }
+
     public void registerShowNonprintablesToolBarActions() {
         getShowNonprintablesActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
@@ -310,6 +327,20 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
         contribution = mgmt.registerMenuItem(showNonprintablesActions.createViewNonprintablesAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_NONPRINTABLES_MENU_GROUP_ID));
+    }
+
+    public void registerViewZoomMenuActions() {
+        getViewFontActions();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_ZOOM_MENU_GROUP_ID);
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
+        contribution = mgmt.registerMenuItem(viewFontActions.createZoomInAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_ZOOM_MENU_GROUP_ID));
+        contribution = mgmt.registerMenuItem(viewFontActions.createZoomOutAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_ZOOM_MENU_GROUP_ID));
+        contribution = mgmt.registerMenuItem(viewFontActions.createResetFontSizeAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_ZOOM_MENU_GROUP_ID));
     }
 
     public void registerClipboardCodeActions() {
