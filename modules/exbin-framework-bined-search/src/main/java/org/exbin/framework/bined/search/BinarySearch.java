@@ -101,7 +101,7 @@ public class BinarySearch {
 
             @Override
             public void setCancelled() {
-                binarySearchPanel.setInfoLabel("Cancelled");
+                binarySearchPanel.setInfoLabel(resourceBundle.getString("searchStatus.cancelled"));
                 BinarySearch.this.foundMatches = new BinarySearchService.FoundMatches();
                 updateMatchStatus();
             }
