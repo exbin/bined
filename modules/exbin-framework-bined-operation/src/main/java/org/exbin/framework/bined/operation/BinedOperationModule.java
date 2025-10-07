@@ -28,20 +28,25 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.action.ClipboardCodeActions;
 import org.exbin.framework.bined.operation.action.InsertDataAction;
 import org.exbin.framework.bined.operation.action.ConvertDataAction;
-import org.exbin.framework.bined.operation.action.CopyAsCodeAction;
-import org.exbin.framework.bined.operation.action.PasteFromCodeAction;
-import org.exbin.framework.bined.operation.component.RandomDataMethod;
-import org.exbin.framework.bined.operation.component.SimpleFillDataMethod;
+import org.exbin.framework.bined.operation.action.CopyAsAction;
+import org.exbin.framework.bined.operation.action.PasteFromAction;
+import org.exbin.framework.bined.operation.method.RandomDataMethod;
+import org.exbin.framework.bined.operation.method.SimpleFillDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
+import org.exbin.framework.bined.operation.api.CopyAsDataMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
-import org.exbin.framework.bined.operation.component.Base64DataMethod;
-import org.exbin.framework.bined.operation.component.BitSwappingDataMethod;
-import org.exbin.framework.bined.operation.component.CompressionDataMethod;
-import org.exbin.framework.bined.operation.component.DateTimeConversionMethod;
+import org.exbin.framework.bined.operation.api.PasteFromDataMethod;
+import org.exbin.framework.bined.operation.method.Base64DataMethod;
+import org.exbin.framework.bined.operation.method.BitSwappingDataMethod;
+import org.exbin.framework.bined.operation.method.CompressionDataMethod;
+import org.exbin.framework.bined.operation.method.DateTimeConversionMethod;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
+import org.exbin.framework.contribution.api.RelativeSequenceContributionRule;
+import org.exbin.framework.contribution.api.RelativeSequenceContributionRule.NextToMode;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.menu.api.ActionMenuCreation;
@@ -55,25 +60,27 @@ public class BinedOperationModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private final List<InsertDataMethod> insertDataComponents = new ArrayList<>();
-    private final List<ConvertDataMethod> convertDataComponents = new ArrayList<>();
+    private final List<InsertDataMethod> insertDataMethods = new ArrayList<>();
+    private final List<ConvertDataMethod> convertDataMethods = new ArrayList<>();
+    private final List<CopyAsDataMethod> copyAsDataMethods = new ArrayList<>();
+    private final List<PasteFromDataMethod> pasteFromDataMethods = new ArrayList<>();
 
     public BinedOperationModule() {
     }
 
     public void addBasicMethods() {
         SimpleFillDataMethod simpleFillDataMethod = new SimpleFillDataMethod();
-        addInsertDataComponent(simpleFillDataMethod);
+        addInsertDataMethod(simpleFillDataMethod);
         RandomDataMethod randomDataMethod = new RandomDataMethod();
-        addInsertDataComponent(randomDataMethod);
+        addInsertDataMethod(randomDataMethod);
         BitSwappingDataMethod bitSwappingDataMethod = new BitSwappingDataMethod();
-        addConvertDataComponent(bitSwappingDataMethod);
+        addConvertDataMethod(bitSwappingDataMethod);
         Base64DataMethod base64DataMethod = new Base64DataMethod();
-        addConvertDataComponent(base64DataMethod);
+        addConvertDataMethod(base64DataMethod);
         DateTimeConversionMethod dateTimeConversionMethod = new DateTimeConversionMethod();
-        addConvertDataComponent(dateTimeConversionMethod);
+        addConvertDataMethod(dateTimeConversionMethod);
         CompressionDataMethod compressionDataMethod = new CompressionDataMethod();
-        addConvertDataComponent(compressionDataMethod);
+        addConvertDataMethod(compressionDataMethod);
     }
 
     @Nonnull
@@ -121,12 +128,12 @@ public class BinedOperationModule implements Module {
     }
 
     @Nonnull
-    private AbstractAction createCopyAsCodeAction() {
+    private AbstractAction createCopyAsAction() {
         ensureSetup();
-        CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction();
-        copyAsCodeAction.setup(resourceBundle);
+        CopyAsAction copyAsAction = new CopyAsAction();
+        copyAsAction.setup(resourceBundle);
 
-        copyAsCodeAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+        copyAsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
@@ -139,16 +146,16 @@ public class BinedOperationModule implements Module {
             public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
-        return copyAsCodeAction;
+        return copyAsAction;
     }
 
     @Nonnull
-    private AbstractAction createPasteFromCodeAction() {
+    private AbstractAction createPasteFromAction() {
         ensureSetup();
-        PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction();
-        pasteFromCodeAction.setup(resourceBundle);
+        PasteFromAction pasteFromAction = new PasteFromAction();
+        pasteFromAction.setup(resourceBundle);
 
-        pasteFromCodeAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+        pasteFromAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
@@ -161,7 +168,7 @@ public class BinedOperationModule implements Module {
             public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
-        return pasteFromCodeAction;
+        return pasteFromAction;
     }
 
     public void registerBlockEditActions() {
@@ -171,10 +178,12 @@ public class BinedOperationModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(createConvertDataAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createCopyAsCodeAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createPasteFromCodeAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        contribution = mgmt.registerMenuItem(createCopyAsAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.CopyAsCodeAction.ACTION_ID));
+        contribution = mgmt.registerMenuItem(createPasteFromAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.PasteFromCodeAction.ACTION_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {
@@ -184,28 +193,48 @@ public class BinedOperationModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(createConvertDataAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createCopyAsCodeAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createPasteFromCodeAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        contribution = mgmt.registerMenuItem(createCopyAsAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.CopyAsCodeAction.ACTION_ID));
+        contribution = mgmt.registerMenuItem(createPasteFromAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.PasteFromCodeAction.ACTION_ID));
     }
 
-    public void addInsertDataComponent(InsertDataMethod insertDataComponent) {
-        insertDataComponents.add(insertDataComponent);
+    public void addInsertDataMethod(InsertDataMethod insertDataMethod) {
+        insertDataMethods.add(insertDataMethod);
     }
 
-    public void addConvertDataComponent(ConvertDataMethod convertDataComponent) {
-        convertDataComponents.add(convertDataComponent);
+    public void addConvertDataMethod(ConvertDataMethod convertDataMethod) {
+        convertDataMethods.add(convertDataMethod);
+    }
+
+    public void addCopyAsDataMethod(CopyAsDataMethod copyAsDataMethod) {
+        copyAsDataMethods.add(copyAsDataMethod);
+    }
+
+    public void addPasteFromDataMethod(PasteFromDataMethod pasteFromDataMethod) {
+        pasteFromDataMethods.add(pasteFromDataMethod);
     }
 
     @Nonnull
-    public List<InsertDataMethod> getInsertDataComponents() {
-        return insertDataComponents;
+    public List<InsertDataMethod> getInsertDataMethods() {
+        return insertDataMethods;
     }
 
     @Nonnull
-    public List<ConvertDataMethod> getConvertDataComponents() {
-        return convertDataComponents;
+    public List<ConvertDataMethod> getConvertDataMethods() {
+        return convertDataMethods;
+    }
+
+    @Nonnull
+    public List<CopyAsDataMethod> getCopyAsDataMethods() {
+        return copyAsDataMethods;
+    }
+
+    @Nonnull
+    public List<PasteFromDataMethod> getPasteFromDataMethods() {
+        return pasteFromDataMethods;
     }
 
     @Nonnull

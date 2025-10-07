@@ -61,8 +61,8 @@ public class BinEdInspectorComponentExtension implements BinEdComponentPanel.Bin
             parsingPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
             parsingPanelScrollPane.setViewportView(inspectorPanel);
             parsingPanelScrollPane.setBorder(null);
+            setShowParsingPanel(true);
         });
-        setShowParsingPanel(true);
     }
 
     @Override

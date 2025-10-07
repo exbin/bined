@@ -26,13 +26,13 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
 
 /**
- Convert data command.
+ * Convert data command.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ConvertDataCommand extends CodeAreaCommand {
-    
+
     protected final ConvertDataOperation operation;
     protected BinaryDataUndoableOperation undoOperation;
 
@@ -67,5 +67,4 @@ public class ConvertDataCommand extends CodeAreaCommand {
         super.dispose();
         operation.dispose();
     }
-    
 }

@@ -66,9 +66,9 @@ public class ConvertDataOperation implements BinaryDataUndoableOperation {
 
         if (withUndo) {
             originalDataUndoOperation = new org.exbin.bined.operation.swing.InsertDataOperation(startPosition, 0, contentData.copy(startPosition, length));
-            undoOperation = new CompoundCodeAreaOperation();
-            ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(startPosition, 0, convertedDataLength));
-            ((CompoundCodeAreaOperation) undoOperation).addOperation(originalDataUndoOperation);
+            undoOperation = new CompoundBinaryDataOperation();
+            ((CompoundBinaryDataOperation) undoOperation).addOperation(new RemoveDataOperation(startPosition, 0, convertedDataLength));
+            ((CompoundBinaryDataOperation) undoOperation).addOperation(originalDataUndoOperation);
         }
 
         conversionDataProvider.provideData(contentData, startPosition, length, startPosition + length);

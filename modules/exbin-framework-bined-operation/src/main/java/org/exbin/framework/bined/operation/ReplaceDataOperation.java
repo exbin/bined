@@ -79,9 +79,9 @@ public class ReplaceDataOperation implements BinaryDataUndoableOperation {
                 // TODO use copy directly once delta is fixed
                 PagedData origData = new ByteArrayPagedData();
                 origData.insert(0, contentData.copy(position, length - diff));
-                undoOperation = new CompoundCodeAreaOperation();
-                ((CompoundCodeAreaOperation) undoOperation).addOperation(new ModifyDataOperation(position, origData));
-                ((CompoundCodeAreaOperation) undoOperation).addOperation(new RemoveDataOperation(dataSize, 0, diff));
+                undoOperation = new CompoundBinaryDataOperation();
+                ((CompoundBinaryDataOperation) undoOperation).addOperation(new ModifyDataOperation(position, origData));
+                ((CompoundBinaryDataOperation) undoOperation).addOperation(new RemoveDataOperation(dataSize, 0, diff));
             }
 
             contentData.insertUninitialized(dataSize, diff);

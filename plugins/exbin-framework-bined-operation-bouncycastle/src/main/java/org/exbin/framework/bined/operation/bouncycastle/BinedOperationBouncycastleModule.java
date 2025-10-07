@@ -25,8 +25,8 @@ import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.bined.operation.bouncycastle.component.ComputeHashDataMethod;
-import org.exbin.framework.bined.operation.bouncycastle.component.SymmetricEncryptionMethod;
+import org.exbin.framework.bined.operation.bouncycastle.method.ComputeHashDataMethod;
+import org.exbin.framework.bined.operation.bouncycastle.method.SymmetricEncryptionMethod;
 import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
@@ -56,10 +56,10 @@ public class BinedOperationBouncycastleModule implements PluginModule {
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
 
             ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
-            binedOperationModule.addConvertDataComponent(computeHashDataMethod);
+            binedOperationModule.addConvertDataMethod(computeHashDataMethod);
 
             SymmetricEncryptionMethod encryptionMethod = new SymmetricEncryptionMethod();
-            binedOperationModule.addConvertDataComponent(encryptionMethod);
+            binedOperationModule.addConvertDataMethod(encryptionMethod);
         });
     }
 

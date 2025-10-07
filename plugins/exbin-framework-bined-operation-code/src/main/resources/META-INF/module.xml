@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.bined.operation.code.BinedOperationCodeModule</plugin>
+  <name>BinEd Code Operation Support</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Operation to copy/paste binary data as code for programming languages</description>
+  <dependency>
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+    <module id="org.exbin.framework.utils.UtilsModule" />
+    <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <module id="org.exbin.framework.bined.BinedModule" />
+    <module id="org.exbin.framework.bined.operation.BinedOperationModule" />
+  </dependency>
+</module>

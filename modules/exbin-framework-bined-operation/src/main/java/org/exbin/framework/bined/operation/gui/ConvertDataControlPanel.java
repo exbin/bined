@@ -17,6 +17,7 @@ package org.exbin.framework.bined.operation.gui;
 
 import java.awt.event.ActionEvent;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JButton;
@@ -62,6 +63,11 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
                 helpModule.openHelp(helpLink);
             }
         });
+    }
+
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
     }
 
     public void setController(ConvertDataControlController controller) {

@@ -28,30 +28,7 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface InsertDataMethod {
-
-    /**
-     * Returns method name.
-     *
-     * @return method name
-     */
-    @Nonnull
-    String getName();
-
-    /**
-     * Returns method component.
-     *
-     * @return method component
-     */
-    @Nonnull
-    Component getComponent();
-
-    /**
-     * Initializes focus.
-     *
-     * @param component component
-     */
-    void initFocus(Component component);
+public interface InsertDataMethod extends DataOperationMethod {
 
     /**
      * Creates command operation for given component and code area.
@@ -60,7 +37,7 @@ public interface InsertDataMethod {
      * @param codeArea code area
      * @param position position in code area
      * @param editOperation insert operation type
-     * @return
+     * @return data insertion command
      */
     @Nonnull
     CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation);

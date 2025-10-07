@@ -18,7 +18,7 @@ include ":plugins:exbin-framework-bined-compare"
 include ":plugins:exbin-framework-bined-macro"
 include ":plugins:exbin-framework-bined-tool-content"
 include ":plugins:exbin-framework-bined-operation-bouncycastle"
-include ":plugins:exbin-framework-bined-operation-crypto"
+include ":plugins:exbin-framework-bined-operation-code"
 include ":plugins:exbin-framework-bined-help"
 include ":apps:bined-editor"
 
