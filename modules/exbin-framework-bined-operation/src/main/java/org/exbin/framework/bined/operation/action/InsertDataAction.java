@@ -40,13 +40,15 @@ import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.operation.gui.InsertDataPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.controller.DefaultControlController;
 import org.exbin.framework.bined.operation.BinedOperationModule;
+import org.exbin.framework.bined.operation.api.DataOperationMethod;
 import org.exbin.framework.bined.operation.api.InsertDataMethod;
+import org.exbin.framework.bined.operation.gui.DataOperationPanel;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
+import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
@@ -68,7 +70,6 @@ public class InsertDataAction extends AbstractAction {
     private InsertDataMethod lastMethod = null;
 
     public InsertDataAction() {
-
     }
 
     public void setup(ResourceBundle resourceBundle) {
@@ -91,36 +92,37 @@ public class InsertDataAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final InsertDataPanel insertDataPanel = new InsertDataPanel();
-        insertDataPanel.setController((previewCodeArea) -> {
-            Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
+        final DataOperationPanel dataOperationPanel = new DataOperationPanel();
+        dataOperationPanel.setController((previewCodeArea) -> {
+            Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
             if (optionalActiveMethod.isPresent()) {
-                Component activeComponent = insertDataPanel.getActiveComponent().get();
-                optionalActiveMethod.get().registerPreviewDataHandler((binaryData) -> {
+                InsertDataMethod activeMethod = (InsertDataMethod) optionalActiveMethod.get();
+                Component activeComponent = dataOperationPanel.getActiveComponent().get();
+                activeMethod.registerPreviewDataHandler((binaryData) -> {
                     previewCodeArea.setContentData(binaryData);
                 }, activeComponent, PREVIEW_LENGTH_LIMIT);
             }
         });
-        ResourceBundle panelResourceBundle = insertDataPanel.getResourceBundle();
+        ResourceBundle panelResourceBundle = App.getModule(LanguageModuleApi.class).getResourceBundleByBundleName("org.exbin.framework.bined.operation.gui.resources.InsertDataControlPanel");
         DefaultControlPanel controlPanel = new DefaultControlPanel();
         HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
         helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        JPanel dialogPanel = windowModule.createDialogPanel(insertDataPanel, controlPanel);
+        JPanel dialogPanel = windowModule.createDialogPanel(dataOperationPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
-        insertDataPanel.setComponents(binedBlockEditModule.getInsertDataComponents());
-        insertDataPanel.selectActiveMethod(lastMethod);
+        dataOperationPanel.setDataMethods(binedBlockEditModule.getInsertDataMethods());
+        dataOperationPanel.selectActiveMethod(lastMethod);
         BinedModule binedModule = App.getModule(BinedModule.class);
-        insertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
+        dataOperationPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        windowModule.addHeaderPanel(dialog.getWindow(), insertDataPanel.getClass(), panelResourceBundle);
+        windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
             if (actionType == DefaultControlController.ControlActionType.OK) {
-                Optional<InsertDataMethod> optionalActiveMethod = insertDataPanel.getActiveMethod();
+                Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
                 if (optionalActiveMethod.isPresent()) {
-                    Component activeComponent = insertDataPanel.getActiveComponent().get();
-                    InsertDataMethod activeMethod = optionalActiveMethod.get();
+                    Component activeComponent = dataOperationPanel.getActiveComponent().get();
+                    InsertDataMethod activeMethod = (InsertDataMethod) optionalActiveMethod.get();
                     long dataPosition = ((CaretCapable) codeArea).getDataPosition();
                     EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
                     CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
@@ -132,14 +134,14 @@ public class InsertDataAction extends AbstractAction {
                         command.execute();
                     }
                 }
-                lastMethod = optionalActiveMethod.orElse(null);
+                lastMethod = (InsertDataMethod) optionalActiveMethod.orElse(null);
             }
 
             dialog.close();
             dialog.dispose();
         });
-        SwingUtilities.invokeLater(insertDataPanel::initFocus);
+        SwingUtilities.invokeLater(dataOperationPanel::initFocus);
         dialog.showCentered(codeArea);
-        insertDataPanel.detachMenu();
+        dataOperationPanel.detachMenu();
     }
 }

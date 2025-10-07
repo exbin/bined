@@ -28,30 +28,7 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface ConvertDataMethod {
-
-    /**
-     * Returns method name.
-     *
-     * @return method name
-     */
-    @Nonnull
-    String getName();
-
-    /**
-     * Returns method component.
-     *
-     * @return method component
-     */
-    @Nonnull
-    Component getComponent();
-
-    /**
-     * Initializes focus.
-     *
-     * @param component component
-     */
-    void initFocus(Component component);
+public interface ConvertDataMethod extends DataOperationMethod {
 
     /**
      * Creates command operation for given component and code area.
@@ -64,7 +41,7 @@ public interface ConvertDataMethod {
     CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea);
 
     /**
-     * Performs direct convert of the selected data to target binary data
+     * Performs direct convert of the selected data to target binary data.
      *
      * @param component visual component
      * @param codeArea code area

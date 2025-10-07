@@ -1,0 +1,9 @@
+rootProject.name = 'exbin-framework-bined-operation-code'
+
+if (rootProject.path == ':') {
+    include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-operation'
+    include ':modules:exbin-framework-bined-search'
+}
+
+apply from: '../bined-plugins-settings.gradle'

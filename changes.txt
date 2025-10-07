@@ -4,7 +4,10 @@
 - TODO: Added copy as / paste from dialogs
 - Added copy/paste formats for C, Java and Python (by mengnankkkk) 
 - Added convert data: date time and compression (by mengnankkkk)
+- Added font zoom actions (by mengnankkkk)
 - Added startup behavior option - reopen lastly opened files (by mengnankkkk) 
+- Added search progress bar + cancel button (assisted Tanyajain2006)
+- Added basic regex search support (assisted Tanyajain2006)
 
 0.2.4 (2025-01-22)
 - Added addon manager

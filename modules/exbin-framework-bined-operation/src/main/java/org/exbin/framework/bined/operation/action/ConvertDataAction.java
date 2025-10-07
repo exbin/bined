@@ -48,14 +48,15 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
+import org.exbin.framework.bined.operation.api.DataOperationMethod;
 import org.exbin.framework.bined.operation.gui.ConvertDataControlPanel;
-import org.exbin.framework.bined.operation.gui.ConvertDataPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.bined.operation.gui.ConvertDataControlController;
+import org.exbin.framework.bined.operation.gui.DataOperationPanel;
 
 /**
  * Convert data action.
@@ -75,7 +76,6 @@ public class ConvertDataAction extends AbstractAction {
     private ConvertDataMethod lastMethod = null;
 
     public ConvertDataAction() {
-
     }
 
     public void setup(ResourceBundle resourceBundle) {
@@ -102,35 +102,36 @@ public class ConvertDataAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final ConvertDataPanel convertDataPanel = new ConvertDataPanel();
-        convertDataPanel.setController((previewCodeArea) -> {
-            Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
+        final DataOperationPanel dataOperationPanel = new DataOperationPanel();
+        dataOperationPanel.setController((previewCodeArea) -> {
+            Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
             if (optionalActiveMethod.isPresent()) {
-                Component activeComponent = convertDataPanel.getActiveComponent().get();
-                optionalActiveMethod.get().registerPreviewDataHandler((binaryData) -> {
+                ConvertDataMethod activeMethod = (ConvertDataMethod) optionalActiveMethod.get();
+                Component activeComponent = dataOperationPanel.getActiveComponent().get();
+                activeMethod.registerPreviewDataHandler((binaryData) -> {
                     previewCodeArea.setContentData(binaryData);
                 }, activeComponent, codeArea, PREVIEW_LENGTH_LIMIT);
             }
         });
-        ResourceBundle panelResourceBundle = convertDataPanel.getResourceBundle();
         ConvertDataControlPanel controlPanel = new ConvertDataControlPanel();
+        ResourceBundle panelResourceBundle = controlPanel.getResourceBundle();
         controlPanel.setHelpLink(new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        JPanel dialogPanel = windowModule.createDialogPanel(convertDataPanel, controlPanel);
+        JPanel dialogPanel = windowModule.createDialogPanel(dataOperationPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
-        convertDataPanel.setComponents(binedBlockEditModule.getConvertDataComponents());
-        convertDataPanel.selectActiveMethod(lastMethod);
+        dataOperationPanel.setDataMethods(binedBlockEditModule.getConvertDataMethods());
+        dataOperationPanel.selectActiveMethod(lastMethod);
         BinedModule binedModule = App.getModule(BinedModule.class);
-        convertDataPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
+        dataOperationPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
-        windowModule.addHeaderPanel(dialog.getWindow(), convertDataPanel.getClass(), panelResourceBundle);
+        windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setController((ConvertDataControlController.ControlActionType actionType) -> {
             if (actionType != ConvertDataControlController.ControlActionType.CANCEL) {
-                Optional<ConvertDataMethod> optionalActiveMethod = convertDataPanel.getActiveMethod();
+                Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
                 if (optionalActiveMethod.isPresent()) {
-                    Component activeComponent = convertDataPanel.getActiveComponent().get();
-                    ConvertDataMethod activeMethod = optionalActiveMethod.get();
+                    Component activeComponent = dataOperationPanel.getActiveComponent().get();
+                    ConvertDataMethod activeMethod = (ConvertDataMethod) optionalActiveMethod.get();
 
                     switch (actionType) {
                         case CONVERT: {
@@ -172,14 +173,14 @@ public class ConvertDataAction extends AbstractAction {
                         }
                     }
                 }
-                lastMethod = optionalActiveMethod.orElse(null);
+                lastMethod = (ConvertDataMethod) optionalActiveMethod.orElse(null);
             }
 
             dialog.close();
             dialog.dispose();
         });
-        SwingUtilities.invokeLater(convertDataPanel::initFocus);
+        SwingUtilities.invokeLater(dataOperationPanel::initFocus);
         dialog.showCentered(codeArea);
-        convertDataPanel.detachMenu();
+        dataOperationPanel.detachMenu();
     }
 }

@@ -23,6 +23,7 @@ if (rootProject.path == ':') {
     include ':plugins:exbin-framework-bined-compare'
     include ':plugins:exbin-framework-bined-macro'
     include ':plugins:exbin-framework-bined-tool-content'
+    include ':plugins:exbin-framework-bined-operation-code'
 }
 
 apply from: '../apps-settings.gradle'
