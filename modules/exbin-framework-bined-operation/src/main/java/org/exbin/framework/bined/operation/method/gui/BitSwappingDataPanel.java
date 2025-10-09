@@ -37,7 +37,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BitSwappingDataPanel.class);
 
-    private ModeChangeListener modeChangeListener = null;
+    private ResultChangeListener resultChangeListener = null;
 
     public BitSwappingDataPanel() {
         initComponents();
@@ -129,13 +129,12 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void operationTypeListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_operationTypeListValueChanged
-        modeChanged();
-        // typeChanged();
+        resultChanged();
     }//GEN-LAST:event_operationTypeListValueChanged
 
-    private void modeChanged() {
-        if (modeChangeListener != null) {
-            modeChangeListener.modeChanged();
+    private void resultChanged() {
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
         }
     }
 
@@ -149,8 +148,8 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
         operationTypeList.setSelectedIndex(operationType.ordinal());
     }
 
-    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
-        this.modeChangeListener = modeChangeListener;
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
     }
 
     public void initFocus() {
@@ -182,8 +181,8 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
     private javax.swing.JPanel typePanel;
     // End of variables declaration//GEN-END:variables
 
-    public interface ModeChangeListener {
+    public interface ResultChangeListener {
 
-        void modeChanged();
+        void resultChanged();
     }
 }

@@ -74,7 +74,7 @@
     <Component class="javax.swing.JLabel" name="lengthLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/SimpleFillDataPanel.properties" key="lengthLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/SimpleFillDataPanel.properties" key="lengthLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -89,7 +89,7 @@
     <Component class="javax.swing.JLabel" name="fillWithLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/SimpleFillDataPanel.properties" key="fillWithLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/SimpleFillDataPanel.properties" key="fillWithLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -100,7 +100,7 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/SimpleFillDataPanel.properties" key="emptyRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/SimpleFillDataPanel.properties" key="emptyRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -113,7 +113,7 @@
           <ComponentRef name="fillWithbuttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/SimpleFillDataPanel.properties" key="spaceRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/SimpleFillDataPanel.properties" key="spaceRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -126,7 +126,7 @@
           <ComponentRef name="fillWithbuttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/SimpleFillDataPanel.properties" key="sampleRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/SimpleFillDataPanel.properties" key="sampleRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -136,7 +136,7 @@
     <Component class="javax.swing.JButton" name="sampleDataButton">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/SimpleFillDataPanel.properties" key="sampleDataButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/SimpleFillDataPanel.properties" key="sampleDataButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>

@@ -114,35 +114,37 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        codeCharactersModeComboBox = new javax.swing.JComboBox<>();
+        viewModeModeLabel = new javax.swing.JLabel();
         viewModeComboBox = new javax.swing.JComboBox<>();
-        showNonprintableCharactersCheckBox = new javax.swing.JCheckBox();
-        viewModeScrollModeLabel = new javax.swing.JLabel();
-        codeColorizationCheckBox = new javax.swing.JCheckBox();
+        codeTypeModeLabel = new javax.swing.JLabel();
+        codeTypeComboBox = new javax.swing.JComboBox<>();
         positionCodeTypeLabel = new javax.swing.JLabel();
         positionCodeTypeComboBox = new javax.swing.JComboBox<>();
-        codeTypeScrollModeLabel = new javax.swing.JLabel();
         hexCharactersModeLabel = new javax.swing.JLabel();
-        codeTypeComboBox = new javax.swing.JComboBox<>();
+        codeCharactersModeComboBox = new javax.swing.JComboBox<>();
+        showNonprintableCharactersCheckBox = new javax.swing.JCheckBox();
+        codeColorizationCheckBox = new javax.swing.JCheckBox();
+        rowWrappingModeCheckBox = new javax.swing.JCheckBox();
         maxBytesPerRowLabel = new javax.swing.JLabel();
         maxBytesPerRowSpinner = new javax.swing.JSpinner();
         minRowPositionLengthLabel = new javax.swing.JLabel();
         minRowPositionLengthSpinner = new javax.swing.JSpinner();
         maxRowPositionLengthLabel = new javax.swing.JLabel();
         maxRowPositionLengthSpinner = new javax.swing.JSpinner();
-        rowWrappingModeCheckBox = new javax.swing.JCheckBox();
 
-        showNonprintableCharactersCheckBox.setText(resourceBundle.getString("showNonprintableCharactersCheckBox.text")); // NOI18N
+        viewModeModeLabel.setText(resourceBundle.getString("viewModeModeLabel.text")); // NOI18N
 
-        viewModeScrollModeLabel.setText(resourceBundle.getString("viewModeScrollModeLabel.text")); // NOI18N
-
-        codeColorizationCheckBox.setText(resourceBundle.getString("codeColorizationCheckBox.text")); // NOI18N
+        codeTypeModeLabel.setText(resourceBundle.getString("codeTypeModeLabel.text")); // NOI18N
 
         positionCodeTypeLabel.setText(resourceBundle.getString("positionCodeTypeLabel.text")); // NOI18N
 
-        codeTypeScrollModeLabel.setText(resourceBundle.getString("codeTypeScrollModeLabel.text")); // NOI18N
-
         hexCharactersModeLabel.setText(resourceBundle.getString("hexCharactersModeLabel.text")); // NOI18N
+
+        showNonprintableCharactersCheckBox.setText(resourceBundle.getString("showNonprintableCharactersCheckBox.text")); // NOI18N
+
+        codeColorizationCheckBox.setText(resourceBundle.getString("codeColorizationCheckBox.text")); // NOI18N
+
+        rowWrappingModeCheckBox.setText(resourceBundle.getString("wrapLineModeCheckBox.text")); // NOI18N
 
         maxBytesPerRowLabel.setText(resourceBundle.getString("maxBytesPerRowLabel.text")); // NOI18N
 
@@ -157,8 +159,6 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
 
         maxRowPositionLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         maxRowPositionLengthSpinner.setValue(8);
-
-        rowWrappingModeCheckBox.setText(resourceBundle.getString("wrapLineModeCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -180,8 +180,8 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(hexCharactersModeLabel)
                             .addComponent(positionCodeTypeLabel)
-                            .addComponent(viewModeScrollModeLabel)
-                            .addComponent(codeTypeScrollModeLabel)
+                            .addComponent(viewModeModeLabel)
+                            .addComponent(codeTypeModeLabel)
                             .addComponent(rowWrappingModeCheckBox)
                             .addComponent(maxBytesPerRowLabel)
                             .addComponent(minRowPositionLengthLabel)
@@ -193,11 +193,11 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(viewModeScrollModeLabel)
+                .addComponent(viewModeModeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(codeTypeScrollModeLabel)
+                .addComponent(codeTypeModeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(codeTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -247,7 +247,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     private javax.swing.JComboBox<String> codeCharactersModeComboBox;
     private javax.swing.JCheckBox codeColorizationCheckBox;
     private javax.swing.JComboBox<String> codeTypeComboBox;
-    private javax.swing.JLabel codeTypeScrollModeLabel;
+    private javax.swing.JLabel codeTypeModeLabel;
     private javax.swing.JLabel hexCharactersModeLabel;
     private javax.swing.JLabel maxBytesPerRowLabel;
     private javax.swing.JSpinner maxBytesPerRowSpinner;
@@ -260,7 +260,7 @@ public class CodeAreaOptionsPanel extends javax.swing.JPanel implements OptionsC
     private javax.swing.JCheckBox rowWrappingModeCheckBox;
     private javax.swing.JCheckBox showNonprintableCharactersCheckBox;
     private javax.swing.JComboBox<String> viewModeComboBox;
-    private javax.swing.JLabel viewModeScrollModeLabel;
+    private javax.swing.JLabel viewModeModeLabel;
     // End of variables declaration//GEN-END:variables
 
     @Override

@@ -48,6 +48,7 @@ import org.exbin.framework.bined.operation.method.gui.CompressionDataPanel;
 import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Compression conversion data method.
@@ -59,6 +60,7 @@ public class CompressionDataMethod implements ConvertDataMethod {
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -139,9 +141,11 @@ public class CompressionDataMethod implements ConvertDataMethod {
      * @param autoDetect auto-detect compression type for decompression
      * @param targetBinaryData target binary data
      * @param targetPosition target position
+     * @return result message
      * @throws IllegalStateException on conversion error
      */
-    public void convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType,
+    @Nonnull
+    public String convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType,
             CompressionAlgorithm algorithm, boolean autoDetect, EditableBinaryData targetBinaryData,
             long targetPosition) throws IllegalStateException {
 
@@ -170,7 +174,10 @@ public class CompressionDataMethod implements ConvertDataMethod {
             String errorMsg = "Error: " + ex.getMessage();
             byte[] output = errorMsg.getBytes(java.nio.charset.StandardCharsets.UTF_8);
             targetBinaryData.insert(targetPosition, output);
+            return errorMsg;
         }
+        
+        return "";
     }
 
     /**
@@ -292,7 +299,7 @@ public class CompressionDataMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         CompressionDataPanel panel = (CompressionDataPanel) component;
@@ -303,6 +310,8 @@ public class CompressionDataMethod implements ConvertDataMethod {
     }
 
     private void fillPreviewData(CompressionDataPanel panel, CodeAreaCore codeArea) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             OperationType operationType = panel.getOperationType();
             CompressionAlgorithm algorithm = panel.getAlgorithm();
@@ -324,18 +333,22 @@ public class CompressionDataMethod implements ConvertDataMethod {
             // Limit preview data size to avoid performance issues
             length = Math.min(length, 1024 * 1024); // Max 1MB for preview
 
-            convertData(codeArea.getContentData(), position, length, operationType, algorithm, autoDetect, previewBinaryData, 0);
+            String message = convertData(codeArea.getContentData(), position, length, operationType, algorithm, autoDetect, previewBinaryData, 0);
 
             // Update statistics in panel
             long originalSize = length;
             long compressedSize = previewBinaryData.getDataSize();
             panel.updateStatistics(originalSize, compressedSize);
 
-            long previewDataSize = previewBinaryData.getDataSize();
-            if (previewDataSize > previewLengthLimit) {
-                previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+            if (message.isEmpty()) {
+                long previewDataSize = previewBinaryData.getDataSize();
+                if (previewDataSize > previewLengthLimit) {
+                    previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+                }
+                previewPanel.setPreviewData(previewBinaryData);
+            } else {
+                previewPanel.setErrorMessage(message);
             }
-            previewDataHandler.setPreviewData(previewBinaryData);
         });
     }
 

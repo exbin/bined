@@ -15,21 +15,20 @@
  */
 package org.exbin.framework.bined.operation.api;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.auxiliary.binary_data.BinaryData;
+import java.awt.Component;
+import javax.annotation.Nullable;
 
 /**
  * Interface preview data handling.
  *
  * @author ExBin Project (https://exbin.org)
  */
-@ParametersAreNonnullByDefault
 public interface PreviewDataHandler {
 
     /**
-     * Sets preview data.
+     * Sets preview component.
      *
-     * @param binaryData binary data
+     * @param previewComponent preview component
      */
-    void setPreviewData(BinaryData binaryData);
+    void setPreviewComponent(@Nullable Component previewComponent);
 }

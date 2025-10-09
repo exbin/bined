@@ -40,6 +40,7 @@ import org.exbin.framework.bined.operation.method.gui.DateTimeConversionPanel;
 import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Date time conversion method.
@@ -51,6 +52,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -125,9 +127,11 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
      * @param config conversion configuration
      * @param targetBinaryData target binary data
      * @param targetPosition target position
+     * @return result message
      * @throws IllegalStateException on conversion error
      */
-    public void convertData(BinaryData sourceBinaryData, long position, long length, ConversionConfig config,
+    @Nonnull
+    public String convertData(BinaryData sourceBinaryData, long position, long length, ConversionConfig config,
             EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
 
         // Validate data length
@@ -137,7 +141,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
                     expectedLength, config.dataSize == DataSize.INT_32 ? "32-bit" : "64-bit", length);
             byte[] output = errorMsg.getBytes(java.nio.charset.StandardCharsets.UTF_8);
             targetBinaryData.insert(targetPosition, output);
-            return;
+            return errorMsg;
         }
 
         // Only read the expected number of bytes
@@ -160,7 +164,10 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
             String errorMsg = "Invalid timestamp data: " + ex.getMessage();
             byte[] output = errorMsg.getBytes(java.nio.charset.StandardCharsets.UTF_8);
             targetBinaryData.insert(targetPosition, output);
+            return errorMsg;
         }
+        
+        return "";
     }
 
     /**
@@ -231,7 +238,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         DateTimeConversionPanel panel = (DateTimeConversionPanel) component;
@@ -242,6 +249,8 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
     }
 
     private void fillPreviewData(DateTimeConversionPanel panel, CodeAreaCore codeArea) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             ConversionConfig config = panel.getConversionConfig();
 
@@ -265,12 +274,16 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
                 length = Math.min(length, 8);
             }
 
-            convertData(codeArea.getContentData(), position, length, config, previewBinaryData, 0);
-            long previewDataSize = previewBinaryData.getDataSize();
-            if (previewDataSize > previewLengthLimit) {
-                previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+            String message = convertData(codeArea.getContentData(), position, length, config, previewBinaryData, 0);
+            if (message.isEmpty()) {
+                long previewDataSize = previewBinaryData.getDataSize();
+                if (previewDataSize > previewLengthLimit) {
+                    previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+                }
+                previewPanel.setPreviewData(previewBinaryData);
+            } else {
+                previewPanel.setErrorMessage(message);
             }
-            previewDataHandler.setPreviewData(previewBinaryData);
         });
     }
 

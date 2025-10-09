@@ -24,12 +24,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import org.exbin.bined.EditOperation;
-import org.exbin.bined.capability.CaretCapable;
-import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.swing.command.CodeAreaCommand;
-import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
@@ -38,13 +32,10 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.CopyAsDataMethod;
 import org.exbin.framework.bined.operation.api.DataOperationMethod;
 import org.exbin.framework.bined.operation.gui.DataOperationPanel;
-import org.exbin.framework.help.api.HelpLink;
-import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
@@ -88,14 +79,14 @@ public class CopyAsAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         final DataOperationPanel dataOperationPanel = new DataOperationPanel();
-        dataOperationPanel.setController((previewCodeArea) -> {
+        dataOperationPanel.setController(() -> {
             Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
             if (optionalActiveMethod.isPresent()) {
                 CopyAsDataMethod activeMethod = (CopyAsDataMethod) optionalActiveMethod.get();
                 Component activeComponent = dataOperationPanel.getActiveComponent().get();
-                activeMethod.registerPreviewDataHandler((binaryData) -> {
-                    previewCodeArea.setContentData(binaryData);
-                }, activeComponent, null, PREVIEW_LENGTH_LIMIT);
+                activeMethod.requestPreview((component) -> {
+                    dataOperationPanel.setPreviewComponent(component);
+                }, activeComponent, codeArea, PREVIEW_LENGTH_LIMIT);
             }
         });
         ResourceBundle panelResourceBundle = App.getModule(LanguageModuleApi.class).getResourceBundleByBundleName("org.exbin.framework.bined.operation.gui.resources.CopyAsDataControlPanel");
@@ -107,8 +98,6 @@ public class CopyAsAction extends AbstractAction {
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         dataOperationPanel.setDataMethods(binedBlockEditModule.getCopyAsDataMethods());
         dataOperationPanel.selectActiveMethod(lastMethod);
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        dataOperationPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
@@ -118,16 +107,7 @@ public class CopyAsAction extends AbstractAction {
                 if (optionalActiveMethod.isPresent()) {
                     Component activeComponent = dataOperationPanel.getActiveComponent().get();
                     CopyAsDataMethod activeMethod = (CopyAsDataMethod) optionalActiveMethod.get();
-                    long dataPosition = ((CaretCapable) codeArea).getDataPosition();
-                    EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
-//                    CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
-//
-//                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-//                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-//                        ((CodeAreaOperationCommandHandler) commandHandler).getUndoRedo().execute(command);
-//                    } else {
-//                        command.execute();
-//                    }
+                    activeMethod.performCopy(activeComponent, codeArea);
                 }
                 lastMethod = (CopyAsDataMethod) optionalActiveMethod.orElse(null);
             }
@@ -137,6 +117,5 @@ public class CopyAsAction extends AbstractAction {
         });
         SwingUtilities.invokeLater(dataOperationPanel::initFocus);
         dialog.showCentered(codeArea);
-        dataOperationPanel.detachMenu();
     }
 }

@@ -27,6 +27,9 @@ import javax.swing.SwingUtilities;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.operation.swing.command.CodeAreaCommand;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
@@ -35,7 +38,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.DataOperationMethod;
 import org.exbin.framework.bined.operation.api.PasteFromDataMethod;
@@ -84,13 +86,13 @@ public class PasteFromAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         final DataOperationPanel dataOperationPanel = new DataOperationPanel();
-        dataOperationPanel.setController((previewCodeArea) -> {
+        dataOperationPanel.setController(() -> {
             Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
             if (optionalActiveMethod.isPresent()) {
                 PasteFromDataMethod activeMethod = (PasteFromDataMethod) optionalActiveMethod.get();
                 Component activeComponent = dataOperationPanel.getActiveComponent().get();
-                activeMethod.registerPreviewDataHandler((binaryData) -> {
-                    previewCodeArea.setContentData(binaryData);
+                activeMethod.requestPreview((component) -> {
+                    dataOperationPanel.setPreviewComponent(component);
                 }, activeComponent, PREVIEW_LENGTH_LIMIT);
             }
         });
@@ -103,8 +105,6 @@ public class PasteFromAction extends AbstractAction {
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         dataOperationPanel.setDataMethods(binedBlockEditModule.getPasteFromDataMethods());
         dataOperationPanel.selectActiveMethod(lastMethod);
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        dataOperationPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
@@ -116,14 +116,14 @@ public class PasteFromAction extends AbstractAction {
                     PasteFromDataMethod activeMethod = (PasteFromDataMethod) optionalActiveMethod.get();
                     long dataPosition = ((CaretCapable) codeArea).getDataPosition();
                     EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
-//                    CodeAreaCommand command = activeMethod.createInsertCommand(activeComponent, codeArea, dataPosition, activeOperation);
-//
-//                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-//                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-//                        ((CodeAreaOperationCommandHandler) commandHandler).getUndoRedo().execute(command);
-//                    } else {
-//                        command.execute();
-//                    }
+                    CodeAreaCommand command = activeMethod.createPasteCommand(activeComponent, codeArea, dataPosition, activeOperation);
+
+                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                        ((CodeAreaOperationCommandHandler) commandHandler).getUndoRedo().execute(command);
+                    } else {
+                        command.execute();
+                    }
                 }
                 lastMethod = (PasteFromDataMethod) optionalActiveMethod.orElse(null);
             }
@@ -133,6 +133,5 @@ public class PasteFromAction extends AbstractAction {
         });
         SwingUtilities.invokeLater(dataOperationPanel::initFocus);
         dialog.showCentered(codeArea);
-        dataOperationPanel.detachMenu();
     }
 }

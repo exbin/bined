@@ -36,7 +36,7 @@ public class RandomDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(RandomDataPanel.class);
 
-    private ModeChangeListener modeChangeListener = null;
+    private ResultChangeListener resultChangeListener = null;
 
     public RandomDataPanel() {
         initComponents();
@@ -150,28 +150,28 @@ public class RandomDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lengthBaseSwitchableSpinnerPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lengthBaseSwitchableSpinnerPanelStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_lengthBaseSwitchableSpinnerPanelStateChanged
 
     private void fullBytesRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fullBytesRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_fullBytesRadioButtonItemStateChanged
 
     private void lowerHalfRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_lowerHalfRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_lowerHalfRadioButtonItemStateChanged
 
     private void alphabetOnlyRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_alphabetOnlyRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_alphabetOnlyRadioButtonItemStateChanged
 
     private void numberDigitsRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_numberDigitsRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_numberDigitsRadioButtonItemStateChanged
 
-    private void modeChanged() {
-        if (modeChangeListener != null) {
-            modeChangeListener.modeChanged();
+    private void resultChanged() {
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
         }
     }
 
@@ -219,8 +219,8 @@ public class RandomDataPanel extends javax.swing.JPanel {
         lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
 
-    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
-        this.modeChangeListener = modeChangeListener;
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
     }
 
     public void initFocus() {
@@ -255,8 +255,8 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private javax.swing.JLabel randomDataLabel;
     // End of variables declaration//GEN-END:variables
 
-    public interface ModeChangeListener {
+    public interface ResultChangeListener {
 
-        void modeChanged();
+        void resultChanged();
     }
 }

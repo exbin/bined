@@ -41,7 +41,7 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ComputeHashDataPanel.class);
 
     private Controller controller;
-    private ModeChangeListener modeChangeListener = null;
+    private ResultChangeListener resultChangeListener = null;
     private HashTypeChangeListener hashTypeChangeListener = null;
 
     public ComputeHashDataPanel() {
@@ -133,17 +133,17 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void hashTypeListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_hashTypeListValueChanged
-        modeChanged();
+        resultChanged();
         hashTypeChanged();
     }//GEN-LAST:event_hashTypeListValueChanged
 
     private void hashBitSizeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hashBitSizeComboBoxItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_hashBitSizeComboBoxItemStateChanged
 
-    private void modeChanged() {
-        if (modeChangeListener != null) {
-            modeChangeListener.modeChanged();
+    private void resultChanged() {
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
         }
     }
 
@@ -185,8 +185,8 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
         }
     }
 
-    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
-        this.modeChangeListener = modeChangeListener;
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
     }
 
     public void setHashTypeChangeListener(HashTypeChangeListener hashTypeChangeListener) {
@@ -225,9 +225,9 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
 
     }
 
-    public interface ModeChangeListener {
+    public interface ResultChangeListener {
 
-        void modeChanged();
+        void resultChanged();
     }
     
     public interface HashTypeChangeListener {

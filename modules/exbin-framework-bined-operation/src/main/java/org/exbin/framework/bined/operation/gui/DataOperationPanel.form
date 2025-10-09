@@ -49,7 +49,7 @@
     <Component class="javax.swing.JLabel" name="methodLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/exbin/framework/bined/operation/gui/resources/ConvertDataPanel.properties" key="methodLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="org/exbin/framework/bined/operation/gui/resources/DataOperationPanel.properties" key="methodLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -92,7 +92,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="Preview">
-                  <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/operation/gui/resources/ConvertDataPanel.properties" key="previewPanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString PropertyName="titleX" bundle="org/exbin/framework/bined/operation/gui/resources/DataOperationPanel.properties" key="previewPanel.border.title" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </TitledBorder>
               </Border>
             </Property>

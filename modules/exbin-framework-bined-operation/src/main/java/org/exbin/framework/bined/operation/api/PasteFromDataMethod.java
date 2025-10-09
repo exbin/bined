@@ -18,7 +18,6 @@ package org.exbin.framework.bined.operation.api;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -50,5 +49,5 @@ public interface PasteFromDataMethod extends DataOperationMethod {
      * @param component visual component
      * @param lengthLimit limit to length of set data
      */
-    void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit);
+    void requestPreview(PreviewDataHandler previewDataHandler, Component component, long lengthLimit);
 }

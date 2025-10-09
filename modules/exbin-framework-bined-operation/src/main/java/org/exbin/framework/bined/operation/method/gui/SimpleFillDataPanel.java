@@ -39,7 +39,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
 
     private Controller controller;
     private EditableBinaryData sampleBinaryData;
-    private ModeChangeListener modeChangeListener = null;
+    private ResultChangeListener resultChangeListener = null;
 
     public SimpleFillDataPanel() {
         initComponents();
@@ -163,29 +163,29 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private void sampleDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleDataButtonActionPerformed
         if (controller != null) {
             controller.sampleDataAction();
-            modeChanged();
+            resultChanged();
         }
     }//GEN-LAST:event_sampleDataButtonActionPerformed
 
     private void emptyRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_emptyRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_emptyRadioButtonItemStateChanged
 
     private void spaceRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_spaceRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_spaceRadioButtonItemStateChanged
 
     private void sampleRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sampleRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_sampleRadioButtonItemStateChanged
 
     private void lengthBaseSwitchableSpinnerPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lengthBaseSwitchableSpinnerPanelStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_lengthBaseSwitchableSpinnerPanelStateChanged
 
-    private void modeChanged() {
-        if (modeChangeListener != null) {
-            modeChangeListener.modeChanged();
+    private void resultChanged() {
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
         }
     }
 
@@ -227,8 +227,8 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
         lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
 
-    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
-        this.modeChangeListener = modeChangeListener;
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
     }
 
     public void initFocus() {
@@ -277,8 +277,8 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
         void sampleDataAction();
     }
 
-    public interface ModeChangeListener {
+    public interface ResultChangeListener {
 
-        void modeChanged();
+        void resultChanged();
     }
 }

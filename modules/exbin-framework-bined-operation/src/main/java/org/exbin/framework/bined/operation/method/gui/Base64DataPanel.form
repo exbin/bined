@@ -8,7 +8,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
-    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel"/>
+    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel"/>
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="true"/>
@@ -87,7 +87,7 @@
             <Component class="javax.swing.JLabel" name="operationTypeLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/BitSwappingDataPanel.properties" key="operationTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/BitSwappingDataPanel.properties" key="operationTypeLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -98,7 +98,7 @@
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="basicEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel.properties" key="basicEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -111,7 +111,7 @@
                   <ComponentRef name="buttonGroup"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="basicDecoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel.properties" key="basicDecoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -124,7 +124,7 @@
                   <ComponentRef name="buttonGroup"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="mimeEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel.properties" key="mimeEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -137,7 +137,7 @@
                   <ComponentRef name="buttonGroup"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="mimeDecoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel.properties" key="mimeDecoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -150,7 +150,7 @@
                   <ComponentRef name="buttonGroup"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="urlEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel.properties" key="urlEncoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
@@ -163,7 +163,7 @@
                   <ComponentRef name="buttonGroup"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/exbin/framework/bined/operation/component/gui/resources/Base64DataPanel.properties" key="urlDecoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/exbin/framework/bined/operation/method/gui/resources/Base64DataPanel.properties" key="urlDecoderRadioButton.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>

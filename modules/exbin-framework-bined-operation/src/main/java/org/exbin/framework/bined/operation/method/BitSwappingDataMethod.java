@@ -36,6 +36,7 @@ import org.exbin.framework.bined.operation.method.gui.BitSwappingDataPanel;
 import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Bit swapping data method.
@@ -51,6 +52,7 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -170,17 +172,19 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         BitSwappingDataPanel panel = (BitSwappingDataPanel) component;
-        panel.setModeChangeListener(() -> {
+        panel.setResultChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);
     }
 
     private void fillPreviewData(BitSwappingDataPanel panel, CodeAreaCore codeArea) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             Optional<OperationType> operationType = panel.getOperationType();
 
@@ -203,7 +207,7 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
                     previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
                 }
             }
-            previewDataHandler.setPreviewData(previewBinaryData);
+            previewPanel.setPreviewData(previewBinaryData);
         });
     }
 

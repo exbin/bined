@@ -49,5 +49,5 @@ public interface InsertDataMethod extends DataOperationMethod {
      * @param component visual component
      * @param lengthLimit limit to length of set data
      */
-    void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit);
+    void requestPreview(PreviewDataHandler previewDataHandler, Component component, long lengthLimit);
 }
