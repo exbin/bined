@@ -43,5 +43,5 @@ public interface CopyAsDataMethod extends DataOperationMethod {
      * @param codeArea source code area
      * @param lengthLimit limit to length of set data
      */
-    void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit);
+    void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit);
 }

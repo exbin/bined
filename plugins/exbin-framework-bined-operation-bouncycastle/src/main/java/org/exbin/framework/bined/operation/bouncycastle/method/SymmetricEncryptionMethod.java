@@ -43,6 +43,7 @@ import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
 import org.exbin.framework.bined.operation.bouncycastle.method.gui.EncryptionPanel;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Encyption and decryption data conversion method.
@@ -57,8 +58,9 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EncryptionPanel.class);
 
-    private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
+    private PreviewDataHandler previewDataHandler;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -128,7 +130,8 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         return binaryData;
     }
 
-    public void convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType,
+    @Nonnull
+    public String convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType,
                             Algorithm algorithm, char[] password, EditableBinaryData targetBinaryData, long targetPosition) {
 
         byte[] sourceData = new byte[(int) length];
@@ -147,7 +150,10 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
             String errorMsg = "Crypto error: " + ex.getMessage();
             byte[] output = errorMsg.getBytes(java.nio.charset.StandardCharsets.UTF_8);
             targetBinaryData.insert(targetPosition, output);
+            return errorMsg;
         }
+        
+        return "";
     }
 
     private byte[] encrypt(byte[] data, Algorithm algorithm, char[] password) throws Exception {
@@ -209,7 +215,7 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         EncryptionPanel panel = (EncryptionPanel) component;
@@ -220,6 +226,8 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
     }
 
     private void fillPreviewData(EncryptionPanel panel, CodeAreaCore codeArea) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             OperationType operationType = panel.getOperationType();
             Algorithm algorithm = panel.getAlgorithm();
@@ -244,13 +252,17 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
 
             length = Math.min(length, 1024);
 
-            convertData(codeArea.getContentData(), position, length, operationType, algorithm, password, previewBinaryData, 0);
+            String resultMessage = convertData(codeArea.getContentData(), position, length, operationType, algorithm, password, previewBinaryData, 0);
 
-            long previewDataSize = previewBinaryData.getDataSize();
-            if (previewDataSize > previewLengthLimit) {
-                previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+            if (resultMessage.isEmpty()) {
+                long previewDataSize = previewBinaryData.getDataSize();
+                if (previewDataSize > previewLengthLimit) {
+                    previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
+                }
+                previewPanel.setPreviewData(previewBinaryData);
+            } else {
+                previewPanel.setErrorMessage(resultMessage);
             }
-            previewDataHandler.setPreviewData(previewBinaryData);
         });
     }
 

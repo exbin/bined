@@ -36,6 +36,7 @@ import org.exbin.framework.bined.operation.method.gui.Base64DataPanel;
 import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Base 64 data method.
@@ -49,6 +50,7 @@ public class Base64DataMethod implements ConvertDataMethod {
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -184,17 +186,19 @@ public class Base64DataMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         Base64DataPanel panel = (Base64DataPanel) component;
-        panel.setModeChangeListener(() -> {
+        panel.setResultChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);
     }
 
     private void fillPreviewData(Base64DataPanel panel, CodeAreaCore codeArea) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             OperationType operationType = panel.getOperationType();
 
@@ -215,7 +219,7 @@ public class Base64DataMethod implements ConvertDataMethod {
             if (previewDataSize > previewLengthLimit) {
                 previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
             }
-            previewDataHandler.setPreviewData(previewBinaryData);
+            previewPanel.setPreviewData(previewBinaryData);
         });
     }
 

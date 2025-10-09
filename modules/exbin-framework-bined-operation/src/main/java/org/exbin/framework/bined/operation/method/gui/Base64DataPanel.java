@@ -35,7 +35,7 @@ public class Base64DataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(Base64DataPanel.class);
 
-    private ModeChangeListener modeChangeListener = null;
+    private ResultChangeListener resultChangeListener = null;
 
     public Base64DataPanel() {
         initComponents();
@@ -183,32 +183,32 @@ public class Base64DataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void basicEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_basicEncoderRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_basicEncoderRadioButtonItemStateChanged
 
     private void basicDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_basicDecoderRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_basicDecoderRadioButtonItemStateChanged
 
     private void mimeEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mimeEncoderRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_mimeEncoderRadioButtonItemStateChanged
 
     private void mimeDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mimeDecoderRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_mimeDecoderRadioButtonItemStateChanged
 
     private void urlEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_urlEncoderRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_urlEncoderRadioButtonItemStateChanged
 
     private void urlDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_urlDecoderRadioButtonItemStateChanged
-        modeChanged();
+        resultChanged();
     }//GEN-LAST:event_urlDecoderRadioButtonItemStateChanged
 
-    private void modeChanged() {
-        if (modeChangeListener != null) {
-            modeChangeListener.modeChanged();
+    private void resultChanged() {
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
         }
     }
 
@@ -242,8 +242,8 @@ public class Base64DataPanel extends javax.swing.JPanel {
         }
     }
 
-    public void setModeChangeListener(ModeChangeListener modeChangeListener) {
-        this.modeChangeListener = modeChangeListener;
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
     }
 
     public void initFocus() {
@@ -280,8 +280,8 @@ public class Base64DataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton urlEncoderRadioButton;
     // End of variables declaration//GEN-END:variables
 
-    public interface ModeChangeListener {
+    public interface ResultChangeListener {
 
-        void modeChanged();
+        void resultChanged();
     }
 }

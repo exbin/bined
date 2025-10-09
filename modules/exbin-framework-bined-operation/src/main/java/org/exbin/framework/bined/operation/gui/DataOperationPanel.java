@@ -27,16 +27,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
-import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
-import org.exbin.bined.EditMode;
-import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.operation.api.DataOperationMethod;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -49,15 +42,12 @@ import org.exbin.framework.utils.UtilsModule;
 @ParametersAreNonnullByDefault
 public class DataOperationPanel extends javax.swing.JPanel {
 
-    private static final String POPUP_MENU_POSTFIX = ".dataOperationPanel";
-
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataOperationPanel.class);
 
     private Controller controller;
-    private SectCodeArea previewCodeArea = new SectCodeArea();
-    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private DataOperationMethod activeMethod;
     private Component activeComponent;
+    private Component previewComponent = null;
 
     public DataOperationPanel() {
         initComponents();
@@ -78,10 +68,8 @@ public class DataOperationPanel extends javax.swing.JPanel {
         optionsList.addListSelectionListener((e) -> {
             activeMethod = optionsList.getSelectedValue();
             activeComponent = activeMethod != null ? activeMethod.createComponent() : null;
-            ByteArrayEditableData previewBinaryData = (ByteArrayEditableData) previewCodeArea.getContentData();
-            previewBinaryData.clear();
             if (controller != null) {
-                controller.updatePreviewData(previewCodeArea);
+                controller.requestPreviewUpdate();
             }
             componentScrollPane.getViewport().setView(activeComponent);
             if (activeMethod != null) {
@@ -92,9 +80,6 @@ public class DataOperationPanel extends javax.swing.JPanel {
                 }
             }
         });
-        previewCodeArea.setContentData(new ByteArrayEditableData());
-        previewCodeArea.setEditMode(EditMode.READ_ONLY);
-        previewPanel.add(previewCodeArea);
     }
 
     @Nonnull
@@ -123,32 +108,15 @@ public class DataOperationPanel extends javax.swing.JPanel {
         return Optional.ofNullable(activeComponent);
     }
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
-        if (previewCodeArea != null) {
-            attachPopupMenu();
+    public void setPreviewComponent(Component previewComponent) {
+        if (this.previewComponent != null) {
+            previewPanel.remove(this.previewComponent);
         }
-    }
 
-    private void attachPopupMenu() {
-        previewCodeArea.setComponentPopupMenu(new JPopupMenu() {
-            @Override
-            public void show(@Nonnull Component invoker, int x, int y) {
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(previewCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
-                popupMenu.show(invoker, x, y);
-                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-            }
-        });
-    }
-
-    public void detachMenu() {
-        codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
+        this.previewComponent = previewComponent;
+        previewPanel.add(previewComponent);
+        previewPanel.revalidate();
+        previewPanel.repaint();
     }
 
     /**
@@ -245,9 +213,8 @@ public class DataOperationPanel extends javax.swing.JPanel {
     private javax.swing.JSplitPane splitPane;
     // End of variables declaration//GEN-END:variables
 
-    @ParametersAreNonnullByDefault
     public interface Controller {
 
-        void updatePreviewData(CodeAreaCore previewCodeArea);
+        void requestPreviewUpdate();
     }
 }

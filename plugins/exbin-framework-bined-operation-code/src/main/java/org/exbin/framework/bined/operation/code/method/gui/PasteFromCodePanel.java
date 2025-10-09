@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.operation.code.method.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -31,8 +30,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
-import org.exbin.bined.EditMode;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.code.CodeImportFormat;
@@ -46,8 +43,9 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PasteFromCodePanel.class);
     private final List<CodeImportFormat> importFormats = new ArrayList<>();
 
-    private SectCodeArea binaryPreviewArea;
     private BinaryData parsedData;
+    private ResultChangeListener resultChangeListener = null;
+    private String errorText = "";
 
     public PasteFromCodePanel() {
         initComponents();
@@ -61,50 +59,35 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         codeTextArea.setWrapStyleWord(false);
 
         // DON'T auto-paste from clipboard - user should paste manually
-        // tryPasteFromClipboard();
-        // Initialize binary preview area
-        binaryPreviewArea = new SectCodeArea();
-        binaryPreviewArea.setContentData(new ByteArrayEditableData());
-        binaryPreviewArea.setEditMode(EditMode.READ_ONLY);
-
-        // Ensure preview area is visible
-        binaryPreviewArea.setVisible(true);
-        binaryPreviewArea.setPreferredSize(new java.awt.Dimension(400, 150));
-
-        binaryPreviewPanel.setLayout(new BorderLayout());
-        binaryPreviewPanel.add(binaryPreviewArea, BorderLayout.CENTER);
-        binaryPreviewPanel.revalidate();
-        binaryPreviewPanel.repaint();
-
-        System.out.println("PasteFromCodePanel: Binary preview area initialized"); // Debug
+        tryPasteFromClipboard();
 
         // Add listener to format combo box
         formatComboBox.addActionListener(e -> {
-            updateBinaryPreview();
+            resultChanged();
         });
 
         // Add listener to auto-detect checkbox
         autoDetectCheckBox.addActionListener(e -> {
             boolean autoDetect = autoDetectCheckBox.isSelected();
             formatComboBox.setEnabled(!autoDetect);
-            updateBinaryPreview();
+            resultChanged();
         });
 
         // Add listener to code text area
         codeTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateBinaryPreview();
+                resultChanged();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                updateBinaryPreview();
+                resultChanged();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateBinaryPreview();
+                resultChanged();
             }
         });
     }
@@ -164,51 +147,52 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         return null;
     }
 
-    private void updateBinaryPreview() {
-        String code = codeTextArea.getText();
-        System.out.println("PasteFromCodePanel: Updating preview, code length: " + (code != null ? code.length() : 0)); // Debug
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
+    }
 
+    private void resultChanged() {
+        updateBinaryPreview();
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
+        }
+    }
+
+    @Nonnull
+    public BinaryData getResultData() {
+        return parsedData;
+    }
+
+    @Nonnull
+    public String getErrorText() {
+        return errorText;
+    }
+
+    private void updateBinaryPreview() {
+        parsedData = new ByteArrayEditableData();
+        errorText = "";
+        String code = codeTextArea.getText();
         if (code == null || code.trim().isEmpty()) {
-            binaryPreviewArea.setContentData(new ByteArrayEditableData());
-            parsedData = null;
-            binaryPreviewArea.repaint();
-            System.out.println("PasteFromCodePanel: Code is empty, cleared preview"); // Debug
             return;
         }
 
         CodeImportFormat format;
         if (autoDetectCheckBox.isSelected()) {
             format = detectFormat(code);
-            System.out.println("PasteFromCodePanel: Auto-detect format: " + (format != null ? format.getFormatName() : "null")); // Debug
             if (format == null) {
-                binaryPreviewArea.setContentData(new ByteArrayEditableData());
-                parsedData = null;
-                binaryPreviewArea.repaint();
-                System.out.println("PasteFromCodePanel: Format not detected"); // Debug
                 return;
             }
         } else {
             format = getSelectedFormat();
-            System.out.println("PasteFromCodePanel: Manual format: " + (format != null ? format.getFormatName() : "null")); // Debug
             if (format == null) {
                 return;
             }
         }
 
         try {
-            BinaryData data = format.parseCode(code);
-            System.out.println("PasteFromCodePanel: Parsed " + data.getDataSize() + " bytes"); // Debug
-            binaryPreviewArea.setContentData(data);
-            parsedData = data;
-            binaryPreviewArea.repaint();
-            binaryPreviewArea.revalidate();
-            System.out.println("PasteFromCodePanel: Preview updated successfully"); // Debug
+            parsedData = format.parseCode(code);
         } catch (CodeImportFormat.CodeParseException ex) {
-            // Show error in preview (empty data)
-            System.out.println("PasteFromCodePanel: Parse error: " + ex.getMessage()); // Debug
-            binaryPreviewArea.setContentData(new ByteArrayEditableData());
-            parsedData = null;
-            binaryPreviewArea.repaint();
+            errorText = "Error: " + ex.getMessage();
         }
     }
 
@@ -233,8 +217,6 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         formatLabel = new javax.swing.JLabel();
         formatComboBox = new javax.swing.JComboBox<>();
         autoDetectCheckBox = new javax.swing.JCheckBox();
-        binaryPreviewLabel = new javax.swing.JLabel();
-        binaryPreviewPanel = new javax.swing.JPanel();
 
         codeLabel.setText(resourceBundle.getString("codeLabel.text"));
         codeTextArea.setRows(8);
@@ -243,18 +225,6 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         formatLabel.setText(resourceBundle.getString("formatLabel.text"));
         autoDetectCheckBox.setText(resourceBundle.getString("autoDetectCheckBox.text"));
         autoDetectCheckBox.setSelected(true);
-        binaryPreviewLabel.setText(resourceBundle.getString("binaryPreviewLabel.text"));
-
-        javax.swing.GroupLayout binaryPreviewPanelLayout = new javax.swing.GroupLayout(binaryPreviewPanel);
-        binaryPreviewPanel.setLayout(binaryPreviewPanelLayout);
-        binaryPreviewPanelLayout.setHorizontalGroup(
-                binaryPreviewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        binaryPreviewPanelLayout.setVerticalGroup(
-                binaryPreviewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 150, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -265,13 +235,11 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(codeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
                                         .addComponent(formatComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(binaryPreviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(codeLabel)
                                                         .addComponent(formatLabel)
-                                                        .addComponent(autoDetectCheckBox)
-                                                        .addComponent(binaryPreviewLabel))
+                                                        .addComponent(autoDetectCheckBox))
                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
@@ -288,10 +256,6 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
                                 .addComponent(formatComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(autoDetectCheckBox)
-                                .addGap(18, 18, 18)
-                                .addComponent(binaryPreviewLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(binaryPreviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
     }
@@ -303,7 +267,10 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
     private javax.swing.JLabel formatLabel;
     private javax.swing.JComboBox<String> formatComboBox;
     private javax.swing.JCheckBox autoDetectCheckBox;
-    private javax.swing.JLabel binaryPreviewLabel;
-    private javax.swing.JPanel binaryPreviewPanel;
     // End of variables declaration
+
+    public interface ResultChangeListener {
+
+        void resultChanged();
+    }
 }

@@ -44,6 +44,7 @@ import org.exbin.framework.bined.operation.InsertFromProviderOperation;
 import org.exbin.framework.bined.operation.ReplaceDataOperation;
 import org.exbin.framework.bined.operation.InsertionDataProvider;
 import org.exbin.framework.bined.operation.command.ReplaceDataCommand;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 import org.exbin.framework.window.api.WindowHandler;
 
 /**
@@ -57,6 +58,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(SimpleFillDataPanel.class);
 
     private PreviewDataHandler previewDataHandler;
+    private BinaryPreviewPanel previewPanel;
     private long previewLengthLimit = 0;
 
     @Nonnull
@@ -171,17 +173,19 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         SimpleFillDataPanel panel = (SimpleFillDataPanel) component;
-        panel.setModeChangeListener(() -> {
+        panel.setResultChangeListener(() -> {
             fillPreviewData(panel);
         });
         fillPreviewData(panel);
     }
 
     private void fillPreviewData(SimpleFillDataPanel panel) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             FillWithType fillWithType = panel.getFillWithType();
             long dataLength = panel.getDataLength();
@@ -193,7 +197,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             EditableBinaryData previewBinaryData = new ByteArrayEditableData();
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, fillWithType, 0, dataLength, sampleBinaryData);
-            previewDataHandler.setPreviewData(previewBinaryData);
+            previewPanel.setPreviewData(previewBinaryData);
         });
     }
 

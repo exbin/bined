@@ -93,13 +93,13 @@ public class InsertDataAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         final DataOperationPanel dataOperationPanel = new DataOperationPanel();
-        dataOperationPanel.setController((previewCodeArea) -> {
+        dataOperationPanel.setController(() -> {
             Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
             if (optionalActiveMethod.isPresent()) {
                 InsertDataMethod activeMethod = (InsertDataMethod) optionalActiveMethod.get();
                 Component activeComponent = dataOperationPanel.getActiveComponent().get();
-                activeMethod.registerPreviewDataHandler((binaryData) -> {
-                    previewCodeArea.setContentData(binaryData);
+                activeMethod.requestPreview((component) -> {
+                    dataOperationPanel.setPreviewComponent(component);
                 }, activeComponent, PREVIEW_LENGTH_LIMIT);
             }
         });
@@ -112,8 +112,6 @@ public class InsertDataAction extends AbstractAction {
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         dataOperationPanel.setDataMethods(binedBlockEditModule.getInsertDataMethods());
         dataOperationPanel.selectActiveMethod(lastMethod);
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        dataOperationPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
         final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
         windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
@@ -142,6 +140,5 @@ public class InsertDataAction extends AbstractAction {
         });
         SwingUtilities.invokeLater(dataOperationPanel::initFocus);
         dialog.showCentered(codeArea);
-        dataOperationPanel.detachMenu();
     }
 }

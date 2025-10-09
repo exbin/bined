@@ -15,8 +15,6 @@
  */
 package org.exbin.framework.bined.operation.code.method.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,8 +22,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -42,8 +38,10 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
     private final List<CodeExportFormat> exportFormats = new ArrayList<>();
     private final CodeExportOptions currentOptions = new CodeExportOptions();
 
-    private JTextArea codePreviewArea;
     private BinaryData sourceData;
+    private String resultText;
+    private String errorText = "";
+    private ResultChangeListener resultChangeListener = null;
 
     public CopyAsCodePanel() {
         initComponents();
@@ -51,40 +49,31 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
     }
 
     private void init() {
-        // Initialize code preview area
-        codePreviewArea = new JTextArea();
-        codePreviewArea.setEditable(false);
-        codePreviewArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        codePreviewArea.setLineWrap(false);
-        JScrollPane previewScrollPane = new JScrollPane(codePreviewArea);
-        previewPanel.setLayout(new BorderLayout());
-        previewPanel.add(previewScrollPane, BorderLayout.CENTER);
-
         // Add listener to format combo box
         formatComboBox.addActionListener(e -> {
             updateOptionsFromFormat();
-            updatePreview();
+            resultChanged();
         });
 
         // Add listeners to option controls
         uppercaseCheckBox.addActionListener(e -> {
             currentOptions.setUppercaseHex(uppercaseCheckBox.isSelected());
-            updatePreview();
+            resultChanged();
         });
 
         lineBreaksCheckBox.addActionListener(e -> {
             currentOptions.setIncludeLineBreaks(lineBreaksCheckBox.isSelected());
-            updatePreview();
+            resultChanged();
         });
 
         variableDeclCheckBox.addActionListener(e -> {
             currentOptions.setIncludeVariableDeclaration(variableDeclCheckBox.isSelected());
-            updatePreview();
+            resultChanged();
         });
 
         bytesPerLineSpinner.addChangeListener(e -> {
             currentOptions.setBytesPerLine((Integer) bytesPerLineSpinner.getValue());
-            updatePreview();
+            resultChanged();
         });
     }
 
@@ -131,9 +120,24 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         return currentOptions;
     }
 
+    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
+        this.resultChangeListener = resultChangeListener;
+    }
+
+    private void resultChanged() {
+        if (resultChangeListener != null) {
+            resultChangeListener.resultChanged();
+        }
+    }
+
     @Nonnull
-    public String getGeneratedCode() {
-        return codePreviewArea.getText();
+    public String getResultText() {
+        return resultText;
+    }
+
+    @Nonnull
+    public String getErrorText() {
+        return errorText;
     }
 
     private void updateOptionsFromFormat() {
@@ -156,22 +160,22 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
 
     private void updatePreview() {
         if (sourceData == null) {
-            codePreviewArea.setText("");
+            resultText = "";
+            errorText = "";
             return;
         }
 
         CodeExportFormat format = getSelectedFormat();
         if (format == null) {
-            codePreviewArea.setText("");
+            resultText = "";
+            errorText = "";
             return;
         }
 
         try {
-            String code = format.generateCode(sourceData, currentOptions);
-            codePreviewArea.setText(code);
-            codePreviewArea.setCaretPosition(0);
+            resultText = format.generateCode(sourceData, currentOptions);
         } catch (Exception ex) {
-            codePreviewArea.setText("Error generating code: " + ex.getMessage());
+            errorText = "Error generating code: " + ex.getMessage();
         }
     }
 
@@ -193,8 +197,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         variableDeclCheckBox = new javax.swing.JCheckBox();
         bytesPerLineLabel = new javax.swing.JLabel();
         bytesPerLineSpinner = new javax.swing.JSpinner();
-        previewLabel = new javax.swing.JLabel();
-        previewPanel = new javax.swing.JPanel();
 
         formatLabel.setText(resourceBundle.getString("formatLabel.text"));
         optionsLabel.setText(resourceBundle.getString("optionsLabel.text"));
@@ -206,18 +208,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         variableDeclCheckBox.setSelected(true);
         bytesPerLineLabel.setText(resourceBundle.getString("bytesPerLineLabel.text"));
         bytesPerLineSpinner.setModel(new javax.swing.SpinnerNumberModel(16, 1, 64, 1));
-        previewLabel.setText(resourceBundle.getString("previewLabel.text"));
-
-        javax.swing.GroupLayout previewPanelLayout = new javax.swing.GroupLayout(previewPanel);
-        previewPanel.setLayout(previewPanelLayout);
-        previewPanelLayout.setHorizontalGroup(
-                previewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
-        );
-        previewPanelLayout.setVerticalGroup(
-                previewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 200, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -227,7 +217,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(formatComboBox, 0, 656, Short.MAX_VALUE)
-                                        .addComponent(previewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(formatLabel)
@@ -238,8 +227,7 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addComponent(bytesPerLineLabel)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(bytesPerLineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addComponent(previewLabel))
+                                                                .addComponent(bytesPerLineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
@@ -262,11 +250,7 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(bytesPerLineLabel)
                                         .addComponent(bytesPerLineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(previewLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(previewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addGap(18, 18, 18))
         );
     }
 
@@ -279,7 +263,10 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox variableDeclCheckBox;
     private javax.swing.JLabel bytesPerLineLabel;
     private javax.swing.JSpinner bytesPerLineSpinner;
-    private javax.swing.JLabel previewLabel;
-    private javax.swing.JPanel previewPanel;
     // End of variables declaration
+
+    public interface ResultChangeListener {
+
+        void resultChanged();
+    }
 }

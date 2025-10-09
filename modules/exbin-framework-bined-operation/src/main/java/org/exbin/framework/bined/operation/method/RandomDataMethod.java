@@ -36,6 +36,7 @@ import org.exbin.framework.bined.operation.InsertFromProviderOperation;
 import org.exbin.framework.bined.operation.ReplaceDataOperation;
 import org.exbin.framework.bined.operation.InsertionDataProvider;
 import org.exbin.framework.bined.operation.command.ReplaceDataCommand;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Generate random data method.
@@ -49,6 +50,7 @@ public class RandomDataMethod implements InsertDataMethod {
 
     private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -114,17 +116,19 @@ public class RandomDataMethod implements InsertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         RandomDataPanel panel = (RandomDataPanel) component;
-        panel.setModeChangeListener(() -> {
+        panel.setResultChangeListener(() -> {
             fillPreviewData(panel);
         });
         fillPreviewData(panel);
     }
 
     private void fillPreviewData(RandomDataPanel panel) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             AlgorithmType algorithmType = panel.getAlgorithmType();
             long dataLength = panel.getDataLength();
@@ -135,7 +139,7 @@ public class RandomDataMethod implements InsertDataMethod {
             EditableBinaryData previewBinaryData = new ByteArrayEditableData();
             previewBinaryData.insertUninitialized(0, dataLength);
             generateData(previewBinaryData, algorithmType, 0, dataLength);
-            previewDataHandler.setPreviewData(previewBinaryData);
+            previewPanel.setPreviewData(previewBinaryData);
         });
     }
 

@@ -59,6 +59,7 @@ import org.exbin.framework.bined.operation.bouncycastle.method.gui.ComputeHashDa
 import org.exbin.framework.bined.operation.ConversionDataProvider;
 import org.exbin.framework.bined.operation.ConvertDataOperation;
 import org.exbin.framework.bined.operation.command.ConvertDataCommand;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
@@ -71,10 +72,11 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ComputeHashDataPanel.class);
 
-    private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
     private HashType lastHashType = null;
     private static final int BUFFER_SIZE = 4096;
+    private PreviewDataHandler previewDataHandler;
+    private BinaryPreviewPanel previewPanel;
 
     @Nonnull
     @Override
@@ -222,17 +224,19 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
-        panel.setModeChangeListener(() -> {
+        panel.setResultChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);
     }
 
     private void fillPreviewData(ComputeHashDataPanel panel, CodeAreaCore codeArea) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
         SwingUtilities.invokeLater(() -> {
             Optional<HashType> hashType = panel.getHashType();
             int bitSize = panel.getBitSize();
@@ -256,7 +260,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
                     previewBinaryData.remove(previewLengthLimit, previewDataSize - previewLengthLimit);
                 }
             }
-            previewDataHandler.setPreviewData(previewBinaryData);
+            previewPanel.setPreviewData(previewBinaryData);
         });
     }
 

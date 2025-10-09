@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -34,6 +35,7 @@ import org.exbin.framework.bined.operation.code.format.CHexArrayParser;
 import org.exbin.framework.bined.operation.code.format.JavaByteArrayParser;
 import org.exbin.framework.bined.operation.code.format.PythonBytesParser;
 import org.exbin.framework.bined.operation.code.method.gui.PasteFromCodePanel;
+import org.exbin.framework.bined.operation.gui.BinaryPreviewPanel;
 
 /**
  * Paste programming language code as binary data method.
@@ -45,9 +47,10 @@ public class PasteFromCodeDataMethod implements PasteFromDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PasteFromCodePanel.class);
 
-    private PreviewDataHandler previewDataHandler;
     private long previewLengthLimit = 0;
     private final List<CodeImportFormat> exportFormats;
+    private PreviewDataHandler previewDataHandler;
+    private BinaryPreviewPanel previewPanel;
 
     public PasteFromCodeDataMethod() {
         // Initialize available export formats
@@ -89,7 +92,26 @@ public class PasteFromCodeDataMethod implements PasteFromDataMethod {
     }
 
     @Override
-    public void registerPreviewDataHandler(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, long lengthLimit) {
+        this.previewDataHandler = previewDataHandler;
+        this.previewLengthLimit = lengthLimit;
+        PasteFromCodePanel panel = (PasteFromCodePanel) component;
+        panel.setResultChangeListener(() -> {
+            fillPreviewData(panel);
+        });
+        fillPreviewData(panel);
+    }
 
+    private void fillPreviewData(PasteFromCodePanel panel) {
+        previewPanel = new BinaryPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
+        SwingUtilities.invokeLater(() -> {
+            String errorText = panel.getErrorText();
+            if (errorText.isEmpty()) {
+                previewPanel.setPreviewData(panel.getResultData());
+            } else {
+                previewPanel.setErrorMessage(errorText);
+            }
+        });
     }
 }

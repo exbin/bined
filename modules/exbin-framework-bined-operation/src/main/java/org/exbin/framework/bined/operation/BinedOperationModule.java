@@ -43,7 +43,9 @@ import org.exbin.framework.bined.operation.api.PasteFromDataMethod;
 import org.exbin.framework.bined.operation.method.Base64DataMethod;
 import org.exbin.framework.bined.operation.method.BitSwappingDataMethod;
 import org.exbin.framework.bined.operation.method.CompressionDataMethod;
+import org.exbin.framework.bined.operation.method.CopyAsTextDataMethod;
 import org.exbin.framework.bined.operation.method.DateTimeConversionMethod;
+import org.exbin.framework.bined.operation.method.PasteFromTextDataMethod;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.RelativeSequenceContributionRule;
 import org.exbin.framework.contribution.api.RelativeSequenceContributionRule.NextToMode;
@@ -81,6 +83,10 @@ public class BinedOperationModule implements Module {
         addConvertDataMethod(dateTimeConversionMethod);
         CompressionDataMethod compressionDataMethod = new CompressionDataMethod();
         addConvertDataMethod(compressionDataMethod);
+        CopyAsTextDataMethod copyAsTextDataMethod = new CopyAsTextDataMethod();
+        addCopyAsDataMethod(copyAsTextDataMethod);
+        PasteFromTextDataMethod fromTextDataMethod = new PasteFromTextDataMethod();
+        addPasteFromDataMethod(fromTextDataMethod);
     }
 
     @Nonnull
