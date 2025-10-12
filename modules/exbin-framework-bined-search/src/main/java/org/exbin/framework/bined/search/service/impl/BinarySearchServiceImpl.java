@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.section.SectCodeArea;
@@ -35,7 +34,7 @@ import org.exbin.framework.bined.search.SearchCondition;
 import org.exbin.framework.bined.search.SearchParameters;
 import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.auxiliary.binary_data.BinaryDataInputStream;
+import org.exbin.auxiliary.binary_data.BinaryDataRangeInputStream;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.CharsetStreamTranslator;
 import org.exbin.bined.CodeAreaUtils;
@@ -361,7 +360,7 @@ public class BinarySearchServiceImpl implements BinarySearchService {
         List<SearchMatch> foundMatches = new ArrayList<>();
         Charset charset = codeArea.getCharset();
         BinaryData contentData = codeArea.getContentData();
-        try (InputStream stream = new BinaryDataInputStream(codeArea.getContentData(), position, contentData.getDataSize() - position); Scanner scanner = new Scanner(stream, charset.name())) {
+        try (InputStream stream = new BinaryDataRangeInputStream(codeArea.getContentData(), position, contentData.getDataSize() - position); Scanner scanner = new Scanner(stream, charset.name())) {
             while (scanner.findWithinHorizon(textPattern, 0) != null) {
                 if (Thread.interrupted()) {
                     searchStatusListener.setCancelled();
