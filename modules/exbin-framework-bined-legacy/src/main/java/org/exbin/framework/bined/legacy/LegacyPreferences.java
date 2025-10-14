@@ -29,8 +29,8 @@ import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
-import org.exbin.framework.text.font.options.TextFontOptions;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.text.font.settings.TextFontOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Legacy preferences for version 0.1.

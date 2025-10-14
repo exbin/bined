@@ -33,7 +33,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.options.FontSizeOptions;
+import org.exbin.framework.bined.settings.FontSizeOptions;
 import org.exbin.framework.utils.ActionUtils;
 
 

@@ -34,7 +34,7 @@ import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorManager;
 import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * BinEd inspector right side panel.

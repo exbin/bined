@@ -29,8 +29,8 @@ import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.theme.options.BinaryThemeOptions;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.bined.theme.settings.BinaryThemeOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Binary data editor module.
@@ -74,8 +74,8 @@ public class BinedThemeModule implements Module {
         return binedThemeManager;
     }
 
-    public void registerOptionsPanels() {
-        getThemeManager().registerOptionsPanels();
+    public void registerSettings() {
+        getThemeManager().registerSettings();
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {

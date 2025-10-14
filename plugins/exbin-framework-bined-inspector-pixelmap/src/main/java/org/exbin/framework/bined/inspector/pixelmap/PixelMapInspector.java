@@ -23,7 +23,7 @@ import org.exbin.bined.operation.undo.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
 import org.exbin.framework.bined.inspector.BinEdInspector;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Pixel map inspector.

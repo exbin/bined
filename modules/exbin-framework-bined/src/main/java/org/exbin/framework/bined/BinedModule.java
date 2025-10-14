@@ -48,7 +48,6 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
@@ -71,11 +70,12 @@ import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.menu.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.preferences.api.OptionsStorage;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.utils.ObjectUtils;
 import org.exbin.framework.utils.UiUtils;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 
 /**
  * Binary data editor module.
@@ -165,8 +165,8 @@ public class BinedModule implements Module {
             fileManager.initFileHandler(editorFile);
 
             BinEdComponentPanel componentPanel = editorFile.getComponent();
-            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            componentPanel.onInitFromPreferences(preferencesModule.getAppPreferences());
+            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+            componentPanel.onInitFromPreferences(optionsModule.getAppOptions());
 
 //            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
 //            editorFile.setNewData(fileHandlingMode);
@@ -238,11 +238,11 @@ public class BinedModule implements Module {
     }
 
     @Nonnull
-    private Action getOptionsAction() {
-        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+    private Action getSettingsAction() {
+        OptionsSettingsModuleApi optionsModule = App.getModule(OptionsSettingsModuleApi.class);
 
-        Action optionsAction = optionsModule.createOptionsAction();
-        optionsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
+        Action settingsAction = optionsModule.createSettingsAction();
+        settingsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
                 return popupMenuVariant == PopupMenuVariant.EDITOR;
@@ -252,7 +252,7 @@ public class BinedModule implements Module {
             public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
             }
         });
-        return optionsAction;
+        return settingsAction;
     }
 
     @Nonnull
@@ -300,9 +300,9 @@ public class BinedModule implements Module {
         if (viewFontActions == null) {
             ensureSetup();
             viewFontActions = new ViewFontActions();
-            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            org.exbin.framework.bined.options.FontSizeOptions fontSizeOptions =
-                new org.exbin.framework.bined.options.FontSizeOptions(preferencesModule.getAppPreferences());
+            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+            org.exbin.framework.bined.settings.FontSizeOptions fontSizeOptions =
+                new org.exbin.framework.bined.settings.FontSizeOptions(optionsModule.getAppOptions());
             viewFontActions.setup(resourceBundle, fontSizeOptions);
         }
 
@@ -400,7 +400,7 @@ public class BinedModule implements Module {
         contribution = mgmt.registerMenuItem(createGoToPositionAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
 
-        contribution = mgmt.registerMenuItem(getOptionsAction());
+        contribution = mgmt.registerMenuItem(getSettingsAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID));
     }
 

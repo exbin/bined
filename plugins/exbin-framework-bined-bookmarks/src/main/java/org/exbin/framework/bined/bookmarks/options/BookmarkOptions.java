@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.options.api.OptionsData;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.settings.api.SettingsOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Code area bookmarks options.
@@ -30,7 +30,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BookmarkOptions implements OptionsData {
+public class BookmarkOptions implements SettingsOptions {
 
     public static final String KEY_BOOKMARK_COUNT = "bookmarksCount";
     public static final String KEY_BOOKMARK_VALUE_PREFIX = "bookmark.";
@@ -102,7 +102,7 @@ public class BookmarkOptions implements OptionsData {
     }
 
     @Override
-    public void copyTo(OptionsData options) {
+    public void copyTo(SettingsOptions options) {
         BookmarkOptions with = (BookmarkOptions) options;
         int bookmarksCount = getBookmarksCount();
         with.setBookmarksCount(bookmarksCount);

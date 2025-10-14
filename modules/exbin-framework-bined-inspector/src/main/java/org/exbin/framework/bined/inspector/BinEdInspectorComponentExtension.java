@@ -23,8 +23,8 @@ import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.InspectorPanel;
-import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**

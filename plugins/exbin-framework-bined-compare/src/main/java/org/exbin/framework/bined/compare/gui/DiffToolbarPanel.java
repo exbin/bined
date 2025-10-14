@@ -30,9 +30,9 @@ import org.exbin.auxiliary.dropdownbutton.DropDownButton;
 import org.exbin.auxiliary.dropdownbutton.DropDownButtonVariant;
 import org.exbin.bined.CodeType;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.viewer.options.CodeAreaOptions;
+import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Diff toolbar panel.

@@ -16,44 +16,24 @@
 package org.exbin.framework.bined.editor;
 
 import org.exbin.framework.bined.editor.action.PropertiesAction;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.basic.EnterKeyHandlingMode;
-import org.exbin.bined.basic.TabKeyHandlingMode;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.swing.CodeAreaCommandHandler;
-import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.bined.BinEdEditorProvider;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
-import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
-import org.exbin.framework.bined.editor.options.page.CodeAreaEditingOptionsPage;
-import org.exbin.framework.bined.editor.service.EditorOptionsService;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.options.api.GroupOptionsPageRule;
-import org.exbin.framework.options.api.OptionsGroup;
-import org.exbin.framework.options.api.OptionsPageManagement;
-import org.exbin.framework.options.api.ParentOptionsGroupRule;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 
 /**
  * Binary data editor module.
@@ -64,6 +44,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
 public class BinedEditorModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedEditorModule.class);
+    public static final String SETTINGS_PAGE_ID = "codeAreaEditing";
 
     private java.util.ResourceBundle resourceBundle = null;
 
@@ -85,16 +66,16 @@ public class BinedEditorModule implements Module {
         }
     }
 
-    public void registerOptionsPanels() {
+    public void registerSettings() {
         BinedModule binedModule = App.getModule(BinedModule.class);
         EditorProvider editorProvider = binedModule.getEditorProvider();
-        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(BinedEditorModule.MODULE_ID);
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
 
-        OptionsGroup binaryCodeAreaEditingGroup = optionsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
-        optionsPageManagement.registerGroup(binaryCodeAreaEditingGroup);
-        optionsPageManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule("binaryEditor"));
-        CodeAreaEditingOptionsPage codeAreaEditingOptionsPage = new CodeAreaEditingOptionsPage();
+        /* OptionsGroup binaryCodeAreaEditingGroup = settingsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
+        settingsManagement.registerGroup(binaryCodeAreaEditingGroup);
+        settingsManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule("binaryEditor"));
+        CodeAreaEditingSettingsComponent codeAreaEditingOptionsPage = new CodeAreaEditingSettingsComponent();
         codeAreaEditingOptionsPage.setEditorOptionsService(new EditorOptionsService() {
             @Override
             public void setFileHandlingMode(FileHandlingMode fileHandlingMode) {
@@ -137,8 +118,8 @@ public class BinedEditorModule implements Module {
             }
         });
         codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
-        optionsPageManagement.registerPage(codeAreaEditingOptionsPage);
-        optionsPageManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule("binaryEditor"));
+        settingsManagement.registerPage(codeAreaEditingOptionsPage);
+        settingsManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule("binaryEditor"));
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull
@@ -176,7 +157,7 @@ public class BinedEditorModule implements Module {
                     }
                 });
             }
-        });
+        }); */
     }
 
     public void registerEditSelection() {

@@ -30,8 +30,8 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.operation.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
-import org.exbin.framework.bined.inspector.options.DataInspectorOptions;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * BinEd basic values inspector.

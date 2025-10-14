@@ -44,7 +44,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.bined.viewer.action.ShowHeaderAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.bined.viewer.options.BinaryViewerOptions;
+import org.exbin.framework.bined.viewer.settings.BinaryViewerOptions;
 import org.exbin.framework.bined.viewer.service.BinaryAppearanceService;
 import org.exbin.framework.bined.viewer.service.impl.BinaryAppearanceServiceImpl;
 import org.exbin.framework.file.api.FileHandler;
@@ -60,7 +60,7 @@ import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.bined.viewer.options.CodeAreaOptions;
+import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
@@ -69,13 +69,13 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.preferences.api.OptionsStorage;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.text.encoding.EncodingsHandler;
-import org.exbin.framework.text.encoding.options.TextEncodingOptions;
+import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.encoding.service.TextEncodingService;
 import org.exbin.framework.text.font.action.TextFontAction;
-import org.exbin.framework.text.font.options.TextFontOptions;
+import org.exbin.framework.text.font.settings.TextFontOptions;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 
 /**
@@ -101,7 +101,7 @@ public class BinedViewerModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private BinedOptionsManager binedOptionsManager;
+    private BinedSettingsManager binedOptionsManager;
 
     private ViewModeHandlerActions viewModeActions;
     private CodeTypeActions codeTypeActions;
@@ -128,9 +128,9 @@ public class BinedViewerModule implements Module {
     }
 
     @Nonnull
-    public BinedOptionsManager getMainOptionsManager() {
+    public BinedSettingsManager getMainOptionsManager() {
         if (binedOptionsManager == null) {
-            binedOptionsManager = new BinedOptionsManager();
+            binedOptionsManager = new BinedSettingsManager();
             BinedModule binedModule = App.getModule(BinedModule.class);
             EditorProvider editorProvider = binedModule.getEditorProvider();
             binedOptionsManager.setEditorProvider(editorProvider);
@@ -160,12 +160,12 @@ public class BinedViewerModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP_LAST));
     }
 
-    public void registerOptionsPanels() {
+    public void registerSettings() {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         EditorProvider editorProvider = binedModule.getEditorProvider();
         BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
-        getMainOptionsManager().registerOptionsPanels(getEncodingsHandler(), fileManager, binaryAppearanceService);
+        getMainOptionsManager().registerSettings(getEncodingsHandler(), fileManager, binaryAppearanceService);
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull
             @Override
@@ -663,8 +663,8 @@ public class BinedViewerModule implements Module {
                 FileHandlingMode fileHandlingMode = fileHandler.getFileHandlingMode();
                 FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
                 if (newHandlingMode != fileHandlingMode) {
-                    PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-                    BinaryViewerOptions preferences = new BinaryViewerOptions(preferencesModule.getAppPreferences());
+                    OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+                    BinaryViewerOptions optionsStorage = new BinaryViewerOptions(optionsModule.getAppOptions());
                     if (editorProvider.releaseFile(fileHandler)) {
                         fileHandler.switchFileHandlingMode(newHandlingMode);
                         // TODO preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);

@@ -258,7 +258,7 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            testApplication.addModule(org.exbin.framework.preferences.api.PreferencesModuleApi.MODULE_ID, new org.exbin.framework.preferences.api.utils.TestPreferencesModule());
+            testApplication.addModule(org.exbin.framework.options.api.OptionsModuleApi.MODULE_ID, new org.exbin.framework.options.api.utils.TestOptionsModule());
 //            testApplication.addModule(org.exbin.framework.action.api.ActionModuleApi.MODULE_ID, );
             WindowUtils.invokeWindow(new CompareFilesPanel());
         });

@@ -45,12 +45,12 @@ import org.exbin.framework.bined.BinaryMultiEditorProvider;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
-import org.exbin.framework.bined.launcher.options.StartupOptions;
-import org.exbin.framework.bined.launcher.options.StartupOptions.StartupBehavior;
-import org.exbin.framework.bined.launcher.options.page.StartupOptionsPage;
+import org.exbin.framework.bined.launcher.setings.StartupOptions;
+import org.exbin.framework.bined.launcher.setings.StartupOptions.StartupBehavior;
+import org.exbin.framework.bined.launcher.setings.StartupSettingsComponent;
 import org.exbin.framework.bined.operation.BinedOperationModule;
-import org.exbin.framework.bined.viewer.options.BinaryAppearanceOptions;
-import org.exbin.framework.bined.editor.options.BinaryEditorOptions;
+import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
+import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
@@ -66,13 +66,13 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
+import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.options.api.OptionsPageManagement;
-import org.exbin.framework.preferences.api.OptionsStorage;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 
 /**
  * Binary editor launcher module.
@@ -99,8 +99,8 @@ public class BinedLauncherModule implements LauncherModule {
 
     @Override
     public void launch(String[] args) {
-        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        OptionsStorage preferences = preferencesModule.getAppPreferences();
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        OptionsStorage optionsStorage = optionsModule.getAppOptions();
         ResourceBundle bundle = App.getModule(LanguageModuleApi.class).getBundle(BinedLauncherModule.class);
 
         try {
@@ -130,7 +130,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             if (demoMode) {
                 // Don't use delta mode
-                preferences.put(BinaryEditorOptions.KEY_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
+                optionsStorage.put(BinaryEditorOptions.KEY_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
             }
 
             LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
@@ -157,14 +157,14 @@ public class BinedLauncherModule implements LauncherModule {
             HelpOnlineModuleApi helpOnlineModule = App.getModule(HelpOnlineModuleApi.class);
             OperationUndoModuleApi undoModule = App.getModule(OperationUndoModuleApi.class);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+            OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
             BinedModule binedModule = App.getModule(BinedModule.class);
             BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
-            BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(preferences);
+            BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(optionsStorage);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
             EditorProviderVariant editorProviderVariant = editorProvideType != null
                     ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)
@@ -232,7 +232,7 @@ public class BinedLauncherModule implements LauncherModule {
             menuModule.registerMenuClipboardActions();
             toolBarModule.registerToolBarClipboardActions();
 
-            optionsModule.registerMenuAction();
+            optionsSettingsModule.registerMenuAction();
 
             binedViewerModule.registerCodeTypeToolBarActions();
             binedModule.registerShowNonprintablesToolBarActions();
@@ -268,24 +268,24 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-            uiModule.registerOptionsPanels();
-            themeModule.registerOptionsPanels();
-            actionManagerModule.registerOptionsPanels();
-            fileModule.registerOptionsPanels();
-            editorModule.registerOptionsPanels();
-            binedViewerModule.registerOptionsPanels();
-            binedEditorModule.registerOptionsPanels();
-            binedThemeModule.registerOptionsPanels();
-            binedInspectorModule.registerOptionsPanels();
-            registerOptionsPanels(); // Register startup options
+            uiModule.registerSettings();
+            themeModule.registerSettings();
+            actionManagerModule.registerSettings();
+            fileModule.registerSettings();
+            editorModule.registerSettings();
+            binedViewerModule.registerSettings();
+            binedEditorModule.registerSettings();
+            binedThemeModule.registerSettings();
+            binedInspectorModule.registerSettings();
+            registerSettings(); // Register startup options
             if (!demoMode) {
-                updateModule.registerOptionsPanels();
+                updateModule.registerSettings();
             }
 
             binedViewerModule.registerStatusBar();
             binedModule.registerUndoHandler();
 
-            binedModule.loadFromOptions(preferences);
+            binedModule.loadFromOptions(optionsStorage);
 
             if (demoMode) {
                 frameModule.addExitListener((ApplicationFrameHandler afh) -> {
@@ -301,7 +301,7 @@ public class BinedLauncherModule implements LauncherModule {
                     if (currentProvider instanceof BinaryMultiEditorProvider) {
                         BinaryMultiEditorProvider multiProvider = (BinaryMultiEditorProvider) currentProvider;
                         List<URI> openFiles = multiProvider.getOpenFileUris();
-                        StartupOptions startupOptions = new StartupOptions(preferences);
+                        StartupOptions startupOptions = new StartupOptions(optionsStorage);
                         startupOptions.setLastSessionFiles(openFiles);
                     }
 
@@ -315,7 +315,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             frameHandler.setDefaultSize(new Dimension(600, 400));
             frameModule.loadFramePosition();
-            optionsModule.initialLoadFromPreferences();
+            optionsSettingsModule.initialLoadFromPreferences();
             if (fullScreenMode || demoMode) {
                 frameModule.switchFrameToFullscreen();
             }
@@ -332,7 +332,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             if (filePath == null) {
                 // Apply startup behavior from options
-                StartupOptions startupOptions = new StartupOptions(preferences);
+                StartupOptions startupOptions = new StartupOptions(optionsStorage);
                 StartupBehavior startupBehavior = startupOptions.getStartupBehavior();
 
                 switch (startupBehavior) {
@@ -381,13 +381,11 @@ public class BinedLauncherModule implements LauncherModule {
     }
 
     /**
-     * Registers startup options panels.
+     * Registers startup settings panels.
      */
-    public void registerOptionsPanels() {
-        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(MODULE_ID);
-
-        StartupOptionsPage startupOptionsPage = new StartupOptionsPage();
-        optionsPageManagement.registerPage(startupOptionsPage);
+    public void registerSettings() {
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = settingsModule.getMainSettingsManager();
+        settingsManager.registerComponent(new StartupSettingsComponent());
     }
 }

@@ -20,8 +20,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.macro.model.MacroRecord;
-import org.exbin.framework.options.api.OptionsData;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.settings.api.SettingsOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Macro options.
@@ -29,7 +29,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class MacroOptions implements OptionsData {
+public class MacroOptions implements SettingsOptions {
 
     public static final String KEY_MACROS_COUNT = "macrosCount";
     public static final String KEY_MACRO_VALUE_PREFIX = "macro.";
@@ -92,7 +92,7 @@ public class MacroOptions implements OptionsData {
     }
 
     @Override
-    public void copyTo(OptionsData options) {
+    public void copyTo(SettingsOptions options) {
         MacroOptions with = (MacroOptions) options;
         int macrosCount = getMacrosCount();
         with.setMacrosCount(macrosCount);

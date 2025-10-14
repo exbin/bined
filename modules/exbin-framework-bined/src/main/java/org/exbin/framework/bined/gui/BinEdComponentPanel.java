@@ -35,7 +35,7 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Binary editor component panel.
@@ -85,8 +85,8 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     }
 
     public void onInitFromPreferences(OptionsStorage options) {
-        org.exbin.framework.bined.options.FontSizeOptions fontSizeOptions =
-            new org.exbin.framework.bined.options.FontSizeOptions(options);
+        org.exbin.framework.bined.settings.FontSizeOptions fontSizeOptions =
+            new org.exbin.framework.bined.settings.FontSizeOptions(options);
         int fontSize = fontSizeOptions.getFontSize();
         Font currentFont = codeArea.getCodeFont();
         codeArea.setCodeFont(new Font(currentFont.getName(), currentFont.getStyle(), fontSize));

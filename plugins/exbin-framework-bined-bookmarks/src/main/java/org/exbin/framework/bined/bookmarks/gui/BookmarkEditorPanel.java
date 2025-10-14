@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 import org.exbin.bined.CodeAreaSelection;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.bined.theme.options.gui.ColorCellPanel;
+import org.exbin.framework.bined.theme.settings.gui.ColorCellPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -154,7 +154,7 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
         lengthSwitchableSpinnerPanel = new org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel();
         fromSelectionButton = new javax.swing.JButton();
         colorLabel = new javax.swing.JLabel();
-        colorCellPanel = new org.exbin.framework.bined.theme.options.gui.ColorCellPanel();
+        colorCellPanel = new org.exbin.framework.bined.theme.settings.gui.ColorCellPanel();
 
         startPositionLabel.setText(resourceBundle.getString("startPositionLabel.text")); // NOI18N
 
@@ -238,7 +238,7 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.exbin.framework.bined.theme.options.gui.ColorCellPanel colorCellPanel;
+    private org.exbin.framework.bined.theme.settings.gui.ColorCellPanel colorCellPanel;
     private javax.swing.JLabel colorLabel;
     private javax.swing.JLabel endPositionLabel;
     private org.exbin.framework.bined.gui.BaseSwitchableSpinnerPanel endPositionSwitchableSpinnerPanel;

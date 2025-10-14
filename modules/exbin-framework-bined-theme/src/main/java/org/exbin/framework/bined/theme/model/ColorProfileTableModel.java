@@ -33,7 +33,7 @@ import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaMatchColorType;
 import org.exbin.bined.highlight.swing.color.CodeAreaNonprintablesColorType;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
-import org.exbin.framework.bined.theme.options.CodeAreaColorOptions;
+import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 
 /**
  * Table model for colors profile panel.

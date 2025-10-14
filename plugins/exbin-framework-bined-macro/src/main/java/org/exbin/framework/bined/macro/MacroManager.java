@@ -69,10 +69,10 @@ import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -128,9 +128,9 @@ public class MacroManager {
         actionManager.registerAction(stopMacroRecordingAction);
         actionManager.initAction(stopMacroRecordingAction);
 
-        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        OptionsStorage preferences = preferencesModule.getAppPreferences();
-        macroOptions = new MacroOptions(preferences);
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        OptionsStorage optionsStorage = optionsModule.getAppOptions();
+        macroOptions = new MacroOptions(optionsStorage);
         loadMacroRecords();
         MacroManager.this.updateMacrosMenu();
     }

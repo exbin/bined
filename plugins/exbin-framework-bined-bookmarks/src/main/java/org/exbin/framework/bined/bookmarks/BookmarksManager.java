@@ -61,11 +61,11 @@ import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -81,7 +81,7 @@ public class BookmarksManager {
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarksManager.class);
 
     private final List<BookmarkRecord> bookmarkRecords = new ArrayList<>();
-    private BookmarkOptions bookmarkPreferences;
+    private BookmarkOptions bookmarkOptions;
     private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
     private EditorProvider editorProvider;
@@ -109,9 +109,9 @@ public class BookmarksManager {
 
         BinedModule binedModule = App.getModule(BinedModule.class);
 
-        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        OptionsStorage preferences = preferencesModule.getAppPreferences();
-        bookmarkPreferences = new BookmarkOptions(preferences);
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        OptionsStorage optionsStorage = optionsModule.getAppOptions();
+        bookmarkOptions = new BookmarkOptions(optionsStorage);
         loadBookmarkRecords();
         updateBookmarksMenu();
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
@@ -120,18 +120,18 @@ public class BookmarksManager {
     }
 
     private void loadBookmarkRecords() {
-        int bookmarksCount = bookmarkPreferences.getBookmarksCount();
+        int bookmarksCount = bookmarkOptions.getBookmarksCount();
         for (int i = 0; i < bookmarksCount; i++) {
-            BookmarkRecord bookmarkRecord = bookmarkPreferences.getBookmarkRecord(i);
+            BookmarkRecord bookmarkRecord = bookmarkOptions.getBookmarkRecord(i);
             bookmarkRecords.add(bookmarkRecord);
         }
     }
 
     private void saveBookmarkRecords() {
         int bookmarksCount = bookmarkRecords.size();
-        bookmarkPreferences.setBookmarksCount(bookmarksCount);
+        bookmarkOptions.setBookmarksCount(bookmarksCount);
         for (int i = 0; i < bookmarksCount; i++) {
-            bookmarkPreferences.setBookmarkRecord(i, bookmarkRecords.get(i));
+            bookmarkOptions.setBookmarkRecord(i, bookmarkRecords.get(i));
         }
     }
 

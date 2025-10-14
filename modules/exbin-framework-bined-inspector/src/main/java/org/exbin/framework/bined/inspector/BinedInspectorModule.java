@@ -33,7 +33,7 @@ import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
-import org.exbin.framework.bined.inspector.options.page.DataInspectorOptionsPage;
+import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsComponent;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
@@ -41,11 +41,11 @@ import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.options.api.GroupOptionsPageRule;
-import org.exbin.framework.options.api.OptionsGroup;
-import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.options.api.OptionsPageManagement;
-import org.exbin.framework.options.api.ParentOptionsGroupRule;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsComponentContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
 
 /**
  * Binary editor data inspector module.
@@ -56,6 +56,7 @@ import org.exbin.framework.options.api.ParentOptionsGroupRule;
 public class BinedInspectorModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedInspectorModule.class);
+    public static final String SETTINGS_PAGE_ID = "dataInspector";
 
     private static final String VIEW_PARSING_PANEL_MENU_GROUP_ID = MODULE_ID + ".viewParsingPanelMenuGroup";
 
@@ -66,7 +67,7 @@ public class BinedInspectorModule implements Module {
     private BinEdInspectorManager binEdInspectorManager;
     private BasicValuesPositionColorModifier basicValuesColorModifier;
 
-    private DataInspectorOptionsPage dataInspectorOptionsPage;
+    private DataInspectorSettingsComponent dataInspectorOptionsPage;
 
     public BinedInspectorModule() {
     }
@@ -154,18 +155,21 @@ public class BinedInspectorModule implements Module {
         subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
-    public void registerOptionsPanels() {
-        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        OptionsPageManagement optionsPageManagement = optionsModule.getOptionsPageManagement(MODULE_ID);
+    public void registerSettings() {
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+        SettingsPageContribution settingsPage = settingsManagement.registerPage(SETTINGS_PAGE_ID);
+        SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(new DataInspectorSettingsComponent());
+        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(settingsPage.getContributionId()));
 
-        OptionsGroup inspectorOptionsGroup = optionsModule.createOptionsGroup("inspector", getResourceBundle());
-        optionsPageManagement.registerGroup(inspectorOptionsGroup);
-        optionsPageManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("binaryEditor"));
-
-        dataInspectorOptionsPage = new DataInspectorOptionsPage();
-        dataInspectorOptionsPage.setEditorProvider(editorProvider);
-        optionsPageManagement.registerPage(dataInspectorOptionsPage);
-        optionsPageManagement.registerPageRule(dataInspectorOptionsPage, new GroupOptionsPageRule(inspectorOptionsGroup));
+//        OptionsGroup inspectorOptionsGroup = settingsModule.createOptionsGroup("inspector", getResourceBundle());
+//        settingsManagement.registerGroup(inspectorOptionsGroup);
+//        settingsManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("binaryEditor"));
+//
+//        dataInspectorOptionsPage = new DataInspectorSettingsComponent();
+//        dataInspectorOptionsPage.setEditorProvider(editorProvider);
+//        settingsManagement.registerPage(dataInspectorOptionsPage);
+//        settingsManagement.registerPageRule(dataInspectorOptionsPage, new GroupOptionsPageRule(inspectorOptionsGroup));
     }
 
     @Nonnull

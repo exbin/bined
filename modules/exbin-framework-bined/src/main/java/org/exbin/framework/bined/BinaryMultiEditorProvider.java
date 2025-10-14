@@ -56,7 +56,7 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedo;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 
 /**
@@ -188,8 +188,8 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
             }
         });
 
-        PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-        fileHandler.getComponent().onInitFromPreferences(preferencesModule.getAppPreferences());
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        fileHandler.getComponent().onInitFromPreferences(optionsModule.getAppOptions());
 
         attachFilePopupMenu(fileHandler);
 
