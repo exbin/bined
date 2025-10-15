@@ -55,7 +55,7 @@ import org.exbin.framework.bined.bookmarks.action.EditBookmarkAction;
 import org.exbin.framework.bined.bookmarks.action.ManageBookmarksAction;
 import org.exbin.framework.bined.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
-import org.exbin.framework.bined.bookmarks.options.BookmarkOptions;
+import org.exbin.framework.bined.bookmarks.settings.BookmarkOptions;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorModuleApi;

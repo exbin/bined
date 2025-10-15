@@ -33,6 +33,7 @@ import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
+import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsComponent;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
@@ -158,9 +159,12 @@ public class BinedInspectorModule implements Module {
     public void registerSettings() {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
-        SettingsPageContribution settingsPage = settingsManagement.registerPage(SETTINGS_PAGE_ID);
+        settingsManagement.registerOptionsSettings(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
+
+        SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(pageContribution);
         SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(new DataInspectorSettingsComponent());
-        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(settingsPage.getContributionId()));
+        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
 
 //        OptionsGroup inspectorOptionsGroup = settingsModule.createOptionsGroup("inspector", getResourceBundle());
 //        settingsManagement.registerGroup(inspectorOptionsGroup);

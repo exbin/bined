@@ -100,13 +100,15 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
         });
 
         Font currentFont = defaultFont;
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (activeFile.isPresent()) {
-            FileHandler fileHandler = activeFile.get();
-            if (fileHandler instanceof BinEdFileHandler) {
-                BasicValuesInspector basicValuesInspector = DataInspectorSettingsComponent.getBinEdInspector(((BinEdFileHandler) fileHandler).getComponent());
-                if (basicValuesInspector != null) {
-                    currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
+        if (editorProvider != null) {
+            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+            if (activeFile.isPresent()) {
+                FileHandler fileHandler = activeFile.get();
+                if (fileHandler instanceof BinEdFileHandler) {
+                    BasicValuesInspector basicValuesInspector = DataInspectorSettingsComponent.getBinEdInspector(((BinEdFileHandler) fileHandler).getComponent());
+                    if (basicValuesInspector != null) {
+                        currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
+                    }
                 }
             }
         }

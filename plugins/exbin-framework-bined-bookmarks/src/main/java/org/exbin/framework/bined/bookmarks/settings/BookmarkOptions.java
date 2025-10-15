@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.bookmarks.options;
+package org.exbin.framework.bined.bookmarks.settings;
 
 import java.awt.Color;
 import java.util.Optional;
