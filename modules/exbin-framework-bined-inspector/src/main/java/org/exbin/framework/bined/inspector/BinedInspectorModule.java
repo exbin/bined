@@ -34,6 +34,7 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
+import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsApplier;
 import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsComponent;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
@@ -42,6 +43,7 @@ import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
+import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponentContribution;
@@ -160,6 +162,8 @@ public class BinedInspectorModule implements Module {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
         settingsManagement.registerOptionsSettings(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
+        
+        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);

@@ -20,15 +20,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.App;
-import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.editor.settings.gui.CodeAreaEditingSettingsPanel;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
-import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
-import org.exbin.framework.options.settings.api.DefaultOptionsStorage;
 import org.exbin.framework.options.settings.api.SettingsComponent;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Code area editing options page.
@@ -74,34 +69,4 @@ public class CodeAreaEditingSettingsComponent implements SettingsComponentProvid
         panel.setTabKeyHandlingModes(tabKeyHandlingModes);
         return panel;
     }
-
-/*    @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public BinaryEditorOptions createOptions() {
-        return new BinaryEditorOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, BinaryEditorOptions options) {
-        new BinaryEditorOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, BinaryEditorOptions options) {
-        options.copyTo(new BinaryEditorOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(BinaryEditorOptions options) {
-        // TODO: This causes multiple reloads / warnings about modified files
-        // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
-        editorOptionsService.setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
-        editorOptionsService.setTabKeyHandlingMode(options.getTabKeyHandlingMode());
-    } */
 }

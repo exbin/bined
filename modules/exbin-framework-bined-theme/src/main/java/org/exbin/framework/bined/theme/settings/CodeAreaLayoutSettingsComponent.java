@@ -16,7 +16,6 @@
 package org.exbin.framework.bined.theme.settings;
 
 import java.awt.Dialog;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,22 +23,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.theme.settings.gui.LayoutProfilePanel;
 import org.exbin.framework.bined.theme.settings.gui.LayoutProfilesSettingsPanel;
 import org.exbin.framework.bined.theme.settings.gui.LayoutProfilesPanel;
 import org.exbin.framework.bined.theme.settings.gui.LayoutTemplatePanel;
 import org.exbin.framework.bined.theme.settings.gui.NamedProfilePanel;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.settings.api.DefaultOptionsStorage;
 import org.exbin.framework.options.settings.api.SettingsComponent;
-import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
@@ -211,41 +203,4 @@ public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvide
 
         LayoutProfilesPanel.LayoutProfile profile;
     }
-
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public CodeAreaLayoutOptions createOptions() {
-        return new CodeAreaLayoutOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, CodeAreaLayoutOptions options) {
-        new CodeAreaLayoutOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, CodeAreaLayoutOptions options) {
-        options.copyTo(new CodeAreaLayoutOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(CodeAreaLayoutOptions options) {
-        int selectedProfile = options.getSelectedProfile();
-        if (selectedProfile >= 0) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                return;
-            }
-
-            SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-            SectionCodeAreaLayoutProfile profile = options.getLayoutProfile(selectedProfile);
-            codeArea.setLayoutProfile(profile);
-        }
-    } */
 }

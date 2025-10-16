@@ -27,12 +27,12 @@ import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 
 /**
- * Status options page.
+ * Status options settings component.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class StatusSettingsComponent implements SettingsComponentProvider<StatusOptions> {
+public class CodeAreaStatusSettingsComponent implements SettingsComponentProvider<StatusOptions> {
 
     public static final String PAGE_ID = "status";
 
@@ -66,31 +66,4 @@ public class StatusSettingsComponent implements SettingsComponentProvider<Status
 
         return panel;
     }
-
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(StatusSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public StatusOptions createOptions() {
-        return new StatusOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, StatusOptions options) {
-        new StatusOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, StatusOptions options) {
-        options.copyTo(new StatusOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(StatusOptions options) {
-        fileManager.applyPreferencesChanges(options);
-    } */
 }

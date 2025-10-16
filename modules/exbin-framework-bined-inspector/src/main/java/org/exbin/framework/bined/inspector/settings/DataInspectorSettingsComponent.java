@@ -118,50 +118,6 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
         return panel;
     }
 
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(DataInspectorSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public DataInspectorOptions createOptions() {
-        return new DataInspectorOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, DataInspectorOptions options) {
-        new DataInspectorOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, DataInspectorOptions options) {
-        options.copyTo(new DataInspectorOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(DataInspectorOptions options) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            return;
-        }
-        FileHandler fileHandler = activeFile.get();
-        if (!(fileHandler instanceof BinEdFileHandler)) {
-            return;
-        }
-
-        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
-        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
-        componentExtension.setShowParsingPanel(options.isShowParsingPanel());
-        boolean useDefaultFont = options.isUseDefaultFont();
-        Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
-        BasicValuesInspector basicValuesInspector = DataInspectorSettingsComponent.getBinEdInspector(component);
-        if (basicValuesInspector != null) {
-            ((BasicValuesPanel) basicValuesInspector.getComponent()).setInputFieldsFont(useDefaultFont || fontAttributes == null ? defaultFont : new Font(fontAttributes));
-        }
-    } */
-    
     @Nullable
     private static BasicValuesInspector getBinEdInspector(BinEdComponentPanel component) {
         BinEdInspectorComponentExtension extension = component.getBinEdComponentExtensions(BinEdInspectorComponentExtension.class).orElse(null);

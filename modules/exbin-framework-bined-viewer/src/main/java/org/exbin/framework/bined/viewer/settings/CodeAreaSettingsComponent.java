@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
 import org.exbin.framework.bined.viewer.settings.gui.CodeAreaSettingsPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -77,38 +76,4 @@ public class CodeAreaSettingsComponent implements SettingsComponentProvider<Code
 
         return panel;
     }
-
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(CodeAreaSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public CodeAreaOptions createOptions() {
-        return new CodeAreaOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, CodeAreaOptions options) {
-        new CodeAreaOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, CodeAreaOptions options) {
-        options.copyTo(new CodeAreaOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(CodeAreaOptions options) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            return;
-        }
-
-        SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-        CodeAreaOptions.applyToCodeArea(options, codeArea);
-        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ActiveComponent.class, codeArea);
-    } */
 }

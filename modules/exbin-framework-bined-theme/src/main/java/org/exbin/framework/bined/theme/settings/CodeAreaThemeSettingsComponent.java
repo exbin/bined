@@ -212,43 +212,6 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
         ThemeProfilesPanel.ThemeProfile profile;
     }
 
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public CodeAreaThemeOptions createOptions() {
-        return new CodeAreaThemeOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, CodeAreaThemeOptions options) {
-        new CodeAreaThemeOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, CodeAreaThemeOptions options) {
-        options.copyTo(new CodeAreaThemeOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(CodeAreaThemeOptions options) {
-        int selectedProfile = options.getSelectedProfile();
-        if (selectedProfile >= 0) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                return;
-            }
-
-            SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-            SectionCodeAreaThemeProfile profile = options.getThemeProfile(selectedProfile);
-            codeArea.setThemeProfile(profile);
-        }
-    } */
-
     @Nonnull
     private ThemeProfilePanel createThemeProfilePanel() {
         ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();

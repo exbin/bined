@@ -23,11 +23,17 @@ import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.CodeAreaSettingsComponent;
-import org.exbin.framework.bined.viewer.settings.StatusSettingsComponent;
+import org.exbin.framework.bined.viewer.settings.CodeAreaStatusSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.TextEncodingSettingsComponent;
 import org.exbin.framework.bined.viewer.service.BinaryAppearanceService;
+import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsApplier;
+import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
+import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
+import org.exbin.framework.bined.viewer.settings.CodeAreaViewerSettingsApplier;
+import org.exbin.framework.bined.viewer.settings.TextEncodingSettingsApplier;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
@@ -49,7 +55,7 @@ public class BinedSettingsManager {
     private TextFontSettingsComponent textFontOptionsPage;
     private BinaryAppearanceSettingsComponent binaryAppearanceOptionsPage;
     private CodeAreaSettingsComponent codeAreaOptionsPage;
-    private StatusSettingsComponent statusBarOptionsPage;
+    private CodeAreaStatusSettingsComponent statusBarOptionsPage;
 
     public BinedSettingsManager() {
     }
@@ -59,11 +65,15 @@ public class BinedSettingsManager {
     }
 
     public void registerSettings(EncodingsHandler encodingsHandler, BinEdFileManager fileManager, BinaryAppearanceService binaryAppearanceService) {
-        // TODO: Drop parameters
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+        
+        settingsManagement.registerApplySetting(CodeAreaOptions.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));
+        settingsManagement.registerApplySetting(BinaryAppearanceOptions.class, new ApplySettingsContribution(BinaryAppearanceSettingsApplier.APPLIER_ID, new BinaryAppearanceSettingsApplier()));
+        settingsManagement.registerApplySetting(TextEncodingSettingsApplier.class, new ApplySettingsContribution(TextEncodingSettingsApplier.APPLIER_ID, new TextEncodingSettingsApplier()));
 
-        /* OptionsGroup binaryGroup = settingsModule.createOptionsGroup("binaryEditor", resourceBundle);
+        /* // TODO: Drop parameters
+        OptionsGroup binaryGroup = settingsModule.createOptionsGroup("binaryEditor", resourceBundle);
         settingsManagement.registerGroup(binaryGroup);
         settingsManagement.registerGroupRule(binaryGroup, new ParentOptionsGroupRule("editor"));
 

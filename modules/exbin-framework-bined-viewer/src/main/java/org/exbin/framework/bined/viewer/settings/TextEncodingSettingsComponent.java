@@ -71,32 +71,4 @@ public class TextEncodingSettingsComponent implements SettingsComponentProvider<
 
         return panel;
     }
-
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(TextEncodingOptionsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public TextEncodingOptions createOptions() {
-        return new TextEncodingOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, TextEncodingOptions options) {
-        new TextEncodingOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, TextEncodingOptions options) {
-        options.copyTo(new TextEncodingOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(TextEncodingOptions options) {
-        encodingsHandler.setSelectedEncoding(options.getSelectedEncoding());
-        encodingsHandler.setEncodings(options.getEncodings());
-    } */
 }

@@ -17,7 +17,6 @@ package org.exbin.framework.bined.viewer.settings;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.viewer.settings.gui.BinaryAppearanceSettingsPanel;
 import org.exbin.framework.bined.viewer.service.BinaryAppearanceService;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -44,31 +43,4 @@ public class BinaryAppearanceSettingsComponent implements SettingsComponentProvi
     public SettingsComponent<BinaryAppearanceOptions> createComponent() {
         return new BinaryAppearanceSettingsPanel();
     }
-
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceSettingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public BinaryAppearanceOptions createOptions() {
-        return new BinaryAppearanceOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, BinaryAppearanceOptions options) {
-        new BinaryAppearanceOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, BinaryAppearanceOptions options) {
-        options.copyTo(new BinaryAppearanceOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(BinaryAppearanceOptions options) {
-        binaryAppearanceService.setWordWrapMode(options.isLineWrapping());
-    } */
 }

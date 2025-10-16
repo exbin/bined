@@ -39,7 +39,7 @@ import org.exbin.framework.window.api.gui.DefaultControlPanel;
 import org.exbin.framework.window.api.controller.DefaultControlController;
 
 /**
- * Color profiles options page.
+ * Color profiles settings component.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -202,41 +202,4 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
 
         ColorProfilesPanel.ColorProfile profile;
     }
-
-    /* @Nonnull
-    @Override
-    public ResourceBundle getResourceBundle() {
-        return App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesSetgingsPanel.class);
-    }
-
-    @Nonnull
-    @Override
-    public CodeAreaColorOptions createOptions() {
-        return new CodeAreaColorOptions(new DefaultOptionsStorage());
-    }
-
-    @Override
-    public void loadFromPreferences(OptionsStorage preferences, CodeAreaColorOptions options) {
-        new CodeAreaColorOptions(preferences).copyTo(options);
-    }
-
-    @Override
-    public void saveToPreferences(OptionsStorage preferences, CodeAreaColorOptions options) {
-        options.copyTo(new CodeAreaColorOptions(preferences));
-    }
-
-    @Override
-    public void applyPreferencesChanges(CodeAreaColorOptions options) {
-        int selectedProfile = options.getSelectedProfile();
-        if (selectedProfile >= 0) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                return;
-            }
-
-            SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-            SectionCodeAreaColorProfile profile = options.getColorsProfile(selectedProfile);
-            codeArea.setColorsProfile(profile);
-        }
-    } */
 }

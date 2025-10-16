@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.launcher.settings;
+package org.exbin.framework.bined.viewer.settings;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.launcher.settings.gui.StartupSettingsPanel;
-import org.exbin.framework.options.settings.api.SettingsComponent;
-import org.exbin.framework.options.settings.api.SettingsComponentProvider;
+import org.exbin.bined.PositionCodeType;
+import org.exbin.framework.bined.RelativePositionMode;
+import org.exbin.framework.options.settings.api.SettingsOptions;
+import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.options.settings.api.SettingsApplier;
+import org.exbin.framework.options.settings.api.SettingsProvider;
 
-
+/**
+ * Go to position options.
+ *
+ * @author ExBin Project (https://exbin.org)
+ */
 @ParametersAreNonnullByDefault
-public class StartupSettingsComponent implements SettingsComponentProvider<StartupOptions> {
+public class CodeAreaStatusSettingsApplier implements SettingsApplier {
 
-    public static final String PAGE_ID = "startup";
-
-    @Nonnull
     @Override
-    public SettingsComponent<StartupOptions> createComponent() {
-        return new StartupSettingsPanel();
+    public void applySettings(Object instance, SettingsProvider settingsProvider) {
     }
 }

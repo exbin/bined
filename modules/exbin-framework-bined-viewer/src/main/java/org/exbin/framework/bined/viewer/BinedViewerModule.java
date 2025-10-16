@@ -165,6 +165,7 @@ public class BinedViewerModule implements Module {
         BinEdFileManager fileManager = binedModule.getFileManager();
         EditorProvider editorProvider = binedModule.getEditorProvider();
         BinaryAppearanceService binaryAppearanceService = new BinaryAppearanceServiceImpl(this, editorProvider);
+
         getMainOptionsManager().registerSettings(getEncodingsHandler(), fileManager, binaryAppearanceService);
         fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull
