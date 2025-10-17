@@ -26,23 +26,24 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.VerticallyExpandable;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
 /**
- * Color profiles options panel.
+ * Color profiles settings panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ColorProfilesSetgingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaColorOptions> {
+public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaColorOptions>, VerticallyExpandable {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesSetgingsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesSettingsPanel.class);
 
     private final ProfileSelectionPanel selectionPanel;
     private final ColorProfilesPanel profilesPanel;
 
-    public ColorProfilesSetgingsPanel() {
+    public ColorProfilesSettingsPanel() {
         this.profilesPanel = new ColorProfilesPanel();
         selectionPanel = new ProfileSelectionPanel(profilesPanel);
         initComponents();
@@ -113,7 +114,7 @@ public class ColorProfilesSetgingsPanel extends javax.swing.JPanel implements Se
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new ColorProfilesSetgingsPanel());
+            WindowUtils.invokeWindow(new ColorProfilesSettingsPanel());
         });
     }
 

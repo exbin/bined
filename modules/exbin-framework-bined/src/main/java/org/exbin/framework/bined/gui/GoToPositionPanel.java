@@ -34,11 +34,11 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class GoToPositionPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(GoToPositionPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(GoToPositionPanel.class);
 
-    private long cursorPosition;
-    private long maxPosition;
-    private RelativePositionMode relativePositionMode = RelativePositionMode.FROM_START;
+    protected long cursorPosition;
+    protected long maxPosition;
+    protected RelativePositionMode relativePositionMode = RelativePositionMode.FROM_START;
 
     public GoToPositionPanel() {
         initComponents();

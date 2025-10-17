@@ -20,6 +20,7 @@ import java.net.URI;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdFileManager;
+import static org.exbin.framework.bined.viewer.BinedViewerModule.SETTINGS_PAGE_ID;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.CodeAreaSettingsComponent;
@@ -30,6 +31,7 @@ import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsApplier
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
 import org.exbin.framework.bined.viewer.settings.CodeAreaViewerSettingsApplier;
+import org.exbin.framework.bined.viewer.settings.GoToPositionOptions;
 import org.exbin.framework.bined.viewer.settings.TextEncodingSettingsApplier;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -37,6 +39,9 @@ import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsComponentContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
 import org.exbin.framework.text.font.settings.TextFontSettingsComponent;
 
 /**
@@ -68,6 +73,16 @@ public class BinedSettingsManager {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
         
+        settingsManagement.registerOptionsSettings(CodeAreaOptions.class, (optionsStorage) -> new CodeAreaOptions(optionsStorage));
+        settingsManagement.registerOptionsSettings(BinaryAppearanceOptions.class, (optionsStorage) -> new BinaryAppearanceOptions(optionsStorage));
+        settingsManagement.registerOptionsSettings(GoToPositionOptions.class, (optionsStorage) -> new GoToPositionOptions(optionsStorage));
+
+        SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(pageContribution);
+
+        SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(new BinaryAppearanceSettingsComponent());
+        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
+
         settingsManagement.registerApplySetting(CodeAreaOptions.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));
         settingsManagement.registerApplySetting(BinaryAppearanceOptions.class, new ApplySettingsContribution(BinaryAppearanceSettingsApplier.APPLIER_ID, new BinaryAppearanceSettingsApplier()));
         settingsManagement.registerApplySetting(TextEncodingSettingsApplier.class, new ApplySettingsContribution(TextEncodingSettingsApplier.APPLIER_ID, new TextEncodingSettingsApplier()));

@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.gui.ColorProfilePanel;
-import org.exbin.framework.bined.theme.settings.gui.ColorProfilesSetgingsPanel;
+import org.exbin.framework.bined.theme.settings.gui.ColorProfilesSettingsPanel;
 import org.exbin.framework.bined.theme.settings.gui.ColorProfilesPanel;
 import org.exbin.framework.bined.theme.settings.gui.ColorTemplatePanel;
 import org.exbin.framework.bined.theme.settings.gui.NamedProfilePanel;
@@ -58,7 +58,7 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
     @Override
     public SettingsComponent<CodeAreaColorOptions> createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        ColorProfilesSetgingsPanel panel = new ColorProfilesSetgingsPanel();
+        ColorProfilesSettingsPanel panel = new ColorProfilesSettingsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
             ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
             colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());

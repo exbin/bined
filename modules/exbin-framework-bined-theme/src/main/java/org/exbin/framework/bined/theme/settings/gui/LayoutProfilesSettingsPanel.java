@@ -26,16 +26,17 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.VerticallyExpandable;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
 /**
- * Layout profiles options panel.
+ * Layout profiles settings panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaLayoutOptions> {
+public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaLayoutOptions>, VerticallyExpandable {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesSettingsPanel.class);
 
