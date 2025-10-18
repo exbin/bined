@@ -46,7 +46,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
 @ParametersAreNonnullByDefault
 public class CodeAreaColorSettingsComponent implements SettingsComponentProvider<CodeAreaColorOptions> {
 
-    public static final String PAGE_ID = "colorProfiles";
+    public static final String COMPONENT_ID = "colorProfiles";
 
     private EditorProvider editorProvider;
 

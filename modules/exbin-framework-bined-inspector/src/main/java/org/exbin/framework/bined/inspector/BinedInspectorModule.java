@@ -167,7 +167,7 @@ public class BinedInspectorModule implements Module {
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);
-        SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(new DataInspectorSettingsComponent());
+        SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(DataInspectorSettingsComponent.COMPONENT_ID, new DataInspectorSettingsComponent());
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
 
 //        OptionsGroup inspectorOptionsGroup = settingsModule.createOptionsGroup("inspector", getResourceBundle());

@@ -30,7 +30,7 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 @ParametersAreNonnullByDefault
 public class BinaryAppearanceSettingsComponent implements SettingsComponentProvider<BinaryAppearanceOptions> {
 
-    public static final String PAGE_ID = "binaryAppearance";
+    public static final String COMPONENT_ID = "binaryAppearance";
 
     private BinaryAppearanceService binaryAppearanceService;
 

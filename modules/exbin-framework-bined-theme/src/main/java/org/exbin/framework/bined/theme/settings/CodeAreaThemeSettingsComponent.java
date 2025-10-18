@@ -49,7 +49,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
 @ParametersAreNonnullByDefault
 public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider<CodeAreaThemeOptions> {
 
-    public static final String PAGE_ID = "themeProfiles";
+    public static final String COMPONENT_ID = "themeProfiles";
 
     private ResourceBundle resourceBundle;
     private EditorProvider editorProvider;

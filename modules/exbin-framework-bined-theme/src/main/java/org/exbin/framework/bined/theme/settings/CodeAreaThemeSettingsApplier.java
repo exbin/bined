@@ -32,6 +32,8 @@ import org.exbin.framework.options.settings.api.SettingsProvider;
 @ParametersAreNonnullByDefault
 public class CodeAreaThemeSettingsApplier implements SettingsApplier {
 
+    public static final String APPLIER_ID = "codeAreaThemeApplier";
+
     @Override
     public void applySettings(Object instance, SettingsProvider settingsProvider) {
         CodeAreaThemeOptions options = settingsProvider.getSettings(CodeAreaThemeOptions.class);

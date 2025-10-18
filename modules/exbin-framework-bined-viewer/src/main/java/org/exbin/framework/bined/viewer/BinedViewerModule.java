@@ -60,11 +60,7 @@ import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
-import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
-import org.exbin.framework.bined.viewer.settings.GoToPositionOptions;
-import org.exbin.framework.bined.viewer.settings.gui.BinaryAppearanceSettingsPanel;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
@@ -75,11 +71,6 @@ import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
-import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
-import org.exbin.framework.options.settings.api.SettingsComponentContribution;
-import org.exbin.framework.options.settings.api.SettingsPageContribution;
-import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.encoding.service.TextEncodingService;
@@ -103,7 +94,6 @@ public class BinedViewerModule implements Module {
     public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
     public static final String POSITION_CODE_TYPE_POPUP_SUBMENU_ID = MODULE_ID + ".positionCodeTypePopupSubMenu";
     public static final String SHOW_POPUP_SUBMENU_ID = MODULE_ID + ".showPopupSubMenu";
-    public static final String SETTINGS_PAGE_ID = "editorBinary";
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 

@@ -49,6 +49,8 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
 @ParametersAreNonnullByDefault
 public class DataInspectorSettingsComponent implements SettingsComponentProvider<DataInspectorOptions> {
 
+    public static final String COMPONENT_ID = "dataInspector";
+
     private EditorProvider editorProvider;
     private Font defaultFont;
 

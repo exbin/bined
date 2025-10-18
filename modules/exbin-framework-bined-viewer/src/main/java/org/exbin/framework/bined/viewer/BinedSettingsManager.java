@@ -20,7 +20,6 @@ import java.net.URI;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdFileManager;
-import static org.exbin.framework.bined.viewer.BinedViewerModule.SETTINGS_PAGE_ID;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.CodeAreaSettingsComponent;
@@ -52,6 +51,8 @@ import org.exbin.framework.text.font.settings.TextFontSettingsComponent;
 @ParametersAreNonnullByDefault
 public class BinedSettingsManager {
 
+    public static final String SETTINGS_PAGE_ID = "editorBinary";
+
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedSettingsManager.class);
 
     private EditorProvider editorProvider;
@@ -80,7 +81,7 @@ public class BinedSettingsManager {
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);
 
-        SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(new BinaryAppearanceSettingsComponent());
+        SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(BinaryAppearanceSettingsComponent.COMPONENT_ID, new BinaryAppearanceSettingsComponent());
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
 
         settingsManagement.registerApplySetting(CodeAreaOptions.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));

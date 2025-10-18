@@ -25,7 +25,7 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 @ParametersAreNonnullByDefault
 public class StartupSettingsComponent implements SettingsComponentProvider<StartupOptions> {
 
-    public static final String PAGE_ID = "startup";
+    public static final String COMPONENT_ID = "startup";
 
     @Nonnull
     @Override

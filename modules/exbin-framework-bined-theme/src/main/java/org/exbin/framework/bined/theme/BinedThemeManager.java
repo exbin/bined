@@ -24,18 +24,26 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.BinaryThemeOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorProfileOptions;
+import org.exbin.framework.bined.theme.settings.CodeAreaColorSettingsApplier;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorSettingsComponent;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutProfileOptions;
+import org.exbin.framework.bined.theme.settings.CodeAreaLayoutSettingsApplier;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutSettingsComponent;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeProfileOptions;
+import org.exbin.framework.bined.theme.settings.CodeAreaThemeSettingsApplier;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeSettingsComponent;
+import org.exbin.framework.contribution.api.GroupSequenceContribution;
+import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsComponentContribution;
 import org.exbin.framework.options.settings.api.SettingsPageContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
 
 /**
  * BinEd options manager.
@@ -47,7 +55,10 @@ public class BinedThemeManager {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedThemeManager.class);
     
-    public static final String PAGE_ID = "binaryEditorTheme";
+    public static final String SETTINGS_GROUP_ID = "binaryEditorTheme";
+    public static final String SETTINGS_THEME_PAGE_ID = "binaryEditorTheme";
+    public static final String SETTINGS_LAYOUT_PAGE_ID = "binaryEditorLayout";
+    public static final String SETTINGS_COLOR_PAGE_ID = "binaryEditorColor";
 
     private EditorProvider editorProvider;
 
@@ -77,36 +88,31 @@ public class BinedThemeManager {
         settingsManagement.registerOptionsSettings(CodeAreaThemeOptions.class, (optionsStorage) -> new CodeAreaThemeOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaThemeProfileOptions.class, (optionsStorage) -> new CodeAreaThemeProfileOptions(optionsStorage));
         
-        SettingsPageContribution settingsPage = new SettingsPageContribution(PAGE_ID, resourceBundle);
+        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
+        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
+        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
 
-        /* OptionsGroup binaryProfileGroup = settingsModule.createOptionsGroup("binaryEditorProfile", resourceBundle);
-        settingsManagement.registerGroup(binaryProfileGroup);
-        settingsManagement.registerGroupRule(binaryProfileGroup, new ParentOptionsGroupRule("binaryEditor"));
+        GroupSequenceContribution registerGroup = settingsManagement.registerGroup(SETTINGS_GROUP_ID);
 
-        OptionsGroup binaryThemeProfileGroup = settingsModule.createOptionsGroup("binaryEditorThemeProfile", resourceBundle);
-        settingsManagement.registerGroup(binaryThemeProfileGroup);
-        settingsManagement.registerGroupRule(binaryThemeProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
-        themeProfilesSettingsComponent = new CodeAreaThemeSettingsComponent();
-        themeProfilesSettingsComponent.setResourceBundle(resourceBundle);
-        themeProfilesSettingsComponent.setEditorProvider(editorProvider);
-        settingsManagement.registerPage(themeProfilesSettingsComponent);
-        settingsManagement.registerPageRule(themeProfilesSettingsComponent, new GroupOptionsPageRule(binaryThemeProfileGroup));
+        SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_THEME_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(settingsPage);
+        settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
+        SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaThemeSettingsComponent.COMPONENT_ID, new CodeAreaThemeSettingsComponent());
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
 
-        OptionsGroup binaryLayoutProfileGroup = settingsModule.createOptionsGroup("binaryEditorLayoutProfile", resourceBundle);
-        settingsManagement.registerGroup(binaryLayoutProfileGroup);
-        settingsManagement.registerGroupRule(binaryLayoutProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
-        layoutProfilesSettingsComponent = new CodeAreaLayoutSettingsComponent();
-        layoutProfilesSettingsComponent.setEditorProvider(editorProvider);
-        settingsManagement.registerPage(layoutProfilesSettingsComponent);
-        settingsManagement.registerPageRule(layoutProfilesSettingsComponent, new GroupOptionsPageRule(binaryLayoutProfileGroup));
-
-        OptionsGroup binaryColorProfileGroup = settingsModule.createOptionsGroup("binaryEditorColorProfile", resourceBundle);
-        settingsManagement.registerGroup(binaryColorProfileGroup);
-        settingsManagement.registerGroupRule(binaryColorProfileGroup, new ParentOptionsGroupRule(binaryProfileGroup));
-        colorProfilesSettingsComponent = new CodeAreaColorSettingsComponent();
-        colorProfilesSettingsComponent.setEditorProvider(editorProvider);
-        settingsManagement.registerPage(colorProfilesSettingsComponent);
-        settingsManagement.registerPageRule(colorProfilesSettingsComponent, new GroupOptionsPageRule(binaryColorProfileGroup)); */
+        settingsPage = new SettingsPageContribution(SETTINGS_LAYOUT_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(settingsPage);
+        settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
+        registerComponent = settingsManagement.registerComponent(CodeAreaLayoutSettingsComponent.COMPONENT_ID, new CodeAreaLayoutSettingsComponent());
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+        
+        settingsPage = new SettingsPageContribution(SETTINGS_COLOR_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(settingsPage);
+        settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
+        registerComponent = settingsManagement.registerComponent(CodeAreaColorSettingsComponent.COMPONENT_ID, new CodeAreaColorSettingsComponent());
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+        
+        
     }
 
     public void loadDefaults(SectCodeArea codeArea) {

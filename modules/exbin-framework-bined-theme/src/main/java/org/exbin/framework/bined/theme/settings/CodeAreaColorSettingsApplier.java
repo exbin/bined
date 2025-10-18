@@ -31,6 +31,8 @@ import org.exbin.framework.options.settings.api.SettingsProvider;
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaColorSettingsApplier implements SettingsApplier {
+    
+    public static final String APPLIER_ID = "codeAreaColorApplier";
 
     @Override
     public void applySettings(Object instance, SettingsProvider settingsProvider) {

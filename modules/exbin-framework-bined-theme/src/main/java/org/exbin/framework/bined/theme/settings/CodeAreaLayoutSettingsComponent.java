@@ -46,7 +46,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
 @ParametersAreNonnullByDefault
 public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvider<CodeAreaLayoutOptions> {
 
-    public static final String PAGE_ID = "layoutProfiles";
+    public static final String COMPONENT_ID = "layoutProfiles";
 
     private EditorProvider editorProvider;
 
