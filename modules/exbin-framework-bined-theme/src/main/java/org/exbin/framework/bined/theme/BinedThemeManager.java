@@ -55,7 +55,7 @@ public class BinedThemeManager {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedThemeManager.class);
     
-    public static final String SETTINGS_GROUP_ID = "binaryEditorTheme";
+    public static final String SETTINGS_GROUP_ID = "binaryEditorThemeGroup";
     public static final String SETTINGS_THEME_PAGE_ID = "binaryEditorTheme";
     public static final String SETTINGS_LAYOUT_PAGE_ID = "binaryEditorLayout";
     public static final String SETTINGS_COLOR_PAGE_ID = "binaryEditorColor";
@@ -93,22 +93,26 @@ public class BinedThemeManager {
         settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
 
         GroupSequenceContribution registerGroup = settingsManagement.registerGroup(SETTINGS_GROUP_ID);
+        settingsManagement.registerSettingsRule(registerGroup, new SettingsPageContributionRule("editorBinary"));
 
         SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_THEME_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
+        settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("editorBinary"));
         SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaThemeSettingsComponent.COMPONENT_ID, new CodeAreaThemeSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
 
         settingsPage = new SettingsPageContribution(SETTINGS_LAYOUT_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
+        settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("editorBinary"));
         registerComponent = settingsManagement.registerComponent(CodeAreaLayoutSettingsComponent.COMPONENT_ID, new CodeAreaLayoutSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
         
         settingsPage = new SettingsPageContribution(SETTINGS_COLOR_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
+        settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("editorBinary"));
         registerComponent = settingsManagement.registerComponent(CodeAreaColorSettingsComponent.COMPONENT_ID, new CodeAreaColorSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
         

@@ -37,13 +37,13 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class EditSelectionPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EditSelectionPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EditSelectionPanel.class);
 
-    private long cursorPosition;
-    private long maxPosition;
-    private RelativePositionMode startPosMode = RelativePositionMode.FROM_START;
-    private RelativePositionMode endPosMode = RelativePositionMode.FROM_START;
-    private volatile boolean activeUpdate = false;
+    protected long cursorPosition;
+    protected long maxPosition;
+    protected RelativePositionMode startPosMode = RelativePositionMode.FROM_START;
+    protected RelativePositionMode endPosMode = RelativePositionMode.FROM_START;
+    protected volatile boolean activeUpdate = false;
 
     public EditSelectionPanel() {
         initComponents();
@@ -340,37 +340,37 @@ public class EditSelectionPanel extends javax.swing.JPanel {
 
     private void fromStartRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromStartRadioButtonItemStateChanged
         if (fromStartRadioButton.isSelected()) {
-            switchStartPosMode(RelativePositionMode.FROM_START);
+            switchStartPositionMode(RelativePositionMode.FROM_START);
         }
     }//GEN-LAST:event_fromStartRadioButtonItemStateChanged
 
     private void fromEndRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromEndRadioButtonItemStateChanged
         if (fromEndRadioButton.isSelected()) {
-            switchStartPosMode(RelativePositionMode.FROM_END);
+            switchStartPositionMode(RelativePositionMode.FROM_END);
         }
     }//GEN-LAST:event_fromEndRadioButtonItemStateChanged
 
     private void fromCursorRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromCursorRadioButtonItemStateChanged
         if (fromCursorRadioButton.isSelected()) {
-            switchStartPosMode(RelativePositionMode.FROM_CURSOR);
+            switchStartPositionMode(RelativePositionMode.FROM_CURSOR);
         }
     }//GEN-LAST:event_fromCursorRadioButtonItemStateChanged
 
     private void fromStartRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromStartRadioButton1ItemStateChanged
         if (fromStartRadioButton1.isSelected()) {
-            switchEndPosMode(RelativePositionMode.FROM_START);
+            switchEndPositionMode(RelativePositionMode.FROM_START);
         }
     }//GEN-LAST:event_fromStartRadioButton1ItemStateChanged
 
     private void fromEndRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromEndRadioButton1ItemStateChanged
         if (fromEndRadioButton1.isSelected()) {
-            switchEndPosMode(RelativePositionMode.FROM_END);
+            switchEndPositionMode(RelativePositionMode.FROM_END);
         }
     }//GEN-LAST:event_fromEndRadioButton1ItemStateChanged
 
     private void fromCursorRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fromCursorRadioButton1ItemStateChanged
         if (fromCursorRadioButton1.isSelected()) {
-            switchEndPosMode(RelativePositionMode.FROM_CURSOR);
+            switchEndPositionMode(RelativePositionMode.FROM_CURSOR);
         }
     }//GEN-LAST:event_fromCursorRadioButton1ItemStateChanged
 
@@ -515,7 +515,7 @@ public class EditSelectionPanel extends javax.swing.JPanel {
         startPositionBaseSwitchableSpinnerPanel.requestFocusInWindow();
     }
 
-    private void switchStartPosMode(RelativePositionMode positionMode) {
+    private void switchStartPositionMode(RelativePositionMode positionMode) {
         if (this.startPosMode == positionMode) {
             return;
         }
@@ -544,7 +544,7 @@ public class EditSelectionPanel extends javax.swing.JPanel {
         setStartTargetPosition(absolutePosition);
     }
 
-    private void switchEndPosMode(RelativePositionMode positionMode) {
+    private void switchEndPositionMode(RelativePositionMode positionMode) {
         if (this.endPosMode == positionMode) {
             return;
         }

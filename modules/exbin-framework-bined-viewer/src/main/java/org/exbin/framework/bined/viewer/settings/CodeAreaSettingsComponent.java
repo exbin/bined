@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.bined.viewer.settings.gui.CodeAreaSettingsPanel;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -33,22 +35,19 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 @ParametersAreNonnullByDefault
 public class CodeAreaSettingsComponent implements SettingsComponentProvider<CodeAreaOptions> {
 
-    public static final String PAGE_ID = "codeArea";
+    public static final String COMPONENT_ID = "codeArea";
 
     private EditorProvider editorProvider;
-    private java.util.ResourceBundle resourceBundle;
 
     public void setEditorProvider(EditorProvider editorProvider) {
         this.editorProvider = editorProvider;
     }
 
-    public void setResourceBundle(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-    }
-    
     @Nonnull
     @Override
     public SettingsComponent<CodeAreaOptions> createComponent() {
+        BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
+        ResourceBundle resourceBundle = binedViewerModule.getResourceBundle();
         CodeAreaSettingsPanel panel = new CodeAreaSettingsPanel();
         List<String> viewModes = new ArrayList<>();
         viewModes.add(resourceBundle.getString("codeAreaViewMode.dual"));

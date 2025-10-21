@@ -29,14 +29,17 @@ import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
 import org.exbin.framework.bined.editor.settings.BinaryEditorSettingsApplier;
+import org.exbin.framework.bined.editor.settings.CodeAreaEditingSettingsComponent;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsComponentContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContribution;
+import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
 
 /**
  * Binary data editor module.
@@ -70,12 +73,19 @@ public class BinedEditorModule implements Module {
     }
 
     public void registerSettings() {
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        EditorProvider editorProvider = binedModule.getEditorProvider();
+        getResourceBundle();
+//        BinedModule binedModule = App.getModule(BinedModule.class);
+//        EditorProvider editorProvider = binedModule.getEditorProvider();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
         
         settingsManagement.registerApplySetting(EditorOptionsService.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
+        
+        SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(settingsPage);
+        settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("editorBinary"));
+        SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaEditingSettingsComponent.COMPONENT_ID, new CodeAreaEditingSettingsComponent());
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
 
         /* OptionsGroup binaryCodeAreaEditingGroup = settingsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
         settingsManagement.registerGroup(binaryCodeAreaEditingGroup);

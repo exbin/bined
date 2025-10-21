@@ -80,10 +80,14 @@ public class BinedSettingsManager {
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);
+        settingsManagement.registerSettingsRule(pageContribution, new SettingsPageContributionRule("editor"));
 
         SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(BinaryAppearanceSettingsComponent.COMPONENT_ID, new BinaryAppearanceSettingsComponent());
-        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
+        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule("editor"));
 
+        settingsComponent = settingsManagement.registerComponent(CodeAreaSettingsComponent.COMPONENT_ID, new CodeAreaSettingsComponent());
+        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
+        
         settingsManagement.registerApplySetting(CodeAreaOptions.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));
         settingsManagement.registerApplySetting(BinaryAppearanceOptions.class, new ApplySettingsContribution(BinaryAppearanceSettingsApplier.APPLIER_ID, new BinaryAppearanceSettingsApplier()));
         settingsManagement.registerApplySetting(TextEncodingSettingsApplier.class, new ApplySettingsContribution(TextEncodingSettingsApplier.APPLIER_ID, new TextEncodingSettingsApplier()));

@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.editor.settings.gui.CodeAreaEditingSettingsPanel;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
@@ -33,21 +35,20 @@ import org.exbin.framework.options.settings.api.SettingsComponent;
 @ParametersAreNonnullByDefault
 public class CodeAreaEditingSettingsComponent implements SettingsComponentProvider<BinaryEditorOptions> {
 
+    public static final String COMPONENT_ID = "codeAreaEditing";
+
     private EditorOptionsService editorOptionsService;
-    private java.util.ResourceBundle resourceBundle;
 
     public void setEditorOptionsService(EditorOptionsService editorOptionsService) {
         this.editorOptionsService = editorOptionsService;
-    }
-
-    public void setResourceBundle(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
     }
 
     @Nonnull
     @Override
     public SettingsComponent<BinaryEditorOptions> createComponent() {
         CodeAreaEditingSettingsPanel panel = new CodeAreaEditingSettingsPanel();
+        BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
+        ResourceBundle resourceBundle = binedEditorModule.getResourceBundle();
         List<String> fileHandlingModes = new ArrayList<>();
         fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
         fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
