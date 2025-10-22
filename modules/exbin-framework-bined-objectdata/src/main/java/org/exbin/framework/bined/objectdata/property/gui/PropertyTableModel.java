@@ -29,13 +29,13 @@ import javax.swing.table.AbstractTableModel;
 @ParametersAreNonnullByDefault
 public class PropertyTableModel extends AbstractTableModel {
 
-    private List<PropertyTableItem> items;
+    protected List<PropertyTableItem> items;
 
-    private final String[] columnNames;
-    private Class[] columnTypes = new Class[]{
+    protected final String[] columnNames;
+    protected Class[] columnTypes = new Class[]{
         java.lang.String.class, java.lang.Object.class
     };
-    private final boolean[] columnsEditable = new boolean[]{false, true};
+    protected final boolean[] columnsEditable = new boolean[]{false, true};
 
     public PropertyTableModel() {
         columnNames = new String[]{"Property", "Value"};

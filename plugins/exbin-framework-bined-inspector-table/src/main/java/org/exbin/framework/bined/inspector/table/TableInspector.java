@@ -13,37 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.inspector.pixelmap;
+package org.exbin.framework.bined.inspector.table;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import org.exbin.bined.CodeAreaCaretListener;
 import org.exbin.bined.DataChangedListener;
+import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
 import org.exbin.framework.bined.inspector.BinEdInspector;
+import org.exbin.framework.bined.inspector.table.gui.TableInspectorPanel;
 import org.exbin.framework.options.api.OptionsStorage;
 
 /**
- * Pixel map inspector.
+ * Table inspector.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PixelMapInspector implements BinEdInspector {
+public class TableInspector implements BinEdInspector {
 
-    protected PixelMapPanel component;
+    protected TableInspectorPanel component;
     protected CodeAreaCore codeArea;
 
     protected DataChangedListener dataChangedListener;
+    protected CodeAreaCaretListener caretMovedListener;
     
     @Nonnull
     @Override
     public JComponent getComponent() {
         if (component == null) {
-            component = new PixelMapPanel();
-            dataChangedListener = component::dataChanged;
+            component = new TableInspectorPanel();
+            dataChangedListener = component::requestUpdate;
+            caretMovedListener = (caretPosition) -> {
+                component.requestUpdate();
+            };
         }
         return component;
     }
@@ -57,11 +63,13 @@ public class PixelMapInspector implements BinEdInspector {
     @Override
     public void activateSync() {
         codeArea.addDataChangedListener(dataChangedListener);
+        ((CaretCapable) codeArea).addCaretMovedListener(caretMovedListener);
     }
 
     @Override
     public void deactivateSync() {
         codeArea.removeDataChangedListener(dataChangedListener);
+        ((CaretCapable) codeArea).removeCaretMovedListener(caretMovedListener);
     }
 
     @Override

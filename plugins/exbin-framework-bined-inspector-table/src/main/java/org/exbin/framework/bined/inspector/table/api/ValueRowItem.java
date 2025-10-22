@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.objectdata;
+package org.exbin.framework.bined.inspector.table.api;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.objectdata.property.gui.PropertyTableItem;
 
 /**
- * Simplified page provider.
+ * Values table row item.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public interface PageProvider {
+@ParametersAreNonnullByDefault
+public abstract class ValueRowItem extends PropertyTableItem {
 
-    /**
-     * Returns page of the specified index.
-     *
-     * @param pageIndex page index
-     * @return page data
-     */
-    @Nonnull
-    byte[] getPage(long pageIndex);
+    public ValueRowItem(String valueName, String typeName, Object value) {
+        super(valueName, typeName, value);
+    }
 
-    /**
-     * Returns size of the full document.
-     *
-     * @return size of the document
-     */
-    long getDocumentSize();
+    public abstract void updateRow(byte[] values, int available);
 }
