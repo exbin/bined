@@ -16,6 +16,7 @@
 package org.exbin.framework.bined.objectdata.property.gui;
 
 import java.awt.Component;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -33,6 +34,7 @@ public class PropertyTableCellRenderer implements TableCellRenderer {
     public PropertyTableCellRenderer() {
     }
 
+    @Nonnull
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Object fieldValue = ((PropertyTableItem) value).asBasicType();

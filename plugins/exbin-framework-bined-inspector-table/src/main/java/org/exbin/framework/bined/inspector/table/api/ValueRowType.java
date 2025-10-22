@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.objectdata;
+package org.exbin.framework.bined.inspector.table.api;
 
 import javax.annotation.Nonnull;
 
 /**
- * Simplified page provider.
+ * Value type interface.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public interface PageProvider {
+public interface ValueRowType {
 
     /**
-     * Returns page of the specified index.
+     * Creates row item.
      *
-     * @param pageIndex page index
-     * @return page data
+     * @return row item
      */
     @Nonnull
-    byte[] getPage(long pageIndex);
-
-    /**
-     * Returns size of the full document.
-     *
-     * @return size of the document
-     */
-    long getDocumentSize();
+    ValueRowItem createRowItem();
 }

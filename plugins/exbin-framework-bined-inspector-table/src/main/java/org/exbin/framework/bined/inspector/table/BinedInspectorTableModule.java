@@ -15,14 +15,23 @@
  */
 package org.exbin.framework.bined.inspector.table;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
+import org.exbin.framework.bined.inspector.BinEdInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorManager;
+import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
+import org.exbin.framework.bined.inspector.BinedInspectorModule;
+import org.exbin.framework.bined.inspector.table.api.ValueRowType;
+import org.exbin.framework.bined.inspector.table.value.ByteValueRowType;
+import org.exbin.framework.bined.inspector.table.value.IntegerValueRowType;
+import org.exbin.framework.bined.inspector.table.value.LongValueRowType;
+import org.exbin.framework.bined.inspector.table.value.WordValueRowType;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
@@ -37,15 +46,39 @@ public class BinedInspectorTableModule implements PluginModule {
 
     private java.util.ResourceBundle resourceBundle = null;
 
+    private final List<ValueRowType> valueRowTypes = new ArrayList<>();
+
     public BinedInspectorTableModule() {
     }
 
     @Override
     public void register() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+        BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+        inspectorManager.addInspector(new BinEdInspectorProvider() {
 
-    public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
+            private TableInspector inspector;
+
+            @Nonnull
+            @Override
+            public String getName() {
+                return "Table";
+            }
+
+            @Nonnull
+            @Override
+            public BinEdInspector createInspector() {
+                if (inspector == null) {
+                    inspector = new TableInspector();
+                }
+                return inspector;
+            }
+        });
+
+        valueRowTypes.add(new ByteValueRowType());
+        valueRowTypes.add(new WordValueRowType());
+        valueRowTypes.add(new IntegerValueRowType());
+        valueRowTypes.add(new LongValueRowType());
     }
 
     @Nonnull
@@ -61,5 +94,10 @@ public class BinedInspectorTableModule implements PluginModule {
         if (resourceBundle == null) {
             getResourceBundle();
         }
+    }
+
+    @Nonnull
+    public List<ValueRowType> getValueRowTypes() {
+        return valueRowTypes;
     }
 }

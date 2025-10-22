@@ -2,6 +2,9 @@ rootProject.name = 'exbin-framework-bined-inspector-table'
 
 if (rootProject.path == ':') {
     include ':modules:exbin-framework-bined'
+    include ':modules:exbin-framework-bined-inspector'
+    include ':modules:exbin-framework-bined-objectdata'
+    include ':modules:exbin-framework-bined-viewer'
     include ':modules:exbin-framework-bined-search'
 }
 

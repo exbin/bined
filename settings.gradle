@@ -20,6 +20,8 @@ include ":plugins:exbin-framework-bined-tool-content"
 include ":plugins:exbin-framework-bined-operation-bouncycastle"
 include ":plugins:exbin-framework-bined-operation-code"
 include ":plugins:exbin-framework-bined-help"
+include ":plugins:exbin-framework-bined-inspector-pixelmap"
+include ":plugins:exbin-framework-bined-inspector-table"
 include ":apps:bined-editor"
 
 File placeholder = file("deps/.downloaded")

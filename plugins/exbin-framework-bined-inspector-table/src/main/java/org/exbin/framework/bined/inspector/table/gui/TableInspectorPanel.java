@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.inspector.pixelmap.gui;
+package org.exbin.framework.bined.inspector.table.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -24,23 +25,24 @@ import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
- * Pixel map side panel.
+ * Values table side inspector panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PixelMapPanel extends javax.swing.JPanel {
+public class TableInspectorPanel extends javax.swing.JPanel {
     
     protected JScrollPane scrollPane;
-    protected PixelMapComponent component;
+    protected ValuesTablePanel component;
 
-    public PixelMapPanel() {
+    public TableInspectorPanel() {
         initComponents();
         init();
     }
     
     private void init() {
-        component = new PixelMapComponent();
+        component = new ValuesTablePanel();
+        component.setPreferredSize(new Dimension());
         scrollPane = new JScrollPane(component);
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -49,7 +51,7 @@ public class PixelMapPanel extends javax.swing.JPanel {
         component.setCodeArea(codeArea);
     }
     
-    public void dataChanged() {
+    public void requestUpdate() {
         component.dataChanged();
     }
 
@@ -74,7 +76,7 @@ public class PixelMapPanel extends javax.swing.JPanel {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new PixelMapPanel());
+            WindowUtils.invokeWindow(new TableInspectorPanel());
         });
     }
 

@@ -36,9 +36,9 @@ import org.exbin.bined.swing.CodeAreaCore;
 @ParametersAreNonnullByDefault
 public class PixelMapComponent extends JComponent {
 
-    private int pixelSize = 5;
-    private int pixelPerRow = 16;
-    private CodeAreaCore codeArea;
+    protected int pixelSize = 5;
+    protected int pixelPerRow = 16;
+    protected CodeAreaCore codeArea;
 
     public PixelMapComponent() {
         addMouseListener(new MouseAdapter() {

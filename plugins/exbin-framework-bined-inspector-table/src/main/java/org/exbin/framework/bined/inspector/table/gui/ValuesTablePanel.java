@@ -13,47 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.objectdata.property.gui;
+package org.exbin.framework.bined.inspector.table.gui;
 
 import java.awt.Component;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
+import java.util.List;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.inspector.table.BinedInspectorTableModule;
+import org.exbin.framework.bined.inspector.table.api.ValueRowItem;
+import org.exbin.framework.bined.inspector.table.api.ValueRowType;
+import org.exbin.framework.bined.objectdata.property.gui.PropertyTableCellEditor;
+import org.exbin.framework.bined.objectdata.property.gui.PropertyTableCellRenderer;
+import org.exbin.framework.bined.objectdata.property.gui.PropertyTableItem;
+import org.exbin.framework.bined.objectdata.property.gui.PropertyTableModel;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.WindowUtils;
 
 /**
- * Panel for properties of the inspected instance.
+ * Panel for table with values for binary data inspection.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class PropertyTablePanel extends javax.swing.JPanel {
+public class ValuesTablePanel extends javax.swing.JPanel {
+    
+    private static final int DATA_LIMIT = 250;
+    private final byte[] values = new byte[DATA_LIMIT];
 
     private final PropertyTableModel tableModel;
     private final PropertyTableCellRenderer valueCellRenderer;
     private final TableCellRenderer nameCellRenderer;
     private final PropertyTableCellEditor valueCellEditor;
 
-    private boolean showStaticFields = false;
+    private CodeAreaCore codeArea;
 
-    public PropertyTablePanel() {
+    public ValuesTablePanel() {
         tableModel = new PropertyTableModel();
 
         initComponents();
 
         TableColumnModel columns = propertiesTable.getColumnModel();
-        columns.getColumn(0).setPreferredWidth(190);
-        columns.getColumn(1).setPreferredWidth(190);
-        columns.getColumn(0).setWidth(190);
-        columns.getColumn(1).setWidth(190);
+        columns.getColumn(0).setPreferredWidth(80);
+        columns.getColumn(1).setPreferredWidth(80);
+        columns.getColumn(0).setWidth(80);
+        columns.getColumn(1).setWidth(80);
         nameCellRenderer = new DefaultTableCellRenderer() {
             @Nonnull
             @Override
@@ -82,68 +94,37 @@ public class PropertyTablePanel extends javax.swing.JPanel {
                 return component;
             }
         });
+
+        BinedInspectorTableModule binedInspectorTableModule = App.getModule(BinedInspectorTableModule.class);
+        List<ValueRowType> valueRowTypes = binedInspectorTableModule.getValueRowTypes();
+
+        for (ValueRowType valueRowType : valueRowTypes) {
+            tableModel.addRow(valueRowType.createRowItem());
+        }
     }
 
-    public void setObject(Object object) {
+    public void setCodeArea(CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+        BinaryData contentData = codeArea.getContentData();
+        long dataSize = codeArea.getDataSize();
+        long dataPosition = ((CaretCapable) codeArea).getDataPosition();
+        long available = dataSize - dataPosition;
+
         if (propertiesTable.isEditing()) {
             propertiesTable.getCellEditor().cancelCellEditing();
         }
 
-        tableModel.removeAll();
-
-        Class<?> clazz = object.getClass();
-        if (clazz.isArray()) {
-            int length = Array.getLength(object);
-            for (int i = 0; i < length; i++) {
-                Object field = Array.get(object, i);
-                PropertyTableItem item = new PropertyTableItem(String.valueOf(i), field == null ? "-" : field.getClass().getTypeName(), field);
-                tableModel.addRow(item);
-            }
-        } else {
-            while (clazz != null) {
-                Field[] fields = clazz.getDeclaredFields();
-                for (Field field : fields) {
-                    if (!showStaticFields && java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
-                        continue;
-                    }
-
-                    Object value = accessField(field, object);
-                    PropertyTableItem item = new PropertyTableItem(field.getName(), field.getGenericType().getTypeName(), value);
-                    tableModel.addRow(item);
-                }
-                clazz = clazz.getSuperclass();
-            }
+        int valuesAvailable = available > DATA_LIMIT ? DATA_LIMIT : (int) available;
+        contentData.copyToArray(dataPosition, values, 0, valuesAvailable);
+        List<PropertyTableItem> items = tableModel.getItems();
+        for (PropertyTableItem item : items) {
+            ((ValueRowItem) item).updateRow(values, valuesAvailable);
         }
+        tableModel.fireTableRowsUpdated(0, tableModel.getRowCount() - 1);
     }
 
-    @Nullable
-    private static Object accessField(Field field, Object object) {
-        Object result = null;
-        try {
-            result = field.get(object);
-        } catch (Throwable ex) {
-            try {
-                // Try to make field accessible
-                field.setAccessible(true);
-                try {
-                    result = field.get(object);
-                } catch (Throwable ex3) {
-                }
-                field.setAccessible(false);
-            } catch (Throwable ex2) {
-                // Can't set it back, just ignore it
-            }
-        }
-
-        return result;
-    }
-
-    public boolean isShowStaticFields() {
-        return showStaticFields;
-    }
-
-    public void setShowStaticFields(boolean showStaticFields) {
-        this.showStaticFields = showStaticFields;
+    public void dataChanged() {
+        setCodeArea(codeArea);
     }
 
     /**
@@ -178,7 +159,7 @@ public class PropertyTablePanel extends javax.swing.JPanel {
      */
     public static void main(String[] args) {
         TestApplication.run(() -> {
-            WindowUtils.invokeWindow(new PropertyTablePanel());
+            WindowUtils.invokeWindow(new ValuesTablePanel());
         });
     }
 

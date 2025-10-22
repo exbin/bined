@@ -98,6 +98,7 @@ public class BasicValuesInspector implements BinEdInspector {
 
     @Override
     public void onInitFromOptions(OptionsStorage options) {
+        getComponent();
         DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(options);
         boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
         if (useDefaultFont) {
