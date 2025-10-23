@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -27,17 +28,19 @@ import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
 /**
- * Binary data preview panel.
+ * Text preview panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class TextPreviewPanel extends javax.swing.JPanel {
 
-    private final JTextArea previewTextArea = new JTextArea();
-    private Component activeComponent;
+    protected final JScrollPane previewScrollPane;
+    protected final JTextArea previewTextArea = new JTextArea();
+    protected Component activeComponent;
 
     public TextPreviewPanel() {
+        previewScrollPane = new JScrollPane(previewTextArea);
         initComponents();
         init();
     }
@@ -52,8 +55,8 @@ public class TextPreviewPanel extends javax.swing.JPanel {
             if (activeComponent != null) {
                 remove(activeComponent);
             }
-            activeComponent = previewTextArea;
-            add(previewTextArea, BorderLayout.CENTER);
+            activeComponent = previewScrollPane;
+            add(previewScrollPane, BorderLayout.CENTER);
             revalidate();
             repaint();
         }
@@ -125,10 +128,6 @@ public class TextPreviewPanel extends javax.swing.JPanel {
 
         add(progressPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    public void initFocus() {
-        // TODO
-    }
 
     /**
      * Test method for this panel.

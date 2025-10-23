@@ -22,8 +22,10 @@ import java.awt.datatransfer.StringSelection;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.SwingUtilities;
+import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.SelectionRange;
@@ -34,6 +36,7 @@ import org.exbin.framework.bined.operation.api.CopyAsDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.code.CodeExportFormat;
+import org.exbin.framework.bined.operation.code.CodeExportOptions;
 import org.exbin.framework.bined.operation.code.format.CHexArrayFormat;
 import org.exbin.framework.bined.operation.code.format.JavaByteArrayFormat;
 import org.exbin.framework.bined.operation.code.format.PythonBytesFormat;
@@ -51,16 +54,16 @@ public class CopyAsCodeDataMethod implements CopyAsDataMethod {
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CopyAsCodePanel.class);
 
     private final List<CodeExportFormat> exportFormats;
-    private long previewLengthLimit = 0;
+    private long previewLengthLimit = 128;
     private PreviewDataHandler previewDataHandler;
     private TextPreviewPanel previewPanel;
 
     public CopyAsCodeDataMethod() {
         // Initialize available export formats
         exportFormats = Arrays.asList(
-            new JavaByteArrayFormat(),
-            new PythonBytesFormat(),
-            new CHexArrayFormat()
+                new JavaByteArrayFormat(),
+                new PythonBytesFormat(),
+                new CHexArrayFormat()
         );
     }
 
@@ -75,9 +78,6 @@ public class CopyAsCodeDataMethod implements CopyAsDataMethod {
     public Component createComponent() {
         final CopyAsCodePanel copyAsCodePanel = new CopyAsCodePanel();
         copyAsCodePanel.setExportFormats(exportFormats);
-//        if (sourceData != null && !sourceData.isEmpty()) {
-//            copyAsCodePanel.setSourceData(sourceData);
-//        }
         return copyAsCodePanel;
     }
 
@@ -88,8 +88,26 @@ public class CopyAsCodeDataMethod implements CopyAsDataMethod {
 
     @Override
     public void performCopy(Component component, CodeAreaCore codeArea) {
-        String code = ((CopyAsCodePanel) component).getResultText();
-        StringSelection stringSelection = new StringSelection(code);
+        CopyAsCodePanel panel = (CopyAsCodePanel) component;
+        BinaryData binaryData;
+        SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+        if (!selection.isEmpty()) {
+            long position = selection.getFirst();
+            long length = selection.getLength();
+            binaryData = new ByteArrayEditableData();
+            ((ByteArrayEditableData) binaryData).insert(0, codeArea.getContentData().copy(position, length));
+        } else {
+            binaryData = codeArea.getContentData();
+        }
+
+        String resultText;
+        ResultData resultData = generateData(binaryData, panel.getSelectedFormat(), panel.getCurrentOptions());
+        if (resultData.errorText.isEmpty()) {
+            resultText = resultData.errorText;
+        } else {
+            resultText = resultData.resultText;
+        }
+        StringSelection stringSelection = new StringSelection(resultText);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
     }
@@ -121,14 +139,40 @@ public class CopyAsCodeDataMethod implements CopyAsDataMethod {
                 position = selection.getFirst();
                 length = selection.getLength();
             }
+
+            if (length > previewLengthLimit) {
+                length = previewLengthLimit;
+            }
+
             previewBinaryData.insert(0, codeArea.getContentData().copy(position, length));
-            panel.setSourceData(previewBinaryData);
-            String errorText = panel.getErrorText();
-            if (errorText.isEmpty()) {
-                previewPanel.setPreviewText(panel.getResultText());
+            ResultData resultData = generateData(previewBinaryData, panel.getSelectedFormat(), panel.getCurrentOptions());
+            if (resultData.errorText.isEmpty()) {
+                previewPanel.setPreviewText(resultData.resultText);
             } else {
-                previewPanel.setErrorMessage(errorText);
+                previewPanel.setErrorMessage(resultData.errorText);
             }
         });
+    }
+
+    @Nonnull
+    protected ResultData generateData(BinaryData sourceData, @Nullable CodeExportFormat format, CodeExportOptions options) {
+        ResultData resultData = new ResultData();
+        if (format == null) {
+            resultData.errorText = "No format selected";
+            return resultData;
+        }
+
+        try {
+            resultData.resultText = format.generateCode(sourceData, options);
+        } catch (Exception ex) {
+            resultData.errorText = "Error generating code: " + ex.getMessage();
+        }
+        return resultData;
+    }
+
+    protected static class ResultData {
+
+        String resultText;
+        String errorText = "";
     }
 }

@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
-import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.code.CodeExportFormat;
@@ -38,9 +37,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
     private final List<CodeExportFormat> exportFormats = new ArrayList<>();
     private final CodeExportOptions currentOptions = new CodeExportOptions();
 
-    private BinaryData sourceData;
-    private String resultText;
-    private String errorText = "";
     private ResultChangeListener resultChangeListener = null;
 
     public CopyAsCodePanel() {
@@ -100,12 +96,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         this.repaint();
     }
 
-    public void setSourceData(BinaryData data) {
-        this.sourceData = data;
-        // Update preview immediately when data is set
-        updatePreview();
-    }
-
     @Nullable
     public CodeExportFormat getSelectedFormat() {
         int index = formatComboBox.getSelectedIndex();
@@ -130,16 +120,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
-    public String getResultText() {
-        return resultText;
-    }
-
-    @Nonnull
-    public String getErrorText() {
-        return errorText;
-    }
-
     private void updateOptionsFromFormat() {
         CodeExportFormat format = getSelectedFormat();
         if (format != null) {
@@ -155,27 +135,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
             currentOptions.setBytesPerLine(defaults.getBytesPerLine());
             currentOptions.setIndentation(defaults.getIndentation());
             currentOptions.setVariableName(defaults.getVariableName());
-        }
-    }
-
-    private void updatePreview() {
-        if (sourceData == null) {
-            resultText = "";
-            errorText = "";
-            return;
-        }
-
-        CodeExportFormat format = getSelectedFormat();
-        if (format == null) {
-            resultText = "";
-            errorText = "";
-            return;
-        }
-
-        try {
-            resultText = format.generateCode(sourceData, currentOptions);
-        } catch (Exception ex) {
-            errorText = "Error generating code: " + ex.getMessage();
         }
     }
 
