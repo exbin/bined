@@ -15,43 +15,54 @@
  */
 package org.exbin.framework.bined.inspector.table.value;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import javax.annotation.Nonnull;
 import org.exbin.framework.bined.inspector.table.api.ValueRowItem;
 import org.exbin.framework.bined.inspector.table.api.ValueRowType;
 
 /**
- * Byte value type.
+ * Double value type.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class ByteValueRowType implements ValueRowType {
+public class DoubleValueRowType implements ValueRowType {
 
-    private boolean signed = false;
+    private ByteOrder byteOrder = ByteOrder.LITTLE_ENDIAN;
 
     @Nonnull
     @Override
     public String getId() {
-        return "byte";
+        return "double";
     }
 
     @Nonnull
     @Override
     public String getName() {
-        return "Byte";
+        return "Double";
     }
 
     @Nonnull
     @Override
     public ValueRowItem createRowItem() {
-        return new ValueRowItem(getId(), getName(), Byte.class.getTypeName(), null) {
+        return new ValueRowItem(getId(), getName(), Short.class.getTypeName(), null) {
             @Override
             public void updateRow(byte[] values, int available) {
-                if (available < 1) {
+                if (available < 8) {
                     setValue(null);
                     return;
                 }
 
-                setValue(signed ? values[0] : values[0] & 0xff);
+                int length = Math.min(available, 8);
+
+                ByteBuffer byteBuffer = ByteBuffer.allocate(8);
+                byteBuffer.put(values, 0, length);
+                byteBuffer.rewind();
+                if (byteBuffer.order() != byteOrder) {
+                    byteBuffer.order(byteOrder);
+                }
+
+                setValue(byteBuffer.getDouble());
             }
         };
     }

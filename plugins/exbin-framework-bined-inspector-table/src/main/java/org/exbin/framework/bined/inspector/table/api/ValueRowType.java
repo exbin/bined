@@ -25,6 +25,22 @@ import javax.annotation.Nonnull;
 public interface ValueRowType {
 
     /**
+     * Returns type id.
+     *
+     * @return id
+     */
+    @Nonnull
+    String getId();
+
+    /**
+     * Returns type name.
+     *
+     * @return name
+     */
+    @Nonnull
+    String getName();
+
+    /**
      * Creates row item.
      *
      * @return row item

@@ -32,8 +32,20 @@ public class WordValueRowType implements ValueRowType {
 
     @Nonnull
     @Override
+    public String getId() {
+        return "word";
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return "Word";
+    }
+
+    @Nonnull
+    @Override
     public ValueRowItem createRowItem() {
-        return new ValueRowItem("Word", Short.class.getTypeName(), null) {
+        return new ValueRowItem(getId(), getName(), Short.class.getTypeName(), null) {
             @Override
             public void updateRow(byte[] values, int available) {
                 if (available < 2) {

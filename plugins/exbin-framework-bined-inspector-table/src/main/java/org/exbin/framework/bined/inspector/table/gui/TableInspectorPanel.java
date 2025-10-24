@@ -17,12 +17,25 @@ package org.exbin.framework.bined.inspector.table.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.inspector.table.BinedInspectorTableModule;
+import org.exbin.framework.bined.inspector.table.api.ValueRowItem;
+import org.exbin.framework.bined.inspector.table.api.ValueRowType;
+import org.exbin.framework.bined.inspector.table.settings.gui.TableInspectorSettingsPanel;
+import org.exbin.framework.bined.inspector.table.settings.gui.ValueRowTypePanel;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.WindowModuleApi;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
  * Values table side inspector panel.
@@ -31,7 +44,7 @@ import org.exbin.framework.utils.WindowUtils;
  */
 @ParametersAreNonnullByDefault
 public class TableInspectorPanel extends javax.swing.JPanel {
-    
+
     protected JScrollPane scrollPane;
     protected ValuesTablePanel component;
 
@@ -39,20 +52,103 @@ public class TableInspectorPanel extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    
+
     private void init() {
         component = new ValuesTablePanel();
+
+        BinedInspectorTableModule binedInspectorTableModule = App.getModule(BinedInspectorTableModule.class);
+        Map<String, ValueRowType> valueRowTypes = binedInspectorTableModule.getValueRowTypes();
+
+        List<ValueRowItem> rowItems = new ArrayList<>();
+        for (ValueRowType valueRowType : valueRowTypes.values()) {
+            rowItems.add(valueRowType.createRowItem());
+        }
+
+        component.setValueRows(rowItems);
+        component.setController(new ValuesTablePanel.Controller() {
+            @Override
+            public void performSettings() {
+                BinedInspectorTableModule binedInspectorTableModule = App.getModule(BinedInspectorTableModule.class);
+                Map<String, ValueRowType> valueRowTypes = binedInspectorTableModule.getValueRowTypes();
+
+                OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+                WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                TableInspectorSettingsPanel settingsPanel = new TableInspectorSettingsPanel();
+                settingsPanel.setRowTypes(valueRowTypes);
+                List<ValueRowItem> valueRows = component.getValueRows();
+                {
+                    List<String> typeIds = new ArrayList<>();
+                    for (ValueRowItem valueRow : valueRows) {
+                        typeIds.add(valueRow.getTypeId());
+                    }
+                    settingsPanel.setItems(typeIds);
+                }
+                settingsPanel.setController(new TableInspectorSettingsPanel.Controller() {
+                    @Override
+                    public void performAddItem() {
+                        ValueRowTypePanel valueRowTypePanel = new ValueRowTypePanel();
+                        valueRowTypePanel.setRowTypes(valueRowTypes);
+                        List<String> typeIds = new ArrayList<>();
+                        for (ValueRowType valueRowType : valueRowTypes.values()) {
+                            typeIds.add(valueRowType.getId());
+                        }
+                        valueRowTypePanel.setItems(typeIds);
+                        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+                        DefaultControlPanel controlPanel = new DefaultControlPanel();
+
+                        WindowHandler dialog = windowModule.createDialog(valueRowTypePanel, controlPanel);
+                        controlPanel.setController((actionType) -> {
+                            switch (actionType) {
+                                case OK:
+                                    List<String> resultTypeIds = valueRowTypePanel.getSelectedItems();
+                                    settingsPanel.addItems(resultTypeIds);
+                                    break;
+                                case CANCEL:
+                                    break;
+                                default:
+                                    throw new AssertionError();
+                            }
+                            dialog.close();
+                        });
+                        windowModule.setWindowTitle(dialog, valueRowTypePanel.getResourceBundle());
+                        dialog.showCentered(component);
+                    }
+                });
+                WindowHandler dialog = windowModule.createDialog(settingsPanel, controlPanel);
+                controlPanel.setController((actionType) -> {
+                    switch (actionType) {
+                        case OK:
+                            List<String> resultTypeIds = settingsPanel.getItems();
+                            List<ValueRowItem> rowItems = new ArrayList<>();
+                            for (String typeId : resultTypeIds) {
+                                ValueRowType valueRowType = valueRowTypes.get(typeId);
+                                rowItems.add(valueRowType.createRowItem());
+                            }
+                            component.setValueRows(rowItems);
+                            break;
+                        case CANCEL:
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+                    dialog.close();
+                });
+                windowModule.setWindowTitle(dialog, settingsPanel.getResourceBundle());
+                dialog.showCentered(component);
+            }
+        });
         component.setPreferredSize(new Dimension());
         scrollPane = new JScrollPane(component);
         add(scrollPane, BorderLayout.CENTER);
     }
-    
+
     public void setCodeArea(CodeAreaCore codeArea) {
         component.setCodeArea(codeArea);
     }
-    
+
     public void requestUpdate() {
-        component.dataChanged();
+        component.notifyChanged();
     }
 
     /**

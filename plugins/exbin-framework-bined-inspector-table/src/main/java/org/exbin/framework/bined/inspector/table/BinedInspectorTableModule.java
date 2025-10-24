@@ -15,8 +15,8 @@
  */
 package org.exbin.framework.bined.inspector.table;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,6 +29,8 @@ import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.inspector.table.api.ValueRowType;
 import org.exbin.framework.bined.inspector.table.value.ByteValueRowType;
+import org.exbin.framework.bined.inspector.table.value.DoubleValueRowType;
+import org.exbin.framework.bined.inspector.table.value.FloatValueRowType;
 import org.exbin.framework.bined.inspector.table.value.IntegerValueRowType;
 import org.exbin.framework.bined.inspector.table.value.LongValueRowType;
 import org.exbin.framework.bined.inspector.table.value.WordValueRowType;
@@ -46,7 +48,7 @@ public class BinedInspectorTableModule implements PluginModule {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private final List<ValueRowType> valueRowTypes = new ArrayList<>();
+    private final Map<String, ValueRowType> valueRowTypes = new HashMap<>();
 
     public BinedInspectorTableModule() {
     }
@@ -75,10 +77,16 @@ public class BinedInspectorTableModule implements PluginModule {
             }
         });
 
-        valueRowTypes.add(new ByteValueRowType());
-        valueRowTypes.add(new WordValueRowType());
-        valueRowTypes.add(new IntegerValueRowType());
-        valueRowTypes.add(new LongValueRowType());
+        registerRowType(new ByteValueRowType());
+        registerRowType(new WordValueRowType());
+        registerRowType(new IntegerValueRowType());
+        registerRowType(new LongValueRowType());
+        registerRowType(new FloatValueRowType());
+        registerRowType(new DoubleValueRowType());
+    }
+
+    public void registerRowType(ValueRowType valueRowType) {
+        valueRowTypes.put(valueRowType.getId(), valueRowType);
     }
 
     @Nonnull
@@ -97,7 +105,7 @@ public class BinedInspectorTableModule implements PluginModule {
     }
 
     @Nonnull
-    public List<ValueRowType> getValueRowTypes() {
+    public Map<String, ValueRowType> getValueRowTypes() {
         return valueRowTypes;
     }
 }

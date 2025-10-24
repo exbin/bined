@@ -32,8 +32,20 @@ public class IntegerValueRowType implements ValueRowType {
 
     @Nonnull
     @Override
+    public String getId() {
+        return "integer";
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return "Integer";
+    }
+
+    @Nonnull
+    @Override
     public ValueRowItem createRowItem() {
-        return new ValueRowItem("Integer", Integer.class.getTypeName(), null) {
+        return new ValueRowItem(getId(), getName(), Integer.class.getTypeName(), null) {
             @Override
             public void updateRow(byte[] values, int available) {
                 if (available < 4) {
