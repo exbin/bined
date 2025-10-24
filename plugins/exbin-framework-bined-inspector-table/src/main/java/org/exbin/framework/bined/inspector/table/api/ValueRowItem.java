@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.inspector.table.api;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.objectdata.property.gui.PropertyTableItem;
 
@@ -25,9 +26,17 @@ import org.exbin.framework.bined.objectdata.property.gui.PropertyTableItem;
  */
 @ParametersAreNonnullByDefault
 public abstract class ValueRowItem extends PropertyTableItem {
+    
+    protected final String typeId;
 
-    public ValueRowItem(String valueName, String typeName, Object value) {
+    public ValueRowItem(String typeId, String valueName, String typeName, Object value) {
         super(valueName, typeName, value);
+        this.typeId = typeId;
+    }
+
+    @Nonnull
+    public String getTypeId() {
+        return typeId;
     }
 
     public abstract void updateRow(byte[] values, int available);

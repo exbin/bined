@@ -34,8 +34,20 @@ public class LongValueRowType implements ValueRowType {
 
     @Nonnull
     @Override
+    public String getId() {
+        return "long";
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return "Long";
+    }
+
+    @Nonnull
+    @Override
     public ValueRowItem createRowItem() {
-        return new ValueRowItem("Long", Long.class.getTypeName(), null) {
+        return new ValueRowItem(getId(), getName(), Long.class.getTypeName(), null) {
             @Override
             public void updateRow(byte[] values, int available) {
                 if (available < 8) {
