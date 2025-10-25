@@ -18,7 +18,7 @@ package org.exbin.framework.bined.editor.settings;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Binary editor settings applier.
@@ -31,9 +31,9 @@ public class BinaryEditorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryEditor";
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
         EditorOptionsService editorOptionsService = null;
-        BinaryEditorOptions options = settingsProvider.getSettings(BinaryEditorOptions.class);
+        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
         // TODO: This causes multiple reloads / warnings about modified files
         // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
         editorOptionsService.setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());

@@ -35,6 +35,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
@@ -44,7 +45,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class TableInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent<TableInspectorOptions> {
+public class TableInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private SettingsModifiedListener settingsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(TableInspectorSettingsPanel.class);
@@ -84,7 +85,8 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void loadFromOptions(TableInspectorOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        TableInspectorOptions options = settingsOptionsProvider.getSettingsOptions(TableInspectorOptions.class);
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int rowsCount = options.getRowsCount();
         model.setSize(rowsCount);
@@ -94,7 +96,8 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void saveToOptions(TableInspectorOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        TableInspectorOptions options = settingsOptionsProvider.getSettingsOptions(TableInspectorOptions.class);
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int rowsCount = model.getSize();
         options.setRowsCount(rowsCount);

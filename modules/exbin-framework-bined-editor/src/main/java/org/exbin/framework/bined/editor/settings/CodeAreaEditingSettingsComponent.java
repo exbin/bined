@@ -33,7 +33,7 @@ import org.exbin.framework.options.settings.api.SettingsComponent;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaEditingSettingsComponent implements SettingsComponentProvider<BinaryEditorOptions> {
+public class CodeAreaEditingSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "codeAreaEditing";
 
@@ -45,7 +45,7 @@ public class CodeAreaEditingSettingsComponent implements SettingsComponentProvid
 
     @Nonnull
     @Override
-    public SettingsComponent<BinaryEditorOptions> createComponent() {
+    public SettingsComponent createComponent() {
         CodeAreaEditingSettingsPanel panel = new CodeAreaEditingSettingsPanel();
         BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
         ResourceBundle resourceBundle = binedEditorModule.getResourceBundle();

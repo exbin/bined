@@ -28,7 +28,7 @@ import org.gradle.util.VersionNumber
 
 apply from: '../deps_processing.gradle'
 
-java { 
+java {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 }

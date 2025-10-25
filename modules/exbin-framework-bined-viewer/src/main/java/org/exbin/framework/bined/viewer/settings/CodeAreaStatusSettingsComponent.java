@@ -32,7 +32,7 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaStatusSettingsComponent implements SettingsComponentProvider<StatusOptions> {
+public class CodeAreaStatusSettingsComponent implements SettingsComponentProvider {
 
     public static final String PAGE_ID = "status";
 
@@ -49,7 +49,7 @@ public class CodeAreaStatusSettingsComponent implements SettingsComponentProvide
 
     @Nonnull
     @Override
-    public SettingsComponent<StatusOptions> createComponent() {
+    public SettingsComponent createComponent() {
         StatusSettingsPanel panel = new StatusSettingsPanel();
 
         List<String> cursorPositionCodeTypes = new ArrayList<>();

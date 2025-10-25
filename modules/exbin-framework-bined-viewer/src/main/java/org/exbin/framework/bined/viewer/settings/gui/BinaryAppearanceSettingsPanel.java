@@ -24,6 +24,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
@@ -33,7 +34,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements SettingsComponent<BinaryAppearanceOptions> {
+public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private SettingsModifiedListener settingsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceSettingsPanel.class);
@@ -49,12 +50,14 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
     }
 
     @Override
-    public void loadFromOptions(BinaryAppearanceOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         multiFileModeCheckBox.setSelected(options.isMultiFileMode());
     }
 
     @Override
-    public void saveToOptions(BinaryAppearanceOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         options.setMultiFileMode(multiFileModeCheckBox.isSelected());
     }
 

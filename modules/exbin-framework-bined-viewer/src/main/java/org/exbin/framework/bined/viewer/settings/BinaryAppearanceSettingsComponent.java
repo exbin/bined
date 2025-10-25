@@ -28,7 +28,7 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryAppearanceSettingsComponent implements SettingsComponentProvider<BinaryAppearanceOptions> {
+public class BinaryAppearanceSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "binaryAppearance";
 
@@ -40,7 +40,7 @@ public class BinaryAppearanceSettingsComponent implements SettingsComponentProvi
 
     @Nonnull
     @Override
-    public SettingsComponent<BinaryAppearanceOptions> createComponent() {
+    public SettingsComponent createComponent() {
         return new BinaryAppearanceSettingsPanel();
     }
 }

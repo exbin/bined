@@ -28,6 +28,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
@@ -37,7 +38,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent<BinaryEditorOptions> {
+public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
 
@@ -70,7 +71,8 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
     }
 
     @Override
-    public void saveToOptions(BinaryEditorOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
         // Skip direct file handling mode
         options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex() + 1]);
         options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
@@ -78,7 +80,8 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
     }
 
     @Override
-    public void loadFromOptions(BinaryEditorOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
         // Skip direct file handling mode
         fileHandlingModeComboBox.setSelectedIndex(options.getFileHandlingMode().ordinal() - 1);
         enterKeyHandlingModeComboBox.setSelectedIndex(options.getEnterKeyHandlingMode().ordinal());

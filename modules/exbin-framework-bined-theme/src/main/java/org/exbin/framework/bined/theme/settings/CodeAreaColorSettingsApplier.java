@@ -22,7 +22,7 @@ import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Color profiles settings applier.
@@ -35,8 +35,8 @@ public class CodeAreaColorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "codeAreaColorApplier";
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
-        CodeAreaColorOptions options = settingsProvider.getSettings(CodeAreaColorOptions.class);
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
         
         int selectedProfile = options.getSelectedProfile();
         if (selectedProfile >= 0) {

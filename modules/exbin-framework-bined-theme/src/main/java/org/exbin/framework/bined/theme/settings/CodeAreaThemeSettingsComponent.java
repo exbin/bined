@@ -47,7 +47,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider<CodeAreaThemeOptions> {
+public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "themeProfiles";
 
@@ -64,7 +64,7 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
 
     @Nonnull
     @Override
-    public SettingsComponent<CodeAreaThemeOptions> createComponent() {
+    public SettingsComponent createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ThemeProfilesSettingsPanel panel = new ThemeProfilesSettingsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {

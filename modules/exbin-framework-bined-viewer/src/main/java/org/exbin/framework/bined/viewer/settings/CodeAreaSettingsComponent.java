@@ -33,7 +33,7 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaSettingsComponent implements SettingsComponentProvider<CodeAreaOptions> {
+public class CodeAreaSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "codeArea";
 
@@ -45,7 +45,7 @@ public class CodeAreaSettingsComponent implements SettingsComponentProvider<Code
 
     @Nonnull
     @Override
-    public SettingsComponent<CodeAreaOptions> createComponent() {
+    public SettingsComponent createComponent() {
         BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
         ResourceBundle resourceBundle = binedViewerModule.getResourceBundle();
         CodeAreaSettingsPanel panel = new CodeAreaSettingsPanel();

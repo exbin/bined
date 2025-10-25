@@ -21,7 +21,7 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Code area viewer settings applier.
@@ -34,8 +34,8 @@ public class CodeAreaViewerSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "codeAreaViewer";
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
-        CodeAreaOptions options = settingsProvider.getSettings(CodeAreaOptions.class);
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
 //        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
 //        if (!activeFile.isPresent()) {
 //            return;

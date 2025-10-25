@@ -28,7 +28,7 @@ import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Data inspector settings component.
@@ -41,10 +41,10 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "dataInspector";
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
         Font defaultFont = null;
 
-        DataInspectorOptions options = settingsProvider.getSettings(DataInspectorOptions.class);
+        DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         Optional<FileHandler> activeFile = null; // TODO editorProvider.getActiveFile();
         if (!activeFile.isPresent()) {
             return;

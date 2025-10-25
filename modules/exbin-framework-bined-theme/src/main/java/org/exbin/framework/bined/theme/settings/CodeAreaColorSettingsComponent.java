@@ -44,7 +44,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaColorSettingsComponent implements SettingsComponentProvider<CodeAreaColorOptions> {
+public class CodeAreaColorSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "colorProfiles";
 
@@ -56,7 +56,7 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
 
     @Nonnull
     @Override
-    public SettingsComponent<CodeAreaColorOptions> createComponent() {
+    public SettingsComponent createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ColorProfilesSettingsPanel panel = new ColorProfilesSettingsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {

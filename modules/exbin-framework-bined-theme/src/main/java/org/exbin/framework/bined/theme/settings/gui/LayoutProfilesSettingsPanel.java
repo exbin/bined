@@ -26,6 +26,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.options.settings.api.VerticallyExpandable;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -36,7 +37,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaLayoutOptions>, VerticallyExpandable {
+public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent, VerticallyExpandable {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesSettingsPanel.class);
 
@@ -78,17 +79,19 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void loadFromOptions(CodeAreaLayoutOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
         CodeAreaLayoutProfileOptions layoutProfileOptions = new CodeAreaLayoutProfileOptions(options);
         layoutProfileOptions.loadFromPreferences(options);
-        profilesPanel.loadFromOptions(layoutProfileOptions);
+        profilesPanel.loadFromOptions(settingsOptionsProvider);
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
-    public void saveToOptions(CodeAreaLayoutOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
         CodeAreaLayoutProfileOptions layoutProfileOptions = new CodeAreaLayoutProfileOptions(options);
-        profilesPanel.saveToOptions(layoutProfileOptions);
+        profilesPanel.saveToOptions(settingsOptionsProvider);
         layoutProfileOptions.saveToPreferences(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }

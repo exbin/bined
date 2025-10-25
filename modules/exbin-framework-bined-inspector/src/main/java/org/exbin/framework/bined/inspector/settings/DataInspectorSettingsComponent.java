@@ -47,7 +47,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class DataInspectorSettingsComponent implements SettingsComponentProvider<DataInspectorOptions> {
+public class DataInspectorSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "dataInspector";
 
@@ -60,7 +60,7 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
 
     @Nonnull
     @Override
-    public SettingsComponent<DataInspectorOptions> createComponent() {
+    public SettingsComponent createComponent() {
         DataInspectorSettingsPanel panel = new DataInspectorSettingsPanel();
         defaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
         panel.setDefaultFont(defaultFont);

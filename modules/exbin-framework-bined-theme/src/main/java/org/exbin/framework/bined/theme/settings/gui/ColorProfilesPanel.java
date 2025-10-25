@@ -34,6 +34,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorProfileOptions;
 import org.exbin.framework.bined.theme.settings.gui.PreviewPanel.PreviewType;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
@@ -427,7 +428,8 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
         updateStates();
     }
 
-    public void loadFromOptions(CodeAreaColorProfileOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaColorProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorProfileOptions.class);
         List<ColorProfile> profiles = new ArrayList<>();
         List<String> profileNames = options.getProfileNames();
         for (int index = 0; index < profileNames.size(); index++) {
@@ -442,7 +444,8 @@ public class ColorProfilesPanel extends javax.swing.JPanel implements ProfileLis
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(CodeAreaColorProfileOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaColorProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorProfileOptions.class);
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();
         List<ColorProfile> profiles = model.getProfiles();

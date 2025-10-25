@@ -17,7 +17,7 @@ package org.exbin.framework.bined.viewer.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 
 /**
@@ -31,8 +31,8 @@ public class TextEncodingSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "textEncoding";
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
-        TextEncodingOptions options = settingsProvider.getSettings(TextEncodingOptions.class);
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        TextEncodingOptions options = settingsOptionsProvider.getSettingsOptions(TextEncodingOptions.class);
 //        encodingsHandler.setSelectedEncoding(options.getSelectedEncoding());
 //        encodingsHandler.setEncodings(options.getEncodings());
     }

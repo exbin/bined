@@ -26,6 +26,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.options.settings.api.VerticallyExpandable;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -36,7 +37,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaColorOptions>, VerticallyExpandable {
+public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent, VerticallyExpandable {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesSettingsPanel.class);
 
@@ -78,17 +79,19 @@ public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void loadFromOptions(CodeAreaColorOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
         CodeAreaColorProfileOptions colorProfileOptions = new CodeAreaColorProfileOptions(options);
         colorProfileOptions.loadFromPreferences(options);
-        profilesPanel.loadFromOptions(colorProfileOptions);
+        profilesPanel.loadFromOptions(settingsOptionsProvider);
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
-    public void saveToOptions(CodeAreaColorOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
         CodeAreaColorProfileOptions colorProfileOptions = new CodeAreaColorProfileOptions(options);
-        profilesPanel.saveToOptions(colorProfileOptions);
+        profilesPanel.saveToOptions(settingsOptionsProvider);
         colorProfileOptions.saveToPreferences(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }

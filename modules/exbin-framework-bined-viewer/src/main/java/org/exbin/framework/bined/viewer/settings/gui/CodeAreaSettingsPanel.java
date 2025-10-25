@@ -30,6 +30,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
@@ -39,7 +40,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaOptions> {
+public class CodeAreaSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaSettingsPanel.class);
 
@@ -78,7 +79,8 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     }
 
     @Override
-    public void saveToOptions(CodeAreaOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         options.setCodeType(CodeType.values()[codeTypeComboBox.getSelectedIndex()]);
         options.setShowNonprintables(showNonprintableCharactersCheckBox.isSelected());
         options.setCodeCharactersCase(CodeCharactersCase.values()[codeCharactersModeComboBox.getSelectedIndex()]);
@@ -92,7 +94,8 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     }
 
     @Override
-    public void loadFromOptions(CodeAreaOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         codeTypeComboBox.setSelectedIndex(options.getCodeType().ordinal());
         showNonprintableCharactersCheckBox.setSelected(options.isShowNonprintables());
         codeCharactersModeComboBox.setSelectedIndex(options.getCodeCharactersCase().ordinal());

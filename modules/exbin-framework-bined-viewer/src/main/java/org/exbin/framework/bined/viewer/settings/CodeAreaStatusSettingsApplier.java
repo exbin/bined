@@ -24,7 +24,7 @@ import org.exbin.framework.bined.RelativePositionMode;
 import org.exbin.framework.options.settings.api.SettingsOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Go to position options.
@@ -35,6 +35,6 @@ import org.exbin.framework.options.settings.api.SettingsProvider;
 public class CodeAreaStatusSettingsApplier implements SettingsApplier {
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
     }
 }

@@ -37,7 +37,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class TextEncodingSettingsComponent implements SettingsComponentProvider<TextEncodingOptions> {
+public class TextEncodingSettingsComponent implements SettingsComponentProvider {
 
     private EncodingsHandler encodingsHandler;
 
@@ -47,7 +47,7 @@ public class TextEncodingSettingsComponent implements SettingsComponentProvider<
 
     @Nonnull
     @Override
-    public SettingsComponent<TextEncodingOptions> createComponent() {
+    public SettingsComponent createComponent() {
         TextEncodingSettingsPanel panel = new TextEncodingSettingsPanel();
         panel.setTextEncodingService(encodingsHandler.getTextEncodingService());
         panel.setAddEncodingsOperation((List<String> usedEncodings, TextEncodingListPanel.EncodingsUpdate encodingsUpdate) -> {

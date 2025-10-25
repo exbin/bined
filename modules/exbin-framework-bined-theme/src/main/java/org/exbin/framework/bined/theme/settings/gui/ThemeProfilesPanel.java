@@ -33,6 +33,7 @@ import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
@@ -431,7 +432,8 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    public void loadFromOptions(CodeAreaThemeProfileOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaThemeProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
         List<ThemeProfile> profiles = new ArrayList<>();
         List<String> profileNames = options.getProfileNames();
         for (int index = 0; index < profileNames.size(); index++) {
@@ -446,7 +448,8 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(CodeAreaThemeProfileOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaThemeProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();
         List<ThemeProfile> profiles = model.getProfiles();

@@ -26,6 +26,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.options.settings.api.VerticallyExpandable;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -36,7 +37,7 @@ import org.exbin.framework.utils.UtilsModule;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent<CodeAreaThemeOptions>, VerticallyExpandable {
+public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent, VerticallyExpandable {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesSettingsPanel.class);
 
@@ -78,17 +79,19 @@ public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void loadFromOptions(CodeAreaThemeOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         CodeAreaThemeProfileOptions themeProfileOptions = new CodeAreaThemeProfileOptions(options);
         themeProfileOptions.loadFromPreferences(options);
-        profilesPanel.loadFromOptions(themeProfileOptions);
+        profilesPanel.loadFromOptions(settingsOptionsProvider);
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
-    public void saveToOptions(CodeAreaThemeOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         CodeAreaThemeProfileOptions themeProfileOptions = new CodeAreaThemeProfileOptions(options);
-        profilesPanel.saveToOptions(themeProfileOptions);
+        profilesPanel.saveToOptions(settingsOptionsProvider);
         themeProfileOptions.saveToPreferences(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }

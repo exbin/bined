@@ -23,13 +23,13 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 
 
 @ParametersAreNonnullByDefault
-public class StartupSettingsComponent implements SettingsComponentProvider<StartupOptions> {
+public class StartupSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "startup";
 
     @Nonnull
     @Override
-    public SettingsComponent<StartupOptions> createComponent() {
+    public SettingsComponent createComponent() {
         return new StartupSettingsPanel();
     }
 }

@@ -25,6 +25,7 @@ import org.exbin.framework.bined.launcher.settings.StartupOptions.StartupBehavio
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
@@ -33,7 +34,7 @@ import org.exbin.framework.utils.WindowUtils;
  * Startup settings panel.
  */
 @ParametersAreNonnullByDefault
-public class StartupSettingsPanel extends javax.swing.JPanel implements SettingsComponent<StartupOptions> {
+public class StartupSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private SettingsModifiedListener settingsModifiedListener;
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StartupSettingsPanel.class);
@@ -57,7 +58,8 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     }
 
     @Override
-    public void loadFromOptions(StartupOptions options) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        StartupOptions options = settingsOptionsProvider.getSettingsOptions(StartupOptions.class);
         StartupBehavior behavior = options.getStartupBehavior();
         switch (behavior) {
             case START_EMPTY:
@@ -73,7 +75,8 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     }
 
     @Override
-    public void saveToOptions(StartupOptions options) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+        StartupOptions options = settingsOptionsProvider.getSettingsOptions(StartupOptions.class);
         StartupBehavior behavior;
         if (startEmptyRadioButton.isSelected()) {
             behavior = StartupBehavior.START_EMPTY;

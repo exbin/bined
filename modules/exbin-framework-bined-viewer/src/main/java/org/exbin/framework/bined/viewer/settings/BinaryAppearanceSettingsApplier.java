@@ -17,7 +17,7 @@ package org.exbin.framework.bined.viewer.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.options.settings.api.SettingsApplier;
-import org.exbin.framework.options.settings.api.SettingsProvider;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Binary appearance settings applier.
@@ -30,8 +30,8 @@ public class BinaryAppearanceSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryAppearance";
 
     @Override
-    public void applySettings(Object instance, SettingsProvider settingsProvider) {
-        BinaryAppearanceOptions options = settingsProvider.getSettings(BinaryAppearanceOptions.class);
+    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         // TODO
         // binaryAppearanceService.setWordWrapMode(options.isLineWrapping());
     }

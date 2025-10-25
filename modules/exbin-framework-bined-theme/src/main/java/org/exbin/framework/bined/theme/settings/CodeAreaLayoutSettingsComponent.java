@@ -44,7 +44,7 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvider<CodeAreaLayoutOptions> {
+public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "layoutProfiles";
 
@@ -56,7 +56,7 @@ public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvide
 
     @Nonnull
     @Override
-    public SettingsComponent<CodeAreaLayoutOptions> createComponent() {
+    public SettingsComponent createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         LayoutProfilesSettingsPanel panel = new LayoutProfilesSettingsPanel();
         panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
