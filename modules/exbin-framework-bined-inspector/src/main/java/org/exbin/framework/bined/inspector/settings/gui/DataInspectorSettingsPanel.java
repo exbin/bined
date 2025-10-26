@@ -24,7 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.settings.api.DefaultOptionsStorage;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -103,7 +103,8 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         showParsingPanelCheckBox.setSelected(options.isShowParsingPanel());
-        TextFontOptions textFontOptions = new TextFontOptions(new DefaultOptionsStorage());
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        TextFontOptions textFontOptions = new TextFontOptions(optionsModule.createMemoryStorage());
         textFontOptions.setUseDefaultFont(options.isUseDefaultFont());
         Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
         textFontOptions.setFontAttributes((fontAttributes == null) ? defaultFont.getAttributes() : fontAttributes);
@@ -114,7 +115,8 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         options.setShowParsingPanel(showParsingPanelCheckBox.isSelected());
-        TextFontOptions textFontOptions = new TextFontOptions(new DefaultOptionsStorage());
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        TextFontOptions textFontOptions = new TextFontOptions(optionsModule.createMemoryStorage());
         textFontSettingsPanel.saveToOptions(settingsOptionsProvider);
         options.setUseDefaultFont(textFontOptions.isUseDefaultFont());
         options.setFontAttributes(textFontOptions.getFontAttributes());

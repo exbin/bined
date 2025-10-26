@@ -39,7 +39,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.settings.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -149,9 +148,9 @@ public class ColorTemplatePanel extends javax.swing.JPanel implements ProfileLis
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadFromOptions() {
-        CodeAreaColorProfileOptions options = new CodeAreaColorProfileOptions(new DefaultOptionsStorage());
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        CodeAreaColorProfileOptions options = new CodeAreaColorProfileOptions(optionsModule.createMemoryStorage());
         try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/colorTemplates.xml")) {
-            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
             options.loadFromPreferences(new CodeAreaColorOptions(optionsModule.createStreamPreferencesStorage(stream)));
             List<ColorProfile> profiles = new ArrayList<>();
             List<String> profileNames = options.getProfileNames();

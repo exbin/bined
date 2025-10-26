@@ -39,7 +39,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.settings.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -149,9 +148,9 @@ public class LayoutTemplatePanel extends javax.swing.JPanel implements ProfileLi
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadFromOptions() {
-        CodeAreaLayoutProfileOptions options = new CodeAreaLayoutProfileOptions(new DefaultOptionsStorage());
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        CodeAreaLayoutProfileOptions options = new CodeAreaLayoutProfileOptions(optionsModule.createMemoryStorage());
         try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/layoutTemplates.xml")) {
-            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
             options.loadFromPreferences(new CodeAreaLayoutOptions(optionsModule.createStreamPreferencesStorage(stream)));
 
             List<LayoutProfile> profiles = new ArrayList<>();

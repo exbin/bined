@@ -39,7 +39,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeProfileOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.settings.api.DefaultOptionsStorage;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -153,9 +152,9 @@ public class ThemeTemplatePanel extends javax.swing.JPanel implements ProfileLis
     }
 
     private void loadFromOptions() {
-        CodeAreaThemeProfileOptions options = new CodeAreaThemeProfileOptions(new DefaultOptionsStorage());
+        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+        CodeAreaThemeProfileOptions options = new CodeAreaThemeProfileOptions(optionsModule.createMemoryStorage());
         try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/themeTemplates.xml")) {
-            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
             options.loadFromPreferences(new CodeAreaThemeOptions(optionsModule.createStreamPreferencesStorage(stream)));
             List<ThemeProfile> profiles = new ArrayList<>();
             List<String> profileNames = options.getProfileNames();
