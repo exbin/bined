@@ -65,6 +65,7 @@ import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
+import org.exbin.framework.contribution.api.SubSequenceContributionRule;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
@@ -365,7 +366,7 @@ public class BinedViewerModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createCodeAreaFontAction());
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM_LAST));
+        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(BinedModule.VIEW_FONT_SUB_MENU_ID));
     }
 
     public void registerViewModeMenu() {

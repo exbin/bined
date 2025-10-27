@@ -36,7 +36,9 @@ import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.settings.FontSizeOptions;
 import org.exbin.framework.utils.ActionUtils;
 
-
+/**
+ * View font actions.
+ */
 @ParametersAreNonnullByDefault
 public class ViewFontActions {
 

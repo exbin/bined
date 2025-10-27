@@ -64,6 +64,8 @@ import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.RelativeSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
+import org.exbin.framework.contribution.api.SubSequenceContribution;
+import org.exbin.framework.contribution.api.SubSequenceContributionRule;
 import org.exbin.framework.menu.api.MenuManagement;
 import org.exbin.framework.toolbar.api.ToolBarManagement;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
@@ -90,7 +92,8 @@ public class BinedModule implements Module {
     public static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
     public static final String EDIT_OPERATION_MENU_GROUP_ID = MODULE_ID + ".editOperationMenuGroup";
     public static final String VIEW_NONPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewNonprintablesMenuGroup";
-    public static final String VIEW_ZOOM_MENU_GROUP_ID = MODULE_ID + ".viewZoomMenuGroup";
+    public static final String VIEW_FONT_SUB_MENU_ID = MODULE_ID + ".viewFontSubMenu";
+    public static final String VIEW_FONT_ZOOM_MENU_GROUP_ID = MODULE_ID + ".viewZoomMenuGroup";
 
     public static final String BINARY_POPUP_MENU_ID = MODULE_ID + ".binaryPopupMenu";
     public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
@@ -333,14 +336,20 @@ public class BinedModule implements Module {
         getViewFontActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_ZOOM_MENU_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
+        SubSequenceContribution subContribution = mgmt.registerMenuItem(VIEW_FONT_SUB_MENU_ID, resourceBundle.getString("viewFontSubMenu.name"));
+        mgmt.registerMenuRule(subContribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
+
+        SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_FONT_ZOOM_MENU_GROUP_ID);
+        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         contribution = mgmt.registerMenuItem(viewFontActions.createZoomInAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_ZOOM_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(viewFontActions.createZoomOutAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_ZOOM_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(viewFontActions.createResetFontSizeAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_ZOOM_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
     }
 
     public void registerClipboardCodeActions() {
