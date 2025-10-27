@@ -45,6 +45,7 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
         Font defaultFont = null;
 
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
+        DataInspectorFontOptions fontOptions = settingsOptionsProvider.getSettingsOptions(DataInspectorFontOptions.class);
         Optional<FileHandler> activeFile = null; // TODO editorProvider.getActiveFile();
         if (!activeFile.isPresent()) {
             return;
@@ -57,8 +58,8 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
         BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
         BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(options.isShowParsingPanel());
-        boolean useDefaultFont = options.isUseDefaultFont();
-        Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
+        boolean useDefaultFont = fontOptions.isUseDefaultFont();
+        Map<TextAttribute, ?> fontAttributes = fontOptions.getFontAttributes();
         BasicValuesInspector basicValuesInspector = DataInspectorSettingsApplier.getBinEdInspector(component);
         if (basicValuesInspector != null) {
             ((BasicValuesPanel) basicValuesInspector.getComponent()).setInputFieldsFont(useDefaultFont || fontAttributes == null ? defaultFont : new Font(fontAttributes));

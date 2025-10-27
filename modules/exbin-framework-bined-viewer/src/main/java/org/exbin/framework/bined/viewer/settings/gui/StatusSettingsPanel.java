@@ -18,12 +18,14 @@ package org.exbin.framework.bined.viewer.settings.gui;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.StatusCursorPositionFormat;
 import org.exbin.framework.bined.StatusDocumentSizeFormat;
 import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.context.api.ApplicationContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -65,7 +67,23 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+        StatusOptions options = settingsOptionsProvider.getSettingsOptions(StatusOptions.class);
+        StatusCursorPositionFormat cursorPositionFormat = options.getCursorPositionFormat();
+        cursorPositionCodeTypeComboBox.setSelectedIndex(cursorPositionFormat.getCodeType().ordinal());
+        cursorPositionShowOffsetCheckBox.setSelected(cursorPositionFormat.isShowOffset());
+
+        StatusDocumentSizeFormat documentSizeFormat = options.getDocumentSizeFormat();
+        documentSizeCodeTypeComboBox.setSelectedIndex(documentSizeFormat.getCodeType().ordinal());
+        cursorPositionShowOffsetCheckBox.setSelected(documentSizeFormat.isShowRelative());
+
+        octalGroupSizeSpinner.setValue(options.getOctalSpaceGroupSize());
+        decimalGroupSizeSpinner.setValue(options.getDecimalSpaceGroupSize());
+        hexadecimalGroupSizeSpinner.setValue(options.getHexadecimalSpaceGroupSize());
+    }
+
+    @Override
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
         StatusOptions options = settingsOptionsProvider.getSettingsOptions(StatusOptions.class);
         StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
         cursorPositionFormat.setCodeType(PositionCodeType.values()[cursorPositionCodeTypeComboBox.getSelectedIndex()]);
@@ -80,22 +98,6 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
         options.setOctalSpaceGroupSize((int) octalGroupSizeSpinner.getValue());
         options.setDecimalSpaceGroupSize((int) decimalGroupSizeSpinner.getValue());
         options.setHexadecimalSpaceGroupSize((int) hexadecimalGroupSizeSpinner.getValue());
-    }
-
-    @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
-        StatusOptions options = settingsOptionsProvider.getSettingsOptions(StatusOptions.class);
-        StatusCursorPositionFormat cursorPositionFormat = options.getCursorPositionFormat();
-        cursorPositionCodeTypeComboBox.setSelectedIndex(cursorPositionFormat.getCodeType().ordinal());
-        cursorPositionShowOffsetCheckBox.setSelected(cursorPositionFormat.isShowOffset());
-
-        StatusDocumentSizeFormat documentSizeFormat = options.getDocumentSizeFormat();
-        documentSizeCodeTypeComboBox.setSelectedIndex(documentSizeFormat.getCodeType().ordinal());
-        cursorPositionShowOffsetCheckBox.setSelected(documentSizeFormat.isShowRelative());
-
-        octalGroupSizeSpinner.setValue(options.getOctalSpaceGroupSize());
-        decimalGroupSizeSpinner.setValue(options.getDecimalSpaceGroupSize());
-        hexadecimalGroupSizeSpinner.setValue(options.getHexadecimalSpaceGroupSize());
     }
 
     /**

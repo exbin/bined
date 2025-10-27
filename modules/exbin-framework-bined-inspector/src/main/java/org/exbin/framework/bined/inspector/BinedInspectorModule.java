@@ -36,6 +36,7 @@ import org.exbin.framework.bined.inspector.action.ShowParsingPanelAction;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsApplier;
 import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsComponent;
+import org.exbin.framework.bined.inspector.settings.DataInspectorFontOptions;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
@@ -69,8 +70,6 @@ public class BinedInspectorModule implements Module {
 
     private BinEdInspectorManager binEdInspectorManager;
     private BasicValuesPositionColorModifier basicValuesColorModifier;
-
-    private DataInspectorSettingsComponent dataInspectorOptionsPage;
 
     public BinedInspectorModule() {
     }
@@ -163,6 +162,7 @@ public class BinedInspectorModule implements Module {
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
         settingsManagement.registerOptionsSettings(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
         
+        settingsManagement.registerOptionsSettings(DataInspectorFontOptions.class, (optionsStorage) -> new DataInspectorFontOptions(optionsStorage));
         settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);

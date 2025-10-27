@@ -31,6 +31,7 @@ import javax.swing.event.ListSelectionEvent;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.table.api.ValueRowType;
 import org.exbin.framework.bined.inspector.table.settings.TableInspectorOptions;
+import org.exbin.framework.context.api.ApplicationContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -85,7 +86,7 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
         TableInspectorOptions options = settingsOptionsProvider.getSettingsOptions(TableInspectorOptions.class);
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int rowsCount = options.getRowsCount();
@@ -96,7 +97,7 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
         TableInspectorOptions options = settingsOptionsProvider.getSettingsOptions(TableInspectorOptions.class);
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int rowsCount = model.getSize();

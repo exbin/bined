@@ -16,18 +16,20 @@
 package org.exbin.framework.bined.inspector.settings.gui;
 
 import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
+import org.exbin.framework.bined.inspector.settings.DataInspectorFontOptions;
+import org.exbin.framework.context.api.ApplicationContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.api.OptionsModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
+import org.exbin.framework.options.settings.api.SettingsOptionsOverrides;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.font.service.TextFontService;
 import org.exbin.framework.text.font.settings.TextFontOptions;
@@ -100,26 +102,25 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         showParsingPanelCheckBox.setSelected(options.isShowParsingPanel());
-        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        TextFontOptions textFontOptions = new TextFontOptions(optionsModule.createMemoryStorage());
-        textFontOptions.setUseDefaultFont(options.isUseDefaultFont());
-        Map<TextAttribute, ?> fontAttributes = options.getFontAttributes();
-        textFontOptions.setFontAttributes((fontAttributes == null) ? defaultFont.getAttributes() : fontAttributes);
-        textFontSettingsPanel.loadFromOptions(settingsOptionsProvider);
+
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        SettingsOptionsOverrides settingsOptionsOverrides = optionsSettingsModule.createSettingsOptionsOverrides(settingsOptionsProvider);
+        settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
+        textFontSettingsPanel.loadFromOptions(settingsOptionsOverrides, applicationContextProvider);
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         options.setShowParsingPanel(showParsingPanelCheckBox.isSelected());
-        OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        TextFontOptions textFontOptions = new TextFontOptions(optionsModule.createMemoryStorage());
-        textFontSettingsPanel.saveToOptions(settingsOptionsProvider);
-        options.setUseDefaultFont(textFontOptions.isUseDefaultFont());
-        options.setFontAttributes(textFontOptions.getFontAttributes());
+
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        SettingsOptionsOverrides settingsOptionsOverrides = optionsSettingsModule.createSettingsOptionsOverrides(settingsOptionsProvider);
+        settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
+        textFontSettingsPanel.saveToOptions(settingsOptionsOverrides, applicationContextProvider);
     }
 
     /**

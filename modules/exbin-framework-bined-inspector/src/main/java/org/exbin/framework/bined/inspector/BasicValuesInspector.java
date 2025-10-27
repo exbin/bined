@@ -30,6 +30,7 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.operation.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
+import org.exbin.framework.bined.inspector.settings.DataInspectorFontOptions;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 
@@ -98,13 +99,15 @@ public class BasicValuesInspector implements BinEdInspector {
 
     @Override
     public void onInitFromOptions(OptionsStorage options) {
+        // TODO Move to applier
         getComponent();
-        DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(options);
-        boolean useDefaultFont = dataInspectorPreferences.isUseDefaultFont();
+        DataInspectorOptions dataInspectorOptions = new DataInspectorOptions(options);
+        DataInspectorFontOptions fontOptions = new DataInspectorFontOptions(options);
+        boolean useDefaultFont = fontOptions.isUseDefaultFont();
         if (useDefaultFont) {
             component.setInputFieldsFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
         } else {
-            Map<TextAttribute, Object> fontAttributes = dataInspectorPreferences.getFontAttributes();
+            Map<TextAttribute, Object> fontAttributes = fontOptions.getFontAttributes();
             component.setInputFieldsFont(new Font(fontAttributes));
         }
     }

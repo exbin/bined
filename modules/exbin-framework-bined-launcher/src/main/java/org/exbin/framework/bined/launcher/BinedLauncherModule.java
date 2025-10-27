@@ -386,6 +386,8 @@ public class BinedLauncherModule implements LauncherModule {
     public void registerSettings() {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = settingsModule.getMainSettingsManager();
+        
+        settingsManager.registerOptionsSettings(StartupOptions.class, (optionsStorage) -> new StartupOptions(optionsStorage));
         settingsManager.registerComponent(StartupSettingsComponent.COMPONENT_ID, new StartupSettingsComponent());
     }
 }

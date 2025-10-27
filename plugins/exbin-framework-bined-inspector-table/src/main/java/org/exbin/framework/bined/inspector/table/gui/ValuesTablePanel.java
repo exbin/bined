@@ -65,7 +65,7 @@ public class ValuesTablePanel extends javax.swing.JPanel {
 
         initComponents();
 
-        TableColumnModel columns = propertiesTable.getColumnModel();
+        TableColumnModel columns = valuesTable.getColumnModel();
         columns.getColumn(0).setPreferredWidth(80);
         columns.getColumn(1).setPreferredWidth(80);
         columns.getColumn(0).setWidth(80);
@@ -86,7 +86,7 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         valueCellEditor = new PropertyTableCellEditor();
         columns.getColumn(1).setCellEditor(valueCellEditor);
 
-        propertiesTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        valuesTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Nonnull
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -137,8 +137,8 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         long dataPosition = ((CaretCapable) codeArea).getDataPosition();
         long available = dataSize - dataPosition;
 
-        if (propertiesTable.isEditing()) {
-            propertiesTable.getCellEditor().cancelCellEditing();
+        if (valuesTable.isEditing()) {
+            valuesTable.getCellEditor().cancelCellEditing();
         }
 
         int valuesAvailable = available > DATA_LIMIT ? DATA_LIMIT : (int) available;
@@ -160,57 +160,57 @@ public class ValuesTablePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         mainScrollPane = new javax.swing.JScrollPane();
-        propertiesTable = new javax.swing.JTable();
-        settingsPanel = new javax.swing.JPanel();
-        settingsButton = new javax.swing.JButton();
+        valuesTable = new javax.swing.JTable();
+        configurePanel = new javax.swing.JPanel();
+        configureButton = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         mainScrollPane.setName("mainScrollPane"); // NOI18N
 
-        propertiesTable.setModel(tableModel);
-        propertiesTable.setName("propertiesTable"); // NOI18N
-        propertiesTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        mainScrollPane.setViewportView(propertiesTable);
+        valuesTable.setModel(tableModel);
+        valuesTable.setName("valuesTable"); // NOI18N
+        valuesTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        mainScrollPane.setViewportView(valuesTable);
 
         add(mainScrollPane, java.awt.BorderLayout.CENTER);
 
-        settingsPanel.setName("settingsPanel"); // NOI18N
+        configurePanel.setName("configurePanel"); // NOI18N
 
-        settingsButton.setText(resourceBundle.getString("settingsButton.text")); // NOI18N
-        settingsButton.setName("settingsButton"); // NOI18N
-        settingsButton.addActionListener(new java.awt.event.ActionListener() {
+        configureButton.setText(resourceBundle.getString("configureButton.text")); // NOI18N
+        configureButton.setName("configureButton"); // NOI18N
+        configureButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settingsButtonActionPerformed(evt);
+                configureButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
-        settingsPanel.setLayout(settingsPanelLayout);
-        settingsPanelLayout.setHorizontalGroup(
-            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsPanelLayout.createSequentialGroup()
-                .addContainerGap(323, Short.MAX_VALUE)
-                .addComponent(settingsButton)
+        javax.swing.GroupLayout configurePanelLayout = new javax.swing.GroupLayout(configurePanel);
+        configurePanel.setLayout(configurePanelLayout);
+        configurePanelLayout.setHorizontalGroup(
+            configurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, configurePanelLayout.createSequentialGroup()
+                .addContainerGap(315, Short.MAX_VALUE)
+                .addComponent(configureButton)
                 .addContainerGap())
         );
-        settingsPanelLayout.setVerticalGroup(
-            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(settingsPanelLayout.createSequentialGroup()
+        configurePanelLayout.setVerticalGroup(
+            configurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(configurePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingsButton)
+                .addComponent(configureButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        add(settingsPanel, java.awt.BorderLayout.SOUTH);
+        add(configurePanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
+    private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
         if (controller != null) {
             controller.performSettings();
         }
-    }//GEN-LAST:event_settingsButtonActionPerformed
+    }//GEN-LAST:event_configureButtonActionPerformed
 
     /**
      * Test method for this panel.
@@ -224,10 +224,10 @@ public class ValuesTablePanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton configureButton;
+    private javax.swing.JPanel configurePanel;
     private javax.swing.JScrollPane mainScrollPane;
-    private javax.swing.JTable propertiesTable;
-    private javax.swing.JButton settingsButton;
-    private javax.swing.JPanel settingsPanel;
+    private javax.swing.JTable valuesTable;
     // End of variables declaration//GEN-END:variables
 
     public static interface Controller {

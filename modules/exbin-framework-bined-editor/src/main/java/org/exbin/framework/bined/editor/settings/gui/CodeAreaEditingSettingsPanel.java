@@ -18,12 +18,14 @@ package org.exbin.framework.bined.editor.settings.gui;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
+import org.exbin.framework.context.api.ApplicationContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -71,21 +73,21 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
-        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
-        // Skip direct file handling mode
-        options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex() + 1]);
-        options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
-        options.setTabKeyHandlingMode(TabKeyHandlingMode.values()[tabKeyHandlingModeComboBox.getSelectedIndex()]);
-    }
-
-    @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
         BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
         // Skip direct file handling mode
         fileHandlingModeComboBox.setSelectedIndex(options.getFileHandlingMode().ordinal() - 1);
         enterKeyHandlingModeComboBox.setSelectedIndex(options.getEnterKeyHandlingMode().ordinal());
         tabKeyHandlingModeComboBox.setSelectedIndex(options.getTabKeyHandlingMode().ordinal());
+    }
+
+    @Override
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
+        // Skip direct file handling mode
+        options.setFileHandlingMode(FileHandlingMode.values()[fileHandlingModeComboBox.getSelectedIndex() + 1]);
+        options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
+        options.setTabKeyHandlingMode(TabKeyHandlingMode.values()[tabKeyHandlingModeComboBox.getSelectedIndex()]);
     }
 
     /**
