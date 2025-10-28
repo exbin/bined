@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdFileManager;
-import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.bined.viewer.settings.gui.StatusSettingsPanel;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
@@ -34,14 +35,9 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 @ParametersAreNonnullByDefault
 public class CodeAreaStatusSettingsComponent implements SettingsComponentProvider {
 
-    public static final String PAGE_ID = "status";
+    public static final String COMPONENT_ID = "status";
 
-    private java.util.ResourceBundle resourceBundle;
     private BinEdFileManager fileManager;
-
-    public void setResourceBundle(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-    }
 
     public void setFileManager(BinEdFileManager fileManager) {
         this.fileManager = fileManager;
@@ -51,6 +47,8 @@ public class CodeAreaStatusSettingsComponent implements SettingsComponentProvide
     @Override
     public SettingsComponent createComponent() {
         StatusSettingsPanel panel = new StatusSettingsPanel();
+        BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
+        ResourceBundle resourceBundle = binedViewerModule.getResourceBundle();
 
         List<String> cursorPositionCodeTypes = new ArrayList<>();
         cursorPositionCodeTypes.add(resourceBundle.getString("cursorPositionCodeType.octal"));

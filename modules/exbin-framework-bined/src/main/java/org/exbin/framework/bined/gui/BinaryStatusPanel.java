@@ -39,7 +39,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.BinaryStatusApi;
-import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UiUtils;
@@ -57,14 +57,14 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryStatusPanel.class);
 
-    private StatusOptions statusParameters;
+    private CodeAreaStatusOptions statusParameters;
     private Controller controller;
 
     private StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
     private StatusDocumentSizeFormat documentSizeFormat = new StatusDocumentSizeFormat();
-    private int octalSpaceGroupSize = StatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
-    private int decimalSpaceGroupSize = StatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
-    private int hexadecimalSpaceGroupSize = StatusOptions.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
+    private int octalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
+    private int decimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
+    private int hexadecimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
 
     private EditOperation editOperation;
     private CodeAreaCaretPosition caretPosition;
@@ -76,7 +76,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         initComponents();
     }
 
-    public void loadFromOptions(StatusOptions statusOptions) {
+    public void loadFromOptions(CodeAreaStatusOptions statusOptions) {
         this.statusParameters = statusOptions;
         cursorPositionFormat.setCodeType(statusOptions.getCursorPositionCodeType());
         cursorPositionFormat.setShowOffset(statusOptions.isCursorShowOffset());
@@ -131,7 +131,7 @@ public class BinaryStatusPanel extends javax.swing.JPanel implements BinaryStatu
         documentSizeShowRelativeCheckBoxMenuItem.setSelected(documentSizeFormat.isShowRelative());
     }
 
-    public void setStatusOptions(StatusOptions statusOptions) {
+    public void setStatusOptions(CodeAreaStatusOptions statusOptions) {
         cursorPositionFormat = statusOptions.getCursorPositionFormat();
         documentSizeFormat = statusOptions.getDocumentSizeFormat();
         octalSpaceGroupSize = statusOptions.getOctalSpaceGroupSize();

@@ -15,7 +15,7 @@
  */
 package org.exbin.framework.bined.viewer.settings;
 
-import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
@@ -32,7 +32,7 @@ public class BinaryViewerOptions {
 
     private final OptionsStorage storage;
 
-    private final StatusOptions statusOptions;
+    private final CodeAreaStatusOptions statusOptions;
     private final CodeAreaOptions codeAreaOptions;
     private final TextEncodingOptions encodingOptions;
     private final TextFontOptions fontOptions;
@@ -40,7 +40,7 @@ public class BinaryViewerOptions {
     public BinaryViewerOptions(OptionsStorage storage) {
         this.storage = storage;
 
-        statusOptions = new StatusOptions(storage);
+        statusOptions = new CodeAreaStatusOptions(storage);
         codeAreaOptions = new CodeAreaOptions(storage);
         encodingOptions = new TextEncodingOptions(storage);
         fontOptions = new TextFontOptions(storage);
@@ -52,7 +52,7 @@ public class BinaryViewerOptions {
     }
 
     @Nonnull
-    public StatusOptions getStatusOptions() {
+    public CodeAreaStatusOptions getStatusOptions() {
         return statusOptions;
     }
 

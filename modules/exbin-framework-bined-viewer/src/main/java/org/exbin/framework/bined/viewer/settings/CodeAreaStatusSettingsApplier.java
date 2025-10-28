@@ -27,12 +27,14 @@ import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
- * Go to position options.
+ * Code area status settings applier.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaStatusSettingsApplier implements SettingsApplier {
+
+    public static final String APPLIER_ID = "binaryStatus";
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {

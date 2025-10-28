@@ -24,7 +24,7 @@ import org.exbin.bined.PositionCodeType;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.StatusCursorPositionFormat;
 import org.exbin.framework.bined.StatusDocumentSizeFormat;
-import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import org.exbin.framework.context.api.ApplicationContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -68,7 +68,7 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
 
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
-        StatusOptions options = settingsOptionsProvider.getSettingsOptions(StatusOptions.class);
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         StatusCursorPositionFormat cursorPositionFormat = options.getCursorPositionFormat();
         cursorPositionCodeTypeComboBox.setSelectedIndex(cursorPositionFormat.getCodeType().ordinal());
         cursorPositionShowOffsetCheckBox.setSelected(cursorPositionFormat.isShowOffset());
@@ -84,7 +84,7 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
 
     @Override
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
-        StatusOptions options = settingsOptionsProvider.getSettingsOptions(StatusOptions.class);
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
         cursorPositionFormat.setCodeType(PositionCodeType.values()[cursorPositionCodeTypeComboBox.getSelectedIndex()]);
         cursorPositionFormat.setShowOffset(cursorPositionShowOffsetCheckBox.isSelected());

@@ -24,7 +24,6 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.text.encoding.gui.TextEncodingListPanel;
 import org.exbin.framework.text.encoding.gui.TextEncodingPanel;
-import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.encoding.settings.gui.TextEncodingSettingsPanel;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;

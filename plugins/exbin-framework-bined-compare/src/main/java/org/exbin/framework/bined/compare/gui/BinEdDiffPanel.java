@@ -57,7 +57,7 @@ import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
@@ -257,8 +257,8 @@ public class BinEdDiffPanel extends JPanel {
 
             @Nonnull
             @Override
-            public StatusOptions getStatusOptions() {
-                return new StatusOptions(preferences);
+            public CodeAreaStatusOptions getStatusOptions() {
+                return new CodeAreaStatusOptions(preferences);
             }
 
             @Nonnull
@@ -281,8 +281,8 @@ public class BinEdDiffPanel extends JPanel {
         });
 
         encodingsHandler.loadFromOptions(new TextEncodingOptions(preferences));
-        leftStatusPanel.loadFromOptions(new StatusOptions(preferences));
-        rightStatusPanel.loadFromOptions(new StatusOptions(preferences));
+        leftStatusPanel.loadFromOptions(new CodeAreaStatusOptions(preferences));
+        rightStatusPanel.loadFromOptions(new CodeAreaStatusOptions(preferences));
         toolbarPanel.loadFromOptions(preferences);
 
         BinaryStatusApi.MemoryMode memoryMode = BinaryStatusApi.MemoryMode.READ_ONLY;
@@ -311,7 +311,7 @@ public class BinEdDiffPanel extends JPanel {
             ((CodeAreaOperationCommandHandler) codeArea.getCommandHandler()).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
         }
 
-        StatusOptions statusOptions = applyOptions.getStatusOptions();
+        CodeAreaStatusOptions statusOptions = applyOptions.getStatusOptions();
         leftStatusPanel.setStatusOptions(statusOptions);
         rightStatusPanel.setStatusOptions(statusOptions);
         toolbarPanel.applyFromCodeArea();
@@ -449,7 +449,7 @@ public class BinEdDiffPanel extends JPanel {
         BinaryEditorOptions getEditorOptions();
 
         @Nonnull
-        StatusOptions getStatusOptions();
+        CodeAreaStatusOptions getStatusOptions();
 
         @Nonnull
         CodeAreaLayoutOptions getLayoutOptions();

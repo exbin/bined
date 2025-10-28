@@ -26,12 +26,12 @@ import org.exbin.framework.options.settings.api.SettingsOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 
 /**
- * Code area status panel options.
+ * Code area status bar options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class StatusOptions implements SettingsOptions {
+public class CodeAreaStatusOptions implements SettingsOptions {
 
     public static int DEFAULT_OCTAL_SPACE_GROUP_SIZE = 4;
     public static int DEFAULT_DECIMAL_SPACE_GROUP_SIZE = 3;
@@ -47,7 +47,7 @@ public class StatusOptions implements SettingsOptions {
 
     private final OptionsStorage storage;
 
-    public StatusOptions(OptionsStorage storage) {
+    public CodeAreaStatusOptions(OptionsStorage storage) {
         this.storage = storage;
     }
 
@@ -57,7 +57,7 @@ public class StatusOptions implements SettingsOptions {
         try {
             return PositionCodeType.valueOf(storage.get(KEY_CURSOR_POSITION_CODE_TYPE, defaultCodeType.name()));
         } catch (Exception ex) {
-            Logger.getLogger(StatusOptions.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CodeAreaStatusOptions.class.getName()).log(Level.SEVERE, null, ex);
             return defaultCodeType;
         }
     }
@@ -80,7 +80,7 @@ public class StatusOptions implements SettingsOptions {
         try {
             return PositionCodeType.valueOf(storage.get(KEY_DOCUMENT_SIZE_CODE_TYPE, defaultCodeType.name()));
         } catch (Exception ex) {
-            Logger.getLogger(StatusOptions.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CodeAreaStatusOptions.class.getName()).log(Level.SEVERE, null, ex);
             return defaultCodeType;
         }
     }
@@ -143,7 +143,7 @@ public class StatusOptions implements SettingsOptions {
 
     @Override
     public void copyTo(SettingsOptions options) {
-        StatusOptions with = (StatusOptions) options;
+        CodeAreaStatusOptions with = (CodeAreaStatusOptions) options;
         with.setCursorPositionCodeType(getCursorPositionCodeType());
         with.setCursorShowOffset(isCursorShowOffset());
         with.setDecimalSpaceGroupSize(getDecimalSpaceGroupSize());

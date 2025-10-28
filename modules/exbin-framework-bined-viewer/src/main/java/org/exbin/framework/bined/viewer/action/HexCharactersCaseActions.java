@@ -23,7 +23,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;

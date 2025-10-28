@@ -167,17 +167,10 @@ public class BinedInspectorModule implements Module {
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);
+        settingsManagement.registerSettingsRule(pageContribution, new SettingsPageContributionRule("binary"));
+        
         SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(DataInspectorSettingsComponent.COMPONENT_ID, new DataInspectorSettingsComponent());
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
-
-//        OptionsGroup inspectorOptionsGroup = settingsModule.createOptionsGroup("inspector", getResourceBundle());
-//        settingsManagement.registerGroup(inspectorOptionsGroup);
-//        settingsManagement.registerGroupRule(inspectorOptionsGroup, new ParentOptionsGroupRule("binaryEditor"));
-//
-//        dataInspectorOptionsPage = new DataInspectorSettingsComponent();
-//        dataInspectorOptionsPage.setEditorProvider(editorProvider);
-//        settingsManagement.registerPage(dataInspectorOptionsPage);
-//        settingsManagement.registerPageRule(dataInspectorOptionsPage, new GroupOptionsPageRule(inspectorOptionsGroup));
     }
 
     @Nonnull

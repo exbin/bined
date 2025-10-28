@@ -31,7 +31,7 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.bined.settings.StatusOptions;
+import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.text.encoding.EncodingsHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
@@ -134,14 +134,14 @@ public class BinEdFileManager {
         }
     }
 
-    public void applyPreferencesChanges(StatusOptions options) {
+    public void applyPreferencesChanges(CodeAreaStatusOptions options) {
         if (binaryStatusPanel != null) {
             binaryStatusPanel.setStatusOptions(options);
         }
     }
 
-    public void setStatusControlHandler(BinaryStatusPanel.Controller statusControlHandler) {
-        binaryStatusPanel.setController(statusControlHandler);
+    public void setBinaryStatusController(BinaryStatusPanel.Controller binaryStatusController) {
+        binaryStatusPanel.setController(binaryStatusController);
     }
 
     public void setCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
@@ -154,7 +154,7 @@ public class BinEdFileManager {
 
     public void loadFromOptions(OptionsStorage options) {
         if (binaryStatusPanel != null) {
-            binaryStatusPanel.loadFromOptions(new StatusOptions(options));
+            binaryStatusPanel.loadFromOptions(new CodeAreaStatusOptions(options));
         }
     }
 
