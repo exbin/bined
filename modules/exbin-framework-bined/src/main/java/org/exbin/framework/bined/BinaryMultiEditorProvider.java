@@ -49,8 +49,8 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.DialogParentComponent;
+import org.exbin.framework.context.api.ApplicationContextManager;
 import org.exbin.framework.editor.DefaultMultiEditorProvider;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
@@ -82,7 +82,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
 
     private void init() {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        ApplicationContextManager contextManager = frameModule.getFrameHandler().getContextManager();
         dialogParentComponent = () -> frameModule.getFrame();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.addFlavorListener((FlavorEvent e) -> {
@@ -103,7 +103,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                 }
             }
         });
-        componentActivationListener.updated(EditorProvider.class, this);
+        contextManager.changeActiveState(EditorProvider.class, this);
     }
 
     @Override

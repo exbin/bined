@@ -45,6 +45,8 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionContextManager;
+import org.exbin.framework.action.api.ActionManager;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
@@ -56,9 +58,10 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActiveComponent;
-import org.exbin.framework.action.api.DefaultActionContextService;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.action.GoToPositionAction;
+import org.exbin.framework.context.api.ApplicationContextManager;
+import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.RelativeSequenceContributionRule;
@@ -490,12 +493,21 @@ public class BinedModule implements Module {
         popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
 
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
-        DefaultActionContextService actionContextService = new DefaultActionContextService();
-        actionContextService.updated(ActiveComponent.class, new BinEdDataComponent(codeArea));
-        actionContextService.updated(EditorProvider.class, editorProvider);
-        actionContextService.updated(FileHandler.class, editorProvider.getActiveFile().orElse(null));
-        actionContextService.updated(DialogParentComponent.class, () -> codeArea);
-        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionContextService);
+        ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+        ApplicationContextManager contextManager = contextModule.createContextManager();
+        contextManager.changeActiveState(ActiveComponent.class, new BinEdDataComponent(codeArea));
+        contextManager.changeActiveState(EditorProvider.class, editorProvider);
+        contextManager.changeActiveState(FileHandler.class, editorProvider.getActiveFile().orElse(null));
+        contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
+
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        ActionManager actionManager = actionModule.createActionManager(contextManager);
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, new ActionContextManager() {
+            @Override
+            public void registerActionContext(Action action) {
+                
+            }
+        });
         return popupMenu;
     }
 

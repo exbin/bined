@@ -44,12 +44,12 @@ import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
-import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
+import org.exbin.framework.context.api.ApplicationContextManager;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
@@ -75,7 +75,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private String title;
     private SectionCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
-    private ComponentActivationListener componentActivationListener;
+    private ApplicationContextManager contextManager;
     private BinEdDataComponent binaryDataComponent;
     private DialogParentComponent dialogParentComponent;
     private UndoRedo undoRedo = null;
@@ -100,8 +100,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         defaultColors = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
         binaryDataComponent = new BinEdDataComponent(codeArea);
         codeArea.addSelectionChangedListener(() -> {
-            if (componentActivationListener != null) {
-                componentActivationListener.updated(ActiveComponent.class, binaryDataComponent);
+            if (contextManager != null) {
+                contextManager.changeActiveState(ActiveComponent.class, binaryDataComponent);
             }
         });
     }
@@ -465,13 +465,13 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Override
-    public void componentActivated(ComponentActivationListener componentActivationListener) {
-        this.componentActivationListener = componentActivationListener;
-        componentActivationListener.updated(TextFontController.class, binaryDataComponent);
-        componentActivationListener.updated(TextEncodingController.class, binaryDataComponent);
-        componentActivationListener.updated(UndoRedoState.class, undoRedo);
-        componentActivationListener.updated(ActiveComponent.class, binaryDataComponent);
-        componentActivationListener.updated(DialogParentComponent.class, new DialogParentComponent() {
+    public void componentActivated(ApplicationContextManager contextManager) {
+        this.contextManager = contextManager;
+        contextManager.changeActiveState(TextFontController.class, binaryDataComponent);
+        contextManager.changeActiveState(TextEncodingController.class, binaryDataComponent);
+        contextManager.changeActiveState(UndoRedoState.class, undoRedo);
+        contextManager.changeActiveState(ActiveComponent.class, binaryDataComponent);
+        contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull
             @Override
             public Component getComponent() {
@@ -481,13 +481,13 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Override
-    public void componentDeactivated(ComponentActivationListener componentActivationListener) {
-        this.componentActivationListener = null;
-        componentActivationListener.updated(TextFontController.class, null);
-        componentActivationListener.updated(TextEncodingController.class, null);
-        componentActivationListener.updated(UndoRedoState.class, null);
-        componentActivationListener.updated(ActiveComponent.class, null);
-        componentActivationListener.updated(DialogParentComponent.class, dialogParentComponent);
+    public void componentDeactivated(ApplicationContextManager contextManager) {
+        this.contextManager = null;
+        contextManager.changeActiveState(TextFontController.class, null);
+        contextManager.changeActiveState(TextEncodingController.class, null);
+        contextManager.changeActiveState(UndoRedoState.class, null);
+        contextManager.changeActiveState(ActiveComponent.class, null);
+        contextManager.changeActiveState(DialogParentComponent.class, dialogParentComponent);
     }
 
     @Override
@@ -497,8 +497,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     private void notifyUndoChanged() {
         if (undoRedo != null) {
-            if (componentActivationListener != null) {
-                componentActivationListener.updated(UndoRedoState.class, undoRedo);
+            if (contextManager != null) {
+                contextManager.changeActiveState(UndoRedoState.class, undoRedo);
             }
         }
     }

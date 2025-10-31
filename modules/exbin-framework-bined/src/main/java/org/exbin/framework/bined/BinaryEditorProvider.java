@@ -40,13 +40,13 @@ import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.context.api.ApplicationContextManager;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileTypes;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
-import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -68,11 +68,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     @Nullable
     private File lastUsedDirectory;
     private BinaryStatusApi binaryStatus;
-    private ComponentActivationListener componentActivationListener = new ComponentActivationListener() {
-        @Override
-        public <T> void updated(Class<T> instanceClass, T instance) {
-        }
-    };
+    private ApplicationContextManager contextManager;
 
     public BinaryEditorProvider(BinEdFileHandler activeFile) {
         init(activeFile);
@@ -81,7 +77,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     private void init(BinEdFileHandler activeFile) {
         // TODO: Drop dependency on frame module
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
+        contextManager = frameModule.getFrameHandler().getContextManager();
         this.activeFile = activeFile;
         activeFile.setDialogParentComponent(() -> frameModule.getFrame());
         fileTypes = new AllFileTypes();
@@ -101,16 +97,16 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
                 }
             }
         });
-        componentActivationListener.updated(EditorProvider.class, this);
+        contextManager.changeActiveState(EditorProvider.class, this);
         activeFileChanged();
     }
 
     private void activeFileChanged() {
-        componentActivationListener.updated(FileHandler.class, activeFile);
+        contextManager.changeActiveState(FileHandler.class, activeFile);
         if (activeFile instanceof EditorFileHandler) {
-            ((EditorFileHandler) activeFile).componentActivated(componentActivationListener);
+            ((EditorFileHandler) activeFile).componentActivated(contextManager);
         }
-        componentActivationListener.updated(FileOperations.class, this);
+        contextManager.changeActiveState(FileOperations.class, this);
     }
 
     @Nonnull

@@ -41,7 +41,6 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ComponentActivationListener;
 import org.exbin.framework.action.api.ActionContextChangeManager;
 import org.exbin.framework.action.api.ActionManager;
 import org.exbin.framework.action.api.ActiveComponent;
@@ -64,6 +63,8 @@ import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.options.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
+import org.exbin.framework.context.api.ApplicationContextManager;
+import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
@@ -102,14 +103,18 @@ public class MacroManager {
     private JMenu macrosMenu;
     private int lastActiveMacro = -1;
     private long lastMacroIndex = 0;
+    private ApplicationContextManager contextManager;
     private ActionManager actionManager;
 
     public MacroManager() {
     }
 
     public void init() {
+        // TODO Use different context
+        ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+        contextManager = contextModule.createContextManager();
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionManager = actionModule.createActionManager();
+        actionManager = actionModule.createActionManager(contextManager);
         addMacroAction.setup(resourceBundle);
         editMacroAction.setup(resourceBundle);
         manageMacrosAction.setup(resourceBundle);
@@ -268,15 +273,15 @@ public class MacroManager {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });
                     manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
-                        ((ComponentActivationListener) actionManager).updated(ActiveComponent.class, instance);
+                        contextManager.changeActiveState(ActiveComponent.class, instance);
                         activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                         updateMacrosMenu();
                     });
                     manager.registerUpdateListener(DialogParentComponent.class, (instance) -> {
-                        ((ComponentActivationListener) actionManager).updated(DialogParentComponent.class, instance);
+                        contextManager.changeActiveState(DialogParentComponent.class, instance);
                     });
                     manager.registerUpdateListener(EditorProvider.class, (instance) -> {
-                        ((ComponentActivationListener) actionManager).updated(EditorProvider.class, instance);
+                        contextManager.changeActiveState(EditorProvider.class, instance);
                     });
                 }
             });
@@ -314,12 +319,12 @@ public class MacroManager {
                     fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 });
                 manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
-                    ((ComponentActivationListener) actionManager).updated(ActiveComponent.class, instance);
+                    contextManager.changeActiveState(ActiveComponent.class, instance);
                     activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     updateMacrosMenu();
                 });
                 manager.registerUpdateListener(EditorProvider.class, (instance) -> {
-                    ((ComponentActivationListener) actionManager).updated(EditorProvider.class, instance);
+                    contextManager.changeActiveState(EditorProvider.class, instance);
                 });
             }
         });
@@ -453,8 +458,8 @@ public class MacroManager {
     private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
         // TODO Reported as a change of CodeAreaCore - create some kind of macro recording state instead?
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ComponentActivationListener componentActivationListener = frameModule.getFrameHandler().getComponentActivationListener();
-        componentActivationListener.updated(CodeAreaCore.class, codeArea);
+        ApplicationContextManager frameContextManager = frameModule.getFrameHandler().getContextManager();
+        frameContextManager.changeActiveState(CodeAreaCore.class, codeArea);
     }
 
     public void updateMacrosMenu() {
