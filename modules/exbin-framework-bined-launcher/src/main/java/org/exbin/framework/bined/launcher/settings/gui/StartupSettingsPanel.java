@@ -23,7 +23,7 @@ import javax.swing.ButtonGroup;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.launcher.settings.StartupOptions;
 import org.exbin.framework.bined.launcher.settings.StartupOptions.StartupBehavior;
-import org.exbin.framework.context.api.ApplicationContextProvider;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -60,7 +60,7 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         StartupOptions options = settingsOptionsProvider.getSettingsOptions(StartupOptions.class);
         StartupBehavior behavior = options.getStartupBehavior();
         switch (behavior) {
@@ -77,7 +77,7 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         StartupOptions options = settingsOptionsProvider.getSettingsOptions(StartupOptions.class);
         StartupBehavior behavior;
         if (startEmptyRadioButton.isSelected()) {

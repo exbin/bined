@@ -63,7 +63,7 @@ import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.options.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
-import org.exbin.framework.context.api.ApplicationContextManager;
+import org.exbin.framework.context.api.ActiveContextManager;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
@@ -103,7 +103,7 @@ public class MacroManager {
     private JMenu macrosMenu;
     private int lastActiveMacro = -1;
     private long lastMacroIndex = 0;
-    private ApplicationContextManager contextManager;
+    private ActiveContextManager contextManager;
     private ActionManager actionManager;
 
     public MacroManager() {
@@ -458,7 +458,7 @@ public class MacroManager {
     private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
         // TODO Reported as a change of CodeAreaCore - create some kind of macro recording state instead?
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ApplicationContextManager frameContextManager = frameModule.getFrameHandler().getContextManager();
+        ActiveContextManager frameContextManager = frameModule.getFrameHandler().getContextManager();
         frameContextManager.changeActiveState(CodeAreaCore.class, codeArea);
     }
 

@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
-import org.exbin.framework.context.api.ApplicationContextProvider;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -52,13 +52,13 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         multiFileModeCheckBox.setSelected(options.isMultiFileMode());
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         options.setMultiFileMode(multiFileModeCheckBox.isSelected());
     }

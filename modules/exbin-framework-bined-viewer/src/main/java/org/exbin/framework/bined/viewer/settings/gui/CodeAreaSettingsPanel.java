@@ -27,7 +27,7 @@ import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
-import org.exbin.framework.context.api.ApplicationContextProvider;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -81,7 +81,7 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         codeTypeComboBox.setSelectedIndex(options.getCodeType().ordinal());
         showNonprintableCharactersCheckBox.setSelected(options.isShowNonprintables());
@@ -96,7 +96,7 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         options.setCodeType(CodeType.values()[codeTypeComboBox.getSelectedIndex()]);
         options.setShowNonprintables(showNonprintableCharactersCheckBox.isSelected());

@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeProfileOptions;
-import org.exbin.framework.context.api.ApplicationContextProvider;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
@@ -433,7 +433,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaThemeProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
         List<ThemeProfile> profiles = new ArrayList<>();
         List<String> profileNames = options.getProfileNames();
@@ -449,7 +449,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaThemeProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();

@@ -40,7 +40,7 @@ import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.context.api.ApplicationContextManager;
+import org.exbin.framework.context.api.ActiveContextManager;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileType;
@@ -68,7 +68,7 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     @Nullable
     private File lastUsedDirectory;
     private BinaryStatusApi binaryStatus;
-    private ApplicationContextManager contextManager;
+    private ActiveContextManager contextManager;
 
     public BinaryEditorProvider(BinEdFileHandler activeFile) {
         init(activeFile);

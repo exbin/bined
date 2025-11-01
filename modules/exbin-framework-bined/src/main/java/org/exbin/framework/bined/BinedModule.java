@@ -60,7 +60,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.action.GoToPositionAction;
-import org.exbin.framework.context.api.ApplicationContextManager;
+import org.exbin.framework.context.api.ActiveContextManager;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
@@ -494,7 +494,7 @@ public class BinedModule implements Module {
 
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ApplicationContextManager contextManager = contextModule.createContextManager();
+        ActiveContextManager contextManager = contextModule.createContextManager();
         contextManager.changeActiveState(ActiveComponent.class, new BinEdDataComponent(codeArea));
         contextManager.changeActiveState(EditorProvider.class, editorProvider);
         contextManager.changeActiveState(FileHandler.class, editorProvider.getActiveFile().orElse(null));

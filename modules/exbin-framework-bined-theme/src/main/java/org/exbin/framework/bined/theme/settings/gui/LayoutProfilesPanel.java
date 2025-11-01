@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutProfileOptions;
-import org.exbin.framework.context.api.ApplicationContextProvider;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
@@ -431,7 +431,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaLayoutProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutProfileOptions.class);
 //        activeOptions = options;
 
@@ -449,7 +449,7 @@ public class LayoutProfilesPanel extends javax.swing.JPanel implements ProfileLi
         model.setProfiles(profiles);
     }
 
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ApplicationContextProvider applicationContextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaLayoutProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutProfileOptions.class);
         options.clearProfiles();
         ProfilesListModel model = getProfilesListModel();
