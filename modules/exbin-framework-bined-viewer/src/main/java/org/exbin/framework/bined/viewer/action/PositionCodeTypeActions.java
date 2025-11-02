@@ -28,7 +28,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActionContextChangeRegistrar;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 
@@ -77,7 +77,7 @@ public class PositionCodeTypeActions {
 
         public static final String ACTION_ID = "octalPositionCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -95,7 +95,7 @@ public class PositionCodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -114,7 +114,7 @@ public class PositionCodeTypeActions {
 
         public static final String ACTION_ID = "decimalPositionCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -132,7 +132,7 @@ public class PositionCodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -151,7 +151,7 @@ public class PositionCodeTypeActions {
 
         public static final String ACTION_ID = "hexadecimalPositionCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -169,7 +169,7 @@ public class PositionCodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;

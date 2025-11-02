@@ -30,7 +30,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActionContextChangeRegistrar;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -129,7 +129,7 @@ public class FindReplaceActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
                 fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 setEnabled(fileHandler != null);
@@ -177,7 +177,7 @@ public class FindReplaceActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
                 fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 setEnabled(fileHandler != null);
@@ -222,7 +222,7 @@ public class FindReplaceActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             manager.registerUpdateListener(FileHandler.class, (instance) -> {
                 fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 setEnabled(fileHandler != null);

@@ -34,7 +34,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActionContextChangeRegistrar;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.utils.UiUtils;
@@ -98,7 +98,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "binaryCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -116,7 +116,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -135,7 +135,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "octalCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -153,7 +153,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -172,7 +172,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "decimalCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -190,7 +190,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -209,7 +209,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "hexadecimalCodeTypeAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -227,7 +227,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -246,7 +246,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "cycleCodeTypesAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
         private List<Action> dropDownActions;
 
@@ -286,7 +286,7 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;

@@ -502,12 +502,7 @@ public class BinedModule implements Module {
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         ActionManager actionManager = actionModule.createActionManager(contextManager);
-        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, new ActionContextManager() {
-            @Override
-            public void registerActionContext(Action action) {
-                
-            }
-        });
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionManager);
         return popupMenu;
     }
 

@@ -28,7 +28,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.action.api.ActionContextChangeManager;
+import org.exbin.framework.action.api.ActionContextChangeRegistrar;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 
@@ -70,7 +70,7 @@ public class HexCharactersCaseActions {
 
         public static final String ACTION_ID = "upperHexCharactersAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -88,7 +88,7 @@ public class HexCharactersCaseActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
@@ -107,7 +107,7 @@ public class HexCharactersCaseActions {
 
         public static final String ACTION_ID = "lowerHexCharactersAction";
 
-        private ActionContextChangeManager manager;
+        private ActionContextChangeRegistrar manager;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -125,7 +125,7 @@ public class HexCharactersCaseActions {
         }
 
         @Override
-        public void register(ActionContextChangeManager manager) {
+        public void register(ActionContextChangeRegistrar manager) {
             this.manager = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
