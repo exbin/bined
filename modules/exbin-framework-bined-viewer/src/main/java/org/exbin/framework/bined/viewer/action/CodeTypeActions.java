@@ -98,7 +98,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "binaryCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -112,12 +112,12 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.BINARY);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -135,7 +135,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "octalCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -149,12 +149,12 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.OCTAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -172,7 +172,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "decimalCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -186,12 +186,12 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.DECIMAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -209,7 +209,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "hexadecimalCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -223,12 +223,12 @@ public class CodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.HEXADECIMAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -246,7 +246,7 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "cycleCodeTypesAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
         private List<Action> dropDownActions;
 
@@ -278,7 +278,7 @@ public class CodeTypeActions {
             CodeType[] values = CodeType.values();
             CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
             ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(next);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         public void setDropDownActions(List<Action> dropDownActions) {
@@ -287,7 +287,7 @@ public class CodeTypeActions {
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;

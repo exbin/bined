@@ -60,8 +60,8 @@ public class ExecuteLastMacroAction extends AbstractAction {
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ActionContextChangeRegistrar manager) {
-                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            public void register(ActionContextChangeRegistrar registrar) {
+                registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     boolean hasInstance = instance != null;
                     boolean enabled = false;

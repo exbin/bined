@@ -77,7 +77,7 @@ public class PositionCodeTypeActions {
 
         public static final String ACTION_ID = "octalPositionCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -91,12 +91,12 @@ public class PositionCodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).setPositionCodeType(PositionCodeType.OCTAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -114,7 +114,7 @@ public class PositionCodeTypeActions {
 
         public static final String ACTION_ID = "decimalPositionCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -128,12 +128,12 @@ public class PositionCodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).setPositionCodeType(PositionCodeType.DECIMAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -151,7 +151,7 @@ public class PositionCodeTypeActions {
 
         public static final String ACTION_ID = "hexadecimalPositionCodeTypeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -165,12 +165,12 @@ public class PositionCodeTypeActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).setPositionCodeType(PositionCodeType.HEXADECIMAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;

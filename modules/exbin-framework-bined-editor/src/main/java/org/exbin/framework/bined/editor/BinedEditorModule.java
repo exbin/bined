@@ -30,7 +30,7 @@ import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
 import org.exbin.framework.bined.editor.service.EditorOptionsService;
@@ -190,7 +190,7 @@ public class BinedEditorModule implements Module {
 
     public void registerEditSelection() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
@@ -222,7 +222,7 @@ public class BinedEditorModule implements Module {
     public void registerPropertiesMenu() {
         createPropertiesAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createPropertiesAction());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
@@ -230,7 +230,7 @@ public class BinedEditorModule implements Module {
     public void registerReloadFileMenu() {
         createReloadFileAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createReloadFileAction());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
@@ -238,14 +238,14 @@ public class BinedEditorModule implements Module {
     public void registerEditSelectionAction() {
         createEditSelectionAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
     }
 
     public void registerCodeAreaPopupMenu() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_SELECTION_GROUP_ID));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));

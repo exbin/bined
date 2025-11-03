@@ -92,8 +92,8 @@ public class ClipboardCodeActions {
         }
 
         @Override
-        public void register(ActionContextChangeRegistrar manager) {
-            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+        public void register(ActionContextChangeRegistrar registrar) {
+            registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 boolean hasSelection = hasInstance;
@@ -136,8 +136,8 @@ public class ClipboardCodeActions {
         }
 
         @Override
-        public void register(ActionContextChangeRegistrar manager) {
-            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+        public void register(ActionContextChangeRegistrar registrar) {
+            registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 boolean hasSelection = hasInstance;

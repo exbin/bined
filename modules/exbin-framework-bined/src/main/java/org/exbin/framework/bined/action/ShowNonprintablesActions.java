@@ -95,8 +95,8 @@ public class ShowNonprintablesActions {
         }
 
         @Override
-        public void register(ActionContextChangeRegistrar manager) {
-            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+        public void register(ActionContextChangeRegistrar registrar) {
+            registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 if (hasInstance) {

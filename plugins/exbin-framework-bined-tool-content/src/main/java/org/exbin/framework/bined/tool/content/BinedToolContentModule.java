@@ -21,7 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.tool.content.action.ClipboardContentAction;
 import org.exbin.framework.bined.tool.content.action.DragDropContentAction;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
@@ -88,7 +88,7 @@ public class BinedToolContentModule implements PluginModule {
     public void registerClipboardContentMenu() {
         createClipboardContentAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createClipboardContentAction());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
     }
@@ -96,7 +96,7 @@ public class BinedToolContentModule implements PluginModule {
     public void registerDragDropContentMenu() {
         createDragDropContentAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createDragDropContentAction());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
     }

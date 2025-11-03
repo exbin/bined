@@ -28,7 +28,7 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -139,7 +139,7 @@ public class BinedInspectorModule implements Module {
 
     public void registerShowParsingPanelMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
         contribution = mgmt.registerMenuItem(createShowParsingPanelAction());
@@ -148,11 +148,11 @@ public class BinedInspectorModule implements Module {
 
     public void registerShowParsingPanelPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createShowParsingPanelAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
-        MenuManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
+        MenuDefinitionManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
         contribution = subMgmt.registerMenuItem(createShowParsingPanelAction());
         subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }

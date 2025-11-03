@@ -77,7 +77,7 @@ public class ViewModeHandlerActions {
 
         public static final String ACTION_ID = "dualViewModeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -91,12 +91,12 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.DUAL);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -114,7 +114,7 @@ public class ViewModeHandlerActions {
 
         public static final String ACTION_ID = "codeMatrixViewModeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -129,12 +129,12 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.CODE_MATRIX);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -152,7 +152,7 @@ public class ViewModeHandlerActions {
 
         public static final String ACTION_ID = "textPreviewViewModeAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -166,12 +166,12 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;

@@ -45,7 +45,7 @@ import org.exbin.framework.action.api.ActionContextChangeRegistrar;
 import org.exbin.framework.action.api.ActionManager;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinedModule;
@@ -268,19 +268,19 @@ public class MacroManager {
             macrosMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
             macrosMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
-                public void register(ActionContextChangeRegistrar manager) {
-                    manager.registerUpdateListener(FileHandler.class, (instance) -> {
+                public void register(ActionContextChangeRegistrar registrar) {
+                    registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });
-                    manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                    registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                         contextManager.changeActiveState(ActiveComponent.class, instance);
                         activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                         updateMacrosMenu();
                     });
-                    manager.registerUpdateListener(DialogParentComponent.class, (instance) -> {
+                    registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
                         contextManager.changeActiveState(DialogParentComponent.class, instance);
                     });
-                    manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                    registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
                         contextManager.changeActiveState(EditorProvider.class, instance);
                     });
                 }
@@ -314,21 +314,21 @@ public class MacroManager {
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ActionContextChangeRegistrar manager) {
-                manager.registerUpdateListener(FileHandler.class, (instance) -> {
+            public void register(ActionContextChangeRegistrar registrar) {
+                registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 });
-                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                     contextManager.changeActiveState(ActiveComponent.class, instance);
                     activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     updateMacrosMenu();
                 });
-                manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
                     contextManager.changeActiveState(EditorProvider.class, instance);
                 });
             }
         });
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu macrosPopupMenu = UiUtils.createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);

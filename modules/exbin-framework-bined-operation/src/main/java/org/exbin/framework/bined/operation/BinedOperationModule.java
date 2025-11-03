@@ -52,7 +52,7 @@ import org.exbin.framework.contribution.api.RelativeSequenceContributionRule.Nex
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.menu.api.ActionMenuCreation;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 
 
 @ParametersAreNonnullByDefault
@@ -179,7 +179,7 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createInsertDataAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(createConvertDataAction());
@@ -194,7 +194,7 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createInsertDataAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(createConvertDataAction());

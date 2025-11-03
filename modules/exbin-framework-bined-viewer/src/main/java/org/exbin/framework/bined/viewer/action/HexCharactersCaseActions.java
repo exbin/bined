@@ -70,7 +70,7 @@ public class HexCharactersCaseActions {
 
         public static final String ACTION_ID = "upperHexCharactersAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -84,12 +84,12 @@ public class HexCharactersCaseActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(CodeCharactersCase.UPPER);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
@@ -107,7 +107,7 @@ public class HexCharactersCaseActions {
 
         public static final String ACTION_ID = "lowerHexCharactersAction";
 
-        private ActionContextChangeRegistrar manager;
+        private ActionContextChangeRegistrar registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
@@ -121,12 +121,12 @@ public class HexCharactersCaseActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(CodeCharactersCase.LOWER);
-            manager.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistrar manager) {
-            this.manager = manager;
+            this.registrar = manager;
             manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;

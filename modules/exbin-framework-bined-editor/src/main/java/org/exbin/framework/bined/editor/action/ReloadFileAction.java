@@ -50,12 +50,12 @@ public class ReloadFileAction extends AbstractAction {
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ActionContextChangeRegistrar manager) {
-                manager.registerUpdateListener(FileHandler.class, (instance) -> {
+            public void register(ActionContextChangeRegistrar registrar) {
+                registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance;
                     setEnabled(fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider));
                 });
-                manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+                registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
                     editorProvider = instance;
                     setEnabled(fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider));
                 });

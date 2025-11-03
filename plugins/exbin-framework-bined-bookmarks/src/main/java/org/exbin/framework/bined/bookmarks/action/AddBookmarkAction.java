@@ -65,12 +65,12 @@ public class AddBookmarkAction extends AbstractAction {
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ActionContextChangeRegistrar manager) {
-                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            public void register(ActionContextChangeRegistrar registrar) {
+                registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     setEnabled(codeArea != null && dialogParentComponent != null);
                 });
-                manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+                registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
                     dialogParentComponent = instance;
                     setEnabled(codeArea != null && dialogParentComponent != null);
                 });

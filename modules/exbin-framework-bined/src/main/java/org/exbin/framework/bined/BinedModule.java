@@ -69,8 +69,8 @@ import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContributionRule;
-import org.exbin.framework.menu.api.MenuManagement;
-import org.exbin.framework.toolbar.api.ToolBarManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
+import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.menu.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -227,7 +227,7 @@ public class BinedModule implements Module {
 
     public void registerGoToPosition() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuGroup(EDIT_OPERATION_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
@@ -318,7 +318,7 @@ public class BinedModule implements Module {
     public void registerShowNonprintablesToolBarActions() {
         getShowNonprintablesActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
-        ToolBarManagement mgmt = toolBarModule.getMainToolBarManagement(MODULE_ID);
+        ToolBarDefinitionManagement mgmt = toolBarModule.getMainToolBarManager(MODULE_ID);
         SequenceContribution contribution = mgmt.registerToolBarGroup(BINED_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         contribution = mgmt.registerToolBarItem(showNonprintablesActions.createViewNonprintablesToolbarAction());
@@ -328,7 +328,7 @@ public class BinedModule implements Module {
     public void registerViewNonprintablesMenuActions() {
         getShowNonprintablesActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_NONPRINTABLES_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
         contribution = mgmt.registerMenuItem(showNonprintablesActions.createViewNonprintablesAction());
@@ -338,7 +338,7 @@ public class BinedModule implements Module {
     public void registerViewZoomMenuActions() {
         getViewFontActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SubSequenceContribution subContribution = mgmt.registerMenuItem(VIEW_FONT_SUB_MENU_ID, resourceBundle.getString("viewFontSubMenu.name"));
         mgmt.registerMenuRule(subContribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
 
@@ -358,7 +358,7 @@ public class BinedModule implements Module {
     public void registerClipboardCodeActions() {
         getClipboardCodeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(clipboardCodeActions.createCopyAsCodeAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
         mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(RelativeSequenceContributionRule.NextToMode.AFTER, "copyAction"));
@@ -371,7 +371,7 @@ public class BinedModule implements Module {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        MenuManagement mgmt = menuModule.getMenuManagement(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         ClipboardActionsApi clipboardActions = actionModule.getClipboardActions();
 
         SequenceContribution contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID);
@@ -487,7 +487,7 @@ public class BinedModule implements Module {
         getClipboardCodeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
 //        menuModule.registerMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
-//        MenuManagement mgmt = menuModule.getMenuManagement(CODE_AREA_POPUP_MENU_ID + menuPostfix, MODULE_ID);
+//        MenuManagement mgmt = menuModule.getMenuManager(CODE_AREA_POPUP_MENU_ID + menuPostfix, MODULE_ID);
 
         popupMenuVariant = variant;
         popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
@@ -527,7 +527,7 @@ public class BinedModule implements Module {
 
     private void dropCodeAreaPopupMenu(String menuPostfix) {
 //        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-//        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID);
+//        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID);
 //        mgmt.unregisterMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
     }
 

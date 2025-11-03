@@ -23,7 +23,7 @@ import javax.swing.JMenu;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
@@ -63,7 +63,7 @@ public class BinedBookmarksModule implements PluginModule {
 
     public void registerBookmarksMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> getBookmarksMenu());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
     }

@@ -135,12 +135,12 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     }
 
     @Override
-    public void register(ActionContextChangeRegistrar manager) {
-        manager.registerUpdateListener(EditorProvider.class, (instance) -> {
+    public void register(ActionContextChangeRegistrar registrar) {
+        registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(editorProvider != null && dialogParentComponent != null);
         });
-        manager.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+        registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
             setEnabled(editorProvider != null && dialogParentComponent != null);
         });

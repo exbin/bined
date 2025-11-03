@@ -46,7 +46,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
@@ -289,7 +289,7 @@ public class BookmarksManager {
             }
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu bookmarksPopupMenu = UiUtils.createMenu();
             bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);

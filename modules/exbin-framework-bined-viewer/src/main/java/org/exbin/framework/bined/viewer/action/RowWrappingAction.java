@@ -50,8 +50,8 @@ public class RowWrappingAction extends AbstractAction {
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ActionContextChangeRegistrar manager) {
-                manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            public void register(ActionContextChangeRegistrar registrar) {
+                registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     setEnabled(instance != null);
                 });

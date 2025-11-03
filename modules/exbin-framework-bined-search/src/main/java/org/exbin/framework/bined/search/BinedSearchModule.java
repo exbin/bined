@@ -23,8 +23,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.menu.api.MenuManagement;
-import org.exbin.framework.toolbar.api.ToolBarManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
+import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
@@ -85,7 +85,7 @@ public class BinedSearchModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         // TODO SearchModule
         String groupId = BinedModule.EDIT_FIND_MENU_GROUP_ID;
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
         contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAgainAction());
@@ -96,7 +96,7 @@ public class BinedSearchModule implements Module {
 
     public void registerEditFindPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMenuManagement(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
         contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditReplaceAction());
@@ -106,7 +106,7 @@ public class BinedSearchModule implements Module {
     public void registerEditFindToolBarActions() {
         getFindReplaceActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
-        ToolBarManagement mgmt = toolBarModule.getMainToolBarManagement(MODULE_ID);
+        ToolBarDefinitionManagement mgmt = toolBarModule.getMainToolBarManager(MODULE_ID);
         SequenceContribution contribution = mgmt.registerToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerToolBarRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));

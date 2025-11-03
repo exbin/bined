@@ -22,7 +22,7 @@ import javax.swing.AbstractAction;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.menu.api.MenuManagement;
+import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.compare.action.CompareFilesAction;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
@@ -55,7 +55,7 @@ public class BinedCompareModule implements PluginModule {
 
     public void registerToolsOptionsMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuManagement mgmt = menuModule.getMainMenuManagement(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createCompareFilesAction());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
