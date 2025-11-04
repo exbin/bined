@@ -49,7 +49,7 @@ import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.context.api.ActiveContextManager;
+import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
@@ -75,7 +75,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private String title;
     private SectionCodeAreaColorProfile defaultColors;
     private long documentOriginalSize;
-    private ActiveContextManager contextManager;
+    private ActiveContextManagement contextManager;
     private BinEdDataComponent binaryDataComponent;
     private DialogParentComponent dialogParentComponent;
     private UndoRedo undoRedo = null;
@@ -465,7 +465,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Override
-    public void componentActivated(ActiveContextManager contextManager) {
+    public void componentActivated(ActiveContextManagement contextManager) {
         this.contextManager = contextManager;
         contextManager.changeActiveState(TextFontController.class, binaryDataComponent);
         contextManager.changeActiveState(TextEncodingController.class, binaryDataComponent);
@@ -481,7 +481,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Override
-    public void componentDeactivated(ActiveContextManager contextManager) {
+    public void componentDeactivated(ActiveContextManagement contextManager) {
         this.contextManager = null;
         contextManager.changeActiveState(TextFontController.class, null);
         contextManager.changeActiveState(TextEncodingController.class, null);

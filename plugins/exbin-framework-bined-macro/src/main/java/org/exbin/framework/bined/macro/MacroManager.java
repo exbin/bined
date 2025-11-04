@@ -41,8 +41,9 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActionContextChangeRegistrar;
-import org.exbin.framework.action.api.ActionManager;
+import org.exbin.framework.action.api.ActionContextChangeRegistration;
+import org.exbin.framework.action.api.ActionManagement;
+import org.exbin.framework.action.api.ActionManagement;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
@@ -63,7 +64,7 @@ import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.macro.options.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
-import org.exbin.framework.context.api.ActiveContextManager;
+import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
@@ -103,8 +104,8 @@ public class MacroManager {
     private JMenu macrosMenu;
     private int lastActiveMacro = -1;
     private long lastMacroIndex = 0;
-    private ActiveContextManager contextManager;
-    private ActionManager actionManager;
+    private ActiveContextManagement contextManager;
+    private ActionManagement actionManager;
 
     public MacroManager() {
     }
@@ -268,7 +269,7 @@ public class MacroManager {
             macrosMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
             macrosMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
-                public void register(ActionContextChangeRegistrar registrar) {
+                public void register(ActionContextChangeRegistration registrar) {
                     registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });
@@ -314,7 +315,7 @@ public class MacroManager {
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
-            public void register(ActionContextChangeRegistrar registrar) {
+            public void register(ActionContextChangeRegistration registrar) {
                 registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 });
@@ -458,7 +459,7 @@ public class MacroManager {
     private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
         // TODO Reported as a change of CodeAreaCore - create some kind of macro recording state instead?
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManager frameContextManager = frameModule.getFrameHandler().getContextManager();
+        ActiveContextManagement frameContextManager = frameModule.getFrameHandler().getContextManager();
         frameContextManager.changeActiveState(CodeAreaCore.class, codeArea);
     }
 

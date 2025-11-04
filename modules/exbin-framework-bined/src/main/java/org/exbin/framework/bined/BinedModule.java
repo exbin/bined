@@ -45,8 +45,8 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.ActionContextManager;
-import org.exbin.framework.action.api.ActionManager;
+import org.exbin.framework.action.api.ActionContextRegistration;
+import org.exbin.framework.action.api.ActionManagement;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
@@ -60,7 +60,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActiveComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.action.GoToPositionAction;
-import org.exbin.framework.context.api.ActiveContextManager;
+import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
@@ -494,15 +494,16 @@ public class BinedModule implements Module {
 
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ActiveContextManager contextManager = contextModule.createContextManager();
+        ActiveContextManagement contextManager = contextModule.createContextManager();
         contextManager.changeActiveState(ActiveComponent.class, new BinEdDataComponent(codeArea));
         contextManager.changeActiveState(EditorProvider.class, editorProvider);
         contextManager.changeActiveState(FileHandler.class, editorProvider.getActiveFile().orElse(null));
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        ActionManager actionManager = actionModule.createActionManager(contextManager);
-        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionManager);
+        ActionManagement actionManager = actionModule.createActionManager(contextManager);
+        ActionContextRegistration ActionContextRegistrar = actionModule.createActionContextRegistrar(actionManager);
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, ActionContextRegistrar);
         return popupMenu;
     }
 

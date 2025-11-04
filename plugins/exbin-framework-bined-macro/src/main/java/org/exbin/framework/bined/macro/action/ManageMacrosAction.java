@@ -27,7 +27,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActionContextChangeRegistrar;
+import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.macro.BinedMacroModule;
 import org.exbin.framework.bined.macro.MacroManager;
@@ -98,7 +98,7 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
     }
 
     @Override
-    public void register(ActionContextChangeRegistrar registrar) {
+    public void register(ActionContextChangeRegistration registrar) {
         registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
             setEnabled(dialogParentComponent != null);
