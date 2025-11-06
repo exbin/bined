@@ -149,6 +149,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
             MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
             MenuPopupModuleApi menuPopupModule = App.getModule(MenuPopupModuleApi.class);
             ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
@@ -164,6 +165,23 @@ public class BinedLauncherModule implements LauncherModule {
             BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
+            BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+
+            uiModule.registerSettings();
+            frameModule.registerSettings();
+            themeModule.registerSettings();
+            actionManagerModule.registerSettings();
+            fileModule.registerSettings();
+            editorModule.registerSettings();
+            binedViewerModule.registerSettings();
+            binedEditorModule.registerSettings();
+            binedThemeModule.registerSettings();
+            binedInspectorModule.registerSettings();
+            registerSettings(); // Register startup options
+            if (!demoMode) {
+                updateModule.registerSettings();
+            }
+
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(optionsStorage);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
             EditorProviderVariant editorProviderVariant = editorProvideType != null
@@ -180,14 +198,12 @@ public class BinedLauncherModule implements LauncherModule {
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.addBasicMethods();
 
-            BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
             binedInspectorModule.setEditorProvider(editorProvider);
 
             AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
             addonManagerModule.setAddonServiceCoreUrl("https://bined.exbin.org/");
             addonManagerModule.setManualLegacyGitHubUrl("https://github.com/exbin/bined/releases/tag/");
-            ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
 
             frameModule.init();
             if (!demoMode) {
@@ -268,24 +284,9 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-            uiModule.registerSettings();
-            themeModule.registerSettings();
-            actionManagerModule.registerSettings();
-            fileModule.registerSettings();
-            editorModule.registerSettings();
-            binedViewerModule.registerSettings();
-            binedEditorModule.registerSettings();
-            binedThemeModule.registerSettings();
-            binedInspectorModule.registerSettings();
-            registerSettings(); // Register startup options
-            if (!demoMode) {
-                updateModule.registerSettings();
-            }
 
             binedViewerModule.registerStatusBar();
             binedModule.registerUndoHandler();
-
-            binedModule.loadFromOptions(optionsStorage);
 
             if (demoMode) {
                 frameModule.addExitListener((ApplicationFrameHandler afh) -> {

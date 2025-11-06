@@ -15,12 +15,10 @@
  */
 package org.exbin.framework.bined.theme.settings;
 
-import java.util.Optional;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -31,21 +29,20 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaColorSettingsApplier implements SettingsApplier {
-    
+
     public static final String APPLIER_ID = "codeAreaColorApplier";
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        if (!(instance instanceof BinEdFileHandler)) {
+            return;
+        }
+
         CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
-        
+
         int selectedProfile = options.getSelectedProfile();
         if (selectedProfile >= 0) {
-            Optional<FileHandler> activeFile = null; // TODO editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                return;
-            }
-
-            SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) instance).getCodeArea();
             SectionCodeAreaColorProfile profile = options.getColorsProfile(selectedProfile);
             codeArea.setColorsProfile(profile);
         }

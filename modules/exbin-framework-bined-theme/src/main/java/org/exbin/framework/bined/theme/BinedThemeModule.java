@@ -68,8 +68,6 @@ public class BinedThemeModule implements Module {
     public BinedThemeManager getThemeManager() {
         if (binedThemeManager == null) {
             binedThemeManager = new BinedThemeManager();
-            BinedModule binedModule = App.getModule(BinedModule.class);
-            binedThemeManager.setEditorProvider(binedModule.getEditorProvider());
         }
         return binedThemeManager;
     }

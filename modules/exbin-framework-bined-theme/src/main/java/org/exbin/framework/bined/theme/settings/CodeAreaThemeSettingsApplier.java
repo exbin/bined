@@ -15,12 +15,10 @@
  */
 package org.exbin.framework.bined.theme.settings;
 
-import java.util.Optional;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -36,15 +34,14 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        if (!(instance instanceof BinEdFileHandler)) {
+            return;
+        }
+
         CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         int selectedProfile = options.getSelectedProfile();
         if (selectedProfile >= 0) {
-            Optional<FileHandler> activeFile = null; // TODO editorProvider.getActiveFile();
-            if (!activeFile.isPresent()) {
-                return;
-            }
-
-            SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
+            SectCodeArea codeArea = ((BinEdFileHandler) instance).getCodeArea();
             SectionCodeAreaThemeProfile profile = options.getThemeProfile(selectedProfile);
             codeArea.setThemeProfile(profile);
         }

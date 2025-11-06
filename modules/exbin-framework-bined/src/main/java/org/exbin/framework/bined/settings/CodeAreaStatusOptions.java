@@ -33,9 +33,9 @@ import org.exbin.framework.options.api.OptionsStorage;
 @ParametersAreNonnullByDefault
 public class CodeAreaStatusOptions implements SettingsOptions {
 
-    public static int DEFAULT_OCTAL_SPACE_GROUP_SIZE = 4;
-    public static int DEFAULT_DECIMAL_SPACE_GROUP_SIZE = 3;
-    public static int DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE = 4;
+    public static final int DEFAULT_OCTAL_SPACE_GROUP_SIZE = 4;
+    public static final int DEFAULT_DECIMAL_SPACE_GROUP_SIZE = 3;
+    public static final int DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE = 4;
 
     public static final String KEY_CURSOR_POSITION_CODE_TYPE = "statusCursorPositionFormat";
     public static final String KEY_CURSOR_POSITION_SHOW_OFFSET = "statusCursorShowOffset";

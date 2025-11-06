@@ -37,7 +37,7 @@ import org.exbin.framework.bined.theme.settings.CodeAreaThemeSettingsApplier;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeSettingsComponent;
 import org.exbin.framework.contribution.api.GroupSequenceContribution;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
-import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
@@ -60,8 +60,6 @@ public class BinedThemeManager {
     public static final String SETTINGS_LAYOUT_PAGE_ID = "binaryEditorLayout";
     public static final String SETTINGS_COLOR_PAGE_ID = "binaryEditorColor";
 
-    private EditorProvider editorProvider;
-
     private SectionCodeAreaLayoutProfile defaultLayoutProfile;
     private SectionCodeAreaThemeProfile defaultThemeProfile;
     private CodeAreaColorsProfile defaultColorProfile;
@@ -71,10 +69,6 @@ public class BinedThemeManager {
     private CodeAreaColorSettingsComponent colorProfilesSettingsComponent;
 
     public BinedThemeManager() {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     public void registerSettings() {
@@ -88,9 +82,9 @@ public class BinedThemeManager {
         settingsManagement.registerOptionsSettings(CodeAreaThemeOptions.class, (optionsStorage) -> new CodeAreaThemeOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaThemeProfileOptions.class, (optionsStorage) -> new CodeAreaThemeProfileOptions(optionsStorage));
         
-        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
-        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
-        settingsManagement.registerApplySetting(Object.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
+        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
+        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
+        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
 
         GroupSequenceContribution registerGroup = settingsManagement.registerGroup(SETTINGS_GROUP_ID);
         settingsManagement.registerSettingsRule(registerGroup, new SettingsPageContributionRule("binary"));

@@ -18,7 +18,6 @@ package org.exbin.framework.bined.inspector.settings;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -26,7 +25,6 @@ import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BasicValuesInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -42,20 +40,15 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        Font defaultFont = null;
+        if (!(instance instanceof BinEdFileHandler)) {
+            return;
+        }
 
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         DataInspectorFontOptions fontOptions = settingsOptionsProvider.getSettingsOptions(DataInspectorFontOptions.class);
-        Optional<FileHandler> activeFile = null; // TODO editorProvider.getActiveFile();
-        if (!activeFile.isPresent()) {
-            return;
-        }
-        FileHandler fileHandler = activeFile.get();
-        if (!(fileHandler instanceof BinEdFileHandler)) {
-            return;
-        }
 
-        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
+        Font defaultFont = null;
+        BinEdComponentPanel component = ((BinEdFileHandler) instance).getComponent();
         BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(options.isShowParsingPanel());
         boolean useDefaultFont = fontOptions.isUseDefaultFont();

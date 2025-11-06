@@ -201,7 +201,7 @@ public class BinedViewerModule implements Module {
 
          // TODO: Drop service parameters
         TextEncodingSettingsComponent textEncodingSettingsComponent = new TextEncodingSettingsComponent();
-        textEncodingSettingsComponent.setEncodingsHandler(encodingsHandler);
+        textEncodingSettingsComponent.setEncodingsHandler(getEncodingsHandler());
         settingsComponent = settingsManagement.registerComponent(TextEncodingSettingsComponent.COMPONENT_ID, textEncodingSettingsComponent);
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(encodingPageContribution));
         
@@ -694,9 +694,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void loadFromPreferences(OptionsStorage options) {
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
+        // TODO Drop
         encodingsHandler.loadFromOptions(new TextEncodingOptions(options));
-        fileManager.loadFromOptions(options);
     }
 }

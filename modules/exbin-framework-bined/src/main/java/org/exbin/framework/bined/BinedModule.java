@@ -532,11 +532,6 @@ public class BinedModule implements Module {
 //        mgmt.unregisterMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
     }
 
-    public void loadFromOptions(OptionsStorage options) {
-        // TODO encodingsHandler.loadFromOptions(new TextEncodingOptions(options));
-        fileManager.loadFromOptions(options);
-    }
-
     @Nonnull
     public CodeAreaPopupMenuHandler createCodeAreaPopupMenuHandler(PopupMenuVariant variant) {
         return new CodeAreaPopupMenuHandler() {
