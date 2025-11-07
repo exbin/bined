@@ -43,6 +43,6 @@ public class CodeAreaViewerSettingsApplier implements SettingsApplier {
 //
 //        SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
 //        CodeAreaOptions.applyToCodeArea(options, codeArea);
-//        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ActiveComponent.class, codeArea);
+//        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
     }
 }

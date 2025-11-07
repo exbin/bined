@@ -44,7 +44,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ActionManagement;
 import org.exbin.framework.action.api.ActionManagement;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinEdFileHandler;
@@ -273,8 +273,8 @@ public class MacroManager {
                     registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                         fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                     });
-                    registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
-                        contextManager.changeActiveState(ActiveComponent.class, instance);
+                    registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                        contextManager.changeActiveState(ContextComponent.class, instance);
                         activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                         updateMacrosMenu();
                     });
@@ -319,8 +319,8 @@ public class MacroManager {
                 registrar.registerUpdateListener(FileHandler.class, (instance) -> {
                     fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
                 });
-                registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
-                    contextManager.changeActiveState(ActiveComponent.class, instance);
+                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                    contextManager.changeActiveState(ContextComponent.class, instance);
                     activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     updateMacrosMenu();
                 });

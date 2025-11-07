@@ -57,7 +57,7 @@ import org.exbin.framework.editor.api.MultiEditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.context.api.ActiveContextManagement;
@@ -495,7 +495,7 @@ public class BinedModule implements Module {
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ActiveContextManagement contextManager = contextModule.createContextManager();
-        contextManager.changeActiveState(ActiveComponent.class, new BinEdDataComponent(codeArea));
+        contextManager.changeActiveState(ContextComponent.class, new BinEdDataComponent(codeArea));
         contextManager.changeActiveState(EditorProvider.class, editorProvider);
         contextManager.changeActiveState(FileHandler.class, editorProvider.getActiveFile().orElse(null));
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);

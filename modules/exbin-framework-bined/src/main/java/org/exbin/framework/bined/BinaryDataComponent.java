@@ -18,6 +18,7 @@ package org.exbin.framework.bined;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.framework.action.api.ContextComponent;
 
 /**
  * Binary data component.
@@ -25,7 +26,7 @@ import org.exbin.bined.swing.CodeAreaCore;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinaryDataComponent {
+public interface BinaryDataComponent extends ContextComponent {
 
     /**
      * Returns code area component.

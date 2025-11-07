@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
 import org.exbin.framework.text.encoding.TextEncodingController;
@@ -34,7 +34,7 @@ import org.exbin.framework.text.font.TextFontController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdDataComponent implements ActiveComponent, BinaryDataComponent, TextClipboardController, TextEncodingController, TextFontController {
+public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, TextEncodingController, TextFontController {
 
     private final CodeAreaCore codeArea;
     private Font defaultFont;

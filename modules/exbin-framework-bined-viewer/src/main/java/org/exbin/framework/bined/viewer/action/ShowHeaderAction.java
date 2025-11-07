@@ -29,7 +29,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 
 /**
@@ -54,7 +54,7 @@ public class ShowHeaderAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ActionContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
+                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     boolean hasInstance = instance != null;
                     if (codeArea != null) {
@@ -71,6 +71,6 @@ public class ShowHeaderAction extends AbstractAction {
         SectionCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
         layoutProfile.setShowHeader(!layoutProfile.isShowHeader());
         ((LayoutProfileCapable) codeArea).setLayoutProfile(layoutProfile);
-        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ActiveComponent.class, codeArea);
+        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
     }
 }

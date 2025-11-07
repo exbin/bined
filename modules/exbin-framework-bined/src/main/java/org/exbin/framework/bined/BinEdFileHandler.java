@@ -47,7 +47,7 @@ import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.file.api.EditableFileHandler;
 import org.exbin.framework.file.api.FileType;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
@@ -101,7 +101,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         binaryDataComponent = new BinEdDataComponent(codeArea);
         codeArea.addSelectionChangedListener(() -> {
             if (contextManager != null) {
-                contextManager.changeActiveState(ActiveComponent.class, binaryDataComponent);
+                contextManager.changeActiveState(ContextComponent.class, binaryDataComponent);
             }
         });
     }
@@ -470,7 +470,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         contextManager.changeActiveState(TextFontController.class, binaryDataComponent);
         contextManager.changeActiveState(TextEncodingController.class, binaryDataComponent);
         contextManager.changeActiveState(UndoRedoState.class, undoRedo);
-        contextManager.changeActiveState(ActiveComponent.class, binaryDataComponent);
+        contextManager.changeActiveState(ContextComponent.class, binaryDataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull
             @Override
@@ -486,7 +486,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         contextManager.changeActiveState(TextFontController.class, null);
         contextManager.changeActiveState(TextEncodingController.class, null);
         contextManager.changeActiveState(UndoRedoState.class, null);
-        contextManager.changeActiveState(ActiveComponent.class, null);
+        contextManager.changeActiveState(ContextComponent.class, null);
         contextManager.changeActiveState(DialogParentComponent.class, dialogParentComponent);
     }
 

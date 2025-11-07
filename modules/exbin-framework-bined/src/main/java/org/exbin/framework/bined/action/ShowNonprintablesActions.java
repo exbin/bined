@@ -32,7 +32,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.utils.ActionUtils;
 
@@ -91,12 +91,12 @@ public class ShowNonprintablesActions {
                 nonprintablesCodeAreaAssessor.setShowNonprintables(!showNonprintables);
                 codeArea.repaint();
             }
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ActiveComponent.class, codeArea);
+            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
         }
 
         @Override
         public void register(ActionContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                 boolean hasInstance = codeArea != null;
                 if (hasInstance) {

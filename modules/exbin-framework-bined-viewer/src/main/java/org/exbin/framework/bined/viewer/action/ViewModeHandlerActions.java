@@ -29,7 +29,7 @@ import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
-import org.exbin.framework.action.api.ActiveComponent;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 
 /**
@@ -91,13 +91,13 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.DUAL);
-            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistration manager) {
             this.registrar = manager;
-            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
@@ -129,13 +129,13 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.CODE_MATRIX);
-            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistration manager) {
             this.registrar = manager;
-            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
@@ -166,13 +166,13 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-            registrar.updateActionsForComponent(ActiveComponent.class, (ActiveComponent) binaryDataComponent);
+            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
         }
 
         @Override
         public void register(ActionContextChangeRegistration manager) {
             this.registrar = manager;
-            manager.registerUpdateListener(ActiveComponent.class, (instance) -> {
+            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
                 binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                 boolean hasInstance = instance != null;
                 if (hasInstance) {
