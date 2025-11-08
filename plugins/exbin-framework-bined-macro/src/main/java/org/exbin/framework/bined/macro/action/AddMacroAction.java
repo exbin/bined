@@ -53,6 +53,7 @@ public class AddMacroAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, (ActionContextChange) (ActionContextChangeRegistration registrar) -> {
             registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
@@ -60,7 +61,6 @@ public class AddMacroAction extends AbstractAction {
                 setEnabled(dialogParentComponent != null);
             });
         });
-        setEnabled(false);
     }
 
     @Nonnull

@@ -33,7 +33,6 @@ import org.exbin.framework.bined.theme.settings.gui.ThemeProfilePanel;
 import org.exbin.framework.bined.theme.settings.gui.ThemeProfilesSettingsPanel;
 import org.exbin.framework.bined.theme.settings.gui.ThemeProfilesPanel;
 import org.exbin.framework.bined.theme.settings.gui.ThemeTemplatePanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.window.api.WindowHandler;
@@ -52,14 +51,9 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
     public static final String COMPONENT_ID = "themeProfiles";
 
     private ResourceBundle resourceBundle;
-    private EditorProvider editorProvider;
 
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     @Nonnull

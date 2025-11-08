@@ -32,7 +32,9 @@ import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.macro.MacroManager;
+import org.exbin.framework.bined.macro.MacroStateChangeMessage;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
+import org.exbin.framework.context.api.StateChangeMessage;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -57,23 +59,32 @@ public class ExecuteLastMacroAction extends AbstractAction {
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ActionContextChangeRegistration registrar) {
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
-                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    boolean hasInstance = instance != null;
-                    boolean enabled = false;
-                    if (hasInstance) {
-                        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                        enabled = commandHandler instanceof CodeAreaMacroCommandHandler && !((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording() && (macroManager.getLastActiveMacro() >= 0);
+                    updateByContext(instance);
+                });
+                registrar.registerContextMessageListener(ContextComponent.class, (ContextComponent instance, StateChangeMessage changeMessage) -> {
+                    if (MacroStateChangeMessage.LAST_MACRO.equals(changeMessage)) {
+                        updateByContext(instance);
                     }
-                    setEnabled(enabled);
                 });
             }
         });
-        setEnabled(false);
+    }
+
+    private void updateByContext(ContextComponent instance) {
+        codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+        boolean hasInstance = instance != null;
+        boolean actionEnabled = false;
+        if (hasInstance) {
+            CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+            actionEnabled = commandHandler instanceof CodeAreaMacroCommandHandler && !((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording() && (macroManager.getLastActiveMacro() >= 0);
+        }
+        setEnabled(actionEnabled);
     }
 
     public void setMacroManager(MacroManager macroManager) {

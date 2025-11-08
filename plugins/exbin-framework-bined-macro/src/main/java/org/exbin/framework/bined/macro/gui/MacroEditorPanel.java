@@ -172,7 +172,6 @@ public class MacroEditorPanel extends javax.swing.JPanel {
         });
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;

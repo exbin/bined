@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.theme;
 
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -24,13 +23,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.bined.BinEdFileManager;
-import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.theme.settings.BinaryThemeOptions;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Binary data editor module.
@@ -68,54 +60,13 @@ public class BinedThemeModule implements Module {
     public BinedThemeManager getThemeManager() {
         if (binedThemeManager == null) {
             binedThemeManager = new BinedThemeManager();
+            // Possibly try to optimize this later
+            binedThemeManager.loadDefaults(new SectCodeArea());
         }
         return binedThemeManager;
     }
 
     public void registerSettings() {
         getThemeManager().registerSettings();
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Override
-            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                return Optional.of(new BinEdComponentPanel.BinEdComponentExtension() {
-                    @Override
-                    public void onCreate(BinEdComponentPanel componentPanel) {
-                    }
-
-                    @Override
-                    public void onInitFromOptions(OptionsStorage options) {
-                        SectCodeArea codeArea = component.getCodeArea();
-                        getThemeManager().applyProfileFromPreferences(codeArea, new BinaryThemeOptions(options));
-                    }
-
-                    @Override
-                    public void onDataChange() {
-                    }
-
-                    @Override
-                    public void onClose() {
-                    }
-
-                    @Override
-                    public void onUndoHandlerChange() {
-                    }
-                });
-            }
-        });
-    }
-
-    @Nonnull
-    public SectCodeArea getActiveCodeArea() {
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        Optional<FileHandler> activeFile = binedModule.getEditorProvider().getActiveFile();
-        if (activeFile.isPresent()) {
-            return ((BinEdFileHandler) activeFile.get()).getComponent().getCodeArea();
-        }
-        throw new IllegalStateException("No active file");
-    }
-
-    public void loadFromPreferences(OptionsStorage preferences) {
     }
 }

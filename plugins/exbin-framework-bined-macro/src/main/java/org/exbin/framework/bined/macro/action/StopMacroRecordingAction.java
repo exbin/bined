@@ -29,6 +29,7 @@ import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.macro.MacroManager;
+import org.exbin.framework.bined.macro.MacroStateChangeMessage;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 
 /**
@@ -50,22 +51,31 @@ public class StopMacroRecordingAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ActionContextChangeRegistration registrar) {
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
-                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    boolean hasInstance = instance != null;
-                    boolean enabled = false;
-                    if (hasInstance) {
-                        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                        enabled = commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
+                    updateByContext(instance);
+                });
+                registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                    if (MacroStateChangeMessage.MACRO_RECORDING.equals(changeMessage)) {
+                        updateByContext(instance);
                     }
-                    setEnabled(enabled);
                 });
             }
         });
-        setEnabled(false);
+    }
+
+    private void updateByContext(ContextComponent instance) {
+        codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+        boolean hasInstance = instance != null;
+        boolean enabled = false;
+        if (hasInstance) {
+            CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+            enabled = commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
+        }
+        setEnabled(enabled);
     }
 
     public void setMacroManager(MacroManager macroManager) {

@@ -15,34 +15,26 @@
  */
 package org.exbin.framework.bined.editor;
 
-import java.util.Optional;
 import org.exbin.framework.bined.editor.action.PropertiesAction;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.swing.CodeAreaCommandHandler;
-import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
-import org.exbin.framework.bined.editor.service.EditorOptionsService;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.editor.settings.BinaryEditorSettingsApplier;
 import org.exbin.framework.bined.editor.settings.CodeAreaEditingSettingsComponent;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
@@ -89,7 +81,7 @@ public class BinedEditorModule implements Module {
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
         
         settingsManagement.registerOptionsSettings(BinaryEditorOptions.class, (optionsStorage) -> new BinaryEditorOptions(optionsStorage));
-        settingsManagement.registerApplySetting(EditorOptionsService.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
         
         SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
@@ -145,47 +137,6 @@ public class BinedEditorModule implements Module {
         codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
         settingsManagement.registerPage(codeAreaEditingOptionsPage);
         settingsManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule("binaryEditor")); */
-
-        // TODO Convert to settings applier
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
-            @Override
-            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                return Optional.of(new BinEdComponentPanel.BinEdComponentExtension() {
-                    @Override
-                    public void onCreate(BinEdComponentPanel componentPanel) {
-                    }
-
-                    @Override
-                    public void onInitFromOptions(OptionsStorage options) {
-                        SectCodeArea codeArea = component.getCodeArea();
-                        BinaryEditorOptions editorOptions = new BinaryEditorOptions(options);
-                        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                        if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-                            ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
-                            ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
-                        } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
-                            ((DefaultCodeAreaCommandHandler) commandHandler).setEnterKeyHandlingMode(editorOptions.getEnterKeyHandlingMode());
-                            ((DefaultCodeAreaCommandHandler) commandHandler).setTabKeyHandlingMode(editorOptions.getTabKeyHandlingMode());
-                        }
-                    }
-
-                    @Override
-                    public void onDataChange() {
-                    }
-
-                    @Override
-                    public void onClose() {
-                    }
-
-                    @Override
-                    public void onUndoHandlerChange() {
-                    }
-                });
-            }
-        });
     }
 
     public void registerEditSelection() {

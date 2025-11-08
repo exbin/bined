@@ -40,7 +40,7 @@ import org.exbin.framework.utils.ClipboardUtils;
 @ParametersAreNonnullByDefault
 public class ClipboardFlavorBinaryData implements BinaryData {
 
-	public static final String BROKEN_DATA_SOURCE = "Broken data source";
+	public static final String BROKEN_DATA_SOURCE_EXCEPTION = "Broken data source";
     public static final int PAGE_SIZE = 4096;
 
     private DataFlavor dataFlavor;
@@ -191,7 +191,7 @@ public class ClipboardFlavorBinaryData implements BinaryData {
             Object data = ClipboardUtils.getClipboard().getData(dataFlavor);
             return (InputStream) data;
         } catch (UnsupportedFlavorException | IOException ex) {
-            throw new IllegalStateException(BROKEN_DATA_SOURCE, ex);
+            throw new IllegalStateException(BROKEN_DATA_SOURCE_EXCEPTION, ex);
         }
     }
 
@@ -248,7 +248,7 @@ public class ClipboardFlavorBinaryData implements BinaryData {
             while (remains > 0) {
                 int copied = inputStream.read(cachePages[usedPage].page, done, remains);
                 if (copied < 0) {
-                    throw new IllegalStateException(BROKEN_DATA_SOURCE);
+                    throw new IllegalStateException(BROKEN_DATA_SOURCE_EXCEPTION);
                 }
                 cachePosition += copied;
                 remains -= copied;
@@ -258,7 +258,7 @@ public class ClipboardFlavorBinaryData implements BinaryData {
             cachePages[usedPage].pageIndex = pageIndex;
             nextCachePage = 1 - nextCachePage;
         } catch (IOException e) {
-            throw new IllegalStateException(BROKEN_DATA_SOURCE, e);
+            throw new IllegalStateException(BROKEN_DATA_SOURCE_EXCEPTION, e);
         }
 
         return usedPage;

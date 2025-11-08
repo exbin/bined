@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.macro.options;
+package org.exbin.framework.bined.macro.settings;
 
 import java.util.ArrayList;
 import java.util.List;

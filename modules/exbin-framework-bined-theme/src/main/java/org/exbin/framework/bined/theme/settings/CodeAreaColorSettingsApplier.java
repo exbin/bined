@@ -16,9 +16,13 @@
 package org.exbin.framework.bined.theme.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.theme.BinedThemeManager;
+import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -34,17 +38,26 @@ public class CodeAreaColorSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        if (!(instance instanceof BinEdFileHandler)) {
+        if (!(instance instanceof BinaryDataComponent)) {
+            return;
+        }
+
+        CodeAreaCore codeArea = ((BinaryDataComponent) instance).getCodeArea();
+        if (!(codeArea instanceof SectCodeArea)) {
             return;
         }
 
         CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
-
+        SectionCodeAreaColorProfile profile;
         int selectedProfile = options.getSelectedProfile();
         if (selectedProfile >= 0) {
-            SectCodeArea codeArea = ((BinEdFileHandler) instance).getCodeArea();
-            SectionCodeAreaColorProfile profile = options.getColorsProfile(selectedProfile);
-            codeArea.setColorsProfile(profile);
+            profile = options.getColorsProfile(selectedProfile);
+        } else {
+            BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
+            BinedThemeManager themeManager = binedThemeModule.getThemeManager();
+            profile = themeManager.getDefaultColorProfile();
         }
+
+        ((SectCodeArea) codeArea).setColorsProfile(profile);
     }
 }

@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.editor.service;
+package org.exbin.framework.bined.macro;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.basic.EnterKeyHandlingMode;
-import org.exbin.bined.basic.TabKeyHandlingMode;
-import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.context.api.StateChangeMessage;
 
 /**
- * Editor options service interface.
+ * Macro state context message.
  *
  * @author ExBin Project (https://exbin.org)
  */
-@ParametersAreNonnullByDefault
-public interface EditorOptionsService {
-
-    void setFileHandlingMode(FileHandlingMode fileHandlingMode);
-
-    void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode);
-
-    void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode);
+public enum MacroStateChangeMessage implements StateChangeMessage {
+    MACRO_RECORDING,
+    LAST_MACRO
 }

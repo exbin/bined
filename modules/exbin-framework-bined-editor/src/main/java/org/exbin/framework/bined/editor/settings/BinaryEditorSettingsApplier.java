@@ -16,7 +16,11 @@
 package org.exbin.framework.bined.editor.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.editor.service.EditorOptionsService;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -32,11 +36,23 @@ public class BinaryEditorSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        EditorOptionsService editorOptionsService = null;
+        if (!(instance instanceof BinaryDataComponent)) {
+            return;
+        }
+
         BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
         // TODO: This causes multiple reloads / warnings about modified files
+        // Move to BinaryFileProcessing
         // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
-        editorOptionsService.setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
-        editorOptionsService.setTabKeyHandlingMode(options.getTabKeyHandlingMode());
+
+        CodeAreaCore codeArea = ((BinaryDataComponent) instance).getCodeArea();
+        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+        if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+            ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
+            ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(options.getTabKeyHandlingMode());
+        } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
+            ((DefaultCodeAreaCommandHandler) commandHandler).setEnterKeyHandlingMode(options.getEnterKeyHandlingMode());
+            ((DefaultCodeAreaCommandHandler) commandHandler).setTabKeyHandlingMode(options.getTabKeyHandlingMode());
+        }
     }
 }

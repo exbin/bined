@@ -15,13 +15,14 @@
  */
 package org.exbin.framework.bined.theme;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
-import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.theme.settings.BinaryThemeOptions;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorProfileOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorSettingsApplier;
@@ -37,7 +38,6 @@ import org.exbin.framework.bined.theme.settings.CodeAreaThemeSettingsApplier;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeSettingsComponent;
 import org.exbin.framework.contribution.api.GroupSequenceContribution;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
@@ -54,7 +54,7 @@ import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
 public class BinedThemeManager {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedThemeManager.class);
-    
+
     public static final String SETTINGS_GROUP_ID = "binaryEditorThemeGroup";
     public static final String SETTINGS_THEME_PAGE_ID = "binaryEditorTheme";
     public static final String SETTINGS_LAYOUT_PAGE_ID = "binaryEditorLayout";
@@ -62,11 +62,7 @@ public class BinedThemeManager {
 
     private SectionCodeAreaLayoutProfile defaultLayoutProfile;
     private SectionCodeAreaThemeProfile defaultThemeProfile;
-    private CodeAreaColorsProfile defaultColorProfile;
-
-    private CodeAreaThemeSettingsComponent themeProfilesSettingsComponent;
-    private CodeAreaLayoutSettingsComponent layoutProfilesSettingsComponent;
-    private CodeAreaColorSettingsComponent colorProfilesSettingsComponent;
+    private SectionCodeAreaColorProfile defaultColorProfile;
 
     public BinedThemeManager() {
     }
@@ -74,17 +70,17 @@ public class BinedThemeManager {
     public void registerSettings() {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
-        
+
         settingsManagement.registerOptionsSettings(CodeAreaColorOptions.class, (optionsStorage) -> new CodeAreaColorOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaColorProfileOptions.class, (optionsStorage) -> new CodeAreaColorProfileOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaLayoutOptions.class, (optionsStorage) -> new CodeAreaLayoutOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaLayoutProfileOptions.class, (optionsStorage) -> new CodeAreaLayoutProfileOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaThemeOptions.class, (optionsStorage) -> new CodeAreaThemeOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(CodeAreaThemeProfileOptions.class, (optionsStorage) -> new CodeAreaThemeProfileOptions(optionsStorage));
-        
-        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
-        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
-        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
+
+        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
 
         GroupSequenceContribution registerGroup = settingsManagement.registerGroup(SETTINGS_GROUP_ID);
         settingsManagement.registerSettingsRule(registerGroup, new SettingsPageContributionRule("binary"));
@@ -102,46 +98,33 @@ public class BinedThemeManager {
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         registerComponent = settingsManagement.registerComponent(CodeAreaLayoutSettingsComponent.COMPONENT_ID, new CodeAreaLayoutSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
-        
+
         settingsPage = new SettingsPageContribution(SETTINGS_COLOR_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(registerGroup));
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         registerComponent = settingsManagement.registerComponent(CodeAreaColorSettingsComponent.COMPONENT_ID, new CodeAreaColorSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
-        
-        
     }
 
     public void loadDefaults(SectCodeArea codeArea) {
         defaultLayoutProfile = codeArea.getLayoutProfile();
         defaultThemeProfile = codeArea.getThemeProfile();
-        defaultColorProfile = codeArea.getColorsProfile();
+        defaultColorProfile = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();
     }
 
-    public void applyProfileFromPreferences(SectCodeArea codeArea, BinaryThemeOptions preferences) {
-        CodeAreaLayoutOptions layoutOptions = preferences.getLayoutOptions();
-        int selectedLayoutProfile = layoutOptions.getSelectedProfile();
-        if (selectedLayoutProfile >= 0) {
-            codeArea.setLayoutProfile(layoutOptions.getLayoutProfile(selectedLayoutProfile));
-        } else if (defaultLayoutProfile != null) {
-            codeArea.setLayoutProfile(defaultLayoutProfile);
-        }
+    @Nonnull
+    public SectionCodeAreaLayoutProfile getDefaultLayoutProfile() {
+        return defaultLayoutProfile;
+    }
 
-        CodeAreaThemeOptions themeOptions = preferences.getThemeOptions();
-        int selectedThemeProfile = themeOptions.getSelectedProfile();
-        if (selectedThemeProfile >= 0) {
-            codeArea.setThemeProfile(themeOptions.getThemeProfile(selectedThemeProfile));
-        } else if (defaultThemeProfile != null) {
-            codeArea.setThemeProfile(defaultThemeProfile);
-        }
+    @Nonnull
+    public SectionCodeAreaThemeProfile getDefaultThemeProfile() {
+        return defaultThemeProfile;
+    }
 
-        CodeAreaColorOptions colorOptions = preferences.getColorOptions();
-        int selectedColorProfile = colorOptions.getSelectedProfile();
-        if (selectedColorProfile >= 0) {
-            codeArea.setColorsProfile(colorOptions.getColorsProfile(selectedColorProfile));
-        } else if (defaultColorProfile != null) {
-            codeArea.setColorsProfile(defaultColorProfile);
-        }
+    @Nonnull
+    public SectionCodeAreaColorProfile getDefaultColorProfile() {
+        return defaultColorProfile;
     }
 }

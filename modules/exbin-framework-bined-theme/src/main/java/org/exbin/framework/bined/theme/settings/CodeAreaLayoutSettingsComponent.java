@@ -30,7 +30,6 @@ import org.exbin.framework.bined.theme.settings.gui.LayoutProfilesSettingsPanel;
 import org.exbin.framework.bined.theme.settings.gui.LayoutProfilesPanel;
 import org.exbin.framework.bined.theme.settings.gui.LayoutTemplatePanel;
 import org.exbin.framework.bined.theme.settings.gui.NamedProfilePanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.window.api.WindowHandler;
@@ -47,12 +46,6 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
 public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "layoutProfiles";
-
-    private EditorProvider editorProvider;
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-    }
 
     @Nonnull
     @Override

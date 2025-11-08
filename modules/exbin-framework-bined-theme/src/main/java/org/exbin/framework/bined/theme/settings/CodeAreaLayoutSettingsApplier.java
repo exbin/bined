@@ -17,8 +17,12 @@ package org.exbin.framework.bined.theme.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.theme.BinedThemeManager;
+import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -34,16 +38,26 @@ public class CodeAreaLayoutSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        if (!(instance instanceof BinEdFileHandler)) {
+        if (!(instance instanceof BinaryDataComponent)) {
+            return;
+        }
+
+        CodeAreaCore codeArea = ((BinaryDataComponent) instance).getCodeArea();
+        if (!(codeArea instanceof SectCodeArea)) {
             return;
         }
 
         CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
+        SectionCodeAreaLayoutProfile profile;
         int selectedProfile = options.getSelectedProfile();
         if (selectedProfile >= 0) {
-            SectCodeArea codeArea = ((BinEdFileHandler) instance).getCodeArea();
-            SectionCodeAreaLayoutProfile profile = options.getLayoutProfile(selectedProfile);
-            codeArea.setLayoutProfile(profile);
+            profile = options.getLayoutProfile(selectedProfile);
+        } else {
+            BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
+            BinedThemeManager themeManager = binedThemeModule.getThemeManager();
+            profile = themeManager.getDefaultLayoutProfile();
         }
+
+        ((SectCodeArea) codeArea).setLayoutProfile(profile);
     }
 }

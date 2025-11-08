@@ -75,7 +75,6 @@ import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.menu.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.utils.ObjectUtils;

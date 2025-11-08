@@ -30,7 +30,6 @@ import org.exbin.framework.bined.theme.settings.gui.ColorProfilesSettingsPanel;
 import org.exbin.framework.bined.theme.settings.gui.ColorProfilesPanel;
 import org.exbin.framework.bined.theme.settings.gui.ColorTemplatePanel;
 import org.exbin.framework.bined.theme.settings.gui.NamedProfilePanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.window.api.WindowHandler;
@@ -47,12 +46,6 @@ import org.exbin.framework.window.api.controller.DefaultControlController;
 public class CodeAreaColorSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "colorProfiles";
-
-    private EditorProvider editorProvider;
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-    }
 
     @Nonnull
     @Override

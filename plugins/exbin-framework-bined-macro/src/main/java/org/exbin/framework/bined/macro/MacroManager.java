@@ -43,7 +43,6 @@ import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ActionManagement;
-import org.exbin.framework.action.api.ActionManagement;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
@@ -62,7 +61,7 @@ import org.exbin.framework.bined.macro.model.MacroRecord;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroOperation;
 import org.exbin.framework.bined.macro.operation.MacroStep;
-import org.exbin.framework.bined.macro.options.MacroOptions;
+import org.exbin.framework.bined.macro.settings.MacroOptions;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.context.api.ContextModuleApi;
@@ -70,7 +69,6 @@ import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
-import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -93,7 +91,7 @@ public class MacroManager {
     private MacroOptions macroOptions;
 
     private BinEdFileHandler fileHandler;
-    private CodeAreaCore activeCodeArea;
+    private BinaryDataComponent binaryDataComponent = null;
 
     private final ManageMacrosAction manageMacrosAction = new ManageMacrosAction();
     private final StartMacroRecordingAction startMacroRecordingAction = new StartMacroRecordingAction();
@@ -172,6 +170,7 @@ public class MacroManager {
         macroRecords.addAll(records);
         saveMacroRecords();
         MacroManager.this.updateMacrosMenu();
+        notifyLastMacroChange();
     }
 
     @Nonnull
@@ -275,7 +274,7 @@ public class MacroManager {
                     });
                     registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                         contextManager.changeActiveState(ContextComponent.class, instance);
-                        activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                        binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                         updateMacrosMenu();
                     });
                     registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
@@ -321,8 +320,11 @@ public class MacroManager {
                 });
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                     contextManager.changeActiveState(ContextComponent.class, instance);
-                    activeCodeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                    binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                     updateMacrosMenu();
+                });
+                registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
+                    contextManager.changeActiveState(DialogParentComponent.class, instance);
                 });
                 registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
                     contextManager.changeActiveState(EditorProvider.class, instance);
@@ -353,65 +355,67 @@ public class MacroManager {
     }
 
     public void executeMacro(CodeAreaCore codeArea, int macroIndex) {
-        if (macroRecords.size() > macroIndex) {
-            lastActiveMacro = macroIndex;
-            MacroRecord record = macroRecords.get(macroIndex);
-            CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
+        if (macroRecords.size() <= macroIndex) {
+            return;
+        }
 
-            int line = 0;
-            List<String> steps = record.getSteps();
-            for (String step : steps) {
-                line++;
-                try {
-                    MacroOperation parseStep = CodeAreaMacroCommandHandler.parseStep(step);
-                    MacroStep macroStep = parseStep.getMacroStep();
-                    List<Object> parameters = parseStep.getParameters();
-                    switch (macroStep) {
-                        case KEY_PRESSED: {
-                            if (!parameters.isEmpty()) {
-                                String text = (String) parameters.get(0);
-                                for (char character : text.toCharArray()) {
-                                    commandHandler.executeMacroStep(macroStep, Arrays.asList(character));
-                                }
-                                continue;
-                            }
-                            break;
-                        }
-                        case CARET_MOVE: {
-                            if (parameters.size() > 1) {
-                                Integer count = (Integer) parameters.get(1);
-                                for (int i = 0; i < count; i++) {
-                                    commandHandler.executeMacroStep(macroStep, Arrays.asList(parameters.get(0)));
-                                }
-                                continue;
-                            }
-                            break;
-                        }
-                        case FIND_TEXT: {
-                            if (parameters.size() > 1) {
-                                if (fileHandler == null) {
-                                    throw new IllegalStateException("No active file");
-                                }
-                                BinEdComponentPanel activePanel = fileHandler.getComponent();
-                                BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                                componentExtension.performSearchText((String) parameters.get(0));
+        lastActiveMacro = macroIndex;
+        MacroRecord record = macroRecords.get(macroIndex);
+        CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
+
+        int line = 0;
+        List<String> steps = record.getSteps();
+        for (String step : steps) {
+            line++;
+            try {
+                MacroOperation parseStep = CodeAreaMacroCommandHandler.parseStep(step);
+                MacroStep macroStep = parseStep.getMacroStep();
+                List<Object> parameters = parseStep.getParameters();
+                switch (macroStep) {
+                    case KEY_PRESSED: {
+                        if (!parameters.isEmpty()) {
+                            String text = (String) parameters.get(0);
+                            for (char character : text.toCharArray()) {
+                                commandHandler.executeMacroStep(macroStep, Arrays.asList(character));
                             }
                             continue;
                         }
-                        case FIND_AGAIN: {
+                        break;
+                    }
+                    case CARET_MOVE: {
+                        if (parameters.size() > 1) {
+                            Integer count = (Integer) parameters.get(1);
+                            for (int i = 0; i < count; i++) {
+                                commandHandler.executeMacroStep(macroStep, Arrays.asList(parameters.get(0)));
+                            }
+                            continue;
+                        }
+                        break;
+                    }
+                    case FIND_TEXT: {
+                        if (parameters.size() > 1) {
                             if (fileHandler == null) {
                                 throw new IllegalStateException("No active file");
                             }
                             BinEdComponentPanel activePanel = fileHandler.getComponent();
                             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
-                            componentExtension.performFindAgain();
-                            continue;
+                            componentExtension.performSearchText((String) parameters.get(0));
                         }
+                        continue;
                     }
-                    commandHandler.executeMacroStep(macroStep, parameters);
-                } catch (IllegalStateException | NumberFormatException | ParseException ex) {
-                    throw new IllegalStateException("Error on line " + line + ": ", ex);
+                    case FIND_AGAIN: {
+                        if (fileHandler == null) {
+                            throw new IllegalStateException("No active file");
+                        }
+                        BinEdComponentPanel activePanel = fileHandler.getComponent();
+                        BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                        componentExtension.performFindAgain();
+                        continue;
+                    }
                 }
+                commandHandler.executeMacroStep(macroStep, parameters);
+            } catch (IllegalStateException | NumberFormatException | ParseException ex) {
+                throw new IllegalStateException("Error on line " + line + ": ", ex);
             }
         }
     }
@@ -432,7 +436,7 @@ public class MacroManager {
         macroRecord.setName(resourceBundle.getString("macroAction.defaultNamePrefix") + lastMacroIndex);
         lastMacroIndex++;
         commandHandler.setRecordingMacro(macroRecord);
-        notifyMacroRecordingChange(codeArea);
+        notifyMacroRecordingChange();
     }
 
     public void stopMacroRecording(CodeAreaCore codeArea) {
@@ -448,19 +452,26 @@ public class MacroManager {
             }
         }
         commandHandler.setRecordingMacro(null);
-        notifyMacroRecordingChange(codeArea);
+        notifyMacroRecordingChange();
+        notifyLastMacroChange();
     }
 
     /**
-     * Notifies Macro recording state changed.
+     * Notifies macro recording state changed.
      *
      * @param codeArea code area
      */
-    private void notifyMacroRecordingChange(CodeAreaCore codeArea) {
-        // TODO Reported as a change of CodeAreaCore - create some kind of macro recording state instead?
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement frameContextManager = frameModule.getFrameHandler().getContextManager();
-        frameContextManager.changeActiveState(CodeAreaCore.class, codeArea);
+    private void notifyMacroRecordingChange() {
+        contextManager.activeStateMessage(ContextComponent.class, binaryDataComponent, MacroStateChangeMessage.MACRO_RECORDING);
+    }
+
+    /**
+     * Notifies last macro state changed.
+     *
+     * @param codeArea code area
+     */
+    private void notifyLastMacroChange() {
+        contextManager.activeStateMessage(ContextComponent.class, binaryDataComponent, MacroStateChangeMessage.LAST_MACRO);
     }
 
     public void updateMacrosMenu() {
@@ -477,7 +488,7 @@ public class MacroManager {
             int recordsLimit = Math.min(macroRecords.size(), 10);
             String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
             String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
-            boolean enabled = activeCodeArea != null;
+            boolean enabled = binaryDataComponent != null;
             for (int i = 0; i < recordsLimit; i++) {
                 final int macroIndex = i;
                 String macroName = macroRecords.get(i).getName();
@@ -485,7 +496,7 @@ public class MacroManager {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            executeMacro(activeCodeArea, macroIndex);
+                            executeMacro(binaryDataComponent.getCodeArea(), macroIndex);
                         } catch (Exception ex) {
                             String message = ex.getMessage();
                             if (message == null || message.isEmpty()) {

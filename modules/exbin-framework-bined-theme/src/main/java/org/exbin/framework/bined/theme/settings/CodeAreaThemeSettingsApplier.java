@@ -16,9 +16,13 @@
 package org.exbin.framework.bined.theme.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.theme.BinedThemeManager;
+import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -34,16 +38,26 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        if (!(instance instanceof BinEdFileHandler)) {
+        if (!(instance instanceof BinaryDataComponent)) {
+            return;
+        }
+
+        CodeAreaCore codeArea = ((BinaryDataComponent) instance).getCodeArea();
+        if (!(codeArea instanceof SectCodeArea)) {
             return;
         }
 
         CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
+        SectionCodeAreaThemeProfile profile;
         int selectedProfile = options.getSelectedProfile();
-        if (selectedProfile >= 0) {
-            SectCodeArea codeArea = ((BinEdFileHandler) instance).getCodeArea();
-            SectionCodeAreaThemeProfile profile = options.getThemeProfile(selectedProfile);
-            codeArea.setThemeProfile(profile);
+        if (selectedProfile < 0) {
+            profile = options.getThemeProfile(selectedProfile);
+        } else {
+            BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
+            BinedThemeManager themeManager = binedThemeModule.getThemeManager();
+            profile = themeManager.getDefaultThemeProfile();
         }
+
+        ((SectCodeArea) codeArea).setThemeProfile(profile);
     }
 }
