@@ -84,8 +84,8 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        preferencesScrollPane = new javax.swing.JScrollPane();
-        preferencesPanel = new javax.swing.JPanel();
+        optionsScrollPane = new javax.swing.JScrollPane();
+        optionsPanel = new javax.swing.JPanel();
         halfSpaceGroupSizeLabel = new javax.swing.JLabel();
         rowPositionPanel = new javax.swing.JPanel();
         showRowPositionCheckBox = new javax.swing.JCheckBox();
@@ -253,23 +253,23 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout preferencesPanelLayout = new javax.swing.GroupLayout(preferencesPanel);
-        preferencesPanel.setLayout(preferencesPanelLayout);
-        preferencesPanelLayout.setHorizontalGroup(
-            preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(preferencesPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
+        optionsPanel.setLayout(optionsPanelLayout);
+        optionsPanelLayout.setHorizontalGroup(
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(optionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(preferencesPanelLayout.createSequentialGroup()
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(optionsPanelLayout.createSequentialGroup()
                         .addComponent(halfSpaceGroupSizeLabel)
                         .addGap(51, 51, 51))
-                    .addGroup(preferencesPanelLayout.createSequentialGroup()
-                        .addGroup(preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(optionsPanelLayout.createSequentialGroup()
+                        .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(doubleSpaceGroupSizeLabel)
                             .addComponent(spaceGroupSizeLabel))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, preferencesPanelLayout.createSequentialGroup()
-                        .addGroup(preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                        .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(halfSpaceGroupSizeSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(spaceGroupSizeSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(doubleSpaceGroupSizeSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -277,9 +277,9 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
                             .addComponent(rowPositionPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
-        preferencesPanelLayout.setVerticalGroup(
-            preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(preferencesPanelLayout.createSequentialGroup()
+        optionsPanelLayout.setVerticalGroup(
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(optionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,9 +299,9 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        preferencesScrollPane.setViewportView(preferencesPanel);
+        optionsScrollPane.setViewportView(optionsPanel);
 
-        add(preferencesScrollPane, java.awt.BorderLayout.WEST);
+        add(optionsScrollPane, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
 
     private void showRowPositionCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_showRowPositionCheckBoxItemStateChanged
@@ -386,8 +386,8 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel headerTopSpaceLabel;
     private javax.swing.JSpinner headerTopSpaceSpinner;
-    private javax.swing.JPanel preferencesPanel;
-    private javax.swing.JScrollPane preferencesScrollPane;
+    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JScrollPane optionsScrollPane;
     private javax.swing.JLabel rowPositionLeftSpaceLabel;
     private javax.swing.JSpinner rowPositionLeftSpaceSpinner;
     private javax.swing.JPanel rowPositionPanel;

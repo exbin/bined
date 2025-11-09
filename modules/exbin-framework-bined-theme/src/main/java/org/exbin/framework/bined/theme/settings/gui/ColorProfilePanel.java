@@ -85,20 +85,20 @@ public class ColorProfilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        preferencesPanel = new javax.swing.JPanel();
+        optionsPanel = new javax.swing.JPanel();
         colorsScrollPane = new javax.swing.JScrollPane();
         colorsTable = new javax.swing.JTable();
 
         setLayout(new java.awt.BorderLayout());
 
-        preferencesPanel.setLayout(new java.awt.BorderLayout());
+        optionsPanel.setLayout(new java.awt.BorderLayout());
 
         colorsTable.setModel(colorTableModel);
         colorsScrollPane.setViewportView(colorsTable);
 
-        preferencesPanel.add(colorsScrollPane, java.awt.BorderLayout.CENTER);
+        optionsPanel.add(colorsScrollPane, java.awt.BorderLayout.CENTER);
 
-        add(preferencesPanel, java.awt.BorderLayout.WEST);
+        add(optionsPanel, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -117,6 +117,6 @@ public class ColorProfilePanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane colorsScrollPane;
     private javax.swing.JTable colorsTable;
-    private javax.swing.JPanel preferencesPanel;
+    private javax.swing.JPanel optionsPanel;
     // End of variables declaration//GEN-END:variables
 }

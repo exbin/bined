@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.theme.settings.gui;
+package org.exbin.framework.bined.theme.gui;
 
+import org.exbin.framework.bined.theme.model.ThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
-import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.theme.settings.CodeAreaThemeProfileOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
+import org.exbin.framework.bined.theme.settings.gui.PreviewPanel;
+import org.exbin.framework.bined.theme.settings.gui.PreviewPanel.PreviewType;
+import org.exbin.framework.bined.theme.settings.gui.ProfileListPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
@@ -47,14 +46,10 @@ import org.exbin.framework.utils.WindowUtils;
 @ParametersAreNonnullByDefault
 public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileListPanel {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesPanel.class);
 
-    private boolean modified = false;
-
-    private AddProfileOperation addProfileOperation = null;
-    private EditProfileOperation editProfileOperation = null;
-    private CopyProfileOperation copyProfileOperation = null;
-    private TemplateProfileOperation templateProfileOperation = null;
+    protected boolean modified = false;
+    protected Controller controller;
 
     public ThemeProfilesPanel() {
         initComponents();
@@ -62,25 +57,13 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     }
 
     private void init() {
-        profilesList.setModel(new ProfilesListModel());
+        profilesList.setModel(new ThemeProfilesListModel());
         profilesList.setCellRenderer(new ProfileCellRenderer());
         profilesList.addListSelectionListener((ListSelectionEvent e) -> updateStates());
     }
 
-    public void setAddProfileOperation(AddProfileOperation addProfileOperation) {
-        this.addProfileOperation = addProfileOperation;
-    }
-
-    public void setEditProfileOperation(EditProfileOperation editProfileOperation) {
-        this.editProfileOperation = editProfileOperation;
-    }
-
-    public void setCopyProfileOperation(CopyProfileOperation copyProfileOperation) {
-        this.copyProfileOperation = copyProfileOperation;
-    }
-
-    public void setTemplateProfileOperation(TemplateProfileOperation templateProfileOperation) {
-        this.templateProfileOperation = templateProfileOperation;
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     private void updateStates() {
@@ -97,7 +80,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
             upButton.setEnabled(profilesList.getMaxSelectionIndex() >= selectedIndices.length);
             downButton.setEnabled(profilesList.getMinSelectionIndex() + selectedIndices.length < getProfilesListModel().getSize());
             if (selectedIndices.length == 1) {
-                previewPanel.getCodeArea().setThemeProfile(getProfilesListModel().getElementAt(selectedIndices[0]).getThemeProfile());
+                controller.updatePreview(previewPanel, getProfilesListModel().getElementAt(selectedIndices[0]));
             }
         } else {
             upButton.setEnabled(false);
@@ -106,25 +89,21 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     }
 
     @Nonnull
-    @Override
-    public List<String> getProfileNames() {
-        List<String> profileNames = new ArrayList<>();
-        getProfilesListModel().profiles.forEach((profile) -> profileNames.add(profile.profileName));
-        return profileNames;
+    public ThemeProfilesListModel getProfilesListModel() {
+        return ((ThemeProfilesListModel) profilesList.getModel());
     }
 
     @Nonnull
-    private ProfilesListModel getProfilesListModel() {
-        return ((ProfilesListModel) profilesList.getModel());
+    @Override
+    public List<String> getProfileNames() {
+        List<String> profileNames = new ArrayList<>();
+        getProfilesListModel().getProfiles().forEach((profile) -> profileNames.add(profile.getProfileName()));
+        return profileNames;
     }
 
     @Override
     public void addProfileListPanelListener(ListDataListener listener) {
         getProfilesListModel().addListDataListener(listener);
-    }
-
-    public SectionCodeAreaThemeProfile getProfile(int profileIndex) {
-        return getProfilesListModel().getElementAt(profileIndex).themeProfile;
     }
 
     /**
@@ -148,9 +127,11 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         selectAllButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
         hideButton = new javax.swing.JButton();
-        previewPanel = new org.exbin.framework.bined.theme.settings.gui.PreviewPanel();
+        previewPanel = new PreviewPanel(PreviewType.WITH_SEARCH);
 
         profilesListScrollPane.setViewportView(profilesList);
+
+        profilesControlPanel.setPreferredSize(new java.awt.Dimension(152, 459));
 
         addButton.setText(resourceBundle.getString("addButton.text")); // NOI18N
         addButton.addActionListener(new java.awt.event.ActionListener() {
@@ -229,15 +210,15 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
             .addGroup(profilesControlPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(profilesControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(copyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(upButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(hideButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fromTemplateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                    .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(upButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(copyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fromTemplateButton, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
                 .addContainerGap())
         );
         profilesControlPanelLayout.setVerticalGroup(
@@ -278,7 +259,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(profilesControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(profilesControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(profilesListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,7 +270,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     }// </editor-fold>//GEN-END:initComponents
 
     private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
+        ThemeProfilesListModel model = getProfilesListModel();
         int[] indices = profilesList.getSelectedIndices();
         int last = 0;
         for (int i = 0; i < indices.length; i++) {
@@ -307,7 +288,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
+        ThemeProfilesListModel model = getProfilesListModel();
         int[] indices = profilesList.getSelectedIndices();
         int last = model.getSize() - 1;
         for (int i = indices.length; i > 0; i--) {
@@ -325,29 +306,49 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
+        Optional<ThemeProfile> profile = controller.addProfile();
+        if (!profile.isPresent()) {
+            return;
+        }
+
+        ThemeProfilesListModel model = getProfilesListModel();
         int selectedIndex = profilesList.getSelectedIndex();
 
-        if (addProfileOperation != null) {
-            ThemeProfilesPanel.ThemeProfile newProfileRecord = addProfileOperation.run(this, getNewProfileName());
-            if (newProfileRecord != null) {
-                if (selectedIndex >= 0) {
-                    profilesList.clearSelection();
-                    model.add(selectedIndex, newProfileRecord);
-                } else {
-                    model.add(newProfileRecord);
-                }
-                wasModified();
-            }
+        if (selectedIndex >= 0) {
+            profilesList.clearSelection();
+            model.add(selectedIndex, profile.get());
+        } else {
+            model.add(profile.get());
         }
+        wasModified();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
+        ThemeProfilesListModel model = getProfilesListModel();
         model.removeIndices(profilesList.getSelectedIndices());
         profilesList.clearSelection();
         wasModified();
     }//GEN-LAST:event_removeButtonActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        ThemeProfilesListModel model = getProfilesListModel();
+        int selectedIndex = profilesList.getSelectedIndex();
+        ThemeProfile oldProfileRecord = model.getElementAt(selectedIndex);
+
+        Optional<ThemeProfile> newProfileRecord = controller.editProfile(oldProfileRecord);
+        if (!newProfileRecord.isPresent()) {
+            return;
+        }
+
+        ThemeProfile profileRecord = model.getElementAt(selectedIndex);
+        newProfileRecord.get().copyTo(profileRecord);
+        model.notifyProfileModified(selectedIndex);
+        wasModified();
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hideButtonActionPerformed
 
     private void selectAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllButtonActionPerformed
         if (profilesList.getSelectedIndices().length < profilesList.getModel().getSize()) {
@@ -357,64 +358,37 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         }
     }//GEN-LAST:event_selectAllButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
-        int selectedIndex = profilesList.getSelectedIndex();
-        ThemeProfile oldProfileRecord = model.getElementAt(selectedIndex);
-
-        if (editProfileOperation != null) {
-            ThemeProfile newProfileRecord = editProfileOperation.run(this, oldProfileRecord);
-            if (newProfileRecord != null) {
-                ThemeProfile profileRecord = model.getElementAt(selectedIndex);
-                profileRecord.profileName = newProfileRecord.getProfileName();
-                profileRecord.themeProfile = newProfileRecord.themeProfile;
-                model.notifyProfileModified(selectedIndex);
-                wasModified();
-            }
-        }
-    }//GEN-LAST:event_editButtonActionPerformed
-
-    private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_hideButtonActionPerformed
-
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
+        ThemeProfilesListModel model = getProfilesListModel();
         int selectedIndex = profilesList.getSelectedIndex();
         ThemeProfile sourceProfile = model.getElementAt(selectedIndex);
-        ThemeProfile profileRecord = new ThemeProfile(sourceProfile.profileName, sourceProfile.themeProfile);
-
-        if (copyProfileOperation != null) {
-            ThemeProfile newProfileRecord = copyProfileOperation.run(this, profileRecord);
-            if (newProfileRecord != null) {
-                if (selectedIndex >= 0) {
-                    model.add(selectedIndex + 1, newProfileRecord);
-                    profilesList.setSelectedIndex(selectedIndex + 1);
-                } else {
-                    profilesList.clearSelection();
-                    model.add(newProfileRecord);
-                }
-                wasModified();
-            }
+        ThemeProfile profileRecord = controller.copyProfile(sourceProfile);
+        if (selectedIndex >= 0) {
+            model.add(selectedIndex + 1, profileRecord);
+            profilesList.setSelectedIndex(selectedIndex + 1);
+        } else {
+            profilesList.clearSelection();
+            model.add(profileRecord);
         }
+        wasModified();
     }//GEN-LAST:event_copyButtonActionPerformed
 
     private void fromTemplateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromTemplateButtonActionPerformed
-        ProfilesListModel model = getProfilesListModel();
+        ThemeProfilesListModel model = getProfilesListModel();
         int selectedIndex = profilesList.getSelectedIndex();
 
-        if (templateProfileOperation != null) {
-            ThemeProfilesPanel.ThemeProfile newProfileRecord = templateProfileOperation.run(this);
-            if (newProfileRecord != null) {
-                if (selectedIndex >= 0) {
-                    profilesList.clearSelection();
-                    model.add(selectedIndex, newProfileRecord);
-                } else {
-                    model.add(newProfileRecord);
-                }
-                wasModified();
-            }
+        Optional<ThemeProfile> profile = controller.addTemplate();
+        if (!profile.isPresent()) {
+            return;
         }
+
+        if (selectedIndex >= 0) {
+            profilesList.clearSelection();
+            model.add(selectedIndex, profile.get());
+        } else {
+            model.add(profile.get());
+        }
+        wasModified();
     }//GEN-LAST:event_fromTemplateButtonActionPerformed
 
     public boolean isModified() {
@@ -423,41 +397,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
 
     private void wasModified() {
         modified = true;
-    }
-
-    public void addProfilesListListener(ListDataListener listener) {
-        getProfilesListModel().addListDataListener(listener);
-    }
-
-    private boolean isValidProfileName(@Nullable String profileName) {
-        return profileName != null && !"".equals(profileName.trim());
-    }
-
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
-        CodeAreaThemeProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
-        List<ThemeProfile> profiles = new ArrayList<>();
-        List<String> profileNames = options.getProfileNames();
-        for (int index = 0; index < profileNames.size(); index++) {
-            ThemeProfile profile = new ThemeProfile(
-                    profileNames.get(index),
-                    options.getThemeProfile(index)
-            );
-            profiles.add(profile);
-        }
-
-        ProfilesListModel model = getProfilesListModel();
-        model.setProfiles(profiles);
-    }
-
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
-        CodeAreaThemeProfileOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
-        options.clearProfiles();
-        ProfilesListModel model = getProfilesListModel();
-        List<ThemeProfile> profiles = model.getProfiles();
-        for (int index = 0; index < profiles.size(); index++) {
-            ThemeProfile profile = profiles.get(index);
-            options.addProfile(profile.profileName, profile.themeProfile);
-        }
+        updateStates();
     }
 
     /**
@@ -490,165 +430,32 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     // End of variables declaration//GEN-END:variables
 
     @ParametersAreNonnullByDefault
-    public final static class ThemeProfile {
-
-        private String profileName;
-        private boolean visible = true;
-        private SectionCodeAreaThemeProfile themeProfile;
-
-        public ThemeProfile(String profileName, SectionCodeAreaThemeProfile themeProfile) {
-            this.profileName = profileName;
-            this.themeProfile = themeProfile;
-        }
-
-        @Nonnull
-        public String getProfileName() {
-            return profileName;
-        }
-
-        @Nonnull
-        public SectionCodeAreaThemeProfile getThemeProfile() {
-            return themeProfile;
-        }
-    }
-
-    @ParametersAreNonnullByDefault
-    private static final class ProfilesListModel extends AbstractListModel<ThemeProfile> {
-
-        private final List<ThemeProfile> profiles = new ArrayList<>();
-
-        public ProfilesListModel() {
-        }
-
-        @Override
-        public int getSize() {
-            if (profiles == null) {
-                return 0;
-            }
-            return profiles.size();
-        }
-
-        public boolean isEmpty() {
-            return profiles == null || profiles.isEmpty();
-        }
-
-        @Nullable
-        @Override
-        public ThemeProfile getElementAt(int index) {
-            return profiles.get(index);
-        }
-
-        @Nonnull
-        public List<ThemeProfile> getProfiles() {
-            return profiles;
-        }
-
-        public void setProfiles(List<ThemeProfile> profiles) {
-            int size = this.profiles.size();
-            if (size > 0) {
-                this.profiles.clear();
-                fireIntervalRemoved(this, 0, size - 1);
-            }
-            int profilesSize = profiles.size();
-            if (profilesSize > 0) {
-                this.profiles.addAll(profiles);
-                fireIntervalAdded(this, 0, profilesSize - 1);
-            }
-        }
-
-        public void addAll(List<ThemeProfile> list, int index) {
-            if (index >= 0) {
-                profiles.addAll(index, list);
-                fireIntervalAdded(this, index, list.size() + index);
-            } else {
-                profiles.addAll(list);
-                fireIntervalAdded(this, profiles.size() - list.size(), profiles.size());
-            }
-        }
-
-        public void removeIndices(int[] indices) {
-            if (indices.length == 0) {
-                return;
-            }
-            Arrays.sort(indices);
-            for (int i = indices.length - 1; i >= 0; i--) {
-                profiles.remove(indices[i]);
-                fireIntervalRemoved(this, indices[i], indices[i]);
-            }
-        }
-
-        public void remove(int index) {
-            profiles.remove(index);
-            fireIntervalRemoved(this, index, index);
-        }
-
-        public void add(int index, ThemeProfile item) {
-            profiles.add(index, item);
-            fireIntervalAdded(this, index, index);
-        }
-
-        public void add(ThemeProfile item) {
-            profiles.add(item);
-            int index = profiles.size() - 1;
-            fireIntervalAdded(this, index, index);
-        }
-
-        public void notifyProfileModified(int index) {
-            fireContentsChanged(this, index, index);
-        }
-    }
-
-    @ParametersAreNonnullByDefault
     private static final class ProfileCellRenderer implements ListCellRenderer<ThemeProfile> {
 
         private final DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 
+        @Nonnull
         @Override
-        public Component getListCellRendererComponent(JList<? extends ThemeProfile> list, ThemeProfile value, int index, boolean isSelected, boolean cellHasFocus) {
-            return defaultListCellRenderer.getListCellRendererComponent(list, value.profileName, index, isSelected, cellHasFocus);
+        public Component getListCellRendererComponent(JList<? extends ThemeProfile> list, @Nullable ThemeProfile value, int index, boolean isSelected, boolean cellHasFocus) {
+            return defaultListCellRenderer.getListCellRendererComponent(list, value != null ? value.getProfileName() : null, index, isSelected, cellHasFocus);
         }
     }
 
-    @Nonnull
-    private String getNewProfileName() {
-        String profileName = "Profile ";
-        int profileIndex = 1;
-        while (hasProfileWithName(profileName + profileIndex)) {
-            profileIndex++;
-        }
-
-        return profileName + profileIndex;
-    }
-
-    private boolean hasProfileWithName(String profileName) {
-        return getProfilesListModel().getProfiles().stream().anyMatch((profile) -> (profileName.equals(profile.profileName)));
-    }
-
     @ParametersAreNonnullByDefault
-    public static interface AddProfileOperation {
+    public interface Controller {
 
-        @Nullable
-        ThemeProfile run(JComponent parentComponent, String profileName);
-    }
+        @Nonnull
+        Optional<ThemeProfile> addProfile();
 
-    @ParametersAreNonnullByDefault
-    public static interface EditProfileOperation {
+        @Nonnull
+        Optional<ThemeProfile> editProfile(ThemeProfile profile);
 
-        @Nullable
-        ThemeProfile run(JComponent parentComponent, ThemeProfile profileRecord);
-    }
+        @Nonnull
+        ThemeProfile copyProfile(ThemeProfile profile);
 
-    @ParametersAreNonnullByDefault
-    public static interface CopyProfileOperation {
+        @Nonnull
+        Optional<ThemeProfile> addTemplate();
 
-        @Nullable
-        ThemeProfile run(JComponent parentComponent, ThemeProfile profileRecord);
-    }
-
-    @ParametersAreNonnullByDefault
-    public static interface TemplateProfileOperation {
-
-        @Nullable
-        ThemeProfile run(JComponent parentComponent);
+        void updatePreview(PreviewPanel previewPanel, ThemeProfile themeProfile);
     }
 }

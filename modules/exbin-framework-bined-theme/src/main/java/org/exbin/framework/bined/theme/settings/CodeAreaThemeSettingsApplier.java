@@ -21,7 +21,6 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.theme.BinedThemeManager;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
@@ -54,8 +53,7 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
             profile = options.getThemeProfile(selectedProfile);
         } else {
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
-            BinedThemeManager themeManager = binedThemeModule.getThemeManager();
-            profile = themeManager.getDefaultThemeProfile();
+            profile = binedThemeModule.getDefaultThemeProfile();
         }
 
         ((SectCodeArea) codeArea).setThemeProfile(profile);

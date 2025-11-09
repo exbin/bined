@@ -15,12 +15,19 @@
  */
 package org.exbin.framework.bined.theme.settings.gui;
 
+import org.exbin.framework.bined.theme.gui.ProfileSelectionPanel;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.theme.gui.ThemeProfilesPanel;
+import org.exbin.framework.bined.theme.model.LayoutThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutProfileOptions;
 import org.exbin.framework.context.api.ActiveContextProvider;
@@ -44,10 +51,10 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesSettingsPanel.class);
 
     private final ProfileSelectionPanel selectionPanel;
-    private final LayoutProfilesPanel profilesPanel;
+    private final ThemeProfilesPanel profilesPanel;
 
     public LayoutProfilesSettingsPanel() {
-        this.profilesPanel = new LayoutProfilesPanel();
+        this.profilesPanel = new ThemeProfilesPanel();
         selectionPanel = new ProfileSelectionPanel(profilesPanel);
         initComponents();
         init();
@@ -64,38 +71,52 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
         return resourceBundle;
     }
 
-    public void setAddProfileOperation(LayoutProfilesPanel.AddProfileOperation addProfileOperation) {
-        profilesPanel.setAddProfileOperation(addProfileOperation);
+    @Nonnull
+    public List<ThemeProfile> getProfiles() {
+        return profilesPanel.getProfilesListModel().getProfiles();
     }
 
-    public void setEditProfileOperation(LayoutProfilesPanel.EditProfileOperation editProfileOperation) {
-        profilesPanel.setEditProfileOperation(editProfileOperation);
-    }
-
-    public void setCopyProfileOperation(LayoutProfilesPanel.CopyProfileOperation copyProfileOperation) {
-        profilesPanel.setCopyProfileOperation(copyProfileOperation);
-    }
-
-    public void setTemplateProfileOperation(LayoutProfilesPanel.TemplateProfileOperation templateProfileOperation) {
-        profilesPanel.setTemplateProfileOperation(templateProfileOperation);
+    public void setThemeProfileController(ThemeProfilesPanel.Controller controller) {
+        profilesPanel.setController(controller);
     }
 
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
-        CodeAreaLayoutProfileOptions layoutProfileOptions = new CodeAreaLayoutProfileOptions(options);
-        layoutProfileOptions.loadFromPreferences(options);
-        profilesPanel.loadFromOptions(settingsOptionsProvider, contextProvider);
+        CodeAreaLayoutProfileOptions layoutProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutProfileOptions.class);
+        layoutProfileOptions.loadFromOptions(options);
+
+        List<ThemeProfile> profiles = new ArrayList<>();
+        List<String> profileNames = layoutProfileOptions.getProfileNames();
+        for (int index = 0; index < profileNames.size(); index++) {
+            LayoutThemeProfile profile = new LayoutThemeProfile(
+                    profileNames.get(index),
+                    layoutProfileOptions.getLayoutProfile(index)
+            );
+            profiles.add(profile);
+        }
+
+        ThemeProfilesListModel model = profilesPanel.getProfilesListModel();
+        model.setProfiles(profiles);
+
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
-        CodeAreaLayoutProfileOptions layoutProfileOptions = new CodeAreaLayoutProfileOptions(options);
-        profilesPanel.saveToOptions(settingsOptionsProvider, contextProvider);
-        layoutProfileOptions.saveToPreferences(options);
-        options.setSelectedProfile(selectionPanel.getDefaultProfile());
+        CodeAreaLayoutProfileOptions layoutProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutProfileOptions.class);
+
+        layoutProfileOptions.clearProfiles();
+        ThemeProfilesListModel model = profilesPanel.getProfilesListModel();
+        List<ThemeProfile> profiles = model.getProfiles();
+        for (int index = 0; index < profiles.size(); index++) {
+            ThemeProfile profile = profiles.get(index);
+            layoutProfileOptions.addProfile(profile.getProfileName(), ((LayoutThemeProfile) profile).getLayoutProfile());
+        }
+
+        layoutProfileOptions.saveToOptions(options);
+        layoutProfileOptions.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 
     /**

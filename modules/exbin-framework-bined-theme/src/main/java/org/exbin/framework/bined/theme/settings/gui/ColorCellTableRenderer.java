@@ -37,7 +37,7 @@ public class ColorCellTableRenderer implements TableCellRenderer {
 
     @Nonnull
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return new ColorCellPanel(new ColorCellPanel.ColorHandler() {
             @Nullable
             @Override

@@ -15,12 +15,19 @@
  */
 package org.exbin.framework.bined.theme.settings.gui;
 
+import org.exbin.framework.bined.theme.gui.ProfileSelectionPanel;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.theme.gui.ThemeProfilesPanel;
+import org.exbin.framework.bined.theme.model.DecorThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeProfileOptions;
 import org.exbin.framework.context.api.ActiveContextProvider;
@@ -64,37 +71,51 @@ public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements Se
         return resourceBundle;
     }
 
-    public void setAddProfileOperation(ThemeProfilesPanel.AddProfileOperation addProfileOperation) {
-        profilesPanel.setAddProfileOperation(addProfileOperation);
+    @Nonnull
+    public List<ThemeProfile> getProfiles() {
+        return profilesPanel.getProfilesListModel().getProfiles();
     }
 
-    public void setEditProfileOperation(ThemeProfilesPanel.EditProfileOperation editProfileOperation) {
-        profilesPanel.setEditProfileOperation(editProfileOperation);
-    }
-
-    public void setCopyProfileOperation(ThemeProfilesPanel.CopyProfileOperation copyProfileOperation) {
-        profilesPanel.setCopyProfileOperation(copyProfileOperation);
-    }
-
-    public void setTemplateProfileOperation(ThemeProfilesPanel.TemplateProfileOperation templateProfileOperation) {
-        profilesPanel.setTemplateProfileOperation(templateProfileOperation);
+    public void setThemeProfileController(ThemeProfilesPanel.Controller controller) {
+        profilesPanel.setController(controller);
     }
 
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
-        CodeAreaThemeProfileOptions themeProfileOptions = new CodeAreaThemeProfileOptions(options);
-        themeProfileOptions.loadFromPreferences(options);
-        profilesPanel.loadFromOptions(settingsOptionsProvider, contextProvider);
+        CodeAreaThemeProfileOptions themeProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
+        themeProfileOptions.loadFromOptions(options);
+
+        List<ThemeProfile> profiles = new ArrayList<>();
+        List<String> profileNames = themeProfileOptions.getProfileNames();
+        for (int index = 0; index < profileNames.size(); index++) {
+            ThemeProfile profile = new DecorThemeProfile(
+                    profileNames.get(index),
+                    options.getThemeProfile(index)
+            );
+            profiles.add(profile);
+        }
+
+        ThemeProfilesListModel model = profilesPanel.getProfilesListModel();
+        model.setProfiles(profiles);
+
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
-        CodeAreaThemeProfileOptions themeProfileOptions = new CodeAreaThemeProfileOptions(options);
-        profilesPanel.saveToOptions(settingsOptionsProvider, contextProvider);
-        themeProfileOptions.saveToPreferences(options);
+        CodeAreaThemeProfileOptions themeProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
+
+        themeProfileOptions.clearProfiles();
+        ThemeProfilesListModel model = profilesPanel.getProfilesListModel();
+        List<ThemeProfile> profiles = model.getProfiles();
+        for (int index = 0; index < profiles.size(); index++) {
+            ThemeProfile profile = profiles.get(index);
+            themeProfileOptions.addProfile(profile.getProfileName(), ((DecorThemeProfile) profile).getThemeProfile());
+        }
+
+        themeProfileOptions.saveToOptions(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

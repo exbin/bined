@@ -13,33 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.theme.settings.gui;
+package org.exbin.framework.bined.theme.model;
 
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.event.ListDataListener;
 
 /**
- * Interface for profile list panel.
+ * Theme profile.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface ProfileListPanel {
+public interface ThemeProfile {
 
     /**
-     * Returns list of profile names.
+     * Returns profile name.
      *
-     * @return profile names
+     * @return profile name
      */
     @Nonnull
-    List<String> getProfileNames();
+    String getProfileName();
 
     /**
-     * Adds profile list data listener.
+     * Copies content to target profile.
      *
-     * @param listener list data listener
+     * @param targetProfile target profile
      */
-    void addProfileListPanelListener(ListDataListener listener);
+    void copyTo(ThemeProfile targetProfile);
 }

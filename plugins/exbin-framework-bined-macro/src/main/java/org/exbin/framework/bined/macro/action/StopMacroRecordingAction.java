@@ -70,12 +70,12 @@ public class StopMacroRecordingAction extends AbstractAction {
     private void updateByContext(ContextComponent instance) {
         codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
         boolean hasInstance = instance != null;
-        boolean enabled = false;
+        boolean actionEnabled = false;
         if (hasInstance) {
             CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-            enabled = commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
+            actionEnabled = commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording();
         }
-        setEnabled(enabled);
+        setEnabled(actionEnabled);
     }
 
     public void setMacroManager(MacroManager macroManager) {

@@ -114,7 +114,7 @@ public class CodeAreaThemeProfileOptions implements SettingsOptions {
         profileRecords.add(new ProfileRecord(profileName, themeProfile));
     }
 
-    public void loadFromPreferences(CodeAreaThemeOptions options) {
+    public void loadFromOptions(CodeAreaThemeOptions options) {
         this.options = options;
         profileRecords.clear();
         List<String> themeProfilesList = options.getThemeProfilesList();
@@ -124,7 +124,7 @@ public class CodeAreaThemeProfileOptions implements SettingsOptions {
         selectedProfile = options.getSelectedProfile();
     }
 
-    public void saveToPreferences(CodeAreaThemeOptions options) {
+    public void saveToOptions(CodeAreaThemeOptions options) {
         options.setSelectedProfile(selectedProfile);
         options.setThemeProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {

@@ -106,24 +106,24 @@ public class CodeAreaColorProfileOptions implements SettingsOptions {
         profileRecords.add(new ProfileRecord(profileName, colorProfile));
     }
 
-    public void loadFromPreferences(CodeAreaColorOptions preferences) {
-        this.options = preferences;
+    public void loadFromOptions(CodeAreaColorOptions options) {
+        this.options = options;
         profileRecords.clear();
-        List<String> colorProfilesList = preferences.getColorProfilesList();
+        List<String> colorProfilesList = options.getColorProfilesList();
         colorProfilesList.forEach((name) -> {
             profileRecords.add(new ProfileRecord(name, null));
         });
-        selectedProfile = preferences.getSelectedProfile();
+        selectedProfile = options.getSelectedProfile();
     }
 
-    public void saveToPreferences(CodeAreaColorOptions preferences) {
-        preferences.setSelectedProfile(selectedProfile);
-        preferences.setColorProfilesList(getProfileNames());
+    public void saveToOptions(CodeAreaColorOptions options) {
+        options.setSelectedProfile(selectedProfile);
+        options.setColorProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {
             ProfileRecord record = profileRecords.get(i);
             SectionCodeAreaColorProfile profile = record.profile;
             if (profile != null) {
-                preferences.setColorsProfile(i, record.profile);
+                options.setColorsProfile(i, record.profile);
             }
         }
     }

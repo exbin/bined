@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.theme.settings.gui;
+package org.exbin.framework.bined.theme.gui;
 
 import java.awt.BorderLayout;
 import java.util.List;
@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.theme.settings.gui.ProfileListPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -45,55 +46,7 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
 
         if (profilePanel instanceof ProfileListPanel) {
             final ProfileListPanel listPanel = (ProfileListPanel) profilePanel;
-            listPanel.addProfileListPanelListener(new ListDataListener() {
-                @Override
-                public void intervalAdded(@Nonnull ListDataEvent event) {
-                    List<String> profileNames = listPanel.getProfileNames();
-                    int startIndex = event.getIndex0();
-                    int endIndex = event.getIndex1();
-                    for (int index = startIndex; index <= endIndex; index++) {
-                        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) defaultProfileComboBox.getModel();
-                        int selectedIndex = defaultProfileComboBox.getSelectedIndex();
-                        String profileName = profileNames.get(index);
-                        model.insertElementAt(profileName, index);
-                        if (model.getSize() == 1) {
-                            defaultProfileComboBox.setSelectedIndex(0);
-                        } else if (index < selectedIndex) {
-                            defaultProfileComboBox.setSelectedIndex(selectedIndex + 1);
-                        }
-                    }
-                }
-
-                @Override
-                public void intervalRemoved(@Nonnull ListDataEvent event) {
-                    int startIndex = event.getIndex0();
-                    int endIndex = event.getIndex1();
-                    for (int index = endIndex; index >= startIndex; index--) {
-                        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) defaultProfileComboBox.getModel();
-                        int selectedIndex = defaultProfileComboBox.getSelectedIndex();
-                        model.removeElementAt(index);
-                        if (selectedIndex == index && model.getSize() > 0) {
-                            defaultProfileComboBox.setSelectedIndex(index == 0 ? 0 : index - 1);
-                        }
-                    }
-                }
-
-                @Override
-                public void contentsChanged(@Nonnull ListDataEvent event) {
-                    List<String> profileNames = listPanel.getProfileNames();
-                    int startIndex = event.getIndex0();
-                    int endIndex = event.getIndex1();
-                    for (int index = startIndex; index <= endIndex; index++) {
-                        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) defaultProfileComboBox.getModel();
-                        boolean selected = defaultProfileComboBox.getSelectedIndex() == index;
-                        model.removeElementAt(index);
-                        model.insertElementAt(profileNames.get(index), index);
-                        if (selected) {
-                            defaultProfileComboBox.setSelectedIndex(index);
-                        }
-                    }
-                }
-            });
+            listPanel.addProfileListPanelListener(new ProfileListDataListener(listPanel));
         }
     }
 
@@ -177,4 +130,62 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JLabel defaultProfileLabel;
     private javax.swing.JPanel defaultProfilePanel;
     // End of variables declaration//GEN-END:variables
+
+    @ParametersAreNonnullByDefault
+    private class ProfileListDataListener implements ListDataListener {
+
+        private final ProfileListPanel listPanel;
+
+        public ProfileListDataListener(ProfileListPanel listPanel) {
+            this.listPanel = listPanel;
+        }
+
+        @Override
+        public void intervalAdded(ListDataEvent event) {
+            List<String> profileNames = listPanel.getProfileNames();
+            int startIndex = event.getIndex0();
+            int endIndex = event.getIndex1();
+            for (int index = startIndex; index <= endIndex; index++) {
+                DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) defaultProfileComboBox.getModel();
+                int selectedIndex = defaultProfileComboBox.getSelectedIndex();
+                String profileName = profileNames.get(index);
+                model.insertElementAt(profileName, index);
+                if (model.getSize() == 1) {
+                    defaultProfileComboBox.setSelectedIndex(0);
+                } else if (index < selectedIndex) {
+                    defaultProfileComboBox.setSelectedIndex(selectedIndex + 1);
+                }
+            }
+        }
+
+        @Override
+        public void intervalRemoved(ListDataEvent event) {
+            int startIndex = event.getIndex0();
+            int endIndex = event.getIndex1();
+            for (int index = endIndex; index >= startIndex; index--) {
+                DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) defaultProfileComboBox.getModel();
+                int selectedIndex = defaultProfileComboBox.getSelectedIndex();
+                model.removeElementAt(index);
+                if (selectedIndex == index && model.getSize() > 0) {
+                    defaultProfileComboBox.setSelectedIndex(index == 0 ? 0 : index - 1);
+                }
+            }
+        }
+
+        @Override
+        public void contentsChanged(ListDataEvent event) {
+            List<String> profileNames = listPanel.getProfileNames();
+            int startIndex = event.getIndex0();
+            int endIndex = event.getIndex1();
+            for (int index = startIndex; index <= endIndex; index++) {
+                DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) defaultProfileComboBox.getModel();
+                boolean selected = defaultProfileComboBox.getSelectedIndex() == index;
+                model.removeElementAt(index);
+                model.insertElementAt(profileNames.get(index), index);
+                if (selected) {
+                    defaultProfileComboBox.setSelectedIndex(index);
+                }
+            }
+        }
+    }
 }

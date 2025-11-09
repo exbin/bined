@@ -15,12 +15,19 @@
  */
 package org.exbin.framework.bined.theme.settings.gui;
 
+import org.exbin.framework.bined.theme.gui.ProfileSelectionPanel;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.theme.gui.ThemeProfilesPanel;
+import org.exbin.framework.bined.theme.model.ColorThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorProfileOptions;
 import org.exbin.framework.context.api.ActiveContextProvider;
@@ -44,10 +51,10 @@ public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements Se
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesSettingsPanel.class);
 
     private final ProfileSelectionPanel selectionPanel;
-    private final ColorProfilesPanel profilesPanel;
+    private final ThemeProfilesPanel profilesPanel;
 
     public ColorProfilesSettingsPanel() {
-        this.profilesPanel = new ColorProfilesPanel();
+        this.profilesPanel = new ThemeProfilesPanel();
         selectionPanel = new ProfileSelectionPanel(profilesPanel);
         initComponents();
         init();
@@ -64,37 +71,51 @@ public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements Se
         return resourceBundle;
     }
 
-    public void setAddProfileOperation(ColorProfilesPanel.AddProfileOperation addProfileOperation) {
-        profilesPanel.setAddProfileOperation(addProfileOperation);
+    @Nonnull
+    public List<ThemeProfile> getProfiles() {
+        return profilesPanel.getProfilesListModel().getProfiles();
     }
 
-    public void setEditProfileOperation(ColorProfilesPanel.EditProfileOperation editProfileOperation) {
-        profilesPanel.setEditProfileOperation(editProfileOperation);
-    }
-
-    public void setCopyProfileOperation(ColorProfilesPanel.CopyProfileOperation copyProfileOperation) {
-        profilesPanel.setCopyProfileOperation(copyProfileOperation);
-    }
-
-    public void setTemplateProfileOperation(ColorProfilesPanel.TemplateProfileOperation templateProfileOperation) {
-        profilesPanel.setTemplateProfileOperation(templateProfileOperation);
+    public void setThemeProfileController(ThemeProfilesPanel.Controller controller) {
+        profilesPanel.setController(controller);
     }
 
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
-        CodeAreaColorProfileOptions colorProfileOptions = new CodeAreaColorProfileOptions(options);
-        colorProfileOptions.loadFromPreferences(options);
-        profilesPanel.loadFromOptions(settingsOptionsProvider, contextProvider);
+        CodeAreaColorProfileOptions colorProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaColorProfileOptions.class);
+        colorProfileOptions.loadFromOptions(options);
+
+        List<ThemeProfile> profiles = new ArrayList<>();
+        List<String> profileNames = colorProfileOptions.getProfileNames();
+        for (int index = 0; index < profileNames.size(); index++) {
+            ThemeProfile profile = new ColorThemeProfile(
+                    profileNames.get(index),
+                    options.getColorsProfile(index)
+            );
+            profiles.add(profile);
+        }
+
+        ThemeProfilesListModel model = profilesPanel.getProfilesListModel();
+        model.setProfiles(profiles);
+
         selectionPanel.setDefaultProfile(options.getSelectedProfile());
     }
 
     @Override
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
         CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
-        CodeAreaColorProfileOptions colorProfileOptions = new CodeAreaColorProfileOptions(options);
-        profilesPanel.saveToOptions(settingsOptionsProvider, contextProvider);
-        colorProfileOptions.saveToPreferences(options);
+        CodeAreaColorProfileOptions colorProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaColorProfileOptions.class);
+
+        colorProfileOptions.clearProfiles();
+        ThemeProfilesListModel model = profilesPanel.getProfilesListModel();
+        List<ThemeProfile> profiles = model.getProfiles();
+        for (int index = 0; index < profiles.size(); index++) {
+            ThemeProfile profile = profiles.get(index);
+            colorProfileOptions.addProfile(profile.getProfileName(), ((ColorThemeProfile) profile).getColorProfile());
+        }
+
+        colorProfileOptions.saveToOptions(options);
         options.setSelectedProfile(selectionPanel.getDefaultProfile());
     }
 

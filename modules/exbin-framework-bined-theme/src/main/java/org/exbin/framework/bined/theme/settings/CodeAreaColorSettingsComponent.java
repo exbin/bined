@@ -16,7 +16,14 @@
 package org.exbin.framework.bined.theme.settings;
 
 import java.awt.Dialog;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -25,11 +32,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.theme.model.ColorThemeProfile;
+import org.exbin.framework.bined.theme.model.ThemeProfile;
+import org.exbin.framework.bined.theme.gui.ThemeProfilesPanel;
+import org.exbin.framework.bined.theme.gui.ThemeTemplatesPanel;
+import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import org.exbin.framework.bined.theme.settings.gui.ColorProfilePanel;
 import org.exbin.framework.bined.theme.settings.gui.ColorProfilesSettingsPanel;
-import org.exbin.framework.bined.theme.settings.gui.ColorProfilesPanel;
-import org.exbin.framework.bined.theme.settings.gui.ColorTemplatePanel;
 import org.exbin.framework.bined.theme.settings.gui.NamedProfilePanel;
+import org.exbin.framework.bined.theme.settings.gui.PreviewPanel;
+import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.window.api.WindowHandler;
@@ -52,147 +65,214 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
     public SettingsComponent createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ColorProfilesSettingsPanel panel = new ColorProfilesSettingsPanel();
-        panel.setAddProfileOperation((JComponent parentComponent, String profileName) -> {
-            ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
-            colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());
-            NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
-            namedProfilePanel.setProfileName(profileName);
-            DefaultControlPanel controlPanel = new DefaultControlPanel();
-            JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
+        panel.setThemeProfileController(new ThemeProfilesPanel.Controller() {
+            @Nonnull
+            @Override
+            public Optional<ThemeProfile> addProfile() {
+                ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
+                ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
+                colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());
+                NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
+                namedProfilePanel.setProfileName(CodeAreaColorSettingsComponent.getNewProfileName(panel, panelResourceBundle));
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
+                JComponent parentComponent = panel;
 
-            ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
-            ColorProfileResult result = new ColorProfileResult();
-            final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
-            windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
-            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
-                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
-                    if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                        JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
-                        return;
+                ColorThemeProfile[] result = new ColorThemeProfile[1];
+                final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
+                controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                    if (actionType != DefaultControlController.ControlActionType.CANCEL) {
+                        if (!CodeAreaColorSettingsComponent.isValidProfileName(namedProfilePanel.getProfileName())) {
+                            CodeAreaColorSettingsComponent.showInvalidNameErrorMessage(parentComponent, panelResourceBundle);
+                            return;
+                        }
+
+                        result[0] = new ColorThemeProfile(
+                                namedProfilePanel.getProfileName(), colorProfilePanel.getColorProfile()
+                        );
                     }
 
-                    result.profile = new ColorProfilesPanel.ColorProfile(
-                            namedProfilePanel.getProfileName(), colorProfilePanel.getColorProfile()
-                    );
+                    dialog.close();
+                    dialog.dispose();
+                });
+                dialog.showCentered(parentComponent);
+
+                return Optional.ofNullable(result[0]);
+            }
+
+            @Nonnull
+            @Override
+            public Optional<ThemeProfile> editProfile(ThemeProfile profile) {
+                ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
+                ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
+                NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
+                JComponent parentComponent = panel;
+
+                ColorThemeProfile[] result = new ColorThemeProfile[1];
+                final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("editProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
+                namedProfilePanel.setProfileName(profile.getProfileName());
+                colorProfilePanel.setColorProfile(((ColorThemeProfile) profile).getColorProfile());
+                controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                    if (actionType != DefaultControlController.ControlActionType.CANCEL) {
+                        if (!CodeAreaColorSettingsComponent.isValidProfileName(namedProfilePanel.getProfileName())) {
+                            CodeAreaColorSettingsComponent.showInvalidNameErrorMessage(parentComponent, panelResourceBundle);
+                            return;
+                        }
+
+                        result[0] = new ColorThemeProfile(
+                                namedProfilePanel.getProfileName(), colorProfilePanel.getColorProfile()
+                        );
+                    }
+
+                    dialog.close();
+                    dialog.dispose();
+                });
+                dialog.showCentered(parentComponent);
+
+                return Optional.ofNullable(result[0]);
+            }
+
+            @Nonnull
+            @Override
+            public ThemeProfile copyProfile(ThemeProfile profile) {
+                ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
+                ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
+                colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());
+                NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
+                JComponent parentComponent = panel;
+
+                ColorThemeProfile[] result = new ColorThemeProfile[1];
+                final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("copyProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
+                namedProfilePanel.setProfileName(profile.getProfileName() + panelResourceBundle.getString("copyProfile.profilePostfix"));
+                colorProfilePanel.setColorProfile(((ColorThemeProfile) profile).getColorProfile());
+                controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                    if (actionType != DefaultControlController.ControlActionType.CANCEL) {
+                        if (!CodeAreaColorSettingsComponent.isValidProfileName(namedProfilePanel.getProfileName())) {
+                            CodeAreaColorSettingsComponent.showInvalidNameErrorMessage(parentComponent, panelResourceBundle);
+                            return;
+                        }
+
+                        result[0] = new ColorThemeProfile(
+                                namedProfilePanel.getProfileName(), colorProfilePanel.getColorProfile()
+                        );
+                    }
+
+                    dialog.close();
+                    dialog.dispose();
+                });
+                dialog.showCentered(parentComponent);
+
+                return result[0];
+            }
+
+            @Nonnull
+            @Override
+            public Optional<ThemeProfile> addTemplate() {
+                ThemeTemplatesPanel templatePanel = new ThemeTemplatesPanel();
+                templatePanel.setController(new ThemeTemplatesPanel.Controller() {
+                    @Override
+                    public void updatePreview(PreviewPanel previewPanel, ThemeProfile themeProfile) {
+                        previewPanel.getCodeArea().setColorsProfile(((ColorThemeProfile) themeProfile).getColorProfile());
+                    }
+                });
+
+                OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+                CodeAreaColorProfileOptions options = new CodeAreaColorProfileOptions(optionsModule.createMemoryStorage());
+                try (InputStream stream = getClass().getResourceAsStream("/org/exbin/framework/bined/theme/resources/templates/colorTemplates.xml")) {
+                    options.loadFromOptions(new CodeAreaColorOptions(optionsModule.createStreamPreferencesStorage(stream)));
+                    List<ThemeProfile> profiles = new ArrayList<>();
+                    List<String> profileNames = options.getProfileNames();
+                    for (int index = 0; index < profileNames.size(); index++) {
+                        ColorThemeProfile profile = new ColorThemeProfile(
+                                profileNames.get(index),
+                                options.getColorsProfile(index)
+                        );
+                        profiles.add(profile);
+                    }
+
+                    ThemeProfilesListModel model = templatePanel.getProfilesListModel();
+                    model.setProfiles(profiles);
+                } catch (IOException ex) {
+                    Logger.getLogger(CodeAreaColorSettingsComponent.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                dialog.close();
-                dialog.dispose();
-            });
-            dialog.showCentered(parentComponent);
-            return result.profile;
-        });
-        panel.setEditProfileOperation((JComponent parentComponent, ColorProfilesPanel.ColorProfile profileRecord) -> {
-            ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
-            NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
-            DefaultControlPanel controlPanel = new DefaultControlPanel();
-            JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
+                ResourceBundle panelResourceBundle = templatePanel.getResourceBundle();
+                LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
+                ResourceBundle headerResourceBundle = languageModule.getResourceBundleByBundleName("org.exbin.framework.bined.theme.settings.gui.resources.ColorTemplatePanel");
+                NamedProfilePanel namedProfilePanel = new NamedProfilePanel(templatePanel);
+                namedProfilePanel.setProfileName("");
+                templatePanel.addListSelectionListener((e) -> {
+                    ColorThemeProfile selectedTemplate = (ColorThemeProfile) templatePanel.getSelectedTemplate();
+                    namedProfilePanel.setProfileName(selectedTemplate != null ? selectedTemplate.getProfileName() : "");
+                });
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
+                JComponent parentComponent = panel;
 
-            ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
-            ColorProfileResult result = new ColorProfileResult();
-            final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("editProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
-            windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
-            namedProfilePanel.setProfileName(profileRecord.getProfileName());
-            colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
-            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
-                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
-                    if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                        JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
-                        return;
+                ColorThemeProfile[] result = new ColorThemeProfile[1];
+                final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, headerResourceBundle.getString("addTemplate.title"), Dialog.ModalityType.APPLICATION_MODAL);
+                windowModule.addHeaderPanel(dialog.getWindow(), templatePanel.getClass(), headerResourceBundle);
+                controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+                    if (actionType != DefaultControlController.ControlActionType.CANCEL) {
+                        if (!CodeAreaColorSettingsComponent.isValidProfileName(namedProfilePanel.getProfileName())) {
+                            CodeAreaColorSettingsComponent.showInvalidNameErrorMessage(parentComponent, panelResourceBundle);
+                            return;
+                        }
+
+                        ColorThemeProfile selectedTemplate = (ColorThemeProfile) templatePanel.getSelectedTemplate();
+                        if (selectedTemplate == null) {
+                            JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.noTemplate.message"), panelResourceBundle.getString("error.noTemplate.title"), JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        result[0] = new ColorThemeProfile(
+                                namedProfilePanel.getProfileName(), selectedTemplate.getColorProfile()
+                        );
                     }
 
-                    result.profile = new ColorProfilesPanel.ColorProfile(
-                            namedProfilePanel.getProfileName(), colorProfilePanel.getColorProfile()
-                    );
-                }
+                    dialog.close();
+                    dialog.dispose();
+                });
+                dialog.showCentered(parentComponent);
 
-                dialog.close();
-                dialog.dispose();
-            });
-            dialog.showCentered(parentComponent);
+                return Optional.ofNullable(result[0]);
+            }
 
-            return result.profile;
-        });
-        panel.setCopyProfileOperation((JComponent parentComponent, ColorProfilesPanel.ColorProfile profileRecord) -> {
-            ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
-            colorProfilePanel.setColorProfile(new SectionCodeAreaColorProfile());
-            NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorProfilePanel);
-            DefaultControlPanel controlPanel = new DefaultControlPanel();
-            JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
-
-            ResourceBundle panelResourceBundle = colorProfilePanel.getResourceBundle();
-            ColorProfileResult result = new ColorProfileResult();
-            final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("copyProfile.title"), Dialog.ModalityType.APPLICATION_MODAL);
-            windowModule.addHeaderPanel(dialog.getWindow(), colorProfilePanel.getClass(), panelResourceBundle);
-            namedProfilePanel.setProfileName(profileRecord.getProfileName() + panelResourceBundle.getString("copyProfile.profilePostfix"));
-            colorProfilePanel.setColorProfile(profileRecord.getColorProfile());
-            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
-                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
-                    if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                        JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    result.profile = new ColorProfilesPanel.ColorProfile(
-                            namedProfilePanel.getProfileName(), colorProfilePanel.getColorProfile()
-                    );
-                }
-
-                dialog.close();
-                dialog.dispose();
-            });
-            dialog.showCentered(parentComponent);
-
-            return result.profile;
-        });
-        panel.setTemplateProfileOperation((JComponent parentComponent) -> {
-            ColorTemplatePanel colorTemplatePanel = new ColorTemplatePanel();
-            NamedProfilePanel namedProfilePanel = new NamedProfilePanel(colorTemplatePanel);
-            namedProfilePanel.setProfileName("");
-            colorTemplatePanel.addListSelectionListener((e) -> {
-                ColorTemplatePanel.ColorProfile selectedTemplate = colorTemplatePanel.getSelectedTemplate();
-                namedProfilePanel.setProfileName(selectedTemplate != null ? selectedTemplate.getProfileName() : "");
-            });
-            DefaultControlPanel controlPanel = new DefaultControlPanel();
-            JPanel dialogPanel = windowModule.createDialogPanel(namedProfilePanel, controlPanel);
-
-            ResourceBundle panelResourceBundle = colorTemplatePanel.getResourceBundle();
-            ColorProfileResult result = new ColorProfileResult();
-            final WindowHandler dialog = windowModule.createWindow(dialogPanel, parentComponent, panelResourceBundle.getString("addTemplate.title"), Dialog.ModalityType.APPLICATION_MODAL);
-            windowModule.addHeaderPanel(dialog.getWindow(), colorTemplatePanel.getClass(), panelResourceBundle);
-            controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
-                if (actionType != DefaultControlController.ControlActionType.CANCEL) {
-                    if (!isValidProfileName(namedProfilePanel.getProfileName())) {
-                        JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    ColorTemplatePanel.ColorProfile selectedTemplate = colorTemplatePanel.getSelectedTemplate();
-                    if (selectedTemplate == null) {
-                        JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.noTemplate.message"), panelResourceBundle.getString("error.noTemplate.title"), JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    result.profile = new ColorProfilesPanel.ColorProfile(
-                            namedProfilePanel.getProfileName(), selectedTemplate.getColorProfile()
-                    );
-                }
-
-                dialog.close();
-                dialog.dispose();
-            });
-            dialog.showCentered(parentComponent);
-            return result.profile;
+            @Override
+            public void updatePreview(PreviewPanel previewPanel, ThemeProfile themeProfile) {
+                previewPanel.getCodeArea().setColorsProfile(((ColorThemeProfile) themeProfile).getColorProfile());
+            }
         });
         return panel;
     }
 
-    private boolean isValidProfileName(@Nullable String profileName) {
+    private static boolean isValidProfileName(@Nullable String profileName) {
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    class ColorProfileResult {
+    @Nonnull
+    private static String getNewProfileName(ColorProfilesSettingsPanel panel, ResourceBundle resourceBundle) {
+        String profileName = resourceBundle.getString("newProfile.profilePrefix");
+        int profileIndex = 1;
+        while (CodeAreaColorSettingsComponent.hasProfileWithName(panel, profileName + profileIndex)) {
+            profileIndex++;
+        }
 
-        ColorProfilesPanel.ColorProfile profile;
+        return profileName + profileIndex;
+    }
+
+    private static boolean hasProfileWithName(ColorProfilesSettingsPanel panel, String profileName) {
+        return panel.getProfiles().stream().anyMatch((profile) -> (profileName.equals(profile.getProfileName())));
+    }
+
+    private static void showInvalidNameErrorMessage(JComponent parentComponent, ResourceBundle panelResourceBundle) {
+        JOptionPane.showMessageDialog(parentComponent, panelResourceBundle.getString("error.invalidName.message"), panelResourceBundle.getString("error.invalidName.title"), JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -24,7 +24,7 @@ import org.exbin.framework.options.settings.api.SettingsOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 
 /**
- * Code area layout preferences.
+ * Code area layout settings options.
  *
  * @author ExBin Project (https://exbin.org)
  */

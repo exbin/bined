@@ -114,7 +114,7 @@ public class CodeAreaLayoutProfileOptions implements SettingsOptions {
         profileRecords.add(new ProfileRecord(profileName, layoutProfile));
     }
 
-    public void loadFromPreferences(CodeAreaLayoutOptions options) {
+    public void loadFromOptions(CodeAreaLayoutOptions options) {
         this.options = options;
         profileRecords.clear();
         List<String> layoutProfilesList = options.getLayoutProfilesList();
@@ -124,7 +124,7 @@ public class CodeAreaLayoutProfileOptions implements SettingsOptions {
         selectedProfile = options.getSelectedProfile();
     }
 
-    public void saveToPreferences(CodeAreaLayoutOptions options) {
+    public void saveToOptions(CodeAreaLayoutOptions options) {
         options.setSelectedProfile(selectedProfile);
         options.setLayoutProfilesList(getProfileNames());
         for (int i = 0; i < profileRecords.size(); i++) {

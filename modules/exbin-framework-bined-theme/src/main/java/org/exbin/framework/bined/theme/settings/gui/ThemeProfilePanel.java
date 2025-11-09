@@ -90,8 +90,8 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        preferencesScrollPane = new javax.swing.JScrollPane();
-        preferencesPanel = new javax.swing.JPanel();
+        optionsScrollPane = new javax.swing.JScrollPane();
+        optionsPanel = new javax.swing.JPanel();
         backgroundModeLabel = new javax.swing.JLabel();
         backgroundModeComboBox = new javax.swing.JComboBox<>();
         paintRowPosBackgroundCheckBox = new javax.swing.JCheckBox();
@@ -184,27 +184,27 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
 
         verticalLineByteGroupSizeLabel.setText(resourceBundle.getString("verticalLineByteGroupSizeLabel.text")); // NOI18N
 
-        javax.swing.GroupLayout preferencesPanelLayout = new javax.swing.GroupLayout(preferencesPanel);
-        preferencesPanel.setLayout(preferencesPanelLayout);
-        preferencesPanelLayout.setHorizontalGroup(
-            preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(preferencesPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
+        optionsPanel.setLayout(optionsPanelLayout);
+        optionsPanelLayout.setHorizontalGroup(
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(optionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(paintRowPosBackgroundCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(backgroundModeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(linesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(verticalLineByteGroupSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(preferencesPanelLayout.createSequentialGroup()
-                        .addGroup(preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(optionsPanelLayout.createSequentialGroup()
+                        .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(backgroundModeLabel)
                             .addComponent(verticalLineByteGroupSizeLabel))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        preferencesPanelLayout.setVerticalGroup(
-            preferencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(preferencesPanelLayout.createSequentialGroup()
+        optionsPanelLayout.setVerticalGroup(
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(optionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(backgroundModeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -220,9 +220,9 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
                 .addContainerGap(358, Short.MAX_VALUE))
         );
 
-        preferencesScrollPane.setViewportView(preferencesPanel);
+        optionsScrollPane.setViewportView(optionsPanel);
 
-        add(preferencesScrollPane, java.awt.BorderLayout.WEST);
+        add(optionsScrollPane, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
 
     private void backgroundModeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundModeComboBoxActionPerformed
@@ -300,9 +300,9 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox decoratorRowPosLineCheckBox;
     private javax.swing.JCheckBox decoratorSplitLineCheckBox;
     private javax.swing.JPanel linesPanel;
+    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JScrollPane optionsScrollPane;
     private javax.swing.JCheckBox paintRowPosBackgroundCheckBox;
-    private javax.swing.JPanel preferencesPanel;
-    private javax.swing.JScrollPane preferencesScrollPane;
     private javax.swing.JLabel verticalLineByteGroupSizeLabel;
     private javax.swing.JSpinner verticalLineByteGroupSizeSpinner;
     // End of variables declaration//GEN-END:variables
