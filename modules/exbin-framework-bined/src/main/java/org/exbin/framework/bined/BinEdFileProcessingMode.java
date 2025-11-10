@@ -16,21 +16,9 @@
 package org.exbin.framework.bined;
 
 /**
- * File handling mode.
+ * BinEd file processing mode.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public enum FileHandlingMode {
-    /**
-     * Direct access to stream of externally handled file.
-     */
-    DIRECT,
-    /**
-     * Whole file is loaded to memory.
-     */
-    MEMORY,
-    /**
-     * File is handled using delta changes.
-     */
-    DELTA;
+public interface BinEdFileProcessingMode {
 }

@@ -15,11 +15,19 @@
  */
 package org.exbin.framework.bined.viewer.settings;
 
-import java.util.Optional;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.capability.CodeCharactersCaseCapable;
+import org.exbin.bined.capability.CodeTypeCapable;
+import org.exbin.bined.capability.ViewModeCapable;
+import org.exbin.bined.highlight.swing.NonAsciiCodeAreaColorAssessor;
+import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
+import org.exbin.bined.section.capability.PositionCodeTypeCapable;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.CodeAreaPainter;
+import org.exbin.bined.swing.CodeAreaSwingUtils;
+import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -35,14 +43,56 @@ public class CodeAreaViewerSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        if (!(instance instanceof BinaryDataComponent)) {
+            return;
+        }
         CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
-//        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-//        if (!activeFile.isPresent()) {
-//            return;
-//        }
-//
-//        SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-//        CodeAreaOptions.applyToCodeArea(options, codeArea);
-//        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
+        
+        CodeAreaCore codeArea = ((BinaryDataComponent) instance).getCodeArea();
+        applyFromCodeArea(options, (SectCodeArea) codeArea);
+        ((CodeTypeCapable) codeArea).setCodeType(options.getCodeType());
+        ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(options.getCodeCharactersCase());
+        ((PositionCodeTypeCapable) codeArea).setPositionCodeType(options.getPositionCodeType());
+        ((ViewModeCapable) codeArea).setViewMode(options.getViewMode());
+    }
+    
+    public static void applyFromCodeArea(CodeAreaOptions codeAreaOptions, SectCodeArea codeArea) {
+        CodeAreaPainter painter = codeArea.getPainter();
+        codeAreaOptions.setCodeType(((CodeTypeCapable) codeArea).getCodeType());
+        NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonprintablesCodeAreaAssessor.class);
+        if (nonprintablesCodeAreaAssessor != null) {
+            codeAreaOptions.setShowNonprintables(nonprintablesCodeAreaAssessor.isShowNonprintables());
+        }
+        codeAreaOptions.setCodeCharactersCase(((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase());
+        codeAreaOptions.setPositionCodeType(((PositionCodeTypeCapable) codeArea).getPositionCodeType());
+        codeAreaOptions.setViewMode(((ViewModeCapable) codeArea).getViewMode());
+        NonAsciiCodeAreaColorAssessor nonAsciiColorAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonAsciiCodeAreaColorAssessor.class);
+        if (nonAsciiColorAssessor != null) {
+            codeAreaOptions.setCodeColorization(nonAsciiColorAssessor.isNonAsciiHighlightingEnabled());
+        }
+        codeAreaOptions.setRowWrappingMode(codeArea.getRowWrapping());
+        codeAreaOptions.setMaxBytesPerRow(codeArea.getMaxBytesPerRow());
+        codeAreaOptions.setMinRowPositionLength(codeArea.getMinRowPositionLength());
+        codeAreaOptions.setMaxRowPositionLength(codeArea.getMaxRowPositionLength());
+    }
+
+    public static void applyToCodeArea(CodeAreaOptions codeAreaOptions, SectCodeArea codeArea) {
+        CodeAreaPainter painter = codeArea.getPainter();
+        ((CodeTypeCapable) codeArea).setCodeType(codeAreaOptions.getCodeType());
+        NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonprintablesCodeAreaAssessor.class);
+        if (nonprintablesCodeAreaAssessor != null) {
+            nonprintablesCodeAreaAssessor.setShowNonprintables(codeAreaOptions.isShowNonprintables());
+        }
+        ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeAreaOptions.getCodeCharactersCase());
+        ((PositionCodeTypeCapable) codeArea).setPositionCodeType(codeAreaOptions.getPositionCodeType());
+        ((ViewModeCapable) codeArea).setViewMode(codeAreaOptions.getViewMode());
+        NonAsciiCodeAreaColorAssessor nonAsciiColorAssessor = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) painter, NonAsciiCodeAreaColorAssessor.class);
+        if (nonAsciiColorAssessor != null) {
+            nonAsciiColorAssessor.setNonAsciiHighlightingEnabled(codeAreaOptions.isCodeColorization());
+        }
+        codeArea.setRowWrapping(codeAreaOptions.getRowWrappingMode());
+        codeArea.setMaxBytesPerRow(codeAreaOptions.getMaxBytesPerRow());
+        codeArea.setMinRowPositionLength(codeAreaOptions.getMinRowPositionLength());
+        codeArea.setMaxRowPositionLength(codeAreaOptions.getMaxRowPositionLength());
     }
 }

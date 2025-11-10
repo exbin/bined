@@ -39,7 +39,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.window.api.controller.DefaultControlController;
 import org.exbin.framework.bined.operation.BinedOperationModule;
@@ -75,6 +74,7 @@ public class InsertDataAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
@@ -87,7 +87,6 @@ public class InsertDataAction extends AbstractAction {
                 });
             }
         });
-        setEnabled(false);
     }
 
     @Override

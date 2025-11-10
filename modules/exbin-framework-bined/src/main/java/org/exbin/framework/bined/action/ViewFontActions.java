@@ -60,10 +60,7 @@ public class ViewFontActions {
     @Nonnull
     public ZoomInAction createZoomInAction() {
         ZoomInAction zoomInAction = new ZoomInAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(zoomInAction, resourceBundle, ZOOM_IN_ACTION_ID);
-        zoomInAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionUtils.getMetaMask()));
-        zoomInAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, zoomInAction);
+        zoomInAction.setup(resourceBundle);
         zoomInAction.setFontSizeOptions(fontSizeOptions);
         return zoomInAction;
     }
@@ -71,10 +68,7 @@ public class ViewFontActions {
     @Nonnull
     public ZoomOutAction createZoomOutAction() {
         ZoomOutAction zoomOutAction = new ZoomOutAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(zoomOutAction, resourceBundle, ZOOM_OUT_ACTION_ID);
-        zoomOutAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionUtils.getMetaMask()));
-        zoomOutAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, zoomOutAction);
+        zoomOutAction.setup(resourceBundle);
         zoomOutAction.setFontSizeOptions(fontSizeOptions);
         return zoomOutAction;
     }
@@ -82,10 +76,7 @@ public class ViewFontActions {
     @Nonnull
     public ResetFontSizeAction createResetFontSizeAction() {
         ResetFontSizeAction resetFontSizeAction = new ResetFontSizeAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(resetFontSizeAction, resourceBundle, RESET_FONT_SIZE_ACTION_ID);
-        resetFontSizeAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_0, ActionUtils.getMetaMask()));
-        resetFontSizeAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, resetFontSizeAction);
+        resetFontSizeAction.setup(resourceBundle);
         resetFontSizeAction.setFontSizeOptions(fontSizeOptions);
         return resetFontSizeAction;
     }
@@ -100,6 +91,13 @@ public class ViewFontActions {
 
         public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;
+        }
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ZOOM_IN_ACTION_ID);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
         }
 
         @Override
@@ -145,6 +143,13 @@ public class ViewFontActions {
             this.fontSizeOptions = fontSizeOptions;
         }
 
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ZOOM_OUT_ACTION_ID);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (codeArea == null) {
@@ -186,6 +191,13 @@ public class ViewFontActions {
 
         public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;
+        }
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, RESET_FONT_SIZE_ACTION_ID);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_0, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
         }
 
         @Override

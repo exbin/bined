@@ -75,68 +75,17 @@ public class BinedEditorModule implements Module {
 
     public void registerSettings() {
         getResourceBundle();
-//        BinedModule binedModule = App.getModule(BinedModule.class);
-//        EditorProvider editorProvider = binedModule.getEditorProvider();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
-        
+
         settingsManagement.registerOptionsSettings(BinaryEditorOptions.class, (optionsStorage) -> new BinaryEditorOptions(optionsStorage));
         settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
-        
+
         SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaEditingSettingsComponent.COMPONENT_ID, new CodeAreaEditingSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
-
-        /* OptionsGroup binaryCodeAreaEditingGroup = settingsModule.createOptionsGroup("binaryEditorEditing", resourceBundle);
-        settingsManagement.registerGroup(binaryCodeAreaEditingGroup);
-        settingsManagement.registerGroupRule(binaryCodeAreaEditingGroup, new ParentOptionsGroupRule("binaryEditor"));
-        CodeAreaEditingSettingsComponent codeAreaEditingOptionsPage = new CodeAreaEditingSettingsComponent();
-        codeAreaEditingOptionsPage.setEditorOptionsService(new EditorOptionsService() {
-            @Override
-            public void setFileHandlingMode(FileHandlingMode fileHandlingMode) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    if (!fileHandler.isModified() || editorProvider.releaseFile(fileHandler)) {
-                        fileHandler.switchFileHandlingMode(fileHandlingMode);
-                        ((BinEdEditorProvider) editorProvider).updateStatus();
-                    }
-                }
-            }
-
-            @Override
-            public void setEnterKeyHandlingMode(EnterKeyHandlingMode enterKeyHandlingMode) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-                        ((CodeAreaOperationCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
-                    } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
-                        ((DefaultCodeAreaCommandHandler) commandHandler).setEnterKeyHandlingMode(enterKeyHandlingMode);
-                    }
-                }
-            }
-
-            @Override
-            public void setTabKeyHandlingMode(TabKeyHandlingMode tabKeyHandlingMode) {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    SectCodeArea codeArea = ((BinEdFileHandler) activeFile.get()).getCodeArea();
-                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-                        ((CodeAreaOperationCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
-                    } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
-                        ((DefaultCodeAreaCommandHandler) commandHandler).setTabKeyHandlingMode(tabKeyHandlingMode);
-                    }
-            }
-            }
-        });
-        codeAreaEditingOptionsPage.setResourceBundle(resourceBundle);
-        settingsManagement.registerPage(codeAreaEditingOptionsPage);
-        settingsManagement.registerPageRule(codeAreaEditingOptionsPage, new GroupOptionsPageRule("binaryEditor")); */
     }
 
     public void registerEditSelection() {

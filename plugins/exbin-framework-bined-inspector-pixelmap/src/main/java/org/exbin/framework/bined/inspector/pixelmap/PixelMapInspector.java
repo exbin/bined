@@ -23,7 +23,6 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.pixelmap.gui.PixelMapPanel;
 import org.exbin.framework.bined.inspector.BinEdInspector;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Pixel map inspector.
@@ -37,7 +36,7 @@ public class PixelMapInspector implements BinEdInspector {
     protected CodeAreaCore codeArea;
 
     protected DataChangedListener dataChangedListener;
-    
+
     @Nonnull
     @Override
     public JComponent getComponent() {
@@ -62,9 +61,5 @@ public class PixelMapInspector implements BinEdInspector {
     @Override
     public void deactivateSync() {
         codeArea.removeDataChangedListener(dataChangedListener);
-    }
-
-    @Override
-    public void onInitFromOptions(OptionsStorage options) {
     }
 }

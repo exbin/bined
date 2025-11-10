@@ -31,9 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -77,8 +75,8 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private JComponent currentDataComponent = null;
     private InspectComponentPanel inspectComponentPanel = new InspectComponentPanel();
-    private AbstractAction openAsTabAction = null;
-    private AbstractAction saveAsFileAction = null;
+
+    protected Controller controller;
 
     public ClipboardContentPanel() {
         initComponents();
@@ -247,24 +245,16 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         return resourceBundle;
     }
 
-    @Nonnull
-    public Optional<AbstractAction> getOpenAsTabAction() {
-        return Optional.ofNullable(openAsTabAction);
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
-    public void setOpenAsTabAction(@Nullable AbstractAction openAsTabAction) {
-        this.openAsTabAction = openAsTabAction;
-        openAsTabButton.setEnabled(openAsTabAction != null);
+    public void setOpenAsTabEnabled(boolean enabled) {
+        openAsTabButton.setEnabled(enabled);
     }
 
-    @Nonnull
-    public Optional<AbstractAction> getSaveAsFileAction() {
-        return Optional.ofNullable(saveAsFileAction);
-    }
-
-    public void setSaveAsFileAction(@Nullable AbstractAction saveAsFileAction) {
-        this.saveAsFileAction = saveAsFileAction;
-        saveAsFileButton.setEnabled(saveAsFileAction != null);
+    public void setSaveAsFileEnabled(boolean enabled) {
+        saveAsFileButton.setEnabled(enabled);
     }
 
     @Nonnull
@@ -508,11 +498,11 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openAsTabButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAsTabButtonActionPerformed
-        openAsTabAction.actionPerformed(evt);
+        controller.openAsTab();
     }//GEN-LAST:event_openAsTabButtonActionPerformed
 
     private void saveAsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileButtonActionPerformed
-        saveAsFileAction.actionPerformed(evt);
+        controller.saveAsFile();
     }//GEN-LAST:event_saveAsFileButtonActionPerformed
 
     /**
@@ -594,5 +584,12 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         public PropertyClass(Object classInst) {
             this.classInst = classInst;
         }
+    }
+
+    public interface Controller {
+
+        void openAsTab();
+
+        void saveAsFile();
     }
 }

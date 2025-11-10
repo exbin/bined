@@ -19,14 +19,16 @@ import java.awt.Font;
 import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.CodeType;
 import org.exbin.bined.capability.CharsetCapable;
+import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
-import org.exbin.framework.text.encoding.TextEncodingController;
-import org.exbin.framework.text.font.TextFontController;
+import org.exbin.framework.text.encoding.CharsetEncodingState;
+import org.exbin.framework.text.font.TextFontState;
 
 /**
  * Binary data component.
@@ -34,7 +36,7 @@ import org.exbin.framework.text.font.TextFontController;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, TextEncodingController, TextFontController {
+public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, TextFontState {
 
     private final CodeAreaCore codeArea;
     private Font defaultFont;
@@ -112,13 +114,13 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Nonnull
     @Override
-    public Charset getCharset() {
-        return ((CharsetCapable) codeArea).getCharset();
+    public String getEncoding() {
+        return ((CharsetCapable) codeArea).getCharset().name();
     }
 
     @Override
-    public void setCharset(Charset charset) {
-        ((CharsetCapable) codeArea).setCharset(charset);
+    public void setEncoding(String encoding) {
+        ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
     }
 
     @Nonnull

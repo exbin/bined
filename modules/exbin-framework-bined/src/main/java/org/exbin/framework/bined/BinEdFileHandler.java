@@ -54,8 +54,8 @@ import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
 import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
-import org.exbin.framework.text.encoding.TextEncodingController;
-import org.exbin.framework.text.font.TextFontController;
+import org.exbin.framework.text.encoding.ContextEncoding;
+import org.exbin.framework.text.font.ContextFont;
 
 /**
  * File handler for binary editor.
@@ -123,7 +123,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         loadFromFile(fileUri, fileType, getFileHandlingMode());
     }
 
-    private void loadFromFile(URI fileUri, FileType fileType, FileHandlingMode fileHandlingMode) {
+    private void loadFromFile(URI fileUri, FileType fileType, FileProcessingMode fileHandlingMode) {
         this.fileType = fileType;
         File file = new File(fileUri);
         if (!file.isFile()) {
@@ -138,7 +138,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
         try {
             BinaryData oldData = editorComponent.getContentData();
-            if (fileHandlingMode == FileHandlingMode.DELTA) {
+            if (fileHandlingMode == FileProcessingMode.DELTA) {
                 FileDataSource openFileSource = new FileDataSource(file);
                 segmentsRepository.addDataSource(openFileSource);
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
@@ -253,7 +253,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
 
     @Override
     public void clearFile() {
-        FileHandlingMode fileHandlingMode = getFileHandlingMode();
+        FileProcessingMode fileHandlingMode = getFileHandlingMode();
         closeData();
         SectCodeArea codeArea = editorComponent.getCodeArea();
         BinaryData data = codeArea.getContentData();
@@ -356,8 +356,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         }
     }
 
-    public void switchFileHandlingMode(FileHandlingMode handlingMode) {
-        FileHandlingMode oldFileHandlingMode = getFileHandlingMode();
+    public void switchFileHandlingMode(FileProcessingMode handlingMode) {
+        FileProcessingMode oldFileHandlingMode = getFileHandlingMode();
         SectCodeArea codeArea = editorComponent.getCodeArea();
         if (handlingMode != oldFileHandlingMode) {
             if (fileUri != null) {
@@ -384,8 +384,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    public FileHandlingMode getFileHandlingMode() {
-        return getCodeArea().getContentData() instanceof DeltaDocument ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
+    public FileProcessingMode getFileHandlingMode() {
+        return getCodeArea().getContentData() instanceof DeltaDocument ? FileProcessingMode.DELTA : FileProcessingMode.MEMORY;
     }
 
     @Nonnull
@@ -418,8 +418,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         return undoRedo.getCommandPosition() != undoRedo.getSyncPosition();
     }
 
-    public void setNewData(FileHandlingMode fileHandlingMode) {
-        if (fileHandlingMode == FileHandlingMode.DELTA) {
+    public void setNewData(FileProcessingMode fileHandlingMode) {
+        if (fileHandlingMode == FileProcessingMode.DELTA) {
             editorComponent.setContentData(segmentsRepository.createDocument());
         } else {
             editorComponent.setContentData(new ByteArrayPagedData());
@@ -467,8 +467,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Override
     public void componentActivated(ActiveContextManagement contextManager) {
         this.contextManager = contextManager;
-        contextManager.changeActiveState(TextFontController.class, binaryDataComponent);
-        contextManager.changeActiveState(TextEncodingController.class, binaryDataComponent);
+        contextManager.changeActiveState(ContextFont.class, binaryDataComponent);
+        contextManager.changeActiveState(ContextEncoding.class, binaryDataComponent);
         contextManager.changeActiveState(UndoRedoState.class, undoRedo);
         contextManager.changeActiveState(ContextComponent.class, binaryDataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
@@ -483,8 +483,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Override
     public void componentDeactivated(ActiveContextManagement contextManager) {
         this.contextManager = null;
-        contextManager.changeActiveState(TextFontController.class, null);
-        contextManager.changeActiveState(TextEncodingController.class, null);
+        contextManager.changeActiveState(ContextFont.class, null);
+        contextManager.changeActiveState(ContextEncoding.class, null);
         contextManager.changeActiveState(UndoRedoState.class, null);
         contextManager.changeActiveState(ContextComponent.class, null);
         contextManager.changeActiveState(DialogParentComponent.class, dialogParentComponent);

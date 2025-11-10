@@ -25,7 +25,6 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.table.gui.TableInspectorPanel;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Table inspector.
@@ -40,7 +39,7 @@ public class TableInspector implements BinEdInspector {
 
     protected DataChangedListener dataChangedListener;
     protected CodeAreaCaretListener caretMovedListener;
-    
+
     @Nonnull
     @Override
     public JComponent getComponent() {
@@ -70,9 +69,5 @@ public class TableInspector implements BinEdInspector {
     public void deactivateSync() {
         codeArea.removeDataChangedListener(dataChangedListener);
         ((CaretCapable) codeArea).removeCaretMovedListener(caretMovedListener);
-    }
-
-    @Override
-    public void onInitFromOptions(OptionsStorage options) {
     }
 }

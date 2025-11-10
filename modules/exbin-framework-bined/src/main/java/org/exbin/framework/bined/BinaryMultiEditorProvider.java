@@ -57,7 +57,7 @@ import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.text.encoding.TextEncodingStatusApi;
+import org.exbin.framework.text.encoding.CharsetEncodingState;
 
 /**
  * Binary editor provider.
@@ -67,13 +67,13 @@ import org.exbin.framework.text.encoding.TextEncodingStatusApi;
 @ParametersAreNonnullByDefault
 public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implements BinEdEditorProvider {
 
-    private FileHandlingMode defaultFileHandlingMode = FileHandlingMode.MEMORY;
+    private FileProcessingMode defaultFileHandlingMode = FileProcessingMode.MEMORY;
 
     private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private JPopupMenu codeAreaPopupMenu;
     private ClipboardStateListener clipboardActionsUpdateListener;
     private BinaryStatusApi binaryStatus;
-    private TextEncodingStatusApi textEncodingStatusApi;
+    private CharsetEncodingState textEncodingStatusApi;
     private DialogParentComponent dialogParentComponent;
 
     public BinaryMultiEditorProvider() {
@@ -131,7 +131,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
     }
 
-    public void setDefaultFileHandlingMode(FileHandlingMode defaultFileHandlingMode) {
+    public void setDefaultFileHandlingMode(FileProcessingMode defaultFileHandlingMode) {
         this.defaultFileHandlingMode = defaultFileHandlingMode;
     }
 
@@ -221,7 +221,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
     }
 
     @Override
-    public void registerEncodingStatus(TextEncodingStatusApi encodingStatus) {
+    public void registerEncodingStatus(CharsetEncodingState encodingStatus) {
         this.textEncodingStatusApi = encodingStatus;
         updateCurrentEncoding();
     }
@@ -358,7 +358,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         }
 
         if (activeFile instanceof BinEdFileHandler) {
-            textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getBinaryDataComponent().getCharset().name());
+            textEncodingStatusApi.setEncoding(((BinEdFileHandler) activeFile).getBinaryDataComponent().getEncoding());
         }
     }
 

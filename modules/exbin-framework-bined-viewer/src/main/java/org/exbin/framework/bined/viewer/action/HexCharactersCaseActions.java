@@ -31,6 +31,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.viewer.BinedViewerChangeMessage;
 
 /**
  * Hex characters case actions.
@@ -59,7 +60,7 @@ public class HexCharactersCaseActions {
     }
 
     @Nonnull
-    public Action createLowerHexCharsAction() {
+    public LowerHexCharsAction createLowerHexCharsAction() {
         LowerHexCharsAction lowerHexCharsAction = new LowerHexCharsAction();
         lowerHexCharsAction.setup(resourceBundle);
         return lowerHexCharsAction;
@@ -70,12 +71,12 @@ public class HexCharactersCaseActions {
 
         public static final String ACTION_ID = "upperHexCharactersAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -83,22 +84,29 @@ public class HexCharactersCaseActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(CodeCharactersCase.UPPER);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            HexCharactersCaseActions.setCodeCharactersCase(binaryDataComponent, CodeCharactersCase.UPPER);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
-                    putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
+                putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -107,12 +115,12 @@ public class HexCharactersCaseActions {
 
         public static final String ACTION_ID = "lowerHexCharactersAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, HEX_CHARACTERS_CASE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -120,22 +128,34 @@ public class HexCharactersCaseActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(CodeCharactersCase.LOWER);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            HexCharactersCaseActions.setCodeCharactersCase(binaryDataComponent, CodeCharactersCase.LOWER);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
-                    putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
+            });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
                 }
-                setEnabled(hasInstance);
             });
         }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
+                putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    public static void setCodeCharactersCase(BinaryDataComponent binaryDataComponent, CodeCharactersCase codeCharactersCase) {
+        ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(codeCharactersCase);
+        // TODO invoke change notification
     }
 }

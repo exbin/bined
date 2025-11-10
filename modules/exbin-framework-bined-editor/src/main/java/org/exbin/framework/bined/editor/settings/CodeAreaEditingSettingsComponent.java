@@ -42,10 +42,6 @@ public class CodeAreaEditingSettingsComponent implements SettingsComponentProvid
         CodeAreaEditingSettingsPanel panel = new CodeAreaEditingSettingsPanel();
         BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
         ResourceBundle resourceBundle = binedEditorModule.getResourceBundle();
-        List<String> fileHandlingModes = new ArrayList<>();
-        fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
-        fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
-        panel.setFileHandlingModes(fileHandlingModes);
         List<String> enderKeyHandlingModes = new ArrayList<>();
         enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.platformSpecific"));
         enderKeyHandlingModes.add(resourceBundle.getString("enterKeyHandlingMode.cr"));

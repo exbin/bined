@@ -20,10 +20,9 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.basic.EnterKeyHandlingMode;
-import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
+import org.exbin.framework.bined.FileProcessingMode;
+import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.WindowUtils;
@@ -34,16 +33,16 @@ import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 
 /**
- * Code area editing options panel.
+ * Code area file processing options panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
+public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
+    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaFileProcessingSettingsPanel.class);
 
-    public CodeAreaEditingSettingsPanel() {
+    public CodeAreaFileProcessingSettingsPanel() {
         initComponents();
     }
 
@@ -53,30 +52,24 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
         return resourceBundle;
     }
 
-    public void setEnterKeyHandlingModes(List<String> enterKeyHandlingModes) {
-        for (String enterKeyHandlingMode : enterKeyHandlingModes) {
-            enterKeyHandlingModeComboBox.addItem(enterKeyHandlingMode);
-        }
-    }
-
-    public void setTabKeyHandlingModes(List<String> tabKeyHandlingModes) {
-        for (String tabKeyHandlingMode : tabKeyHandlingModes) {
-            tabKeyHandlingModeComboBox.addItem(tabKeyHandlingMode);
+    public void setFileProcessingModes(List<String> fileProcessingModes) {
+        for (String fileProcessingMode : fileProcessingModes) {
+            fileProcessingModeComboBox.addItem(fileProcessingMode);
         }
     }
 
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
-        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
-        enterKeyHandlingModeComboBox.setSelectedIndex(options.getEnterKeyHandlingMode().ordinal());
-        tabKeyHandlingModeComboBox.setSelectedIndex(options.getTabKeyHandlingMode().ordinal());
+        BinaryFileProcessingOptions options = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
+        // Skip direct file handling mode
+        fileProcessingModeComboBox.setSelectedIndex(options.getFileProcessingMode().ordinal() - 1);
     }
 
     @Override
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
-        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
-        options.setEnterKeyHandlingMode(EnterKeyHandlingMode.values()[enterKeyHandlingModeComboBox.getSelectedIndex()]);
-        options.setTabKeyHandlingMode(TabKeyHandlingMode.values()[tabKeyHandlingModeComboBox.getSelectedIndex()]);
+        BinaryFileProcessingOptions options = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
+        // Skip direct file handling mode
+        options.setFileProcessingMode(FileProcessingMode.values()[fileProcessingModeComboBox.getSelectedIndex() + 1]);
     }
 
     /**
@@ -88,14 +81,10 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        enterKeyHandlingModeLabel = new javax.swing.JLabel();
-        enterKeyHandlingModeComboBox = new javax.swing.JComboBox<>();
-        tabKeyHandlingModeLabel = new javax.swing.JLabel();
-        tabKeyHandlingModeComboBox = new javax.swing.JComboBox<>();
+        fileHandlingModeLabel = new javax.swing.JLabel();
+        fileProcessingModeComboBox = new javax.swing.JComboBox<>();
 
-        enterKeyHandlingModeLabel.setText(resourceBundle.getString("enterKeyHandlingModeLabel.text")); // NOI18N
-
-        tabKeyHandlingModeLabel.setText(resourceBundle.getString("tabKeyHandlingModeLabel.text")); // NOI18N
+        fileHandlingModeLabel.setText(resourceBundle.getString("fileHandlingModeLabel.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -104,26 +93,19 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(enterKeyHandlingModeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tabKeyHandlingModeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fileProcessingModeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(enterKeyHandlingModeLabel)
-                            .addComponent(tabKeyHandlingModeLabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(fileHandlingModeLabel)
+                        .addGap(0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(enterKeyHandlingModeLabel)
+                .addComponent(fileHandlingModeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enterKeyHandlingModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabKeyHandlingModeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabKeyHandlingModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fileProcessingModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -137,15 +119,13 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new CodeAreaEditingSettingsPanel());
+            WindowUtils.invokeWindow(new CodeAreaFileProcessingSettingsPanel());
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> enterKeyHandlingModeComboBox;
-    private javax.swing.JLabel enterKeyHandlingModeLabel;
-    private javax.swing.JComboBox<String> tabKeyHandlingModeComboBox;
-    private javax.swing.JLabel tabKeyHandlingModeLabel;
+    private javax.swing.JLabel fileHandlingModeLabel;
+    private javax.swing.JComboBox<String> fileProcessingModeComboBox;
     // End of variables declaration//GEN-END:variables
 
     @Override

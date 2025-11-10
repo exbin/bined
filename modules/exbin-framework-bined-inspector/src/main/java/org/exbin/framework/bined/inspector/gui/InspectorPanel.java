@@ -34,7 +34,6 @@ import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorManager;
 import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * BinEd inspector right side panel.
@@ -124,12 +123,6 @@ public class InspectorPanel extends javax.swing.JPanel {
     public void deactivateSync() {
         if (currentInspector != null) {
             currentInspector.deactivateSync();
-        }
-    }
-
-    public void onInitFromOptions(OptionsStorage options) {
-        for (BinEdInspector inspector : inspectors) {
-            inspector.onInitFromOptions(options);
         }
     }
 

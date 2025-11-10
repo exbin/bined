@@ -66,10 +66,6 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
     }
 
     @Override
-    public void onInitFromOptions(OptionsStorage options) {
-    }
-
-    @Override
     public void onClose() {
     }
 

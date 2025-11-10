@@ -15,13 +15,10 @@
  */
 package org.exbin.framework.bined.editor.settings;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
-import org.exbin.framework.bined.FileHandlingMode;
 import org.exbin.framework.options.settings.api.SettingsOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 
@@ -33,7 +30,6 @@ import org.exbin.framework.options.api.OptionsStorage;
 @ParametersAreNonnullByDefault
 public class BinaryEditorOptions implements SettingsOptions {
 
-    public static final String KEY_FILE_HANDLING_MODE = "fileHandlingMode";
     public static final String KEY_ENTER_KEY_HANDLING_MODE = "enterKeyHandlingMode";
     public static final String KEY_TAB_KEY_HANDLING_MODE = "tabKeyHandlingMode";
 
@@ -41,21 +37,6 @@ public class BinaryEditorOptions implements SettingsOptions {
 
     public BinaryEditorOptions(OptionsStorage optionsStorage) {
         this.storage = optionsStorage;
-    }
-
-    @Nonnull
-    public FileHandlingMode getFileHandlingMode() {
-        FileHandlingMode defaultFileHandlingMode = FileHandlingMode.DELTA;
-        try {
-            return FileHandlingMode.valueOf(storage.get(KEY_FILE_HANDLING_MODE, defaultFileHandlingMode.name()));
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(BinaryEditorOptions.class.getName()).log(Level.SEVERE, null, ex);
-            return defaultFileHandlingMode;
-        }
-    }
-
-    public void setFileHandlingMode(FileHandlingMode fileHandlingMode) {
-        storage.put(KEY_FILE_HANDLING_MODE, fileHandlingMode.name());
     }
 
     @Nonnull
@@ -90,7 +71,6 @@ public class BinaryEditorOptions implements SettingsOptions {
     public void copyTo(SettingsOptions options) {
         BinaryEditorOptions with = (BinaryEditorOptions) options;
         with.setEnterKeyHandlingMode(getEnterKeyHandlingMode());
-        with.setFileHandlingMode(getFileHandlingMode());
         with.setTabKeyHandlingMode(getTabKeyHandlingMode());
     }
 }

@@ -32,7 +32,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.text.encoding.EncodingsHandler;
+import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
 /**
@@ -126,9 +126,9 @@ public class BinEdFileManager {
         }
     }
 
-    public void updateTextEncodingStatus(EncodingsHandler encodingsHandler) {
+    public void updateTextEncodingStatus(EncodingsManager encodingsHandler) {
         if (binaryStatusPanel != null) {
-            encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
+            // TODO encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
         }
     }
 

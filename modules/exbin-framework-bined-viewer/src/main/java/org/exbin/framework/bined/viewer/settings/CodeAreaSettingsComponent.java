@@ -23,7 +23,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.bined.viewer.settings.gui.CodeAreaSettingsPanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 
@@ -36,12 +35,6 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 public class CodeAreaSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "codeArea";
-
-    private EditorProvider editorProvider;
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-    }
 
     @Nonnull
     @Override

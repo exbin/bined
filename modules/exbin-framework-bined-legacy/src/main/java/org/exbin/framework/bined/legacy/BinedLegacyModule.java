@@ -29,8 +29,9 @@ import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
-import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
+import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
@@ -56,6 +57,7 @@ public class BinedLegacyModule implements Module {
     private OptionsStorage storage;
     private CodeAreaOptions codeAreaOptions;
     private BinaryEditorOptions editorOptions;
+    private BinaryFileProcessingOptions fileProcessingOptions;
     private TextEncodingOptions encodingOptions;
     private TextFontOptions fontOptions;
     private CodeAreaLayoutOptions layoutOptions;
@@ -120,7 +122,7 @@ public class BinedLegacyModule implements Module {
         codeAreaOptions.setPaintRowPosBackground(legacyPreferences.isPaintRowPosBackground());
         codeAreaOptions.setCodeColorization(legacyPreferences.isCodeColorization());
 
-        editorOptions.setFileHandlingMode(legacyPreferences.isDeltaMemoryMode() ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY);
+        fileProcessingOptions.setFileProcessingMode(legacyPreferences.isDeltaMemoryMode() ? FileProcessingMode.DELTA : FileProcessingMode.MEMORY);
         // editorOptions.setShowValuesPanel(legacyPreferences.isShowValuesPanel());
 
         List<String> layoutProfiles = new ArrayList<>();

@@ -173,9 +173,9 @@ public class BinedModule implements Module {
             OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
             componentPanel.onInitFromPreferences(optionsModule.getAppOptions());
 
-//            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
+//            FileProcessingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
 //            editorFile.setNewData(fileHandlingMode);
-            editorFile.setNewData(FileHandlingMode.MEMORY);
+            editorFile.setNewData(FileProcessingMode.MEMORY);
 
             SectCodeArea codeArea = editorFile.getComponent().getCodeArea();
             codeArea.addSelectionChangedListener(() -> {
@@ -193,9 +193,9 @@ public class BinedModule implements Module {
             editorProvider = new BinaryMultiEditorProvider();
 //            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
 //            EditorOptions editorPreferences = new EditorOptions(preferencesModule.getAppPreferences());
-//            FileHandlingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
+//            FileProcessingMode fileHandlingMode = editorPreferences.getFileHandlingMode();
 //            ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(fileHandlingMode);
-            ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(FileHandlingMode.MEMORY);
+            ((BinaryMultiEditorProvider) editorProvider).setDefaultFileHandlingMode(FileProcessingMode.MEMORY);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             ((BinaryMultiEditorProvider) editorProvider).setCodeAreaPopupMenuHandler(createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR));
 

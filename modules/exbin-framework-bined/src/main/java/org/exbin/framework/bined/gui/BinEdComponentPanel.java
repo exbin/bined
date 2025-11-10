@@ -90,10 +90,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         int fontSize = fontSizeOptions.getFontSize();
         Font currentFont = codeArea.getCodeFont();
         codeArea.setCodeFont(new Font(currentFont.getName(), currentFont.getStyle(), fontSize));
-
-        for (BinEdComponentExtension extension : componentExtensions) {
-            extension.onInitFromOptions(options);
-        }
     }
 
     public void addComponentExtension(BinEdComponentExtension extension) {
@@ -197,12 +193,10 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
         void onCreate(BinEdComponentPanel componentPanel);
 
-        void onInitFromOptions(OptionsStorage options);
-
         void onDataChange();
 
         void onClose();
 
-        public void onUndoHandlerChange();
+        void onUndoHandlerChange();
     }
 }

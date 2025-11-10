@@ -32,7 +32,7 @@ import org.exbin.framework.bined.operation.ReplaceDataOperation;
  */
 @ParametersAreNonnullByDefault
 public class ReplaceDataCommand extends CodeAreaCommand {
-    
+
     protected final ReplaceDataOperation operation;
     protected BinaryDataUndoableOperation undoOperation;
 
@@ -65,5 +65,4 @@ public class ReplaceDataCommand extends CodeAreaCommand {
         super.dispose();
         operation.dispose();
     }
-    
 }

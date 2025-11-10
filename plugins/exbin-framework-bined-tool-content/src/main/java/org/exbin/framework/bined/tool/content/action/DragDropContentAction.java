@@ -79,9 +79,9 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
         HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
         helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         final WindowHandler dialog = windowModule.createDialog(dragDropContentPanel, controlPanel);
-        dragDropContentPanel.setOpenAsTabAction(new AbstractAction() {
+        dragDropContentPanel.setController(new DragDropContentPanel.Controller() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void openAsTab() {
                 Optional<BinaryData> optContentBinaryData = dragDropContentPanel.getContentBinaryData();
                 if (optContentBinaryData.isPresent()) {
                     BinaryData contentBinaryData = optContentBinaryData.get();
@@ -93,10 +93,9 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
                     }
                 }
             }
-        });
-        dragDropContentPanel.setSaveAsFileAction(new AbstractAction() {
+
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void saveAsFile() {
                 JFileChooser exportFileChooser = new JFileChooser();
                 exportFileChooser.setAcceptAllFileFilterUsed(true);
                 if (exportFileChooser.showSaveDialog(dialog.getWindow()) == JFileChooser.APPROVE_OPTION) {
@@ -122,6 +121,8 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
                 }
             }
         });
+        dragDropContentPanel.setOpenAsTabEnabled(true);
+        dragDropContentPanel.setSaveAsFileEnabled(true);
         BinedModule binedModule = App.getModule(BinedModule.class);
         dragDropContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 

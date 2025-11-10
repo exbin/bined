@@ -18,7 +18,6 @@ package org.exbin.framework.bined.viewer.settings;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.viewer.settings.gui.BinaryAppearanceSettingsPanel;
-import org.exbin.framework.bined.viewer.service.BinaryAppearanceService;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 
@@ -31,12 +30,6 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 public class BinaryAppearanceSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "binaryAppearance";
-
-    private BinaryAppearanceService binaryAppearanceService;
-
-    public void setBinaryAppearanceService(BinaryAppearanceService binaryAppearanceService) {
-        this.binaryAppearanceService = binaryAppearanceService;
-    }
 
     @Nonnull
     @Override

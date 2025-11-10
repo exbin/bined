@@ -44,7 +44,6 @@ import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
@@ -81,6 +80,7 @@ public class ConvertDataAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, ActionUtils.getMetaMask()));
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
@@ -93,7 +93,6 @@ public class ConvertDataAction extends AbstractAction {
                 });
             }
         });
-        setEnabled(false);
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {

@@ -39,7 +39,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import org.exbin.bined.CodeAreaSelection;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
@@ -95,6 +94,7 @@ public class BookmarksManager {
     }
 
     public void setEditorProvider(EditorProvider editorProvider) {
+        // TODO Drop editor provider
         this.editorProvider = editorProvider;
         EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
         editorModule.addEditorProviderComponentListener((editorComponent) -> {
@@ -160,14 +160,6 @@ public class BookmarksManager {
         bookmarksManagerPanel.setController(new BookmarksManagerPanel.Controller() {
             @Override
             public void addRecord() {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    SectCodeArea codeArea = fileHandler.getCodeArea();
-                    addBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
-                } else {
-                    addBookmarkAction.setCurrentSelection(new CodeAreaSelection());
-                }
                 addBookmarkAction.setDialogParentComponent(dialogParentComponent);
                 addBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = addBookmarkAction.getBookmarkRecord();
@@ -180,14 +172,6 @@ public class BookmarksManager {
 
             @Override
             public void editRecord() {
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                if (activeFile.isPresent()) {
-                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                    SectCodeArea codeArea = fileHandler.getCodeArea();
-                    editBookmarkAction.setCurrentSelection(codeArea.getSelectionHandler());
-                } else {
-                    editBookmarkAction.setCurrentSelection(new CodeAreaSelection());
-                }
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
                 int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();
                 editBookmarkAction.setBookmarkRecord(new BookmarkRecord(selectedRecord));

@@ -59,21 +59,23 @@ public class ShowNonprintablesActions {
     @Nonnull
     public ViewNonprintablesAction createViewNonprintablesAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(viewNonprintablesAction, resourceBundle, VIEW_NONPRINTABLES_ACTION_ID);
-        viewNonprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
-        viewNonprintablesAction.putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, ActionUtils.getMetaMask()));
-        viewNonprintablesAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, viewNonprintablesAction);
+        viewNonprintablesAction.setup(resourceBundle);
         return viewNonprintablesAction;
     }
 
     @Nonnull
     public ViewNonprintablesAction createViewNonprintablesToolbarAction() {
-        ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionModule.initAction(viewNonprintablesAction, resourceBundle, VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID);
-        viewNonprintablesAction.putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
-        viewNonprintablesAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, viewNonprintablesAction);
+        ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction() {
+            @Override
+            public void setup(ResourceBundle resourceBundle) {
+                ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+                actionModule.initAction(this, resourceBundle, VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID);
+                setEnabled(false);
+                putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
+                putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+            }
+        };
+        viewNonprintablesAction.setup(resourceBundle);
         return viewNonprintablesAction;
     }
 
@@ -81,6 +83,15 @@ public class ShowNonprintablesActions {
     public static class ViewNonprintablesAction extends AbstractAction implements ActionContextChange {
 
         private CodeAreaCore codeArea;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, VIEW_NONPRINTABLES_ACTION_ID);
+            setEnabled(false);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {

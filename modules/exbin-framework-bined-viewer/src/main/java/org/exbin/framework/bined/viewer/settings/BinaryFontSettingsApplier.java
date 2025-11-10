@@ -15,25 +15,34 @@
  */
 package org.exbin.framework.bined.viewer.settings;
 
+import java.nio.charset.UnsupportedCharsetException;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.BinEdDataComponent;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
-import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
+import org.exbin.framework.text.font.settings.TextFontOptions;
 
 /**
- * Text encoding settings applier.
+ * Binary font settings applier.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class TextEncodingSettingsApplier implements SettingsApplier {
+public class BinaryFontSettingsApplier implements SettingsApplier {
 
-    public static final String APPLIER_ID = "textEncoding";
+    public static final String APPLIER_ID = "binaryFont";
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        TextEncodingOptions options = settingsOptionsProvider.getSettingsOptions(TextEncodingOptions.class);
-//        encodingsHandler.setSelectedEncoding(options.getSelectedEncoding());
-//        encodingsHandler.setEncodings(options.getEncodings());
+        if (!(instance instanceof BinEdDataComponent)) {
+            return;
+        }
+
+        TextFontOptions options = settingsOptionsProvider.getSettingsOptions(TextFontOptions.class);
+        try {
+            ((BinEdDataComponent) instance).setCurrentFont(options.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : options.getFont(CodeAreaOptions.DEFAULT_FONT));
+        } catch (UnsupportedCharsetException ex) {
+            // ignore
+        }
     }
 }

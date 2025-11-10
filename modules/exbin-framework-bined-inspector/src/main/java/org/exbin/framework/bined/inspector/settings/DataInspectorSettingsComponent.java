@@ -64,7 +64,7 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
         DataInspectorSettingsPanel panel = new DataInspectorSettingsPanel();
         defaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
         panel.setDefaultFont(defaultFont);
-        panel.setFontChangeAction(new TextFontSettingsPanel.FontChangeAction() {
+        panel.setFontSettingsController(new TextFontSettingsPanel.Controller() {
             @Override
             public Font changeFont(Font currentFont) {
                 final Result result = new Result();

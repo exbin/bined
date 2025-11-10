@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import org.exbin.bined.CodeAreaSelection;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
@@ -50,7 +50,6 @@ public class EditBookmarkAction extends AbstractAction {
     public static final String ACTION_ID = "editBookmarkAction";
 
     private BookmarkRecord bookmarkRecord;
-    private CodeAreaSelection currentSelection;
     private DialogParentComponent dialogParentComponent;
     private CodeAreaCore codeArea;
 
@@ -60,6 +59,7 @@ public class EditBookmarkAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
@@ -74,11 +74,6 @@ public class EditBookmarkAction extends AbstractAction {
                 });
             }
         });
-        setEnabled(false);
-    }
-
-    public void setCurrentSelection(CodeAreaSelection currentSelection) {
-        this.currentSelection = currentSelection;
     }
 
     @Nonnull
@@ -98,7 +93,7 @@ public class EditBookmarkAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();
         bookmarkEditorPanel.setBookmarkRecord(bookmarkRecord);
-        bookmarkEditorPanel.setCurrentSelection(currentSelection);
+        bookmarkEditorPanel.setCurrentSelection(((SelectionCapable) codeArea).getSelectionHandler());
         ResourceBundle panelResourceBundle = bookmarkEditorPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
 

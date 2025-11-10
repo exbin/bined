@@ -16,7 +16,7 @@
 package org.exbin.framework.bined;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.text.encoding.TextEncodingStatusApi;
+import org.exbin.framework.text.encoding.CharsetEncodingState;
 
 /**
  * Binary editor provider interface.
@@ -38,7 +38,7 @@ public interface BinEdEditorProvider {
      *
      * @param encodingStatus encoding status
      */
-    void registerEncodingStatus(TextEncodingStatusApi encodingStatus);
+    void registerEncodingStatus(CharsetEncodingState encodingStatus);
 
     /**
      * Requests update of the status for current file.

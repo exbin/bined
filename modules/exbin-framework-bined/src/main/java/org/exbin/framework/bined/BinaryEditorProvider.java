@@ -53,7 +53,7 @@ import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.file.api.FileOperations;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
-import org.exbin.framework.text.encoding.TextEncodingStatusApi;
+import org.exbin.framework.text.encoding.CharsetEncodingState;
 
 /**
  * Binary editor provider.
@@ -223,8 +223,8 @@ public class BinaryEditorProvider implements EditorProvider, BinEdEditorProvider
     }
 
     @Override
-    public void registerEncodingStatus(TextEncodingStatusApi encodingStatus) {
-        encodingStatus.setEncoding(activeFile.getBinaryDataComponent().getCharset().name());
+    public void registerEncodingStatus(CharsetEncodingState encodingStatus) {
+        encodingStatus.setEncoding(activeFile.getBinaryDataComponent().getEncoding());
     }
 
     @Override

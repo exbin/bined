@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.viewer;
 
-import java.awt.Font;
 import org.exbin.framework.bined.viewer.action.ShowRowPositionAction;
 import org.exbin.framework.bined.viewer.action.CodeTypeActions;
 import org.exbin.framework.bined.viewer.action.ViewModeHandlerActions;
@@ -23,7 +22,6 @@ import org.exbin.framework.bined.viewer.action.RowWrappingAction;
 import org.exbin.framework.bined.viewer.action.HexCharactersCaseActions;
 import org.exbin.framework.bined.viewer.action.PositionCodeTypeActions;
 import java.awt.event.ActionEvent;
-import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -31,11 +29,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
@@ -47,11 +43,11 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinedModule.PopupMenuVariant;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceSettingsApplier;
@@ -62,7 +58,9 @@ import org.exbin.framework.bined.viewer.settings.CodeAreaStatusSettingsApplier;
 import org.exbin.framework.bined.viewer.settings.CodeAreaStatusSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.CodeAreaViewerSettingsApplier;
 import org.exbin.framework.bined.viewer.settings.GoToPositionOptions;
-import org.exbin.framework.bined.viewer.settings.TextEncodingSettingsApplier;
+import org.exbin.framework.bined.viewer.settings.BinaryEncodingSettingsApplier;
+import org.exbin.framework.bined.viewer.settings.BinaryEncodingSettingsComponent;
+import org.exbin.framework.bined.viewer.settings.BinaryFontSettingsApplier;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
@@ -72,19 +70,16 @@ import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
-import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponentContribution;
 import org.exbin.framework.options.settings.api.SettingsPageContribution;
 import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
-import org.exbin.framework.text.encoding.EncodingsHandler;
+import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
-import org.exbin.framework.text.encoding.service.TextEncodingService;
 import org.exbin.framework.text.encoding.settings.TextEncodingSettingsComponent;
 import org.exbin.framework.text.font.action.TextFontAction;
-import org.exbin.framework.text.font.service.TextFontService;
 import org.exbin.framework.text.font.settings.TextFontOptions;
 import org.exbin.framework.text.font.settings.TextFontSettingsComponent;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
@@ -120,7 +115,7 @@ public class BinedViewerModule implements Module {
     private CodeTypeActions codeTypeActions;
     private PositionCodeTypeActions positionCodeTypeActions;
     private HexCharactersCaseActions hexCharactersCaseActions;
-    private EncodingsHandler encodingsHandler;
+    private EncodingsManager encodingsManager;
 
     public BinedViewerModule() {
     }
@@ -145,20 +140,20 @@ public class BinedViewerModule implements Module {
         BinEdFileManager fileManager = binedModule.getFileManager();
         EditorProvider editorProvider = binedModule.getEditorProvider();
         fileManager.registerStatusBar();
-        fileManager.setBinaryStatusController(new BinaryStatusController(editorProvider, encodingsHandler));
+        fileManager.setBinaryStatusController(new BinaryStatusController(editorProvider, encodingsManager));
 
-        if (encodingsHandler != null) {
-            fileManager.updateTextEncodingStatus(encodingsHandler);
+        if (encodingsManager != null) {
+            fileManager.updateTextEncodingStatus(encodingsManager);
         }
     }
 
     public void registerEncodings() {
-        getEncodingsHandler();
-        encodingsHandler.rebuildEncodings();
+        getEncodingsManager();
+        encodingsManager.rebuildEncodings();
 
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(() -> encodingsHandler.getToolsEncodingMenu());
+        SequenceContribution contribution = mgmt.registerMenuItem(() -> encodingsManager.getToolsEncodingMenu());
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP_LAST));
     }
 
@@ -173,9 +168,10 @@ public class BinedViewerModule implements Module {
         settingsManagement.registerOptionsSettings(TextEncodingOptions.class, (optionsStorage) -> new TextEncodingOptions(optionsStorage));
         settingsManagement.registerOptionsSettings(TextFontOptions.class, (optionsStorage) -> new TextFontOptions(optionsStorage));
 
-        settingsManagement.registerApplySetting(CodeAreaOptions.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));
         settingsManagement.registerApplySetting(BinaryAppearanceOptions.class, new ApplySettingsContribution(BinaryAppearanceSettingsApplier.APPLIER_ID, new BinaryAppearanceSettingsApplier()));
-        settingsManagement.registerApplySetting(TextEncodingSettingsApplier.class, new ApplySettingsContribution(TextEncodingSettingsApplier.APPLIER_ID, new TextEncodingSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(BinaryEncodingSettingsApplier.APPLIER_ID, new BinaryEncodingSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(BinaryFontSettingsApplier.APPLIER_ID, new BinaryFontSettingsApplier()));
         settingsManagement.registerApplySetting(CodeAreaStatusOptions.class, new ApplySettingsContribution(CodeAreaStatusSettingsApplier.APPLIER_ID, new CodeAreaStatusSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
@@ -199,100 +195,15 @@ public class BinedViewerModule implements Module {
         settingsManagement.registerPage(encodingPageContribution);
         settingsManagement.registerSettingsRule(encodingPageContribution, new SettingsPageContributionRule(pageContribution));
 
-         // TODO: Drop service parameters
-        TextEncodingSettingsComponent textEncodingSettingsComponent = new TextEncodingSettingsComponent();
-        textEncodingSettingsComponent.setEncodingsHandler(getEncodingsHandler());
-        settingsComponent = settingsManagement.registerComponent(TextEncodingSettingsComponent.COMPONENT_ID, textEncodingSettingsComponent);
+        settingsComponent = settingsManagement.registerComponent(TextEncodingSettingsComponent.COMPONENT_ID, new BinaryEncodingSettingsComponent());
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(encodingPageContribution));
         
         SettingsPageContribution fontPageContribution = new SettingsPageContribution(SETTINGS_FONT_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(fontPageContribution);
         settingsManagement.registerSettingsRule(fontPageContribution, new SettingsPageContributionRule(pageContribution));
 
-        TextFontSettingsComponent textFontSettingsComponent = new TextFontSettingsComponent();
-        textFontSettingsComponent.setTextFontService(new TextFontService() {
-            @Nonnull
-            @Override
-            public Font getCurrentFont() {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                EditorProvider editorProvider = binedModule.getEditorProvider();
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                FileHandler fileHandler = activeFile.orElse(null);
-                if (fileHandler instanceof BinEdFileHandler) {
-                    return ((BinEdFileHandler) fileHandler).getBinaryDataComponent().getCurrentFont();
-                }
-
-                return new JLabel().getFont();
-            }
-
-            @Nonnull
-            @Override
-            public Font getDefaultFont() {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                EditorProvider editorProvider = binedModule.getEditorProvider();
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                FileHandler fileHandler = activeFile.orElse(null);
-                if (fileHandler instanceof BinEdFileHandler) {
-                    return ((BinEdFileHandler) fileHandler).getBinaryDataComponent().getDefaultFont();
-                }
-
-                return new JLabel().getFont();
-            }
-
-            @Override
-            public void setCurrentFont(Font font) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                EditorProvider editorProvider = binedModule.getEditorProvider();
-                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                FileHandler fileHandler = activeFile.orElse(null);
-                if (fileHandler instanceof BinEdFileHandler) {
-                    ((BinEdFileHandler) fileHandler).getBinaryDataComponent().setCurrentFont(font);
-                }
-            }
-        });
-        settingsComponent = settingsManagement.registerComponent(TextFontSettingsComponent.COMPONENT_ID, textFontSettingsComponent);
+        settingsComponent = settingsManagement.registerComponent(TextFontSettingsComponent.COMPONENT_ID, new TextFontSettingsComponent());
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(fontPageContribution));
-
-        // TODO Convert to settings applier
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
-            @Override
-            public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                return Optional.of(new BinEdComponentPanel.BinEdComponentExtension() {
-                    @Override
-                    public void onCreate(BinEdComponentPanel componentPanel) {
-                    }
-
-                    @Override
-                    public void onInitFromOptions(OptionsStorage options) {
-                        SectCodeArea codeArea = component.getCodeArea();
-                        CodeAreaOptions.applyToCodeArea(new CodeAreaOptions(options), codeArea);
-
-                        String encoding = new TextEncodingOptions(options).getSelectedEncoding();
-                        if (!encoding.isEmpty()) {
-                            codeArea.setCharset(Charset.forName(encoding));
-                        }
-
-                        TextFontOptions textFontOptions = new TextFontOptions(options);
-                        ((FontCapable) codeArea).setCodeFont(textFontOptions.isUseDefaultFont() ? CodeAreaOptions.DEFAULT_FONT : textFontOptions.getFont(CodeAreaOptions.DEFAULT_FONT));
-                    }
-
-                    @Override
-                    public void onDataChange() {
-                    }
-
-                    @Override
-                    public void onClose() {
-                    }
-
-                    @Override
-                    public void onUndoHandlerChange() {
-                    }
-                });
-            }
-        });
     }
 
     public void registerWordWrapping() {
@@ -365,34 +276,17 @@ public class BinedViewerModule implements Module {
     }
 
     @Nonnull
-    public EncodingsHandler getEncodingsHandler() {
-        if (encodingsHandler == null) {
+    public EncodingsManager getEncodingsManager() {
+        if (encodingsManager == null) {
             ensureSetup();
             BinedModule binedModule = App.getModule(BinedModule.class);
             BinEdFileManager fileManager = binedModule.getFileManager();
-            encodingsHandler = new EncodingsHandler();
-            fileManager.updateTextEncodingStatus(encodingsHandler);
-            encodingsHandler.init();
-
-            encodingsHandler.setEncodingChangeListener(new TextEncodingService.EncodingChangeListener() {
-                @Override
-                public void encodingListChanged() {
-                    encodingsHandler.rebuildEncodings();
-                }
-
-                @Override
-                public void selectedEncodingChanged() {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    EditorProvider editorProvider = binedModule.getEditorProvider();
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        ((BinEdFileHandler) activeFile.get()).getBinaryDataComponent().setCharset(Charset.forName(encodingsHandler.getSelectedEncoding()));
-                    }
-                }
-            });
+            encodingsManager = new EncodingsManager();
+            fileManager.updateTextEncodingStatus(encodingsManager);
+            encodingsManager.init();
         }
 
-        return encodingsHandler;
+        return encodingsManager;
     }
 
     @Nonnull
@@ -691,10 +585,5 @@ public class BinedViewerModule implements Module {
 //        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
 //        MenuManagement mgmt = menuModule.getMainMenuManager(MODULE_ID);
 //        mgmt.unregisterMenu(CODE_AREA_POPUP_MENU_ID + menuPostfix);
-    }
-
-    public void loadFromPreferences(OptionsStorage options) {
-        // TODO Drop
-        encodingsHandler.loadFromOptions(new TextEncodingOptions(options));
     }
 }

@@ -62,11 +62,11 @@ import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
 import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
+import org.exbin.framework.bined.viewer.settings.CodeAreaViewerSettingsApplier;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.text.encoding.EncodingsHandler;
-import org.exbin.framework.text.encoding.TextEncodingStatusApi;
+import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.font.settings.TextFontOptions;
 
@@ -78,7 +78,7 @@ import org.exbin.framework.text.font.settings.TextFontOptions;
 @ParametersAreNonnullByDefault
 public class BinEdDiffPanel extends JPanel {
 
-    private final OptionsStorage preferences;
+    private final OptionsStorage optionsStorage;
     private final SectCodeAreaDiffPanel diffPanel = new SectCodeAreaDiffPanel();
 
     private final Font defaultFont;
@@ -89,14 +89,14 @@ public class BinEdDiffPanel extends JPanel {
     private final DiffToolbarPanel toolbarPanel;
     private final BinaryStatusPanel leftStatusPanel;
     private final BinaryStatusPanel rightStatusPanel;
-    private EncodingsHandler encodingsHandler;
+    private EncodingsManager encodingsManager;
     private GoToPositionAction goToPositionAction = new GoToPositionAction();
 
     public BinEdDiffPanel() {
         setLayout(new java.awt.BorderLayout());
 
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-        preferences = optionsModule.getAppOptions();
+        optionsStorage = optionsModule.getAppOptions();
         defaultFont = new Font(Font.MONOSPACED, Font.PLAIN, 12);
         SectCodeArea leftCodeArea = diffPanel.getLeftCodeArea();
         SectCodeArea rightCodeArea = diffPanel.getRightCodeArea();
@@ -160,9 +160,9 @@ public class BinEdDiffPanel extends JPanel {
 
     private void init() {
         this.add(toolbarPanel, BorderLayout.NORTH);
-        encodingsHandler = new EncodingsHandler();
-        encodingsHandler.init();
-        encodingsHandler.setTextEncodingStatus(new TextEncodingStatusApi() {
+        encodingsManager = new EncodingsManager();
+        encodingsManager.init();
+        /* TODO encodingsManager.setTextEncodingStatus(new TextEncodingStatusApi() {
             @Nonnull
             @Override
             public String getEncoding() {
@@ -175,9 +175,9 @@ public class BinEdDiffPanel extends JPanel {
                 diffPanel.getRightCodeArea().setCharset(Charset.forName(encodingName));
                 leftStatusPanel.setEncoding(encodingName);
                 rightStatusPanel.setEncoding(encodingName);
-                new TextEncodingOptions(preferences).setSelectedEncoding(encodingName);
+                new TextEncodingOptions(optionsStorage).setSelectedEncoding(encodingName);
             }
-        });
+        }); */
         goToPositionAction.setup(App.getModule(LanguageModuleApi.class).getBundle(BinedModule.class));
 
         registerBinaryStatus(leftStatusPanel, diffPanel.getLeftCodeArea());
@@ -234,56 +234,56 @@ public class BinEdDiffPanel extends JPanel {
             @Nonnull
             @Override
             public CodeAreaOptions getCodeAreaOptions() {
-                return new CodeAreaOptions(preferences);
+                return new CodeAreaOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public TextEncodingOptions getEncodingOptions() {
-                return new TextEncodingOptions(preferences);
+                return new TextEncodingOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public TextFontOptions getFontOptions() {
-                return new TextFontOptions(preferences);
+                return new TextFontOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public BinaryEditorOptions getEditorOptions() {
-                return new BinaryEditorOptions(preferences);
+                return new BinaryEditorOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public CodeAreaStatusOptions getStatusOptions() {
-                return new CodeAreaStatusOptions(preferences);
+                return new CodeAreaStatusOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public CodeAreaLayoutOptions getLayoutOptions() {
-                return new CodeAreaLayoutOptions(preferences);
+                return new CodeAreaLayoutOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public CodeAreaColorOptions getColorOptions() {
-                return new CodeAreaColorOptions(preferences);
+                return new CodeAreaColorOptions(optionsStorage);
             }
 
             @Nonnull
             @Override
             public CodeAreaThemeOptions getThemeOptions() {
-                return new CodeAreaThemeOptions(preferences);
+                return new CodeAreaThemeOptions(optionsStorage);
             }
         });
 
-        encodingsHandler.loadFromOptions(new TextEncodingOptions(preferences));
-        leftStatusPanel.loadFromOptions(new CodeAreaStatusOptions(preferences));
-        rightStatusPanel.loadFromOptions(new CodeAreaStatusOptions(preferences));
-        toolbarPanel.loadFromOptions(preferences);
+        // TODO encodingsManager.loadFromOptions(new TextEncodingOptions(optionsStorage));
+        leftStatusPanel.loadFromOptions(new CodeAreaStatusOptions(optionsStorage));
+        rightStatusPanel.loadFromOptions(new CodeAreaStatusOptions(optionsStorage));
+        toolbarPanel.loadFromOptions(optionsStorage);
 
         BinaryStatusApi.MemoryMode memoryMode = BinaryStatusApi.MemoryMode.READ_ONLY;
         leftStatusPanel.setMemoryMode(memoryMode);
@@ -296,11 +296,11 @@ public class BinEdDiffPanel extends JPanel {
     }
 
     private void applyOptions(BinEdApplyOptions applyOptions, SectCodeArea codeArea) {
-        CodeAreaOptions.applyToCodeArea(applyOptions.getCodeAreaOptions(), codeArea);
+        CodeAreaViewerSettingsApplier.applyToCodeArea(applyOptions.getCodeAreaOptions(), codeArea);
 
         ((CharsetCapable) codeArea).setCharset(Charset.forName(applyOptions.getEncodingOptions()
                 .getSelectedEncoding()));
-        encodingsHandler.setEncodings(applyOptions.getEncodingOptions().getEncodings());
+        encodingsManager.setEncodings(applyOptions.getEncodingOptions().getEncodings());
         ((FontCapable) codeArea).setCodeFont(
                 applyOptions.getFontOptions().isUseDefaultFont() ? defaultFont : applyOptions.getFontOptions().getFont(defaultFont)
         );
@@ -408,22 +408,22 @@ public class BinEdDiffPanel extends JPanel {
 
         @Override
         public void cycleNextEncoding() {
-            if (encodingsHandler != null) {
-                encodingsHandler.cycleNextEncoding();
+            if (encodingsManager != null) {
+                encodingsManager.cycleNextEncoding();
             }
         }
 
         @Override
         public void cyclePreviousEncoding() {
-            if (encodingsHandler != null) {
-                encodingsHandler.cyclePreviousEncoding();
+            if (encodingsManager != null) {
+                encodingsManager.cyclePreviousEncoding();
             }
         }
 
         @Override
         public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
-            if (encodingsHandler != null) {
-                encodingsHandler.popupEncodingsMenu(mouseEvent);
+            if (encodingsManager != null) {
+                encodingsManager.popupEncodingsMenu(mouseEvent);
             }
         }
 

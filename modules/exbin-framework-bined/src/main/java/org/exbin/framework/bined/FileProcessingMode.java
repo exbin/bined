@@ -13,29 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.viewer.service;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+package org.exbin.framework.bined;
 
 /**
- * Appearance service interface.
+ * File processing mode.
  *
  * @author ExBin Project (https://exbin.org)
  */
-@ParametersAreNonnullByDefault
-public interface BinaryAppearanceService {
-
+public enum FileProcessingMode implements BinEdFileProcessingMode {
     /**
-     * Returns text word wrapping mode.
-     *
-     * @return wrapping mode
+     * Direct access to stream of externally handled file.
      */
-    boolean getWordWrapMode();
-
+    DIRECT,
     /**
-     * Sets text word wrapping mode.
-     *
-     * @param mode word wrapping mode
+     * Whole file is loaded to memory.
      */
-    void setWordWrapMode(boolean mode);
+    MEMORY,
+    /**
+     * File is handled using delta changes.
+     */
+    DELTA;
 }

@@ -37,6 +37,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.viewer.BinedViewerChangeMessage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -59,28 +60,28 @@ public class CodeTypeActions {
     }
 
     @Nonnull
-    public Action createBinaryCodeTypeAction() {
+    public BinaryCodeTypeAction createBinaryCodeTypeAction() {
         BinaryCodeTypeAction binaryCodeTypeAction = new BinaryCodeTypeAction();
         binaryCodeTypeAction.setup(resourceBundle);
         return binaryCodeTypeAction;
     }
 
     @Nonnull
-    public Action createOctalCodeTypeAction() {
+    public OctalCodeTypeAction createOctalCodeTypeAction() {
         OctalCodeTypeAction octalCodeTypeAction = new OctalCodeTypeAction();
         octalCodeTypeAction.setup(resourceBundle);
         return octalCodeTypeAction;
     }
 
     @Nonnull
-    public Action createDecimalCodeTypeAction() {
+    public DecimalCodeTypeAction createDecimalCodeTypeAction() {
         DecimalCodeTypeAction decimalCodeTypeAction = new DecimalCodeTypeAction();
         decimalCodeTypeAction.setup(resourceBundle);
         return decimalCodeTypeAction;
     }
 
     @Nonnull
-    public Action createHexadecimalCodeTypeAction() {
+    public HexadecimalCodeTypeAction createHexadecimalCodeTypeAction() {
         HexadecimalCodeTypeAction hexadecimalCodeTypeAction = new HexadecimalCodeTypeAction();
         hexadecimalCodeTypeAction.setup(resourceBundle);
         return hexadecimalCodeTypeAction;
@@ -98,12 +99,12 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "binaryCodeTypeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -111,22 +112,29 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.BINARY);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            CodeTypeActions.setCodeType(binaryDataComponent, CodeType.BINARY);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
-                    putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -135,12 +143,12 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "octalCodeTypeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -148,22 +156,29 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.OCTAL);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            CodeTypeActions.setCodeType(binaryDataComponent, CodeType.OCTAL);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
-                    putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -172,12 +187,12 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "decimalCodeTypeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -185,22 +200,29 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.DECIMAL);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            CodeTypeActions.setCodeType(binaryDataComponent, CodeType.DECIMAL);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
-                    putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -209,12 +231,12 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "hexadecimalCodeTypeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, CODE_TYPE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -222,22 +244,29 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(CodeType.HEXADECIMAL);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            CodeTypeActions.setCodeType(binaryDataComponent, CodeType.HEXADECIMAL);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
-                    putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -246,7 +275,6 @@ public class CodeTypeActions {
 
         public static final String ACTION_ID = "cycleCodeTypesAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
         private List<Action> dropDownActions;
 
@@ -277,8 +305,7 @@ public class CodeTypeActions {
             int codeTypePos = codeType.ordinal();
             CodeType[] values = CodeType.values();
             CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
-            ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(next);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
+            CodeTypeActions.setCodeType(binaryDataComponent, next);
         }
 
         public void setDropDownActions(List<Action> dropDownActions) {
@@ -286,23 +313,36 @@ public class CodeTypeActions {
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
-                    putValue(Action.NAME, resourceBundle.getString(ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
+            });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                    updateByContext(instance);
                 }
-                setEnabled(hasInstance);
             });
             if (dropDownActions != null) {
                 for (Action dropDownAction : dropDownActions) {
                     ActionContextChange ActionContextChange = (ActionContextChange) dropDownAction;
-                    ActionContextChange.register(manager);
+                    ActionContextChange.register(registrar);
                 }
             }
         }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                putValue(Action.NAME, resourceBundle.getString(ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    public static void setCodeType(BinaryDataComponent binaryDataComponent, CodeType codeType) {
+        ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(codeType);
+        // TODO invoke change notification
     }
 }

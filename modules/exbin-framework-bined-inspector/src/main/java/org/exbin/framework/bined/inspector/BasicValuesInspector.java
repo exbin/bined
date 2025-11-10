@@ -15,9 +15,6 @@
  */
 package org.exbin.framework.bined.inspector;
 
-import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -30,9 +27,6 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.operation.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
-import org.exbin.framework.bined.inspector.settings.DataInspectorFontOptions;
-import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * BinEd basic values inspector.
@@ -94,21 +88,6 @@ public class BasicValuesInspector implements BinEdInspector {
         ((CaretCapable) codeArea).removeCaretMovedListener(caretMovedListener);
         if (undoRedo != null) {
             undoRedo.addChangeListener(undoRedoChangeListener);
-        }
-    }
-
-    @Override
-    public void onInitFromOptions(OptionsStorage options) {
-        // TODO Move to applier
-        getComponent();
-        DataInspectorOptions dataInspectorOptions = new DataInspectorOptions(options);
-        DataInspectorFontOptions fontOptions = new DataInspectorFontOptions(options);
-        boolean useDefaultFont = fontOptions.isUseDefaultFont();
-        if (useDefaultFont) {
-            component.setInputFieldsFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
-        } else {
-            Map<TextAttribute, Object> fontAttributes = fontOptions.getFontAttributes();
-            component.setInputFieldsFont(new Font(fontAttributes));
         }
     }
 }

@@ -15,11 +15,6 @@
  */
 package org.exbin.framework.bined.inspector.settings;
 
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.options.settings.api.SettingsOptions;
 import org.exbin.framework.options.api.OptionsStorage;

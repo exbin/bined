@@ -42,7 +42,7 @@ import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinaryMultiEditorProvider;
-import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.launcher.settings.StartupOptions;
@@ -51,6 +51,7 @@ import org.exbin.framework.bined.launcher.settings.StartupSettingsComponent;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
+import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
@@ -130,7 +131,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             if (demoMode) {
                 // Don't use delta mode
-                optionsStorage.put(BinaryEditorOptions.KEY_FILE_HANDLING_MODE, FileHandlingMode.MEMORY.name());
+                optionsStorage.put(BinaryFileProcessingOptions.KEY_FILE_PROCESSING_MODE, FileProcessingMode.MEMORY.name());
             }
 
             LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);

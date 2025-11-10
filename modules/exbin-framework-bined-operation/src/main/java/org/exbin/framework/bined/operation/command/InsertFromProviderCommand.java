@@ -31,7 +31,7 @@ import org.exbin.framework.bined.operation.InsertFromProviderOperation;
  */
 @ParametersAreNonnullByDefault
 public class InsertFromProviderCommand extends CodeAreaCommand {
-    
+
     protected final InsertFromProviderOperation operation;
     protected BinaryDataUndoableOperation undoOperation;
 
@@ -62,5 +62,4 @@ public class InsertFromProviderCommand extends CodeAreaCommand {
         super.dispose();
         operation.dispose();
     }
-    
 }

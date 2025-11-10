@@ -31,11 +31,11 @@ import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsOptionsOverrides;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
-import org.exbin.framework.text.font.service.TextFontService;
 import org.exbin.framework.text.font.settings.TextFontOptions;
 import org.exbin.framework.text.font.settings.gui.TextFontSettingsPanel;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
+import org.exbin.framework.text.font.TextFontState;
 
 /**
  * Data inspector settings panel.
@@ -58,7 +58,7 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
 
     private void init() {
         textFontSettingsPanel = new TextFontSettingsPanel();
-        textFontSettingsPanel.setTextFontService(new TextFontService() {
+        textFontSettingsPanel.setTextFontState(new TextFontState() {
             @Nonnull
             @Override
             public Font getCurrentFont() {
@@ -85,12 +85,12 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         return resourceBundle;
     }
 
-    public void setTextFontService(TextFontService textFontService) {
-        textFontSettingsPanel.setTextFontService(textFontService);
+    public void setTextFontService(TextFontState textFontService) {
+        textFontSettingsPanel.setTextFontState(textFontService);
     }
 
-    public void setFontChangeAction(TextFontSettingsPanel.FontChangeAction fontChangeAction) {
-        textFontSettingsPanel.setFontChangeAction(fontChangeAction);
+    public void setFontSettingsController(TextFontSettingsPanel.Controller controller) {
+        textFontSettingsPanel.setController(controller);
     }
 
     public void setDefaultFont(Font defaultFont) {

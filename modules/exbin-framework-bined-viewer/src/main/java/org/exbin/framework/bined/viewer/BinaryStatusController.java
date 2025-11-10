@@ -22,18 +22,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.viewer.settings.BinaryViewerOptions;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.bined.BinEdEditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinaryStatusApi;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.FileHandlingMode;
+import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.text.encoding.EncodingsHandler;
+import org.exbin.framework.text.encoding.EncodingsManager;
 
 /**
  * Binary status controller.
@@ -44,9 +42,9 @@ import org.exbin.framework.text.encoding.EncodingsHandler;
 public class BinaryStatusController implements BinaryStatusPanel.Controller, BinaryStatusPanel.EncodingsController, BinaryStatusPanel.MemoryModeController {
 
     protected final EditorProvider editorProvider;
-    protected final EncodingsHandler encodingsHandler;
+    protected final EncodingsManager encodingsHandler;
 
-    public BinaryStatusController(EditorProvider editorProvider, EncodingsHandler encodingsHandler) {
+    public BinaryStatusController(EditorProvider editorProvider, EncodingsManager encodingsHandler) {
         this.editorProvider = editorProvider;
         this.encodingsHandler = encodingsHandler;
     }
@@ -92,11 +90,9 @@ public class BinaryStatusController implements BinaryStatusPanel.Controller, Bin
         Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         if (activeFile.isPresent()) {
             BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-            FileHandlingMode fileHandlingMode = fileHandler.getFileHandlingMode();
-            FileHandlingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileHandlingMode.DELTA : FileHandlingMode.MEMORY;
+            FileProcessingMode fileHandlingMode = fileHandler.getFileHandlingMode();
+            FileProcessingMode newHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileProcessingMode.DELTA : FileProcessingMode.MEMORY;
             if (newHandlingMode != fileHandlingMode) {
-                OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-                BinaryViewerOptions optionsStorage = new BinaryViewerOptions(optionsModule.getAppOptions());
                 if (editorProvider.releaseFile(fileHandler)) {
                     fileHandler.switchFileHandlingMode(newHandlingMode);
                     // TODO preferences.getEditorOptions().setFileHandlingMode(newHandlingMode);

@@ -23,8 +23,6 @@ import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.InspectorPanel;
-import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
-import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -74,13 +72,6 @@ public class BinEdInspectorComponentExtension implements BinEdComponentPanel.Bin
         if (inspectorPanel != null) {
             inspectorPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoRedo().orElse(null));
         }
-    }
-
-    @Override
-    public void onInitFromOptions(OptionsStorage options) {
-        DataInspectorOptions dataInspectorPreferences = new DataInspectorOptions(options);
-        setShowParsingPanel(dataInspectorPreferences.isShowParsingPanel());
-        inspectorPanel.onInitFromOptions(options);
     }
 
     @Override

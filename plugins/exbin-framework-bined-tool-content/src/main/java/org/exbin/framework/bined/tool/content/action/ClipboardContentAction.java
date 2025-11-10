@@ -78,9 +78,9 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
         ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
         controlPanel.setHelpLink(new HelpLink(HELP_ID));
         final WindowHandler dialog = windowModule.createDialog(clipboardContentPanel, controlPanel);
-        clipboardContentPanel.setOpenAsTabAction(new AbstractAction() {
+        clipboardContentPanel.setController(new ClipboardContentPanel.Controller() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void openAsTab() {
                 Optional<BinaryData> optContentBinaryData = clipboardContentPanel.getContentBinaryData();
                 if (optContentBinaryData.isPresent()) {
                     BinaryData contentBinaryData = optContentBinaryData.get();
@@ -92,10 +92,9 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
                     }
                 }
             }
-        });
-        clipboardContentPanel.setSaveAsFileAction(new AbstractAction() {
+
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void saveAsFile() {
                 JFileChooser exportFileChooser = new JFileChooser();
                 exportFileChooser.setAcceptAllFileFilterUsed(true);
                 if (exportFileChooser.showSaveDialog(dialog.getWindow()) == JFileChooser.APPROVE_OPTION) {
@@ -121,6 +120,8 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
                 }
             }
         });
+        clipboardContentPanel.setOpenAsTabEnabled(true);
+        clipboardContentPanel.setSaveAsFileEnabled(true);
         BinedModule binedModule = App.getModule(BinedModule.class);
         clipboardContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
 

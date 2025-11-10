@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.bined.viewer.settings.gui.StatusSettingsPanel;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -36,12 +35,6 @@ import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 public class CodeAreaStatusSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "status";
-
-    private BinEdFileManager fileManager;
-
-    public void setFileManager(BinEdFileManager fileManager) {
-        this.fileManager = fileManager;
-    }
 
     @Nonnull
     @Override

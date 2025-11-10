@@ -31,6 +31,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.viewer.BinedViewerChangeMessage;
 
 /**
  * View mode actions.
@@ -77,12 +78,12 @@ public class ViewModeHandlerActions {
 
         public static final String ACTION_ID = "dualViewModeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -91,21 +92,28 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.DUAL);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
-                    putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.VIEW_MODE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
+                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.DUAL);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -114,12 +122,12 @@ public class ViewModeHandlerActions {
 
         public static final String ACTION_ID = "codeMatrixViewModeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -129,21 +137,28 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.CODE_MATRIX);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
-                    putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
-                }
-                setEnabled(hasInstance);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
             });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.VIEW_MODE.equals(changeMessage)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
+                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.CODE_MATRIX);
+            }
+            setEnabled(hasInstance);
         }
     }
 
@@ -152,12 +167,12 @@ public class ViewModeHandlerActions {
 
         public static final String ACTION_ID = "textPreviewViewModeAction";
 
-        private ActionContextChangeRegistration registrar;
         private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
             putValue(ActionConsts.ACTION_RADIO_GROUP, VIEW_MODE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -166,21 +181,33 @@ public class ViewModeHandlerActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(CodeAreaViewMode.TEXT_PREVIEW);
-            registrar.updateActionsForComponent(ContextComponent.class, binaryDataComponent);
         }
 
         @Override
-        public void register(ActionContextChangeRegistration manager) {
-            this.registrar = manager;
-            manager.registerUpdateListener(ContextComponent.class, (instance) -> {
-                binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                boolean hasInstance = instance != null;
-                if (hasInstance) {
-                    CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
-                    putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
+        public void register(ActionContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
+            });
+            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
+                if (BinedViewerChangeMessage.VIEW_MODE.equals(changeMessage)) {
+                    updateByContext(instance);
                 }
-                setEnabled(hasInstance);
             });
         }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                CodeAreaViewMode viewMode = ((ViewModeCapable) binaryDataComponent.getCodeArea()).getViewMode();
+                putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    public static void setViewMode(BinaryDataComponent binaryDataComponent, CodeAreaViewMode viewMode) {
+        ((ViewModeCapable) binaryDataComponent.getCodeArea()).setViewMode(viewMode);
+        // TODO invoke change notification
     }
 }
