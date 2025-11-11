@@ -115,7 +115,7 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         CopyAsTextDataPanel panel = (CopyAsTextDataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

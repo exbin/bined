@@ -24,6 +24,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 
 /**
  * Base 64 data component panel.
@@ -35,7 +36,7 @@ public class Base64DataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(Base64DataPanel.class);
 
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public Base64DataPanel() {
         initComponents();
@@ -183,32 +184,32 @@ public class Base64DataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void basicEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_basicEncoderRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_basicEncoderRadioButtonItemStateChanged
 
     private void basicDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_basicDecoderRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_basicDecoderRadioButtonItemStateChanged
 
     private void mimeEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mimeEncoderRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_mimeEncoderRadioButtonItemStateChanged
 
     private void mimeDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mimeDecoderRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_mimeDecoderRadioButtonItemStateChanged
 
     private void urlEncoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_urlEncoderRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_urlEncoderRadioButtonItemStateChanged
 
     private void urlDecoderRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_urlDecoderRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_urlDecoderRadioButtonItemStateChanged
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -242,8 +243,8 @@ public class Base64DataPanel extends javax.swing.JPanel {
         }
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
     public void initFocus() {
@@ -280,8 +281,4 @@ public class Base64DataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton urlEncoderRadioButton;
     // End of variables declaration//GEN-END:variables
 
-    public interface ResultChangeListener {
-
-        void resultChanged();
-    }
 }

@@ -190,7 +190,7 @@ public class Base64DataMethod implements ConvertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         Base64DataPanel panel = (Base64DataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

@@ -106,7 +106,7 @@ public class PasteFromTextDataMethod implements PasteFromDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         PasteFromTextDataPanel panel = (PasteFromTextDataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel);
         });
         fillPreviewData(panel);

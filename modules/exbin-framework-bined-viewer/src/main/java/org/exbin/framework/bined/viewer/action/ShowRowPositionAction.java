@@ -71,6 +71,5 @@ public class ShowRowPositionAction extends AbstractAction {
         SectionCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
         layoutProfile.setShowRowPosition(!layoutProfile.isShowRowPosition());
         ((LayoutProfileCapable) codeArea).setLayoutProfile(layoutProfile);
-        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
     }
 }

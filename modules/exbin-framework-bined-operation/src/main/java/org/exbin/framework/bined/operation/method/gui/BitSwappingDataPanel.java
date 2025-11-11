@@ -26,6 +26,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
 import org.exbin.framework.utils.WindowUtils;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 
 /**
  * Fill simple data component panel.
@@ -37,7 +38,7 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BitSwappingDataPanel.class);
 
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public BitSwappingDataPanel() {
         initComponents();
@@ -129,12 +130,12 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void operationTypeListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_operationTypeListValueChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_operationTypeListValueChanged
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -148,8 +149,8 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
         operationTypeList.setSelectedIndex(operationType.ordinal());
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
     public void initFocus() {
@@ -180,9 +181,4 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JPanel typePanel;
     // End of variables declaration//GEN-END:variables
-
-    public interface ResultChangeListener {
-
-        void resultChanged();
-    }
 }

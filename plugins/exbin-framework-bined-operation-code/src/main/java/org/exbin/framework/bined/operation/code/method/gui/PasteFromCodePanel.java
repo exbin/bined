@@ -31,6 +31,7 @@ import javax.swing.event.DocumentListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.code.CodeImportFormat;
 
@@ -44,7 +45,7 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
     private final List<CodeImportFormat> importFormats = new ArrayList<>();
 
     private BinaryData parsedData;
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
     private String errorText = "";
 
     public PasteFromCodePanel() {
@@ -63,31 +64,31 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
 
         // Add listener to format combo box
         formatComboBox.addActionListener(e -> {
-            resultChanged();
+            paramChanged();
         });
 
         // Add listener to auto-detect checkbox
         autoDetectCheckBox.addActionListener(e -> {
             boolean autoDetect = autoDetectCheckBox.isSelected();
             formatComboBox.setEnabled(!autoDetect);
-            resultChanged();
+            paramChanged();
         });
 
         // Add listener to code text area
         codeTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                resultChanged();
+                paramChanged();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                resultChanged();
+                paramChanged();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                resultChanged();
+                paramChanged();
             }
         });
     }
@@ -147,14 +148,14 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         return null;
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
-    private void resultChanged() {
+    private void paramChanged() {
         updateBinaryPreview();
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -268,9 +269,4 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> formatComboBox;
     private javax.swing.JCheckBox autoDetectCheckBox;
     // End of variables declaration
-
-    public interface ResultChangeListener {
-
-        void resultChanged();
-    }
 }

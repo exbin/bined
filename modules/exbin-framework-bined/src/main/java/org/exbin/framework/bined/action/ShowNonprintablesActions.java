@@ -102,7 +102,6 @@ public class ShowNonprintablesActions {
                 nonprintablesCodeAreaAssessor.setShowNonprintables(!showNonprintables);
                 codeArea.repaint();
             }
-            // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
         }
 
         @Override

@@ -96,7 +96,7 @@ public class PasteFromCodeDataMethod implements PasteFromDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         PasteFromCodePanel panel = (PasteFromCodePanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel);
         });
         fillPreviewData(panel);

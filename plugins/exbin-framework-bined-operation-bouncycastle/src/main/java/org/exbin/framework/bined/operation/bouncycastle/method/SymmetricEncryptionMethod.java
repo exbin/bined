@@ -219,7 +219,7 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         EncryptionPanel panel = (EncryptionPanel) component;
-        panel.setConfigChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

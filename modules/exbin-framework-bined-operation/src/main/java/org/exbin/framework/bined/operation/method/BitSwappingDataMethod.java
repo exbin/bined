@@ -176,7 +176,7 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         BitSwappingDataPanel panel = (BitSwappingDataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

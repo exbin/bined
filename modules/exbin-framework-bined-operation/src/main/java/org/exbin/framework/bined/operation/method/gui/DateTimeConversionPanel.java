@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.bined.operation.method.DateTimeConversionMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
@@ -28,7 +29,7 @@ public class DateTimeConversionPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DateTimeConversionPanel.class);
 
-    private ConfigChangeListener configChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public DateTimeConversionPanel() {
         initComponents();
@@ -144,19 +145,19 @@ public class DateTimeConversionPanel extends javax.swing.JPanel {
 
     private void byteOrderComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_byteOrderComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_byteOrderComboBoxItemStateChanged
 
     private void dataSizeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_dataSizeComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_dataSizeComboBoxItemStateChanged
 
     private void timeUnitComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_timeUnitComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_timeUnitComboBoxItemStateChanged
 
@@ -191,18 +192,13 @@ public class DateTimeConversionPanel extends javax.swing.JPanel {
         return new DateTimeConversionMethod.ConversionConfig(byteOrder, dataSize, timeUnit);
     }
 
-    public void setConfigChangeListener(ConfigChangeListener listener) {
-        this.configChangeListener = listener;
+    public void setParamChangeListener(ParamChangeListener listener) {
+        this.paramChangeListener = listener;
     }
 
-    private void fireConfigChanged() {
-        if (configChangeListener != null) {
-            configChangeListener.configChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface ConfigChangeListener {
-        void configChanged();
     }
 }

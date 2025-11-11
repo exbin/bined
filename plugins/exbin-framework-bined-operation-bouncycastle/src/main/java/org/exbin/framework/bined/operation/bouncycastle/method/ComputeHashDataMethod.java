@@ -228,7 +228,7 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

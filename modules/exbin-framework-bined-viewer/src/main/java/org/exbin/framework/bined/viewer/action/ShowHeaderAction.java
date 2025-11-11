@@ -71,6 +71,5 @@ public class ShowHeaderAction extends AbstractAction {
         SectionCodeAreaLayoutProfile layoutProfile = ((LayoutProfileCapable) codeArea).getLayoutProfile();
         layoutProfile.setShowHeader(!layoutProfile.isShowHeader());
         ((LayoutProfileCapable) codeArea).setLayoutProfile(layoutProfile);
-        // TODO App.getModule(ActionModuleApi.class).updateActionsForComponent(ContextComponent.class, codeArea);
     }
 }

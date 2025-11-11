@@ -303,7 +303,7 @@ public class CompressionDataMethod implements ConvertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         CompressionDataPanel panel = (CompressionDataPanel) component;
-        panel.setConfigChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

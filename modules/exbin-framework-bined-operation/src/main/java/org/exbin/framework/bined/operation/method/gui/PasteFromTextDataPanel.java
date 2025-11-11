@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeType;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
 import org.exbin.framework.utils.UtilsModule;
@@ -35,7 +36,7 @@ public class PasteFromTextDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle;
 
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public PasteFromTextDataPanel() {
         this(App.getModule(LanguageModuleApi.class).getBundle(PasteFromTextDataPanel.class));
@@ -112,16 +113,16 @@ public class PasteFromTextDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void codeTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codeTypeComboBoxItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_codeTypeComboBoxItemStateChanged
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -144,10 +145,5 @@ public class PasteFromTextDataPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void initFocus() {
-    }
-
-    public interface ResultChangeListener {
-
-        void resultChanged();
     }
 }

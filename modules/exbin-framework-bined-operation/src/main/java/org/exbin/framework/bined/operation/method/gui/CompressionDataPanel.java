@@ -21,14 +21,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.operation.method.CompressionDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 
-
+/**
+ * Compression data panel.
+ */
 @ParametersAreNonnullByDefault
 public class CompressionDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CompressionDataPanel.class);
 
-    private ConfigChangeListener configChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public CompressionDataPanel() {
         initComponents();
@@ -211,24 +214,24 @@ public class CompressionDataPanel extends javax.swing.JPanel {
 
     private void compressRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_compressRadioButtonItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_compressRadioButtonItemStateChanged
 
     private void decompressRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_decompressRadioButtonItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_decompressRadioButtonItemStateChanged
 
     private void algorithmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_algorithmComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_algorithmComboBoxItemStateChanged
 
     private void autoDetectCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_autoDetectCheckBoxItemStateChanged
-        fireConfigChanged();
+        paramChanged();
     }//GEN-LAST:event_autoDetectCheckBoxItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -290,7 +293,7 @@ public class CompressionDataPanel extends javax.swing.JPanel {
         }
     }
 
-    private String formatSize(long bytes) {
+    private static String formatSize(long bytes) {
         if (bytes < 1024) {
             return bytes + " bytes";
         } else if (bytes < 1024 * 1024) {
@@ -302,18 +305,13 @@ public class CompressionDataPanel extends javax.swing.JPanel {
         }
     }
 
-    public void setConfigChangeListener(ConfigChangeListener listener) {
-        this.configChangeListener = listener;
+    public void setParamChangeListener(ParamChangeListener listener) {
+        this.paramChangeListener = listener;
     }
 
-    private void fireConfigChanged() {
-        if (configChangeListener != null) {
-            configChangeListener.configChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface ConfigChangeListener {
-        void configChanged();
     }
 }

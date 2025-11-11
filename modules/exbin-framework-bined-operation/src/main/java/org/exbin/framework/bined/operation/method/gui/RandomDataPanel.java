@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.bined.operation.method.RandomDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -36,7 +37,7 @@ public class RandomDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(RandomDataPanel.class);
 
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public RandomDataPanel() {
         initComponents();
@@ -150,28 +151,28 @@ public class RandomDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lengthBaseSwitchableSpinnerPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lengthBaseSwitchableSpinnerPanelStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_lengthBaseSwitchableSpinnerPanelStateChanged
 
     private void fullBytesRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fullBytesRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_fullBytesRadioButtonItemStateChanged
 
     private void lowerHalfRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_lowerHalfRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_lowerHalfRadioButtonItemStateChanged
 
     private void alphabetOnlyRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_alphabetOnlyRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_alphabetOnlyRadioButtonItemStateChanged
 
     private void numberDigitsRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_numberDigitsRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_numberDigitsRadioButtonItemStateChanged
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -219,8 +220,8 @@ public class RandomDataPanel extends javax.swing.JPanel {
         lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
     public void initFocus() {
@@ -255,8 +256,4 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private javax.swing.JLabel randomDataLabel;
     // End of variables declaration//GEN-END:variables
 
-    public interface ResultChangeListener {
-
-        void resultChanged();
-    }
 }

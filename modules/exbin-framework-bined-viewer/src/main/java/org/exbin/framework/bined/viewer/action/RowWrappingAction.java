@@ -63,6 +63,5 @@ public class RowWrappingAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
 // TODO        boolean lineWraping = ((BinEdEditorProvider) editorProvider).changeLineWrap();
 //        putValue(Action.SELECTED_KEY, lineWraping);
-//        App.getModule(ActionModuleApi.class).updateActionsForComponent(codeArea);
     }
 }

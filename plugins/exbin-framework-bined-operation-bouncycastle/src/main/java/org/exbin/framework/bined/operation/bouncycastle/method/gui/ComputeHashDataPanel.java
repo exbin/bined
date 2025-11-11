@@ -24,6 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.bined.operation.bouncycastle.method.ComputeHashDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -40,8 +41,7 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ComputeHashDataPanel.class);
 
-    private Controller controller;
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
     private HashTypeChangeListener hashTypeChangeListener = null;
 
     public ComputeHashDataPanel() {
@@ -61,10 +61,6 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     /**
@@ -133,17 +129,17 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void hashTypeListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_hashTypeListValueChanged
-        resultChanged();
+        paramChanged();
         hashTypeChanged();
     }//GEN-LAST:event_hashTypeListValueChanged
 
     private void hashBitSizeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hashBitSizeComboBoxItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_hashBitSizeComboBoxItemStateChanged
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -185,8 +181,8 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
         }
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
     public void setHashTypeChangeListener(HashTypeChangeListener hashTypeChangeListener) {
@@ -221,15 +217,6 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane hashTypeScrollPane;
     // End of variables declaration//GEN-END:variables
 
-    public interface Controller {
-
-    }
-
-    public interface ResultChangeListener {
-
-        void resultChanged();
-    }
-    
     public interface HashTypeChangeListener {
 
         void hashTypeChanged();

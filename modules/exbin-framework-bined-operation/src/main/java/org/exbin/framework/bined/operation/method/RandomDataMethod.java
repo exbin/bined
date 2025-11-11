@@ -120,7 +120,7 @@ public class RandomDataMethod implements InsertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         RandomDataPanel panel = (RandomDataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel);
         });
         fillPreviewData(panel);

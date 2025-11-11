@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.bined.operation.bouncycastle.method.SymmetricEncryptionMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
@@ -31,7 +32,7 @@ public class EncryptionPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EncryptionPanel.class);
 
-    private ConfigChangeListener configChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public EncryptionPanel() {
         initComponents();
@@ -169,24 +170,24 @@ public class EncryptionPanel extends javax.swing.JPanel {
 
     private void encryptRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_encryptRadioButtonItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_encryptRadioButtonItemStateChanged
 
     private void decryptRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_decryptRadioButtonItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_decryptRadioButtonItemStateChanged
 
     private void algorithmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_algorithmComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            fireConfigChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_algorithmComboBoxItemStateChanged
 
     private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyReleased
-        fireConfigChanged();
+        paramChanged();
     }//GEN-LAST:event_passwordFieldKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -225,18 +226,13 @@ public class EncryptionPanel extends javax.swing.JPanel {
         return passwordField.getPassword();
     }
 
-    public void setConfigChangeListener(ConfigChangeListener listener) {
-        this.configChangeListener = listener;
+    public void setParamChangeListener(ParamChangeListener listener) {
+        this.paramChangeListener = listener;
     }
 
-    private void fireConfigChanged() {
-        if (configChangeListener != null) {
-            configChangeListener.configChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
-    }
-
-    public interface ConfigChangeListener {
-
-        void configChanged();
     }
 }

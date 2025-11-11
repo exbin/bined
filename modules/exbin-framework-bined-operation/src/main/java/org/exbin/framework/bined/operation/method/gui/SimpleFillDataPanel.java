@@ -21,6 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.bined.operation.method.SimpleFillDataMethod;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.utils.TestApplication;
@@ -39,7 +40,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
 
     private Controller controller;
     private EditableBinaryData sampleBinaryData;
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public SimpleFillDataPanel() {
         initComponents();
@@ -163,29 +164,29 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private void sampleDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleDataButtonActionPerformed
         if (controller != null) {
             controller.sampleDataAction();
-            resultChanged();
+            paramChanged();
         }
     }//GEN-LAST:event_sampleDataButtonActionPerformed
 
     private void emptyRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_emptyRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_emptyRadioButtonItemStateChanged
 
     private void spaceRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_spaceRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_spaceRadioButtonItemStateChanged
 
     private void sampleRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sampleRadioButtonItemStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_sampleRadioButtonItemStateChanged
 
     private void lengthBaseSwitchableSpinnerPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_lengthBaseSwitchableSpinnerPanelStateChanged
-        resultChanged();
+        paramChanged();
     }//GEN-LAST:event_lengthBaseSwitchableSpinnerPanelStateChanged
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -227,8 +228,8 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
         lengthBaseSwitchableSpinnerPanel.setValue(dataLength);
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
     public void initFocus() {
@@ -275,10 +276,5 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     public interface Controller {
 
         void sampleDataAction();
-    }
-
-    public interface ResultChangeListener {
-
-        void resultChanged();
     }
 }

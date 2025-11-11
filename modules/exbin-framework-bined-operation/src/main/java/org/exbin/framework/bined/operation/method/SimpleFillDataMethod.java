@@ -177,7 +177,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         SimpleFillDataPanel panel = (SimpleFillDataPanel) component;
-        panel.setResultChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel);
         });
         fillPreviewData(panel);

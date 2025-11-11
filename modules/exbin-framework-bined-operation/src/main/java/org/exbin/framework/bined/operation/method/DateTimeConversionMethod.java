@@ -242,7 +242,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
         this.previewDataHandler = previewDataHandler;
         this.previewLengthLimit = lengthLimit;
         DateTimeConversionPanel panel = (DateTimeConversionPanel) component;
-        panel.setConfigChangeListener(() -> {
+        panel.setParamChangeListener(() -> {
             fillPreviewData(panel, codeArea);
         });
         fillPreviewData(panel, codeArea);

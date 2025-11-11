@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.code.CodeExportFormat;
 import org.exbin.framework.bined.operation.code.CodeExportOptions;
@@ -37,7 +38,7 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
     private final List<CodeExportFormat> exportFormats = new ArrayList<>();
     private final CodeExportOptions currentOptions = new CodeExportOptions();
 
-    private ResultChangeListener resultChangeListener = null;
+    private ParamChangeListener paramChangeListener = null;
 
     public CopyAsCodePanel() {
         initComponents();
@@ -48,28 +49,28 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         // Add listener to format combo box
         formatComboBox.addActionListener(e -> {
             updateOptionsFromFormat();
-            resultChanged();
+            paramChanged();
         });
 
         // Add listeners to option controls
         uppercaseCheckBox.addActionListener(e -> {
             currentOptions.setUppercaseHex(uppercaseCheckBox.isSelected());
-            resultChanged();
+            paramChanged();
         });
 
         lineBreaksCheckBox.addActionListener(e -> {
             currentOptions.setIncludeLineBreaks(lineBreaksCheckBox.isSelected());
-            resultChanged();
+            paramChanged();
         });
 
         variableDeclCheckBox.addActionListener(e -> {
             currentOptions.setIncludeVariableDeclaration(variableDeclCheckBox.isSelected());
-            resultChanged();
+            paramChanged();
         });
 
         bytesPerLineSpinner.addChangeListener(e -> {
             currentOptions.setBytesPerLine((Integer) bytesPerLineSpinner.getValue());
-            resultChanged();
+            paramChanged();
         });
     }
 
@@ -110,13 +111,13 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         return currentOptions;
     }
 
-    public void setResultChangeListener(ResultChangeListener resultChangeListener) {
-        this.resultChangeListener = resultChangeListener;
+    public void setParamChangeListener(ParamChangeListener paramChangeListener) {
+        this.paramChangeListener = paramChangeListener;
     }
 
-    private void resultChanged() {
-        if (resultChangeListener != null) {
-            resultChangeListener.resultChanged();
+    private void paramChanged() {
+        if (paramChangeListener != null) {
+            paramChangeListener.paramChanged();
         }
     }
 
@@ -223,9 +224,4 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
     private javax.swing.JLabel bytesPerLineLabel;
     private javax.swing.JSpinner bytesPerLineSpinner;
     // End of variables declaration
-
-    public interface ResultChangeListener {
-
-        void resultChanged();
-    }
 }
