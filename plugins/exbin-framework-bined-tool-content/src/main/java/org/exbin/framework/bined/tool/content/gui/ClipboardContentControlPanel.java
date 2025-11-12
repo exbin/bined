@@ -25,10 +25,7 @@ import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpLinkable;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.utils.UiUtils;
-import org.exbin.framework.utils.UtilsModule;
 
 /**
  * Clipboard content control panel.
@@ -166,19 +163,6 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
     @Override
     public void invokeCancelEvent() {
         performClick(ClipboardContentControlController.ControlActionType.CLOSE);
-    }
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new ClipboardContentControlPanel());
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

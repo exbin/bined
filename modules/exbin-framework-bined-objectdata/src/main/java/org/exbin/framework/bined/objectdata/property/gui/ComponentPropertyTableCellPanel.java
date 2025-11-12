@@ -26,8 +26,6 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicBorders;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Empty property column panel with operation button.
@@ -101,15 +99,6 @@ public class ComponentPropertyTableCellPanel extends javax.swing.JPanel {
         editorButton.setName("editorButton"); // NOI18N
         add(editorButton, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new ComponentPropertyTableCellPanel()));
-    }
 
     @Nonnull
     public static JLabel createEmptyCellComponent() {

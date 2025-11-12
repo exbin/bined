@@ -597,19 +597,6 @@ public class EditSelectionPanel extends javax.swing.JPanel {
         updateEndTargetPosition();
     }
 
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new EditSelectionPanel());
-        });
-    }
-
     public void acceptInput() {
         startPositionBaseSwitchableSpinnerPanel.acceptInput();
         endPositionBaseSwitchableSpinnerPanel.acceptInput();

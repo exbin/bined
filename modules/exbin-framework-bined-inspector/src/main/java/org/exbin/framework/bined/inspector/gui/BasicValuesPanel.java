@@ -40,7 +40,6 @@ import org.exbin.bined.operation.swing.command.CodeAreaCompoundCommand;
 import org.exbin.bined.operation.swing.command.InsertDataCommand;
 import org.exbin.bined.operation.swing.command.ModifyDataCommand;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
@@ -48,8 +47,6 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.BasicValuesPositionColorModifier;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
 import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
@@ -690,19 +687,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
     private void unsignedRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_unsignedRadioButtonItemStateChanged
         updateValues();
     }//GEN-LAST:event_unsignedRadioButtonItemStateChanged
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new BasicValuesPanel());
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton bigEndianRadioButton;

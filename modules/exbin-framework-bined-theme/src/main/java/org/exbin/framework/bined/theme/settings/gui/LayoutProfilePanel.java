@@ -363,19 +363,6 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
         codeArea.setLayoutProfile(layoutProfile);
     }
 
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new LayoutProfilePanel());
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel doubleSpaceGroupSizeLabel;
     private javax.swing.JSpinner doubleSpaceGroupSizeSpinner;

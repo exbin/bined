@@ -27,9 +27,6 @@ import org.exbin.bined.swing.section.layout.SectionCodeAreaDecorations;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Theme profile panel.
@@ -277,19 +274,6 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
     private void updateThemeProfile(SectionCodeAreaThemeProfile themeProfile) {
         SectCodeArea codeArea = previewPanel.getCodeArea();
         codeArea.setThemeProfile(themeProfile);
-    }
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new ThemeProfilePanel());
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

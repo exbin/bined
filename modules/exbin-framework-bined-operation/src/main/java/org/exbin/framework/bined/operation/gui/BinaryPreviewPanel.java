@@ -30,10 +30,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
 
 /**
  * Binary data preview panel.
@@ -157,20 +154,6 @@ public class BinaryPreviewPanel extends javax.swing.JPanel {
 
     public void initFocus() {
         // TODO
-    }
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            testApplication.addModule(BinedModule.MODULE_ID, new BinedModule());
-            WindowUtils.invokeWindow(new BinaryPreviewPanel());
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

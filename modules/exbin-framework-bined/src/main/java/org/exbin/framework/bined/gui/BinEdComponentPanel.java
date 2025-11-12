@@ -29,8 +29,6 @@ import org.exbin.bined.operation.command.EmptyBinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.bined.BinEdCodeAreaAssessor;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.WindowUtils;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
@@ -127,15 +125,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         setName("Form"); // NOI18N
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new BinEdComponentPanel()));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -34,9 +34,6 @@ import org.exbin.framework.bined.theme.settings.gui.PreviewPanel;
 import org.exbin.framework.bined.theme.settings.gui.PreviewPanel.PreviewType;
 import org.exbin.framework.bined.theme.settings.gui.ProfileListPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Manage list of theme profiles panel.
@@ -398,19 +395,6 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     private void wasModified() {
         modified = true;
         updateStates();
-    }
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new ThemeProfilesPanel());
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

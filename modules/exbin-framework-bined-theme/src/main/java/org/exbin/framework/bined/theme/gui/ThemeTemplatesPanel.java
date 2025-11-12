@@ -34,9 +34,6 @@ import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import org.exbin.framework.bined.theme.settings.gui.PreviewPanel;
 import org.exbin.framework.bined.theme.settings.gui.ProfileListPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.WindowUtils;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
 
 /**
  * Manage list of theme templates panel.
@@ -144,19 +141,6 @@ public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileLi
 
     public void addProfilesListListener(ListDataListener listener) {
         getProfilesListModel().addListDataListener(listener);
-    }
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new ThemeTemplatesPanel());
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -19,9 +19,6 @@ import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Pixel map side panel.
@@ -30,7 +27,7 @@ import org.exbin.framework.utils.WindowUtils;
  */
 @ParametersAreNonnullByDefault
 public class PixelMapPanel extends javax.swing.JPanel {
-    
+
     protected JScrollPane scrollPane;
     protected PixelMapComponent component;
 
@@ -38,17 +35,17 @@ public class PixelMapPanel extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    
+
     private void init() {
         component = new PixelMapComponent();
         scrollPane = new JScrollPane(component);
         add(scrollPane, BorderLayout.CENTER);
     }
-    
+
     public void setCodeArea(CodeAreaCore codeArea) {
         component.setCodeArea(codeArea);
     }
-    
+
     public void dataChanged() {
         component.dataChanged();
     }
@@ -64,19 +61,6 @@ public class PixelMapPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new PixelMapPanel());
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -36,8 +36,6 @@ import org.exbin.framework.bined.objectdata.property.gui.PropertyTableCellRender
 import org.exbin.framework.bined.objectdata.property.gui.PropertyTableItem;
 import org.exbin.framework.bined.objectdata.property.gui.PropertyTableModel;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Panel for table with values for binary data inspection.
@@ -211,17 +209,6 @@ public class ValuesTablePanel extends javax.swing.JPanel {
             controller.performSettings();
         }
     }//GEN-LAST:event_configureButtonActionPerformed
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication.run(() -> {
-            WindowUtils.invokeWindow(new ValuesTablePanel());
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton configureButton;

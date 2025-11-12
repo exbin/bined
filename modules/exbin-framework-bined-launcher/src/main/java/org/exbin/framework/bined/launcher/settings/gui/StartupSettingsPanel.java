@@ -28,9 +28,6 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Startup settings panel.
@@ -175,19 +172,6 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     private void reopenSessionRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reopenSessionRadioButtonActionPerformed
         notifyModified();
     }//GEN-LAST:event_reopenSessionRadioButtonActionPerformed
-
-    /**
-     * Test method for this panel.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TestApplication testApplication = UtilsModule.createTestApplication();
-        testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.framework.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.framework.language.api.utils.TestLanguageModule());
-            WindowUtils.invokeWindow(new StartupSettingsPanel());
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton newFileRadioButton;
