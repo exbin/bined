@@ -182,7 +182,7 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
 
     private void notifyModified() {
         if (settingsModifiedListener != null) {
-            settingsModifiedListener.wasModified();
+            settingsModifiedListener.notifyModified();
         }
     }
 

@@ -334,7 +334,7 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
 
     private void notifyModified() {
         if (settingsModifiedListener != null) {
-            settingsModifiedListener.wasModified();
+            settingsModifiedListener.notifyModified();
         }
     }
 

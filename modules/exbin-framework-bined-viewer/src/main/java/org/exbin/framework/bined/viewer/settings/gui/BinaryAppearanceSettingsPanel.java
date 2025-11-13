@@ -101,7 +101,7 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
 
     private void notifyModified() {
         if (settingsModifiedListener != null) {
-            settingsModifiedListener.wasModified();
+            settingsModifiedListener.notifyModified();
         }
     }
 
