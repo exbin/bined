@@ -15,11 +15,8 @@
  */
 package org.exbin.framework.bined.theme.gui;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 import org.exbin.framework.utils.TestApplication;
+import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.utils.WindowUtils;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,14 +31,6 @@ public class SelectableColorTest {
     public void testPanel() {
         TestApplication.run(() -> WindowUtils.invokeWindow(new SelectableColor("")));
 
-        Thread[] uiThread = new Thread[1];
-        try {
-            SwingUtilities.invokeAndWait(() -> {
-                uiThread[0] = Thread.currentThread();
-            });
-            uiThread[0].join();
-        } catch (InterruptedException | InvocationTargetException ex) {
-            Logger.getLogger(SelectableColorTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        UiUtils.waitForUiThread();
     }
 }
