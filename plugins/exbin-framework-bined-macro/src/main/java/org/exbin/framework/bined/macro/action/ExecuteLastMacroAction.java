@@ -32,9 +32,9 @@ import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.macro.MacroManager;
-import org.exbin.framework.bined.macro.MacroStateChangeMessage;
+import org.exbin.framework.bined.macro.MacroStateChangeType;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
-import org.exbin.framework.context.api.StateChangeMessage;
+import org.exbin.framework.context.api.StateChangeType;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -67,8 +67,8 @@ public class ExecuteLastMacroAction extends AbstractAction {
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                     updateByContext(instance);
                 });
-                registrar.registerContextMessageListener(ContextComponent.class, (ContextComponent instance, StateChangeMessage changeMessage) -> {
-                    if (MacroStateChangeMessage.LAST_MACRO.equals(changeMessage)) {
+                registrar.registerContextMessageListener(ContextComponent.class, (ContextComponent instance, StateChangeType changeType) -> {
+                    if (MacroStateChangeType.LAST_MACRO.equals(changeType)) {
                         updateByContext(instance);
                     }
                 });

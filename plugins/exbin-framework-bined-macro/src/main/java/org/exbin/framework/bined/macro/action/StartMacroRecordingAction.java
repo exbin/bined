@@ -29,7 +29,7 @@ import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.macro.MacroManager;
-import org.exbin.framework.bined.macro.MacroStateChangeMessage;
+import org.exbin.framework.bined.macro.MacroStateChangeType;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 
 /**
@@ -59,7 +59,7 @@ public class StartMacroRecordingAction extends AbstractAction {
                     updateByContext(instance);
                 });
                 registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                    if (MacroStateChangeMessage.MACRO_RECORDING.equals(changeMessage)) {
+                    if (MacroStateChangeType.MACRO_RECORDING.equals(changeMessage)) {
                         updateByContext(instance);
                     }
                 });

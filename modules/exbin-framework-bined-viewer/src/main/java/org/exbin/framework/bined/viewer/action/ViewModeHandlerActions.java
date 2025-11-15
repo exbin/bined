@@ -31,7 +31,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.viewer.BinedViewerChangeMessage;
+import org.exbin.framework.bined.viewer.BinedViewerChangeType;
 
 /**
  * View mode actions.
@@ -100,7 +100,7 @@ public class ViewModeHandlerActions {
                 updateByContext(instance);
             });
             registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeMessage.VIEW_MODE.equals(changeMessage)) {
+                if (BinedViewerChangeType.VIEW_MODE.equals(changeMessage)) {
                     updateByContext(instance);
                 }
             });
@@ -145,7 +145,7 @@ public class ViewModeHandlerActions {
                 updateByContext(instance);
             });
             registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeMessage.VIEW_MODE.equals(changeMessage)) {
+                if (BinedViewerChangeType.VIEW_MODE.equals(changeMessage)) {
                     updateByContext(instance);
                 }
             });
@@ -189,7 +189,7 @@ public class ViewModeHandlerActions {
                 updateByContext(instance);
             });
             registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeMessage.VIEW_MODE.equals(changeMessage)) {
+                if (BinedViewerChangeType.VIEW_MODE.equals(changeMessage)) {
                     updateByContext(instance);
                 }
             });

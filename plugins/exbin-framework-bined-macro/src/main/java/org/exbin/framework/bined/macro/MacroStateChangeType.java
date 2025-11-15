@@ -15,14 +15,14 @@
  */
 package org.exbin.framework.bined.macro;
 
-import org.exbin.framework.context.api.StateChangeMessage;
+import org.exbin.framework.context.api.StateChangeType;
 
 /**
- * Macro state context message.
+ * Macro state context change type.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public enum MacroStateChangeMessage implements StateChangeMessage {
+public enum MacroStateChangeType implements StateChangeType {
     MACRO_RECORDING,
     LAST_MACRO
 }

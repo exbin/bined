@@ -15,14 +15,14 @@
  */
 package org.exbin.framework.bined.viewer;
 
-import org.exbin.framework.context.api.StateChangeMessage;
+import org.exbin.framework.context.api.StateChangeType;
 
 /**
- * Binary data viewer change message types.
+ * Binary data viewer change types.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public enum BinedViewerChangeMessage implements StateChangeMessage {
+public enum BinedViewerChangeType implements StateChangeType {
     CODE_TYPE,
     VIEW_MODE,
     FONT,

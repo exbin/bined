@@ -31,7 +31,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.viewer.BinedViewerChangeMessage;
+import org.exbin.framework.bined.viewer.BinedViewerChangeType;
 
 /**
  * Position code type actions.
@@ -100,7 +100,7 @@ public class PositionCodeTypeActions {
                 updateByContext(instance);
             });
             registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
                     updateByContext(instance);
                 }
             });
@@ -144,7 +144,7 @@ public class PositionCodeTypeActions {
                 updateByContext(instance);
             });
             registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
                     updateByContext(instance);
                 }
             });
@@ -188,7 +188,7 @@ public class PositionCodeTypeActions {
                 updateByContext(instance);
             });
             registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeMessage.CODE_TYPE.equals(changeMessage)) {
+                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
                     updateByContext(instance);
                 }
             });
