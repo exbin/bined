@@ -67,7 +67,7 @@ public class ExecuteLastMacroAction extends AbstractAction {
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                     updateByContext(instance);
                 });
-                registrar.registerContextMessageListener(ContextComponent.class, (ContextComponent instance, StateChangeType changeType) -> {
+                registrar.registerStateChangeListener(ContextComponent.class, (ContextComponent instance, StateChangeType changeType) -> {
                     if (MacroStateChangeType.LAST_MACRO.equals(changeType)) {
                         updateByContext(instance);
                     }

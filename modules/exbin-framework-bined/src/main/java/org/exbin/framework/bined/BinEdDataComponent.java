@@ -19,14 +19,19 @@ import java.awt.Font;
 import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
+import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.capability.CharsetCapable;
+import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.capability.CodeTypeCapable;
+import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
 import org.exbin.framework.text.font.TextFontState;
 
@@ -38,8 +43,9 @@ import org.exbin.framework.text.font.TextFontState;
 @ParametersAreNonnullByDefault
 public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, TextFontState {
 
-    private final CodeAreaCore codeArea;
-    private Font defaultFont;
+    protected final CodeAreaCore codeArea;
+    protected Font defaultFont;
+    protected ActiveContextProvider contextProvider;
 
     public BinEdDataComponent(CodeAreaCore codeArea) {
         this.codeArea = codeArea;
@@ -50,6 +56,10 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public CodeAreaCore getCodeArea() {
         return codeArea;
+    }
+
+    public void setContextProvider(ActiveContextProvider contextProvider) {
+        this.contextProvider = contextProvider;
     }
 
     @Override
@@ -138,5 +148,47 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCurrentFont(Font font) {
         ((FontCapable) codeArea).setCodeFont(font);
+    }
+
+    @Nonnull
+    @Override
+    public CodeType getCodeType() {
+        return ((CodeTypeCapable) codeArea).getCodeType();
+    }
+
+    @Override
+    public void setCodeType(CodeType codeType) {
+        ((CodeTypeCapable) codeArea).setCodeType(codeType);
+        if (contextProvider != null) {
+            contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.CODE_TYPE);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public PositionCodeType getPositionCodeType() {
+        return ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
+    }
+
+    @Override
+    public void setPositionCodeType(PositionCodeType positionCodeType) {
+        ((PositionCodeTypeCapable) codeArea).setPositionCodeType(positionCodeType);
+        if (contextProvider != null) {
+            contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.POSITION_CODE_TYPE);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public CodeCharactersCase getCodeCharactersCase() {
+        return ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+    }
+
+    @Override
+    public void setCodeCharactersCase(CodeCharactersCase codeCharactersCase) {
+        ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeCharactersCase);
+        if (contextProvider != null) {
+            contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.HEX_CHARACTERS_CASE);
+        }
     }
 }

@@ -23,7 +23,6 @@ import org.exbin.framework.context.api.StateChangeType;
  * @author ExBin Project (https://exbin.org)
  */
 public enum BinedViewerChangeType implements StateChangeType {
-    CODE_TYPE,
     VIEW_MODE,
     FONT,
     ENCODING

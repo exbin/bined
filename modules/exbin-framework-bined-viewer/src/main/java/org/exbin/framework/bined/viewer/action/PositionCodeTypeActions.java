@@ -22,7 +22,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
@@ -31,7 +30,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.viewer.BinedViewerChangeType;
+import org.exbin.framework.bined.CodeTypeState;
 
 /**
  * Position code type actions.
@@ -99,8 +98,8 @@ public class PositionCodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -110,7 +109,7 @@ public class PositionCodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                PositionCodeType positionCodeType = ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).getPositionCodeType();
+                PositionCodeType positionCodeType = binaryDataComponent.getPositionCodeType();
                 putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.OCTAL);
             }
             setEnabled(hasInstance);
@@ -143,8 +142,8 @@ public class PositionCodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -154,7 +153,7 @@ public class PositionCodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                PositionCodeType positionCodeType = ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).getPositionCodeType();
+                PositionCodeType positionCodeType = binaryDataComponent.getPositionCodeType();
                 putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.DECIMAL);
             }
             setEnabled(hasInstance);
@@ -187,8 +186,8 @@ public class PositionCodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -198,7 +197,7 @@ public class PositionCodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                PositionCodeType positionCodeType = ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).getPositionCodeType();
+                PositionCodeType positionCodeType = binaryDataComponent.getPositionCodeType();
                 putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.HEXADECIMAL);
             }
             setEnabled(hasInstance);
@@ -206,7 +205,6 @@ public class PositionCodeTypeActions {
     }
 
     public static void setPositionCodeType(BinaryDataComponent binaryDataComponent, PositionCodeType positionCodeType) {
-        ((PositionCodeTypeCapable) binaryDataComponent.getCodeArea()).setPositionCodeType(positionCodeType);
-        // TODO invoke change notification
+        binaryDataComponent.setPositionCodeType(positionCodeType);
     }
 }

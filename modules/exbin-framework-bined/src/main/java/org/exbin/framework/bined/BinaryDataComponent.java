@@ -26,7 +26,7 @@ import org.exbin.framework.action.api.ContextComponent;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinaryDataComponent extends ContextComponent {
+public interface BinaryDataComponent extends ContextComponent, CodeTypeState {
 
     /**
      * Returns code area component.

@@ -58,8 +58,8 @@ public class StartMacroRecordingAction extends AbstractAction {
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                     updateByContext(instance);
                 });
-                registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                    if (MacroStateChangeType.MACRO_RECORDING.equals(changeMessage)) {
+                registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                    if (MacroStateChangeType.MACRO_RECORDING.equals(changeType)) {
                         updateByContext(instance);
                     }
                 });

@@ -494,7 +494,9 @@ public class BinedModule implements Module {
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ActiveContextManagement contextManager = contextModule.createContextManager();
-        contextManager.changeActiveState(ContextComponent.class, new BinEdDataComponent(codeArea));
+        BinEdDataComponent binEdDataComponent = new BinEdDataComponent(codeArea);
+        binEdDataComponent.setContextProvider(contextManager);
+        contextManager.changeActiveState(ContextComponent.class, binEdDataComponent);
         contextManager.changeActiveState(EditorProvider.class, editorProvider);
         contextManager.changeActiveState(FileHandler.class, editorProvider.getActiveFile().orElse(null));
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);

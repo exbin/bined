@@ -61,6 +61,7 @@ import org.exbin.framework.bined.viewer.settings.GoToPositionOptions;
 import org.exbin.framework.bined.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.framework.bined.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.BinaryFontSettingsApplier;
+import org.exbin.framework.contribution.api.GroupSequenceContribution;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
@@ -100,6 +101,7 @@ public class BinedViewerModule implements Module {
     public static final String SETTINGS_FONT_PAGE_ID = "codeAreaFont";
     public static final String VIEW_MODE_SUBMENU_ID = MODULE_ID + ".viewModeSubMenu";
     public static final String CODE_TYPE_SUBMENU_ID = MODULE_ID + ".codeTypeSubMenu";
+    public static final String CODE_TYPE_MENU_GROUP_ID = MODULE_ID + ".codeTypeSubMenu";
     public static final String POSITION_CODE_TYPE_SUBMENU_ID = MODULE_ID + ".positionCodeTypeSubMenu";
     public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
     public static final String POSITION_CODE_TYPE_POPUP_SUBMENU_ID = MODULE_ID + ".positionCodeTypePopupSubMenu";
@@ -392,13 +394,19 @@ public class BinedViewerModule implements Module {
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
         mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
+        GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(CODE_TYPE_MENU_GROUP_ID);
+        mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
         contribution = mgmt.registerMenuItem(codeTypeActions.createBinaryCodeTypeAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(codeTypeActions.createOctalCodeTypeAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(codeTypeActions.createDecimalCodeTypeAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = mgmt.registerMenuItem(codeTypeActions.createHexadecimalCodeTypeAction());
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
@@ -412,6 +420,7 @@ public class BinedViewerModule implements Module {
         };
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction);
         mgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_SUBMENU_ID);
         contribution = mgmt.registerMenuItem(positionCodeTypeActions.createOctalCodeTypeAction());
@@ -432,6 +441,7 @@ public class BinedViewerModule implements Module {
         };
         hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
         mgmt = mgmt.getSubMenu(HEX_CHARACTERS_CASE_SUBMENU_ID);
         contribution = mgmt.registerMenuItem(hexCharactersCaseActions.createUpperHexCharsAction());

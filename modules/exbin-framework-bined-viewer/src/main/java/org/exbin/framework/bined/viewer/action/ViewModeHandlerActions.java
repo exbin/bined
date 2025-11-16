@@ -99,8 +99,8 @@ public class ViewModeHandlerActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.VIEW_MODE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (BinedViewerChangeType.VIEW_MODE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -144,8 +144,8 @@ public class ViewModeHandlerActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.VIEW_MODE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (BinedViewerChangeType.VIEW_MODE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -188,8 +188,8 @@ public class ViewModeHandlerActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.VIEW_MODE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (BinedViewerChangeType.VIEW_MODE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });

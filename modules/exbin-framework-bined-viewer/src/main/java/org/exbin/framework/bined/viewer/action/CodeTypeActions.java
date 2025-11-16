@@ -28,7 +28,6 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.CodeType;
-import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
@@ -37,7 +36,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.viewer.BinedViewerChangeType;
+import org.exbin.framework.bined.CodeTypeState;
 import org.exbin.framework.utils.UiUtils;
 
 /**
@@ -120,8 +119,8 @@ public class CodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -131,7 +130,7 @@ public class CodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                CodeType codeType = binaryDataComponent.getCodeType();
                 putValue(Action.SELECTED_KEY, codeType == CodeType.BINARY);
             }
             setEnabled(hasInstance);
@@ -164,8 +163,8 @@ public class CodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -175,7 +174,7 @@ public class CodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                CodeType codeType = binaryDataComponent.getCodeType();
                 putValue(Action.SELECTED_KEY, codeType == CodeType.OCTAL);
             }
             setEnabled(hasInstance);
@@ -208,8 +207,8 @@ public class CodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -219,7 +218,7 @@ public class CodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                CodeType codeType = binaryDataComponent.getCodeType();
                 putValue(Action.SELECTED_KEY, codeType == CodeType.DECIMAL);
             }
             setEnabled(hasInstance);
@@ -252,8 +251,8 @@ public class CodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -263,7 +262,7 @@ public class CodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                CodeType codeType = binaryDataComponent.getCodeType();
                 putValue(Action.SELECTED_KEY, codeType == CodeType.HEXADECIMAL);
             }
             setEnabled(hasInstance);
@@ -301,7 +300,7 @@ public class CodeTypeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+            CodeType codeType = binaryDataComponent.getCodeType();
             int codeTypePos = codeType.ordinal();
             CodeType[] values = CodeType.values();
             CodeType next = codeTypePos + 1 >= values.length ? values[0] : values[codeTypePos + 1];
@@ -317,8 +316,8 @@ public class CodeTypeActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -334,7 +333,7 @@ public class CodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeType codeType = ((CodeTypeCapable) binaryDataComponent.getCodeArea()).getCodeType();
+                CodeType codeType = binaryDataComponent.getCodeType();
                 putValue(Action.NAME, resourceBundle.getString(ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
             }
             setEnabled(hasInstance);
@@ -342,7 +341,6 @@ public class CodeTypeActions {
     }
 
     public static void setCodeType(BinaryDataComponent binaryDataComponent, CodeType codeType) {
-        ((CodeTypeCapable) binaryDataComponent.getCodeArea()).setCodeType(codeType);
-        // TODO invoke change notification
+        binaryDataComponent.setCodeType(codeType);
     }
 }

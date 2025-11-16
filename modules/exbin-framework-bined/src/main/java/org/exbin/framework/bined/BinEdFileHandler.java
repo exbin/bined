@@ -467,6 +467,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Override
     public void componentActivated(ActiveContextManagement contextManager) {
         this.contextManager = contextManager;
+        binaryDataComponent.setContextProvider(contextManager);
         contextManager.changeActiveState(ContextFont.class, binaryDataComponent);
         contextManager.changeActiveState(ContextEncoding.class, binaryDataComponent);
         contextManager.changeActiveState(UndoRedoState.class, undoRedo);
@@ -483,6 +484,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     @Override
     public void componentDeactivated(ActiveContextManagement contextManager) {
         this.contextManager = null;
+        binaryDataComponent.setContextProvider(null);
         contextManager.changeActiveState(ContextFont.class, null);
         contextManager.changeActiveState(ContextEncoding.class, null);
         contextManager.changeActiveState(UndoRedoState.class, null);

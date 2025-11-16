@@ -22,7 +22,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
-import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
@@ -31,7 +30,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.bined.viewer.BinedViewerChangeType;
+import org.exbin.framework.bined.CodeTypeState;
 
 /**
  * Hex characters case actions.
@@ -92,8 +91,8 @@ public class HexCharactersCaseActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.HEX_CHARACTERS_CASE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -103,7 +102,7 @@ public class HexCharactersCaseActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
+                CodeCharactersCase codeCharactersCase = binaryDataComponent.getCodeCharactersCase();
                 putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.UPPER);
             }
             setEnabled(hasInstance);
@@ -136,8 +135,8 @@ public class HexCharactersCaseActions {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerContextMessageListener(ContextComponent.class, (instance, changeMessage) -> {
-                if (BinedViewerChangeType.CODE_TYPE.equals(changeMessage)) {
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.HEX_CHARACTERS_CASE.equals(changeType)) {
                     updateByContext(instance);
                 }
             });
@@ -147,7 +146,7 @@ public class HexCharactersCaseActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeCharactersCase codeCharactersCase = ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).getCodeCharactersCase();
+                CodeCharactersCase codeCharactersCase = binaryDataComponent.getCodeCharactersCase();
                 putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
             }
             setEnabled(hasInstance);
@@ -155,7 +154,6 @@ public class HexCharactersCaseActions {
     }
 
     public static void setCodeCharactersCase(BinaryDataComponent binaryDataComponent, CodeCharactersCase codeCharactersCase) {
-        ((CodeCharactersCaseCapable) binaryDataComponent.getCodeArea()).setCodeCharactersCase(codeCharactersCase);
-        // TODO invoke change notification
+        binaryDataComponent.setCodeCharactersCase(codeCharactersCase);
     }
 }

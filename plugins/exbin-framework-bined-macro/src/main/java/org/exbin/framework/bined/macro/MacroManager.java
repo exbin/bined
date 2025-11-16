@@ -462,7 +462,7 @@ public class MacroManager {
      * @param codeArea code area
      */
     private void notifyMacroRecordingChange() {
-        contextManager.notifyStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.MACRO_RECORDING);
+        contextManager.notifyActiveStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.MACRO_RECORDING);
     }
 
     /**
@@ -471,7 +471,7 @@ public class MacroManager {
      * @param codeArea code area
      */
     private void notifyLastMacroChange() {
-        contextManager.notifyStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.LAST_MACRO);
+        contextManager.notifyActiveStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.LAST_MACRO);
     }
 
     public void updateMacrosMenu() {
