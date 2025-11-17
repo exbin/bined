@@ -15,24 +15,32 @@
  */
 package org.exbin.framework.bined;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.action.api.ContextComponent;
+import org.exbin.framework.context.api.StateChangeType;
 
 /**
- * Binary data component.
+ * Nonprintables state.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinaryDataComponent extends ContextComponent, CodeTypeState, NonprintablesState {
+public interface NonprintablesState {
 
     /**
-     * Returns code area component.
+     * Returns show nonprintables characters state.
      *
-     * @return code area component
+     * @return show nonprintables
      */
-    @Nonnull
-    CodeAreaCore getCodeArea();
+    boolean isShowNonprintables();
+
+    /**
+     * Sets show nonprintables characters state.
+     *
+     * @param showNonprintables show nonprintables
+     */
+    void setShowNonprintables(boolean showNonprintables);
+
+    public enum ChangeType implements StateChangeType {
+        NONPRINTABLES
+    }
 }

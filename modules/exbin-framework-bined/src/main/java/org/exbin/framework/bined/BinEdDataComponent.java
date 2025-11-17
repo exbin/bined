@@ -19,15 +19,20 @@ import java.awt.Font;
 import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.capability.CodeTypeCapable;
+import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
 import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.CodeAreaSwingUtils;
+import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.capability.FontCapable;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
@@ -189,6 +194,29 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeCharactersCase);
         if (contextProvider != null) {
             contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.HEX_CHARACTERS_CASE);
+        }
+    }
+
+    @Override
+    public boolean isShowNonprintables() {
+        ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
+        NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
+        if (nonprintablesCodeAreaAssessor != null) {
+            return nonprintablesCodeAreaAssessor.isShowNonprintables();
+        }
+        return false;
+    }
+
+    @Override
+    public void setShowNonprintables(boolean showNonprintables) {
+        ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
+        NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
+        if (nonprintablesCodeAreaAssessor != null) {
+            nonprintablesCodeAreaAssessor.setShowNonprintables(showNonprintables);
+            codeArea.repaint();
+            if (contextProvider != null) {
+                contextProvider.notifyStateChange(ContextComponent.class, NonprintablesState.ChangeType.NONPRINTABLES);
+            }
         }
     }
 }

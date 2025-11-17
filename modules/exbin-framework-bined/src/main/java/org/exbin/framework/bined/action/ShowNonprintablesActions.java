@@ -21,11 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
-import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.CodeAreaSwingUtils;
-import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
@@ -34,6 +29,7 @@ import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.action.api.ActionContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.NonprintablesState;
 import org.exbin.framework.utils.ActionUtils;
 
 /**
@@ -82,7 +78,7 @@ public class ShowNonprintablesActions {
     @ParametersAreNonnullByDefault
     public static class ViewNonprintablesAction extends AbstractAction implements ActionContextChange {
 
-        private CodeAreaCore codeArea;
+        private BinaryDataComponent binaryDataComponent;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -95,30 +91,28 @@ public class ShowNonprintablesActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
-            NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
-            if (nonprintablesCodeAreaAssessor != null) {
-                boolean showNonprintables = nonprintablesCodeAreaAssessor.isShowNonprintables();
-                nonprintablesCodeAreaAssessor.setShowNonprintables(!showNonprintables);
-                codeArea.repaint();
-            }
+            binaryDataComponent.setShowNonprintables(!binaryDataComponent.isShowNonprintables());
         }
 
         @Override
         public void register(ActionContextChangeRegistration registrar) {
             registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
-                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                boolean hasInstance = codeArea != null;
-                if (hasInstance) {
-                    ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
-                    NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
-                    if (nonprintablesCodeAreaAssessor != null) {
-                        boolean showNonprintables = nonprintablesCodeAreaAssessor.isShowNonprintables();
-                        putValue(Action.SELECTED_KEY, showNonprintables);
-                    }
-                }
-                setEnabled(hasInstance);
+                updateByContext(instance);
             });
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (NonprintablesState.ChangeType.NONPRINTABLES.equals(changeType)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = binaryDataComponent != null;
+            if (hasInstance) {
+                putValue(Action.SELECTED_KEY, binaryDataComponent.isShowNonprintables());
+            }
+            setEnabled(hasInstance);
         }
     }
 }
