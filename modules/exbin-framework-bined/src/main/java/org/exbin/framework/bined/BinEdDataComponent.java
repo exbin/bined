@@ -17,9 +17,10 @@ package org.exbin.framework.bined;
 
 import java.awt.Font;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
@@ -38,6 +39,8 @@ import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
 import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
+import org.exbin.framework.text.encoding.CharsetListEncodingState;
+import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.text.font.TextFontState;
 
 /**
@@ -46,11 +49,12 @@ import org.exbin.framework.text.font.TextFontState;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, TextFontState {
+public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState {
 
     protected final CodeAreaCore codeArea;
     protected Font defaultFont;
     protected ActiveContextProvider contextProvider;
+    protected List<String> encodings = new ArrayList<>();
 
     public BinEdDataComponent(CodeAreaCore codeArea) {
         this.codeArea = codeArea;
@@ -136,6 +140,24 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setEncoding(String encoding) {
         ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
+        if (contextProvider != null) {
+            contextProvider.notifyStateChange(ContextComponent.class, CharsetEncodingState.ChangeType.ENCODING);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public List<String> getEncodings() {
+        return encodings;
+    }
+
+    @Override
+    public void setEncodings(List<String> encodings) {
+        this.encodings.clear();
+        this.encodings.addAll(encodings);
+        if (contextProvider != null) {
+            contextProvider.notifyStateChange(ContextComponent.class, CharsetListEncodingState.ChangeType.ENCODING_LIST);
+        }
     }
 
     @Nonnull
@@ -153,6 +175,9 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCurrentFont(Font font) {
         ((FontCapable) codeArea).setCodeFont(font);
+        if (contextProvider != null) {
+            contextProvider.notifyStateChange(ContextComponent.class, TextFontState.ChangeType.FONT);
+        }
     }
 
     @Nonnull

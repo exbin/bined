@@ -300,7 +300,7 @@ public class BinEdDiffPanel extends JPanel {
 
         ((CharsetCapable) codeArea).setCharset(Charset.forName(applyOptions.getEncodingOptions()
                 .getSelectedEncoding()));
-        encodingsManager.setEncodings(applyOptions.getEncodingOptions().getEncodings());
+        // TODO encodingsManager.setEncodings(applyOptions.getEncodingOptions().getEncodings());
         ((FontCapable) codeArea).setCodeFont(
                 applyOptions.getFontOptions().isUseDefaultFont() ? defaultFont : applyOptions.getFontOptions().getFont(defaultFont)
         );

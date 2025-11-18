@@ -39,15 +39,19 @@ public class BinaryEncodingSettingsApplier implements SettingsApplier {
         }
 
         TextEncodingOptions options = settingsOptionsProvider.getSettingsOptions(TextEncodingOptions.class);
-        String encoding = options.getSelectedEncoding();
-        if (encoding.isEmpty()) {
-            return;
-        }
-
         try {
-            ((BinEdDataComponent) instance).setEncoding(encoding);
+            ((BinEdDataComponent) instance).setEncodings(options.getEncodings());
         } catch (UnsupportedCharsetException ex) {
             // ignore
+        }
+
+        String encoding = options.getSelectedEncoding();
+        if (!encoding.isEmpty()) {
+            try {
+                ((BinEdDataComponent) instance).setEncoding(encoding);
+            } catch (UnsupportedCharsetException ex) {
+                // ignore
+            }
         }
     }
 }
