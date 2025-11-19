@@ -74,6 +74,7 @@ import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.sidebar.api.SideBarModuleApi;
 
 /**
  * Binary editor launcher module.
@@ -154,6 +155,7 @@ public class BinedLauncherModule implements LauncherModule {
             MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
             MenuPopupModuleApi menuPopupModule = App.getModule(MenuPopupModuleApi.class);
             ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
+            SideBarModuleApi sideBarModule = App.getModule(SideBarModuleApi.class);
             AboutModuleApi aboutModule = App.getModule(AboutModuleApi.class);
             HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
             HelpOnlineModuleApi helpOnlineModule = App.getModule(HelpOnlineModuleApi.class);
@@ -230,6 +232,7 @@ public class BinedLauncherModule implements LauncherModule {
             if (!demoMode) {
                 frameModule.registerExitAction();
             }
+            sideBarModule.registerFrameSideBar();
             frameModule.registerBarsVisibilityActions();
 
             fileModule.registerMenuFileHandlingActions();

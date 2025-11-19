@@ -32,7 +32,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ActionContextChangeRegistration;
+import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinedModule;
@@ -144,7 +144,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     }
 
     @Override
-    public void register(ActionContextChangeRegistration registrar) {
+    public void register(ContextChangeRegistration registrar) {
         registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
             editorProvider = instance;
             setEnabled(editorProvider != null && dialogParentComponent != null);
