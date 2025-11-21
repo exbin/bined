@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined;
 
+import java.net.URI;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,40 +25,45 @@ import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.ui.api.Document;
-import org.exbin.framework.ui.api.DocumentView;
+import org.exbin.framework.document.api.UiDocument;
+import org.exbin.framework.file.api.FileDocument;
 
 /**
- * BinEd binary document view.
+ * BinEd binary document.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdDocumentView implements DocumentView {
+public class BinaryFileDocument implements BinaryDocument, UiDocument, FileDocument {
 
-    protected BinEdDocument document;
     protected BinEdComponentPanel componentPanel = createComponentPanel();
+    protected URI fileUri = null;
+    protected BinaryData binaryData;
 
-    @Nonnull
-    protected BinEdComponentPanel createComponentPanel() {
-        return new BinEdComponentPanel();
+    public BinaryFileDocument() {
     }
 
     @Nonnull
     @Override
-    public BinEdDocument getDocument() {
-        return document;
+    public Optional<URI> getFileUri() {
+        return Optional.ofNullable(fileUri);
     }
 
+    @Nonnull
     @Override
-    public void setDocument(Document document) {
-        this.document = (BinEdDocument) document;
+    public BinaryData getBinaryData() {
+        return binaryData;
     }
 
     @Nonnull
     @Override
     public JComponent getComponent() {
         return componentPanel;
+    }
+
+    @Nonnull
+    protected BinEdComponentPanel createComponentPanel() {
+        return new BinEdComponentPanel();
     }
 
     @Nonnull

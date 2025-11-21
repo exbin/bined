@@ -88,7 +88,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
         clipboard.addFlavorListener((FlavorEvent e) -> {
             updateClipboardActionsStatus();
         });
-        multiEditorPanel.setDropTarget(new DropTarget() {
+/*        multiEditorPanel.setDropTarget(new DropTarget() {
             @Override
             public synchronized void drop(DropTargetDropEvent event) {
                 try {
@@ -102,7 +102,7 @@ public class BinaryMultiEditorProvider extends DefaultMultiEditorProvider implem
                     Logger.getLogger(BinaryMultiEditorProvider.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        });
+        }); */
         contextManager.changeActiveState(EditorProvider.class, this);
     }
 

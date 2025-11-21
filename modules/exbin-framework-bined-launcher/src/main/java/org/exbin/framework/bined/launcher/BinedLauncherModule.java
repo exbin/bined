@@ -55,6 +55,7 @@ import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
+import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.editor.api.EditorProviderVariant;
@@ -150,6 +151,7 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+            DockingModuleApi dockingModule = App.getModule(DockingModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
             MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -237,7 +239,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             fileModule.registerMenuFileHandlingActions();
             if (editorProviderVariant == EditorProviderVariant.MULTI) {
-                editorModule.registerMenuFileCloseActions();
+                dockingModule.registerMenuFileCloseActions();
             }
 
             fileModule.registerToolBarFileHandlingActions();

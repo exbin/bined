@@ -72,7 +72,7 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     private SegmentsRepository segmentsRepository;
 
     @Nonnull
-    private final BinEdDocumentView editorComponent;
+    private final BinaryFileDocument editorComponent;
     private int id = 0;
     private URI fileUri = null;
     private FileType fileType;
@@ -96,8 +96,8 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
     }
 
     @Nonnull
-    protected BinEdDocumentView createEditorComponent() {
-        return new BinEdDocumentView();
+    protected BinaryFileDocument createEditorComponent() {
+        return new BinaryFileDocument();
     }
 
     private void init() {
