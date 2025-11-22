@@ -42,11 +42,14 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.editor.api.MultiEditorProvider;
+import org.exbin.framework.bined.BinaryFileDocument;
+import org.exbin.framework.docking.api.ContextDocking;
+import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.docking.api.MultiDocking;
+import org.exbin.framework.document.api.Document;
 import org.exbin.framework.file.api.AllFileTypes;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.help.api.HelpLink;
@@ -66,7 +69,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public static final String ACTION_ID = "compareFilesAction";
     public static final String HELP_ID = "compare-files-action";
 
-    private EditorProvider editorProvider;
+    private DocumentDocking documentDocking;
     private DialogParentComponent dialogParentComponent;
 
     public CompareFilesAction() {
@@ -94,26 +97,32 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
         Dimension preferredSize = dialog.getWindow().getPreferredSize();
         dialog.getWindow().setSize(new Dimension(preferredSize.width, preferredSize.height + 450));
         controlPanel.setController(dialog::close);
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (activeFile.isPresent()) {
-            compareFilesPanel.setLeftFile(((BinEdFileHandler) activeFile.get()).getCodeArea().getContentData());
+        Optional<Document> activeDocument = documentDocking.getActiveDocument();
+        if (activeDocument.isPresent()) {
+            compareFilesPanel.setLeftFile(((BinaryFileDocument) activeDocument.get()).getBinaryData());
         }
 
-        List<FileHandler> fileHandlers;
-        if (editorProvider instanceof MultiEditorProvider) {
-            fileHandlers = ((MultiEditorProvider) editorProvider).getFileHandlers();
+        List<Document> fileDocuments;
+        if (documentDocking instanceof MultiDocking) {
+            fileDocuments = ((MultiDocking) documentDocking).getDocuments();
             List<String> availableFiles = new ArrayList<>();
-            for (FileHandler fileHandler : fileHandlers) {
-                Optional<URI> fileUri = fileHandler.getFileUri();
+            for (Document document : fileDocuments) {
+                if (!(document instanceof FileDocument)) {
+                    continue;
+                }
+                Optional<URI> fileUri = ((FileDocument) document).getFileUri();
                 availableFiles.add(fileUri.isPresent() ? fileUri.get().toString() : panelResourceBundle.getString("unsavedFile"));
             }
             compareFilesPanel.setAvailableFiles(availableFiles);
         } else {
-            fileHandlers = new ArrayList<>();
-            Optional<URI> fileUri = editorProvider.getActiveFile().get().getFileUri();
-            List<String> availableFiles = new ArrayList<>();
-            availableFiles.add(fileUri.isPresent() ? fileUri.get().toString() : panelResourceBundle.getString("unsavedFile"));
-            compareFilesPanel.setAvailableFiles(availableFiles);
+            fileDocuments = new ArrayList<>();
+            Document document = documentDocking.getActiveDocument().orElse(null);
+            if (document != null) {
+                String documentName = document instanceof FileDocument ? ((FileDocument) document).getFileUri().toString() : panelResourceBundle.getString("unsavedFile");
+                List<String> availableFiles = new ArrayList<>();
+                availableFiles.add(documentName);
+                compareFilesPanel.setAvailableFiles(availableFiles);
+            }
         }
 
         compareFilesPanel.setController(new CompareFilesPanel.Controller() {
@@ -124,7 +133,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
                 FileModuleApi fileModule = App.getModule(FileModuleApi.class);
                 fileModule.getFileActions().openFile((URI fileUri, FileType fileType) -> {
                     result[0] = new File(fileUri);
-                }, new AllFileTypes(), editorProvider);
+                }, new AllFileTypes(), null); // TODO documentDocking
 
                 if (result[0] == null) {
                     return null;
@@ -144,7 +153,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
             @Nonnull
             @Override
             public BinaryData getFileData(int index) {
-                return ((BinEdFileHandler) fileHandlers.get(index)).getCodeArea().getContentData();
+                return ((BinEdFileHandler) fileDocuments.get(index)).getCodeArea().getContentData();
             }
         });
         dialog.showCentered(dialogParentComponent.getComponent());
@@ -152,13 +161,13 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
 
     @Override
     public void register(ContextChangeRegistration registrar) {
-        registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
-            editorProvider = instance;
-            setEnabled(editorProvider != null && dialogParentComponent != null);
+        registrar.registerUpdateListener(ContextDocking.class, (instance) -> {
+            documentDocking = instance instanceof DocumentDocking ? (DocumentDocking) instance : null;
+            setEnabled(documentDocking != null && dialogParentComponent != null);
         });
         registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
-            setEnabled(editorProvider != null && dialogParentComponent != null);
+            setEnabled(documentDocking != null && dialogParentComponent != null);
         });
     }
 }

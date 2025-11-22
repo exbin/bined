@@ -21,9 +21,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.BinaryFileDocument;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.bined.inspector.BasicValuesInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
+import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.bined.inspector.settings.DataInspectorFontOptions;
+import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsComponent;
 import org.exbin.framework.context.api.ActiveContextProvider;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -107,6 +114,16 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         SettingsOptionsOverrides settingsOptionsOverrides = optionsSettingsModule.createSettingsOptionsOverrides(settingsOptionsProvider);
         settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
         textFontSettingsPanel.loadFromOptions(settingsOptionsOverrides, contextProvider);
+        
+        if (contextProvider != null) {
+            ContextDocument contextDocument = contextProvider.getActiveState(ContextDocument.class);
+            if (contextDocument instanceof BinaryFileDocument) {
+                BasicValuesInspector basicValuesInspector = DataInspectorSettingsPanel.getBinEdInspector(((BinaryFileDocument) contextDocument).getComponent());
+                if (basicValuesInspector != null) {
+                    currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
+                }
+            }
+        }
     }
 
     @Override
@@ -118,6 +135,12 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         SettingsOptionsOverrides settingsOptionsOverrides = optionsSettingsModule.createSettingsOptionsOverrides(settingsOptionsProvider);
         settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
         textFontSettingsPanel.saveToOptions(settingsOptionsOverrides, contextProvider);
+    }
+
+    @Nullable
+    private static BasicValuesInspector getBinEdInspector(BinEdComponentPanel component) {
+        BinEdInspectorComponentExtension extension = component.getBinEdComponentExtensions(BinEdInspectorComponentExtension.class).orElse(null);
+        return extension != null ? extension.getInspector(BasicValuesInspector.class) : null;
     }
 
     /**

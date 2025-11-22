@@ -39,14 +39,15 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.ScrollingCapable;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.bookmarks.action.AddBookmarkAction;
@@ -57,9 +58,6 @@ import org.exbin.framework.bined.bookmarks.model.BookmarkRecord;
 import org.exbin.framework.bined.bookmarks.settings.BookmarkOptions;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
-import org.exbin.framework.editor.api.EditorModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -83,8 +81,6 @@ public class BookmarksManager {
     private BookmarkOptions bookmarkOptions;
     private BookmarksPositionColorModifier bookmarksPositionColorModifier;
 
-    private EditorProvider editorProvider;
-
     private final ManageBookmarksAction manageBookmarksAction = new ManageBookmarksAction();
     private final AddBookmarkAction addBookmarkAction = new AddBookmarkAction();
     private final EditBookmarkAction editBookmarkAction = new EditBookmarkAction();
@@ -93,14 +89,15 @@ public class BookmarksManager {
     public BookmarksManager() {
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
+    // TODO
+    /* public void setEditorProvider(EditorProvider editorProvider) {
         // TODO Drop editor provider
         this.editorProvider = editorProvider;
         EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
         editorModule.addEditorProviderComponentListener((editorComponent) -> {
             registerBookmarksComponentActions(editorComponent);
         });
-    }
+    } */
 
     public void init() {
         addBookmarkAction.setup(resourceBundle);
@@ -306,10 +303,8 @@ public class BookmarksManager {
             actionMap.put(goToActionKey, new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        SectCodeArea codeArea = fileHandler.getCodeArea();
+                    CodeAreaCore codeArea = manageBookmarksAction.getCodeArea();
+                    if (codeArea != null) {
                         goToBookmark(codeArea, bookmarkIndex);
                     }
                 }
@@ -321,10 +316,8 @@ public class BookmarksManager {
             actionMap.put(addActionKey, new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        SectCodeArea codeArea = fileHandler.getCodeArea();
+                    CodeAreaCore codeArea = manageBookmarksAction.getCodeArea();
+                    if (codeArea != null) {
                         addBookmark(codeArea, bookmarkIndex);
                     }
                 }
@@ -346,20 +339,20 @@ public class BookmarksManager {
         component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap);
     }
 
-    public void goToBookmark(SectCodeArea codeArea, int bookmarkIndex) {
+    public void goToBookmark(CodeAreaCore codeArea, int bookmarkIndex) {
         if (bookmarkRecords.size() > bookmarkIndex) {
             BookmarkRecord record = bookmarkRecords.get(bookmarkIndex);
             if (record.isEmpty()) {
                 return;
             }
 
-            codeArea.setActiveCaretPosition(record.getStartPosition());
-            codeArea.centerOnCursor();
+            ((CaretCapable) codeArea).setActiveCaretPosition(record.getStartPosition());
+            ((ScrollingCapable) codeArea).centerOnCursor();
         }
     }
 
-    public void addBookmark(SectCodeArea codeArea, int bookmarkIndex) {
-        long position = codeArea.getDataPosition();
+    public void addBookmark(CodeAreaCore codeArea, int bookmarkIndex) {
+        long position = ((CaretCapable) codeArea).getDataPosition();
 
         if (bookmarkRecords.size() <= bookmarkIndex) {
             int recordsToInsert = bookmarkIndex - bookmarkRecords.size() + 1;
@@ -410,12 +403,10 @@ public class BookmarksManager {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     long startPosition = bookmarkRecord.getStartPosition();
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        SectCodeArea codeArea = fileHandler.getCodeArea();
-                        codeArea.setActiveCaretPosition(startPosition);
-                        codeArea.centerOnCursor();
+                    CodeAreaCore codeArea = manageBookmarksAction.getCodeArea();
+                    if (codeArea != null) {
+                        ((CaretCapable) codeArea).setActiveCaretPosition(startPosition);
+                        ((ScrollingCapable) codeArea).centerOnCursor();
                     }
                 }
             };

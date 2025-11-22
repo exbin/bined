@@ -30,7 +30,6 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.text.encoding.EncodingsManager;
 
 /**
@@ -41,26 +40,25 @@ import org.exbin.framework.text.encoding.EncodingsManager;
 @ParametersAreNonnullByDefault
 public class BinaryStatusController implements BinaryStatusPanel.Controller, BinaryStatusPanel.EncodingsController, BinaryStatusPanel.MemoryModeController {
 
-    protected final EditorProvider editorProvider;
     protected final EncodingsManager encodingsHandler;
 
-    public BinaryStatusController(EditorProvider editorProvider, EncodingsManager encodingsHandler) {
-        this.editorProvider = editorProvider;
+    public BinaryStatusController(EncodingsManager encodingsHandler) {
         this.encodingsHandler = encodingsHandler;
     }
 
     @Override
     public void changeEditOperation(EditOperation editOperation) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (activeFile.isPresent()) {
-            ((BinEdFileHandler) activeFile.get()).getCodeArea().setEditOperation(editOperation);
-        }
+        // TODO
+//        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+//        if (activeFile.isPresent()) {
+//            ((BinEdFileHandler) activeFile.get()).getCodeArea().setEditOperation(editOperation);
+//        }
     }
 
     @Override
     public void changeCursorPosition() {
         GoToPositionAction action = new GoToPositionAction();
-        action.setCodeArea(getActiveCodeArea());
+// TODO        action.setCodeArea(getActiveCodeArea());
         action.actionPerformed(null);
     }
 
@@ -87,7 +85,8 @@ public class BinaryStatusController implements BinaryStatusPanel.Controller, Bin
 
     @Override
     public void changeMemoryMode(BinaryStatusApi.MemoryMode memoryMode) {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
+        // TODO
+        /* Optional<FileHandler> activeFile = editorProvider.getActiveFile();
         if (activeFile.isPresent()) {
             BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
             FileProcessingMode fileHandlingMode = fileHandler.getFileHandlingMode();
@@ -99,16 +98,6 @@ public class BinaryStatusController implements BinaryStatusPanel.Controller, Bin
                 }
                 ((BinEdEditorProvider) editorProvider).updateStatus();
             }
-        }
-    }
-
-    @Nonnull
-    public SectCodeArea getActiveCodeArea() {
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        Optional<FileHandler> activeFile = binedModule.getEditorProvider().getActiveFile();
-        if (activeFile.isPresent()) {
-            return ((BinEdFileHandler) activeFile.get()).getComponent().getCodeArea();
-        }
-        throw new IllegalStateException("No active file");
+        } */
     }
 }

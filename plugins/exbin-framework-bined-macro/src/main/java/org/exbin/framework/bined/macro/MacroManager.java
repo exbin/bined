@@ -35,6 +35,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
@@ -67,7 +68,7 @@ import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
-import org.exbin.framework.editor.api.EditorProvider;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -280,8 +281,8 @@ public class MacroManager {
                     registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
                         contextManager.changeActiveState(DialogParentComponent.class, instance);
                     });
-                    registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
-                        contextManager.changeActiveState(EditorProvider.class, instance);
+                    registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                        contextManager.changeActiveState(ContextDocument.class, instance);
                     });
                 }
             });
@@ -326,8 +327,8 @@ public class MacroManager {
                 registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
                     contextManager.changeActiveState(DialogParentComponent.class, instance);
                 });
-                registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
-                    contextManager.changeActiveState(EditorProvider.class, instance);
+                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    contextManager.changeActiveState(ContextDocument.class, instance);
                 });
             }
         });
@@ -472,6 +473,18 @@ public class MacroManager {
      */
     private void notifyLastMacroChange() {
         contextManager.notifyActiveStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.LAST_MACRO);
+    }
+
+    public void notifyFindAgain() {
+        if (binaryDataComponent == null) {
+            return;
+        }
+
+        CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
+        CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+        if (commandHandler instanceof CodeAreaMacroCommandHandler && ((CodeAreaMacroCommandHandler) commandHandler).isMacroRecording()) {
+            ((CodeAreaMacroCommandHandler) commandHandler).appendMacroOperationStep(MacroStep.FIND_AGAIN);
+        }
     }
 
     public void updateMacrosMenu() {

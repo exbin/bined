@@ -23,11 +23,9 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.context.api.ContextChangeRegistration;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.MultiEditorProvider;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.document.api.ContextDocument;
 
 /**
  * Reload content of the currently active file.
@@ -39,8 +37,7 @@ public class ReloadFileAction extends AbstractAction {
 
     public static final String ACTION_ID = "reloadFileAction";
 
-    private EditorProvider editorProvider;
-    private FileHandler fileHandler;
+    protected BinaryFileDocument binaryFileDocument;
 
     public ReloadFileAction() {
     }
@@ -52,13 +49,9 @@ public class ReloadFileAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                    fileHandler = instance;
-                    setEnabled(fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider));
-                });
-                registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
-                    editorProvider = instance;
-                    setEnabled(fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider));
+                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    binaryFileDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
+                    setEnabled(binaryFileDocument != null);
                 });
             }
         });
@@ -66,12 +59,6 @@ public class ReloadFileAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (fileHandler instanceof BinEdFileHandler && (editorProvider instanceof MultiEditorProvider)) {
-            if (editorProvider.releaseFile(fileHandler)) {
-                if (fileHandler.getFileUri().isPresent()) {
-                    ((BinEdFileHandler) fileHandler).reloadFile();
-                }
-            }
-        }
+        binaryFileDocument.reloadFile();
     }
 }

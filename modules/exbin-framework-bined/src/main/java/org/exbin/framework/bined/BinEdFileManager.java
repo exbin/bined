@@ -31,7 +31,6 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
@@ -43,8 +42,6 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 @ParametersAreNonnullByDefault
 public class BinEdFileManager {
 
-    private EditorProvider editorProvider;
-
     private BinaryStatusPanel binaryStatusPanel;
     private final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
@@ -53,10 +50,6 @@ public class BinEdFileManager {
     private CodeAreaCommandHandlerProvider commandHandlerProvider = null;
 
     public BinEdFileManager() {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     public void initFileHandler(BinEdFileHandler fileHandler) {
@@ -120,10 +113,11 @@ public class BinEdFileManager {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         frameModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
         frameModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
-        if (editorProvider instanceof BinEdEditorProvider) {
-            ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
-            ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
-        }
+        // TODO
+//        if (editorProvider instanceof BinEdEditorProvider) {
+//            ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
+//            ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
+//        }
     }
 
     public void updateTextEncodingStatus(EncodingsManager encodingsHandler) {

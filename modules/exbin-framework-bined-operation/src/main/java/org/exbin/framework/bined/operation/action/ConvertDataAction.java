@@ -49,7 +49,6 @@ import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
 import org.exbin.framework.bined.operation.api.DataOperationMethod;
 import org.exbin.framework.bined.operation.gui.ConvertDataControlPanel;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
@@ -71,7 +70,6 @@ public class ConvertDataAction extends AbstractAction {
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
     private CodeAreaCore codeArea;
-    private EditorProvider editorProvider;
     private ConvertDataMethod lastMethod = null;
 
     public ConvertDataAction() {
@@ -93,10 +91,6 @@ public class ConvertDataAction extends AbstractAction {
                 });
             }
         });
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     @Override
@@ -143,7 +137,9 @@ public class ConvertDataAction extends AbstractAction {
                             break;
                         }
                         case CONVERT_TO_NEW_FILE: {
-                            BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
+                            throw new UnsupportedOperationException("Not supported yet.");
+                            // TODO
+                            /* BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
 
                             if (editorProvider != null) {
                                 editorProvider.newFile();
@@ -153,7 +149,7 @@ public class ConvertDataAction extends AbstractAction {
                                     fileHandler.getCodeArea().setContentData(outputData);
                                 }
                             }
-                            break;
+                            break; */
                         }
                         case CONVERT_TO_CLIPBOARD: {
                             try {

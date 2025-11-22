@@ -15,7 +15,6 @@
  */
 package org.exbin.framework.bined.search;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
@@ -34,7 +33,6 @@ import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 
@@ -52,15 +50,9 @@ public class BinedSearchModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-
     private FindReplaceActions findReplaceActions;
 
     public BinedSearchModule() {
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
     }
 
     public void registerSearchComponent() {
@@ -121,11 +113,6 @@ public class BinedSearchModule implements Module {
         }
 
         return resourceBundle;
-    }
-
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
     }
 
     private void ensureSetup() {

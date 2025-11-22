@@ -28,18 +28,20 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryDocument;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.StreamUtils;
 import org.exbin.framework.bined.tool.content.gui.DragDropContentPanel;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.docking.api.ContextDocking;
+import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.document.api.Document;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowModuleApi;
@@ -59,7 +61,7 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
 
     private DragDropContentPanel dragDropContentPanel = new DragDropContentPanel();
     private DialogParentComponent dialogParentComponent;
-    private EditorProvider editorProvider;
+    private DocumentDocking documentDocking;
 
     public DragDropContentAction() {
     }
@@ -85,11 +87,12 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
                 Optional<BinaryData> optContentBinaryData = dragDropContentPanel.getContentBinaryData();
                 if (optContentBinaryData.isPresent()) {
                     BinaryData contentBinaryData = optContentBinaryData.get();
-                    editorProvider.newFile();
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        fileHandler.getCodeArea().setContentData(contentBinaryData);
+                    // TODO Force binary document
+                    documentDocking.openNewDocument();
+                    Optional<Document> document = documentDocking.getActiveDocument();
+                    if (document.isPresent()) {
+                        BinaryDocument binaryDocument = (BinaryDocument) document.get();
+                        ((EditableBinaryData) binaryDocument.getBinaryData()).insert(0, contentBinaryData);
                     }
                 }
             }
@@ -137,13 +140,13 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
 
     @Override
     public void register(ContextChangeRegistration registrar) {
-        registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
-            editorProvider = instance;
-            setEnabled(editorProvider != null && dialogParentComponent != null);
+        registrar.registerUpdateListener(ContextDocking.class, (instance) -> {
+            documentDocking = instance instanceof DocumentDocking ? (DocumentDocking) instance : null;
+            setEnabled(documentDocking != null && dialogParentComponent != null);
         });
         registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
-            setEnabled(editorProvider != null && dialogParentComponent != null);
+            setEnabled(documentDocking != null && dialogParentComponent != null);
         });
     }
 }

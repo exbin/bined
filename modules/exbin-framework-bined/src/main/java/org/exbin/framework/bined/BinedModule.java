@@ -26,8 +26,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,10 +49,6 @@ import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
-import org.exbin.framework.editor.api.MultiEditorProvider;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ContextComponent;
@@ -69,17 +63,22 @@ import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContributionRule;
+import org.exbin.framework.docking.api.ContextDocking;
+import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.document.api.Document;
+import org.exbin.framework.document.api.DocumentModuleApi;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.menu.popup.api.ComponentPopupEventDispatcher;
 import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
-import org.exbin.framework.utils.ObjectUtils;
 import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.document.api.DocumentProvider;
 
 /**
  * Binary data editor module.
@@ -112,7 +111,6 @@ public class BinedModule implements Module {
     
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
     private BinEdFileManager fileManager = new BinEdFileManager();
 
     private ShowNonprintablesActions showNonprintablesActions;
@@ -124,7 +122,16 @@ public class BinedModule implements Module {
     public BinedModule() {
     }
 
-    public void initEditorProvider(EditorProviderVariant variant) {
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        if (resourceBundle == null) {
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedModule.class);
+        }
+
+        return resourceBundle;
+    }
+
+    /* public void initEditorProvider(EditorProviderVariant variant) {
         switch (variant) {
             case SINGLE: {
                 editorProvider = createSingleEditorProvider();
@@ -138,24 +145,6 @@ public class BinedModule implements Module {
                 throw ObjectUtils.getInvalidTypeException(variant);
         }
         fileManager.setEditorProvider(editorProvider);
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        if (fileManager == null) {
-            fileManager = new BinEdFileManager();
-        }
-
-        this.editorProvider = editorProvider;
-        fileManager.setEditorProvider(editorProvider);
-    }
-
-    @Nonnull
-    public ResourceBundle getResourceBundle() {
-        if (resourceBundle == null) {
-            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedModule.class);
-        }
-
-        return resourceBundle;
     }
 
     @Nonnull
@@ -203,25 +192,12 @@ public class BinedModule implements Module {
         }
 
         return editorProvider;
-    }
-
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
+    } */
 
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }
-    }
-
-    public void registerUndoHandler() {
-        ((BinEdEditorProvider) editorProvider).registerUndoHandler();
     }
 
     public void registerGoToPosition() {
@@ -333,6 +309,17 @@ public class BinedModule implements Module {
         contribution = mgmt.registerMenuItem(showNonprintablesActions.createViewNonprintablesAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_NONPRINTABLES_MENU_GROUP_ID));
     }
+    
+    public void registerDocument() {
+        DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
+        documentModule.registerDocumentProvider(new DocumentProvider() {
+            @Nonnull
+            @Override
+            public Document createDefaultDocument() {
+                return new BinaryFileDocument();
+            }
+        });
+    }
 
     public void registerViewZoomMenuActions() {
         getViewFontActions();
@@ -416,9 +403,17 @@ public class BinedModule implements Module {
     }
 
     public void start() {
-        if (editorProvider instanceof MultiEditorProvider) {
-            editorProvider.newFile();
+        // TODO
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
+        ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
+        if (contextDocking instanceof DocumentDocking) {
+            ((DocumentDocking) contextDocking).openNewDocument();
         }
+        
+//        if (editorProvider instanceof MultiEditorProvider) {
+//            editorProvider.newFile();
+//        }
     }
 
     public void startWithFile(String filePath) {
@@ -435,15 +430,6 @@ public class BinedModule implements Module {
     @Nonnull
     public String getNewFileTitlePrefix() {
         return resourceBundle.getString("newFileTitlePrefix");
-    }
-
-    @Nonnull
-    public SectCodeArea getActiveCodeArea() {
-        Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-        if (activeFile.isPresent()) {
-            return ((BinEdFileHandler) activeFile.get()).getComponent().getCodeArea();
-        }
-        throw new IllegalStateException("No active file");
     }
 
     @Nonnull
@@ -497,8 +483,9 @@ public class BinedModule implements Module {
         BinEdDataComponent binEdDataComponent = new BinEdDataComponent(codeArea);
         binEdDataComponent.setContextProvider(contextManager);
         contextManager.changeActiveState(ContextComponent.class, binEdDataComponent);
-        contextManager.changeActiveState(EditorProvider.class, editorProvider);
-        contextManager.changeActiveState(FileHandler.class, editorProvider.getActiveFile().orElse(null));
+        // TODO
+//        contextManager.changeActiveState(ContextDocument.class, editorProvider);
+//        contextManager.changeActiveState(ContextDocking.class, FileHandler.class, editorProvider.getActiveFile().orElse(null));
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

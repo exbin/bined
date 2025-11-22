@@ -59,7 +59,6 @@ import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContributionRule;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -132,9 +131,8 @@ public class BinedViewerModule implements Module {
     public void registerStatusBar() {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        EditorProvider editorProvider = binedModule.getEditorProvider();
         fileManager.registerStatusBar();
-        fileManager.setBinaryStatusController(new BinaryStatusController(editorProvider, encodingsManager));
+        fileManager.setBinaryStatusController(new BinaryStatusController(encodingsManager));
 
         if (encodingsManager != null) {
             fileManager.updateTextEncodingStatus(encodingsManager);

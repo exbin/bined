@@ -28,19 +28,21 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryDocument;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.tool.content.StreamUtils;
 import org.exbin.framework.bined.tool.content.gui.ClipboardContentControlPanel;
 import org.exbin.framework.bined.tool.content.gui.ClipboardContentPanel;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.docking.api.ContextDocking;
+import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.document.api.Document;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
@@ -56,9 +58,9 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     public static final String ACTION_ID = "clipboardContentAction";
     public static final String HELP_ID = "clipboard-content";
 
-    private ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
-    private DialogParentComponent dialogParentComponent;
-    private EditorProvider editorProvider;
+    protected ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
+    protected DialogParentComponent dialogParentComponent;
+    protected DocumentDocking documentDocking;
 
     public ClipboardContentAction() {
     }
@@ -84,11 +86,12 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
                 Optional<BinaryData> optContentBinaryData = clipboardContentPanel.getContentBinaryData();
                 if (optContentBinaryData.isPresent()) {
                     BinaryData contentBinaryData = optContentBinaryData.get();
-                    editorProvider.newFile();
-                    Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                    if (activeFile.isPresent()) {
-                        BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                        fileHandler.getCodeArea().setContentData(contentBinaryData);
+                    // TODO Force binary document
+                    documentDocking.openNewDocument();
+                    Optional<Document> document = documentDocking.getActiveDocument();
+                    if (document.isPresent()) {
+                        BinaryDocument binaryDocument = (BinaryDocument) document.get();
+                        ((EditableBinaryData) binaryDocument.getBinaryData()).insert(0, contentBinaryData);
                     }
                 }
             }
@@ -145,13 +148,13 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
 
     @Override
     public void register(ContextChangeRegistration registrar) {
-        registrar.registerUpdateListener(EditorProvider.class, (instance) -> {
-            editorProvider = instance;
-            setEnabled(editorProvider != null && dialogParentComponent != null);
+        registrar.registerUpdateListener(ContextDocking.class, (instance) -> {
+            documentDocking = instance instanceof DocumentDocking ? (DocumentDocking) instance : null;
+            setEnabled(documentDocking != null && dialogParentComponent != null);
         });
         registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
-            setEnabled(editorProvider != null && dialogParentComponent != null);
+            setEnabled(documentDocking != null && dialogParentComponent != null);
         });
     }
 }

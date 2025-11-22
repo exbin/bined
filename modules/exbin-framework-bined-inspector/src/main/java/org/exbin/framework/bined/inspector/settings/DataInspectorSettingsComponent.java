@@ -16,19 +16,10 @@
 package org.exbin.framework.bined.inspector.settings;
 
 import java.awt.Font;
-import java.util.Optional;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.BinEdFileHandler;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.bined.inspector.BasicValuesInspector;
-import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
-import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.settings.gui.DataInspectorSettingsPanel;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.api.OptionsModuleApi;
@@ -51,12 +42,7 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
 
     public static final String COMPONENT_ID = "dataInspector";
 
-    private EditorProvider editorProvider;
     private Font defaultFont;
-
-    public void setEditorProvider(EditorProvider editorProvider) {
-        this.editorProvider = editorProvider;
-    }
 
     @Nonnull
     @Override
@@ -101,28 +87,6 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
             }
         });
 
-        Font currentFont = defaultFont;
-        if (editorProvider != null) {
-            Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-            if (activeFile.isPresent()) {
-                FileHandler fileHandler = activeFile.get();
-                if (fileHandler instanceof BinEdFileHandler) {
-                    BasicValuesInspector basicValuesInspector = DataInspectorSettingsComponent.getBinEdInspector(((BinEdFileHandler) fileHandler).getComponent());
-                    if (basicValuesInspector != null) {
-                        currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
-                    }
-                }
-            }
-        }
-
-        panel.setCurrentFont(currentFont);
-
         return panel;
-    }
-
-    @Nullable
-    private static BasicValuesInspector getBinEdInspector(BinEdComponentPanel component) {
-        BinEdInspectorComponentExtension extension = component.getBinEdComponentExtensions(BinEdInspectorComponentExtension.class).orElse(null);
-        return extension != null ? extension.getInspector(BasicValuesInspector.class) : null;
     }
 }

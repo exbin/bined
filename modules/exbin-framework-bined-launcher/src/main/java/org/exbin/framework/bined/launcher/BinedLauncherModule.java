@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -41,7 +40,6 @@ import org.exbin.framework.action.manager.ActionManagerModule;
 import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.BinaryMultiEditorProvider;
 import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
@@ -50,17 +48,15 @@ import org.exbin.framework.bined.launcher.settings.StartupOptions.StartupBehavio
 import org.exbin.framework.bined.launcher.settings.StartupSettingsComponent;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
-import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
+import org.exbin.framework.docking.api.BasicDockingType;
 import org.exbin.framework.docking.api.DockingModuleApi;
-import org.exbin.framework.editor.api.EditorModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
-import org.exbin.framework.editor.api.EditorProviderVariant;
+import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.document.api.DocumentModuleApi;
 import org.exbin.framework.file.api.FileModuleApi;
-import org.exbin.framework.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.help.online.api.HelpOnlineModuleApi;
@@ -76,6 +72,7 @@ import org.exbin.framework.ui.api.UiModuleApi;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.sidebar.api.SideBarModuleApi;
+import org.exbin.framework.frame.api.ComponentFrame;
 
 /**
  * Binary editor launcher module.
@@ -150,7 +147,7 @@ public class BinedLauncherModule implements LauncherModule {
                 frameModule.switchFrameToUndecorated();
             }
 
-            EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+            DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
             DockingModuleApi dockingModule = App.getModule(DockingModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
@@ -177,7 +174,6 @@ public class BinedLauncherModule implements LauncherModule {
             themeModule.registerSettings();
             actionManagerModule.registerSettings();
             fileModule.registerSettings();
-            editorModule.registerSettings();
             binedViewerModule.registerSettings();
             binedEditorModule.registerSettings();
             binedThemeModule.registerSettings();
@@ -189,21 +185,16 @@ public class BinedLauncherModule implements LauncherModule {
 
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(optionsStorage);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
-            EditorProviderVariant editorProviderVariant = editorProvideType != null
-                    ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? EditorProviderVariant.SINGLE : EditorProviderVariant.MULTI)
-                    : (multiFileMode ? EditorProviderVariant.MULTI : EditorProviderVariant.SINGLE);
-            binedModule.initEditorProvider(editorProviderVariant);
-            EditorProvider editorProvider = binedModule.getEditorProvider();
-            editorModule.registerEditor(BINARY_PLUGIN_ID, editorProvider);
+            BasicDockingType dockingType = editorProvideType != null
+                    ? (OPTION_SINGLE_FILE.equals(editorProvideType) ? BasicDockingType.SINGLE : BasicDockingType.MULTI)
+                    : (multiFileMode ? BasicDockingType.MULTI : BasicDockingType.SINGLE);
+            // binedModule.initEditorProvider(dockingType);
 
             BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
-            binedSearchModule.setEditorProvider(editorProvider);
             binedSearchModule.registerSearchComponent();
 
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.addBasicMethods();
-
-            binedInspectorModule.setEditorProvider(editorProvider);
 
             AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
@@ -238,7 +229,7 @@ public class BinedLauncherModule implements LauncherModule {
             frameModule.registerBarsVisibilityActions();
 
             fileModule.registerMenuFileHandlingActions();
-            if (editorProviderVariant == EditorProviderVariant.MULTI) {
+            if (dockingType == BasicDockingType.MULTI) {
                 dockingModule.registerMenuFileCloseActions();
             }
 
@@ -259,6 +250,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerCodeTypeToolBarActions();
             binedModule.registerShowNonprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
+            binedModule.registerDocument();
             binedModule.registerViewNonprintablesMenuActions();
             binedModule.registerViewZoomMenuActions();
             binedInspectorModule.registerShowParsingPanelMenuActions();
@@ -286,38 +278,36 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerHexCharactersCaseHandlerMenu();
             binedViewerModule.registerLayoutMenu();
 
-            final ApplicationFrameHandler frameHandler = frameModule.getFrameHandler();
+            final ComponentFrame frameHandler = frameModule.getFrameHandler();
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-
             binedViewerModule.registerStatusBar();
-            binedModule.registerUndoHandler();
 
             if (demoMode) {
-                frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                frameModule.addExitListener((ComponentFrame afh) -> {
                     return false;
                 });
             } else {
-                frameModule.addExitListener((ApplicationFrameHandler afh) -> {
+                frameModule.addExitListener((ComponentFrame afh) -> {
                     // Save frame position
                     frameModule.saveFramePosition();
 
                     // Save session files if in multi-file mode
-                    EditorProvider currentProvider = binedModule.getEditorProvider();
-                    if (currentProvider instanceof BinaryMultiEditorProvider) {
-                        BinaryMultiEditorProvider multiProvider = (BinaryMultiEditorProvider) currentProvider;
+                    if (dockingType == BasicDockingType.MULTI) {
+                        // TODO
+                        /* BinaryMultiEditorProvider multiProvider = (BinaryMultiEditorProvider) currentProvider;
                         List<URI> openFiles = multiProvider.getOpenFileUris();
                         StartupOptions startupOptions = new StartupOptions(optionsStorage);
-                        startupOptions.setLastSessionFiles(openFiles);
+                        startupOptions.setLastSessionFiles(openFiles); */
                     }
 
                     return true;
                 });
             }
 
-            JComponent editorComponent = editorModule.getEditorComponent();
-            frameHandler.setMainPanel(editorComponent);
+            DocumentDocking documentDocking = dockingModule.createDefaultDocking(dockingType);
+            frameModule.attachFrameContentComponent(documentDocking);
             addonManagerModule.registerAddonManagerMenuItem();
 
             frameHandler.setDefaultSize(new Dimension(600, 400));
@@ -352,19 +342,20 @@ public class BinedLauncherModule implements LauncherModule {
                         break;
                     case REOPEN_SESSION:
                         // Reopen last session files (only in multi-file mode)
-                        if (editorProviderVariant == EditorProviderVariant.MULTI) {
+                        if (dockingType == BasicDockingType.MULTI) {
                             List<URI> sessionFiles = startupOptions.getLastSessionFiles();
                             if (sessionFiles.isEmpty()) {
                                 // No session files, fallback to new file
                                 binedModule.start();
                             } else {
+                                binedModule.start();
                                 // Load session files
                                 for (URI fileUri : sessionFiles) {
                                     try {
                                         fileModule.loadFromFile(fileUri);
                                     } catch (Exception ex) {
                                         Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.WARNING,
-                                            "Failed to load session file: " + fileUri, ex);
+                                                "Failed to load session file: " + fileUri, ex);
                                     }
                                 }
                             }
@@ -393,7 +384,7 @@ public class BinedLauncherModule implements LauncherModule {
     public void registerSettings() {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = settingsModule.getMainSettingsManager();
-        
+
         settingsManager.registerOptionsSettings(StartupOptions.class, (optionsStorage) -> new StartupOptions(optionsStorage));
         settingsManager.registerComponent(StartupSettingsComponent.COMPONENT_ID, new StartupSettingsComponent());
     }

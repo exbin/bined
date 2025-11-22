@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -77,6 +78,11 @@ public class ManageBookmarksAction extends AbstractAction {
                 });
             }
         });
+    }
+
+    @Nullable
+    public CodeAreaCore getCodeArea() {
+        return codeArea;
     }
 
     @Override

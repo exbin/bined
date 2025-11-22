@@ -20,12 +20,11 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
-import org.exbin.framework.document.api.UiDocument;
+import org.exbin.framework.document.api.ComponentDocument;
 import org.exbin.framework.file.api.FileDocument;
 
 /**
@@ -34,7 +33,7 @@ import org.exbin.framework.file.api.FileDocument;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryFileDocument implements BinaryDocument, UiDocument, FileDocument {
+public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument {
 
     protected BinEdComponentPanel componentPanel = createComponentPanel();
     protected URI fileUri = null;
@@ -57,7 +56,7 @@ public class BinaryFileDocument implements BinaryDocument, UiDocument, FileDocum
 
     @Nonnull
     @Override
-    public JComponent getComponent() {
+    public BinEdComponentPanel getComponent() {
         return componentPanel;
     }
 
@@ -89,5 +88,9 @@ public class BinaryFileDocument implements BinaryDocument, UiDocument, FileDocum
     public void setContentData(@Nullable BinaryData data) {
         SectCodeArea codeArea = componentPanel.getCodeArea();
         codeArea.setContentData(data);
+    }
+    
+    public void reloadFile() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

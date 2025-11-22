@@ -52,7 +52,6 @@ import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.operation.undo.api.UndoRedoFileHandler;
-import org.exbin.framework.editor.api.EditorFileHandler;
 import org.exbin.framework.operation.undo.api.UndoRedo;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
@@ -67,7 +66,7 @@ import org.exbin.framework.text.font.ContextFont;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler, UndoRedoFileHandler {
+public class BinEdFileHandler implements EditableFileHandler, UndoRedoFileHandler {
 
     private SegmentsRepository segmentsRepository;
 
@@ -469,7 +468,6 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         return defaultColors;
     }
 
-    @Override
     public void componentActivated(ActiveContextManagement contextManager) {
         this.contextManager = contextManager;
         if (!initialized) {
@@ -493,7 +491,6 @@ public class BinEdFileHandler implements EditableFileHandler, EditorFileHandler,
         });
     }
 
-    @Override
     public void componentDeactivated(ActiveContextManagement contextManager) {
         this.contextManager = null;
         binaryDataComponent.setContextProvider(null);

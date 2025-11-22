@@ -27,7 +27,6 @@ import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
-import org.exbin.framework.editor.api.EditorModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
@@ -56,8 +55,9 @@ public class BinedBookmarksModule implements PluginModule {
             registerBookmarksMenuActions();
             registerBookmarksPopupMenuActions();
 
-            EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-            editorModule.addEditorProviderChangeListener((editorProvider) -> getBookmarksManager().setEditorProvider(editorProvider));
+            // TODO
+//            EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
+//            editorModule.addEditorProviderChangeListener((editorProvider) -> getBookmarksManager().setEditorProvider(editorProvider));
         });
     }
 

@@ -42,7 +42,6 @@ import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.editor.api.EditorProvider;
 import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
@@ -67,21 +66,13 @@ public class BinedInspectorModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private EditorProvider editorProvider;
-
     private BinEdInspectorManager binEdInspectorManager;
     private BasicValuesPositionColorModifier basicValuesColorModifier;
 
     public BinedInspectorModule() {
     }
 
-    public void setEditorProvider(EditorProvider editorProvider) {
-        setEditorProvider(editorProvider, null);
-    }
-
-    public void setEditorProvider(EditorProvider editorProvider, @Nullable BinEdInspectorComponentExtension.ComponentsProvider componentsProvider) {
-        this.editorProvider = editorProvider;
-
+    public void setComponentsProvider(@Nullable BinEdInspectorComponentExtension.ComponentsProvider componentsProvider) {
         BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
         inspectorManager.addInspector(new BasicValuesInspectorProvider());
         basicValuesColorModifier = new BasicValuesPositionColorModifier();
@@ -100,16 +91,7 @@ public class BinedInspectorModule implements Module {
         return resourceBundle;
     }
 
-    @Nonnull
-    public EditorProvider getEditorProvider() {
-        return Objects.requireNonNull(editorProvider, "Editor provider was not yet initialized");
-    }
-
     private void ensureSetup() {
-        if (editorProvider == null) {
-            getEditorProvider();
-        }
-
         if (resourceBundle == null) {
             getResourceBundle();
         }
