@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.gui;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.command.EmptyBinaryDataUndoRedo;
@@ -33,7 +37,9 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
-import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.App;
+import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Binary editor component panel.
@@ -63,9 +69,53 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new EmptyBinaryDataUndoRedo());
         codeArea.setCommandHandler(commandHandler);
 
+        String popupMenuId = BinedModule.BINARY_POPUP_MENU_ID + ".multi";
+
+        JPopupMenu codeAreaPopupMenu = new JPopupMenu() {
+            @Override
+            public void show(Component invoker, int x, int y) {
+                if (invoker == null) {
+                    return;
+                }
+                
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
+                }
+
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.EDITOR);
+                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
+                popupMenu.addPopupMenuListener(new PopupMenuListener() {
+                    @Override
+                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                    }
+
+                    @Override
+                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                        codeAreaPopupMenuHandler.dropPopupMenu(popupMenuId);
+                    }
+
+                    @Override
+                    public void popupMenuCanceled(PopupMenuEvent e) {
+                    }
+                });
+                popupMenu.show(invoker, x, y);
+            }
+        };
+        // TODO
+        /*MenuPopupModuleApi menuPopupModule = App.getModule(MenuPopupModuleApi.class);
+        codeArea.setComponentPopupMenu(menuPopupModule.createComponentPopupMenu(BinedModule.CODE_AREA_POPUP_MENU_ID, () -> {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+            return actionModule.createActionContextRegistrar(frameModule.getFrameHandler().getActionManager());
+        })); */
+        codeArea.setComponentPopupMenu(codeAreaPopupMenu);
         add(codeArea);
     }
-    
+
     @Nonnull
     protected SectCodeArea createCodeArea() {
         return new SectCodeArea();
@@ -82,14 +132,13 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         }
     }
 
-    public void onInitFromPreferences(OptionsStorage options) {
+    /* public void onInitFromPreferences(OptionsStorage options) {
         org.exbin.framework.bined.settings.FontSizeOptions fontSizeOptions =
             new org.exbin.framework.bined.settings.FontSizeOptions(options);
         int fontSize = fontSizeOptions.getFontSize();
         Font currentFont = codeArea.getCodeFont();
         codeArea.setCodeFont(new Font(currentFont.getName(), currentFont.getStyle(), fontSize));
-    }
-
+    } */
     public void addComponentExtension(BinEdComponentExtension extension) {
         componentExtensions.add(extension);
         if (undoRedo != null) {

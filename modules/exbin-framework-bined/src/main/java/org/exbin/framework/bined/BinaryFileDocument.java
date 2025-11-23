@@ -23,9 +23,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.document.api.ComponentDocument;
 import org.exbin.framework.file.api.FileDocument;
+import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 
 /**
  * BinEd binary document.
@@ -62,7 +64,8 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Nonnull
     protected BinEdComponentPanel createComponentPanel() {
-        return new BinEdComponentPanel();
+        BinEdComponentPanel componentPanel = new BinEdComponentPanel();
+        return componentPanel;
     }
 
     @Nonnull

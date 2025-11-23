@@ -225,7 +225,6 @@ public class BinedLauncherModule implements LauncherModule {
             if (!demoMode) {
                 frameModule.registerExitAction();
             }
-            sideBarModule.registerFrameSideBar();
             frameModule.registerBarsVisibilityActions();
 
             fileModule.registerMenuFileHandlingActions();
@@ -308,6 +307,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             DocumentDocking documentDocking = dockingModule.createDefaultDocking(dockingType);
             frameModule.attachFrameContentComponent(documentDocking);
+            sideBarModule.registerDockingSideBar(documentDocking);
             addonManagerModule.registerAddonManagerMenuItem();
 
             frameHandler.setDefaultSize(new Dimension(600, 400));

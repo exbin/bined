@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -318,6 +319,12 @@ public class BinedModule implements Module {
             public Document createDefaultDocument() {
                 return new BinaryFileDocument();
             }
+            
+            @Nonnull
+            @Override
+            public Optional<Document> openDefaultDocument() {
+                return Optional.empty();
+            }
         });
     }
 
@@ -490,8 +497,8 @@ public class BinedModule implements Module {
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         ActionManagement actionManager = actionModule.createActionManager(contextManager);
-        ActionContextRegistration ActionContextRegistrar = actionModule.createActionContextRegistrar(actionManager);
-        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, ActionContextRegistrar);
+        ActionContextRegistration actionContextRegistrar = actionModule.createActionContextRegistrar(actionManager);
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionContextRegistrar);
         return popupMenu;
     }
 
