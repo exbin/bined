@@ -41,8 +41,8 @@ import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.menu.api.MenuModuleApi;
 import org.exbin.framework.options.settings.api.ApplySettingsContribution;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
@@ -146,7 +146,7 @@ public class BinedInspectorModule implements Module {
         settingsManagement.registerOptionsSettings(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
         
         settingsManagement.registerOptionsSettings(DataInspectorFontOptions.class, (optionsStorage) -> new DataInspectorFontOptions(optionsStorage));
-        settingsManagement.registerApplySetting(FileHandler.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);

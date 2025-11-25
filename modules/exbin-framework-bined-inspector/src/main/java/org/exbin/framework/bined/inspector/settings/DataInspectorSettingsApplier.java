@@ -20,7 +20,7 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BasicValuesInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
@@ -40,7 +40,7 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
-        if (!(instance instanceof BinEdFileHandler)) {
+        if (!(instance instanceof BinaryFileDocument)) {
             return;
         }
 
@@ -48,7 +48,7 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
         DataInspectorFontOptions fontOptions = settingsOptionsProvider.getSettingsOptions(DataInspectorFontOptions.class);
 
         Font defaultFont = null;
-        BinEdComponentPanel component = ((BinEdFileHandler) instance).getComponent();
+        BinEdComponentPanel component = ((BinaryFileDocument) instance).getComponent();
         BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(options.isShowParsingPanel());
         boolean useDefaultFont = fontOptions.isUseDefaultFont();

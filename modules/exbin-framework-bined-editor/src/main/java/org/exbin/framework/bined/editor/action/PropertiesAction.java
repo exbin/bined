@@ -24,11 +24,11 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.DialogParentComponent;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.editor.gui.BinEdFilePropertiesPanel;
 import org.exbin.framework.context.api.ContextChangeRegistration;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.window.api.gui.CloseControlPanel;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
 
@@ -43,7 +43,7 @@ public class PropertiesAction extends AbstractAction {
     public static final String ACTION_ID = "propertiesAction";
 
     private DialogParentComponent dialogParentComponent;
-    private FileHandler fileHandler;
+    private BinaryFileDocument binaryDocument;
 
     public PropertiesAction() {
     }
@@ -56,9 +56,9 @@ public class PropertiesAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                    fileHandler = instance;
-                    setEnabled(fileHandler instanceof BinEdFileHandler);
+                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
+                    setEnabled(binaryDocument != null);
                 });
                 registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
                     dialogParentComponent = instance;
@@ -69,13 +69,9 @@ public class PropertiesAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!(fileHandler instanceof BinEdFileHandler)) {
-            return;
-        }
-
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         BinEdFilePropertiesPanel propertiesPanel = new BinEdFilePropertiesPanel();
-        propertiesPanel.setFileHandler((BinEdFileHandler) fileHandler);
+        propertiesPanel.setBinaryDocument(binaryDocument);
         CloseControlPanel controlPanel = new CloseControlPanel();
         final WindowHandler dialog = windowModule.createDialog(propertiesPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), propertiesPanel.getClass(), propertiesPanel.getResourceBundle());

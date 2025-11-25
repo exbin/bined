@@ -42,11 +42,10 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.compare.gui.CompareFilesPanel;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.docking.api.ContextDocking;
 import org.exbin.framework.docking.api.DocumentDocking;
-import org.exbin.framework.docking.api.MultiDocking;
+import org.exbin.framework.docking.multi.api.MultiDocking;
 import org.exbin.framework.document.api.Document;
 import org.exbin.framework.file.api.AllFileTypes;
 import org.exbin.framework.file.api.FileDocument;
@@ -130,10 +129,11 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
             @Override
             public CompareFilesPanel.FileRecord openFile() {
                 final File[] result = new File[1];
-                FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-                fileModule.getFileActions().openFile((URI fileUri, FileType fileType) -> {
-                    result[0] = new File(fileUri);
-                }, new AllFileTypes(), null); // TODO documentDocking
+                // TODO documentDocking
+//                FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+//                fileModule.getFileActions().openFile((URI fileUri, FileType fileType) -> {
+//                    result[0] = new File(fileUri);
+//                }, new AllFileTypes(), null);
 
                 if (result[0] == null) {
                     return null;
@@ -153,7 +153,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
             @Nonnull
             @Override
             public BinaryData getFileData(int index) {
-                return ((BinEdFileHandler) fileDocuments.get(index)).getCodeArea().getContentData();
+                return ((BinaryFileDocument) fileDocuments.get(index)).getCodeArea().getContentData();
             }
         });
         dialog.showCentered(dialogParentComponent.getComponent());

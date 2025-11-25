@@ -29,7 +29,7 @@ import org.exbin.auxiliary.binary_data.delta.SourceSegment;
 import org.exbin.auxiliary.binary_data.delta.list.DefaultDoublyLinkedList;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
 /**
@@ -144,9 +144,9 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane structureScrollPane;
     // End of variables declaration//GEN-END:variables
 
-    public void setFileHandler(BinEdFileHandler fileHandler) {
-        SectCodeArea codeArea = fileHandler.getCodeArea();
-        Optional<URI> fileUri = fileHandler.getFileUri();
+    public void setBinaryDocument(BinaryFileDocument binaryDocument) {
+        SectCodeArea codeArea = binaryDocument.getCodeArea();
+        Optional<URI> fileUri = binaryDocument.getFileUri();
         fileNameTextField.setText(fileUri.isPresent() ? fileUri.get().toString() : "");
         fileSizeTextField.setText(Long.toString(codeArea.getDataSize()));
 

@@ -47,8 +47,8 @@ import org.exbin.framework.action.api.ActionManagement;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.macro.action.AddMacroAction;
@@ -69,7 +69,6 @@ import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.document.api.ContextDocument;
-import org.exbin.framework.file.api.FileHandler;
 import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -91,7 +90,7 @@ public class MacroManager {
     private final List<MacroRecord> macroRecords = new ArrayList<>();
     private MacroOptions macroOptions;
 
-    private BinEdFileHandler fileHandler;
+    private BinaryFileDocument binaryDocument;
     private BinaryDataComponent binaryDataComponent = null;
 
     private final ManageMacrosAction manageMacrosAction = new ManageMacrosAction();
@@ -270,8 +269,8 @@ public class MacroManager {
             macrosMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
                 public void register(ContextChangeRegistration registrar) {
-                    registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                        fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                    registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                        binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                     });
                     registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                         contextManager.changeActiveState(ContextComponent.class, instance);
@@ -316,8 +315,8 @@ public class MacroManager {
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                    fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
+                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                 });
                 registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
                     contextManager.changeActiveState(ContextComponent.class, instance);
@@ -395,20 +394,20 @@ public class MacroManager {
                     }
                     case FIND_TEXT: {
                         if (parameters.size() > 1) {
-                            if (fileHandler == null) {
+                            if (binaryDocument == null) {
                                 throw new IllegalStateException("No active file");
                             }
-                            BinEdComponentPanel activePanel = fileHandler.getComponent();
+                            BinEdComponentPanel activePanel = binaryDocument.getComponent();
                             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                             componentExtension.performSearchText((String) parameters.get(0));
                         }
                         continue;
                     }
                     case FIND_AGAIN: {
-                        if (fileHandler == null) {
+                        if (binaryDocument == null) {
                             throw new IllegalStateException("No active file");
                         }
-                        BinEdComponentPanel activePanel = fileHandler.getComponent();
+                        BinEdComponentPanel activePanel = binaryDocument.getComponent();
                         BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
                         componentExtension.performFindAgain();
                         continue;

@@ -214,11 +214,6 @@ public class BinedModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_MENU_GROUP_ID));
     }
 
-    @Nullable
-    public BinaryStatusPanel getBinaryStatusPanel() {
-        return fileManager.getBinaryStatusPanel();
-    }
-
     @Nonnull
     private Action getSettingsAction() {
         OptionsSettingsModuleApi optionsModule = App.getModule(OptionsSettingsModuleApi.class);
@@ -487,7 +482,7 @@ public class BinedModule implements Module {
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ActiveContextManagement contextManager = contextModule.createContextManager();
-        BinEdDataComponent binEdDataComponent = new BinEdDataComponent(codeArea);
+        BinEdDataComponent binEdDataComponent = new BinEdDataComponent(null);
         binEdDataComponent.setContextProvider(contextManager);
         contextManager.changeActiveState(ContextComponent.class, binEdDataComponent);
         // TODO

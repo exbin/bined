@@ -52,10 +52,11 @@ import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
-import org.exbin.framework.docking.api.BasicDockingType;
 import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.docking.multi.api.DockingMultiModuleApi;
 import org.exbin.framework.document.api.DocumentModuleApi;
+import org.exbin.framework.document.recent.DocumentRecentModule;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpModuleApi;
@@ -149,6 +150,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
             DockingModuleApi dockingModule = App.getModule(DockingModuleApi.class);
+            DockingMultiModuleApi dockingMultiModule = App.getModule(DockingMultiModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             ActionManagerModule actionManagerModule = App.getModule(ActionManagerModule.class);
             MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -160,6 +162,7 @@ public class BinedLauncherModule implements LauncherModule {
             HelpOnlineModuleApi helpOnlineModule = App.getModule(HelpOnlineModuleApi.class);
             OperationUndoModuleApi undoModule = App.getModule(OperationUndoModuleApi.class);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            DocumentRecentModule documentRecentModule = App.getModule(DocumentRecentModule.class);
             OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
@@ -227,13 +230,13 @@ public class BinedLauncherModule implements LauncherModule {
             }
             frameModule.registerBarsVisibilityActions();
 
-            fileModule.registerMenuFileHandlingActions();
+            dockingModule.registerMenuFileHandlingActions();
             if (dockingType == BasicDockingType.MULTI) {
-                dockingModule.registerMenuFileCloseActions();
+                dockingMultiModule.registerMenuFileCloseActions();
             }
 
-            fileModule.registerToolBarFileHandlingActions();
-            fileModule.registerRecenFilesMenuActions();
+            dockingModule.registerToolBarFileHandlingActions();
+            documentRecentModule.registerRecenFilesMenuActions();
             fileModule.registerCloseListener();
 
             undoModule.registerMainMenu();
@@ -305,7 +308,7 @@ public class BinedLauncherModule implements LauncherModule {
                 });
             }
 
-            DocumentDocking documentDocking = dockingModule.createDefaultDocking(dockingType);
+            DocumentDocking documentDocking = dockingType == BasicDockingType.SINGLE ? dockingModule.createDefaultDocking() : dockingMultiModule.createDefaultDocking();
             frameModule.attachFrameContentComponent(documentDocking);
             sideBarModule.registerDockingSideBar(documentDocking);
             addonManagerModule.registerAddonManagerMenuItem();
@@ -387,5 +390,9 @@ public class BinedLauncherModule implements LauncherModule {
 
         settingsManager.registerOptionsSettings(StartupOptions.class, (optionsStorage) -> new StartupOptions(optionsStorage));
         settingsManager.registerComponent(StartupSettingsComponent.COMPONENT_ID, new StartupSettingsComponent());
+    }
+
+    public enum BasicDockingType {
+        SINGLE, MULTI;
     }
 }

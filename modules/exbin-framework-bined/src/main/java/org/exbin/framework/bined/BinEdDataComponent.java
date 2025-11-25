@@ -37,10 +37,10 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
 import org.exbin.framework.text.encoding.CharsetListEncodingState;
-import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.text.font.TextFontState;
 
 /**
@@ -51,20 +51,25 @@ import org.exbin.framework.text.font.TextFontState;
 @ParametersAreNonnullByDefault
 public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState {
 
-    protected final CodeAreaCore codeArea;
+    protected final BinEdComponentPanel component;
     protected Font defaultFont;
     protected ActiveContextProvider contextProvider;
     protected List<String> encodings = new ArrayList<>();
 
-    public BinEdDataComponent(CodeAreaCore codeArea) {
-        this.codeArea = codeArea;
-        defaultFont = ((FontCapable) codeArea).getCodeFont();
+    public BinEdDataComponent(BinEdComponentPanel component) {
+        this.component = component;
+        defaultFont = ((FontCapable) component.getCodeArea()).getCodeFont();
+    }
+
+    @Nonnull
+    public BinEdComponentPanel getComponent() {
+        return component;
     }
 
     @Nonnull
     @Override
     public CodeAreaCore getCodeArea() {
-        return codeArea;
+        return component.getCodeArea();
     }
 
     public void setContextProvider(ActiveContextProvider contextProvider) {
@@ -73,32 +78,32 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public void performCut() {
-        codeArea.cut();
+        getCodeArea().cut();
     }
 
     @Override
     public void performCopy() {
-        codeArea.copy();
+        getCodeArea().copy();
     }
 
     @Override
     public void performPaste() {
-        codeArea.paste();
+        getCodeArea().paste();
     }
 
     @Override
     public void performDelete() {
-        codeArea.delete();
+        getCodeArea().delete();
     }
 
     @Override
     public void performSelectAll() {
-        codeArea.selectAll();
+        getCodeArea().selectAll();
     }
 
     @Override
     public boolean hasSelection() {
-        return codeArea.hasSelection();
+        return getCodeArea().hasSelection();
     }
 
     @Override
@@ -108,7 +113,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public boolean isEditable() {
-        return codeArea.isEditable();
+        return getCodeArea().isEditable();
     }
 
     @Override
@@ -118,12 +123,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public boolean canPaste() {
-        return codeArea.isEditable() && codeArea.canPaste();
+        return getCodeArea().isEditable() && getCodeArea().canPaste();
     }
 
     @Override
     public boolean canDelete() {
-        return codeArea.isEditable();
+        return getCodeArea().isEditable();
     }
 
     @Override
@@ -134,12 +139,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Nonnull
     @Override
     public String getEncoding() {
-        return ((CharsetCapable) codeArea).getCharset().name();
+        return ((CharsetCapable) getCodeArea()).getCharset().name();
     }
 
     @Override
     public void setEncoding(String encoding) {
-        ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
+        ((CharsetCapable) getCodeArea()).setCharset(Charset.forName(encoding));
         if (contextProvider != null) {
             contextProvider.notifyStateChange(ContextComponent.class, CharsetEncodingState.ChangeType.ENCODING);
         }
@@ -163,7 +168,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Nonnull
     @Override
     public Font getCurrentFont() {
-        return ((FontCapable) codeArea).getCodeFont();
+        return ((FontCapable) getCodeArea()).getCodeFont();
     }
 
     @Nonnull
@@ -174,7 +179,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public void setCurrentFont(Font font) {
-        ((FontCapable) codeArea).setCodeFont(font);
+        ((FontCapable) getCodeArea()).setCodeFont(font);
         if (contextProvider != null) {
             contextProvider.notifyStateChange(ContextComponent.class, TextFontState.ChangeType.FONT);
         }
@@ -183,12 +188,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Nonnull
     @Override
     public CodeType getCodeType() {
-        return ((CodeTypeCapable) codeArea).getCodeType();
+        return ((CodeTypeCapable) getCodeArea()).getCodeType();
     }
 
     @Override
     public void setCodeType(CodeType codeType) {
-        ((CodeTypeCapable) codeArea).setCodeType(codeType);
+        ((CodeTypeCapable) getCodeArea()).setCodeType(codeType);
         if (contextProvider != null) {
             contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.CODE_TYPE);
         }
@@ -197,12 +202,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Nonnull
     @Override
     public PositionCodeType getPositionCodeType() {
-        return ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
+        return ((PositionCodeTypeCapable) getCodeArea()).getPositionCodeType();
     }
 
     @Override
     public void setPositionCodeType(PositionCodeType positionCodeType) {
-        ((PositionCodeTypeCapable) codeArea).setPositionCodeType(positionCodeType);
+        ((PositionCodeTypeCapable) getCodeArea()).setPositionCodeType(positionCodeType);
         if (contextProvider != null) {
             contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.POSITION_CODE_TYPE);
         }
@@ -211,12 +216,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Nonnull
     @Override
     public CodeCharactersCase getCodeCharactersCase() {
-        return ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
+        return ((CodeCharactersCaseCapable) getCodeArea()).getCodeCharactersCase();
     }
 
     @Override
     public void setCodeCharactersCase(CodeCharactersCase codeCharactersCase) {
-        ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeCharactersCase);
+        ((CodeCharactersCaseCapable) getCodeArea()).setCodeCharactersCase(codeCharactersCase);
         if (contextProvider != null) {
             contextProvider.notifyStateChange(ContextComponent.class, CodeTypeState.ChangeType.HEX_CHARACTERS_CASE);
         }
@@ -224,7 +229,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public boolean isShowNonprintables() {
-        ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
+        ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) getCodeArea()).getPainter();
         NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
         if (nonprintablesCodeAreaAssessor != null) {
             return nonprintablesCodeAreaAssessor.isShowNonprintables();
@@ -234,11 +239,11 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public void setShowNonprintables(boolean showNonprintables) {
-        ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
+        ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) getCodeArea()).getPainter();
         NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
         if (nonprintablesCodeAreaAssessor != null) {
             nonprintablesCodeAreaAssessor.setShowNonprintables(showNonprintables);
-            codeArea.repaint();
+            getCodeArea().repaint();
             if (contextProvider != null) {
                 contextProvider.notifyStateChange(ContextComponent.class, NonprintablesState.ChangeType.NONPRINTABLES);
             }

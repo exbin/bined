@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
@@ -42,7 +41,7 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 @ParametersAreNonnullByDefault
 public class BinEdFileManager {
 
-    private BinaryStatusPanel binaryStatusPanel;
+    private BinaryStatus binaryStatus = new BinaryStatus();
     private final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
     private final List<CodeAreaColorAssessor> painterPositionColorModifiers = new ArrayList<>();
@@ -52,13 +51,14 @@ public class BinEdFileManager {
     public BinEdFileManager() {
     }
 
-    public void initFileHandler(BinEdFileHandler fileHandler) {
-        fileHandler.setSegmentsRepository(segmentsRepository);
-        BinEdComponentPanel componentPanel = fileHandler.getComponent();
-        initComponentPanel(componentPanel);
+    public void initFileHandler(BinEdDataComponent binaryDataComponent) {
+        // fileHandler.setSegmentsRepository(segmentsRepository);
+        initComponentPanel(binaryDataComponent);
     }
 
-    public void initComponentPanel(BinEdComponentPanel componentPanel) {
+    public void initComponentPanel(BinEdDataComponent binaryDataComponent) {
+        BinEdComponentPanel componentPanel = binaryDataComponent.getComponent();
+//        BinEdComponentPanel componentPanel = fileHandler.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             if (componentExtension.isPresent()) {
@@ -75,6 +75,7 @@ public class BinEdFileManager {
         for (CodeAreaColorAssessor modifier : painterPositionColorModifiers) {
             painter.addColorModifier(modifier);
         }
+        binaryStatus.attachCodeArea(binaryDataComponent);
     }
 
     public void initCommandHandler(BinEdComponentPanel componentPanel) {
@@ -109,7 +110,7 @@ public class BinEdFileManager {
     }
 
     public void registerStatusBar(BinaryStatusPanel binaryStatusPanel) {
-        this.binaryStatusPanel = binaryStatusPanel;
+        binaryStatus.setBinaryStatusPanel(binaryStatusPanel);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         frameModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
         frameModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
@@ -121,13 +122,13 @@ public class BinEdFileManager {
     }
 
     public void updateTextEncodingStatus(EncodingsManager encodingsHandler) {
-        if (binaryStatusPanel != null) {
+        // if (binaryStatusPanel != null) {
             // TODO encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
-        }
+        // }
     }
 
     public void setBinaryStatusController(BinaryStatusPanel.Controller binaryStatusController) {
-        binaryStatusPanel.setController(binaryStatusController);
+        binaryStatus.setBinaryStatusController(binaryStatusController);
     }
 
     public void setCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
@@ -141,11 +142,6 @@ public class BinEdFileManager {
     @Nonnull
     public Iterable<BinEdFileExtension> getBinEdComponentExtensions() {
         return binEdComponentExtensions;
-    }
-
-    @Nullable
-    public BinaryStatusPanel getBinaryStatusPanel() {
-        return binaryStatusPanel;
     }
 
     @ParametersAreNonnullByDefault

@@ -33,11 +33,11 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.utils.ActionUtils;
-import org.exbin.framework.bined.BinEdFileHandler;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.search.BinEdComponentSearch;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.document.api.ContextDocument;
 
 /**
  * Find/replace actions for binary search.
@@ -97,7 +97,7 @@ public class FindReplaceActions {
 
         public static final String ACTION_ID = "binarySearchFindAction";
 
-        private BinEdFileHandler fileHandler;
+        private BinaryFileDocument binaryDocument;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -123,16 +123,16 @@ public class FindReplaceActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = fileHandler.getComponent();
+            BinEdComponentPanel activePanel = binaryDocument.getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
         }
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
-                setEnabled(fileHandler != null);
+            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
+                setEnabled(binaryDocument != null);
             });
         }
     }
@@ -142,7 +142,7 @@ public class FindReplaceActions {
 
         public static final String ACTION_ID = "binarySearchFindAgainAction";
 
-        private BinEdFileHandler fileHandler;
+        private BinaryFileDocument binaryDocument;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -167,7 +167,7 @@ public class FindReplaceActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = fileHandler.getComponent();
+            BinEdComponentPanel activePanel = binaryDocument.getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.performFindAgain();
 
@@ -178,9 +178,9 @@ public class FindReplaceActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
-                setEnabled(fileHandler != null);
+            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
+                setEnabled(binaryDocument != null);
             });
         }
     }
@@ -190,7 +190,7 @@ public class FindReplaceActions {
 
         public static final String ACTION_ID = "binarySearchReplaceAction";
 
-        private BinEdFileHandler fileHandler;
+        private BinaryFileDocument binaryDocument;
 
         public void setup(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -216,16 +216,16 @@ public class FindReplaceActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = fileHandler.getComponent();
+            BinEdComponentPanel activePanel = binaryDocument.getComponent();
             BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
         }
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                fileHandler = instance instanceof BinEdFileHandler ? (BinEdFileHandler) instance : null;
-                setEnabled(fileHandler != null);
+            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
+                setEnabled(binaryDocument != null);
             });
         }
     }

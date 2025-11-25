@@ -25,11 +25,11 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.context.api.ContextChangeRegistration;
-import org.exbin.framework.bined.BinEdFileHandler;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
-import org.exbin.framework.file.api.FileHandler;
+import org.exbin.framework.document.api.ContextDocument;
 
 /**
  * Show parsing panel action.
@@ -41,7 +41,7 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     public static final String ACTION_ID = "showParsingPanelAction";
 
-    private FileHandler fileHandler;
+    private BinaryFileDocument binaryDocument;
 
     public ShowParsingPanelAction() {
     }
@@ -49,16 +49,17 @@ public class ShowParsingPanelAction extends AbstractAction {
     public void setup(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(FileHandler.class, (instance) -> {
-                    fileHandler = instance;
-                    setEnabled(fileHandler instanceof BinEdFileHandler);
+                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
+                    setEnabled(binaryDocument != null);
                     boolean showParsingPanel = false;
-                    if (fileHandler instanceof BinEdFileHandler) {
-                        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
+                    if (binaryDocument != null) {
+                        BinEdComponentPanel component = binaryDocument.getComponent();
                         BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
                         showParsingPanel = componentExtension.isShowParsingPanel();
                     }
@@ -70,21 +71,13 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!(fileHandler instanceof BinEdFileHandler)) {
-            return;
-        }
-
-        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
+        BinEdComponentPanel component = binaryDocument.getComponent();
         BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         setShowParsingPanel(!componentExtension.isShowParsingPanel());
     }
 
     public void setShowParsingPanel(boolean show) {
-        if (!(fileHandler instanceof BinEdFileHandler)) {
-            return;
-        }
-
-        BinEdComponentPanel component = ((BinEdFileHandler) fileHandler).getComponent();
+        BinEdComponentPanel component = binaryDocument.getComponent();
         BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(show);
         putValue(Action.SELECTED_KEY, show);
