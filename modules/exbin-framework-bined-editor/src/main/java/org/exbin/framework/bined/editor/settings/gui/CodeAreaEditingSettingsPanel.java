@@ -39,6 +39,7 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
+    private SettingsModifiedListener settingsModifiedListener;
 
     public CodeAreaEditingSettingsPanel() {
         initComponents();
@@ -92,7 +93,19 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
 
         enterKeyHandlingModeLabel.setText(resourceBundle.getString("enterKeyHandlingModeLabel.text")); // NOI18N
 
+        enterKeyHandlingModeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                enterKeyHandlingModeComboBoxItemStateChanged(evt);
+            }
+        });
+
         tabKeyHandlingModeLabel.setText(resourceBundle.getString("tabKeyHandlingModeLabel.text")); // NOI18N
+
+        tabKeyHandlingModeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                tabKeyHandlingModeComboBoxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -125,6 +138,14 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void enterKeyHandlingModeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_enterKeyHandlingModeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_enterKeyHandlingModeComboBoxItemStateChanged
+
+    private void tabKeyHandlingModeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tabKeyHandlingModeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_tabKeyHandlingModeComboBoxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> enterKeyHandlingModeComboBox;
     private javax.swing.JLabel enterKeyHandlingModeLabel;
@@ -132,7 +153,14 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
     private javax.swing.JLabel tabKeyHandlingModeLabel;
     // End of variables declaration//GEN-END:variables
 
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+    }
+
     @Override
     public void setSettingsModifiedListener(SettingsModifiedListener listener) {
+        settingsModifiedListener = listener;
     }
 }

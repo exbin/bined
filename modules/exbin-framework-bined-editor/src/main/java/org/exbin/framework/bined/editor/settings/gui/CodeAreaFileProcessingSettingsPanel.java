@@ -38,6 +38,7 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaFileProcessingSettingsPanel.class);
+    private SettingsModifiedListener settingsModifiedListener;
 
     public CodeAreaFileProcessingSettingsPanel() {
         initComponents();
@@ -78,10 +79,16 @@ public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel impl
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fileHandlingModeLabel = new javax.swing.JLabel();
+        fileProcessingModeLabel = new javax.swing.JLabel();
         fileProcessingModeComboBox = new javax.swing.JComboBox<>();
 
-        fileHandlingModeLabel.setText(resourceBundle.getString("fileHandlingModeLabel.text")); // NOI18N
+        fileProcessingModeLabel.setText(resourceBundle.getString("fileProcessingModeLabel.text")); // NOI18N
+
+        fileProcessingModeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                fileProcessingModeComboBoxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,7 +99,7 @@ public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel impl
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fileProcessingModeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(fileHandlingModeLabel)
+                        .addComponent(fileProcessingModeLabel)
                         .addGap(0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -100,19 +107,30 @@ public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel impl
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(fileHandlingModeLabel)
+                .addComponent(fileProcessingModeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fileProcessingModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fileProcessingModeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fileProcessingModeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_fileProcessingModeComboBoxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel fileHandlingModeLabel;
     private javax.swing.JComboBox<String> fileProcessingModeComboBox;
+    private javax.swing.JLabel fileProcessingModeLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+    }
 
     @Override
     public void setSettingsModifiedListener(SettingsModifiedListener listener) {
+        settingsModifiedListener = listener;
     }
 }

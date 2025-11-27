@@ -17,8 +17,8 @@ package org.exbin.framework.bined.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import org.exbin.framework.bined.StatusDocumentSizeFormat;
-import org.exbin.framework.bined.StatusCursorPositionFormat;
+import org.exbin.framework.bined.status.StatusDocumentSizeFormat;
+import org.exbin.framework.bined.status.StatusCursorPositionFormat;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;

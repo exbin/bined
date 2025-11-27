@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.framework.bined.StatusCursorPositionFormat;
-import org.exbin.framework.bined.StatusDocumentSizeFormat;
+import org.exbin.framework.bined.status.StatusCursorPositionFormat;
+import org.exbin.framework.bined.status.StatusDocumentSizeFormat;
 import org.exbin.framework.options.settings.api.SettingsOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 

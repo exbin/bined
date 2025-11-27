@@ -43,8 +43,8 @@ public class CodeAreaFileProcessingSettingsComponent implements SettingsComponen
         BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
         ResourceBundle resourceBundle = binedEditorModule.getResourceBundle();
         List<String> fileHandlingModes = new ArrayList<>();
-        fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.memory"));
-        fileHandlingModes.add(resourceBundle.getString("fileHandlingMode.delta"));
+        fileHandlingModes.add(resourceBundle.getString("fileProcessingMode.memory"));
+        fileHandlingModes.add(resourceBundle.getString("fileProcessingMode.delta"));
         panel.setFileProcessingModes(fileHandlingModes);
         return panel;
     }

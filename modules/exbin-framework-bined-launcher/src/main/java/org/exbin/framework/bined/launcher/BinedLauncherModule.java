@@ -149,6 +149,7 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
+            DocumentRecentModule documentRecentModule = App.getModule(DocumentRecentModule.class);
             DockingModuleApi dockingModule = App.getModule(DockingModuleApi.class);
             DockingMultiModuleApi dockingMultiModule = App.getModule(DockingMultiModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
@@ -162,7 +163,6 @@ public class BinedLauncherModule implements LauncherModule {
             HelpOnlineModuleApi helpOnlineModule = App.getModule(HelpOnlineModuleApi.class);
             OperationUndoModuleApi undoModule = App.getModule(OperationUndoModuleApi.class);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-            DocumentRecentModule documentRecentModule = App.getModule(DocumentRecentModule.class);
             OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
@@ -186,6 +186,7 @@ public class BinedLauncherModule implements LauncherModule {
                 updateModule.registerSettings();
             }
 
+            fileModule.registerFileProviders();
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(optionsStorage);
             boolean multiFileMode = binaryAppearanceParameters.isMultiFileMode();
             BasicDockingType dockingType = editorProvideType != null

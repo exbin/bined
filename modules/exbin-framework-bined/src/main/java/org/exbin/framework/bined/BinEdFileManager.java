@@ -57,7 +57,7 @@ public class BinEdFileManager {
     }
 
     public void initComponentPanel(BinEdDataComponent binaryDataComponent) {
-        BinEdComponentPanel componentPanel = binaryDataComponent.getComponent();
+        BinEdComponentPanel componentPanel = (BinEdComponentPanel) binaryDataComponent.getComponent();
 //        BinEdComponentPanel componentPanel = fileHandler.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
@@ -87,6 +87,11 @@ public class BinEdFileManager {
             commandHandler = new CodeAreaOperationCommandHandler(codeArea, componentPanel.getUndoRedo().orElse(null));
         }
         codeArea.setCommandHandler(commandHandler);
+    }
+
+    @Nonnull
+    public SegmentsRepository getSegmentsRepository() {
+        return segmentsRepository;
     }
 
     public void addPainterColorModifier(CodeAreaColorAssessor modifier) {
