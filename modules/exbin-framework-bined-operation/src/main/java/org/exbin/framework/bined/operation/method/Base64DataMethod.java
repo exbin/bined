@@ -114,7 +114,7 @@ public class Base64DataMethod implements ConvertDataMethod {
         return binaryData;
     }
 
-    public void convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType, EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
+    public static void convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType, EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
         switch (operationType) {
             case BASIC_ENCODER: {
                 Base64.Encoder encoder = Base64.getEncoder();

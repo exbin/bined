@@ -1,5 +1,5 @@
 0.2.5
-- TODO: Added sidebar support
+- Added sidebar support
 - Added tabs support for inspector panel 
 - Added copy as / paste from dialogs
 - Added copy/paste formats for C, Java and Python (by mengnankkkk) 

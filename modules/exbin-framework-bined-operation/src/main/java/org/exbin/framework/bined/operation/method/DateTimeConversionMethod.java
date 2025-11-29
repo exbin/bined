@@ -131,7 +131,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
      * @throws IllegalStateException on conversion error
      */
     @Nonnull
-    public String convertData(BinaryData sourceBinaryData, long position, long length, ConversionConfig config,
+    public static String convertData(BinaryData sourceBinaryData, long position, long length, ConversionConfig config,
             EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
 
         // Validate data length
@@ -177,7 +177,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
      * @param config conversion configuration
      * @return timestamp value
      */
-    private long parseTimestamp(byte[] data, ConversionConfig config) {
+    private static long parseTimestamp(byte[] data, ConversionConfig config) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
 
         // Set byte order
@@ -211,7 +211,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
      * @return formatted date/time string
      */
     @Nonnull
-    private String formatDateTime(long timestamp, ConversionConfig config) {
+    private static String formatDateTime(long timestamp, ConversionConfig config) {
         Instant instant = Instant.ofEpochSecond(timestamp);
 
         // Format in UTC

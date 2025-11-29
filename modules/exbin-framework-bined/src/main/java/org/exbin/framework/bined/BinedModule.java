@@ -45,8 +45,6 @@ import javax.swing.event.PopupMenuListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
-import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
-import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.section.SectCodeArea;
@@ -76,10 +74,9 @@ import org.exbin.framework.contribution.api.SubSequenceContributionRule;
 import org.exbin.framework.docking.api.ContextDocking;
 import org.exbin.framework.docking.api.DocumentDocking;
 import org.exbin.framework.document.api.Document;
-import org.exbin.framework.document.api.DocumentData;
+import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.document.api.DocumentManagement;
 import org.exbin.framework.document.api.DocumentModuleApi;
-import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
@@ -91,9 +88,8 @@ import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
-import org.exbin.framework.document.api.DocumentProvider;
 import org.exbin.framework.document.api.DocumentType;
-import org.exbin.framework.file.api.FileDocumentData;
+import org.exbin.framework.file.api.FileDocumentSource;
 
 /**
  * Binary data editor module.
@@ -262,6 +258,7 @@ public class BinedModule implements Module {
         DocumentManagement documentManager = documentModule.getMainDocumentManager();
         documentManager.registerDocumentType(new DocumentType() {
             @Nonnull
+            @Override
             public String getTypeId() {
                 return "binary";
             }
@@ -281,10 +278,10 @@ public class BinedModule implements Module {
 
             @Nonnull
             @Override
-            public Optional<Document> openDocument(DocumentData documentData) {
-                if (documentData instanceof FileDocumentData) {
+            public Optional<Document> openDocument(DocumentSource documentSource) {
+                if (documentSource instanceof FileDocumentSource) {
                     BinaryFileDocument document = createDefaultDocument();
-                    File file = ((FileDocumentData) documentData).getFile();
+                    File file = ((FileDocumentSource) documentSource).getFile();
 
                     try {
                         BinaryData oldData = document.getContentData();
@@ -296,15 +293,15 @@ public class BinedModule implements Module {
                             this.fileUri = fileUri;
                             oldData.dispose();
                         } else { */
-                            try (FileInputStream fileStream = new FileInputStream(file)) {
-                                BinaryData data = oldData;
-                                if (!(data instanceof PagedData)) {
-                                    data = new ByteArrayPagedData();
-                                    oldData.dispose();
-                                }
-                                ((EditableBinaryData) data).loadFromStream(fileStream);
-                                                    document.setContentData(data);
+                        try (FileInputStream fileStream = new FileInputStream(file)) {
+                            BinaryData data = oldData;
+                            if (!(data instanceof PagedData)) {
+                                data = new ByteArrayPagedData();
+                                oldData.dispose();
                             }
+                            ((EditableBinaryData) data).loadFromStream(fileStream);
+                            document.setContentData(data);
+                        }
 //                        }
                     } catch (IOException ex) {
                         Logger.getLogger(BinedModule.class.getName()).log(Level.SEVERE, null, ex);

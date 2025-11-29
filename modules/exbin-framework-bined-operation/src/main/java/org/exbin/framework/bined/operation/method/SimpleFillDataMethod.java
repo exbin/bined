@@ -134,7 +134,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         }
     }
 
-    public void generateData(EditableBinaryData binaryData, FillWithType fillWithType, long position, long length, BinaryData sampleBinaryData) throws IllegalStateException {
+    public static void generateData(EditableBinaryData binaryData, FillWithType fillWithType, long position, long length, BinaryData sampleBinaryData) throws IllegalStateException {
         switch (fillWithType) {
             case EMPTY: {
                 for (long pos = position; pos < position + length; pos++) {

@@ -116,7 +116,7 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
         return binaryData;
     }
 
-    public void convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType, EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
+    public static void convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType, EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
         switch (operationType) {
             case INVERT_BITS: {
                 int bufferSize = length < BUFFER_SIZE ? (int) length : BUFFER_SIZE;

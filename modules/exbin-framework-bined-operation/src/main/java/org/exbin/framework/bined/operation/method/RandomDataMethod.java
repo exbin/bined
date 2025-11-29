@@ -87,7 +87,7 @@ public class RandomDataMethod implements InsertDataMethod {
         }
     }
 
-    public void generateData(EditableBinaryData binaryData, AlgorithmType algorithmType, long position, long length) throws IllegalStateException {
+    public static void generateData(EditableBinaryData binaryData, AlgorithmType algorithmType, long position, long length) throws IllegalStateException {
         Random random = new Random();
         for (long pos = position; pos < position + length; pos++) {
             byte value;

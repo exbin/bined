@@ -27,6 +27,7 @@ import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.MemorySegment;
 import org.exbin.auxiliary.binary_data.delta.SourceSegment;
 import org.exbin.auxiliary.binary_data.delta.list.DefaultDoublyLinkedList;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinaryFileDocument;
@@ -145,7 +146,7 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void setBinaryDocument(BinaryFileDocument binaryDocument) {
-        SectCodeArea codeArea = binaryDocument.getCodeArea();
+        CodeAreaCore codeArea = binaryDocument.getCodeArea();
         Optional<URI> fileUri = binaryDocument.getFileUri();
         fileNameTextField.setText(fileUri.isPresent() ? fileUri.get().toString() : "");
         fileSizeTextField.setText(Long.toString(codeArea.getDataSize()));

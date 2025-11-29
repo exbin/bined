@@ -188,7 +188,7 @@ public class CompressionDataMethod implements ConvertDataMethod {
      * @return compressed data
      * @throws IOException on compression error
      */
-    private byte[] compress(byte[] data, CompressionAlgorithm algorithm) throws IOException {
+    private static byte[] compress(byte[] data, CompressionAlgorithm algorithm) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         switch (algorithm) {
@@ -227,7 +227,7 @@ public class CompressionDataMethod implements ConvertDataMethod {
      * @return decompressed data
      * @throws IOException on decompression error
      */
-    private byte[] decompress(byte[] data, CompressionAlgorithm algorithm) throws IOException {
+    private static byte[] decompress(byte[] data, CompressionAlgorithm algorithm) throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -279,7 +279,7 @@ public class CompressionDataMethod implements ConvertDataMethod {
      * @return detected compression algorithm, or null if unknown
      */
     @Nullable
-    private CompressionAlgorithm detectCompressionType(byte[] data) {
+    private static CompressionAlgorithm detectCompressionType(byte[] data) {
         if (data.length < 2) {
             return null;
         }
