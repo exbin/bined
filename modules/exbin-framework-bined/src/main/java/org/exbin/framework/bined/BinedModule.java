@@ -267,6 +267,7 @@ public class BinedModule implements Module {
             @Override
             public BinaryFileDocument createDefaultDocument() {
                 BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
+                getFileManager().initDataComponent(binaryFileDocument.getDataComponent());
 //                if (fileHandlingMode == FileProcessingMode.DELTA) {
 //                    SegmentsRepository segmentsRepository = fileManager.getSegmentsRepository();
 //                    binaryFileDocument.setContentData(segmentsRepository.createDocument());

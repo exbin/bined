@@ -27,7 +27,6 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
 import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.context.api.ContextChangeRegistration;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.document.api.ContextDocument;
 

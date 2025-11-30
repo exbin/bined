@@ -51,14 +51,8 @@ public class BinEdFileManager {
     public BinEdFileManager() {
     }
 
-    public void initFileHandler(BinEdDataComponent binaryDataComponent) {
-        // fileHandler.setSegmentsRepository(segmentsRepository);
-        initComponentPanel(binaryDataComponent);
-    }
-
-    public void initComponentPanel(BinEdDataComponent binaryDataComponent) {
+    public void initDataComponent(BinEdDataComponent binaryDataComponent) {
         BinEdComponentPanel componentPanel = (BinEdComponentPanel) binaryDataComponent.getComponent();
-//        BinEdComponentPanel componentPanel = fileHandler.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             if (componentExtension.isPresent()) {

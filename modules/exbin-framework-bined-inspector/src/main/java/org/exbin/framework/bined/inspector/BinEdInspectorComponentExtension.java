@@ -22,7 +22,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.bined.BinEdComponentExtension;
-import org.exbin.framework.bined.BinEdDataComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.InspectorPanel;
