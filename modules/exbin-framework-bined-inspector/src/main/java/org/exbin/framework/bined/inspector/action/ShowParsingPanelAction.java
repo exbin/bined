@@ -59,8 +59,7 @@ public class ShowParsingPanelAction extends AbstractAction {
                     setEnabled(binaryDocument != null);
                     boolean showParsingPanel = false;
                     if (binaryDocument != null) {
-                        BinEdComponentPanel component = binaryDocument.getComponent();
-                        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
+                        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
                         showParsingPanel = componentExtension.isShowParsingPanel();
                     }
                     putValue(Action.SELECTED_KEY, showParsingPanel);
@@ -71,14 +70,12 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinEdComponentPanel component = binaryDocument.getComponent();
-        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
+        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
         setShowParsingPanel(!componentExtension.isShowParsingPanel());
     }
 
     public void setShowParsingPanel(boolean show) {
-        BinEdComponentPanel component = binaryDocument.getComponent();
-        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
+        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(show);
         putValue(Action.SELECTED_KEY, show);
     }

@@ -38,13 +38,12 @@ import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.DialogParentComponent;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
-import org.exbin.framework.context.api.ContextComponentProvider;
+import org.exbin.framework.context.api.ContextActivable;
 import org.exbin.framework.document.api.ComponentDocument;
 import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.document.api.EditableDocument;
@@ -60,10 +59,10 @@ import org.exbin.framework.text.font.ContextFont;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextComponentProvider {
+public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {
 
     protected BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
-    protected URI fileUri = null;
+    protected DocumentSource documentSource = null;
     protected BinaryData binaryData;
 
     public BinaryFileDocument() {
@@ -72,7 +71,10 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     @Nonnull
     @Override
     public Optional<URI> getFileUri() {
-        return Optional.ofNullable(fileUri);
+        if (!(documentSource instanceof FileDocumentSource)) {
+            return Optional.empty();
+        }
+        return Optional.of(((FileDocumentSource) documentSource).getFile().toURI());
     }
 
     @Nonnull
@@ -88,17 +90,22 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     @Nonnull
+    public BinEdDataComponent getDataComponent() {
+        return dataComponent;
+    }
+
+    @Nonnull
     public CodeAreaCore getCodeArea() {
         return dataComponent.getCodeArea();
     }
 
     @Nonnull
     public Optional<BinaryDataUndoRedo> getUndoHandler() {
-        return getComponent().getUndoRedo();
+        return dataComponent.getUndoRedo();
     }
 
     public void setUndoHandler(BinaryDataUndoRedo undoHandler) {
-        getComponent().setUndoRedo(undoHandler);
+        dataComponent.setUndoRedo(undoHandler);
     }
 
     @Nonnull
@@ -113,7 +120,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     public void reloadFile() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (documentSource != null) {
+            loadFrom(documentSource);
+        }
     }
 
     @Override
@@ -144,7 +153,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 segmentsRepository.addDataSource(openFileSource);
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
                 componentPanel.setContentData(document);
-                this.fileUri = fileUri;
+                this.documentSource = documentSource;
                 oldData.dispose();
             } else {
                 try (FileInputStream fileStream = new FileInputStream(file)) {
@@ -155,7 +164,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                     }
                     ((EditableBinaryData) data).loadFromStream(fileStream);
                     componentPanel.setContentData(data);
-                    this.fileUri = fileUri;
+                    this.documentSource = documentSource;
                 }
             }
         } catch (IOException ex) {
@@ -209,11 +218,11 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                     document.setDataSource(fileSource);
                 }
                 segmentsRepository.saveDocument(document);
-                this.fileUri = fileUri;
+                this.documentSource = documentSource;
             } else {
                 try (FileOutputStream outputStream = new FileOutputStream(file)) {
                     Objects.requireNonNull(contentData).saveToStream(outputStream);
-                    this.fileUri = fileUri;
+                    this.documentSource = documentSource;
                 }
             }
             // TODO
@@ -232,6 +241,12 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         if (undoRedo != null) {
             undoRedo.setSyncPosition();
         } */
+    }
+
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
+        return dataComponent.getComponentExtension(clazz);
     }
 
     @Override

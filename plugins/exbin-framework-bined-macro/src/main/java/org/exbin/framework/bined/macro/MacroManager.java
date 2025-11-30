@@ -397,8 +397,7 @@ public class MacroManager {
                             if (binaryDocument == null) {
                                 throw new IllegalStateException("No active file");
                             }
-                            BinEdComponentPanel activePanel = binaryDocument.getComponent();
-                            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                            BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
                             componentExtension.performSearchText((String) parameters.get(0));
                         }
                         continue;
@@ -407,8 +406,7 @@ public class MacroManager {
                         if (binaryDocument == null) {
                             throw new IllegalStateException("No active file");
                         }
-                        BinEdComponentPanel activePanel = binaryDocument.getComponent();
-                        BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+                        BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
                         componentExtension.performFindAgain();
                         continue;
                     }

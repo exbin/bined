@@ -15,35 +15,21 @@
  */
 package org.exbin.framework.bined;
 
-import java.util.Optional;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.operation.command.BinaryDataUndoRedo;
-import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.framework.action.api.ContextComponent;
-import org.exbin.framework.utils.ComponentProvider;
 
 /**
- * Binary data component.
+ * Binary data binaryComponent extension.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinaryDataComponent extends ContextComponent, ComponentProvider, CodeTypeState, NonprintablesState {
+public interface BinEdComponentExtension {
 
-    /**
-     * Returns code area component.
-     *
-     * @return code area component
-     */
-    @Nonnull
-    CodeAreaCore getCodeArea();
+    void onCreate(BinaryDataComponent binaryDataComponent);
 
-    /**
-     * Returns undo redo if available.
-     *
-     * @return undo redo
-     */
-    @Nonnull
-    Optional<BinaryDataUndoRedo> getUndoRedo();
+    void onDataChange();
+
+    void onClose();
+
+    void onUndoHandlerChange();
 }

@@ -21,6 +21,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.framework.bined.BinEdComponentExtension;
+import org.exbin.framework.bined.BinEdDataComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.InspectorPanel;
 import org.exbin.framework.utils.UiUtils;
@@ -31,9 +34,9 @@ import org.exbin.framework.utils.UiUtils;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdInspectorComponentExtension implements BinEdComponentPanel.BinEdComponentExtension {
+public class BinEdInspectorComponentExtension implements BinEdComponentExtension {
 
-    private BinEdComponentPanel componentPanel;
+    private BinaryDataComponent dataComponent;
     private InspectorPanel inspectorPanel;
     private boolean parsingPanelVisible = false;
 
@@ -48,11 +51,11 @@ public class BinEdInspectorComponentExtension implements BinEdComponentPanel.Bin
     }
 
     @Override
-    public void onCreate(BinEdComponentPanel componentPanel) {
-        this.componentPanel = componentPanel;
+    public void onCreate(BinaryDataComponent dataComponent) {
+        this.dataComponent = dataComponent;
 
         UiUtils.runInUiThread(() -> {
-            SectCodeArea codeArea = componentPanel.getCodeArea();
+            SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
             this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createInspectorPanel();
             inspectorPanel.setCodeArea(codeArea, null);
 
@@ -70,7 +73,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentPanel.Bin
     @Override
     public void onUndoHandlerChange() {
         if (inspectorPanel != null) {
-            inspectorPanel.setCodeArea(componentPanel.getCodeArea(), componentPanel.getUndoRedo().orElse(null));
+            inspectorPanel.setCodeArea((SectCodeArea) dataComponent.getCodeArea(), dataComponent.getUndoRedo().orElse(null));
         }
     }
 
@@ -79,6 +82,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentPanel.Bin
     }
 
     public void setShowParsingPanel(boolean show) {
+        BinEdComponentPanel componentPanel = (BinEdComponentPanel) dataComponent.getComponent();
         if (parsingPanelVisible != show) {
             if (show) {
                 componentPanel.add(parsingPanelScrollPane, BorderLayout.EAST);

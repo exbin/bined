@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeCharactersCase;
@@ -29,6 +30,9 @@ import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.section.capability.PositionCodeTypeCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
@@ -54,6 +58,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     protected final BinEdComponentPanel binaryComponent;
     protected final CodeAreaCore codeArea;
+    protected final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
+    protected BinaryDataUndoRedo undoRedo;
     protected Font defaultFont;
     protected ActiveContextProvider contextProvider;
     protected List<String> encodings = new ArrayList<>();
@@ -69,7 +75,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         this.codeArea = codeArea;
         defaultFont = ((FontCapable) codeArea).getCodeFont();
     }
-    
+
     @Nonnull
     public Component getComponent() {
         return binaryComponent != null ? binaryComponent : codeArea;
@@ -257,5 +263,46 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
                 contextProvider.notifyStateChange(ContextComponent.class, NonprintablesState.ChangeType.NONPRINTABLES);
             }
         }
+    }
+
+    @Nonnull
+    @Override
+    public Optional<BinaryDataUndoRedo> getUndoRedo() {
+        // TODO Replace with context undo
+        return Optional.ofNullable(undoRedo);
+    }
+
+    public void setUndoRedo(BinaryDataUndoRedo undoRedo) {
+        this.undoRedo = undoRedo;
+        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoRedo == null ? new CodeAreaUndoRedo(codeArea) : undoRedo);
+        codeArea.setCommandHandler(commandHandler);
+
+        for (BinEdComponentExtension extension : componentExtensions) {
+            extension.onUndoHandlerChange();
+        }
+        // TODO set ENTER KEY mode in apply options
+
+    }
+
+    public void addComponentExtension(BinEdComponentExtension extension) {
+        componentExtensions.add(extension);
+        if (undoRedo != null) {
+            extension.onUndoHandlerChange();
+        }
+    }
+
+    @Nonnull
+    public List<BinEdComponentExtension> getComponentExtensions() {
+        return componentExtensions;
+    }
+
+    @Nonnull
+    public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
+        for (BinEdComponentExtension extension : componentExtensions) {
+            if (clazz.isInstance(extension)) {
+                return (T) clazz.cast(extension);
+            }
+        }
+        throw new IllegalStateException();
     }
 }

@@ -27,6 +27,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.bined.BinEdComponentExtension;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinEdFileManager;
@@ -180,7 +181,7 @@ public class BinedInspectorModule implements Module {
 
         @Nonnull
         @Override
-        public Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+        public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
             BinEdInspectorComponentExtension binEdComponentInspector = new BinEdInspectorComponentExtension(componentsProvider);
             return Optional.of(binEdComponentInspector);
         }

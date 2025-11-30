@@ -24,9 +24,9 @@ import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
@@ -60,11 +60,11 @@ public class BinEdFileManager {
         BinEdComponentPanel componentPanel = (BinEdComponentPanel) binaryDataComponent.getComponent();
 //        BinEdComponentPanel componentPanel = fileHandler.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
-            Optional<BinEdComponentPanel.BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
+            Optional<BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
             if (componentExtension.isPresent()) {
-                BinEdComponentPanel.BinEdComponentExtension extension = componentExtension.get();
-                extension.onCreate(componentPanel);
-                componentPanel.addComponentExtension(extension);
+                BinEdComponentExtension extension = componentExtension.get();
+                extension.onCreate(binaryDataComponent);
+                binaryDataComponent.addComponentExtension(extension);
             }
         }
 
@@ -78,13 +78,13 @@ public class BinEdFileManager {
         binaryStatus.attachCodeArea(binaryDataComponent);
     }
 
-    public void initCommandHandler(BinEdComponentPanel componentPanel) {
-        SectCodeArea codeArea = componentPanel.getCodeArea();
+    public void initCommandHandler(BinEdDataComponent binaryDataComponent) {
+        CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
         CodeAreaOperationCommandHandler commandHandler;
         if (commandHandlerProvider != null) {
-            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, componentPanel.getUndoRedo().orElse(null));
+            commandHandler = commandHandlerProvider.createCommandHandler(codeArea, binaryDataComponent.getUndoRedo().orElse(null));
         } else {
-            commandHandler = new CodeAreaOperationCommandHandler(codeArea, componentPanel.getUndoRedo().orElse(null));
+            commandHandler = new CodeAreaOperationCommandHandler(codeArea, binaryDataComponent.getUndoRedo().orElse(null));
         }
         codeArea.setCommandHandler(commandHandler);
     }
@@ -153,6 +153,6 @@ public class BinEdFileManager {
     public interface BinEdFileExtension {
 
         @Nonnull
-        Optional<BinEdComponentPanel.BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
+        Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
     }
 }

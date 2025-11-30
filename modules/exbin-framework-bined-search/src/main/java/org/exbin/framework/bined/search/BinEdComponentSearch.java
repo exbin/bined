@@ -16,7 +16,7 @@
 package org.exbin.framework.bined.search;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.bined.BinEdComponentExtension;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 
@@ -26,7 +26,7 @@ import org.exbin.framework.bined.search.gui.BinarySearchPanel;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface BinEdComponentSearch extends BinEdComponentPanel.BinEdComponentExtension {
+public interface BinEdComponentSearch extends BinEdComponentExtension {
 
     /**
      * Shows search panel.

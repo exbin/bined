@@ -22,13 +22,11 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.BinaryFileDocument;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BasicValuesInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.bined.inspector.settings.DataInspectorFontOptions;
-import org.exbin.framework.bined.inspector.settings.DataInspectorSettingsComponent;
 import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.language.api.LanguageModuleApi;
@@ -118,7 +116,7 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         if (contextProvider != null) {
             ContextDocument contextDocument = contextProvider.getActiveState(ContextDocument.class);
             if (contextDocument instanceof BinaryFileDocument) {
-                BasicValuesInspector basicValuesInspector = DataInspectorSettingsPanel.getBinEdInspector(((BinaryFileDocument) contextDocument).getComponent());
+                BasicValuesInspector basicValuesInspector = DataInspectorSettingsPanel.getBinEdInspector((BinaryFileDocument) contextDocument);
                 if (basicValuesInspector != null) {
                     currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
                 }
@@ -138,9 +136,9 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Nullable
-    private static BasicValuesInspector getBinEdInspector(BinEdComponentPanel component) {
-        BinEdInspectorComponentExtension extension = component.getBinEdComponentExtensions(BinEdInspectorComponentExtension.class).orElse(null);
-        return extension != null ? extension.getInspector(BasicValuesInspector.class) : null;
+    private static BasicValuesInspector getBinEdInspector(BinaryFileDocument binaryDocument) {
+        BinEdInspectorComponentExtension extension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
+        return extension.getInspector(BasicValuesInspector.class);
     }
 
     /**

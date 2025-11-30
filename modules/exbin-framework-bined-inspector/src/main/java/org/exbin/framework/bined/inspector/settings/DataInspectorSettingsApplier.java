@@ -20,8 +20,8 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.BinEdDataComponent;
 import org.exbin.framework.bined.BinaryFileDocument;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.BasicValuesInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
@@ -48,20 +48,20 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
         DataInspectorFontOptions fontOptions = settingsOptionsProvider.getSettingsOptions(DataInspectorFontOptions.class);
 
         Font defaultFont = null;
-        BinEdComponentPanel component = ((BinaryFileDocument) instance).getComponent();
-        BinEdInspectorComponentExtension componentExtension = component.getComponentExtension(BinEdInspectorComponentExtension.class);
+        BinaryFileDocument binaryDocument = (BinaryFileDocument) instance;
+        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(options.isShowParsingPanel());
         boolean useDefaultFont = fontOptions.isUseDefaultFont();
         Map<TextAttribute, ?> fontAttributes = fontOptions.getFontAttributes();
-        BasicValuesInspector basicValuesInspector = DataInspectorSettingsApplier.getBinEdInspector(component);
+        BasicValuesInspector basicValuesInspector = DataInspectorSettingsApplier.getBinEdInspector(binaryDocument);
         if (basicValuesInspector != null) {
             ((BasicValuesPanel) basicValuesInspector.getComponent()).setInputFieldsFont(useDefaultFont || fontAttributes == null ? defaultFont : new Font(fontAttributes));
         }
     }
 
     @Nullable
-    private static BasicValuesInspector getBinEdInspector(BinEdComponentPanel component) {
-        BinEdInspectorComponentExtension extension = component.getBinEdComponentExtensions(BinEdInspectorComponentExtension.class).orElse(null);
-        return extension != null ? extension.getInspector(BasicValuesInspector.class) : null;
+    private static BasicValuesInspector getBinEdInspector(BinaryFileDocument binaryDocument) {
+        BinEdInspectorComponentExtension extension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
+        return extension.getInspector(BasicValuesInspector.class);
     }
 }

@@ -19,13 +19,13 @@ import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 import org.exbin.framework.bined.search.gui.BinarySearchPanel;
 import org.exbin.framework.bined.search.service.BinarySearchService;
 import org.exbin.framework.bined.search.service.impl.BinarySearchServiceImpl;
-import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * Bined component search.
@@ -41,9 +41,9 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
     private boolean binarySearchPanelVisible = false;
 
     @Override
-    public void onCreate(BinEdComponentPanel componentPanel) {
-        this.componentPanel = componentPanel;
-        SectCodeArea codeArea = componentPanel.getCodeArea();
+    public void onCreate(BinaryDataComponent dataComponent) {
+        this.componentPanel = (BinEdComponentPanel) dataComponent.getComponent();
+        SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
 
         binarySearchService = new BinarySearchServiceImpl(codeArea);
         binarySearch.setBinarySearchService(binarySearchService);

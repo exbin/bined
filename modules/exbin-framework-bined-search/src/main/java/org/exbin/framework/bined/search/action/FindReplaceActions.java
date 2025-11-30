@@ -30,7 +30,7 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
+import org.exbin.framework.bined.BinEdDataComponent;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.BinaryFileDocument;
@@ -123,8 +123,7 @@ public class FindReplaceActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = binaryDocument.getComponent();
-            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+            BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
         }
 
@@ -167,8 +166,7 @@ public class FindReplaceActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = binaryDocument.getComponent();
-            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+            BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.performFindAgain();
 
             for (FindAgainListener findAgainListener : findAgainListeners) {
@@ -216,8 +214,7 @@ public class FindReplaceActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            BinEdComponentPanel activePanel = binaryDocument.getComponent();
-            BinEdComponentSearch componentExtension = activePanel.getComponentExtension(BinEdComponentSearch.class);
+            BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
             componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
         }
 

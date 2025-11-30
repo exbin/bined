@@ -18,9 +18,6 @@ package org.exbin.framework.bined.gui;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
@@ -28,12 +25,10 @@ import javax.swing.JViewport;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.command.EmptyBinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.bined.BinEdCodeAreaAssessor;
-import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
@@ -49,9 +44,7 @@ import org.exbin.framework.bined.handler.CodeAreaPopupMenuHandler;
 @ParametersAreNonnullByDefault
 public class BinEdComponentPanel extends javax.swing.JPanel {
 
-    private SectCodeArea codeArea;
-    private BinaryDataUndoRedo undoRedo;
-    private final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
+    protected SectCodeArea codeArea;
 
     public BinEdComponentPanel() {
         initComponents();
@@ -77,7 +70,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
                 if (invoker == null) {
                     return;
                 }
-                
+
                 int clickedX = x;
                 int clickedY = y;
                 if (invoker instanceof JViewport) {
@@ -126,12 +119,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         return codeArea;
     }
 
-    public void notifyDataChanged() {
-        for (BinEdComponentExtension extension : componentExtensions) {
-            extension.onDataChange();
-        }
-    }
-
     /* public void onInitFromPreferences(OptionsStorage options) {
         org.exbin.framework.bined.settings.FontSizeOptions fontSizeOptions =
             new org.exbin.framework.bined.settings.FontSizeOptions(options);
@@ -139,29 +126,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         Font currentFont = codeArea.getCodeFont();
         codeArea.setCodeFont(new Font(currentFont.getName(), currentFont.getStyle(), fontSize));
     } */
-    public void addComponentExtension(BinEdComponentExtension extension) {
-        componentExtensions.add(extension);
-        if (undoRedo != null) {
-            extension.onUndoHandlerChange();
-        }
-    }
-
-    @Nonnull
-    public List<BinEdComponentExtension> getComponentExtensions() {
-        return componentExtensions;
-    }
-
-    @Nonnull
-    @SuppressWarnings("unchecked")
-    public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
-        for (BinEdComponentExtension extension : componentExtensions) {
-            if (clazz.isInstance(extension)) {
-                return (T) extension;
-            }
-        }
-        throw new IllegalStateException();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,23 +141,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    @Nonnull
-    public Optional<BinaryDataUndoRedo> getUndoRedo() {
-        return Optional.ofNullable(undoRedo);
-    }
-
-    public void setUndoRedo(BinaryDataUndoRedo undoRedo) {
-        this.undoRedo = undoRedo;
-        CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoRedo == null ? new CodeAreaUndoRedo(codeArea) : undoRedo);
-        codeArea.setCommandHandler(commandHandler);
-
-        for (BinEdComponentExtension extension : componentExtensions) {
-            extension.onUndoHandlerChange();
-        }
-        // TODO set ENTER KEY mode in apply options
-
-    }
-
     public void setPopupMenu(JPopupMenu menu) {
         codeArea.setComponentPopupMenu(menu);
     }
@@ -215,26 +162,8 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.removeFocusListener(focusListener);
     }
 
-    @Nonnull
-    public <T extends BinEdComponentExtension> Optional<T> getBinEdComponentExtensions(Class<T> clazz) {
-        for (BinEdComponentExtension binEdComponentExtension : componentExtensions) {
-            if (clazz.isInstance(binEdComponentExtension)) {
-                return Optional.of(clazz.cast(binEdComponentExtension));
-            }
-        }
-
-        return Optional.empty();
-    }
-
     @ParametersAreNonnullByDefault
-    public interface BinEdComponentExtension {
+    public interface Controller {
 
-        void onCreate(BinEdComponentPanel componentPanel);
-
-        void onDataChange();
-
-        void onClose();
-
-        void onUndoHandlerChange();
     }
 }
