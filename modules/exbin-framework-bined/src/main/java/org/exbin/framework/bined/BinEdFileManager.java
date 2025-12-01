@@ -23,6 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
@@ -30,6 +31,7 @@ import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
+import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.frame.api.FrameModuleApi;
 
@@ -61,6 +63,7 @@ public class BinEdFileManager {
                 binaryDataComponent.addComponentExtension(extension);
             }
         }
+        binaryDataComponent.setUndoRedo(new CodeAreaUndoRedo(binaryDataComponent.getCodeArea()));
 
         BinEdCodeAreaAssessor painter = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) componentPanel.getCodeArea().getPainter(), BinEdCodeAreaAssessor.class);
         for (CodeAreaColorAssessor modifier : painterPriorityPositionColorModifiers) {
@@ -70,6 +73,9 @@ public class BinEdFileManager {
             painter.addColorModifier(modifier);
         }
         binaryStatus.attachCodeArea(binaryDataComponent);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
+        binaryDataComponent.setContextProvider(contextManager);
     }
 
     public void initCommandHandler(BinEdDataComponent binaryDataComponent) {
