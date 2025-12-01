@@ -255,6 +255,19 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         contextManager.changeActiveState(ContextEncoding.class, dataComponent);
         // TODO contextManager.changeActiveState(UndoRedoState.class, );
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
+        contextManager.changeActiveState(UndoRedoState.class, new UndoRedoState() {
+            @Override
+            public boolean canUndo() {
+                Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
+                return optUndoRedo.isPresent() ? optUndoRedo.get().canUndo() : false;
+            }
+
+            @Override
+            public boolean canRedo() {
+                Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
+                return optUndoRedo.isPresent() ? optUndoRedo.get().canRedo() : false;
+            }
+        });
         contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull
             @Override

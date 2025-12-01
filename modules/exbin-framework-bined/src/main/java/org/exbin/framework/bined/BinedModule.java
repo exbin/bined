@@ -73,6 +73,7 @@ import org.exbin.framework.contribution.api.SubSequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContributionRule;
 import org.exbin.framework.docking.api.ContextDocking;
 import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.document.api.Document;
 import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.document.api.DocumentManagement;
@@ -122,7 +123,7 @@ public class BinedModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private BinEdFileManager fileManager = new BinEdFileManager();
+    private final BinEdFileManager fileManager = new BinEdFileManager();
 
     private ShowNonprintablesActions showNonprintablesActions;
     private ClipboardCodeActions clipboardCodeActions;
@@ -267,7 +268,8 @@ public class BinedModule implements Module {
             @Override
             public BinaryFileDocument createDefaultDocument() {
                 BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
-                getFileManager().initDataComponent(binaryFileDocument.getDataComponent());
+                fileManager.initDataComponent(binaryFileDocument.getDataComponent());
+                fileManager.initCommandHandler(binaryFileDocument.getDataComponent());
 //                if (fileHandlingMode == FileProcessingMode.DELTA) {
 //                    SegmentsRepository segmentsRepository = fileManager.getSegmentsRepository();
 //                    binaryFileDocument.setContentData(segmentsRepository.createDocument());
@@ -279,7 +281,7 @@ public class BinedModule implements Module {
 
             @Nonnull
             @Override
-            public Optional<Document> openDocument(DocumentSource documentSource) {
+            public Optional<Document> createDocument(DocumentSource documentSource) {
                 if (documentSource instanceof FileDocumentSource) {
                     BinaryFileDocument document = createDefaultDocument();
                     File file = ((FileDocumentSource) documentSource).getFile();
@@ -414,7 +416,7 @@ public class BinedModule implements Module {
     public void startWithFile(String filePath) {
         FileModuleApi fileModule = App.getModule(FileModuleApi.class);
         URI uri = new File(filePath).toURI();
-        fileModule.loadFromFile(uri);
+        fileModule.openFile(uri);
     }
 
     @Nonnull
@@ -475,12 +477,23 @@ public class BinedModule implements Module {
         final JPopupMenu popupMenu = UiUtils.createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ActiveContextManagement contextManager = contextModule.createContextManager();
-        BinEdDataComponent binEdDataComponent = new BinEdDataComponent(codeArea);
-        binEdDataComponent.setContextProvider(contextManager);
-        contextManager.changeActiveState(ContextComponent.class, binEdDataComponent);
-        // TODO
-//        contextManager.changeActiveState(ContextDocument.class, editorProvider);
-//        contextManager.changeActiveState(ContextDocking.class, FileHandler.class, editorProvider.getActiveFile().orElse(null));
+        BinaryDataComponent dataComponent = null;
+        if (variant == PopupMenuVariant.EDITOR) {
+            FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+            ActiveContextManagement frameContextManager = frameModule.getFrameHandler().getContextManager();
+            ContextDocking contextDocking = frameContextManager.getActiveState(ContextDocking.class);
+            contextManager.changeActiveState(ContextDocking.class, contextDocking);
+            if (contextDocking instanceof DocumentDocking) {
+                Document document = ((DocumentDocking) contextDocking).getActiveDocument().orElse(null);
+                contextManager.changeActiveState(ContextDocument.class, (ContextDocument) document);
+                dataComponent = ((BinaryFileDocument) document).getDataComponent();
+            }
+        } else {
+            dataComponent = new BinEdDataComponent(codeArea);
+            ((BinEdDataComponent) dataComponent).setContextProvider(contextManager);
+        }
+
+        contextManager.changeActiveState(ContextComponent.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

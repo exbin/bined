@@ -46,4 +46,14 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      */
     @Nonnull
     Optional<BinaryDataUndoRedo> getUndoRedo();
+
+    /**
+     * Returns assigned extension.
+     *
+     * @param <T> extension type
+     * @param clazz extension class
+     * @return extension instance
+     */
+    @Nonnull
+    <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz);
 }

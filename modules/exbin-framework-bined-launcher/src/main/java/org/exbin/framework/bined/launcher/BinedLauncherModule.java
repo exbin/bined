@@ -357,7 +357,7 @@ public class BinedLauncherModule implements LauncherModule {
                                 // Load session files
                                 for (URI fileUri : sessionFiles) {
                                     try {
-                                        fileModule.loadFromFile(fileUri);
+                                        fileModule.openFile(fileUri);
                                     } catch (Exception ex) {
                                         Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.WARNING,
                                                 "Failed to load session file: " + fileUri, ex);

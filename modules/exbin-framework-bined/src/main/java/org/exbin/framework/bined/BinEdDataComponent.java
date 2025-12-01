@@ -297,12 +297,14 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     }
 
     @Nonnull
+    @Override
     public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
         for (BinEdComponentExtension extension : componentExtensions) {
             if (clazz.isInstance(extension)) {
                 return (T) clazz.cast(extension);
             }
         }
-        throw new IllegalStateException();
+
+        throw new IllegalStateException("Missing extension: " + clazz.toString());
     }
 }

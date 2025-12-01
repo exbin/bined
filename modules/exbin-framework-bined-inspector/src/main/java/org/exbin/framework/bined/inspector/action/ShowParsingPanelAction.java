@@ -25,10 +25,11 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.api.ActionType;
-import org.exbin.framework.bined.BinaryFileDocument;
+import org.exbin.framework.action.api.ContextComponent;
+import org.exbin.framework.bined.BinEdDataComponent;
+import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
-import org.exbin.framework.document.api.ContextDocument;
 
 /**
  * Show parsing panel action.
@@ -40,7 +41,7 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     public static final String ACTION_ID = "showParsingPanelAction";
 
-    private BinaryFileDocument binaryDocument;
+    private BinaryDataComponent binaryComponent;
 
     public ShowParsingPanelAction() {
     }
@@ -53,12 +54,12 @@ public class ShowParsingPanelAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
-                    binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
-                    setEnabled(binaryDocument != null);
+                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                    binaryComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
+                    setEnabled(binaryComponent != null);
                     boolean showParsingPanel = false;
-                    if (binaryDocument != null) {
-                        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
+                    if (binaryComponent != null) {
+                        BinEdInspectorComponentExtension componentExtension = binaryComponent.getComponentExtension(BinEdInspectorComponentExtension.class);
                         showParsingPanel = componentExtension.isShowParsingPanel();
                     }
                     putValue(Action.SELECTED_KEY, showParsingPanel);
@@ -69,12 +70,12 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
+        BinEdInspectorComponentExtension componentExtension = binaryComponent.getComponentExtension(BinEdInspectorComponentExtension.class);
         setShowParsingPanel(!componentExtension.isShowParsingPanel());
     }
 
     public void setShowParsingPanel(boolean show) {
-        BinEdInspectorComponentExtension componentExtension = binaryDocument.getComponentExtension(BinEdInspectorComponentExtension.class);
+        BinEdInspectorComponentExtension componentExtension = binaryComponent.getComponentExtension(BinEdInspectorComponentExtension.class);
         componentExtension.setShowParsingPanel(show);
         putValue(Action.SELECTED_KEY, show);
     }
