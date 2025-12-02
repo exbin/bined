@@ -44,6 +44,8 @@ import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ActiveContextProvider;
+import org.exbin.framework.operation.undo.api.UndoRedoController;
+import org.exbin.framework.operation.undo.api.UndoRedoState;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
 import org.exbin.framework.text.encoding.CharsetListEncodingState;
 import org.exbin.framework.text.font.TextFontState;
@@ -54,7 +56,7 @@ import org.exbin.framework.text.font.TextFontState;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState {
+public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {
 
     protected final BinEdComponentPanel binaryComponent;
     protected final CodeAreaCore codeArea;
@@ -89,6 +91,26 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     public void setContextProvider(ActiveContextProvider contextProvider) {
         this.contextProvider = contextProvider;
+    }
+
+    @Override
+    public boolean canUndo() {
+        return undoRedo != null ? undoRedo.canUndo() : false;
+    }
+
+    @Override
+    public boolean canRedo() {
+        return undoRedo != null ? undoRedo.canRedo() : false;
+    }
+
+    @Override
+    public void performUndo() {
+        undoRedo.performUndo();
+    }
+
+    @Override
+    public void performRedo() {
+        undoRedo.performRedo();
     }
 
     @Override

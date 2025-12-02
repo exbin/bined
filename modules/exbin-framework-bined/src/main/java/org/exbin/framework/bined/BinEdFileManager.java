@@ -22,6 +22,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
+import org.exbin.bined.capability.SelectionCapable;
+import org.exbin.bined.operation.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
@@ -29,11 +31,17 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ContextComponent;
+import org.exbin.framework.action.api.DeletionController;
+import org.exbin.framework.action.api.SelectionController;
+import org.exbin.framework.action.api.clipboard.ClipboardController;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.text.encoding.EncodingsManager;
+import org.exbin.framework.operation.undo.api.ContextUndoRedo;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.operation.undo.api.UndoRedoState;
 
 /**
  * File manager for binary editor.
@@ -54,6 +62,8 @@ public class BinEdFileManager {
     }
 
     public void initDataComponent(BinEdDataComponent binaryDataComponent) {
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
         BinEdComponentPanel componentPanel = (BinEdComponentPanel) binaryDataComponent.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
@@ -63,7 +73,23 @@ public class BinEdFileManager {
                 binaryDataComponent.addComponentExtension(extension);
             }
         }
-        binaryDataComponent.setUndoRedo(new CodeAreaUndoRedo(binaryDataComponent.getCodeArea()));
+        CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
+        ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
+            ContextComponent component = contextManager.getActiveState(ContextComponent.class);
+            if (component == binaryDataComponent) {
+                contextManager.notifyActiveStateChange(ContextComponent.class, component, SelectionController.ChangeType.CONTENT_STATE);
+                contextManager.notifyActiveStateChange(ContextComponent.class, component, ClipboardController.ChangeType.CONTENT_STATE);
+                contextManager.notifyActiveStateChange(ContextComponent.class, component, DeletionController.ChangeType.CONTENT_STATE);
+            }
+        });
+        CodeAreaUndoRedo codeAreaUndoRedo = new CodeAreaUndoRedo(codeArea);
+        codeAreaUndoRedo.addChangeListener(() -> {
+            ContextUndoRedo undoRedo = contextManager.getActiveState(ContextUndoRedo.class);
+            if (undoRedo == binaryDataComponent) {
+                contextManager.notifyActiveStateChange(ContextUndoRedo.class, undoRedo, UndoRedoState.ChangeType.UNDO_REDO_STATE);
+            }
+        });
+        binaryDataComponent.setUndoRedo(codeAreaUndoRedo);
 
         BinEdCodeAreaAssessor painter = CodeAreaSwingUtils.findColorAssessor((ColorAssessorPainterCapable) componentPanel.getCodeArea().getPainter(), BinEdCodeAreaAssessor.class);
         for (CodeAreaColorAssessor modifier : painterPriorityPositionColorModifiers) {
@@ -73,8 +99,6 @@ public class BinEdFileManager {
             painter.addColorModifier(modifier);
         }
         binaryStatus.attachCodeArea(binaryDataComponent);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
         binaryDataComponent.setContextProvider(contextManager);
     }
 

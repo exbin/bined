@@ -47,9 +47,10 @@ import org.exbin.framework.context.api.ContextActivable;
 import org.exbin.framework.document.api.ComponentDocument;
 import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.document.api.EditableDocument;
+import org.exbin.framework.document.api.MemoryDocumentSource;
 import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileDocumentSource;
-import org.exbin.framework.operation.undo.api.UndoRedoState;
+import org.exbin.framework.operation.undo.api.ContextUndoRedo;
 import org.exbin.framework.text.encoding.ContextEncoding;
 import org.exbin.framework.text.font.ContextFont;
 
@@ -64,6 +65,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     protected BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
     protected DocumentSource documentSource = null;
     protected BinaryData binaryData;
+    private long documentOriginalSize;
 
     public BinaryFileDocument() {
     }
@@ -87,6 +89,12 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     @Override
     public BinEdComponentPanel getComponent() {
         return (BinEdComponentPanel) dataComponent.getComponent();
+    }
+
+    @Nonnull
+    @Override
+    public Optional<DocumentSource> getDocumentSource() {
+        return Optional.ofNullable(documentSource);
     }
 
     @Nonnull
@@ -127,6 +135,11 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public void loadFrom(DocumentSource documentSource) {
+        if (documentSource instanceof MemoryDocumentSource) {
+            this.documentSource = documentSource;
+            return;
+        }
+
         if (!(documentSource instanceof FileDocumentSource)) {
             throw new UnsupportedOperationException();
         }
@@ -237,10 +250,11 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     public void fileSync() {
-        /* documentOriginalSize = getCodeArea().getDataSize();
-        if (undoRedo != null) {
-            undoRedo.setSyncPosition();
-        } */
+        documentOriginalSize = getCodeArea().getDataSize();
+        Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
+        if (optUndoRedo.isPresent()) {
+            optUndoRedo.get().setSyncPosition();
+        }
     }
 
     @Nonnull
@@ -255,19 +269,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         contextManager.changeActiveState(ContextEncoding.class, dataComponent);
         // TODO contextManager.changeActiveState(UndoRedoState.class, );
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
-        contextManager.changeActiveState(UndoRedoState.class, new UndoRedoState() {
-            @Override
-            public boolean canUndo() {
-                Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
-                return optUndoRedo.isPresent() ? optUndoRedo.get().canUndo() : false;
-            }
-
-            @Override
-            public boolean canRedo() {
-                Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
-                return optUndoRedo.isPresent() ? optUndoRedo.get().canRedo() : false;
-            }
-        });
+        contextManager.changeActiveState(ContextUndoRedo.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull
             @Override
@@ -281,7 +283,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     public void notifyDeactivated(ActiveContextManagement contextManager) {
         contextManager.changeActiveState(ContextFont.class, null);
         contextManager.changeActiveState(ContextEncoding.class, null);
-        contextManager.changeActiveState(UndoRedoState.class, null);
+        contextManager.changeActiveState(ContextUndoRedo.class, null);
         contextManager.changeActiveState(ContextComponent.class, null);
         contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull

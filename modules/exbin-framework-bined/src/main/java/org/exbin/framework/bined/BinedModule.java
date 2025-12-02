@@ -267,6 +267,25 @@ public class BinedModule implements Module {
             @Nonnull
             @Override
             public BinaryFileDocument createDefaultDocument() {
+                BinaryFileDocument binaryDocument = createBinaryDocument();
+                binaryDocument.loadFrom(documentModule.createMemoryDocumentSource());
+                return binaryDocument;
+            }
+
+            @Nonnull
+            @Override
+            public Optional<Document> createDocument(DocumentSource documentSource) {
+                if (documentSource instanceof FileDocumentSource) {
+                    BinaryFileDocument document = createBinaryDocument();
+                    document.loadFrom(documentSource);
+                    return Optional.of(document);
+                }
+
+                return Optional.empty();
+            }
+            
+            @Nonnull
+            private BinaryFileDocument createBinaryDocument() {
                 BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
                 fileManager.initDataComponent(binaryFileDocument.getDataComponent());
                 fileManager.initCommandHandler(binaryFileDocument.getDataComponent());
@@ -277,43 +296,6 @@ public class BinedModule implements Module {
                 binaryFileDocument.setContentData(new ByteArrayPagedData());
 //                }
                 return binaryFileDocument;
-            }
-
-            @Nonnull
-            @Override
-            public Optional<Document> createDocument(DocumentSource documentSource) {
-                if (documentSource instanceof FileDocumentSource) {
-                    BinaryFileDocument document = createDefaultDocument();
-                    File file = ((FileDocumentSource) documentSource).getFile();
-
-                    try {
-                        BinaryData oldData = document.getContentData();
-                        /*if (fileHandlingMode == FileProcessingMode.DELTA) {
-                            FileDataSource openFileSource = new FileDataSource(file);
-                            segmentsRepository.addDataSource(openFileSource);
-                            DeltaDocument document = segmentsRepository.createDocument(openFileSource);
-                            editorComponent.setContentData(document);
-                            this.fileUri = fileUri;
-                            oldData.dispose();
-                        } else { */
-                        try (FileInputStream fileStream = new FileInputStream(file)) {
-                            BinaryData data = oldData;
-                            if (!(data instanceof PagedData)) {
-                                data = new ByteArrayPagedData();
-                                oldData.dispose();
-                            }
-                            ((EditableBinaryData) data).loadFromStream(fileStream);
-                            document.setContentData(data);
-                        }
-//                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(BinedModule.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    return Optional.of(document);
-                }
-
-                return Optional.empty();
             }
         });
     }
