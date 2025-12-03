@@ -174,6 +174,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             uiModule.registerSettings();
             frameModule.registerSettings();
+            documentModule.registerSettings();
             themeModule.registerSettings();
             actionManagerModule.registerSettings();
             fileModule.registerSettings();
@@ -238,7 +239,6 @@ public class BinedLauncherModule implements LauncherModule {
 
             dockingModule.registerToolBarFileHandlingActions();
             documentRecentModule.registerRecenFilesMenuActions();
-            fileModule.registerCloseListener();
 
             undoModule.registerMainMenu();
             undoModule.registerMainToolBar();
@@ -289,11 +289,11 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerStatusBar();
 
             if (demoMode) {
-                frameModule.addExitListener((ComponentFrame afh) -> {
+                frameModule.addClosingListener(() -> {
                     return false;
                 });
             } else {
-                frameModule.addExitListener((ComponentFrame afh) -> {
+                frameModule.addClosingListener(() -> {
                     // Save frame position
                     frameModule.saveFramePosition();
 

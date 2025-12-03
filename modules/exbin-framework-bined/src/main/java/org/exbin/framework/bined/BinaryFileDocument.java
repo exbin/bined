@@ -192,7 +192,12 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public boolean isModified() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
+        if (optUndoRedo.isPresent()) {
+            return optUndoRedo.get().isModified();
+        }
+
+        return true;
     }
 
     @Override
@@ -239,9 +244,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 }
             }
             // TODO
-//            documentOriginalSize = codeArea.getDataSize();
-//            updateCurrentDocumentSize();
-//            updateCurrentMemoryMode();
+            // Update title
         } catch (IOException ex) {
             Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
         }

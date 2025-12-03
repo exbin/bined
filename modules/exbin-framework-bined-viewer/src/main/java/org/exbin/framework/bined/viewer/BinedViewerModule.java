@@ -59,6 +59,7 @@ import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContributionRule;
+import org.exbin.framework.document.api.DocumentModuleApi;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -150,6 +151,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerSettings() {
+        getResourceBundle();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
 
@@ -168,10 +170,10 @@ public class BinedViewerModule implements Module {
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);
-        settingsManagement.registerSettingsRule(pageContribution, new SettingsPageContributionRule("editor"));
+        settingsManagement.registerSettingsRule(pageContribution, new SettingsPageContributionRule(DocumentModuleApi.SETTINGS_PAGE_ID));
 
         SettingsComponentContribution settingsComponent = settingsManagement.registerComponent(BinaryAppearanceSettingsComponent.COMPONENT_ID, new BinaryAppearanceSettingsComponent());
-        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule("editor"));
+        settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(DocumentModuleApi.SETTINGS_PAGE_ID));
 
         settingsComponent = settingsManagement.registerComponent(CodeAreaSettingsComponent.COMPONENT_ID, new CodeAreaSettingsComponent());
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));

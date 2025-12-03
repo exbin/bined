@@ -142,6 +142,7 @@ public class BinedInspectorModule implements Module {
     }
 
     public void registerSettings() {
+        getResourceBundle();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
         settingsManagement.registerOptionsSettings(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
