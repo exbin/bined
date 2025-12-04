@@ -207,7 +207,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public boolean canSave() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
     @Override

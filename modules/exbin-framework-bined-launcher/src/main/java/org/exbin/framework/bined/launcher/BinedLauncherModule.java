@@ -43,9 +43,8 @@ import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
-import org.exbin.framework.bined.launcher.settings.StartupOptions;
-import org.exbin.framework.bined.launcher.settings.StartupOptions.StartupBehavior;
-import org.exbin.framework.bined.launcher.settings.StartupSettingsComponent;
+import org.exbin.framework.document.settings.StartupOptions;
+import org.exbin.framework.document.settings.StartupOptions.StartupBehavior;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
@@ -67,7 +66,6 @@ import org.exbin.framework.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.toolbar.api.ToolBarModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
@@ -182,7 +180,6 @@ public class BinedLauncherModule implements LauncherModule {
             binedEditorModule.registerSettings();
             binedThemeModule.registerSettings();
             binedInspectorModule.registerSettings();
-            registerSettings(); // Register startup options
             if (!demoMode) {
                 updateModule.registerSettings();
             }
@@ -381,17 +378,6 @@ public class BinedLauncherModule implements LauncherModule {
             Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
 //                System.exit(1);
         }
-    }
-
-    /**
-     * Registers startup settings panels.
-     */
-    public void registerSettings() {
-        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
-        OptionsSettingsManagement settingsManager = settingsModule.getMainSettingsManager();
-
-        settingsManager.registerOptionsSettings(StartupOptions.class, (optionsStorage) -> new StartupOptions(optionsStorage));
-        settingsManager.registerComponent(StartupSettingsComponent.COMPONENT_ID, new StartupSettingsComponent());
     }
 
     public enum BasicDockingType {
