@@ -310,6 +310,7 @@ public class BinedLauncherModule implements LauncherModule {
             DocumentDocking documentDocking = dockingType == BasicDockingType.SINGLE ? dockingModule.createDefaultDocking() : dockingMultiModule.createDefaultDocking();
             frameModule.attachFrameContentComponent(documentDocking);
             sideBarModule.registerDockingSideBar(documentDocking);
+            dockingModule.registerDocumentReceiver(documentDocking);
             addonManagerModule.registerAddonManagerMenuItem();
 
             frameHandler.setDefaultSize(new Dimension(600, 400));
