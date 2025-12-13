@@ -72,6 +72,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-text-font')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-help')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-help-online')
+    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-search')
     implementation moduleDep('Bined', 'org.exbin.framework', 'modules', 'exbin-framework-bined-operation')

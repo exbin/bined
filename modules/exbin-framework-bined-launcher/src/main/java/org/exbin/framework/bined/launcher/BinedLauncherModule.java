@@ -16,6 +16,9 @@
 package org.exbin.framework.bined.launcher;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,6 +34,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
 import org.exbin.framework.LauncherModule;
 import org.exbin.framework.ModuleUtils;
@@ -39,6 +43,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.manager.ActionManagerModule;
 import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
+import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.editor.BinedEditorModule;
@@ -54,6 +59,7 @@ import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.docking.api.DocumentDocking;
 import org.exbin.framework.docking.multi.api.DockingMultiModuleApi;
+import org.exbin.framework.document.api.DocumentManagement;
 import org.exbin.framework.document.api.DocumentModuleApi;
 import org.exbin.framework.document.recent.DocumentRecentModule;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -82,6 +88,7 @@ import org.exbin.framework.frame.api.ComponentFrame;
 public class BinedLauncherModule implements LauncherModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedLauncherModule.class);
+    private static final int BUFFER_SIZE = 1024;
 
     private static final String BINARY_PLUGIN_ID = "binary";
 
@@ -139,6 +146,9 @@ public class BinedLauncherModule implements LauncherModule {
             final UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
             themeModule.registerThemeInit();
 
+            BinedModule binedModule = App.getModule(BinedModule.class);
+            binedModule.registerDocument();
+
             uiModule.initSwingUi();
 
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
@@ -164,7 +174,6 @@ public class BinedLauncherModule implements LauncherModule {
             OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
 
-            BinedModule binedModule = App.getModule(BinedModule.class);
             BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
@@ -250,7 +259,6 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerCodeTypeToolBarActions();
             binedModule.registerShowNonprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
-            binedModule.registerDocument();
             binedModule.registerViewNonprintablesMenuActions();
             binedModule.registerViewZoomMenuActions();
             binedInspectorModule.setComponentsProvider(null);
@@ -371,6 +379,8 @@ public class BinedLauncherModule implements LauncherModule {
             } else {
                 binedModule.startWithFile(filePath);
             }
+            
+            loadSampleFile();
 
             if (!demoMode) {
                 updateModule.checkOnStart(frameHandler.getFrame());
@@ -378,6 +388,66 @@ public class BinedLauncherModule implements LauncherModule {
         } catch (ParseException | RuntimeException ex) {
             Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
 //                System.exit(1);
+        }
+    }
+
+    public void loadSampleFile() {
+        DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
+        DocumentManagement mainDocumentManager = documentModule.getMainDocumentManager();
+        BinaryFileDocument document = (BinaryFileDocument) mainDocumentManager.createDefaultDocument();
+        EditableBinaryData binaryData = (EditableBinaryData) document.getBinaryData();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            inputStream = getClass().getResourceAsStream("/org/exbin/framework/bined/launcher/resources/images/icon.png");
+            outputStream = binaryData.getDataOutputStream();
+            BinedLauncherModule.copyInputStreamToOutputStream(inputStream, outputStream);
+        } catch (IOException ex) {
+            Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException ex) {
+                // ignore
+            }
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException ex) {
+                // ignore
+            }
+        }
+        mainDocumentManager.receiveDocument(document);
+    }
+
+    /**
+     * Copies all data from input stream to output stream using 1k buffer.
+     *
+     * @param source input stream
+     * @param target output stream
+     * @throws IOException if read or write fails
+     */
+    public static void copyInputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bufferUsed = 0;
+
+        int bytesRead;
+        do {
+            bytesRead = source.read(buffer, bufferUsed, BUFFER_SIZE - bufferUsed);
+            if (bytesRead > 0) {
+                bufferUsed += bytesRead;
+                if (bufferUsed == BUFFER_SIZE) {
+                    target.write(buffer, 0, BUFFER_SIZE);
+                    bufferUsed = 0;
+                }
+            }
+        } while (bytesRead > 0);
+
+        if (bufferUsed > 0) {
+            target.write(buffer, 0, bufferUsed);
         }
     }
 

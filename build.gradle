@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'com.netflix.nebula.ospackage-base'
 apply plugin: 'com.netflix.nebula.rpm'
 
-version = '0.3.0-SNAPSHOT'
+version = '0.2.5-SNAPSHOT'
 
 task cleanDeps {
     if (gradle.startParameter.taskNames.contains("clean") && !project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {

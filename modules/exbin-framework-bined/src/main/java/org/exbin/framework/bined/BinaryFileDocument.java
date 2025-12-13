@@ -64,7 +64,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     protected BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
     protected DocumentSource documentSource = null;
-    protected BinaryData binaryData;
     private long documentOriginalSize;
 
     public BinaryFileDocument() {
@@ -82,7 +81,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     @Nonnull
     @Override
     public BinaryData getBinaryData() {
-        return binaryData;
+        return dataComponent.getCodeArea().getContentData();
     }
 
     @Nonnull
