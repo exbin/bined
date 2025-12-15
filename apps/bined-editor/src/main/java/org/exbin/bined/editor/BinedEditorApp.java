@@ -39,14 +39,15 @@ public class BinedEditorApp {
         app.init();
         App.launch(() -> {
             app.setAppDirectory(BinedEditorApp.class);
+            app.addPreloadedLibrary("binary_data-0.3.0-SNAPSHOT.jar");
             app.setupAddons();
             File appDirectory = app.getAppDirectory();
             if ("".equals(appDirectory.getPath())) {
-                app.addModulesFrom(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
-                app.addModulesFrom(new File("lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFromPath(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
+                app.addModulesFromPath(new File("lib").toURI(), ModuleFileLocation.LIBRARY);
             } else {
-                app.addModulesFrom(new File(appDirectory, BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
-                app.addModulesFrom(new File(appDirectory, "lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFromPath(new File(appDirectory, BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
+                app.addModulesFromPath(new File(appDirectory, "lib").toURI(), ModuleFileLocation.LIBRARY);
             }
             app.addClassPathModules();
             app.addModulesFromManifest(BinedEditorApp.class);
