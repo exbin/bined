@@ -76,10 +76,6 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
         }
     }
 
-    @Override
-    public void onClose() {
-    }
-
     public void setShowParsingPanel(boolean show) {
         BinEdComponentPanel componentPanel = (BinEdComponentPanel) dataComponent.getComponent();
         if (parsingPanelVisible != show) {

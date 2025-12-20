@@ -66,10 +66,6 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
     }
 
     @Override
-    public void onClose() {
-    }
-
-    @Override
     public void showSearchPanel(BinarySearchPanel.PanelMode panelMode) {
         if (!binarySearchPanelVisible) {
             componentPanel.add(binarySearch.getPanel(), BorderLayout.SOUTH);

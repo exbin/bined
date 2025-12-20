@@ -24,9 +24,6 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.utils.TestApplication;
-import org.exbin.framework.utils.UtilsModule;
-import org.exbin.framework.utils.WindowUtils;
 
 /**
  * Layout profile panel.

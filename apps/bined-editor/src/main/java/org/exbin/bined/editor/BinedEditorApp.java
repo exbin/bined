@@ -20,6 +20,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.basic.BasicApplication;
 import org.exbin.framework.basic.ModuleFileLocation;
+import org.exbin.framework.bined.launcher.BinedLauncherModule;
 
 /**
  * The main class of the BinEd Binary / Hex Editor application.
@@ -28,6 +29,8 @@ import org.exbin.framework.basic.ModuleFileLocation;
  */
 @ParametersAreNonnullByDefault
 public class BinedEditorApp {
+    
+    public static final String APP_CONFIG_PATH = "ExBin Project" + File.pathSeparator + "BinEd";
 
     /**
      * Main method launching the application.
@@ -38,10 +41,10 @@ public class BinedEditorApp {
         BasicApplication app = BasicApplication.createApplication(BinedEditorApp.class);
         app.init();
         App.launch(() -> {
-            app.setAppDirectory(BinedEditorApp.class);
+            File appDirectory = new File(App.getConfigDirectory(), APP_CONFIG_PATH);
+            app.setAppDirectory(appDirectory);
             app.addPreloadedLibrary("binary_data-0.3.0-SNAPSHOT.jar");
             app.setupAddons();
-            File appDirectory = app.getAppDirectory();
             if ("".equals(appDirectory.getPath())) {
                 app.addModulesFromPath(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
                 app.addModulesFromPath(new File("lib").toURI(), ModuleFileLocation.LIBRARY);
@@ -53,7 +56,7 @@ public class BinedEditorApp {
             app.addModulesFromManifest(BinedEditorApp.class);
             app.initModules();
 
-            App.launch("org.exbin.framework.bined.launcher.BinedLauncherModule", args);
+            App.launch(BinedLauncherModule.class.getName(), args);
         });
     }
 }

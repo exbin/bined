@@ -19,17 +19,28 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Binary data binaryComponent extension.
+ * <p>
+ * TODO: Rework using messaging
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface BinEdComponentExtension {
 
+    /**
+     * Notifies binary data was created.
+     *
+     * @param binaryDataComponent binary data component
+     */
     void onCreate(BinaryDataComponent binaryDataComponent);
 
+    /**
+     * Notifies binary data was changed.
+     */
     void onDataChange();
 
-    void onClose();
-
+    /**
+     * Notifies undo handler was changed.
+     */
     void onUndoHandlerChange();
 }

@@ -281,7 +281,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
                 last++;
             }
         }
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
@@ -299,7 +299,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
                 last--;
             }
         }
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
@@ -317,14 +317,14 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         } else {
             model.add(profile.get());
         }
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         ThemeProfilesListModel model = getProfilesListModel();
         model.removeIndices(profilesList.getSelectedIndices());
         profilesList.clearSelection();
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -340,7 +340,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         ThemeProfile profileRecord = model.getElementAt(selectedIndex);
         newProfileRecord.get().copyTo(profileRecord);
         model.notifyProfileModified(selectedIndex);
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
@@ -367,7 +367,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
             profilesList.clearSelection();
             model.add(profileRecord);
         }
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_copyButtonActionPerformed
 
     private void fromTemplateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromTemplateButtonActionPerformed
@@ -385,14 +385,14 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         } else {
             model.add(profile.get());
         }
-        wasModified();
+        notifyModified();
     }//GEN-LAST:event_fromTemplateButtonActionPerformed
 
     public boolean isModified() {
         return modified;
     }
 
-    private void wasModified() {
+    private void notifyModified() {
         modified = true;
         updateStates();
     }
