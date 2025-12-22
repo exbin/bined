@@ -18,8 +18,9 @@ package org.exbin.bined.editor;
 import java.io.File;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.addon.AddonApplication;
 import org.exbin.framework.basic.BasicApplication;
-import org.exbin.framework.basic.ModuleFileLocation;
+import org.exbin.framework.basic.BasicModuleFileLocation;
 import org.exbin.framework.bined.launcher.BinedLauncherModule;
 
 /**
@@ -38,7 +39,7 @@ public class BinedEditorApp {
      * @param args arguments
      */
     public static void main(String[] args) {
-        BasicApplication app = BasicApplication.createApplication(BinedEditorApp.class);
+        AddonApplication app = AddonApplication.createApplication(BinedEditorApp.class);
         app.init();
         App.launch(() -> {
             File appDirectory = new File(App.getConfigDirectory(), APP_CONFIG_PATH);
@@ -46,11 +47,11 @@ public class BinedEditorApp {
             app.addPreloadedLibrary("binary_data-0.3.0-SNAPSHOT.jar");
             app.setupAddons();
             if ("".equals(appDirectory.getPath())) {
-                app.addModulesFromPath(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
-                app.addModulesFromPath(new File("lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFromPath(new File(BasicApplication.PLUGINS_DIRECTORY).toURI(), BasicModuleFileLocation.PLUGIN);
+                app.addModulesFromPath(new File("lib").toURI(), BasicModuleFileLocation.LIBRARY);
             } else {
-                app.addModulesFromPath(new File(appDirectory, BasicApplication.PLUGINS_DIRECTORY).toURI(), ModuleFileLocation.PLUGIN);
-                app.addModulesFromPath(new File(appDirectory, "lib").toURI(), ModuleFileLocation.LIBRARY);
+                app.addModulesFromPath(new File(appDirectory, BasicApplication.PLUGINS_DIRECTORY).toURI(), BasicModuleFileLocation.PLUGIN);
+                app.addModulesFromPath(new File(appDirectory, "lib").toURI(), BasicModuleFileLocation.LIBRARY);
             }
             app.addClassPathModules();
             app.addModulesFromManifest(BinedEditorApp.class);
