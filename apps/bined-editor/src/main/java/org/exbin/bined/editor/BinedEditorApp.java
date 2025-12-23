@@ -16,6 +16,8 @@
 package org.exbin.bined.editor;
 
 import java.io.File;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.addon.AddonApplication;
@@ -31,19 +33,17 @@ import org.exbin.framework.bined.launcher.BinedLauncherModule;
 @ParametersAreNonnullByDefault
 public class BinedEditorApp {
     
-    public static final String APP_CONFIG_PATH = "ExBin Project" + File.pathSeparator + "BinEd";
-
     /**
      * Main method launching the application.
      *
      * @param args arguments
      */
     public static void main(String[] args) {
-        AddonApplication app = AddonApplication.createApplication(BinedEditorApp.class);
+        ResourceBundle appBundle = ResourceBundle.getBundle(BinedEditorApp.class.getName(), Locale.ROOT);
+        AddonApplication app = AddonApplication.createApplication(BinedEditorApp.class, appBundle);
         app.init();
         App.launch(() -> {
-            File appDirectory = new File(App.getConfigDirectory(), APP_CONFIG_PATH);
-            app.setAppDirectory(appDirectory);
+            File appDirectory = app.getAppDirectory();
             app.addPreloadedLibrary("binary_data-0.3.0-SNAPSHOT.jar");
             app.setupAddons();
             if ("".equals(appDirectory.getPath())) {
