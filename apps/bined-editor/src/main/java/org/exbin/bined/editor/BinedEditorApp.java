@@ -23,7 +23,6 @@ import org.exbin.framework.App;
 import org.exbin.framework.addon.AddonApplication;
 import org.exbin.framework.basic.BasicApplication;
 import org.exbin.framework.basic.BasicModuleFileLocation;
-import org.exbin.framework.bined.launcher.BinedLauncherModule;
 
 /**
  * The main class of the BinEd Binary / Hex Editor application.
@@ -57,7 +56,7 @@ public class BinedEditorApp {
             app.addModulesFromManifest(BinedEditorApp.class);
             app.initModules();
 
-            App.launch(BinedLauncherModule.class.getName(), args);
+            App.launch("org.exbin.framework.bined.launcher.BinedLauncherModule", args);
         });
     }
 }
