@@ -45,18 +45,18 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 @ParametersAreNonnullByDefault
 public class ValuesTablePanel extends javax.swing.JPanel {
 
-    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ValuesTablePanel.class);
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ValuesTablePanel.class);
 
-    private static final int DATA_LIMIT = 250;
-    private final byte[] values = new byte[DATA_LIMIT];
+    protected static final int DATA_LIMIT = 250;
+    protected final byte[] values = new byte[DATA_LIMIT];
 
-    private final PropertyTableModel tableModel;
-    private final PropertyTableCellRenderer valueCellRenderer;
-    private final TableCellRenderer nameCellRenderer;
-    private final PropertyTableCellEditor valueCellEditor;
-    private Controller controller = null;
+    protected final PropertyTableModel tableModel;
+    protected final PropertyTableCellRenderer valueCellRenderer;
+    protected final TableCellRenderer nameCellRenderer;
+    protected final PropertyTableCellEditor valueCellEditor;
+    protected Controller controller = null;
 
-    private CodeAreaCore codeArea;
+    protected CodeAreaCore codeArea;
 
     public ValuesTablePanel() {
         tableModel = new PropertyTableModel();
@@ -139,7 +139,7 @@ public class ValuesTablePanel extends javax.swing.JPanel {
             valuesTable.getCellEditor().cancelCellEditing();
         }
 
-        int valuesAvailable = available > DATA_LIMIT ? DATA_LIMIT : (int) available;
+        int valuesAvailable = Math.min((int) available, DATA_LIMIT);
         contentData.copyToArray(dataPosition, values, 0, valuesAvailable);
         List<PropertyTableItem> items = tableModel.getItems();
         for (PropertyTableItem item : items) {
