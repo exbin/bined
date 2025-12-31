@@ -40,7 +40,6 @@ public class BinedEditorApp {
     public static void main(String[] args) {
         ResourceBundle appBundle = ResourceBundle.getBundle(BinedEditorApp.class.getName(), Locale.ROOT);
         AddonApplication app = AddonApplication.createApplication(BinedEditorApp.class, appBundle);
-        app.init();
         App.launch(() -> {
             File appDirectory = app.getAppDirectory();
             app.addPreloadedLibrary("binary_data-0.3.0-SNAPSHOT.jar");
