@@ -89,6 +89,10 @@ public class EditBookmarkAction extends AbstractAction {
         this.dialogParentComponent = dialogParentComponent;
     }
 
+    public void setCodeArea(CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         final BookmarkEditorPanel bookmarkEditorPanel = new BookmarkEditorPanel();

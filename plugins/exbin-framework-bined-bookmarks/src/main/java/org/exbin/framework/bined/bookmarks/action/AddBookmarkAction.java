@@ -80,6 +80,10 @@ public class AddBookmarkAction extends AbstractAction {
         return Optional.ofNullable(bookmarkRecord);
     }
 
+    public void setCodeArea(CodeAreaCore codeArea) {
+        this.codeArea = codeArea;
+    }
+
     public void setDialogParentComponent(DialogParentComponent dialogParentComponent) {
         this.dialogParentComponent = dialogParentComponent;
     }

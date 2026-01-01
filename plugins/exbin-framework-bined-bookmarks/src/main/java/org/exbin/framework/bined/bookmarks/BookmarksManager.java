@@ -157,6 +157,7 @@ public class BookmarksManager {
         bookmarksManagerPanel.setController(new BookmarksManagerPanel.Controller() {
             @Override
             public void addRecord() {
+                addBookmarkAction.setCodeArea(manageBookmarksAction.getCodeArea());
                 addBookmarkAction.setDialogParentComponent(dialogParentComponent);
                 addBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = addBookmarkAction.getBookmarkRecord();
@@ -172,6 +173,7 @@ public class BookmarksManager {
                 BookmarkRecord selectedRecord = bookmarksManagerPanel.getSelectedRecord();
                 int selectedRow = bookmarksManagerPanel.getTable().getSelectedRow();
                 editBookmarkAction.setBookmarkRecord(new BookmarkRecord(selectedRecord));
+                editBookmarkAction.setCodeArea(manageBookmarksAction.getCodeArea());
                 editBookmarkAction.setDialogParentComponent(dialogParentComponent);
                 editBookmarkAction.actionPerformed(null);
                 Optional<BookmarkRecord> bookmarkRecord = editBookmarkAction.getBookmarkRecord();

@@ -30,6 +30,7 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -43,6 +44,7 @@ import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.BinaryDocument;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.operation.api.ConvertDataMethod;
@@ -53,6 +55,7 @@ import org.exbin.framework.window.api.WindowModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.bined.operation.gui.ConvertDataControlController;
 import org.exbin.framework.bined.operation.gui.DataOperationPanel;
+import org.exbin.framework.document.api.DocumentModuleApi;
 
 /**
  * Convert data action.
@@ -135,19 +138,12 @@ public class ConvertDataAction extends AbstractAction {
                             break;
                         }
                         case CONVERT_TO_NEW_FILE: {
-                            throw new UnsupportedOperationException("Not supported yet.");
-                            // TODO
-                            /* BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
-
-                            if (editorProvider != null) {
-                                editorProvider.newFile();
-                                Optional<FileHandler> activeFile = editorProvider.getActiveFile();
-                                if (activeFile.isPresent()) {
-                                    BinEdFileHandler fileHandler = (BinEdFileHandler) activeFile.get();
-                                    fileHandler.getCodeArea().setContentData(outputData);
-                                }
-                            }
-                            break; */
+                            BinaryData outputData = activeMethod.performDirectConvert(activeComponent, codeArea);
+                            DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
+                            BinaryDocument document = (BinaryDocument) documentModule.getMainDocumentManager().createDefaultDocument();
+                            ((EditableBinaryData) document.getBinaryData()).insert(0, outputData);
+                            documentModule.getMainDocumentManager().receiveDocument(document);
+                            break;
                         }
                         case CONVERT_TO_CLIPBOARD: {
                             try {
