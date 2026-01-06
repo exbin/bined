@@ -340,6 +340,7 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             if (filePath == null) {
+                // TODO Move to document module?
                 // Apply startup behavior from options
                 StartupOptions startupOptions = new StartupOptions(optionsStorage);
                 StartupBehavior startupBehavior = startupOptions.getStartupBehavior();

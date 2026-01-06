@@ -28,6 +28,9 @@ import org.exbin.framework.options.api.OptionsStorage;
 public class DataInspectorOptions implements SettingsOptions {
 
     public static final String KEY_SHOW_PARSING_PANEL = "showValuesPanel";
+    public static final String KEY_INSPECTOR_PREFIX = "inspector.";
+    public static final String KEY_INSPECTOR_HIDE_POSTFIX = ".hide";
+    public static final String KEY_INSPECTOR_POSITION_POSTFIX = ".position";
 
     private final OptionsStorage storage;
 
@@ -41,6 +44,22 @@ public class DataInspectorOptions implements SettingsOptions {
 
     public void setShowParsingPanel(boolean show) {
         storage.putBoolean(KEY_SHOW_PARSING_PANEL, show);
+    }
+
+    public boolean isInspectorHidden(String inspectorId) {
+        return storage.getBoolean(KEY_INSPECTOR_PREFIX + inspectorId + KEY_INSPECTOR_HIDE_POSTFIX, false);
+    }
+
+    public void setInspectorHidden(String inspectorId, boolean hidden) {
+        storage.putBoolean(KEY_INSPECTOR_PREFIX + inspectorId + KEY_INSPECTOR_HIDE_POSTFIX, hidden);
+    }
+
+    public int getInspectorPosition(String inspectorId) {
+        return storage.getInt(KEY_INSPECTOR_PREFIX + inspectorId + KEY_INSPECTOR_POSITION_POSTFIX, -1);
+    }
+
+    public void setInspectorPosition(String inspectorId, int position) {
+        storage.putInt(KEY_INSPECTOR_PREFIX + inspectorId + KEY_INSPECTOR_POSITION_POSTFIX, position);
     }
 
     @Override

@@ -20,7 +20,6 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.bined.BinEdDataComponent;
 import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.inspector.BasicValuesInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;

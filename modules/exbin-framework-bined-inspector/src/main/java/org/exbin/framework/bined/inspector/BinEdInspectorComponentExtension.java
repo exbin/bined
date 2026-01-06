@@ -16,16 +16,26 @@
 package org.exbin.framework.bined.inspector;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinEdComponentExtension;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.InspectorPanel;
+import org.exbin.framework.bined.inspector.settings.gui.InspectorsSettingsPanel;
 import org.exbin.framework.utils.UiUtils;
+import org.exbin.framework.window.api.WindowHandler;
+import org.exbin.framework.window.api.WindowModuleApi;
+import static org.exbin.framework.window.api.controller.DefaultControlController.ControlActionType.CANCEL;
+import static org.exbin.framework.window.api.controller.DefaultControlController.ControlActionType.OK;
+import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
  * BinEd component data inspector.
@@ -56,6 +66,29 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
         UiUtils.runInUiThread(() -> {
             SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
             this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createInspectorPanel();
+            inspectorPanel.setController(new InspectorPanel.Controller() {
+                @Override
+                public void invokeSettings() {
+                    WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+                    DefaultControlPanel controlPanel = new DefaultControlPanel();
+                    InspectorsSettingsPanel settingsPanel = new InspectorsSettingsPanel();
+                    WindowHandler dialog = windowModule.createDialog(settingsPanel, controlPanel);
+                    controlPanel.setController((actionType) -> {
+                        switch (actionType) {
+                            case OK:
+                                // TODO
+                                break;
+                            case CANCEL:
+                                break;
+                            default:
+                                throw new AssertionError();
+                        }
+                        dialog.close();
+                    });
+                    windowModule.setWindowTitle(dialog, settingsPanel.getResourceBundle());
+                    dialog.showCentered(inspectorPanel);
+                }
+            });
             inspectorPanel.setCodeArea(codeArea, null);
 
             parsingPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();

@@ -40,12 +40,13 @@ import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 @ParametersAreNonnullByDefault
 public class InspectorPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorPanel.class);
-    private SectCodeArea codeArea;
-    private BinaryDataUndoRedo undoRedo;
-    private List<BinEdInspector> inspectors = new ArrayList<>();
-    private BinEdInspector currentInspector = null;
-    private JComponent currentComponent = null;
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorPanel.class);
+    protected SectCodeArea codeArea;
+    protected BinaryDataUndoRedo undoRedo;
+    protected List<BinEdInspector> inspectors = new ArrayList<>();
+    protected BinEdInspector currentInspector = null;
+    protected JComponent currentComponent = null;
+    protected Controller controller;
 
     public InspectorPanel() {
         initComponents();
@@ -66,7 +67,7 @@ public class InspectorPanel extends javax.swing.JPanel {
             }
             // TODO Temp hack
             inspectorComboBox.setSelectedIndex(inspectorProviders.size() - 1);
-            add(inspectorComboBox, BorderLayout.NORTH);
+            add(controlPanel, BorderLayout.NORTH);
             inspectorComboBox.addItemListener((ItemEvent e) -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     pageChanged(inspectorComboBox.getSelectedIndex());
@@ -103,6 +104,10 @@ public class InspectorPanel extends javax.swing.JPanel {
         repaint();
     }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
     public void setCodeArea(SectCodeArea codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
         this.codeArea = codeArea;
         this.undoRedo = undoRedo;
@@ -134,12 +139,43 @@ public class InspectorPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        controlPanel = new javax.swing.JPanel();
         inspectorComboBox = new javax.swing.JComboBox<>();
+        controlButton = new javax.swing.JButton();
+
+        controlButton.setText(resourceBundle.getString("controlButton.text")); // NOI18N
+        controlButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                controlButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
+        controlPanel.setLayout(controlPanelLayout);
+        controlPanelLayout.setHorizontalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createSequentialGroup()
+                .addComponent(inspectorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(controlButton))
+        );
+        controlPanelLayout.setVerticalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(inspectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(controlButton))
+        );
 
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
+    private void controlButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controlButtonActionPerformed
+        controller.invokeSettings();
+    }//GEN-LAST:event_controlButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton controlButton;
+    private javax.swing.JPanel controlPanel;
     private javax.swing.JComboBox<String> inspectorComboBox;
     // End of variables declaration//GEN-END:variables
 
@@ -151,5 +187,10 @@ public class InspectorPanel extends javax.swing.JPanel {
             }
         }
         return null;
+    }
+
+    public interface Controller {
+
+        void invokeSettings();
     }
 }
