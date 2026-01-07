@@ -28,7 +28,8 @@ import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.action.ClipboardCodeActions;
+import org.exbin.framework.bined.action.CopyAsCodeAction;
+import org.exbin.framework.bined.action.PasteFromCodeAction;
 import org.exbin.framework.bined.operation.action.InsertDataAction;
 import org.exbin.framework.bined.operation.action.ConvertDataAction;
 import org.exbin.framework.bined.operation.action.CopyAsAction;
@@ -186,10 +187,10 @@ public class BinedOperationModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(createCopyAsAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.CopyAsCodeAction.ACTION_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeAction.ACTION_ID));
         contribution = mgmt.registerMenuItem(createPasteFromAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.PasteFromCodeAction.ACTION_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeAction.ACTION_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {
@@ -201,10 +202,10 @@ public class BinedOperationModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(createCopyAsAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.CopyAsCodeAction.ACTION_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeAction.ACTION_ID));
         contribution = mgmt.registerMenuItem(createPasteFromAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, ClipboardCodeActions.PasteFromCodeAction.ACTION_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeAction.ACTION_ID));
     }
 
     public void addInsertDataMethod(InsertDataMethod insertDataMethod) {

@@ -48,9 +48,9 @@ public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {
 
     @Nullable
     @Override
-    public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
+    public Color getPositionBackgroundColor(long rowDataPosition, int offsetDataPosition, int columnPosition, CodeAreaSection section, boolean inSelection) {
         if (position >= 0) {
-            long dataPosition = rowDataPosition + byteOnRow;
+            long dataPosition = rowDataPosition + offsetDataPosition;
             if (dataPosition >= position && dataPosition < position + length) {
                 return color;
             }
@@ -61,7 +61,7 @@ public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {
 
     @Nullable
     @Override
-    public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
+    public Color getPositionTextColor(long rowDataPosition, int offsetDataPosition, int columnPosition, CodeAreaSection section, boolean inSelection) {
         return null;
     }
 

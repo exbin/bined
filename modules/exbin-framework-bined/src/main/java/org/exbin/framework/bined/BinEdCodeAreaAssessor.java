@@ -85,9 +85,9 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
 
     @Nullable
     @Override
-    public Color getPositionBackgroundColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
+    public Color getPositionBackgroundColor(long rowDataPosition, int offsetDataPosition, int columnPosition, CodeAreaSection section, boolean inSelection) {
         for (CodeAreaColorAssessor colorModifier : priorityColorModifiers) {
-            Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
+            Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, offsetDataPosition, columnPosition, section, inSelection);
             if (positionBackgroundColor != null) {
                 return positionBackgroundColor;
             }
@@ -95,7 +95,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
 
         if (!inSelection) {
             for (CodeAreaColorAssessor colorModifier : colorModifiers) {
-                Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
+                Color positionBackgroundColor = colorModifier.getPositionBackgroundColor(rowDataPosition, offsetDataPosition, columnPosition, section, inSelection);
                 if (positionBackgroundColor != null) {
                     return positionBackgroundColor;
                 }
@@ -103,7 +103,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
         }
 
         if (parentColorAssessor != null) {
-            return parentColorAssessor.getPositionBackgroundColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
+            return parentColorAssessor.getPositionBackgroundColor(rowDataPosition, offsetDataPosition, columnPosition, section, inSelection);
         }
 
 //        if (color == null || inSelection) {
@@ -123,9 +123,9 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
 
     @Nullable
     @Override
-    public Color getPositionTextColor(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section, boolean inSelection) {
+    public Color getPositionTextColor(long rowDataPosition, int offsetDataPosition, int columnPosition, CodeAreaSection section, boolean inSelection) {
         for (CodeAreaColorAssessor colorModifier : priorityColorModifiers) {
-            Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
+            Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, offsetDataPosition, columnPosition, section, inSelection);
             if (positionTextColor != null) {
                 return positionTextColor;
             }
@@ -133,7 +133,7 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
 
         if (!inSelection) {
             for (CodeAreaColorAssessor colorModifier : colorModifiers) {
-                Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
+                Color positionTextColor = colorModifier.getPositionTextColor(rowDataPosition, offsetDataPosition, columnPosition, section, inSelection);
                 if (positionTextColor != null) {
                     return positionTextColor;
                 }
@@ -141,20 +141,20 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
         }
 
         if (parentColorAssessor != null) {
-            return parentColorAssessor.getPositionTextColor(rowDataPosition, byteOnRow, charOnRow, section, inSelection);
+            return parentColorAssessor.getPositionTextColor(rowDataPosition, offsetDataPosition, columnPosition, section, inSelection);
         }
 
         return null;
     }
 
     @Override
-    public char getPreviewCharacter(long rowDataPosition, int byteOnRow, int charOnRow, CodeAreaSection section) {
-        return parentCharAssessor != null ? parentCharAssessor.getPreviewCharacter(rowDataPosition, byteOnRow, charOnRow, section) : ' ';
+    public char getPreviewCharacter(long rowDataPosition, int offsetDataPosition, int columnPosition, CodeAreaSection section) {
+        return parentCharAssessor != null ? parentCharAssessor.getPreviewCharacter(rowDataPosition, offsetDataPosition, columnPosition, section) : ' ';
     }
 
     @Override
-    public char getPreviewCursorCharacter(long rowDataPosition, int byteOnRow, int charOnRow, byte[] cursorData, int cursorDataLength, CodeAreaSection section) {
-        return parentCharAssessor != null ? parentCharAssessor.getPreviewCursorCharacter(rowDataPosition, byteOnRow, charOnRow, cursorData, cursorDataLength, section) : ' ';
+    public char getPreviewCursorCharacter(long rowDataPosition, int offsetDataPosition, int columnPosition, byte[] cursorData, int cursorDataLength, CodeAreaSection section) {
+        return parentCharAssessor != null ? parentCharAssessor.getPreviewCursorCharacter(rowDataPosition, offsetDataPosition, columnPosition, cursorData, cursorDataLength, section) : ' ';
     }
 
     @Nonnull

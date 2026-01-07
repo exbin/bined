@@ -15,24 +15,11 @@
  */
 package org.exbin.framework.bined.action;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.AbstractAction;
-import javax.swing.JOptionPane;
-import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
-import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
-import org.exbin.framework.App;
-import org.exbin.framework.action.api.ActionContextChange;
-import org.exbin.framework.action.api.ActionConsts;
-import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.action.api.ContextComponent;
-import org.exbin.framework.bined.BinaryDataComponent;
-import org.exbin.framework.context.api.ContextChangeRegistration;
 
 /**
  * Clipboard code actions.
@@ -42,7 +29,9 @@ import org.exbin.framework.context.api.ContextChangeRegistration;
 @ParametersAreNonnullByDefault
 public class ClipboardCodeActions {
 
-    private ResourceBundle resourceBundle;
+    protected ResourceBundle resourceBundle;
+    protected ActionMethod copyAsCodeMethod = null;
+    protected ActionMethod pasteFromCodeMethod = null;
 
     public ClipboardCodeActions() {
     }
@@ -53,101 +42,49 @@ public class ClipboardCodeActions {
 
     @Nonnull
     public CopyAsCodeAction createCopyAsCodeAction() {
-        CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction();
+        CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (copyAsCodeMethod != null) {
+                    copyAsCodeMethod.performAction(codeArea);
+                    return;
+                }
+
+                super.actionPerformed(e);
+            }
+        };
         copyAsCodeAction.setup(resourceBundle);
         return copyAsCodeAction;
     }
 
     @Nonnull
     public PasteFromCodeAction createPasteFromCodeAction() {
-        PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction();
+        PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pasteFromCodeMethod != null) {
+                    pasteFromCodeMethod.performAction(codeArea);
+                    return;
+                }
+
+                super.actionPerformed(e);
+            }
+        };
         pasteFromCodeAction.setup(resourceBundle);
         return pasteFromCodeAction;
     }
 
-    @ParametersAreNonnullByDefault
-    public static class CopyAsCodeAction extends AbstractAction implements ActionContextChange {
+    public void setCopyAsCodeMethod(ActionMethod copyAsCodeMethod) {
+        this.copyAsCodeMethod = copyAsCodeMethod;
+    }
 
-        public static final String ACTION_ID = "copyAsCodeAction";
-
-        private CodeAreaCore codeArea;
-
-        public void setup(ResourceBundle resourceBundle) {
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(this, resourceBundle, ACTION_ID);
-            setEnabled(false);
-            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // TODO move out of code area
-            CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-            if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-                ((CodeAreaOperationCommandHandler) commandHandler).copyAsCode();
-            } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
-                ((DefaultCodeAreaCommandHandler) commandHandler).copyAsCode();
-            } else {
-                throw new IllegalStateException();
-            }
-        }
-
-        @Override
-        public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
-                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                boolean hasInstance = codeArea != null;
-                boolean hasSelection = hasInstance;
-                if (hasInstance) {
-                    hasSelection = codeArea.hasSelection();
-                }
-                setEnabled(hasSelection);
-            });
-        }
+    public void setPasteFromCodeMethod(ActionMethod pasteFromCodeMethod) {
+        this.pasteFromCodeMethod = pasteFromCodeMethod;
     }
 
     @ParametersAreNonnullByDefault
-    public static class PasteFromCodeAction extends AbstractAction implements ActionContextChange {
+    public interface ActionMethod {
 
-        public static final String ACTION_ID = "pasteFromCodeAction";
-
-        private CodeAreaCore codeArea;
-
-        public void setup(ResourceBundle resourceBundle) {
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(this, resourceBundle, ACTION_ID);
-            setEnabled(false);
-            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // TODO move out of code area
-            try {
-                CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
-                if (commandHandler instanceof CodeAreaOperationCommandHandler) {
-                    ((CodeAreaOperationCommandHandler) commandHandler).pasteFromCode();
-                } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
-                    ((DefaultCodeAreaCommandHandler) commandHandler).pasteFromCode();
-                } else {
-                    throw new IllegalStateException();
-                }
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog((Component) e.getSource(), ex.getMessage(), "Unable to Paste Code", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        @Override
-        public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
-                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                boolean hasInstance = codeArea != null;
-                boolean hasSelection = hasInstance;
-                if (hasInstance) {
-                    hasSelection = codeArea.canPaste() && codeArea.isEditable();
-                }
-                setEnabled(hasSelection);
-            });
-        }
+        void performAction(CodeAreaCore codeArea);
     }
 }

@@ -38,6 +38,8 @@ import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
+import org.exbin.framework.bined.action.CopyAsCodeAction;
+import org.exbin.framework.bined.action.PasteFromCodeAction;
 import org.exbin.framework.bined.macro.model.MacroRecord;
 
 /**
@@ -193,15 +195,6 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     }
 
     @Override
-    public void copyAsCode() {
-        if (isMacroRecording()) {
-            appendMacroOperationStep(MacroStep.CLIPBOARD_COPY_AS_CODE);
-        }
-
-        super.copyAsCode();
-    }
-
-    @Override
     public void cut() {
         if (isMacroRecording()) {
             appendMacroOperationStep(MacroStep.CLIPBOARD_CUT);
@@ -217,15 +210,6 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         }
 
         super.paste();
-    }
-
-    @Override
-    public void pasteFromCode() {
-        if (isMacroRecording()) {
-            appendMacroOperationStep(MacroStep.CLIPBOARD_PASTE_FROM_CODE);
-        }
-
-        super.pasteFromCode();
     }
 
     @Override
@@ -288,7 +272,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
                 break;
             }
             case CLIPBOARD_COPY_AS_CODE: {
-                copyAsCode();
+                CopyAsCodeAction.copyAsCode(codeArea);
                 break;
             }
             case CLIPBOARD_PASTE: {
@@ -296,7 +280,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
                 break;
             }
             case CLIPBOARD_PASTE_FROM_CODE: {
-                pasteFromCode();
+                PasteFromCodeAction.pasteFromCode(codeArea);
                 break;
             }
             case CLIPBOARD_DELETE: {

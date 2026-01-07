@@ -30,7 +30,6 @@ import org.exbin.framework.action.api.ActionContextChange;
 import org.exbin.framework.action.api.ActionConsts;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.action.api.ActionModuleApi;
-import org.exbin.framework.bined.BinEdDataComponent;
 import org.exbin.framework.context.api.ContextChangeRegistration;
 import org.exbin.framework.utils.ActionUtils;
 import org.exbin.framework.bined.BinaryFileDocument;

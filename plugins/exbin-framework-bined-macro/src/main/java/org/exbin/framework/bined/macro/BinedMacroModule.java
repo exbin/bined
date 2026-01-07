@@ -20,12 +20,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JMenu;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.action.ClipboardCodeActions;
+import org.exbin.framework.bined.action.CopyAsCodeAction;
+import org.exbin.framework.bined.action.PasteFromCodeAction;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
+import org.exbin.framework.bined.macro.operation.MacroStep;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
@@ -57,8 +62,31 @@ public class BinedMacroModule implements PluginModule {
             registerMacrosMenuActions();
             registerMacrosPopupMenuActions();
 
-            BinedModule binEdModule = App.getModule(BinedModule.class);
-            binEdModule.registerCodeAreaCommandHandlerProvider((codeArea, undoRedo) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoRedo) undoRedo));
+            BinedModule binedModule = App.getModule(BinedModule.class);
+            binedModule.registerCodeAreaCommandHandlerProvider((codeArea, undoRedo) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoRedo) undoRedo));
+            ClipboardCodeActions clipboardCodeActions = binedModule.getClipboardCodeActions();
+            clipboardCodeActions.setCopyAsCodeMethod(new ClipboardCodeActions.ActionMethod() {
+                @Override
+                public void performAction(CodeAreaCore codeArea) {
+                    CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
+                    if (commandHandler.isMacroRecording()) {
+                        commandHandler.appendMacroOperationStep(MacroStep.CLIPBOARD_COPY_AS_CODE);
+                    }
+
+                    CopyAsCodeAction.copyAsCode(codeArea);
+                }
+            });
+            clipboardCodeActions.setPasteFromCodeMethod(new ClipboardCodeActions.ActionMethod() {
+                @Override
+                public void performAction(CodeAreaCore codeArea) {
+                    CodeAreaMacroCommandHandler commandHandler = (CodeAreaMacroCommandHandler) codeArea.getCommandHandler();
+                    if (commandHandler.isMacroRecording()) {
+                        commandHandler.appendMacroOperationStep(MacroStep.CLIPBOARD_PASTE_FROM_CODE);
+                    }
+
+                    PasteFromCodeAction.pasteFromCode(codeArea);
+                }
+            });
 
             BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
             binedSearchModule.getFindReplaceActions().addFindAgainListener(() -> {
