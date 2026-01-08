@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
@@ -47,7 +48,11 @@ import org.exbin.framework.docking.api.ContextDocking;
 import org.exbin.framework.docking.api.DocumentDocking;
 import org.exbin.framework.docking.multi.api.MultiDocking;
 import org.exbin.framework.document.api.Document;
+import org.exbin.framework.file.api.AllFileTypes;
+import org.exbin.framework.file.api.FileDialogsProvider;
 import org.exbin.framework.file.api.FileDocument;
+import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.file.api.OpenFileResult;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
@@ -125,21 +130,18 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
             @Nullable
             @Override
             public CompareFilesPanel.FileRecord openFile() {
-                final File[] result = new File[1];
-                // TODO documentDocking
-//                FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-//                fileModule.getFileActions().openFile((URI fileUri, FileType fileType) -> {
-//                    result[0] = new File(fileUri);
-//                }, new AllFileTypes(), null);
-
-                if (result[0] == null) {
+                FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+                FileDialogsProvider dialogsProvider = fileModule.getFileDialogsProvider();
+                OpenFileResult openFileResult = dialogsProvider.showOpenFileDialog(new AllFileTypes(), null, null, null);
+                if (openFileResult.getDialogResult() != JFileChooser.APPROVE_OPTION) {
                     return null;
                 }
-
-                try (FileInputStream stream = new FileInputStream(result[0])) {
+                
+                File file = openFileResult.getSelectedFile().get();
+                try (FileInputStream stream = new FileInputStream(file)) {
                     PagedData pagedData = new ByteArrayPagedData();
                     pagedData.loadFromStream(stream);
-                    return new CompareFilesPanel.FileRecord(result[0].getAbsolutePath(), pagedData);
+                    return new CompareFilesPanel.FileRecord(file.getAbsolutePath(), pagedData);
                 } catch (IOException ex) {
                     Logger.getLogger(CompareFilesAction.class.getName()).log(Level.SEVERE, null, ex);
 

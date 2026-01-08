@@ -18,8 +18,6 @@ package org.exbin.framework.bined.inspector;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JScrollPane;
@@ -29,12 +27,11 @@ import org.exbin.framework.bined.BinEdComponentExtension;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.inspector.gui.InspectorPanel;
+import org.exbin.framework.bined.inspector.settings.gui.InspectorRecord;
 import org.exbin.framework.bined.inspector.settings.gui.InspectorsSettingsPanel;
 import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.window.api.WindowHandler;
 import org.exbin.framework.window.api.WindowModuleApi;
-import static org.exbin.framework.window.api.controller.DefaultControlController.ControlActionType.CANCEL;
-import static org.exbin.framework.window.api.controller.DefaultControlController.ControlActionType.OK;
 import org.exbin.framework.window.api.gui.DefaultControlPanel;
 
 /**
@@ -50,13 +47,8 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
     private boolean parsingPanelVisible = false;
 
     private JScrollPane parsingPanelScrollPane;
-    private ComponentsProvider componentsProvider = null;
 
     public BinEdInspectorComponentExtension() {
-    }
-
-    public BinEdInspectorComponentExtension(@Nullable ComponentsProvider componentsProvider) {
-        this.componentsProvider = componentsProvider;
     }
 
     @Override
@@ -65,19 +57,36 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
 
         UiUtils.runInUiThread(() -> {
             SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
-            this.inspectorPanel = componentsProvider == null ? new InspectorPanel() : componentsProvider.createInspectorPanel();
+            this.inspectorPanel = new InspectorPanel();
+            BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+            BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+            List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
+            inspectorPanel.setInspectorProviders(inspectorProviders);
+            
             inspectorPanel.setController(new InspectorPanel.Controller() {
                 @Override
                 public void invokeSettings() {
                     WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     InspectorsSettingsPanel settingsPanel = new InspectorsSettingsPanel();
+                    
+                    BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+                    BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+                    List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
+                    List<InspectorRecord> inspectorRecords = new ArrayList<>();
+                    for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
+                        inspectorRecords.add(new InspectorRecord(inspectorProvider.getName(), inspectorProvider.getName()));
+                    }
+                    settingsPanel.setItems(inspectorRecords);
+
                     WindowHandler dialog = windowModule.createDialog(settingsPanel, controlPanel);
                     controlPanel.setController((actionType) -> {
                         switch (actionType) {
                             case OK:
+                                List<InspectorRecord> inspectoRecords = settingsPanel.getItems();
                                 // TODO
                                 break;
+
                             case CANCEL:
                                 break;
                             default:
@@ -91,7 +100,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
             });
             inspectorPanel.setCodeArea(codeArea, null);
 
-            parsingPanelScrollPane = componentsProvider == null ? new JScrollPane() : componentsProvider.createScrollPane();
+            parsingPanelScrollPane = new JScrollPane();
             parsingPanelScrollPane.setViewportView(inspectorPanel);
             parsingPanelScrollPane.setBorder(null);
             setShowParsingPanel(true);
@@ -133,14 +142,5 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
     @Nullable
     public <T extends BinEdInspector> T getInspector(Class<T> clazz) {
         return inspectorPanel.getInspector(clazz);
-    }
-
-    public interface ComponentsProvider {
-
-        @Nonnull
-        InspectorPanel createInspectorPanel();
-
-        @Nonnull
-        JScrollPane createScrollPane();
     }
 }

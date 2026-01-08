@@ -27,9 +27,7 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.App;
-import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.inspector.BinEdInspector;
-import org.exbin.framework.bined.inspector.BinEdInspectorManager;
 import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 
 /**
@@ -57,9 +55,11 @@ public class InspectorPanel extends javax.swing.JPanel {
         Dimension dimension = new java.awt.Dimension(250, 10);
         setMinimumSize(dimension);
         setPreferredSize(dimension);
-        BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
-        BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-        List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
+    }
+    
+    public void setInspectorProviders(List<BinEdInspectorProvider> inspectorProviders) {
+        inspectors.clear();
+        inspectorComboBox.removeAllItems();
         if (inspectorProviders.size() > 1) {
             for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
                 inspectors.add(inspectorProvider.createInspector());

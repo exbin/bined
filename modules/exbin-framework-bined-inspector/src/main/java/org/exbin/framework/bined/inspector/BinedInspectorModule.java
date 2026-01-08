@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JMenuItem;
 import org.exbin.bined.basic.BasicCodeAreaZone;
@@ -73,16 +72,6 @@ public class BinedInspectorModule implements Module {
     public BinedInspectorModule() {
     }
 
-    public void setComponentsProvider(@Nullable BinEdInspectorComponentExtension.ComponentsProvider componentsProvider) {
-        BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
-        inspectorManager.addInspector(new BasicValuesInspectorProvider());
-        basicValuesColorModifier = new BasicValuesPositionColorModifier();
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.addPainterColorModifier(basicValuesColorModifier);
-        fileManager.addBinEdComponentExtension(new BinEdInspectorFileExtension(componentsProvider));
-    }
-
     @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
@@ -96,6 +85,16 @@ public class BinedInspectorModule implements Module {
         if (resourceBundle == null) {
             getResourceBundle();
         }
+    }
+
+    public void registerBasicInspector() {
+        BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
+        inspectorManager.addInspector(new BasicValuesInspectorProvider());
+        basicValuesColorModifier = new BasicValuesPositionColorModifier();
+        BinedModule binedModule = App.getModule(BinedModule.class);
+        BinEdFileManager fileManager = binedModule.getFileManager();
+        fileManager.addPainterColorModifier(basicValuesColorModifier);
+        fileManager.addBinEdComponentExtension(new BinEdInspectorFileExtension());
     }
 
     @Nonnull
@@ -174,16 +173,13 @@ public class BinedInspectorModule implements Module {
     @ParametersAreNonnullByDefault
     public static class BinEdInspectorFileExtension implements BinEdFileManager.BinEdFileExtension {
 
-        private final BinEdInspectorComponentExtension.ComponentsProvider componentsProvider;
-
-        public BinEdInspectorFileExtension(@Nullable BinEdInspectorComponentExtension.ComponentsProvider componentsProvider) {
-            this.componentsProvider = componentsProvider;
+        public BinEdInspectorFileExtension() {
         }
 
         @Nonnull
         @Override
         public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-            BinEdInspectorComponentExtension binEdComponentInspector = new BinEdInspectorComponentExtension(componentsProvider);
+            BinEdInspectorComponentExtension binEdComponentInspector = new BinEdInspectorComponentExtension();
             return Optional.of(binEdComponentInspector);
         }
     }

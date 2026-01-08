@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.inspector.settings.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,11 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
                 }
 
                 InspectorRecord record = (InspectorRecord) value;
-                return super.getListCellRendererComponent(list, record.getName(), index, isSelected, cellHasFocus);
+                DefaultListCellRenderer renderer = (DefaultListCellRenderer) super.getListCellRendererComponent(list, record.getName(), index, isSelected, cellHasFocus);
+                if (!record.isShown()) {
+                    renderer.setForeground(Color.GRAY);
+                }
+                return renderer;
             }
         });
         rowsList.addListSelectionListener((ListSelectionEvent e) -> updateStates());
@@ -124,7 +129,7 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
     private void updateStates() {
         int[] selectedIndices = rowsList.getSelectedIndices();
         boolean hasSelection = selectedIndices.length > 0;
-        boolean hasAnyItems = rowsList.getModel().getSize() == 0;
+        boolean hasAnyItems = rowsList.getModel().getSize() > 0;
         selectAllButton.setEnabled(hasAnyItems);
 
         if (hasSelection) {
@@ -149,6 +154,7 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
         rowsList = new javax.swing.JList<>();
         rowsControlPanel = new javax.swing.JPanel();
         showButton = new javax.swing.JButton();
+        hideButton = new javax.swing.JButton();
         upButton = new javax.swing.JButton();
         downButton = new javax.swing.JButton();
         selectAllButton = new javax.swing.JButton();
@@ -167,6 +173,14 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
         showButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showButtonActionPerformed(evt);
+            }
+        });
+
+        hideButton.setText(resourceBundle.getString("hideButton.text")); // NOI18N
+        hideButton.setName("hideButton"); // NOI18N
+        hideButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hideButtonActionPerformed(evt);
             }
         });
 
@@ -207,7 +221,8 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
                     .addComponent(selectAllButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(downButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(upButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(showButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(showButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(hideButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         rowsControlPanelLayout.setVerticalGroup(
@@ -215,6 +230,8 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
             .addGroup(rowsControlPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(showButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hideButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(upButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -251,6 +268,7 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
             int next = indices[i];
             InspectorRecord item = model.getElementAt(next);
             item.setShown(true);
+            model.set(next, item);
         }
         notifyModified();
     }//GEN-LAST:event_showButtonActionPerformed
@@ -299,8 +317,21 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
         }
     }//GEN-LAST:event_selectAllButtonActionPerformed
 
+    private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
+        DefaultListModel<InspectorRecord> model = (DefaultListModel<InspectorRecord>) rowsList.getModel();
+        int[] indices = rowsList.getSelectedIndices();
+        for (int i = 0; i < indices.length; i++) {
+            int next = indices[i];
+            InspectorRecord item = model.getElementAt(next);
+            item.setShown(false);
+            model.set(next, item);
+        }
+        notifyModified();
+    }//GEN-LAST:event_hideButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton downButton;
+    private javax.swing.JButton hideButton;
     private javax.swing.JPanel rowsControlPanel;
     private javax.swing.JList<InspectorRecord> rowsList;
     private javax.swing.JScrollPane rowsListScrollPane;

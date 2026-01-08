@@ -29,17 +29,18 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class BinEdInspectorManager {
 
-    private final List<BinEdInspectorProvider> inspectorProviders = new ArrayList<>();
+    protected final List<BinEdInspectorProvider> inspectorProviders = new ArrayList<>();
     
-    public void addInspector(BinEdInspectorProvider inspectorProvider) {
-        inspectorProviders.add(inspectorProvider);
-    }
-
     @Nonnull
     public List<BinEdInspectorProvider> getInspectorProviders() {
         return inspectorProviders;
     }
-    
+
+    public void setInspectorProviders(List<BinEdInspectorProvider> inspectorProviders) {
+        this.inspectorProviders.clear();
+        this.inspectorProviders.addAll(inspectorProviders);
+    }
+
     @Nonnull
     public <T extends BinEdInspectorProvider> Optional<T> getInspectorProvider(Class<T> clazz) {
         for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
@@ -49,6 +50,10 @@ public class BinEdInspectorManager {
         }
 
         return Optional.empty();
+    }
+
+    public void addInspector(BinEdInspectorProvider inspectorProvider) {
+        inspectorProviders.add(inspectorProvider);
     }
 
     public void removeAllInspectors() {
