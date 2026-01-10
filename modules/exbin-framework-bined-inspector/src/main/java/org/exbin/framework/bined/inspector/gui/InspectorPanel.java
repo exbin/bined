@@ -66,7 +66,7 @@ public class InspectorPanel extends javax.swing.JPanel {
                 inspectorComboBox.addItem(inspectorProvider.getName());
             }
             // TODO Temp hack
-            inspectorComboBox.setSelectedIndex(inspectorProviders.size() - 1);
+            inspectorComboBox.setSelectedIndex(inspectorProviders.size() - 2);
             add(controlPanel, BorderLayout.NORTH);
             inspectorComboBox.addItemListener((ItemEvent e) -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
