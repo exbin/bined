@@ -111,11 +111,10 @@ public class ConvertDataAction extends AbstractAction {
         ResourceBundle panelResourceBundle = controlPanel.getResourceBundle();
         controlPanel.setHelpLink(new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        JPanel dialogPanel = windowModule.createDialogPanel(dataOperationPanel, controlPanel);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         dataOperationPanel.setDataMethods(binedBlockEditModule.getConvertDataMethods());
         dataOperationPanel.selectActiveMethod(lastMethod);
-        final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
+        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, dataOperationPanel, controlPanel);
         windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
         windowModule.setWindowTitle(dialog, panelResourceBundle);
         controlPanel.setController((ConvertDataControlController.ControlActionType actionType) -> {

@@ -199,7 +199,7 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
     @Nonnull
     @Override
     public Optional<JButton> getDefaultButton() {
-        return Optional.of(cancelButton);
+        return Optional.of(convertButton);
     }
 
     @Override

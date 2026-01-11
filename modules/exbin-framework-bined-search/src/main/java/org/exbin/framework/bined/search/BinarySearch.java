@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JPanel;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.framework.App;
@@ -244,9 +243,8 @@ public class BinarySearch {
                         multilinePanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
                         multilinePanel.setCondition(condition);
                         DefaultControlPanel controlPanel = new DefaultControlPanel();
-                        JPanel dialogPanel = windowModule.createDialogPanel(multilinePanel, controlPanel);
                         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-                        final WindowHandler multilineDialog = windowModule.createDialog(dialog.getWindow(), Dialog.ModalityType.APPLICATION_MODAL, dialogPanel);
+                        final WindowHandler multilineDialog = windowModule.createDialog(dialog.getWindow(), Dialog.ModalityType.APPLICATION_MODAL, multilinePanel, controlPanel);
                         windowModule.addHeaderPanel(multilineDialog.getWindow(), multilinePanel.getClass(), multilinePanel.getResourceBundle());
                         windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());
                         final SearchConditionResult result = new SearchConditionResult();

@@ -19,7 +19,6 @@ import java.awt.Component;
 import java.awt.Dialog;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -86,8 +85,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             multilinePanel.setCondition(searchCondition);
             multilinePanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
             DefaultControlPanel controlPanel = new DefaultControlPanel();
-            JPanel dialogPanel = windowModule.createDialogPanel(multilinePanel, controlPanel);
-            final WindowHandler multilineDialog = windowModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, dialogPanel);
+            final WindowHandler multilineDialog = windowModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, multilinePanel, controlPanel);
             windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());
             controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
                 if (actionType == DefaultControlController.ControlActionType.OK) {
