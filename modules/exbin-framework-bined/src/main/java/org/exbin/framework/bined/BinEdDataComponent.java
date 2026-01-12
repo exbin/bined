@@ -45,7 +45,6 @@ import org.exbin.framework.action.api.clipboard.TextClipboardController;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.operation.undo.api.UndoRedoController;
-import org.exbin.framework.operation.undo.api.UndoRedoState;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
 import org.exbin.framework.text.encoding.CharsetListEncodingState;
 import org.exbin.framework.text.font.TextFontState;

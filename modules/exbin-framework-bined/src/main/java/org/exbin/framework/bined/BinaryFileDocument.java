@@ -148,7 +148,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         if (!file.isFile()) {
             JOptionPane.showOptionDialog(componentPanel,
                     "File not found",
-                    "Unable to load file",
+                    "Unable to load file " + file.getAbsolutePath(),
                     JOptionPane.CLOSED_OPTION,
                     JOptionPane.ERROR_MESSAGE,
                     null, null, null);
@@ -201,7 +201,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public void clearFile() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException();
     }
 
     @Override

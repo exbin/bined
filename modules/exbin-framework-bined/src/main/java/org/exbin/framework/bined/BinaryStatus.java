@@ -23,6 +23,7 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -157,6 +158,14 @@ public class BinaryStatus {
         if (dataComponent != null) {
             CodeAreaCore codeArea = dataComponent.getCodeArea();
             binaryStatusPanel.setEditMode(((EditModeCapable) codeArea).getEditMode(), ((EditModeCapable) codeArea).getActiveOperation());
+        }
+    }
+    
+    public void updateEncodingState() {
+        BinEdDataComponent dataComponent = getActiveComponent();
+        if (dataComponent != null) {
+            CodeAreaCore codeArea = dataComponent.getCodeArea();
+            binaryStatusPanel.setEncoding(((CharsetCapable) codeArea).getCharset().name());
         }
     }
 

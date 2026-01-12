@@ -17,6 +17,8 @@ ext {
     depsRoot = 'Bined'
     appName = 'BinEd'
     vendor = 'ExBin Project'
+    appArgs = ''
+//    appArgs = '--add-opens java.base/java.nio=ALL-UNNAMED'
 }
 
 if (!hasProperty('mainClass')) {
@@ -156,6 +158,7 @@ jar {
             'Main-Class': mainClass,
             'Class-Path': 'lib/commons-cli-1.2.jar lib/flatlaf-desktop-3.2.jar lib/exbin-framework-0.3.0-SNAPSHOT.jar lib/exbin-framework-basic-0.3.0-SNAPSHOT.jar lib/exbin-framework-addon-0.3.0-SNAPSHOT.jar lib/binary_data-0.3.0-SNAPSHOT.jar',
             'Build-JDK': System.getProperty('java.version'),
+            'Build-Date': new Date().format('yyyy-MM-dd'),
             'Specification-Title': project.appName,
             'Specification-Version': project.version,
             'Specification-Vendor': project.vendor

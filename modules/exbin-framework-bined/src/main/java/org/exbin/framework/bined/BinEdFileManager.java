@@ -23,7 +23,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.capability.SelectionCapable;
-import org.exbin.bined.operation.BinaryDataUndoRedoChangeListener;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
@@ -151,9 +150,7 @@ public class BinEdFileManager {
     }
 
     public void updateTextEncodingStatus(EncodingsManager encodingsHandler) {
-        // if (binaryStatusPanel != null) {
-            // TODO encodingsHandler.setTextEncodingStatus(binaryStatusPanel);
-        // }
+        binaryStatus.updateEncodingState();
     }
 
     public void setBinaryStatusController(BinaryStatusPanel.Controller binaryStatusController) {
