@@ -41,6 +41,8 @@ import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.about.api.AboutModuleApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.action.manager.ActionManagerModule;
+import org.exbin.framework.addon.catalog.AddonCatalogModule;
+import org.exbin.framework.addon.manager.AddonManagerModule;
 import org.exbin.framework.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.framework.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.framework.bined.BinaryFileDocument;
@@ -208,10 +210,13 @@ public class BinedLauncherModule implements LauncherModule {
             BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
             binedOperationModule.addBasicMethods();
 
-            AddonManagerModuleApi addonManagerModule = App.getModule(AddonManagerModuleApi.class);
+            AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
-            addonManagerModule.setAddonServiceCoreUrl("https://bined.exbin.org/");
-            addonManagerModule.setManualLegacyGitHubUrl("https://github.com/exbin/bined/releases/tag/");
+            AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
+
+            addonCatalogModule.setCatalogPageUrl("https://bined.exbin.org/");
+            addonManagerModule.getAddonManager().setAddonCatalogService(addonCatalogModule.createCatalogService());
+            // TODO addonManagerModule.setManualLegacyGitHubUrl("https://github.com/exbin/bined/releases/tag/");
 
             frameModule.init();
             if (!demoMode) {
