@@ -143,6 +143,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
                 }
             }
         });
+        windowModule.addHeaderPanel(dialog.getWindow(), clipboardContentPanel.getClass(), clipboardContentPanel.getResourceBundle());
         dialog.showCentered(dialogParentComponent.getComponent());
     }
 

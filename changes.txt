@@ -8,6 +8,7 @@
 - Added startup behavior option - reopen lastly opened files (by mengnankkkk) 
 - Added search progress bar + cancel button (assisted by Tanyajain2006)
 - Added basic regex search support (assisted by Tanyajain2006)
+- Modified addon manager to use cart / basket
 
 0.2.4 (2025-01-22)
 - Added addon manager

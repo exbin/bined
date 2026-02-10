@@ -27,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JOptionPane;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.EmptyBinaryData;
@@ -50,6 +49,7 @@ import org.exbin.framework.document.api.EditableDocument;
 import org.exbin.framework.document.api.MemoryDocumentSource;
 import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileDocumentSource;
+import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.operation.undo.api.ContextUndoRedo;
 import org.exbin.framework.text.encoding.ContextEncoding;
 import org.exbin.framework.text.font.ContextFont;
@@ -62,7 +62,7 @@ import org.exbin.framework.text.font.ContextFont;
 @ParametersAreNonnullByDefault
 public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {
 
-    protected BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
+    protected final BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
     protected DocumentSource documentSource = null;
     private long documentOriginalSize;
 
@@ -146,12 +146,8 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         BinEdComponentPanel componentPanel = getComponent();
         File file = ((FileDocumentSource) documentSource).getFile();
         if (!file.isFile()) {
-            JOptionPane.showOptionDialog(componentPanel,
-                    "File not found",
-                    "Unable to load file " + file.getAbsolutePath(),
-                    JOptionPane.CLOSED_OPTION,
-                    JOptionPane.ERROR_MESSAGE,
-                    null, null, null);
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            fileModule.showFileNotFound(componentPanel, file.getAbsolutePath());
             return;
         }
 

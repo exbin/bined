@@ -213,6 +213,7 @@ public class BinedLauncherModule implements LauncherModule {
             AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
             AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
+            addonCatalogModule.setDevMode(devMode);
 
             addonCatalogModule.setCatalogPageUrl("https://bined.exbin.org/");
             addonManagerModule.getAddonManager().setAddonCatalogService(addonCatalogModule.createCatalogService());
@@ -387,7 +388,7 @@ public class BinedLauncherModule implements LauncherModule {
                 binedModule.startWithFile(filePath);
             }
             
-            loadSampleFile();
+            // loadSampleFile();
 
             if (!demoMode) {
                 updateModule.checkOnStart(frameHandler.getFrame());

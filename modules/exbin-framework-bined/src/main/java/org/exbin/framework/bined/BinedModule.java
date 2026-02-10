@@ -112,6 +112,7 @@ public class BinedModule implements Module {
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
+    public static final String BINARY_DOCUMENT_ID = "binary";
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
 
     private java.util.ResourceBundle resourceBundle = null;
@@ -254,7 +255,7 @@ public class BinedModule implements Module {
             @Nonnull
             @Override
             public String getTypeId() {
-                return "binary";
+                return BINARY_DOCUMENT_ID;
             }
 
             @Nonnull
@@ -402,41 +403,6 @@ public class BinedModule implements Module {
     @Nonnull
     public String getNewFileTitlePrefix() {
         return resourceBundle.getString("newFileTitlePrefix");
-    }
-
-    @Nonnull
-    private JPopupMenu createPopupMenu(int postfix, SectCodeArea codeArea) {
-        String popupMenuId = BINARY_POPUP_MENU_ID + "." + postfix;
-
-        JPopupMenu popupMenu = new JPopupMenu() {
-            @Override
-            public void show(Component invoker, int x, int y) {
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-                CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = createCodeAreaPopupMenuHandler(PopupMenuVariant.EDITOR);
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
-                popupMenu.addPopupMenuListener(new PopupMenuListener() {
-                    @Override
-                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                    }
-
-                    @Override
-                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                        codeAreaPopupMenuHandler.dropPopupMenu(popupMenuId);
-                    }
-
-                    @Override
-                    public void popupMenuCanceled(PopupMenuEvent e) {
-                    }
-                });
-                popupMenu.show(invoker, x, y);
-            }
-        };
-        return popupMenu;
     }
 
     @Nonnull
