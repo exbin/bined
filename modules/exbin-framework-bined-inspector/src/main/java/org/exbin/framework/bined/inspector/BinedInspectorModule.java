@@ -89,7 +89,7 @@ public class BinedInspectorModule implements Module {
 
     public void registerBasicInspector() {
         BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
-        inspectorManager.addInspector(new BasicValuesInspectorProvider());
+        inspectorManager.addInspector(new BasicValuesInspectorProvider(getResourceBundle()));
         basicValuesColorModifier = new BasicValuesPositionColorModifier();
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();

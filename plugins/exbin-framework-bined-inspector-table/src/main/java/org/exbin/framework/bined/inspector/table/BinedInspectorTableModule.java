@@ -23,9 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
-import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorManager;
-import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.bined.inspector.table.api.ValueRowType;
 import org.exbin.framework.bined.inspector.table.value.ByteValueRowType;
@@ -57,7 +55,7 @@ public class BinedInspectorTableModule implements PluginModule {
     public void register() {
         BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
         BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-        inspectorManager.addInspector(new TableInspectorProvider(resourceBundle));
+        inspectorManager.addInspector(new TableInspectorProvider(getResourceBundle()));
 
         registerRowType(new ByteValueRowType());
         registerRowType(new WordValueRowType());

@@ -58,6 +58,6 @@ public class BinedInspectorPixelMapModule implements PluginModule {
     public void register() {
         BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
         BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-        inspectorManager.addInspector(new PixelMapInspectorProvider(resourceBundle));
+        inspectorManager.addInspector(new PixelMapInspectorProvider(getResourceBundle()));
     }
 }

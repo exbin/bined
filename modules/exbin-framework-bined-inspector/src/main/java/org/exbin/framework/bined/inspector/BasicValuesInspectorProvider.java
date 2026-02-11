@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.inspector;
 
+import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,8 +26,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
-    
+
     public static final String INSPECTOR_ID = "basicValues";
+
+    protected final java.util.ResourceBundle resourceBundle;
+
+    public BasicValuesInspectorProvider(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
 
     @Nonnull
     @Override
@@ -37,7 +44,7 @@ public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
     @Nonnull
     @Override
     public String getName() {
-        return "Basic Values";
+        return resourceBundle.getString("basicValuesInspector.name");
     }
 
     @Nonnull
