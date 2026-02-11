@@ -75,7 +75,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
                     List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
                     List<InspectorRecord> inspectorRecords = new ArrayList<>();
                     for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
-                        inspectorRecords.add(new InspectorRecord(inspectorProvider.getName(), inspectorProvider.getName()));
+                        inspectorRecords.add(new InspectorRecord(inspectorProvider.getId(), inspectorProvider.getName()));
                     }
                     settingsPanel.setItems(inspectorRecords);
 
@@ -83,7 +83,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
                     controlPanel.setController((actionType) -> {
                         switch (actionType) {
                             case OK:
-                                List<InspectorRecord> inspectoRecords = settingsPanel.getItems();
+                                inspectorPanel.setInspectorRecords(settingsPanel.getItems());
                                 // TODO
                                 break;
 
@@ -106,7 +106,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
             setShowParsingPanel(true);
         });
     }
-
+    
     @Override
     public void onDataChange() {
     }

@@ -92,8 +92,6 @@ public class BinedLauncherModule implements LauncherModule {
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedLauncherModule.class);
     private static final int BUFFER_SIZE = 1024;
 
-    private static final String BINARY_PLUGIN_ID = "binary";
-
     private static final String OPTION_HELP = "h";
     private static final String OPTION_VERBOSE = "v";
     private static final String OPTION_DEV = "dev";
@@ -387,9 +385,8 @@ public class BinedLauncherModule implements LauncherModule {
             } else {
                 binedModule.startWithFile(filePath);
             }
-            
-            // loadSampleFile();
 
+            // loadSampleFile();
             if (!demoMode) {
                 updateModule.checkOnStart(frameHandler.getFrame());
             }

@@ -57,25 +57,7 @@ public class BinedInspectorTableModule implements PluginModule {
     public void register() {
         BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
         BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-        inspectorManager.addInspector(new BinEdInspectorProvider() {
-
-            private TableInspector inspector;
-
-            @Nonnull
-            @Override
-            public String getName() {
-                return "Table";
-            }
-
-            @Nonnull
-            @Override
-            public BinEdInspector createInspector() {
-                if (inspector == null) {
-                    inspector = new TableInspector();
-                }
-                return inspector;
-            }
-        });
+        inspectorManager.addInspector(new TableInspectorProvider(resourceBundle));
 
         registerRowType(new ByteValueRowType());
         registerRowType(new WordValueRowType());

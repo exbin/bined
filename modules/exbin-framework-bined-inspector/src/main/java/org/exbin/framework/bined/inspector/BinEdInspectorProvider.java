@@ -27,6 +27,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public interface BinEdInspectorProvider {
 
     /**
+     * Returns inspector id.
+     *
+     * @return identifier
+     */
+    @Nonnull
+    String getId();
+
+    /**
      * Returns inspector name.
      *
      * @return name

@@ -19,7 +19,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
@@ -27,8 +29,10 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.inspector.BasicValuesInspectorProvider;
 import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
+import org.exbin.framework.bined.inspector.settings.gui.InspectorRecord;
 
 /**
  * BinEd inspector right side panel.
@@ -41,6 +45,7 @@ public class InspectorPanel extends javax.swing.JPanel {
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorPanel.class);
     protected SectCodeArea codeArea;
     protected BinaryDataUndoRedo undoRedo;
+    protected Map<String, BinEdInspectorProvider> inspectorProviders = new HashMap<>();
     protected List<BinEdInspector> inspectors = new ArrayList<>();
     protected BinEdInspector currentInspector = null;
     protected JComponent currentComponent = null;
@@ -58,15 +63,22 @@ public class InspectorPanel extends javax.swing.JPanel {
     }
     
     public void setInspectorProviders(List<BinEdInspectorProvider> inspectorProviders) {
+        this.inspectorProviders.clear();
         inspectors.clear();
         inspectorComboBox.removeAllItems();
         if (inspectorProviders.size() > 1) {
+            int initialIndex = 0;
             for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
+                String inspectorId = inspectorProvider.getId();
+                this.inspectorProviders.put(inspectorId, inspectorProvider);
                 inspectors.add(inspectorProvider.createInspector());
                 inspectorComboBox.addItem(inspectorProvider.getName());
+                if (BasicValuesInspectorProvider.INSPECTOR_ID.equals(inspectorId)) {
+                    // TODO Read it from settings
+                    initialIndex = inspectorProviders.size() - 1;
+                }
             }
-            // TODO Temp hack
-            inspectorComboBox.setSelectedIndex(inspectorProviders.size() - 2);
+            inspectorComboBox.setSelectedIndex(initialIndex);
             add(controlPanel, BorderLayout.NORTH);
             inspectorComboBox.addItemListener((ItemEvent e) -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -80,6 +92,30 @@ public class InspectorPanel extends javax.swing.JPanel {
         }
     }
 
+    public void setInspectorRecords(List<InspectorRecord> inspectorRecords) {
+        remove(controlPanel);
+        inspectors.clear();
+        inspectorComboBox.removeAllItems();
+        for (InspectorRecord inspectorRecord : inspectorRecords) {
+            if (inspectorRecord.isShown()) {
+                BinEdInspectorProvider inspectorProvider = inspectorProviders.get(inspectorRecord.getId());
+                inspectors.add(inspectorProvider.createInspector());
+                inspectorComboBox.addItem(inspectorProvider.getName());
+            }
+        }
+        if (inspectorProviders.size() > 1) {
+            add(controlPanel, BorderLayout.NORTH);
+            int selectedIndex = inspectorComboBox.getSelectedIndex();
+            if (selectedIndex >= 0) {
+                selectedIndex = 0;
+            }
+            pageChanged(selectedIndex);
+        } else {
+            pageChanged(0);
+        }
+    }
+
+    
     private void pageChanged(int inspectorIndex) {
         if (currentComponent != null) {
             remove(currentComponent);

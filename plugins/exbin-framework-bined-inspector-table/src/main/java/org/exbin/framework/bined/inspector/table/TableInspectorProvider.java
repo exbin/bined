@@ -13,20 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.inspector;
+package org.exbin.framework.bined.inspector.table;
 
+import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.inspector.BinEdInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 
 /**
- * BinEd basic values inspector.
+ * Table inspector provider.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
-    
-    public static final String INSPECTOR_ID = "basicValues";
+public class TableInspectorProvider implements BinEdInspectorProvider {
+
+    public static final String INSPECTOR_ID = "table";
+
+    protected TableInspector inspector;
+    protected final ResourceBundle resourceBundle;
+
+    public TableInspectorProvider(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
 
     @Nonnull
     @Override
@@ -37,12 +47,15 @@ public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
     @Nonnull
     @Override
     public String getName() {
-        return "Basic Values";
+        return resourceBundle.getString("tableInspector.name");
     }
 
     @Nonnull
     @Override
     public BinEdInspector createInspector() {
-        return new BasicValuesInspector();
+        if (inspector == null) {
+            inspector = new TableInspector();
+        }
+        return inspector;
     }
 }

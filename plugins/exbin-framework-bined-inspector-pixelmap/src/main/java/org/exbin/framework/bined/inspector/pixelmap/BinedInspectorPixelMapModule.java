@@ -25,9 +25,7 @@ import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.bined.inspector.BinedInspectorModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.bined.inspector.BinEdInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorManager;
-import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 
 /**
  * Binary editor data pixel map inspector plugin.
@@ -60,24 +58,6 @@ public class BinedInspectorPixelMapModule implements PluginModule {
     public void register() {
         BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
         BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-        inspectorManager.addInspector(new BinEdInspectorProvider() {
-
-            private PixelMapInspector inspector;
-
-            @Nonnull
-            @Override
-            public String getName() {
-                return "Pixel Map";
-            }
-
-            @Nonnull
-            @Override
-            public BinEdInspector createInspector() {
-                if (inspector == null) {
-                    inspector = new PixelMapInspector();
-                }
-                return inspector;
-            }
-        });
+        inspectorManager.addInspector(new PixelMapInspectorProvider(resourceBundle));
     }
 }

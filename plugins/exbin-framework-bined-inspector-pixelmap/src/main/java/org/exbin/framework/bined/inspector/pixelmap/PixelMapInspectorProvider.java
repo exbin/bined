@@ -13,20 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.bined.inspector;
+package org.exbin.framework.bined.inspector.pixelmap;
 
+import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.bined.inspector.BinEdInspector;
+import org.exbin.framework.bined.inspector.BinEdInspectorProvider;
 
 /**
- * BinEd basic values inspector.
+ * Pixel map inspector provider.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
-    
-    public static final String INSPECTOR_ID = "basicValues";
+public class PixelMapInspectorProvider implements BinEdInspectorProvider {
+
+    public static final String INSPECTOR_ID = "pixelMap";
+
+    protected PixelMapInspector inspector;
+    protected final ResourceBundle resourceBundle;
+
+    public PixelMapInspectorProvider(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
 
     @Nonnull
     @Override
@@ -37,12 +47,15 @@ public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
     @Nonnull
     @Override
     public String getName() {
-        return "Basic Values";
+        return resourceBundle.getString("pixelMapInspector.name");
     }
 
     @Nonnull
     @Override
     public BinEdInspector createInspector() {
-        return new BasicValuesInspector();
+        if (inspector == null) {
+            inspector = new PixelMapInspector();
+        }
+        return inspector;
     }
 }
