@@ -21,6 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.CodeSeparator;
 import org.exbin.framework.bined.operation.api.ParamChangeListener;
 import org.exbin.framework.language.api.LanguageModuleApi;
 
@@ -56,11 +57,18 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
             codeTypeComboBox.addItem(codeType);
         }
     }
-    
+
     public void setCharactersCases(List<String> charactersCases) {
         for (String charactersCase : charactersCases) {
             codeCharactersComboBox.addItem(charactersCase);
         }
+    }
+
+    public void setCodeSeparators(List<String> codeSeparators) {
+        for (String codeSeparator : codeSeparators) {
+            codeSeparatorComboBox.addItem(codeSeparator);
+        }
+        codeSeparatorComboBox.setSelectedIndex(1);
     }
 
     @Nonnull
@@ -72,9 +80,18 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
         codeTypeComboBox.setSelectedIndex(codeType.ordinal());
     }
 
-    @Nonnull    
+    @Nonnull
     public CodeCharactersCase getCodeCharactersCase() {
         return CodeCharactersCase.values()[codeCharactersComboBox.getSelectedIndex()];
+    }
+
+    @Nonnull
+    public CodeSeparator getCodeSeparator() {
+        return CodeSeparator.values()[codeSeparatorComboBox.getSelectedIndex()];
+    }
+
+    public int getCodesPerRow() {
+        return (Integer) codesPerRowSpinner.getValue();
     }
 
     /**
@@ -90,6 +107,10 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
         codeTypeComboBox = new javax.swing.JComboBox<>();
         hexCharactersLabel = new javax.swing.JLabel();
         codeCharactersComboBox = new javax.swing.JComboBox<>();
+        codeSeparatorLabel = new javax.swing.JLabel();
+        codeSeparatorComboBox = new javax.swing.JComboBox<>();
+        codesPerRowLabel = new javax.swing.JLabel();
+        codesPerRowSpinner = new javax.swing.JSpinner();
 
         codeTypeLabel.setText(resourceBundle.getString("codeTypeScrollModeLabel.text")); // NOI18N
 
@@ -107,6 +128,23 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
             }
         });
 
+        codeSeparatorLabel.setText(resourceBundle.getString("codeSeparatorLabel.text")); // NOI18N
+
+        codeSeparatorComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                codeSeparatorComboBoxItemStateChanged(evt);
+            }
+        });
+
+        codesPerRowLabel.setText(resourceBundle.getString("codesPerRowLabel.text")); // NOI18N
+
+        codesPerRowSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        codesPerRowSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                codesPerRowSpinnerStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,11 +154,15 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(codeTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(codeCharactersComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(codeSeparatorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(codeTypeLabel)
-                            .addComponent(hexCharactersLabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(hexCharactersLabel)
+                            .addComponent(codeSeparatorLabel)
+                            .addComponent(codesPerRowLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(codesPerRowSpinner))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -134,6 +176,14 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
                 .addComponent(hexCharactersLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(codeCharactersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(codeSeparatorLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(codeSeparatorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(codesPerRowLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(codesPerRowSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -145,6 +195,14 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
     private void codeCharactersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codeCharactersComboBoxItemStateChanged
         paramChanged();
     }//GEN-LAST:event_codeCharactersComboBoxItemStateChanged
+
+    private void codeSeparatorComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codeSeparatorComboBoxItemStateChanged
+        paramChanged();
+    }//GEN-LAST:event_codeSeparatorComboBoxItemStateChanged
+
+    private void codesPerRowSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_codesPerRowSpinnerStateChanged
+        paramChanged();
+    }//GEN-LAST:event_codesPerRowSpinnerStateChanged
 
     public void setParamChangeListener(ParamChangeListener paramChangeListener) {
         this.paramChangeListener = paramChangeListener;
@@ -158,8 +216,12 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> codeCharactersComboBox;
+    private javax.swing.JComboBox<String> codeSeparatorComboBox;
+    private javax.swing.JLabel codeSeparatorLabel;
     private javax.swing.JComboBox<String> codeTypeComboBox;
     private javax.swing.JLabel codeTypeLabel;
+    private javax.swing.JLabel codesPerRowLabel;
+    private javax.swing.JSpinner codesPerRowSpinner;
     private javax.swing.JLabel hexCharactersLabel;
     // End of variables declaration//GEN-END:variables
 

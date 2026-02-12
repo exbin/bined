@@ -33,6 +33,7 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.framework.App;
+import org.exbin.framework.bined.operation.CodeSeparator;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.bined.operation.api.PreviewDataHandler;
 import org.exbin.framework.bined.operation.api.CopyAsDataMethod;
@@ -75,7 +76,13 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
         charactersCases.add(resourceBundle.getString("charactersCase.lower"));
         charactersCases.add(resourceBundle.getString("charactersCase.higher"));
         component.setCharactersCases(charactersCases);
-        
+
+        List<String> codeSeparators = new ArrayList<>();
+        codeSeparators.add(resourceBundle.getString("codeSeparator.none"));
+        codeSeparators.add(resourceBundle.getString("codeSeparator.space"));
+        codeSeparators.add(resourceBundle.getString("codeSeparator.comma"));
+        component.setCodeSeparators(codeSeparators);
+
         component.setCodeType(CodeType.HEXADECIMAL);
         return component;
     }
@@ -90,6 +97,8 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
         CopyAsTextDataPanel panel = (CopyAsTextDataPanel) component;
         CodeType codeType = panel.getCodeType();
         CodeCharactersCase codeCharactersCase = panel.getCodeCharactersCase();
+        CodeSeparator codeSeparator = panel.getCodeSeparator();
+        int codesPerRow = panel.getCodesPerRow();
 
         long position;
         long length;
@@ -104,7 +113,7 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
         if (length > previewLengthLimit) {
             length = previewLengthLimit;
         }
-        String text = generateData(codeArea.getContentData(), position, (int) length, codeType, codeCharactersCase);
+        String text = generateData(codeArea.getContentData(), position, (int) length, codeType, codeCharactersCase, codeSeparator, codesPerRow);
         StringSelection stringSelection = new StringSelection(text);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, stringSelection);
@@ -128,6 +137,8 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
         SwingUtilities.invokeLater(() -> {
             CodeType codeType = panel.getCodeType();
             CodeCharactersCase codeCharactersCase = panel.getCodeCharactersCase();
+            CodeSeparator codeSeparator = panel.getCodeSeparator();
+            int codesPerRow = panel.getCodesPerRow();
 
             long position;
             long length;
@@ -142,23 +153,39 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
             if (length > previewLengthLimit) {
                 length = previewLengthLimit;
             }
-            String previewText = generateData(codeArea.getContentData(), position, (int) length, codeType, codeCharactersCase);
+            String previewText = generateData(codeArea.getContentData(), position, (int) length, codeType, codeCharactersCase, codeSeparator, codesPerRow);
             previewPanel.setPreviewText(previewText);
         });
     }
 
     @Nonnull
-    public String generateData(BinaryData sourceData, long position, int length, CodeType codeType, CodeCharactersCase codeCharactersCase) {
-        int charsPerByte = codeType.getMaxDigitsForByte() + 1;
+    public String generateData(BinaryData sourceData, long position, int length, CodeType codeType, CodeCharactersCase codeCharactersCase, CodeSeparator codeSeparator, int codesPerRow) {
+        int charsPerByte = codeType.getMaxDigitsForByte();
         int textLength = (int) (length * charsPerByte);
-        if (textLength > 0) {
-            textLength--;
+        if (codeSeparator != CodeSeparator.NONE) {
+            textLength += length > 0 ? length : length - 1;
+        }
+        if (codesPerRow > 0) {
+            textLength += length / codesPerRow;
         }
 
         char[] targetData = new char[textLength];
         Arrays.fill(targetData, ' ');
+        int charPosition = 0;
+        int rowPosition = 0;
         for (int i = 0; i < length; i++) {
-            CodeAreaUtils.byteToCharsCode(sourceData.getByte(position + i), codeType, targetData, (int) (i * charsPerByte), codeCharactersCase);
+            CodeAreaUtils.byteToCharsCode(sourceData.getByte(position + i), codeType, targetData, charPosition, codeCharactersCase);
+            charPosition += charsPerByte;
+            if (codeSeparator != CodeSeparator.NONE && (i < length - 1)) {
+                targetData[charPosition] = codeSeparator == CodeSeparator.SPACE ? ' ' : ',';
+                charPosition++;
+            }
+            rowPosition++;
+            if (rowPosition == codesPerRow) {
+                rowPosition = 0;
+                targetData[charPosition] = '\n';
+                charPosition++;
+            }
         }
         return new String(targetData);
     }
