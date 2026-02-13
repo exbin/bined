@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
@@ -47,6 +48,7 @@ import org.exbin.framework.document.api.ComponentDocument;
 import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.document.api.EditableDocument;
 import org.exbin.framework.document.api.MemoryDocumentSource;
+import org.exbin.framework.document.api.StreamDocumentSource;
 import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileDocumentSource;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -136,6 +138,33 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     public void loadFrom(DocumentSource documentSource) {
         if (documentSource instanceof MemoryDocumentSource) {
             this.documentSource = documentSource;
+            return;
+        }
+
+        if (documentSource instanceof StreamDocumentSource) {
+            InputStream stream = ((StreamDocumentSource) documentSource).openInputStream();
+            try {
+                BinEdComponentPanel componentPanel = getComponent();
+                BinaryData oldData = componentPanel.getContentData();
+                BinaryData data = oldData;
+                if (!(data instanceof PagedData)) {
+                    data = new ByteArrayPagedData();
+                    oldData.dispose();
+                }
+                ((EditableBinaryData) data).loadFromStream(stream);
+                componentPanel.setContentData(data);
+                this.documentSource = documentSource;
+                
+                fileSync();
+            } catch (IOException ex) {
+                Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    stream.close();
+                } catch (IOException ex) {
+                    // ignore
+                }
+            }
             return;
         }
 

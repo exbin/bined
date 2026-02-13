@@ -149,7 +149,7 @@ public class BinedInspectorModule implements Module {
         settingsManagement.registerOptionsSettings(DataInspectorFontOptions.class, (optionsStorage) -> new DataInspectorFontOptions(optionsStorage));
         settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
 
-        SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
+        SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, getResourceBundle());
         settingsManagement.registerPage(pageContribution);
         settingsManagement.registerSettingsRule(pageContribution, new SettingsPageContributionRule("binary"));
         
