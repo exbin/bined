@@ -34,10 +34,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.bined.swing.section.SectCodeArea;
@@ -84,6 +81,8 @@ import org.exbin.framework.utils.UiUtils;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.document.api.DocumentType;
 import org.exbin.framework.file.api.FileDocumentSource;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Binary data editor module.
@@ -283,6 +282,10 @@ public class BinedModule implements Module {
                 BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
                 fileManager.initDataComponent(binaryFileDocument.getDataComponent());
                 fileManager.initCommandHandler(binaryFileDocument.getDataComponent());
+                OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+                OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+                SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
+                binaryFileDocument.applySettings(settingsOptionsProvider);
 //                if (fileHandlingMode == FileProcessingMode.DELTA) {
 //                    SegmentsRepository segmentsRepository = fileManager.getSegmentsRepository();
 //                    binaryFileDocument.setContentData(segmentsRepository.createDocument());

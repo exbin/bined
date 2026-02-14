@@ -29,6 +29,7 @@ import org.exbin.framework.bined.editor.action.EditSelectionAction;
 import org.exbin.framework.bined.editor.action.ReloadFileAction;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.editor.settings.BinaryEditorSettingsApplier;
+import org.exbin.framework.bined.editor.settings.BinaryFileProcessingSettingsApplier;
 import org.exbin.framework.bined.editor.settings.CodeAreaEditingSettingsComponent;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
@@ -80,6 +81,7 @@ public class BinedEditorModule implements Module {
 
         settingsManagement.registerOptionsSettings(BinaryEditorOptions.class, (optionsStorage) -> new BinaryEditorOptions(optionsStorage));
         settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
+        settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
 
         SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);

@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
@@ -33,6 +34,9 @@ import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.frame.api.FrameModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Binary status.
@@ -41,11 +45,17 @@ import org.exbin.framework.frame.api.FrameModuleApi;
  */
 @ParametersAreNonnullByDefault
 public class BinaryStatus {
-    
+
     protected BinaryStatusPanel binaryStatusPanel;
 
     public void setBinaryStatusPanel(BinaryStatusPanel binaryStatusPanel) {
         this.binaryStatusPanel = binaryStatusPanel;
+    }
+
+    public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+        settingsManager.applyOptions(BinaryStatus.class, this, settingsOptionsProvider);
     }
 
     public void attachCodeArea(BinEdDataComponent binaryComponent) {
@@ -79,6 +89,11 @@ public class BinaryStatus {
 
     public void setBinaryStatusController(BinaryStatusPanel.Controller binaryStatusController) {
         binaryStatusPanel.setController(binaryStatusController);
+    }
+
+    @Nonnull
+    public BinaryStatusPanel getBinaryStatusPanel() {
+        return binaryStatusPanel;
     }
 
     // TODO
@@ -160,7 +175,7 @@ public class BinaryStatus {
             binaryStatusPanel.setEditMode(((EditModeCapable) codeArea).getEditMode(), ((EditModeCapable) codeArea).getActiveOperation());
         }
     }
-    
+
     public void updateEncodingState() {
         BinEdDataComponent dataComponent = getActiveComponent();
         if (dataComponent != null) {

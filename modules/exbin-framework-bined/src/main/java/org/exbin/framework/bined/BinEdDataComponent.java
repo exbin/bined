@@ -39,12 +39,16 @@ import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.framework.App;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.action.api.clipboard.ClipboardStateListener;
 import org.exbin.framework.action.api.clipboard.TextClipboardController;
 import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.operation.undo.api.UndoRedoController;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
 import org.exbin.framework.text.encoding.CharsetListEncodingState;
 import org.exbin.framework.text.font.TextFontState;
@@ -68,16 +72,27 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     public BinEdDataComponent(BinEdComponentPanel binaryComponent) {
         this.binaryComponent = binaryComponent;
         this.codeArea = binaryComponent.getCodeArea();
-        defaultFont = ((FontCapable) codeArea).getCodeFont();
+        init();
     }
 
     public BinEdDataComponent(CodeAreaCore codeArea) {
         this.binaryComponent = null;
         this.codeArea = codeArea;
+        init();
+    }
+    
+    private void init() {
         defaultFont = ((FontCapable) codeArea).getCodeFont();
+    }
+    
+    public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+        settingsManager.applyOptions(ContextComponent.class, this, settingsOptionsProvider);
     }
 
     @Nonnull
+    @Override
     public Component getComponent() {
         return binaryComponent != null ? binaryComponent : codeArea;
     }

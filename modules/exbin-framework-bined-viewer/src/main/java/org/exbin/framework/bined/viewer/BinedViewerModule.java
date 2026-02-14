@@ -38,6 +38,7 @@ import org.exbin.framework.bined.viewer.action.ShowHeaderAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinEdFileManager;
+import org.exbin.framework.bined.BinaryStatus;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinedModule.PopupMenuVariant;
 import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
@@ -166,7 +167,7 @@ public class BinedViewerModule implements Module {
         settingsManagement.registerApplySetting(BinaryAppearanceOptions.class, new ApplySettingsContribution(BinaryAppearanceSettingsApplier.APPLIER_ID, new BinaryAppearanceSettingsApplier()));
         settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(BinaryEncodingSettingsApplier.APPLIER_ID, new BinaryEncodingSettingsApplier()));
         settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(BinaryFontSettingsApplier.APPLIER_ID, new BinaryFontSettingsApplier()));
-        settingsManagement.registerApplySetting(CodeAreaStatusOptions.class, new ApplySettingsContribution(CodeAreaStatusSettingsApplier.APPLIER_ID, new CodeAreaStatusSettingsApplier()));
+        settingsManagement.registerApplySetting(BinaryStatus.class, new ApplySettingsContribution(CodeAreaStatusSettingsApplier.APPLIER_ID, new CodeAreaStatusSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(pageContribution);

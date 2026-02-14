@@ -53,6 +53,7 @@ import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileDocumentSource;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.operation.undo.api.ContextUndoRedo;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.ContextEncoding;
 import org.exbin.framework.text.font.ContextFont;
 
@@ -69,6 +70,11 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     private long documentOriginalSize;
 
     public BinaryFileDocument() {
+    }
+
+    public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
+        // TODO: Call post init after adding extensions - rework later
+        dataComponent.applySettings(settingsOptionsProvider);
     }
 
     @Nonnull

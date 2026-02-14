@@ -15,14 +15,10 @@
  */
 package org.exbin.framework.bined.viewer.settings;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.PositionCodeType;
-import org.exbin.framework.bined.RelativePositionMode;
-import org.exbin.framework.options.settings.api.SettingsOptions;
-import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.bined.BinaryStatus;
+import org.exbin.framework.bined.gui.BinaryStatusPanel;
+import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -38,5 +34,13 @@ public class CodeAreaStatusSettingsApplier implements SettingsApplier {
 
     @Override
     public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+        if (!(instance instanceof BinaryStatus)) {
+            return;
+        }
+
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
+        BinaryStatusPanel binaryStatusPanel = ((BinaryStatus) instance).getBinaryStatusPanel();
+        binaryStatusPanel.loadFromOptions(options);
+        // TODO binaryStatusPanel.setStatusOptions(options);
     }
 }

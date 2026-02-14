@@ -41,6 +41,9 @@ import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.operation.undo.api.ContextUndoRedo;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.operation.undo.api.UndoRedoState;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
 /**
  * File manager for binary editor.
@@ -99,8 +102,17 @@ public class BinEdFileManager {
         }
         binaryStatus.attachCodeArea(binaryDataComponent);
         binaryDataComponent.setContextProvider(contextManager);
+
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+        SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
+        applySettings(settingsOptionsProvider);
     }
 
+    public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
+        binaryStatus.applySettings(settingsOptionsProvider);
+    }
+    
     public void initCommandHandler(BinEdDataComponent binaryDataComponent) {
         CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
         CodeAreaOperationCommandHandler commandHandler;

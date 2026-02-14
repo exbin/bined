@@ -159,6 +159,11 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         showParsingPanelCheckBox.setSelected(true);
         showParsingPanelCheckBox.setText(resourceBundle.getString("showParsingPanelCheckBox.text")); // NOI18N
         showParsingPanelCheckBox.setName("showParsingPanelCheckBox"); // NOI18N
+        showParsingPanelCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                showParsingPanelCheckBoxItemStateChanged(evt);
+            }
+        });
 
         fieldsFontLabel.setText(resourceBundle.getString("fieldsFontLabel.text")); // NOI18N
         fieldsFontLabel.setName("fieldsFontLabel"); // NOI18N
@@ -192,6 +197,10 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void showParsingPanelCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_showParsingPanelCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_showParsingPanelCheckBoxItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel fieldsFontLabel;
