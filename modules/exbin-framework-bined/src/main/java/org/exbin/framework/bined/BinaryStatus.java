@@ -33,6 +33,8 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
+import org.exbin.framework.docking.api.ContextDocking;
+import org.exbin.framework.docking.api.DocumentDocking;
 import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
@@ -200,5 +202,13 @@ public class BinaryStatus {
         ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
         ContextDocument document = contextManager.getActiveState(ContextDocument.class);
         return document instanceof BinaryFileDocument ? (BinaryFileDocument) document : null;
+    }
+
+    @Nullable
+    public DocumentDocking getActiveDocking() {
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
+        ContextDocking docking = contextManager.getActiveState(ContextDocking.class);
+        return docking instanceof DocumentDocking ? (DocumentDocking) docking : null;
     }
 }

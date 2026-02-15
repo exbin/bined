@@ -60,6 +60,7 @@ import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.docking.api.DocumentDocking;
+import org.exbin.framework.docking.api.SidePanelDocking;
 import org.exbin.framework.docking.multi.api.DockingMultiModuleApi;
 import org.exbin.framework.document.api.DocumentManagement;
 import org.exbin.framework.document.api.DocumentModuleApi;
@@ -322,7 +323,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             DocumentDocking documentDocking = dockingType == BasicDockingType.SINGLE ? dockingModule.createDefaultDocking() : dockingMultiModule.createDefaultDocking();
             frameModule.attachFrameContentComponent(documentDocking);
-            sideBarModule.registerDockingSideBar(documentDocking);
+            sideBarModule.registerDockingSideBar((SidePanelDocking) documentDocking);
             dockingModule.registerDocumentReceiver(documentDocking);
             addonManagerModule.registerAddonManagerMenuItem();
 

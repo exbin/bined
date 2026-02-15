@@ -26,6 +26,7 @@ import org.exbin.framework.bined.BinaryStatusApi;
 import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.action.GoToPositionAction;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
+import org.exbin.framework.docking.api.DocumentDocking;
 import org.exbin.framework.text.encoding.EncodingsManager;
 
 /**
@@ -88,8 +89,15 @@ public class BinaryStatusController implements BinaryStatusPanel.Controller, Bin
         // TODO Rename memory mode to processing mode
         BinaryFileDocument activeDocument = binaryStatus.getActiveDocument();
         if (activeDocument != null) {
-            FileProcessingMode fileHandlingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileProcessingMode.DELTA : FileProcessingMode.MEMORY;
-            activeDocument.switchFileProcessingMode(fileHandlingMode);
+            FileProcessingMode fileProcessingMode = memoryMode == BinaryStatusApi.MemoryMode.DELTA_MODE ? FileProcessingMode.DELTA : FileProcessingMode.MEMORY;
+            FileProcessingMode currentProcessingMode = activeDocument.getFileProcessingMode();
+            if (fileProcessingMode != currentProcessingMode) {
+                DocumentDocking activeDocking = binaryStatus.getActiveDocking();
+                if (activeDocking.releaseDocument(activeDocument)) {
+                    activeDocument.loadContent(fileProcessingMode);
+                    binaryStatus.updateStatus();
+                }
+            }
         }
     }
 }

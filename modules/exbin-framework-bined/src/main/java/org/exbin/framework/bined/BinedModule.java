@@ -123,6 +123,7 @@ public class BinedModule implements Module {
     private ViewFontActions viewFontActions;
     private PopupMenuVariant popupMenuVariant = PopupMenuVariant.NORMAL;
     private BasicCodeAreaZone popupMenuPositionZone = BasicCodeAreaZone.UNKNOWN;
+    private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
 
     public BinedModule() {
     }
@@ -227,6 +228,10 @@ public class BinedModule implements Module {
         return viewFontActions;
     }
 
+    public void setInitialFileProcessing(FileProcessingMode initialFileProcessing) {
+        this.initialFileProcessing = initialFileProcessing;
+    }
+
     public void registerShowNonprintablesToolBarActions() {
         getShowNonprintablesActions();
         ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
@@ -286,12 +291,8 @@ public class BinedModule implements Module {
                 OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
                 SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
                 binaryFileDocument.applySettings(settingsOptionsProvider);
-//                if (fileHandlingMode == FileProcessingMode.DELTA) {
-//                    SegmentsRepository segmentsRepository = fileManager.getSegmentsRepository();
-//                    binaryFileDocument.setContentData(segmentsRepository.createDocument());
-//                } else {
                 binaryFileDocument.setContentData(new ByteArrayPagedData());
-//                }
+                binaryFileDocument.setInitialFileProcessing(initialFileProcessing);
                 return binaryFileDocument;
             }
         });

@@ -68,6 +68,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     protected final BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
     protected DocumentSource documentSource = null;
     private long documentOriginalSize;
+    private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
 
     public BinaryFileDocument() {
     }
@@ -75,6 +76,10 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
         // TODO: Call post init after adding extensions - rework later
         dataComponent.applySettings(settingsOptionsProvider);
+    }
+
+    public void setInitialFileProcessing(FileProcessingMode initialFileProcessing) {
+        this.initialFileProcessing = initialFileProcessing;
     }
 
     @Nonnull
@@ -142,8 +147,12 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public void loadFrom(DocumentSource documentSource) {
+        this.documentSource = documentSource;
+        loadContent(initialFileProcessing);
+    }
+
+    public void loadContent(FileProcessingMode fileProcessingMode) {
         if (documentSource instanceof MemoryDocumentSource) {
-            this.documentSource = documentSource;
             return;
         }
 
@@ -159,7 +168,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 }
                 ((EditableBinaryData) data).loadFromStream(stream);
                 componentPanel.setContentData(data);
-                this.documentSource = documentSource;
 
                 fileSync();
             } catch (IOException ex) {
@@ -178,17 +186,17 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
             throw new UnsupportedOperationException();
         }
 
-        BinEdComponentPanel componentPanel = getComponent();
-        File file = ((FileDocumentSource) documentSource).getFile();
-        if (!file.isFile()) {
-            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-            fileModule.showFileNotFound(componentPanel, file.getAbsolutePath());
-            return;
-        }
-
         try {
+            BinEdComponentPanel componentPanel = getComponent();
+            File file = ((FileDocumentSource) documentSource).getFile();
+
+            if (!file.isFile()) {
+                FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+                fileModule.showFileNotFound(componentPanel, file.getAbsolutePath());
+                return;
+            }
+
             BinaryData oldData = componentPanel.getContentData();
-            FileProcessingMode fileProcessingMode = FileProcessingMode.MEMORY;
             if (fileProcessingMode == FileProcessingMode.DELTA) {
                 BinedModule binedModule = App.getModule(BinedModule.class);
                 SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
@@ -196,7 +204,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 segmentsRepository.addDataSource(openFileSource);
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
                 componentPanel.setContentData(document);
-                this.documentSource = documentSource;
                 oldData.dispose();
             } else {
                 try (FileInputStream fileStream = new FileInputStream(file)) {
@@ -207,16 +214,12 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                     }
                     ((EditableBinaryData) data).loadFromStream(fileStream);
                     componentPanel.setContentData(data);
-                    this.documentSource = documentSource;
                 }
             }
         } catch (IOException ex) {
             Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-//        if (undoRedo != null) {
-//            undoRedo.clear();
-//        }
         fileSync();
     }
 
@@ -339,14 +342,5 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         }
 
         return FileProcessingMode.MEMORY;
-    }
-
-    public void switchFileProcessingMode(FileProcessingMode fileProcessingMode) {
-        FileProcessingMode currentFileProcessingMode = getFileProcessingMode();
-        if (currentFileProcessingMode != fileProcessingMode) {
-//            if (editorProvider.releaseFile(fileHandler)) {
-//                ((BinEdEditorProvider) editorProvider).updateStatus();
-//            }
-        }
     }
 }

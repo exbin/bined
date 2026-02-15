@@ -16,7 +16,9 @@
 package org.exbin.framework.bined.editor.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.App;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -37,8 +39,8 @@ public class BinaryFileProcessingSettingsApplier implements SettingsApplier {
         }
 
         BinaryFileProcessingOptions options = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
-        // TODO: This causes multiple reloads / warnings about modified files
-        // Move to BinaryFileProcessing
-        // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());
+        BinedModule binEdModule = App.getModule(BinedModule.class);
+        // TODO: Move to BinaryFileProcessing
+        binEdModule.setInitialFileProcessing(options.getFileProcessingMode());
     }
 }
