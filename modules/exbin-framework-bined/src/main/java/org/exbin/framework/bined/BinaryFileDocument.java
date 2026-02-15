@@ -160,7 +160,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 ((EditableBinaryData) data).loadFromStream(stream);
                 componentPanel.setContentData(data);
                 this.documentSource = documentSource;
-                
+
                 fileSync();
             } catch (IOException ex) {
                 Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
@@ -290,6 +290,10 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         }
     }
 
+    public long getDocumentOriginalSize() {
+        return documentOriginalSize;
+    }
+
     @Nonnull
     @SuppressWarnings("unchecked")
     public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
@@ -325,5 +329,24 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 return dataComponent.getCodeArea();
             }
         });
+    }
+
+    @Nonnull
+    public FileProcessingMode getFileProcessingMode() {
+        BinaryData contentData = getContentData();
+        if (contentData instanceof DeltaDocument) {
+            return FileProcessingMode.DELTA;
+        }
+
+        return FileProcessingMode.MEMORY;
+    }
+
+    public void switchFileProcessingMode(FileProcessingMode fileProcessingMode) {
+        FileProcessingMode currentFileProcessingMode = getFileProcessingMode();
+        if (currentFileProcessingMode != fileProcessingMode) {
+//            if (editorProvider.releaseFile(fileHandler)) {
+//                ((BinEdEditorProvider) editorProvider).updateStatus();
+//            }
+        }
     }
 }

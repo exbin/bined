@@ -125,6 +125,11 @@ public class BinEdFileManager {
     }
 
     @Nonnull
+    public BinaryStatus getBinaryStatus() {
+        return binaryStatus;
+    }
+
+    @Nonnull
     public SegmentsRepository getSegmentsRepository() {
         return segmentsRepository;
     }

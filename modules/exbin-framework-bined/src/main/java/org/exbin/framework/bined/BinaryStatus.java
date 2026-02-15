@@ -20,8 +20,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.bined.CodeAreaCaretPosition;
-import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
+import org.exbin.bined.EditMode;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.CharsetCapable;
@@ -33,6 +33,7 @@ import org.exbin.framework.App;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
@@ -110,10 +111,11 @@ public class BinaryStatus {
             return;
         }
 
+        BinaryFileDocument activeDocument = getActiveDocument();
         BinEdDataComponent dataComponent = getActiveComponent();
         if (dataComponent != null) {
             CodeAreaCore codeArea = dataComponent.getCodeArea();
-            long documentOriginalSize = 0; // TODO ((BinEdFileHandler) activeFile).getDocumentOriginalSize();
+            long documentOriginalSize = activeDocument.getDocumentOriginalSize();
             long dataSize = codeArea.getDataSize();
             binaryStatusPanel.setCurrentDocumentSize(dataSize, documentOriginalSize);
         }
@@ -185,10 +187,18 @@ public class BinaryStatus {
     }
 
     @Nullable
-    private BinEdDataComponent getActiveComponent() {
+    public BinEdDataComponent getActiveComponent() {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
         ContextComponent component = contextManager.getActiveState(ContextComponent.class);
         return component instanceof BinEdDataComponent ? (BinEdDataComponent) component : null;
+    }
+
+    @Nullable
+    public BinaryFileDocument getActiveDocument() {
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
+        ContextDocument document = contextManager.getActiveState(ContextDocument.class);
+        return document instanceof BinaryFileDocument ? (BinaryFileDocument) document : null;
     }
 }

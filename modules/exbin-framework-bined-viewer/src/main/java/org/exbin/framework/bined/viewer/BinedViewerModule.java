@@ -134,7 +134,7 @@ public class BinedViewerModule implements Module {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.registerStatusBar();
-        fileManager.setBinaryStatusController(new BinaryStatusController(encodingsManager));
+        fileManager.setBinaryStatusController(new BinaryStatusController(fileManager.getBinaryStatus(), encodingsManager));
 
         if (encodingsManager != null) {
             fileManager.updateTextEncodingStatus(encodingsManager);
