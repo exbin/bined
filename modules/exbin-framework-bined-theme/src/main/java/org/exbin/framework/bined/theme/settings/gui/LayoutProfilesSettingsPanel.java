@@ -78,7 +78,7 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
         CodeAreaLayoutProfileOptions layoutProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutProfileOptions.class);
         layoutProfileOptions.loadFromOptions(options);
@@ -100,7 +100,7 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaLayoutOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
         CodeAreaLayoutProfileOptions layoutProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutProfileOptions.class);
 

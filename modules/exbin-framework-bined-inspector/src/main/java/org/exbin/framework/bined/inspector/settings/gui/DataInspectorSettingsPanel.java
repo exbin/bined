@@ -104,16 +104,16 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         showParsingPanelCheckBox.setSelected(options.isShowParsingPanel());
 
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         SettingsOptionsOverrides settingsOptionsOverrides = optionsSettingsModule.createSettingsOptionsOverrides(settingsOptionsProvider);
         settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
-        textFontSettingsPanel.loadFromOptions(settingsOptionsOverrides, contextProvider);
+        textFontSettingsPanel.loadFromOptions(settingsOptionsOverrides);
         
-        if (contextProvider != null) {
+        /* if (contextProvider != null) {
             ContextDocument contextDocument = contextProvider.getActiveState(ContextDocument.class);
             if (contextDocument instanceof BinaryFileDocument) {
                 BasicValuesInspector basicValuesInspector = DataInspectorSettingsPanel.getBinEdInspector((BinaryFileDocument) contextDocument);
@@ -121,18 +121,18 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
                     currentFont = ((BasicValuesPanel) basicValuesInspector.getComponent()).getInputFieldsFont();
                 }
             }
-        }
+        } */
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         options.setShowParsingPanel(showParsingPanelCheckBox.isSelected());
 
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         SettingsOptionsOverrides settingsOptionsOverrides = optionsSettingsModule.createSettingsOptionsOverrides(settingsOptionsProvider);
         settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
-        textFontSettingsPanel.saveToOptions(settingsOptionsOverrides, contextProvider);
+        textFontSettingsPanel.saveToOptions(settingsOptionsOverrides);
     }
 
     @Nullable

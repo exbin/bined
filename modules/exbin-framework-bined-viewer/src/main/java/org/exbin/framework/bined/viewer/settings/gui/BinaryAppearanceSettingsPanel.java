@@ -49,13 +49,13 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         multiFileModeCheckBox.setSelected(options.isMultiFileMode());
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         BinaryAppearanceOptions options = settingsOptionsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         options.setMultiFileMode(multiFileModeCheckBox.isSelected());
     }

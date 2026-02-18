@@ -83,7 +83,7 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         TableInspectorOptions options = settingsOptionsProvider.getSettingsOptions(TableInspectorOptions.class);
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int rowsCount = options.getRowsCount();
@@ -94,7 +94,7 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         TableInspectorOptions options = settingsOptionsProvider.getSettingsOptions(TableInspectorOptions.class);
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int rowsCount = model.getSize();

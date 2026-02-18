@@ -64,7 +64,7 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         StatusCursorPositionFormat cursorPositionFormat = options.getCursorPositionFormat();
         cursorPositionCodeTypeComboBox.setSelectedIndex(cursorPositionFormat.getCodeType().ordinal());
@@ -80,7 +80,7 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
         cursorPositionFormat.setCodeType(PositionCodeType.values()[cursorPositionCodeTypeComboBox.getSelectedIndex()]);

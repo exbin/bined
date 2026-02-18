@@ -79,7 +79,7 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         DefaultListModel<InspectorRecord> model = (DefaultListModel<InspectorRecord>) rowsList.getModel();
         List<InspectorRecord> records = new ArrayList<>();
@@ -116,7 +116,7 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
         DefaultListModel<InspectorRecord> model = (DefaultListModel<InspectorRecord>) rowsList.getModel();
         for (int i = 0; i < model.getSize(); i++) {

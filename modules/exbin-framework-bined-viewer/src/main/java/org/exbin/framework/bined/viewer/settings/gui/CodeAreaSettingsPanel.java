@@ -78,7 +78,7 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         codeTypeComboBox.setSelectedIndex(options.getCodeType().ordinal());
         showNonprintableCharactersCheckBox.setSelected(options.isShowNonprintables());
@@ -93,7 +93,7 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         options.setCodeType(CodeType.values()[codeTypeComboBox.getSelectedIndex()]);
         options.setShowNonprintables(showNonprintableCharactersCheckBox.isSelected());

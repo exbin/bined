@@ -78,7 +78,7 @@ public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
         CodeAreaColorProfileOptions colorProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaColorProfileOptions.class);
         colorProfileOptions.loadFromOptions(options);
@@ -100,7 +100,7 @@ public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaColorOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaColorOptions.class);
         CodeAreaColorProfileOptions colorProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaColorProfileOptions.class);
 

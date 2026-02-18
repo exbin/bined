@@ -57,7 +57,7 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         StartupOptions options = settingsOptionsProvider.getSettingsOptions(StartupOptions.class);
         StartupBehavior behavior = options.getStartupBehavior();
         switch (behavior) {
@@ -74,7 +74,7 @@ public class StartupSettingsPanel extends javax.swing.JPanel implements Settings
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         StartupOptions options = settingsOptionsProvider.getSettingsOptions(StartupOptions.class);
         StartupBehavior behavior;
         if (startEmptyRadioButton.isSelected()) {

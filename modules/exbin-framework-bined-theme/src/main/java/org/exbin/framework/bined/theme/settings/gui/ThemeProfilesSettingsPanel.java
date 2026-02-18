@@ -78,7 +78,7 @@ public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         CodeAreaThemeProfileOptions themeProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
         themeProfileOptions.loadFromOptions(options);
@@ -100,7 +100,7 @@ public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements Se
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         CodeAreaThemeProfileOptions themeProfileOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeProfileOptions.class);
 
