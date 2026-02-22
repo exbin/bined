@@ -81,8 +81,8 @@ public class BinedEditorModule implements Module {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
 
-        settingsManagement.registerOptionsSettings(BinaryEditorOptions.class, (optionsStorage) -> new BinaryEditorOptions(optionsStorage));
-        settingsManagement.registerOptionsSettings(BinaryFileProcessingOptions.class, (optionsStorage) -> new BinaryFileProcessingOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(BinaryEditorOptions.class, (optionsStorage) -> new BinaryEditorOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(BinaryFileProcessingOptions.class, (optionsStorage) -> new BinaryFileProcessingOptions(optionsStorage));
         settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
         settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
 

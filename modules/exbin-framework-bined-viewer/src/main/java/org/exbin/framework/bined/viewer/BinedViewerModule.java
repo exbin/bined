@@ -156,12 +156,12 @@ public class BinedViewerModule implements Module {
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
 
-        settingsManagement.registerOptionsSettings(CodeAreaOptions.class, (optionsStorage) -> new CodeAreaOptions(optionsStorage));
-        settingsManagement.registerOptionsSettings(CodeAreaStatusOptions.class, (optionsStorage) -> new CodeAreaStatusOptions(optionsStorage));
-        settingsManagement.registerOptionsSettings(BinaryAppearanceOptions.class, (optionsStorage) -> new BinaryAppearanceOptions(optionsStorage));
-        settingsManagement.registerOptionsSettings(GoToPositionOptions.class, (optionsStorage) -> new GoToPositionOptions(optionsStorage));
-        settingsManagement.registerOptionsSettings(TextEncodingOptions.class, (optionsStorage) -> new TextEncodingOptions(optionsStorage));
-        settingsManagement.registerOptionsSettings(TextFontOptions.class, (optionsStorage) -> new TextFontOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(CodeAreaOptions.class, (optionsStorage) -> new CodeAreaOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(CodeAreaStatusOptions.class, (optionsStorage) -> new CodeAreaStatusOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(BinaryAppearanceOptions.class, (optionsStorage) -> new BinaryAppearanceOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(GoToPositionOptions.class, (optionsStorage) -> new GoToPositionOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(TextEncodingOptions.class, (optionsStorage) -> new TextEncodingOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(TextFontOptions.class, (optionsStorage) -> new TextFontOptions(optionsStorage));
 
         settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaViewerSettingsApplier.APPLIER_ID, new CodeAreaViewerSettingsApplier()));
         settingsManagement.registerApplySetting(BinaryAppearanceOptions.class, new ApplySettingsContribution(BinaryAppearanceSettingsApplier.APPLIER_ID, new BinaryAppearanceSettingsApplier()));

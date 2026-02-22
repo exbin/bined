@@ -144,9 +144,9 @@ public class BinedInspectorModule implements Module {
         getResourceBundle();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
-        settingsManagement.registerOptionsSettings(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
         
-        settingsManagement.registerOptionsSettings(DataInspectorFontOptions.class, (optionsStorage) -> new DataInspectorFontOptions(optionsStorage));
+        settingsManagement.registerSettingsOptions(DataInspectorFontOptions.class, (optionsStorage) -> new DataInspectorFontOptions(optionsStorage));
         settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, getResourceBundle());
