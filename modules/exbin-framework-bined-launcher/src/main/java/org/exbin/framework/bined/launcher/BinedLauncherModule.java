@@ -55,9 +55,13 @@ import org.exbin.framework.document.settings.StartupOptions.StartupBehavior;
 import org.exbin.framework.bined.operation.BinedOperationModule;
 import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
+import org.exbin.framework.bined.inspector.settings.DataInspectorFontContextInference;
+import org.exbin.framework.bined.inspector.settings.DataInspectorFontInference;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
+import org.exbin.framework.context.api.ActiveContextManagement;
+import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.docking.api.DocumentDocking;
 import org.exbin.framework.docking.api.SidePanelDocking;
@@ -81,6 +85,13 @@ import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.sidebar.api.SideBarModuleApi;
 import org.exbin.framework.frame.api.ComponentFrame;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.text.encoding.settings.TextEncodingContextInference;
+import org.exbin.framework.text.encoding.settings.TextEncodingInference;
+import org.exbin.framework.text.encoding.settings.TextEncodingsContextInference;
+import org.exbin.framework.text.encoding.settings.TextEncodingsInference;
+import org.exbin.framework.text.font.settings.TextFontContextInference;
+import org.exbin.framework.text.font.settings.TextFontInference;
 
 /**
  * Binary editor launcher module.
@@ -175,6 +186,7 @@ public class BinedLauncherModule implements LauncherModule {
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
+            ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
 
             BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
@@ -194,6 +206,13 @@ public class BinedLauncherModule implements LauncherModule {
             if (!demoMode) {
                 updateModule.registerSettings();
             }
+            
+            OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+            ActiveContextManagement contextManagement = contextModule.getMainContextManager();
+            settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(contextManagement));
+            settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(contextManagement));
+            settingsManager.registerInferenceOptions(TextFontInference.class, new TextFontContextInference(contextManagement));
+            settingsManager.registerInferenceOptions(DataInspectorFontInference.class, new DataInspectorFontContextInference(contextManagement));
 
             fileModule.registerFileProviders();
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(optionsStorage);

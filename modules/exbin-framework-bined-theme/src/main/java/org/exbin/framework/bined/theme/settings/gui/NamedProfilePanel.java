@@ -75,7 +75,7 @@ public class NamedProfilePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(profileNameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(profileNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                .addComponent(profileNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
                 .addContainerGap())
         );
         namePanelLayout.setVerticalGroup(

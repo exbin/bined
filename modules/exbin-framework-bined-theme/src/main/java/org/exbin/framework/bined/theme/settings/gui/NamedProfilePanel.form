@@ -31,7 +31,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="profileNameLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="profileNameTextField" pref="800" max="32767" attributes="0"/>
+                  <Component id="profileNameTextField" pref="808" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
