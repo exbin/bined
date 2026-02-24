@@ -93,6 +93,24 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Nonnull
     @Override
+    public String getDocumentName() {
+        if (documentSource instanceof FileDocumentSource) {
+            return ((FileDocumentSource) documentSource).getFile().getName();
+        }
+        
+        if (documentSource instanceof StreamDocumentSource) {
+            return ((StreamDocumentSource) documentSource).getDocumentTitle();
+        }
+        
+        if (documentSource instanceof MemoryDocumentSource) {
+            return ((MemoryDocumentSource) documentSource).getDocumentTitle();
+        }
+
+        return "";
+    }
+
+    @Nonnull
+    @Override
     public BinaryData getBinaryData() {
         return dataComponent.getCodeArea().getContentData();
     }

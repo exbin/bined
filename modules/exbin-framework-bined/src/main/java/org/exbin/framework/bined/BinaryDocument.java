@@ -18,14 +18,14 @@ package org.exbin.framework.bined;
 import javax.annotation.Nonnull;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.framework.document.api.ContextDocument;
-import org.exbin.framework.document.api.Document;
+import org.exbin.framework.document.api.NamedDocument;
 
 /**
  * Binary document.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public interface BinaryDocument extends ContextDocument, Document {
+public interface BinaryDocument extends ContextDocument, NamedDocument {
 
     /**
      * Returns document binary data.
