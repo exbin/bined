@@ -53,6 +53,7 @@ import org.exbin.framework.file.api.FileDialogsProvider;
 import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.file.api.OpenFileResult;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpLink;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.window.api.WindowHandler;
@@ -130,9 +131,10 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
             @Nullable
             @Override
             public CompareFilesPanel.FileRecord openFile() {
+                FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);        
                 FileModuleApi fileModule = App.getModule(FileModuleApi.class);
                 FileDialogsProvider dialogsProvider = fileModule.getFileDialogsProvider();
-                OpenFileResult openFileResult = dialogsProvider.showOpenFileDialog(new AllFileTypes(), null, null, null);
+                OpenFileResult openFileResult = dialogsProvider.showOpenFileDialog(frameModule.getFrame(), new AllFileTypes(), null, null, null);
                 if (openFileResult.getDialogResult() != JFileChooser.APPROVE_OPTION) {
                     return null;
                 }
