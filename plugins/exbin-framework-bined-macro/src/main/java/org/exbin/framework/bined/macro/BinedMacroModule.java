@@ -31,11 +31,14 @@ import org.exbin.framework.bined.action.CopyAsCodeAction;
 import org.exbin.framework.bined.action.PasteFromCodeAction;
 import org.exbin.framework.bined.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.framework.bined.macro.operation.MacroStep;
+import org.exbin.framework.bined.macro.settings.MacroOptions;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
@@ -61,6 +64,7 @@ public class BinedMacroModule implements PluginModule {
         uiModule.addPostInitAction(() -> {
             registerMacrosMenuActions();
             registerMacrosPopupMenuActions();
+            registerSettings();
 
             BinedModule binedModule = App.getModule(BinedModule.class);
             binedModule.registerCodeAreaCommandHandlerProvider((codeArea, undoRedo) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoRedo) undoRedo));
@@ -113,6 +117,13 @@ public class BinedMacroModule implements PluginModule {
 
     public void registerMacrosPopupMenuActions() {
         getMacroManager().registerMacrosPopupMenuActions();
+    }
+
+    public void registerSettings() {
+        getResourceBundle();
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+        settingsManagement.registerSettingsOptions(MacroOptions.class, (optionsStorage) -> new MacroOptions(optionsStorage));
     }
 
     @Nonnull

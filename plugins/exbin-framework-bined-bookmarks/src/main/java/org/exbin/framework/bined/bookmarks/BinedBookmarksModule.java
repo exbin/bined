@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.bined.bookmarks;
 
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -23,12 +24,18 @@ import javax.swing.JMenu;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ModuleUtils;
+import org.exbin.framework.bined.BinEdComponentExtension;
+import org.exbin.framework.bined.BinEdFileManager;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.bined.bookmarks.settings.BookmarkOptions;
+import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.menu.api.MenuModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
@@ -48,16 +55,36 @@ public class BinedBookmarksModule implements PluginModule {
     public BinedBookmarksModule() {
     }
 
+    @Nonnull
+    public ResourceBundle getResourceBundle() {
+        if (resourceBundle == null) {
+            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedBookmarksModule.class);
+        }
+
+        return resourceBundle;
+    }
+
     @Override
     public void register() {
         UiModuleApi uiModule = App.getModule(UiModuleApi.class);
         uiModule.addPostInitAction(() -> {
             registerBookmarksMenuActions();
             registerBookmarksPopupMenuActions();
+            
+            registerSettings();
 
-            // TODO
-//            EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-//            editorModule.addEditorProviderChangeListener((editorProvider) -> getBookmarksManager().setEditorProvider(editorProvider));
+            BinedModule binedModule = App.getModule(BinedModule.class);
+            BinEdFileManager fileManager = binedModule.getFileManager();
+            // TODO Rework to use different approach than extension
+            fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
+                @Nonnull
+                @Override
+                public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                    getBookmarksManager();
+                    bookmarksManager.registerBookmarksComponentActions(component);
+                    return Optional.empty();
+                }
+            });
         });
     }
 
@@ -77,13 +104,11 @@ public class BinedBookmarksModule implements PluginModule {
         return getBookmarksManager().getManageBookmarksAction();
     }
 
-    @Nonnull
-    public ResourceBundle getResourceBundle() {
-        if (resourceBundle == null) {
-            resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedBookmarksModule.class);
-        }
-
-        return resourceBundle;
+    public void registerSettings() {
+        getResourceBundle();
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+        settingsManagement.registerSettingsOptions(BookmarkOptions.class, (optionsStorage) -> new BookmarkOptions(optionsStorage));
     }
 
     @Nonnull

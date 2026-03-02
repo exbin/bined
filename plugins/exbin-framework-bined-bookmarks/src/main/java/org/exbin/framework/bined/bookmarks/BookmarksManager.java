@@ -89,16 +89,6 @@ public class BookmarksManager {
     public BookmarksManager() {
     }
 
-    // TODO
-    /* public void setEditorProvider(EditorProvider editorProvider) {
-        // TODO Drop editor provider
-        this.editorProvider = editorProvider;
-        EditorModuleApi editorModule = App.getModule(EditorModuleApi.class);
-        editorModule.addEditorProviderComponentListener((editorComponent) -> {
-            registerBookmarksComponentActions(editorComponent);
-        });
-    } */
-
     public void init() {
         addBookmarkAction.setup(resourceBundle);
         editBookmarkAction.setup(resourceBundle);

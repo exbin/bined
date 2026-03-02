@@ -57,6 +57,7 @@ import org.exbin.framework.bined.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.framework.bined.inspector.settings.DataInspectorFontContextInference;
 import org.exbin.framework.bined.inspector.settings.DataInspectorFontInference;
+import org.exbin.framework.bined.legacy.BinedLegacyModule;
 import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
@@ -192,8 +193,10 @@ public class BinedLauncherModule implements LauncherModule {
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
             BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+            BinedLegacyModule binedLegacyModule = App.getModule(BinedLegacyModule.class);
 
             uiModule.registerSettings();
+            documentRecentModule.registerSettings();
             frameModule.registerSettings();
             documentModule.registerSettings();
             themeModule.registerSettings();
@@ -203,10 +206,11 @@ public class BinedLauncherModule implements LauncherModule {
             binedEditorModule.registerSettings();
             binedThemeModule.registerSettings();
             binedInspectorModule.registerSettings();
+            binedLegacyModule.registerSettings();
             if (!demoMode) {
                 updateModule.registerSettings();
             }
-            
+
             OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
             ActiveContextManagement contextManagement = contextModule.getMainContextManager();
             settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(contextManagement));
@@ -348,6 +352,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             frameHandler.setDefaultSize(new Dimension(600, 400));
             frameModule.loadFramePosition();
+            binedLegacyModule.importLegacySettings();
             optionsSettingsModule.initialLoadFromPreferences();
             if (fullScreenMode || demoMode) {
                 frameModule.switchFrameToFullscreen();

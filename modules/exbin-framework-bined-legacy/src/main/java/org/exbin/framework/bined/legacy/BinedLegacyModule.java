@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.RowWrappingMode;
@@ -30,14 +32,22 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.bined.FileProcessingMode;
-import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
 import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
-import org.exbin.framework.bined.theme.settings.CodeAreaColorOptions;
+import org.exbin.framework.bined.legacy.settings.BinedLegacyOptions;
+import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaThemeOptions;
 import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.options.preferences.FilePreferences;
+import org.exbin.framework.options.preferences.FilePreferencesFactory;
+import org.exbin.framework.options.preferences.PreferencesWrapper;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsOptions;
+import org.exbin.framework.options.settings.api.SettingsOptionsBuilder;
+import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.font.settings.TextFontOptions;
 
@@ -51,20 +61,10 @@ public class BinedLegacyModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedLegacyModule.class);
     private final static String PREFERENCES_VERSION = "version";
-    private final static String PREFERENCES_VERSION_VALUE = "0.2.1";
 
     private java.util.ResourceBundle resourceBundle = null;
-    private OptionsStorage storage;
-    private CodeAreaOptions codeAreaOptions;
-    private BinaryEditorOptions editorOptions;
-    private BinaryFileProcessingOptions fileProcessingOptions;
-    private TextEncodingOptions encodingOptions;
-    private TextFontOptions fontOptions;
-    private CodeAreaLayoutOptions layoutOptions;
-    private CodeAreaThemeOptions themeOptions;
-    private CodeAreaColorOptions colorOptions;
 
-    // TODO nonprintables -> nonprintables, colors:nonprintable, activeMatch -> currentMatch
+    // TODO unprintables -> nonprintables, colors:nonprintable, activeMatch -> currentMatch
 
     public BinedLegacyModule() {
     }
@@ -78,40 +78,80 @@ public class BinedLegacyModule implements Module {
         return resourceBundle;
     }
     
-    public void setThemeOptions(CodeAreaLayoutOptions layoutOptions, CodeAreaThemeOptions themeOptions, CodeAreaColorOptions colorOptions) {
-        this.layoutOptions = layoutOptions;
-        this.themeOptions = themeOptions;
-        this.colorOptions = colorOptions;
-    }
-
     private void ensureSetup() {
         if (resourceBundle == null) {
             getResourceBundle();
         }
     }
 
-    private void convertOlderPreferences() {
-        final String legacyDef = "LEGACY";
-        String storedVersion = storage.get(PREFERENCES_VERSION, legacyDef);
-        if (PREFERENCES_VERSION_VALUE.equals(storedVersion)) {
-            return;
-        }
+    public void importLegacySettings() {
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+        SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
+        BinedLegacyOptions legacyOptions = settingsOptionsProvider.getSettingsOptions(BinedLegacyOptions.class);
 
-        if (legacyDef.equals(storedVersion)) {
-            try {
-                importLegacyPreferences();
-            } finally {
-                storage.put(PREFERENCES_VERSION, PREFERENCES_VERSION_VALUE);
-                storage.flush();
-            }
-        }
-
-        if ("0.2.0".equals(storedVersion)) {
-            convertPreferences_0_2_0();
+        String legacyImported = legacyOptions.getLegacyImported();
+        if ("".equals(legacyImported)) {
+            PreferencesWrapper legacyStorage = new PreferencesWrapper(new FilePreferences(null, "", FilePreferencesFactory.getPreferencesFile("/org/exbin/bined/editor")));
+            convertOlderPreferences(legacyStorage, settingsOptionsProvider);
         }
     }
 
-    private void importLegacyPreferences() {
+    public void registerSettings() {
+        getResourceBundle();
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+        settingsManagement.registerSettingsOptions(BinedLegacyOptions.class, (optionsStorage) -> new BinedLegacyOptions(optionsStorage));
+    }
+
+    private void convertOlderPreferences(OptionsStorage storage, SettingsOptionsProvider settingsOptionsProvider) {
+        BinedLegacyOptions legacyOptions = settingsOptionsProvider.getSettingsOptions(BinedLegacyOptions.class);
+        final String legacyDef = "LEGACY";
+        String storedVersion = storage.get(PREFERENCES_VERSION, legacyDef);
+
+        if (legacyDef.equals(storedVersion)) {
+            try {
+                importLegacyPreferences(storage, settingsOptionsProvider);
+            } finally {
+                legacyOptions.setLegacyImported(storedVersion);
+            }
+            return;
+        }
+        
+        try {
+            // Convert preferences from 0.2.4 or previous
+            ConversionStorage conversionStorage = new ConversionStorage(storage);
+            OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+            OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+            Collection<Class<? extends SettingsOptions>> optionsClasses = settingsManager.getOptionsClasses();
+            for (Class<? extends SettingsOptions> optionsClass : optionsClasses) {
+                try {
+                    SettingsOptionsBuilder<?> optionsBuilder = settingsManager.getSettingsOptionsBuilder(optionsClass);
+                    SettingsOptions sourceOptions = optionsBuilder.createInstance(conversionStorage);
+                    SettingsOptions targetOptions = settingsOptionsProvider.getSettingsOptions(optionsClass);
+                    sourceOptions.copyTo(targetOptions);
+                } catch (Exception ex) {
+                    Logger.getLogger(BinedLegacyModule.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            if ("0.2.0".equals(storedVersion)) {
+                convertPreferences_0_2_0(storage, settingsOptionsProvider);
+            }
+        } finally {
+            legacyOptions.setLegacyImported(storedVersion);
+        }
+    }
+
+    private void importLegacyPreferences(OptionsStorage storage, SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaOptions codeAreaOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
+        BinaryFileProcessingOptions fileProcessingOptions = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
+        TextEncodingOptions encodingOptions = settingsOptionsProvider.getSettingsOptions(TextEncodingOptions.class);
+        TextFontOptions fontOptions = settingsOptionsProvider.getSettingsOptions(TextFontOptions.class);
+        CodeAreaLayoutOptions layoutOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaLayoutOptions.class);
+        CodeAreaThemeOptions themeOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
+        DataInspectorOptions dataInspectorOptions = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
+
         LegacyPreferences legacyPreferences = new LegacyPreferences(storage);
         codeAreaOptions.setCodeType(legacyPreferences.getCodeType());
         codeAreaOptions.setRowWrappingMode(legacyPreferences.isLineWrapping() ? RowWrappingMode.WRAPPING : RowWrappingMode.NO_WRAPPING);
@@ -123,7 +163,7 @@ public class BinedLegacyModule implements Module {
         codeAreaOptions.setCodeColorization(legacyPreferences.isCodeColorization());
 
         fileProcessingOptions.setFileProcessingMode(legacyPreferences.isDeltaMemoryMode() ? FileProcessingMode.DELTA : FileProcessingMode.MEMORY);
-        // editorOptions.setShowValuesPanel(legacyPreferences.isShowValuesPanel());
+        dataInspectorOptions.setShowParsingPanel(legacyPreferences.isShowValuesPanel());
 
         List<String> layoutProfiles = new ArrayList<>();
         layoutProfiles.add("Imported profile");
@@ -161,7 +201,8 @@ public class BinedLegacyModule implements Module {
         storage.flush();
     }
 
-    private void convertPreferences_0_2_0() {
+    private void convertPreferences_0_2_0(OptionsStorage storage, SettingsOptionsProvider settingsOptionsProvider) {
+        CodeAreaOptions codeAreaOptions = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
         String codeType = storage.get(CodeAreaOptions.KEY_VIEW_MODE, "DUAL");
         if ("HEXADECIMAL".equals(codeType)) {
             codeAreaOptions.setViewMode(CodeAreaViewMode.CODE_MATRIX);
