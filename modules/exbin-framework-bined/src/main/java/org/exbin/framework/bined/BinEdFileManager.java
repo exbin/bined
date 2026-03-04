@@ -159,11 +159,6 @@ public class BinEdFileManager {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         frameModule.registerStatusBar(BinedModule.MODULE_ID, BinedModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
         frameModule.switchStatusBar(BinedModule.BINARY_STATUS_BAR_ID);
-        // TODO
-//        if (editorProvider instanceof BinEdEditorProvider) {
-//            ((BinEdEditorProvider) editorProvider).registerBinaryStatus(binaryStatusPanel);
-//            ((BinEdEditorProvider) editorProvider).registerEncodingStatus(binaryStatusPanel);
-//        }
     }
 
     public void updateTextEncodingStatus(EncodingsManager encodingsHandler) {

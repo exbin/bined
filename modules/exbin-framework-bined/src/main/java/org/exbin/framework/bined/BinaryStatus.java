@@ -114,8 +114,8 @@ public class BinaryStatus {
         }
 
         BinaryFileDocument activeDocument = getActiveDocument();
-        BinEdDataComponent dataComponent = getActiveComponent();
-        if (dataComponent != null) {
+        if (activeDocument != null) {
+            BinEdDataComponent dataComponent = activeDocument.getDataComponent();
             CodeAreaCore codeArea = dataComponent.getCodeArea();
             long documentOriginalSize = activeDocument.getDocumentOriginalSize();
             long dataSize = codeArea.getDataSize();
@@ -189,19 +189,21 @@ public class BinaryStatus {
     }
 
     @Nullable
-    public BinEdDataComponent getActiveComponent() {
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
-        ContextComponent component = contextManager.getActiveState(ContextComponent.class);
-        return component instanceof BinEdDataComponent ? (BinEdDataComponent) component : null;
-    }
-
-    @Nullable
     public BinaryFileDocument getActiveDocument() {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
         ContextDocument document = contextManager.getActiveState(ContextDocument.class);
         return document instanceof BinaryFileDocument ? (BinaryFileDocument) document : null;
+    }
+
+    @Nullable
+    public BinEdDataComponent getActiveComponent() {
+        BinaryFileDocument activeDocument = getActiveDocument();
+        if (activeDocument == null) {
+            return null;
+        }
+
+        return activeDocument.getDataComponent();
     }
 
     @Nullable

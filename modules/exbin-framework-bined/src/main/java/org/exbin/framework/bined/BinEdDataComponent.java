@@ -51,6 +51,7 @@ import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.CharsetEncodingState;
 import org.exbin.framework.text.encoding.CharsetListEncodingState;
+import org.exbin.framework.text.encoding.ContextEncoding;
 import org.exbin.framework.text.font.TextFontState;
 
 /**
@@ -197,7 +198,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     public void setEncoding(String encoding) {
         ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
         if (contextProvider != null) {
-            contextProvider.notifyStateChange(ContextComponent.class, CharsetEncodingState.ChangeType.ENCODING);
+            contextProvider.notifyStateChange(ContextEncoding.class, CharsetEncodingState.ChangeType.ENCODING);
         }
     }
 
@@ -212,7 +213,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         this.encodings.clear();
         this.encodings.addAll(encodings);
         if (contextProvider != null) {
-            contextProvider.notifyStateChange(ContextComponent.class, CharsetListEncodingState.ChangeType.ENCODING_LIST);
+            contextProvider.notifyStateChange(ContextEncoding.class, CharsetListEncodingState.ChangeType.ENCODING_LIST);
         }
     }
 
@@ -316,8 +317,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         for (BinEdComponentExtension extension : componentExtensions) {
             extension.onUndoHandlerChange();
         }
-        // TODO set ENTER KEY mode in apply options
-
     }
 
     public void addComponentExtension(BinEdComponentExtension extension) {

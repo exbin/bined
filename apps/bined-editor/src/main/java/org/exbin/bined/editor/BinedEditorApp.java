@@ -31,7 +31,7 @@ import org.exbin.framework.basic.BasicModuleFileLocation;
  */
 @ParametersAreNonnullByDefault
 public class BinedEditorApp {
-    
+
     /**
      * Main method launching the application.
      *

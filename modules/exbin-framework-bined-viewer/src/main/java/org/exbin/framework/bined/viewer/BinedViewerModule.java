@@ -33,11 +33,16 @@ import org.exbin.framework.App;
 import org.exbin.framework.Module;
 import org.exbin.framework.ModuleUtils;
 import org.exbin.framework.action.api.ActionConsts;
+import org.exbin.framework.action.api.ActionContextChange;
+import org.exbin.framework.action.api.ActionContextRegistration;
+import org.exbin.framework.action.api.ActionManagement;
+import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.menu.api.ActionMenuCreation;
 import org.exbin.framework.bined.viewer.action.ShowHeaderAction;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinEdFileManager;
+import org.exbin.framework.bined.BinaryDocument;
 import org.exbin.framework.bined.BinaryStatus;
 import org.exbin.framework.bined.BinedModule;
 import org.exbin.framework.bined.BinedModule.PopupMenuVariant;
@@ -54,13 +59,18 @@ import org.exbin.framework.bined.viewer.settings.GoToPositionOptions;
 import org.exbin.framework.bined.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.framework.bined.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.framework.bined.viewer.settings.BinaryFontSettingsApplier;
+import org.exbin.framework.context.api.ContextChangeRegistration;
+import org.exbin.framework.context.api.StateChangeType;
 import org.exbin.framework.contribution.api.GroupSequenceContribution;
 import org.exbin.framework.contribution.api.GroupSequenceContributionRule;
 import org.exbin.framework.contribution.api.PositionSequenceContributionRule;
 import org.exbin.framework.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.framework.contribution.api.SequenceContribution;
 import org.exbin.framework.contribution.api.SubSequenceContributionRule;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.document.api.DocumentModuleApi;
+import org.exbin.framework.frame.api.ComponentFrame;
+import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.framework.menu.api.MenuModuleApi;
@@ -70,6 +80,8 @@ import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponentContribution;
 import org.exbin.framework.options.settings.api.SettingsPageContribution;
 import org.exbin.framework.options.settings.api.SettingsPageContributionRule;
+import org.exbin.framework.text.encoding.CharsetEncodingState;
+import org.exbin.framework.text.encoding.ContextEncoding;
 import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.encoding.settings.TextEncodingSettingsComponent;
@@ -134,11 +146,37 @@ public class BinedViewerModule implements Module {
         BinedModule binedModule = App.getModule(BinedModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.registerStatusBar();
-        fileManager.setBinaryStatusController(new BinaryStatusController(fileManager.getBinaryStatus(), encodingsManager));
+        BinaryStatus binaryStatus = fileManager.getBinaryStatus();
+        fileManager.setBinaryStatusController(new BinaryStatusController(binaryStatus, encodingsManager));
 
-        if (encodingsManager != null) {
-            fileManager.updateTextEncodingStatus(encodingsManager);
-        }
+        // TODO Replace with status bar contribution
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ComponentFrame frameHandler = frameModule.getFrameHandler();
+        ActionManagement actionManager = frameHandler.getActionManager();
+        ActionModuleApi actionModuleApi = App.getModule(ActionModuleApi.class);
+        ActionContextRegistration actionContextRegistrar = actionModuleApi.createActionContextRegistrar(actionManager);
+        Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                // ignore
+            }
+        };
+        action.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, (ActionContextChange) (ContextChangeRegistration registrar) -> {
+            registrar.registerStateChangeListener(ContextEncoding.class, (ContextEncoding instance, StateChangeType changeType) -> {
+                if (CharsetEncodingState.ChangeType.ENCODING.equals(changeType)) {
+                    fileManager.updateTextEncodingStatus(encodingsManager);
+                }
+            });
+            registrar.registerUpdateListener(ContextEncoding.class, (instance) -> {
+                fileManager.updateTextEncodingStatus(encodingsManager);
+            });
+            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                if (instance instanceof BinaryDocument) {
+                    binaryStatus.updateStatus();
+                }
+            });
+        });
+        actionContextRegistrar.registerActionContext(action);
     }
 
     public void registerEncodings() {
