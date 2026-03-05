@@ -98,6 +98,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="viewModeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="viewModeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -110,6 +113,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="codeTypeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="codeTypeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -122,6 +128,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="positionCodeTypeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="positionCodeTypeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -134,6 +143,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="codeCharactersModeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="codeCharactersModeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -144,6 +156,9 @@
           <ResourceString bundle="org/exbin/framework/bined/viewer/settings/gui/resources/CodeAreaSettingsPanel.properties" key="showNonprintableCharactersCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="showNonprintableCharactersCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="codeColorizationCheckBox">
       <Properties>
@@ -151,6 +166,9 @@
           <ResourceString bundle="org/exbin/framework/bined/viewer/settings/gui/resources/CodeAreaSettingsPanel.properties" key="codeColorizationCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="codeColorizationCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="rowWrappingModeCheckBox">
       <Properties>
@@ -158,6 +176,9 @@
           <ResourceString bundle="org/exbin/framework/bined/viewer/settings/gui/resources/CodeAreaSettingsPanel.properties" key="wrapLineModeCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rowWrappingModeCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="maxBytesPerRowLabel">
       <Properties>
@@ -172,6 +193,9 @@
           <SpinnerModel initial="16" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="maxBytesPerRowSpinnerStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="minRowPositionLengthLabel">
       <Properties>
@@ -189,6 +213,9 @@
           <Connection code="8" type="code"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="minRowPositionLengthSpinnerStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="maxRowPositionLengthLabel">
       <Properties>
@@ -206,6 +233,9 @@
           <Connection code="8" type="code"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="maxRowPositionLengthSpinnerStateChanged"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

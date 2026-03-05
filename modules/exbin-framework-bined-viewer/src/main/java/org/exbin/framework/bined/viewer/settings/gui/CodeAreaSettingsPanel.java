@@ -18,7 +18,6 @@ package org.exbin.framework.bined.viewer.settings.gui;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.CodeCharactersCase;
@@ -27,7 +26,6 @@ import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.viewer.settings.CodeAreaOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -41,8 +39,10 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class CodeAreaSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaSettingsPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaSettingsPanel.class);
 
+    protected SettingsModifiedListener settingsModifiedListener;
+    
     public CodeAreaSettingsPanel() {
         initComponents();
     }
@@ -136,31 +136,85 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
 
         viewModeModeLabel.setText(resourceBundle.getString("viewModeModeLabel.text")); // NOI18N
 
+        viewModeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                viewModeComboBoxItemStateChanged(evt);
+            }
+        });
+
         codeTypeModeLabel.setText(resourceBundle.getString("codeTypeModeLabel.text")); // NOI18N
+
+        codeTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                codeTypeComboBoxItemStateChanged(evt);
+            }
+        });
 
         positionCodeTypeLabel.setText(resourceBundle.getString("positionCodeTypeLabel.text")); // NOI18N
 
+        positionCodeTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                positionCodeTypeComboBoxItemStateChanged(evt);
+            }
+        });
+
         hexCharactersModeLabel.setText(resourceBundle.getString("hexCharactersModeLabel.text")); // NOI18N
 
+        codeCharactersModeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                codeCharactersModeComboBoxItemStateChanged(evt);
+            }
+        });
+
         showNonprintableCharactersCheckBox.setText(resourceBundle.getString("showNonprintableCharactersCheckBox.text")); // NOI18N
+        showNonprintableCharactersCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                showNonprintableCharactersCheckBoxItemStateChanged(evt);
+            }
+        });
 
         codeColorizationCheckBox.setText(resourceBundle.getString("codeColorizationCheckBox.text")); // NOI18N
+        codeColorizationCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                codeColorizationCheckBoxItemStateChanged(evt);
+            }
+        });
 
         rowWrappingModeCheckBox.setText(resourceBundle.getString("wrapLineModeCheckBox.text")); // NOI18N
+        rowWrappingModeCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rowWrappingModeCheckBoxItemStateChanged(evt);
+            }
+        });
 
         maxBytesPerRowLabel.setText(resourceBundle.getString("maxBytesPerRowLabel.text")); // NOI18N
 
         maxBytesPerRowSpinner.setModel(new javax.swing.SpinnerNumberModel(16, 0, null, 1));
+        maxBytesPerRowSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                maxBytesPerRowSpinnerStateChanged(evt);
+            }
+        });
 
         minRowPositionLengthLabel.setText(resourceBundle.getString("minRowPositionLengthLabel.text")); // NOI18N
 
         minRowPositionLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         minRowPositionLengthSpinner.setValue(8);
+        minRowPositionLengthSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                minRowPositionLengthSpinnerStateChanged(evt);
+            }
+        });
 
         maxRowPositionLengthLabel.setText(resourceBundle.getString("maxRowPositionLengthLabel.text")); // NOI18N
 
         maxRowPositionLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         maxRowPositionLengthSpinner.setValue(8);
+        maxRowPositionLengthSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                maxRowPositionLengthSpinnerStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -232,6 +286,46 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void viewModeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_viewModeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_viewModeComboBoxItemStateChanged
+
+    private void codeTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codeTypeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_codeTypeComboBoxItemStateChanged
+
+    private void positionCodeTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_positionCodeTypeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_positionCodeTypeComboBoxItemStateChanged
+
+    private void codeCharactersModeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codeCharactersModeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_codeCharactersModeComboBoxItemStateChanged
+
+    private void showNonprintableCharactersCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_showNonprintableCharactersCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_showNonprintableCharactersCheckBoxItemStateChanged
+
+    private void codeColorizationCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codeColorizationCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_codeColorizationCheckBoxItemStateChanged
+
+    private void rowWrappingModeCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rowWrappingModeCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_rowWrappingModeCheckBoxItemStateChanged
+
+    private void maxBytesPerRowSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maxBytesPerRowSpinnerStateChanged
+        notifyModified();
+    }//GEN-LAST:event_maxBytesPerRowSpinnerStateChanged
+
+    private void minRowPositionLengthSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minRowPositionLengthSpinnerStateChanged
+        notifyModified();
+    }//GEN-LAST:event_minRowPositionLengthSpinnerStateChanged
+
+    private void maxRowPositionLengthSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maxRowPositionLengthSpinnerStateChanged
+        notifyModified();
+    }//GEN-LAST:event_maxRowPositionLengthSpinnerStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> codeCharactersModeComboBox;
     private javax.swing.JCheckBox codeColorizationCheckBox;
@@ -252,7 +346,14 @@ public class CodeAreaSettingsPanel extends javax.swing.JPanel implements Setting
     private javax.swing.JLabel viewModeModeLabel;
     // End of variables declaration//GEN-END:variables
 
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+    }
+
     @Override
     public void setSettingsModifiedListener(SettingsModifiedListener listener) {
+        settingsModifiedListener = listener;
     }
 }

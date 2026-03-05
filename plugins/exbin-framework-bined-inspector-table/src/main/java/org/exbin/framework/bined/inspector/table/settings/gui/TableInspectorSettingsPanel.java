@@ -31,7 +31,6 @@ import javax.swing.event.ListSelectionEvent;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.table.api.ValueRowType;
 import org.exbin.framework.bined.inspector.table.settings.TableInspectorOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -45,11 +44,11 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class TableInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private SettingsModifiedListener settingsModifiedListener;
-    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(TableInspectorSettingsPanel.class);
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(TableInspectorSettingsPanel.class);
 
-    private Controller controller = null;
-    private Map<String, ValueRowType> valueRowTypes;
+    protected SettingsModifiedListener settingsModifiedListener;
+    protected Controller controller = null;
+    protected Map<String, ValueRowType> valueRowTypes;
 
     public TableInspectorSettingsPanel() {
         initComponents();
@@ -103,7 +102,7 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
             options.setRowType(i, model.getElementAt(i));
         }
     }
-    
+
     public void addItems(List<String> items) {
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();
         int selectedIndex = rowsList.getSelectedIndex();

@@ -17,13 +17,11 @@ package org.exbin.framework.bined.launcher.settings.gui;
 
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.ButtonGroup;
 import org.exbin.framework.App;
 import org.exbin.framework.document.settings.StartupOptions;
 import org.exbin.framework.document.settings.StartupOptions.StartupBehavior;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -35,8 +33,9 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class StartupSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private SettingsModifiedListener settingsModifiedListener;
-    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StartupSettingsPanel.class);
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StartupSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public StartupSettingsPanel() {
         initComponents();

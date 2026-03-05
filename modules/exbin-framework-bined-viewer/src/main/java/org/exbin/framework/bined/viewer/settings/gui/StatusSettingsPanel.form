@@ -78,6 +78,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cursorPositionCodeTypeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cursorPositionCodeTypeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -89,6 +92,9 @@
           <ResourceString bundle="org/exbin/framework/bined/viewer/settings/gui/resources/StatusSettingsPanel.properties" key="cursorPositionShowOffsetCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cursorPositionShowOffsetCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="documentSizeCodeTypeLabel">
       <Properties>
@@ -98,6 +104,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="documentSizeCodeTypeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="documentSizeCodeTypeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -109,6 +118,9 @@
           <ResourceString bundle="org/exbin/framework/bined/viewer/settings/gui/resources/StatusSettingsPanel.properties" key="documentSizeShowRelativeCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="documentSizeShowRelativeCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="octalGroupSizeLabel">
       <Properties>
@@ -123,6 +135,9 @@
           <SpinnerModel initial="4" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="octalGroupSizeSpinnerStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
       </AuxValues>
@@ -140,6 +155,9 @@
           <SpinnerModel initial="3" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="decimalGroupSizeSpinnerStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
       </AuxValues>
@@ -157,6 +175,9 @@
           <SpinnerModel initial="4" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="hexadecimalGroupSizeSpinnerStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
       </AuxValues>

@@ -26,6 +26,7 @@ import javax.swing.event.ListDataListener;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.settings.gui.ProfileListPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 
 /**
  * Wrapper panel for named profile.
@@ -35,7 +36,8 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 @ParametersAreNonnullByDefault
 public class ProfileSelectionPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ProfileSelectionPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ProfileSelectionPanel.class);
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public ProfileSelectionPanel(JPanel profilePanel) {
         initComponents();
@@ -85,6 +87,12 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
 
         defaultProfileLabel.setText(resourceBundle.getString("defaultProfileLabel.text")); // NOI18N
 
+        defaultProfileComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                defaultProfileComboBoxItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout defaultProfilePanelLayout = new javax.swing.GroupLayout(defaultProfilePanel);
         defaultProfilePanel.setLayout(defaultProfilePanelLayout);
         defaultProfilePanelLayout.setHorizontalGroup(
@@ -109,11 +117,25 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
         add(defaultProfilePanel, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void defaultProfileComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_defaultProfileComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_defaultProfileComboBoxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> defaultProfileComboBox;
     private javax.swing.JLabel defaultProfileLabel;
     private javax.swing.JPanel defaultProfilePanel;
     // End of variables declaration//GEN-END:variables
+
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+    }
+
+    public void setSettingsModifiedListener(SettingsModifiedListener settingsModifiedListener) {
+        this.settingsModifiedListener = settingsModifiedListener;
+    }
 
     @ParametersAreNonnullByDefault
     private class ProfileListDataListener implements ListDataListener {

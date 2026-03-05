@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.theme.gui.ThemeProfilesPanel;
@@ -30,7 +29,6 @@ import org.exbin.framework.bined.theme.model.ThemeProfile;
 import org.exbin.framework.bined.theme.model.ThemeProfilesListModel;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.framework.bined.theme.settings.CodeAreaLayoutProfileOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -45,10 +43,11 @@ import org.exbin.framework.options.settings.api.VerticallyExpandable;
 @ParametersAreNonnullByDefault
 public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent, VerticallyExpandable {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesSettingsPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilesSettingsPanel.class);
 
-    private final ProfileSelectionPanel selectionPanel;
-    private final ThemeProfilesPanel profilesPanel;
+    protected SettingsModifiedListener settingsModifiedListener;
+    protected final ProfileSelectionPanel selectionPanel;
+    protected final ThemeProfilesPanel profilesPanel;
 
     public LayoutProfilesSettingsPanel() {
         this.profilesPanel = new ThemeProfilesPanel();
@@ -60,6 +59,9 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
     private void init() {
         add(selectionPanel, BorderLayout.NORTH);
         add(profilesPanel, BorderLayout.CENTER);
+
+        selectionPanel.setSettingsModifiedListener(() -> notifyModified());
+        profilesPanel.setSettingsModifiedListener(() -> notifyModified());
     }
 
     @Nonnull
@@ -130,8 +132,14 @@ public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements S
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    @Override
-    public void setSettingsModifiedListener(SettingsModifiedListener listener) {
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+    }
 
+    @Override
+    public void setSettingsModifiedListener(SettingsModifiedListener settingsModifiedListener) {
+        this.settingsModifiedListener = settingsModifiedListener;
     }
 }

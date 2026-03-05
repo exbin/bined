@@ -18,12 +18,10 @@ package org.exbin.framework.bined.editor.settings.gui;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.FileProcessingMode;
 import org.exbin.framework.bined.editor.settings.BinaryFileProcessingOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -37,8 +35,9 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaFileProcessingSettingsPanel.class);
-    private SettingsModifiedListener settingsModifiedListener;
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaFileProcessingSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public CodeAreaFileProcessingSettingsPanel() {
         initComponents();

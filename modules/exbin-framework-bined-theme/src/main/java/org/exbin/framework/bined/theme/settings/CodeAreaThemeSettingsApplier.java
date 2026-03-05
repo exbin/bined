@@ -52,7 +52,7 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
         CodeAreaThemeOptions options = settingsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         SectionCodeAreaThemeProfile profile;
         int selectedProfile = options.getSelectedProfile();
-        if (selectedProfile < 0) {
+        if (selectedProfile >= 0) {
             profile = options.getThemeProfile(selectedProfile);
         } else {
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);

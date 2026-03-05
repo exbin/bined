@@ -18,14 +18,12 @@ package org.exbin.framework.bined.viewer.settings.gui;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.status.StatusCursorPositionFormat;
 import org.exbin.framework.bined.status.StatusDocumentSizeFormat;
 import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -39,7 +37,9 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StatusSettingsPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StatusSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public StatusSettingsPanel() {
         initComponents();
@@ -121,25 +121,62 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
 
         cursorPositionCodeTypeLabel.setText(resourceBundle.getString("cursorPositionCodeTypeLabel.text")); // NOI18N
 
+        cursorPositionCodeTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cursorPositionCodeTypeComboBoxItemStateChanged(evt);
+            }
+        });
+
         cursorPositionShowOffsetCheckBox.setSelected(true);
         cursorPositionShowOffsetCheckBox.setText(resourceBundle.getString("cursorPositionShowOffsetCheckBox.text")); // NOI18N
+        cursorPositionShowOffsetCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cursorPositionShowOffsetCheckBoxItemStateChanged(evt);
+            }
+        });
 
         documentSizeCodeTypeLabel.setText(resourceBundle.getString("documentSizeCodeTypeLabel.text")); // NOI18N
 
+        documentSizeCodeTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                documentSizeCodeTypeComboBoxItemStateChanged(evt);
+            }
+        });
+
         documentSizeShowRelativeCheckBox.setSelected(true);
         documentSizeShowRelativeCheckBox.setText(resourceBundle.getString("documentSizeShowRelativeCheckBox.text")); // NOI18N
+        documentSizeShowRelativeCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                documentSizeShowRelativeCheckBoxItemStateChanged(evt);
+            }
+        });
 
         octalGroupSizeLabel.setText(resourceBundle.getString("octalGroupSizeLabel.text")); // NOI18N
 
         octalGroupSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 0, null, 1));
+        octalGroupSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                octalGroupSizeSpinnerStateChanged(evt);
+            }
+        });
 
         decimalGroupSizeLabel.setText(resourceBundle.getString("decimalGroupSizeLabel.text")); // NOI18N
 
         decimalGroupSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(3, 0, null, 1));
+        decimalGroupSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                decimalGroupSizeSpinnerStateChanged(evt);
+            }
+        });
 
         hexadecimalGroupSizeLabel.setText(resourceBundle.getString("hexadecimalGroupSizeLabel.text")); // NOI18N
 
         hexadecimalGroupSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 0, null, 1));
+        hexadecimalGroupSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                hexadecimalGroupSizeSpinnerStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -193,6 +230,34 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cursorPositionCodeTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cursorPositionCodeTypeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_cursorPositionCodeTypeComboBoxItemStateChanged
+
+    private void cursorPositionShowOffsetCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cursorPositionShowOffsetCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_cursorPositionShowOffsetCheckBoxItemStateChanged
+
+    private void documentSizeCodeTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_documentSizeCodeTypeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_documentSizeCodeTypeComboBoxItemStateChanged
+
+    private void documentSizeShowRelativeCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_documentSizeShowRelativeCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_documentSizeShowRelativeCheckBoxItemStateChanged
+
+    private void octalGroupSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_octalGroupSizeSpinnerStateChanged
+        notifyModified();
+    }//GEN-LAST:event_octalGroupSizeSpinnerStateChanged
+
+    private void decimalGroupSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_decimalGroupSizeSpinnerStateChanged
+        notifyModified();
+    }//GEN-LAST:event_decimalGroupSizeSpinnerStateChanged
+
+    private void hexadecimalGroupSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_hexadecimalGroupSizeSpinnerStateChanged
+        notifyModified();
+    }//GEN-LAST:event_hexadecimalGroupSizeSpinnerStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cursorPositionCodeTypeComboBox;
     private javax.swing.JLabel cursorPositionCodeTypeLabel;
@@ -208,7 +273,14 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
     private javax.swing.JSpinner octalGroupSizeSpinner;
     // End of variables declaration//GEN-END:variables
 
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+    }
+
     @Override
     public void setSettingsModifiedListener(SettingsModifiedListener listener) {
+        settingsModifiedListener = listener;
     }
 }

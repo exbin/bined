@@ -62,6 +62,7 @@ import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.context.api.ActiveContextManagement;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.docking.api.DocumentDocking;
@@ -211,11 +212,12 @@ public class BinedLauncherModule implements LauncherModule {
                 updateModule.registerSettings();
             }
 
+            FrameModuleApi frameModuleApi = App.getModule(FrameModuleApi.class);
+            ActiveContextManagement contextManagement = frameModuleApi.getFrameHandler().getContextManager();
             OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
-            ActiveContextManagement contextManagement = contextModule.getMainContextManager();
             settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(contextManagement));
             settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(contextManagement));
-            settingsManager.registerInferenceOptions(TextFontInference.class, new TextFontContextInference(contextManagement));
+            settingsManager.registerInferenceOptions(TextFontInference.class, new TextFontContextInference((contextManagement)));
             settingsManager.registerInferenceOptions(DataInspectorFontInference.class, new DataInspectorFontContextInference(contextManagement));
 
             fileModule.registerFileProviders();

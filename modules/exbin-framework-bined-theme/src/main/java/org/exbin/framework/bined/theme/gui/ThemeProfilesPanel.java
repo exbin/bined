@@ -34,6 +34,7 @@ import org.exbin.framework.bined.theme.settings.gui.PreviewPanel;
 import org.exbin.framework.bined.theme.settings.gui.PreviewPanel.PreviewType;
 import org.exbin.framework.bined.theme.settings.gui.ProfileListPanel;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 
 /**
  * Manage list of theme profiles panel.
@@ -45,7 +46,7 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesPanel.class);
 
-    protected boolean modified = false;
+    protected SettingsModifiedListener settingsModifiedListener;
     protected Controller controller;
 
     public ThemeProfilesPanel() {
@@ -388,15 +389,6 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         notifyModified();
     }//GEN-LAST:event_fromTemplateButtonActionPerformed
 
-    public boolean isModified() {
-        return modified;
-    }
-
-    private void notifyModified() {
-        modified = true;
-        updateStates();
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton copyButton;
@@ -413,6 +405,18 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables
 
+    private void notifyModified() {
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.notifyModified();
+        }
+        updateStates();
+    }
+
+    public void setSettingsModifiedListener(SettingsModifiedListener settingsModifiedListener) {
+        this.settingsModifiedListener = settingsModifiedListener;
+    }
+
+    
     @ParametersAreNonnullByDefault
     private static final class ProfileCellRenderer implements ListCellRenderer<ThemeProfile> {
 

@@ -18,13 +18,11 @@ package org.exbin.framework.bined.editor.settings.gui;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.editor.settings.BinaryEditorOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.options.settings.api.SettingsComponent;
@@ -38,8 +36,9 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
-    private SettingsModifiedListener settingsModifiedListener;
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public CodeAreaEditingSettingsPanel() {
         initComponents();

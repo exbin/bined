@@ -33,8 +33,9 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private SettingsModifiedListener settingsModifiedListener;
-    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceSettingsPanel.class);
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public BinaryAppearanceSettingsPanel() {
         initComponents();
@@ -74,6 +75,11 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
         multiFileModeCheckBox.setSelected(true);
         multiFileModeCheckBox.setText(resourceBundle.getString("multiFileModeCheckBox.text")); // NOI18N
         multiFileModeCheckBox.setName("multiFileModeCheckBox"); // NOI18N
+        multiFileModeCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                multiFileModeCheckBoxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -81,7 +87,7 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(multiFileModeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 147, Short.MAX_VALUE)
+                .addComponent(multiFileModeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -92,6 +98,10 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void multiFileModeCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_multiFileModeCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_multiFileModeCheckBoxItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox multiFileModeCheckBox;

@@ -29,7 +29,6 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import org.exbin.framework.App;
 import org.exbin.framework.bined.inspector.settings.DataInspectorOptions;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -43,8 +42,9 @@ import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class InspectorsSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    protected SettingsModifiedListener settingsModifiedListener;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorsSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
     protected boolean showMode = true;
 
     public InspectorsSettingsPanel() {
