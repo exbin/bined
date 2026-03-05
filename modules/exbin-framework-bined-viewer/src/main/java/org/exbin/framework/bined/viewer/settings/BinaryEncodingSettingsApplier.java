@@ -17,7 +17,9 @@ package org.exbin.framework.bined.viewer.settings;
 
 import java.nio.charset.UnsupportedCharsetException;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinEdDataComponent;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
@@ -33,12 +35,13 @@ public class BinaryEncodingSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryEncoding";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinEdDataComponent)) {
             return;
         }
 
-        TextEncodingOptions options = settingsOptionsProvider.getSettingsOptions(TextEncodingOptions.class);
+        TextEncodingOptions options = settingsProvider.getSettingsOptions(TextEncodingOptions.class);
         try {
             ((BinEdDataComponent) instance).setEncodings(options.getEncodings());
         } catch (UnsupportedCharsetException ex) {

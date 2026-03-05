@@ -45,14 +45,18 @@ import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.context.api.ContextActivable;
 import org.exbin.framework.document.api.ComponentDocument;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.document.api.DocumentSource;
 import org.exbin.framework.document.api.EditableDocument;
 import org.exbin.framework.document.api.MemoryDocumentSource;
 import org.exbin.framework.document.api.StreamDocumentSource;
+import org.exbin.framework.file.api.ContextFileDialogs;
 import org.exbin.framework.file.api.FileDocument;
 import org.exbin.framework.file.api.FileDocumentSource;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.operation.undo.api.ContextUndoRedo;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 import org.exbin.framework.text.encoding.ContextEncoding;
 import org.exbin.framework.text.font.ContextFont;
@@ -75,6 +79,10 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
         // TODO: Call post init after adding extensions - rework later
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+        settingsManager.applyContextOptions(ContextDocument.class, this, settingsOptionsProvider);
+        settingsManager.applyContextOptions(ContextFileDialogs.class, new ContextFileDialogs() {}, settingsOptionsProvider);
         dataComponent.applySettings(settingsOptionsProvider);
     }
 
@@ -253,7 +261,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public void clearFile() {
-        throw new UnsupportedOperationException();
+        // TODO
     }
 
     @Override

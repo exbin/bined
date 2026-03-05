@@ -24,6 +24,8 @@ import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.inspector.BasicValuesInspector;
 import org.exbin.framework.bined.inspector.BinEdInspectorComponentExtension;
 import org.exbin.framework.bined.inspector.gui.BasicValuesPanel;
+import org.exbin.framework.context.api.ActiveContextProvider;
+import org.exbin.framework.document.api.ContextDocument;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -38,13 +40,14 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "dataInspector";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        ContextDocument instance = contextProvider.getActiveState(ContextDocument.class);
         if (!(instance instanceof BinaryFileDocument)) {
             return;
         }
 
-        DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
-        DataInspectorFontOptions fontOptions = settingsOptionsProvider.getSettingsOptions(DataInspectorFontOptions.class);
+        DataInspectorOptions options = settingsProvider.getSettingsOptions(DataInspectorOptions.class);
+        DataInspectorFontOptions fontOptions = settingsProvider.getSettingsOptions(DataInspectorFontOptions.class);
 
         Font defaultFont = null;
         BinaryFileDocument binaryDocument = (BinaryFileDocument) instance;

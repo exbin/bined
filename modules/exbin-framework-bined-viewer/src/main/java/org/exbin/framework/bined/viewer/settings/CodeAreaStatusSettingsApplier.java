@@ -19,6 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.bined.BinaryStatus;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.bined.settings.CodeAreaStatusOptions;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -33,12 +34,13 @@ public class CodeAreaStatusSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryStatus";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        BinaryStatus instance = contextProvider.getActiveState(BinaryStatus.class);
         if (!(instance instanceof BinaryStatus)) {
             return;
         }
 
-        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
+        CodeAreaStatusOptions options = settingsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         BinaryStatusPanel binaryStatusPanel = ((BinaryStatus) instance).getBinaryStatusPanel();
         binaryStatusPanel.loadFromOptions(options);
         // TODO binaryStatusPanel.setStatusOptions(options);

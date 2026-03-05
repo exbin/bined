@@ -81,6 +81,50 @@ public class ViewFontActions {
         return resetFontSizeAction;
     }
 
+    public void registerComponentActions(CodeAreaCore component) {
+        /* ActionMap actionMap = component.getActionMap();
+        InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        int metaMask = ActionUtils.getMetaMask();
+
+        String fontZoomInKey = "font-zoom-in";
+        actionMap.put(fontZoomInKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ZoomInAction zoomInAction = createZoomInAction();
+                zoomInAction.codeArea = component;
+                zoomInAction.setFontSizeOptions(fontSizeOptions);
+                zoomInAction.actionPerformed(e);
+            }
+        });
+        inputMap.put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, metaMask), fontZoomInKey);
+        
+        String fontZoomOutKey = "font-zoom-out";
+        actionMap.put(fontZoomOutKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ZoomOutAction zoomOutAction = createZoomOutAction();
+                zoomOutAction.codeArea = component;
+                zoomOutAction.setFontSizeOptions(fontSizeOptions);
+                zoomOutAction.actionPerformed(e);
+            }
+        });
+        inputMap.put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, metaMask), fontZoomOutKey);
+
+        String fontResetKey = "font-reset-reset";
+        actionMap.put(fontResetKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ResetFontSizeAction resetFontAction = createResetFontSizeAction();
+                resetFontAction.codeArea = component;
+                resetFontAction.setFontSizeOptions(fontSizeOptions);
+                resetFontAction.actionPerformed(e);
+            }
+        });
+        inputMap.put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_0, metaMask), fontResetKey);
+        component.setActionMap(actionMap);
+        component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap); */
+    }
+
     @ParametersAreNonnullByDefault
     public static class ZoomInAction extends AbstractAction implements ActionContextChange {
 

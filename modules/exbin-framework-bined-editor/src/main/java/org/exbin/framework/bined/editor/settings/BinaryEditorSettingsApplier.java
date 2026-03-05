@@ -20,7 +20,9 @@ import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -35,12 +37,13 @@ public class BinaryEditorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryEditor";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinaryDataComponent)) {
             return;
         }
 
-        BinaryEditorOptions options = settingsOptionsProvider.getSettingsOptions(BinaryEditorOptions.class);
+        BinaryEditorOptions options = settingsProvider.getSettingsOptions(BinaryEditorOptions.class);
         // TODO: This causes multiple reloads / warnings about modified files
         // Move to BinaryFileProcessing
         // editorOptionsService.setFileHandlingMode(options.getFileHandlingMode());

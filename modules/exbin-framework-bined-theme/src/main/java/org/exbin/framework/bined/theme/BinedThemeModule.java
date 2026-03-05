@@ -100,9 +100,12 @@ public class BinedThemeModule implements Module {
         settingsManagement.registerSettingsOptions(CodeAreaThemeOptions.class, (optionsStorage) -> new CodeAreaThemeOptions(optionsStorage));
         settingsManagement.registerSettingsOptions(CodeAreaThemeProfileOptions.class, (optionsStorage) -> new CodeAreaThemeProfileOptions(optionsStorage));
 
-        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
-        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
-        settingsManagement.registerApplySetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
+        settingsManagement.registerApplySetting(CodeAreaColorOptions.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
+        settingsManagement.registerApplyContextSetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaColorSettingsApplier.APPLIER_ID, new CodeAreaColorSettingsApplier()));
+        settingsManagement.registerApplySetting(CodeAreaLayoutOptions.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
+        settingsManagement.registerApplyContextSetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaLayoutSettingsApplier.APPLIER_ID, new CodeAreaLayoutSettingsApplier()));
+        settingsManagement.registerApplySetting(CodeAreaThemeOptions.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
+        settingsManagement.registerApplyContextSetting(ContextComponent.class, new ApplySettingsContribution(CodeAreaThemeSettingsApplier.APPLIER_ID, new CodeAreaThemeSettingsApplier()));
 
         GroupSequenceContribution settingsGroup = settingsManagement.registerGroup(SETTINGS_GROUP_ID);
         settingsManagement.registerSettingsRule(settingsGroup, new SettingsPageContributionRule("binary"));

@@ -147,7 +147,8 @@ public class BinedInspectorModule implements Module {
         settingsManagement.registerSettingsOptions(DataInspectorOptions.class, (optionsStorage) -> new DataInspectorOptions(optionsStorage));
         
         settingsManagement.registerSettingsOptions(DataInspectorFontOptions.class, (optionsStorage) -> new DataInspectorFontOptions(optionsStorage));
-        settingsManagement.registerApplySetting(ContextDocument.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
+        settingsManagement.registerApplySetting(DataInspectorOptions.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
+        settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(DataInspectorSettingsApplier.APPLIER_ID, new DataInspectorSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, getResourceBundle());
         settingsManagement.registerPage(pageContribution);

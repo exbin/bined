@@ -30,7 +30,6 @@ import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.framework.App;
-import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.gui.BinaryStatusPanel;
 import org.exbin.framework.context.api.ActiveContextManagement;
 import org.exbin.framework.docking.api.ContextDocking;
@@ -58,7 +57,7 @@ public class BinaryStatus {
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
-        settingsManager.applyOptions(BinaryStatus.class, this, settingsOptionsProvider);
+        settingsManager.applyContextOptions(BinaryStatus.class, this, settingsOptionsProvider);
     }
 
     public void attachCodeArea(BinEdDataComponent binaryComponent) {

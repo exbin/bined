@@ -17,8 +17,10 @@ package org.exbin.framework.bined.editor.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinedModule;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -33,12 +35,13 @@ public class BinaryFileProcessingSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryFileProcessing";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinaryDataComponent)) {
             return;
         }
 
-        BinaryFileProcessingOptions options = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
+        BinaryFileProcessingOptions options = settingsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
         BinedModule binEdModule = App.getModule(BinedModule.class);
         // TODO: Move to BinaryFileProcessing
         binEdModule.setInitialFileProcessing(options.getFileProcessingMode());

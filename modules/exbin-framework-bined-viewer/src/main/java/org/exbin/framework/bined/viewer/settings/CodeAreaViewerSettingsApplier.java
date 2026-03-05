@@ -27,7 +27,9 @@ import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -42,11 +44,12 @@ public class CodeAreaViewerSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "codeAreaViewer";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinaryDataComponent)) {
             return;
         }
-        CodeAreaOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaOptions.class);
+        CodeAreaOptions options = settingsProvider.getSettingsOptions(CodeAreaOptions.class);
         
         CodeAreaCore codeArea = ((BinaryDataComponent) instance).getCodeArea();
         applyFromCodeArea(options, (SectCodeArea) codeArea);

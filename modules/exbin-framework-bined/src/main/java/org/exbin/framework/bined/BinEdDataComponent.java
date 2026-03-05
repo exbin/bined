@@ -89,7 +89,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
-        settingsManager.applyOptions(ContextComponent.class, this, settingsOptionsProvider);
+        settingsManager.applyContextOptions(ContextComponent.class, this, settingsOptionsProvider);
     }
 
     @Nonnull

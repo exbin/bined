@@ -20,8 +20,10 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.framework.App;
+import org.exbin.framework.action.api.ContextComponent;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.theme.BinedThemeModule;
+import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.options.settings.api.SettingsApplier;
 import org.exbin.framework.options.settings.api.SettingsOptionsProvider;
 
@@ -36,7 +38,8 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "codeAreaThemeApplier";
 
     @Override
-    public void applySettings(Object instance, SettingsOptionsProvider settingsOptionsProvider) {
+    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+        ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinaryDataComponent)) {
             return;
         }
@@ -46,7 +49,7 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
             return;
         }
 
-        CodeAreaThemeOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
+        CodeAreaThemeOptions options = settingsProvider.getSettingsOptions(CodeAreaThemeOptions.class);
         SectionCodeAreaThemeProfile profile;
         int selectedProfile = options.getSelectedProfile();
         if (selectedProfile < 0) {

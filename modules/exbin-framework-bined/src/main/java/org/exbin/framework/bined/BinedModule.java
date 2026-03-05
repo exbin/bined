@@ -387,10 +387,21 @@ public class BinedModule implements Module {
         if (contextDocking instanceof DocumentDocking) {
             ((DocumentDocking) contextDocking).openNewDocument();
         }
-
+        
 //        if (editorProvider instanceof MultiEditorProvider) {
 //            editorProvider.newFile();
 //        }
+
+        // TODO Rework to use different approach than extension
+        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
+            @Nonnull
+            @Override
+            public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
+                getViewFontActions();
+                viewFontActions.registerComponentActions(component.getCodeArea());
+                return Optional.empty();
+            }
+        });
     }
 
     public void startWithFile(String filePath) {
