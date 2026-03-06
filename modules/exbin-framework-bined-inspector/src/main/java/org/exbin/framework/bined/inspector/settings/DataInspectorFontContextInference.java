@@ -42,6 +42,11 @@ public class DataInspectorFontContextInference implements DataInspectorFontInfer
     }
 
     @Nonnull
+    public ActiveContextProvider getContextProvider() {
+        return contextProvider;
+    }
+
+    @Nonnull
     @Override
     public Optional<Font> getInputFieldsFont() {
         ContextDocument contextDocument = contextProvider.getActiveState(ContextDocument.class);

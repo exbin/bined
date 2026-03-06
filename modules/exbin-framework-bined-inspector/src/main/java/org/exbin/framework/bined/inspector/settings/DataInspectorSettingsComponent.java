@@ -42,14 +42,10 @@ public class DataInspectorSettingsComponent implements SettingsComponentProvider
 
     public static final String COMPONENT_ID = "dataInspector";
 
-    private Font defaultFont;
-
     @Nonnull
     @Override
     public SettingsComponent createComponent() {
         DataInspectorSettingsPanel panel = new DataInspectorSettingsPanel();
-        defaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
-        panel.setDefaultFont(defaultFont);
         panel.setFontSettingsController(new TextFontSettingsPanel.Controller() {
             @Override
             public Font changeFont(Font currentFont) {

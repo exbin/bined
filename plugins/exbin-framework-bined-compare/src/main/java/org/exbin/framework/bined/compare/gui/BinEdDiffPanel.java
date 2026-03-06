@@ -78,19 +78,20 @@ import org.exbin.framework.text.font.settings.TextFontOptions;
 @ParametersAreNonnullByDefault
 public class BinEdDiffPanel extends JPanel {
 
-    private final OptionsStorage optionsStorage;
-    private final SectCodeAreaDiffPanel diffPanel = new SectCodeAreaDiffPanel();
+    protected final OptionsStorage optionsStorage;
+    protected final SectCodeAreaDiffPanel diffPanel = new SectCodeAreaDiffPanel();
 
-    private final Font defaultFont;
-    private final SectionCodeAreaLayoutProfile defaultLayoutProfile;
-    private final SectionCodeAreaThemeProfile defaultThemeProfile;
-    private final CodeAreaColorsProfile defaultColorProfile;
+    protected final Font defaultFont;
+    protected final SectionCodeAreaLayoutProfile defaultLayoutProfile;
+    protected final SectionCodeAreaThemeProfile defaultThemeProfile;
+    protected final CodeAreaColorsProfile defaultColorProfile;
 
-    private final DiffToolbarPanel toolbarPanel;
-    private final BinaryStatusPanel leftStatusPanel;
-    private final BinaryStatusPanel rightStatusPanel;
-    private EncodingsManager encodingsManager;
-    private GoToPositionAction goToPositionAction = new GoToPositionAction();
+    protected final DiffToolbarPanel toolbarPanel;
+    protected final BinaryStatusPanel leftStatusPanel;
+    protected final BinaryStatusPanel rightStatusPanel;
+    protected EncodingsManager leftEncodingsManager;
+    protected EncodingsManager rightEncodingsManager;
+    protected GoToPositionAction goToPositionAction = new GoToPositionAction();
 
     public BinEdDiffPanel() {
         setLayout(new java.awt.BorderLayout());
@@ -160,8 +161,8 @@ public class BinEdDiffPanel extends JPanel {
 
     private void init() {
         this.add(toolbarPanel, BorderLayout.NORTH);
-        encodingsManager = new EncodingsManager();
-        encodingsManager.init();
+        leftEncodingsManager = new EncodingsManager();
+        leftEncodingsManager.init();
         /* TODO encodingsManager.setTextEncodingStatus(new TextEncodingStatusApi() {
             @Nonnull
             @Override
@@ -408,22 +409,22 @@ public class BinEdDiffPanel extends JPanel {
 
         @Override
         public void cycleNextEncoding() {
-            if (encodingsManager != null) {
-                encodingsManager.cycleNextEncoding();
+            if (leftEncodingsManager != null) {
+                leftEncodingsManager.cycleNextEncoding();
             }
         }
 
         @Override
         public void cyclePreviousEncoding() {
-            if (encodingsManager != null) {
-                encodingsManager.cyclePreviousEncoding();
+            if (leftEncodingsManager != null) {
+                leftEncodingsManager.cyclePreviousEncoding();
             }
         }
 
         @Override
         public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
-            if (encodingsManager != null) {
-                encodingsManager.popupEncodingsMenu(mouseEvent);
+            if (leftEncodingsManager != null) {
+                leftEncodingsManager.popupEncodingsMenu(mouseEvent);
             }
         }
 

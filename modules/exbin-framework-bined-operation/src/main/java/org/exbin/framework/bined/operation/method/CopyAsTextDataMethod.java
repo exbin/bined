@@ -160,6 +160,10 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
 
     @Nonnull
     public String generateData(BinaryData sourceData, long position, int length, CodeType codeType, CodeCharactersCase codeCharactersCase, CodeSeparator codeSeparator, int codesPerRow) {
+        if (length == 0) {
+            return "";
+        }
+
         int charsPerByte = codeType.getMaxDigitsForByte();
         int textLength = (int) (length * charsPerByte);
         if (codeSeparator != CodeSeparator.NONE) {

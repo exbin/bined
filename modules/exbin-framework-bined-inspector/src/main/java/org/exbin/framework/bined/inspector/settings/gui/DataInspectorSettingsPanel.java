@@ -42,11 +42,10 @@ import org.exbin.framework.text.font.settings.TextFontInference;
 @ParametersAreNonnullByDefault
 public class DataInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private SettingsModifiedListener settingsModifiedListener;
-    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorSettingsPanel.class);
-    private TextFontSettingsPanel textFontSettingsPanel;
-    private Font defaultFont;
-    private Font currentFont;
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorSettingsPanel.class);
+
+    protected SettingsModifiedListener settingsModifiedListener;
+    protected TextFontSettingsPanel textFontSettingsPanel;
 
     public DataInspectorSettingsPanel() {
         initComponents();
@@ -55,19 +54,6 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
 
     private void init() {
         textFontSettingsPanel = new TextFontSettingsPanel();
-        textFontSettingsPanel.setTextFontInference(new TextFontInference() {
-            @Nonnull
-            @Override
-            public Optional<Font> getCurrentFont() {
-                return Optional.of(currentFont);
-            }
-
-            @Nonnull
-            @Override
-            public Optional<Font> getDefaultFont() {
-                return Optional.of(defaultFont);
-            }
-        });
         fontChangePanel.add(textFontSettingsPanel);
     }
 
@@ -85,14 +71,6 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         textFontSettingsPanel.setController(controller);
     }
 
-    public void setDefaultFont(Font defaultFont) {
-        this.defaultFont = defaultFont;
-    }
-
-    public void setCurrentFont(Font currentFont) {
-        this.currentFont = currentFont;
-    }
-
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         DataInspectorOptions options = settingsOptionsProvider.getSettingsOptions(DataInspectorOptions.class);
@@ -103,13 +81,24 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         settingsOptionsOverrides.overrideSettingsOptions(TextFontOptions.class, DataInspectorFontOptions.class);
         textFontSettingsPanel.loadFromOptions(settingsOptionsOverrides);
 
-        Optional<DataInspectorFontInference> optContextEncodingsOptions = settingsOptionsProvider.getInferenceOptions(DataInspectorFontInference.class);
-        if (optContextEncodingsOptions.isPresent()) {
-            DataInspectorFontInference contextOptions = optContextEncodingsOptions.get();
-            Optional<Font> optFont = contextOptions.getInputFieldsFont();
+        Optional<DataInspectorFontInference> optInference = settingsOptionsProvider.getInferenceOptions(DataInspectorFontInference.class);
+        if (optInference.isPresent()) {
+            DataInspectorFontInference inference = optInference.get();
+            Optional<Font> optFont = inference.getInputFieldsFont();
             if (optFont.isPresent()) {
-                currentFont = optFont.get();
-                notifyModified();
+                textFontSettingsPanel.setTextFontInference(new TextFontInference() {
+                    @Nonnull
+                    @Override
+                    public Optional<Font> getCurrentFont() {
+                        return inference.getInputFieldsFont();
+                    }
+
+                    @Nonnull
+                    @Override
+                    public Optional<Font> getDefaultFont() {
+                        return Optional.of(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+                    }
+                });
             }
         }
     }
