@@ -81,6 +81,10 @@ public class GoToPositionAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        actionPerformed();
+    }
+
+    public void actionPerformed() {
         final GoToPositionPanel goToPanel = new GoToPositionPanel();
         goToPanel.setCursorPosition(((CaretCapable) codeArea).getDataPosition());
         goToPanel.setMaxPosition(codeArea.getDataSize());

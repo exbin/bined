@@ -24,6 +24,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
@@ -40,6 +43,7 @@ import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
@@ -66,6 +70,8 @@ import org.exbin.framework.bined.viewer.settings.CodeAreaViewerSettingsApplier;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
+import org.exbin.framework.text.encoding.CharsetEncodingState;
+import org.exbin.framework.text.encoding.CharsetListEncodingState;
 import org.exbin.framework.text.encoding.EncodingsManager;
 import org.exbin.framework.text.encoding.settings.TextEncodingOptions;
 import org.exbin.framework.text.font.settings.TextFontOptions;
@@ -89,8 +95,6 @@ public class BinEdDiffPanel extends JPanel {
     protected final DiffToolbarPanel toolbarPanel;
     protected final BinaryStatusPanel leftStatusPanel;
     protected final BinaryStatusPanel rightStatusPanel;
-    protected EncodingsManager leftEncodingsManager;
-    protected EncodingsManager rightEncodingsManager;
     protected GoToPositionAction goToPositionAction = new GoToPositionAction();
 
     public BinEdDiffPanel() {
@@ -161,24 +165,6 @@ public class BinEdDiffPanel extends JPanel {
 
     private void init() {
         this.add(toolbarPanel, BorderLayout.NORTH);
-        leftEncodingsManager = new EncodingsManager();
-        leftEncodingsManager.init();
-        /* TODO encodingsManager.setTextEncodingStatus(new TextEncodingStatusApi() {
-            @Nonnull
-            @Override
-            public String getEncoding() {
-                return leftStatusPanel.getEncoding();
-            }
-
-            @Override
-            public void setEncoding(String encodingName) {
-                diffPanel.getLeftCodeArea().setCharset(Charset.forName(encodingName));
-                diffPanel.getRightCodeArea().setCharset(Charset.forName(encodingName));
-                leftStatusPanel.setEncoding(encodingName);
-                rightStatusPanel.setEncoding(encodingName);
-                new TextEncodingOptions(optionsStorage).setSelectedEncoding(encodingName);
-            }
-        }); */
         goToPositionAction.setup(App.getModule(LanguageModuleApi.class).getBundle(BinedModule.class));
 
         registerBinaryStatus(leftStatusPanel, diffPanel.getLeftCodeArea());
@@ -199,7 +185,7 @@ public class BinEdDiffPanel extends JPanel {
         repaint();
     }
 
-    public void registerBinaryStatus(BinaryStatusApi binaryStatus, SectCodeArea codeArea) {
+    public void registerBinaryStatus(BinaryStatusPanel binaryStatus, SectCodeArea codeArea) {
         codeArea.addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
             binaryStatus.setCursorPosition(caretPosition);
         });
@@ -218,7 +204,12 @@ public class BinEdDiffPanel extends JPanel {
 
         updateBinaryStatus(binaryStatus, codeArea);
 
-        ((BinaryStatusPanel) binaryStatus).setController(new BinaryStatusController());
+        binaryStatus.setController(new BinaryStatusController(codeArea) {
+            @Override
+            public void notifyEncodingChanged(String encoding) {
+                binaryStatus.setEncoding(encoding);
+            }
+        });
     }
 
     private void updateBinaryStatus(BinaryStatusApi binaryStatus, SectCodeArea codeArea) {
@@ -392,7 +383,57 @@ public class BinEdDiffPanel extends JPanel {
     }
 
     @ParametersAreNonnullByDefault
-    private class BinaryStatusController implements BinaryStatusPanel.Controller, BinaryStatusPanel.EncodingsController, BinaryStatusPanel.MemoryModeController {
+    private abstract class BinaryStatusController implements BinaryStatusPanel.Controller, BinaryStatusPanel.EncodingsController, BinaryStatusPanel.MemoryModeController {
+        
+        private EncodingsManager encodingsManager;
+        private CodeAreaCore codeArea;
+        private List<String> encodings = new ArrayList<>();
+
+        public BinaryStatusController(CodeAreaCore codeArea) {
+            this.codeArea = codeArea;
+            TextEncodingOptions textEncodingOptions = new TextEncodingOptions(optionsStorage);
+            encodings.addAll(textEncodingOptions.getEncodings());
+            try {
+                String encoding = textEncodingOptions.getSelectedEncoding();
+                ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
+                notifyEncodingChanged(encoding);
+            } catch (UnsupportedCharsetException ex) {
+                // ignore
+            }
+            
+            encodingsManager = new EncodingsManager();
+            encodingsManager.init();
+            encodingsManager.setEncodingState(new CharsetEncodingState() {
+                @Nonnull
+                @Override
+                public String getEncoding() {
+                    return ((CharsetCapable) codeArea).getCharset().name();
+                }
+
+                @Override
+                public void setEncoding(String encodingName) {
+                    ((CharsetCapable) codeArea).setCharset(Charset.forName(encodingName));
+                    notifyEncodingChanged(encodingName);
+                }
+            });
+            encodingsManager.setListEncodingState(new CharsetListEncodingState() {
+                @Nonnull
+                @Override
+                public List<String> getEncodings() {
+                    return encodings;
+                }
+
+                @Override
+                public void setEncodings(List<String> encodings) {
+                    BinaryStatusController.this.encodings.clear();
+                    BinaryStatusController.this.encodings.addAll(encodings);
+                    encodingsManager.rebuildEncodings();
+                }
+            });
+            encodingsManager.rebuildEncodings();
+        }
+        
+        public abstract void notifyEncodingChanged(String encoding);
 
         @Override
         public void changeEditOperation(EditOperation editOperation) {
@@ -404,28 +445,22 @@ public class BinEdDiffPanel extends JPanel {
 
         @Override
         public void changeCursorPosition() {
-            goToPositionAction.actionPerformed(new ActionEvent(BinEdDiffPanel.this, 0, ""));
+            goToPositionAction.actionPerformed();
         }
 
         @Override
         public void cycleNextEncoding() {
-            if (leftEncodingsManager != null) {
-                leftEncodingsManager.cycleNextEncoding();
-            }
+            encodingsManager.cycleNextEncoding();
         }
 
         @Override
         public void cyclePreviousEncoding() {
-            if (leftEncodingsManager != null) {
-                leftEncodingsManager.cyclePreviousEncoding();
-            }
+            encodingsManager.cyclePreviousEncoding();
         }
 
         @Override
         public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
-            if (leftEncodingsManager != null) {
-                leftEncodingsManager.popupEncodingsMenu(mouseEvent);
-            }
+            encodingsManager.popupEncodingsMenu(mouseEvent);
         }
 
         @Override
@@ -434,7 +469,6 @@ public class BinEdDiffPanel extends JPanel {
         }
     }
 
-    @ParametersAreNonnullByDefault
     public interface BinEdApplyOptions {
 
         @Nonnull

@@ -99,6 +99,7 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
                         return Optional.of(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
                     }
                 });
+                textFontSettingsPanel.setCodeFont(optFont.get());
             }
         }
     }
@@ -190,5 +191,6 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
     @Override
     public void setSettingsModifiedListener(SettingsModifiedListener listener) {
         settingsModifiedListener = listener;
+        textFontSettingsPanel.setSettingsModifiedListener(listener);
     }
 }
