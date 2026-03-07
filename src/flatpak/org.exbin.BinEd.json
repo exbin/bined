@@ -1,0 +1,38 @@
+{
+  "app-id" : "org.exbin.BinEd",
+  "runtime" : "org.freedesktop.Platform",
+  "runtime-version" : "25.08",
+  "sdk" : "org.freedesktop.Sdk",
+  "sdk-extensions" : [ "org.freedesktop.Sdk.Extension.openjdk" ],
+  "command": "org.exbin.BinEd",
+  "finish-args": [
+     "--share=ipc",
+     "--share=network",
+     "--socket=x11",
+     "--filesystem=home"
+  ],
+  "modules" : [
+    {
+      "name" : "openjdk",
+      "buildsystem" : "simple",
+      "build-commands" : [ "/usr/lib/sdk/openjdk/install.sh" ]
+    },
+    {
+      "name": "bined",
+      "buildsystem": "simple",
+      "build-commands": [
+        "mkdir -p ${FLATPAK_DEST}/bined",
+        "cp -r * ${FLATPAK_DEST}/bined",
+        "install -Dm755 dist/flatpak/${FLATPAK_ID} ${FLATPAK_DEST}/bin/${FLATPAK_ID}",
+        "install -Dm644 dist/flatpak/${FLATPAK_ID}.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop",
+        "install -Dm644 dist/flatpak/${FLATPAK_ID}.appdata.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.appdata.xml",
+        "install -Dm0644 dist/flatpak/${FLATPAK_ID}.svg ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg"
+      ],
+      "sources": [{
+        "type": "archive",
+        "url": "https://bined.exbin.org/download/bined-0.2.5.zip",
+        "sha256": "7c573862c7cca8082b894042a9c7a2c8d9e57106bccdf54d4b33db94cdc7488f"
+      }]
+    }
+  ]
+}

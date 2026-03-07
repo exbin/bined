@@ -408,7 +408,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
                     .addGroup(replacePanelLayout.createSequentialGroup()
                         .addComponent(replaceTypeButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(replaceComboBox, 0, 283, Short.MAX_VALUE)
+                        .addComponent(replaceComboBox, 0, 271, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(replaceMultilineButton))
                     .addComponent(replaceAllMatchesCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

@@ -63,7 +63,7 @@ public class CodeAreaSettingsComponent implements SettingsComponentProvider {
 
         List<String> charactersCases = new ArrayList<>();
         charactersCases.add(resourceBundle.getString("codeAreaCharactersCase.lower"));
-        charactersCases.add(resourceBundle.getString("codeAreaCharactersCase.higher"));
+        charactersCases.add(resourceBundle.getString("codeAreaCharactersCase.upper"));
         panel.setCharactersCases(charactersCases);
 
         return panel;

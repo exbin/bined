@@ -38,6 +38,23 @@
     <kudo>HiDpiIcon</kudo>
   </kudos>
   <releases>
+    <release date="2026-03-08" version="0.2.5">
+      <description>
+        <ul>
+          <li>Added sidebar support</li>
+          <li>Added sidebar support</li>
+          <li>Added tabs support for inspector panel</li> 
+          <li>Added copy as / paste from dialogs</li>
+          <li>Added copy/paste formats for C, Java and Python (by mengnankkkk)</li> 
+          <li>Added convert data: date time and compression (by mengnankkkk)</li>
+          <li>Added font zoom actions (by mengnankkkk)</li>
+          <li>Added startup behavior option - reopen lastly opened files (by mengnankkkk)</li> 
+          <li>Added search progress bar + cancel button (assisted by Tanyajain2006)</li>
+          <li>Added basic regex search support (assisted by Tanyajain2006)</li>
+          <li>Modified addon manager to use cart / basket</li>
+        </ul>
+      </description>
+    </release>
     <release date="2025-01-22" version="0.2.4">
       <description>
         <ul>
