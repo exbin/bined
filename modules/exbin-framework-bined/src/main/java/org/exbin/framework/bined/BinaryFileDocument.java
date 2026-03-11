@@ -242,6 +242,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                     componentPanel.setContentData(data);
                 }
             }
+
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            fileModule.notifyFileUsed(file.toURI(), null);
         } catch (IOException ex) {
             Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -302,6 +305,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                     this.documentSource = documentSource;
                 }
             }
+
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            fileModule.notifyFileUsed(file.toURI(), null);
             // TODO
             // Update title
         } catch (IOException ex) {

@@ -12,6 +12,7 @@
       <Properties>
         <Property name="maximum" type="int" value="1000"/>
         <Property name="name" type="java.lang.String" value="progressBar" noResource="true"/>
+        <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JToolBar" name="progressToolBar">

@@ -294,6 +294,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
      */
     public void setProgress(int progress) {
         progressBar.setValue(progress);
+        progressBar.setString(String.format(resourceBundle.getString("searchProgress"), ((float) progress) / 10));
         setStatusPanelMode(StatusPanelMode.PROGRESS);
     }
 
@@ -436,6 +437,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         progressBar.setMaximum(1000);
         progressBar.setName("progressBar"); // NOI18N
+        progressBar.setStringPainted(true);
 
         progressToolBar.setBorder(null);
         progressToolBar.setRollover(true);

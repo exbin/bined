@@ -219,6 +219,7 @@ public class BinedLauncherModule implements LauncherModule {
             settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(contextManagement));
             settingsManager.registerInferenceOptions(TextFontInference.class, new TextFontContextInference((contextManagement)));
             settingsManager.registerInferenceOptions(DataInspectorFontInference.class, new DataInspectorFontContextInference(contextManagement));
+            documentRecentModule.registerRecentFilesUpdate();
 
             fileModule.registerFileProviders();
             BinaryAppearanceOptions binaryAppearanceParameters = new BinaryAppearanceOptions(optionsStorage);
@@ -275,7 +276,7 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             dockingModule.registerToolBarFileHandlingActions();
-            documentRecentModule.registerRecenFilesMenuActions();
+            documentRecentModule.registerRecentFilesMenuActions();
 
             undoModule.registerMainMenu();
             undoModule.registerMainToolBar();
