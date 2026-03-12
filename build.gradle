@@ -201,8 +201,8 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                     }
                 }
 
-                into('dist/flathub') {
-                    from ('src/flathub') {
+                into('dist/flatpak') {
+                    from ('src/flatpak') {
                         include 'org.exbin.BinEd'
                         include 'org.exbin.BinEd.desktop'
                         include 'org.exbin.BinEd.svg'
