@@ -59,7 +59,6 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     public static final String ACTION_ID = "dragDropContentAction";
     public static final String HELP_ID = "drag-and-drop-content";
 
-    private DragDropContentPanel dragDropContentPanel = new DragDropContentPanel();
     private DialogParentComponent dialogParentComponent;
     private DocumentDocking documentDocking;
 
@@ -76,6 +75,7 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        DragDropContentPanel dragDropContentPanel = new DragDropContentPanel();
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         CloseControlPanel controlPanel = new CloseControlPanel();
         HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);

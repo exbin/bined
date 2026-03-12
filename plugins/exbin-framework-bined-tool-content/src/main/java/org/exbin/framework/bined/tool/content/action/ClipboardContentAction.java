@@ -58,7 +58,6 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     public static final String ACTION_ID = "clipboardContentAction";
     public static final String HELP_ID = "clipboard-content";
 
-    protected ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
     protected DialogParentComponent dialogParentComponent;
     protected DocumentDocking documentDocking;
 
@@ -76,9 +75,10 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     @Override
     public void actionPerformed(ActionEvent e) {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-        clipboardContentPanel.loadFromClipboard();
         ClipboardContentControlPanel controlPanel = new ClipboardContentControlPanel();
         controlPanel.setHelpLink(new HelpLink(HELP_ID));
+        ClipboardContentPanel clipboardContentPanel = new ClipboardContentPanel();
+        clipboardContentPanel.loadFromClipboard();
         final WindowHandler dialog = windowModule.createDialog(clipboardContentPanel, controlPanel);
         clipboardContentPanel.setController(new ClipboardContentPanel.Controller() {
             @Override

@@ -43,6 +43,7 @@ import org.exbin.framework.options.api.OptionsStorage;
 public class DiffToolbarPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle;
+    private final java.util.ResourceBundle viewerResourceBundle;
 
     private Controller controller;
 
@@ -57,6 +58,7 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
     public DiffToolbarPanel() {
         LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
         resourceBundle = languageModule.getBundle(org.exbin.framework.bined.BinedModule.class);
+        viewerResourceBundle = languageModule.getBundle(org.exbin.framework.bined.viewer.BinedViewerModule.class);
         codeTypeButtonGroup = new ButtonGroup();
         Action binaryCodeTypeAction = new AbstractAction() {
             @Override
@@ -65,8 +67,8 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
                 updateCycleButtonState();
             }
         };
-        binaryCodeTypeAction.putValue(Action.NAME, resourceBundle.getString("binaryCodeTypeAction.text"));
-        binaryCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("binaryCodeTypeAction.shortDescription"));
+        binaryCodeTypeAction.putValue(Action.NAME, viewerResourceBundle.getString("binaryCodeTypeAction.text"));
+        binaryCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, viewerResourceBundle.getString("binaryCodeTypeAction.shortDescription"));
         binaryCodeTypeMenuItem = new JRadioButtonMenuItem(binaryCodeTypeAction);
         codeTypeButtonGroup.add(binaryCodeTypeMenuItem);
         Action octalCodeTypeAction = new AbstractAction() {
@@ -76,8 +78,8 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
                 updateCycleButtonState();
             }
         };
-        octalCodeTypeAction.putValue(Action.NAME, resourceBundle.getString("octalCodeTypeAction.text"));
-        octalCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("octalCodeTypeAction.shortDescription"));
+        octalCodeTypeAction.putValue(Action.NAME, viewerResourceBundle.getString("octalCodeTypeAction.text"));
+        octalCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, viewerResourceBundle.getString("octalCodeTypeAction.shortDescription"));
         octalCodeTypeMenuItem = new JRadioButtonMenuItem(octalCodeTypeAction);
         codeTypeButtonGroup.add(octalCodeTypeMenuItem);
         Action decimalCodeTypeAction = new AbstractAction() {
@@ -87,8 +89,8 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
                 updateCycleButtonState();
             }
         };
-        decimalCodeTypeAction.putValue(Action.NAME, resourceBundle.getString("decimalCodeTypeAction.text"));
-        decimalCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("decimalCodeTypeAction.shortDescription"));
+        decimalCodeTypeAction.putValue(Action.NAME, viewerResourceBundle.getString("decimalCodeTypeAction.text"));
+        decimalCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, viewerResourceBundle.getString("decimalCodeTypeAction.shortDescription"));
         decimalCodeTypeMenuItem = new JRadioButtonMenuItem(decimalCodeTypeAction);
         codeTypeButtonGroup.add(decimalCodeTypeMenuItem);
         Action hexadecimalCodeTypeAction = new AbstractAction() {
@@ -98,8 +100,8 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
                 updateCycleButtonState();
             }
         };
-        hexadecimalCodeTypeAction.putValue(Action.NAME, resourceBundle.getString("hexadecimalCodeTypeAction.text"));
-        hexadecimalCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexadecimalCodeTypeAction.shortDescription"));
+        hexadecimalCodeTypeAction.putValue(Action.NAME, viewerResourceBundle.getString("hexadecimalCodeTypeAction.text"));
+        hexadecimalCodeTypeAction.putValue(Action.SHORT_DESCRIPTION, viewerResourceBundle.getString("hexadecimalCodeTypeAction.shortDescription"));
         hexadecimalCodeTypeMenuItem = new JRadioButtonMenuItem(hexadecimalCodeTypeAction);
         codeTypeButtonGroup.add(hexadecimalCodeTypeMenuItem);
         cycleCodeTypesAction = new AbstractAction() {
@@ -118,7 +120,7 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
     }
 
     private void init() {
-        cycleCodeTypesAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("cycleCodeTypesAction.shortDescription"));
+        cycleCodeTypesAction.putValue(Action.SHORT_DESCRIPTION, viewerResourceBundle.getString("cycleCodeTypesAction.shortDescription"));
         JPopupMenu cycleCodeTypesPopupMenu = new JPopupMenu();
         cycleCodeTypesPopupMenu.add(binaryCodeTypeMenuItem);
         cycleCodeTypesPopupMenu.add(octalCodeTypeMenuItem);

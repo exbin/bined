@@ -116,7 +116,7 @@ public class BinedModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private final BinEdFileManager fileManager = new BinEdFileManager();
+    private BinEdFileManager fileManager = null;
 
     private ShowNonprintablesActions showNonprintablesActions;
     private ClipboardCodeActions clipboardCodeActions;
@@ -285,6 +285,7 @@ public class BinedModule implements Module {
             @Nonnull
             private BinaryFileDocument createBinaryDocument() {
                 BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
+                getFileManager();
                 fileManager.initDataComponent(binaryFileDocument.getDataComponent());
                 fileManager.initCommandHandler(binaryFileDocument.getDataComponent());
                 OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
@@ -393,7 +394,7 @@ public class BinedModule implements Module {
 //        }
 
         // TODO Rework to use different approach than extension
-        fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
+        getFileManager().addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull
             @Override
             public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
@@ -412,6 +413,9 @@ public class BinedModule implements Module {
 
     @Nonnull
     public BinEdFileManager getFileManager() {
+        if (fileManager == null) {
+            fileManager = new BinEdFileManager();
+        }
         return fileManager;
     }
 
@@ -574,7 +578,7 @@ public class BinedModule implements Module {
     }
 
     public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
-        fileManager.setCommandHandlerProvider(commandHandlerProvider);
+        getFileManager().setCommandHandlerProvider(commandHandlerProvider);
     }
 
     public enum PopupMenuVariant {
