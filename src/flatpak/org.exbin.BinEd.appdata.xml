@@ -42,7 +42,6 @@
       <description>
         <ul>
           <li>Added sidebar support</li>
-          <li>Added sidebar support</li>
           <li>Added tabs support for inspector panel</li> 
           <li>Added copy as / paste from dialogs</li>
           <li>Added copy/paste formats for C, Java and Python (by mengnankkkk)</li> 
