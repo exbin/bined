@@ -50,7 +50,6 @@ import org.exbin.framework.menu.api.MenuDefinitionManagement;
 import org.exbin.framework.bined.BinaryDataComponent;
 import org.exbin.framework.bined.BinaryFileDocument;
 import org.exbin.framework.bined.BinedModule;
-import org.exbin.framework.bined.gui.BinEdComponentPanel;
 import org.exbin.framework.bined.macro.action.AddMacroAction;
 import org.exbin.framework.bined.macro.action.EditMacroAction;
 import org.exbin.framework.bined.macro.action.ManageMacrosAction;

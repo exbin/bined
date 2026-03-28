@@ -62,7 +62,6 @@ import org.exbin.framework.bined.search.BinedSearchModule;
 import org.exbin.framework.bined.theme.BinedThemeModule;
 import org.exbin.framework.bined.viewer.BinedViewerModule;
 import org.exbin.framework.context.api.ActiveContextManagement;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.context.api.ContextModuleApi;
 import org.exbin.framework.docking.api.DockingModuleApi;
 import org.exbin.framework.docking.api.DocumentDocking;

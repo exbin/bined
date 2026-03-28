@@ -93,7 +93,7 @@ public class BinaryStatus {
         binaryStatusPanel.setController(binaryStatusController);
     }
 
-    @Nonnull
+    @Nullable
     public BinaryStatusPanel getBinaryStatusPanel() {
         return binaryStatusPanel;
     }

@@ -42,7 +42,9 @@ public class CodeAreaStatusSettingsApplier implements SettingsApplier {
 
         CodeAreaStatusOptions options = settingsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         BinaryStatusPanel binaryStatusPanel = ((BinaryStatus) instance).getBinaryStatusPanel();
-        binaryStatusPanel.loadFromOptions(options);
+        if (binaryStatusPanel != null) {
+            binaryStatusPanel.loadFromOptions(options);
+        }
         // TODO binaryStatusPanel.setStatusOptions(options);
     }
 }

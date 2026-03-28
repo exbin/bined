@@ -69,12 +69,17 @@ import org.exbin.framework.text.font.ContextFont;
 @ParametersAreNonnullByDefault
 public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {
 
-    protected final BinEdDataComponent dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
+    protected final BinEdDataComponent dataComponent;
     protected DocumentSource documentSource = null;
     private long documentOriginalSize;
     private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
 
     public BinaryFileDocument() {
+        dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
+    }
+    
+    public BinaryFileDocument(BinEdDataComponent dataComponent) {
+        this.dataComponent = dataComponent;
     }
 
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {

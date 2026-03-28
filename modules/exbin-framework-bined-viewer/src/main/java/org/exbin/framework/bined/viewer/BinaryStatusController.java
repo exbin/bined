@@ -40,9 +40,9 @@ public class BinaryStatusController implements BinaryStatusPanel.Controller, Bin
     protected final BinaryStatus binaryStatus;
     protected final EncodingsManager encodingsManager;
 
-    public BinaryStatusController(BinaryStatus binaryStatus, EncodingsManager encodingsHandler) {
+    public BinaryStatusController(BinaryStatus binaryStatus, EncodingsManager encodingsManager) {
         this.binaryStatus = binaryStatus;
-        this.encodingsManager = encodingsHandler;
+        this.encodingsManager = encodingsManager;
     }
 
     @Override
