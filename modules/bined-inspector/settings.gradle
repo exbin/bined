@@ -1,0 +1,9 @@
+rootProject.name = 'bined-inspector'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-component'
+    include ':modules:bined-viewer'
+    include ':modules:bined-search'
+}
+
+apply from: '../bined-modules-settings.gradle'

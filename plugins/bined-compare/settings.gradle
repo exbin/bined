@@ -1,0 +1,10 @@
+rootProject.name = 'bined-compare'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-component'
+    include ':modules:bined-viewer'
+    include ':modules:bined-editor'
+    include ':modules:bined-theme'
+}
+
+apply from: '../bined-plugins-settings.gradle'

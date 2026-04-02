@@ -1,0 +1,6 @@
+rootProject.name = 'bined-component'
+
+if (rootProject.path == ':') {
+}
+
+apply from: '../bined-modules-settings.gradle'

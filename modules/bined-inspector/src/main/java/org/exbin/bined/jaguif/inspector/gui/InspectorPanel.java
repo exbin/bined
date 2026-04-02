@@ -1,0 +1,232 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.bined.jaguif.inspector.gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JComponent;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.App;
+import org.exbin.bined.jaguif.inspector.BasicValuesInspectorProvider;
+import org.exbin.bined.jaguif.inspector.BinEdInspector;
+import org.exbin.bined.jaguif.inspector.BinEdInspectorProvider;
+import org.exbin.bined.jaguif.inspector.settings.gui.InspectorRecord;
+
+/**
+ * BinEd inspector right side panel.
+ *
+ * @author ExBin Project (https://exbin.org)
+ */
+@ParametersAreNonnullByDefault
+public class InspectorPanel extends javax.swing.JPanel {
+
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorPanel.class);
+    protected SectCodeArea codeArea;
+    protected BinaryDataUndoRedo undoRedo;
+    protected Map<String, BinEdInspectorProvider> inspectorProviders = new HashMap<>();
+    protected List<BinEdInspector> inspectors = new ArrayList<>();
+    protected BinEdInspector currentInspector = null;
+    protected JComponent currentComponent = null;
+    protected Controller controller;
+
+    public InspectorPanel() {
+        initComponents();
+        init();
+    }
+
+    private void init() {
+        Dimension dimension = new java.awt.Dimension(250, 10);
+        setMinimumSize(dimension);
+        setPreferredSize(dimension);
+    }
+    
+    public void setInspectorProviders(List<BinEdInspectorProvider> inspectorProviders) {
+        this.inspectorProviders.clear();
+        inspectors.clear();
+        inspectorComboBox.removeAllItems();
+        if (inspectorProviders.size() > 1) {
+            int initialIndex = 0;
+            for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
+                String inspectorId = inspectorProvider.getId();
+                this.inspectorProviders.put(inspectorId, inspectorProvider);
+                inspectors.add(inspectorProvider.createInspector());
+                inspectorComboBox.addItem(inspectorProvider.getName());
+                if (BasicValuesInspectorProvider.INSPECTOR_ID.equals(inspectorId)) {
+                    // TODO Read it from settings
+                    initialIndex = inspectorProviders.size() - 1;
+                }
+            }
+            inspectorComboBox.setSelectedIndex(initialIndex);
+            add(controlPanel, BorderLayout.NORTH);
+            inspectorComboBox.addItemListener((ItemEvent e) -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    pageChanged(inspectorComboBox.getSelectedIndex());
+                }
+            });
+            pageChanged(inspectorComboBox.getSelectedIndex());
+        } else if (inspectorProviders.size() == 1) {
+            inspectors.add(inspectorProviders.get(0).createInspector());
+            pageChanged(0);
+        }
+    }
+
+    public void setInspectorRecords(List<InspectorRecord> inspectorRecords) {
+        remove(controlPanel);
+        inspectors.clear();
+        inspectorComboBox.removeAllItems();
+        for (InspectorRecord inspectorRecord : inspectorRecords) {
+            if (inspectorRecord.isShown()) {
+                BinEdInspectorProvider inspectorProvider = inspectorProviders.get(inspectorRecord.getId());
+                inspectors.add(inspectorProvider.createInspector());
+                inspectorComboBox.addItem(inspectorProvider.getName());
+            }
+        }
+        if (inspectorProviders.size() > 1) {
+            add(controlPanel, BorderLayout.NORTH);
+            int selectedIndex = inspectorComboBox.getSelectedIndex();
+            if (selectedIndex >= 0) {
+                selectedIndex = 0;
+            }
+            pageChanged(selectedIndex);
+        } else {
+            pageChanged(0);
+        }
+    }
+
+    
+    private void pageChanged(int inspectorIndex) {
+        if (currentComponent != null) {
+            remove(currentComponent);
+            currentComponent = null;
+        }
+        if (currentInspector != null) {
+            if (codeArea != null) {
+                currentInspector.deactivateSync();
+            }
+            currentInspector = null;
+        }
+        if (!inspectors.isEmpty()) {
+            currentInspector = inspectors.get(inspectorIndex);
+            currentComponent = currentInspector.getComponent();
+            add(currentComponent, BorderLayout.CENTER);
+            if (codeArea != null) {
+                currentInspector.setCodeArea(codeArea, undoRedo);
+                currentInspector.activateSync();
+            }
+        }
+        revalidate();
+        repaint();
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public void setCodeArea(SectCodeArea codeArea, @Nullable BinaryDataUndoRedo undoRedo) {
+        this.codeArea = codeArea;
+        this.undoRedo = undoRedo;
+
+        if (currentInspector != null) {
+            currentInspector.setCodeArea(codeArea, undoRedo);
+            currentInspector.activateSync();
+        }
+    }
+
+    public void activateSync() {
+        if (currentInspector != null) {
+            currentInspector.activateSync();
+        }
+    }
+
+    public void deactivateSync() {
+        if (currentInspector != null) {
+            currentInspector.deactivateSync();
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        controlPanel = new javax.swing.JPanel();
+        inspectorComboBox = new javax.swing.JComboBox<>();
+        controlButton = new javax.swing.JButton();
+
+        controlButton.setText(resourceBundle.getString("controlButton.text")); // NOI18N
+        controlButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                controlButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
+        controlPanel.setLayout(controlPanelLayout);
+        controlPanelLayout.setHorizontalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createSequentialGroup()
+                .addComponent(inspectorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(controlButton))
+        );
+        controlPanelLayout.setVerticalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(inspectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(controlButton))
+        );
+
+        setLayout(new java.awt.BorderLayout());
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void controlButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controlButtonActionPerformed
+        controller.invokeSettings();
+    }//GEN-LAST:event_controlButtonActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton controlButton;
+    private javax.swing.JPanel controlPanel;
+    private javax.swing.JComboBox<String> inspectorComboBox;
+    // End of variables declaration//GEN-END:variables
+
+    @Nullable
+    public <T extends BinEdInspector> T getInspector(Class<T> clazz) {
+        for (BinEdInspector inspector : inspectors) {
+            if (clazz.isInstance(inspector)) {
+                return clazz.cast(inspector);
+            }
+        }
+        return null;
+    }
+
+    public interface Controller {
+
+        void invokeSettings();
+    }
+}

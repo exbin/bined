@@ -19,10 +19,10 @@ import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.App;
-import org.exbin.framework.addon.AddonApplication;
-import org.exbin.framework.basic.BasicApplication;
-import org.exbin.framework.basic.BasicModuleFileLocation;
+import org.exbin.jaguif.App;
+import org.exbin.jaguif.addon.AddonApplication;
+import org.exbin.jaguif.basic.BasicApplication;
+import org.exbin.jaguif.basic.BasicModuleFileLocation;
 
 /**
  * The main class of the BinEd Binary / Hex Editor application.
@@ -55,7 +55,7 @@ public class BinedEditorApp {
             app.addModulesFromManifest(BinedEditorApp.class);
             app.initModules();
 
-            App.launch("org.exbin.framework.bined.launcher.BinedLauncherModule", args);
+            App.launch("org.exbin.bined.jaguif.launcher.BinedLauncherModule", args);
         });
     }
 }

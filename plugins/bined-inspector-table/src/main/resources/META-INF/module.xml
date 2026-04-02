@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.bined.jaguif.inspector.table.BinedInspectorTableModule</plugin>
+  <name>BinEd Table Inspector Module</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Data inspector presenting data as configurable table</description>
+  <dependency>
+    <module id="org.exbin.bined.jaguif.inspector.BinedInspectorModule" />
+  </dependency>
+</module>

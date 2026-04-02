@@ -13,9 +13,9 @@ ext.depsBined = [
     version      : version
 ]
 
-ext.depsExbinFrameworkJava = [
+ext.depsJaguif = [
     githubProfile: 'exbin',
-    githubRepo: 'exbin-framework-java',
+    githubRepo: 'jaguif',
     version: '0.3.0-SNAPSHOT'
 ]
 

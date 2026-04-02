@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.bined.jaguif.inspector.pixelmap.BinedInspectorPixelMapModule</plugin>
+  <name>BinEd Pixel Map Inspector Module</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Data inspector presenting data as pixel map</description>
+  <dependency>
+    <module id="org.exbin.bined.jaguif.inspector.BinedInspectorModule" />
+    <module id="org.exbin.jaguif.options.api.OptionsModuleApi" />
+  </dependency>
+</module>

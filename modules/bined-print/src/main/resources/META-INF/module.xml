@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.bined.jaguif.print.BinedPrintModule</id>
+  <name>BinEd Print Module</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Module supporting editation of binary document in hexadecimal form</description>
+  <dependency>
+    <module id="org.exbin.jaguif.ui.api.UiModuleApi" />
+    <module id="org.exbin.jaguif.frame.api.FrameModuleApi" />
+    <module id="org.exbin.jaguif.window.api.WindowModuleApi" />
+    <module id="org.exbin.jaguif.docking.api.DockingModuleApi" />
+    <module id="org.exbin.jaguif.file.api.FileModuleApi" />
+    <module id="org.exbin.jaguif.action.api.ActionModuleApi" />
+    <module id="org.exbin.jaguif.menu.api.MenuModuleApi" />
+    <module id="org.exbin.jaguif.operation.api.OperationModuleApi" />
+    <module id="org.exbin.jaguif.operation.undo.api.OperationUndoModuleApi" />
+    <module id="org.exbin.jaguif.options.api.OptionsModuleApi" />
+    <module id="org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi" />
+    <module id="org.exbin.jaguif.options.api.OptionsModuleApi" />
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+    <module id="org.exbin.jaguif.utils.UtilsModule" />
+    <module id="org.exbin.jaguif.text.font.TextFontModule" />
+    <module id="org.exbin.jaguif.text.encoding.TextEncodingModule" />
+  </dependency>
+</module>

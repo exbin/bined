@@ -1,6 +1,0 @@
-rootProject.name = 'exbin-framework-bined'
-
-if (rootProject.path == ':') {
-}
-
-apply from: '../bined-modules-settings.gradle'

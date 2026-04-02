@@ -1,0 +1,383 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.bined.jaguif;
+
+import java.awt.Component;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.auxiliary.binary_data.EmptyBinaryData;
+import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
+import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
+import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
+import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
+import org.exbin.auxiliary.binary_data.paged.PagedData;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.jaguif.App;
+import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.action.api.DialogParentComponent;
+import org.exbin.bined.jaguif.gui.BinEdComponentPanel;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextActivable;
+import org.exbin.jaguif.document.api.ComponentDocument;
+import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.document.api.DocumentSource;
+import org.exbin.jaguif.document.api.EditableDocument;
+import org.exbin.jaguif.document.api.MemoryDocumentSource;
+import org.exbin.jaguif.document.api.StreamDocumentSource;
+import org.exbin.jaguif.file.api.ContextFileDialogs;
+import org.exbin.jaguif.file.api.FileDocument;
+import org.exbin.jaguif.file.api.FileDocumentSource;
+import org.exbin.jaguif.file.api.FileModuleApi;
+import org.exbin.jaguif.operation.undo.api.ContextUndoRedo;
+import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
+import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.text.encoding.ContextEncoding;
+import org.exbin.jaguif.text.font.ContextFont;
+
+/**
+ * BinEd binary document.
+ *
+ * @author ExBin Project (https://exbin.org)
+ */
+@ParametersAreNonnullByDefault
+public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {
+
+    protected final BinEdDataComponent dataComponent;
+    protected DocumentSource documentSource = null;
+    private long documentOriginalSize;
+    private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
+
+    public BinaryFileDocument() {
+        dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
+    }
+    
+    public BinaryFileDocument(BinEdDataComponent dataComponent) {
+        this.dataComponent = dataComponent;
+    }
+
+    public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
+        // TODO: Call post init after adding extensions - rework later
+        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
+        settingsManager.applyContextOptions(ContextDocument.class, this, settingsOptionsProvider);
+        settingsManager.applyContextOptions(ContextFileDialogs.class, new ContextFileDialogs() {}, settingsOptionsProvider);
+        dataComponent.applySettings(settingsOptionsProvider);
+    }
+
+    public void setInitialFileProcessing(FileProcessingMode initialFileProcessing) {
+        this.initialFileProcessing = initialFileProcessing;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<URI> getFileUri() {
+        if (!(documentSource instanceof FileDocumentSource)) {
+            return Optional.empty();
+        }
+        return Optional.of(((FileDocumentSource) documentSource).getFile().toURI());
+    }
+
+    @Nonnull
+    @Override
+    public String getDocumentName() {
+        if (documentSource instanceof FileDocumentSource) {
+            return ((FileDocumentSource) documentSource).getFile().getName();
+        }
+        
+        if (documentSource instanceof StreamDocumentSource) {
+            return ((StreamDocumentSource) documentSource).getDocumentTitle();
+        }
+        
+        if (documentSource instanceof MemoryDocumentSource) {
+            return ((MemoryDocumentSource) documentSource).getDocumentTitle();
+        }
+
+        return "";
+    }
+
+    @Nonnull
+    @Override
+    public BinaryData getBinaryData() {
+        return dataComponent.getCodeArea().getContentData();
+    }
+
+    @Nonnull
+    @Override
+    public BinEdComponentPanel getComponent() {
+        return (BinEdComponentPanel) dataComponent.getComponent();
+    }
+
+    @Nonnull
+    @Override
+    public Optional<DocumentSource> getDocumentSource() {
+        return Optional.ofNullable(documentSource);
+    }
+
+    @Nonnull
+    public BinEdDataComponent getDataComponent() {
+        return dataComponent;
+    }
+
+    @Nonnull
+    public CodeAreaCore getCodeArea() {
+        return dataComponent.getCodeArea();
+    }
+
+    @Nonnull
+    public Optional<BinaryDataUndoRedo> getUndoHandler() {
+        return dataComponent.getUndoRedo();
+    }
+
+    public void setUndoHandler(BinaryDataUndoRedo undoHandler) {
+        dataComponent.setUndoRedo(undoHandler);
+    }
+
+    @Nonnull
+    public BinaryData getContentData() {
+        CodeAreaCore codeArea = dataComponent.getCodeArea();
+        return codeArea.getContentData();
+    }
+
+    public void setContentData(BinaryData data) {
+        CodeAreaCore codeArea = dataComponent.getCodeArea();
+        codeArea.setContentData(data);
+    }
+
+    public void reloadFile() {
+        if (documentSource != null) {
+            loadFrom(documentSource);
+        }
+    }
+
+    @Override
+    public void loadFrom(DocumentSource documentSource) {
+        this.documentSource = documentSource;
+        loadContent(initialFileProcessing);
+    }
+
+    public void loadContent(FileProcessingMode fileProcessingMode) {
+        if (documentSource instanceof MemoryDocumentSource) {
+            return;
+        }
+
+        if (documentSource instanceof StreamDocumentSource) {
+            InputStream stream = ((StreamDocumentSource) documentSource).openInputStream();
+            try {
+                BinEdComponentPanel componentPanel = getComponent();
+                BinaryData oldData = componentPanel.getContentData();
+                BinaryData data = oldData;
+                if (!(data instanceof PagedData)) {
+                    data = new ByteArrayPagedData();
+                    oldData.dispose();
+                }
+                ((EditableBinaryData) data).loadFromStream(stream);
+                componentPanel.setContentData(data);
+
+                fileSync();
+            } catch (IOException ex) {
+                Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    stream.close();
+                } catch (IOException ex) {
+                    // ignore
+                }
+            }
+            return;
+        }
+
+        if (!(documentSource instanceof FileDocumentSource)) {
+            throw new UnsupportedOperationException();
+        }
+
+        try {
+            BinEdComponentPanel componentPanel = getComponent();
+            File file = ((FileDocumentSource) documentSource).getFile();
+
+            if (!file.isFile()) {
+                FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+                fileModule.showFileNotFound(componentPanel, file.getAbsolutePath());
+                return;
+            }
+
+            BinaryData oldData = componentPanel.getContentData();
+            if (fileProcessingMode == FileProcessingMode.DELTA) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
+                FileDataSource openFileSource = new FileDataSource(file);
+                segmentsRepository.addDataSource(openFileSource);
+                DeltaDocument document = segmentsRepository.createDocument(openFileSource);
+                componentPanel.setContentData(document);
+                oldData.dispose();
+            } else {
+                try (FileInputStream fileStream = new FileInputStream(file)) {
+                    BinaryData data = oldData;
+                    if (!(data instanceof PagedData)) {
+                        data = new ByteArrayPagedData();
+                        oldData.dispose();
+                    }
+                    ((EditableBinaryData) data).loadFromStream(fileStream);
+                    componentPanel.setContentData(data);
+                }
+            }
+
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            fileModule.notifyFileUsed(file.toURI(), null);
+        } catch (IOException ex) {
+            Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        fileSync();
+    }
+
+    @Override
+    public boolean isModified() {
+        Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
+        if (optUndoRedo.isPresent()) {
+            return optUndoRedo.get().isModified();
+        }
+
+        return true;
+    }
+
+    @Override
+    public void clearFile() {
+        // TODO
+    }
+
+    @Override
+    public boolean canSave() {
+        return true;
+    }
+
+    @Override
+    public void saveTo(DocumentSource documentSource) {
+        if (!(documentSource instanceof FileDocumentSource)) {
+            throw new UnsupportedOperationException();
+        }
+
+        File file = ((FileDocumentSource) documentSource).getFile();
+        try {
+            BinEdComponentPanel componentPanel = getComponent();
+            BinaryData contentData = componentPanel.getContentData();
+            if (contentData instanceof EmptyBinaryData) {
+                clearFile();
+                contentData = componentPanel.getContentData();
+            }
+            if (contentData instanceof DeltaDocument) {
+                BinedModule binedModule = App.getModule(BinedModule.class);
+                SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
+                // TODO freezes window / replace with progress bar
+                DeltaDocument document = (DeltaDocument) contentData;
+                FileDataSource fileSource = (FileDataSource) document.getDataSource();
+                if (fileSource == null || !file.equals(fileSource.getFile())) {
+                    fileSource = new FileDataSource(file);
+                    segmentsRepository.addDataSource(fileSource);
+                    document.setDataSource(fileSource);
+                }
+                segmentsRepository.saveDocument(document);
+                this.documentSource = documentSource;
+            } else {
+                try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                    Objects.requireNonNull(contentData).saveToStream(outputStream);
+                    this.documentSource = documentSource;
+                }
+            }
+
+            FileModuleApi fileModule = App.getModule(FileModuleApi.class);
+            fileModule.notifyFileUsed(file.toURI(), null);
+            // TODO
+            // Update title
+        } catch (IOException ex) {
+            Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        fileSync();
+    }
+
+    public void fileSync() {
+        documentOriginalSize = getCodeArea().getDataSize();
+        Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
+        if (optUndoRedo.isPresent()) {
+            optUndoRedo.get().setSyncPosition();
+        }
+    }
+
+    public long getDocumentOriginalSize() {
+        return documentOriginalSize;
+    }
+
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
+        return dataComponent.getComponentExtension(clazz);
+    }
+
+    @Override
+    public void notifyActivated(ActiveContextManagement contextManager) {
+        contextManager.changeActiveState(ContextFont.class, dataComponent);
+        contextManager.changeActiveState(ContextEncoding.class, dataComponent);
+        // TODO contextManager.changeActiveState(UndoRedoState.class, );
+        contextManager.changeActiveState(ContextComponent.class, dataComponent);
+        contextManager.changeActiveState(ContextUndoRedo.class, dataComponent);
+        contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
+            @Nonnull
+            @Override
+            public Component getComponent() {
+                return dataComponent.getCodeArea();
+            }
+        });
+    }
+
+    @Override
+    public void notifyDeactivated(ActiveContextManagement contextManager) {
+        contextManager.changeActiveState(ContextFont.class, null);
+        contextManager.changeActiveState(ContextEncoding.class, null);
+        contextManager.changeActiveState(ContextUndoRedo.class, null);
+        contextManager.changeActiveState(ContextComponent.class, null);
+        contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
+            @Nonnull
+            @Override
+            public Component getComponent() {
+                return dataComponent.getCodeArea();
+            }
+        });
+    }
+
+    @Nonnull
+    public FileProcessingMode getFileProcessingMode() {
+        BinaryData contentData = getContentData();
+        if (contentData instanceof DeltaDocument) {
+            return FileProcessingMode.DELTA;
+        }
+
+        return FileProcessingMode.MEMORY;
+    }
+}

@@ -1,0 +1,9 @@
+rootProject.name = 'bined-bookmarks'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-component'
+    include ':modules:bined-search'
+    include ':modules:bined-theme'
+}
+
+apply from: '../bined-plugins-settings.gradle'

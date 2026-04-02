@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.bined.jaguif.operation.bouncycastle.BinedOperationBouncycastleModule</plugin>
+  <name>BinEd Bouncycastle Support</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://bined.exbin.org</homepage>
+  <description>Support for data conversions using Bouncy Castle cryptographic library</description>
+  <dependency>
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+    <module id="org.exbin.jaguif.utils.UtilsModule" />
+    <module id="org.exbin.jaguif.ui.api.UiModuleApi" />
+    <module id="org.exbin.bined.jaguif.BinedModule" />
+    <module id="org.exbin.bined.jaguif.operation.BinedOperationModule" />
+    <library maven="org.bouncycastle:bcprov-jdk18on:1.80" />
+  </dependency>
+</module>

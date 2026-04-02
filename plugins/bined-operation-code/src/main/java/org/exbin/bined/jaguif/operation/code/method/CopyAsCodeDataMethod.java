@@ -1,0 +1,178 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.bined.jaguif.operation.code.method;
+
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.util.Arrays;
+import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.SwingUtilities;
+import org.exbin.auxiliary.binary_data.BinaryData;
+import org.exbin.auxiliary.binary_data.EditableBinaryData;
+import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
+import org.exbin.bined.SelectionRange;
+import org.exbin.bined.capability.SelectionCapable;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.jaguif.App;
+import org.exbin.bined.jaguif.operation.api.CopyAsDataMethod;
+import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.bined.jaguif.operation.api.PreviewDataHandler;
+import org.exbin.bined.jaguif.operation.code.CodeExportFormat;
+import org.exbin.bined.jaguif.operation.code.CodeExportOptions;
+import org.exbin.bined.jaguif.operation.code.format.CHexArrayFormat;
+import org.exbin.bined.jaguif.operation.code.format.JavaByteArrayFormat;
+import org.exbin.bined.jaguif.operation.code.format.PythonBytesFormat;
+import org.exbin.bined.jaguif.operation.code.method.gui.CopyAsCodePanel;
+import org.exbin.bined.jaguif.operation.gui.TextPreviewPanel;
+
+/**
+ * Copy binary data as programming language code method.
+ *
+ * @author ExBin Project (https://exbin.org)
+ */
+@ParametersAreNonnullByDefault
+public class CopyAsCodeDataMethod implements CopyAsDataMethod {
+
+    private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CopyAsCodePanel.class);
+
+    private final List<CodeExportFormat> exportFormats;
+    private long previewLengthLimit = 128;
+    private PreviewDataHandler previewDataHandler;
+    private TextPreviewPanel previewPanel;
+
+    public CopyAsCodeDataMethod() {
+        // Initialize available export formats
+        exportFormats = Arrays.asList(
+                new JavaByteArrayFormat(),
+                new PythonBytesFormat(),
+                new CHexArrayFormat()
+        );
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return resourceBundle.getString("method.name");
+    }
+
+    @Nonnull
+    @Override
+    public Component createComponent() {
+        final CopyAsCodePanel copyAsCodePanel = new CopyAsCodePanel();
+        copyAsCodePanel.setExportFormats(exportFormats);
+        return copyAsCodePanel;
+    }
+
+    @Override
+    public void initFocus(Component component) {
+        // ((CopyAsCodePanel) component).initFocus();
+    }
+
+    @Override
+    public void performCopy(Component component, CodeAreaCore codeArea) {
+        CopyAsCodePanel panel = (CopyAsCodePanel) component;
+        BinaryData binaryData;
+        SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+        if (!selection.isEmpty()) {
+            long position = selection.getFirst();
+            long length = selection.getLength();
+            binaryData = new ByteArrayEditableData();
+            ((ByteArrayEditableData) binaryData).insert(0, codeArea.getContentData().copy(position, length));
+        } else {
+            binaryData = codeArea.getContentData();
+        }
+
+        String resultText;
+        ResultData resultData = generateData(binaryData, panel.getSelectedFormat(), panel.getCurrentOptions());
+        if (resultData.errorText.isEmpty()) {
+            resultText = resultData.errorText;
+        } else {
+            resultText = resultData.resultText;
+        }
+        StringSelection stringSelection = new StringSelection(resultText);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+
+    @Override
+    public void requestPreview(PreviewDataHandler previewDataHandler, Component component, CodeAreaCore codeArea, long lengthLimit) {
+        this.previewDataHandler = previewDataHandler;
+        this.previewLengthLimit = lengthLimit;
+        CopyAsCodePanel panel = (CopyAsCodePanel) component;
+        panel.setParamChangeListener(() -> {
+            fillPreviewData(panel, codeArea);
+        });
+        fillPreviewData(panel, codeArea);
+    }
+
+    private void fillPreviewData(CopyAsCodePanel panel, CodeAreaCore codeArea) {
+        previewPanel = new TextPreviewPanel();
+        previewDataHandler.setPreviewComponent(previewPanel);
+        SwingUtilities.invokeLater(() -> {
+            EditableBinaryData previewBinaryData = new ByteArrayEditableData();
+            previewBinaryData.clear();
+            long position;
+            long length;
+            SelectionRange selection = ((SelectionCapable) codeArea).getSelection();
+            if (selection.isEmpty()) {
+                position = 0;
+                length = codeArea.getDataSize();
+            } else {
+                position = selection.getFirst();
+                length = selection.getLength();
+            }
+
+            if (length > previewLengthLimit) {
+                length = previewLengthLimit;
+            }
+
+            previewBinaryData.insert(0, codeArea.getContentData().copy(position, length));
+            ResultData resultData = generateData(previewBinaryData, panel.getSelectedFormat(), panel.getCurrentOptions());
+            if (resultData.errorText.isEmpty()) {
+                previewPanel.setPreviewText(resultData.resultText);
+            } else {
+                previewPanel.setErrorMessage(resultData.errorText);
+            }
+        });
+    }
+
+    @Nonnull
+    protected ResultData generateData(BinaryData sourceData, @Nullable CodeExportFormat format, CodeExportOptions options) {
+        ResultData resultData = new ResultData();
+        if (format == null) {
+            resultData.errorText = "No format selected";
+            return resultData;
+        }
+
+        try {
+            resultData.resultText = format.generateCode(sourceData, options);
+        } catch (Exception ex) {
+            resultData.errorText = "Error generating code: " + ex.getMessage();
+        }
+        return resultData;
+    }
+
+    protected static class ResultData {
+
+        String resultText;
+        String errorText = "";
+    }
+}

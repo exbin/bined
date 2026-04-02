@@ -1,0 +1,275 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.bined.jaguif.action;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.swing.section.SectCodeArea;
+import org.exbin.jaguif.App;
+import org.exbin.jaguif.action.api.ActionContextChange;
+import org.exbin.jaguif.action.api.ActionConsts;
+import org.exbin.jaguif.action.api.ActionModuleApi;
+import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.bined.jaguif.BinaryDataComponent;
+import org.exbin.bined.jaguif.settings.FontSizeOptions;
+import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.utils.ActionUtils;
+
+/**
+ * View font actions.
+ */
+@ParametersAreNonnullByDefault
+public class ViewFontActions {
+
+    public static final String ZOOM_IN_ACTION_ID = "zoomInAction";
+    public static final String ZOOM_OUT_ACTION_ID = "zoomOutAction";
+    public static final String RESET_FONT_SIZE_ACTION_ID = "resetFontSizeAction";
+
+    private ResourceBundle resourceBundle;
+    private FontSizeOptions fontSizeOptions;
+
+    public ViewFontActions() {
+    }
+
+    public void setup(ResourceBundle resourceBundle, FontSizeOptions fontSizeOptions) {
+        this.resourceBundle = resourceBundle;
+        this.fontSizeOptions = fontSizeOptions;
+    }
+
+    @Nonnull
+    public ZoomInAction createZoomInAction() {
+        ZoomInAction zoomInAction = new ZoomInAction();
+        zoomInAction.setup(resourceBundle);
+        zoomInAction.setFontSizeOptions(fontSizeOptions);
+        return zoomInAction;
+    }
+
+    @Nonnull
+    public ZoomOutAction createZoomOutAction() {
+        ZoomOutAction zoomOutAction = new ZoomOutAction();
+        zoomOutAction.setup(resourceBundle);
+        zoomOutAction.setFontSizeOptions(fontSizeOptions);
+        return zoomOutAction;
+    }
+
+    @Nonnull
+    public ResetFontSizeAction createResetFontSizeAction() {
+        ResetFontSizeAction resetFontSizeAction = new ResetFontSizeAction();
+        resetFontSizeAction.setup(resourceBundle);
+        resetFontSizeAction.setFontSizeOptions(fontSizeOptions);
+        return resetFontSizeAction;
+    }
+
+    public void registerComponentActions(CodeAreaCore component) {
+        /* ActionMap actionMap = component.getActionMap();
+        InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        int metaMask = ActionUtils.getMetaMask();
+
+        String fontZoomInKey = "font-zoom-in";
+        actionMap.put(fontZoomInKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ZoomInAction zoomInAction = createZoomInAction();
+                zoomInAction.codeArea = component;
+                zoomInAction.setFontSizeOptions(fontSizeOptions);
+                zoomInAction.actionPerformed(e);
+            }
+        });
+        inputMap.put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, metaMask), fontZoomInKey);
+        
+        String fontZoomOutKey = "font-zoom-out";
+        actionMap.put(fontZoomOutKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ZoomOutAction zoomOutAction = createZoomOutAction();
+                zoomOutAction.codeArea = component;
+                zoomOutAction.setFontSizeOptions(fontSizeOptions);
+                zoomOutAction.actionPerformed(e);
+            }
+        });
+        inputMap.put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, metaMask), fontZoomOutKey);
+
+        String fontResetKey = "font-reset-reset";
+        actionMap.put(fontResetKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ResetFontSizeAction resetFontAction = createResetFontSizeAction();
+                resetFontAction.codeArea = component;
+                resetFontAction.setFontSizeOptions(fontSizeOptions);
+                resetFontAction.actionPerformed(e);
+            }
+        });
+        inputMap.put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_0, metaMask), fontResetKey);
+        component.setActionMap(actionMap);
+        component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap); */
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class ZoomInAction extends AbstractAction implements ActionContextChange {
+
+        @Nullable
+        private CodeAreaCore codeArea;
+        @Nullable
+        private FontSizeOptions fontSizeOptions;
+
+        public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
+            this.fontSizeOptions = fontSizeOptions;
+        }
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ZOOM_IN_ACTION_ID);
+            setEnabled(false);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (codeArea == null) {
+                return;
+            }
+
+            SectCodeArea sectCodeArea = (SectCodeArea) codeArea;
+            Font currentFont = sectCodeArea.getCodeFont();
+            int currentSize = currentFont.getSize();
+            int newSize = Math.min(currentSize + 1, FontSizeOptions.MAX_FONT_SIZE);
+
+            if (newSize != currentSize) {
+                Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), newSize);
+                sectCodeArea.setCodeFont(newFont);
+                codeArea.repaint();
+
+                if (fontSizeOptions != null) {
+                    fontSizeOptions.setFontSize(newSize);
+                }
+            }
+        }
+
+        @Override
+        public void register(ContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                setEnabled(codeArea != null);
+            });
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class ZoomOutAction extends AbstractAction implements ActionContextChange {
+
+        @Nullable
+        private CodeAreaCore codeArea;
+        @Nullable
+        private FontSizeOptions fontSizeOptions;
+
+        public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
+            this.fontSizeOptions = fontSizeOptions;
+        }
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ZOOM_OUT_ACTION_ID);
+            setEnabled(false);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (codeArea == null) {
+                return;
+            }
+
+            SectCodeArea sectCodeArea = (SectCodeArea) codeArea;
+            Font currentFont = sectCodeArea.getCodeFont();
+            int currentSize = currentFont.getSize();
+            int newSize = Math.max(currentSize - 1, FontSizeOptions.MIN_FONT_SIZE);
+
+            if (newSize != currentSize) {
+                Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), newSize);
+                sectCodeArea.setCodeFont(newFont);
+                codeArea.repaint();
+
+                if (fontSizeOptions != null) {
+                    fontSizeOptions.setFontSize(newSize);
+                }
+            }
+        }
+
+        @Override
+        public void register(ContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                setEnabled(codeArea != null);
+            });
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class ResetFontSizeAction extends AbstractAction implements ActionContextChange {
+
+        @Nullable
+        private CodeAreaCore codeArea;
+        @Nullable
+        private FontSizeOptions fontSizeOptions;
+
+        public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
+            this.fontSizeOptions = fontSizeOptions;
+        }
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, RESET_FONT_SIZE_ACTION_ID);
+            setEnabled(false);
+            putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_0, ActionUtils.getMetaMask()));
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (codeArea == null) {
+                return;
+            }
+
+            SectCodeArea sectCodeArea = (SectCodeArea) codeArea;
+            Font currentFont = sectCodeArea.getCodeFont();
+            Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), FontSizeOptions.DEFAULT_FONT_SIZE);
+            sectCodeArea.setCodeFont(newFont);
+            codeArea.repaint();
+
+            if (fontSizeOptions != null) {
+                fontSizeOptions.setFontSize(FontSizeOptions.DEFAULT_FONT_SIZE);
+            }
+        }
+
+        @Override
+        public void register(ContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                setEnabled(codeArea != null);
+            });
+        }
+    }
+}

@@ -1,0 +1,210 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.bined.jaguif.viewer.action;
+
+import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import org.exbin.bined.PositionCodeType;
+import org.exbin.jaguif.App;
+import org.exbin.jaguif.action.api.ActionContextChange;
+import org.exbin.jaguif.action.api.ActionConsts;
+import org.exbin.jaguif.action.api.ActionModuleApi;
+import org.exbin.jaguif.action.api.ActionType;
+import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.bined.jaguif.BinaryDataComponent;
+import org.exbin.bined.jaguif.CodeTypeState;
+
+/**
+ * Position code type actions.
+ *
+ * @author ExBin Project (https://exbin.org)
+ */
+@ParametersAreNonnullByDefault
+public class PositionCodeTypeActions {
+
+    public static final String POSITION_CODE_TYPE_RADIO_GROUP_ID = "positionCodeTypeRadioGroup";
+
+    private ResourceBundle resourceBundle;
+
+    public PositionCodeTypeActions() {
+    }
+
+    public void setup(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
+
+    @Nonnull
+    public OctalPositionCodeTypeAction createOctalCodeTypeAction() {
+        OctalPositionCodeTypeAction octalPositionCodeTypeAction = new OctalPositionCodeTypeAction();
+        octalPositionCodeTypeAction.setup(resourceBundle);
+        return octalPositionCodeTypeAction;
+    }
+
+    @Nonnull
+    public DecimalPositionCodeTypeAction createDecimalCodeTypeAction() {
+        DecimalPositionCodeTypeAction decimalPositionCodeTypeAction = new DecimalPositionCodeTypeAction();
+        decimalPositionCodeTypeAction.setup(resourceBundle);
+        return decimalPositionCodeTypeAction;
+    }
+
+    @Nonnull
+    public HexadecimalPositionCodeTypeAction createHexadecimalCodeTypeAction() {
+        HexadecimalPositionCodeTypeAction hexadecimalPositionCodeTypeAction = new HexadecimalPositionCodeTypeAction();
+        hexadecimalPositionCodeTypeAction.setup(resourceBundle);
+        return hexadecimalPositionCodeTypeAction;
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "octalPositionCodeTypeAction";
+
+        private BinaryDataComponent binaryDataComponent;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PositionCodeTypeActions.setPositionCodeType(binaryDataComponent, PositionCodeType.OCTAL);
+        }
+
+        @Override
+        public void register(ContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
+            });
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                PositionCodeType positionCodeType = binaryDataComponent.getPositionCodeType();
+                putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.OCTAL);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "decimalPositionCodeTypeAction";
+
+        private BinaryDataComponent binaryDataComponent;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PositionCodeTypeActions.setPositionCodeType(binaryDataComponent, PositionCodeType.DECIMAL);
+        }
+
+        @Override
+        public void register(ContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
+            });
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                PositionCodeType positionCodeType = binaryDataComponent.getPositionCodeType();
+                putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.DECIMAL);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
+
+        public static final String ACTION_ID = "hexadecimalPositionCodeTypeAction";
+
+        private BinaryDataComponent binaryDataComponent;
+
+        public void setup(ResourceBundle resourceBundle) {
+            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
+            setEnabled(false);
+            putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, POSITION_CODE_TYPE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PositionCodeTypeActions.setPositionCodeType(binaryDataComponent, PositionCodeType.HEXADECIMAL);
+        }
+
+        @Override
+        public void register(ContextChangeRegistration registrar) {
+            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                updateByContext(instance);
+            });
+            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
+                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
+                    updateByContext(instance);
+                }
+            });
+        }
+
+        public void updateByContext(ContextComponent context) {
+            binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
+            boolean hasInstance = context != null;
+            if (hasInstance) {
+                PositionCodeType positionCodeType = binaryDataComponent.getPositionCodeType();
+                putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.HEXADECIMAL);
+            }
+            setEnabled(hasInstance);
+        }
+    }
+
+    public static void setPositionCodeType(BinaryDataComponent binaryDataComponent, PositionCodeType positionCodeType) {
+        binaryDataComponent.setPositionCodeType(positionCodeType);
+    }
+}

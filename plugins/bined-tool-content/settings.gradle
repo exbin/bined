@@ -1,0 +1,8 @@
+rootProject.name = 'bined-tool-content'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-component'
+    include ':modules:bined-objectdata'
+}
+
+apply from: '../bined-plugins-settings.gradle'
