@@ -25,10 +25,10 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.PluginModule;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.action.ClipboardCodeActions;
-import org.exbin.bined.jaguif.action.CopyAsCodeAction;
-import org.exbin.bined.jaguif.action.PasteFromCodeAction;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.action.ClipboardCodeActions;
+import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
+import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
 import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.bined.jaguif.macro.operation.MacroStep;
 import org.exbin.bined.jaguif.macro.settings.MacroOptions;
@@ -66,7 +66,7 @@ public class BinedMacroModule implements PluginModule {
             registerMacrosPopupMenuActions();
             registerSettings();
 
-            BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
             binedModule.registerCodeAreaCommandHandlerProvider((codeArea, undoRedo) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoRedo) undoRedo));
             ClipboardCodeActions clipboardCodeActions = binedModule.getClipboardCodeActions();
             clipboardCodeActions.setCopyAsCodeMethod(new ClipboardCodeActions.ActionMethod() {
@@ -112,7 +112,7 @@ public class BinedMacroModule implements PluginModule {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> getMacrosMenu());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerMacrosPopupMenuActions() {

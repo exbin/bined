@@ -144,11 +144,11 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         startPositionLabel = new javax.swing.JLabel();
-        startPositionSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        startPositionSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         endPositionLabel = new javax.swing.JLabel();
-        endPositionSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        endPositionSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         lengthLabel = new javax.swing.JLabel();
-        lengthSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        lengthSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         fromSelectionButton = new javax.swing.JButton();
         colorLabel = new javax.swing.JLabel();
         colorCellPanel = new org.exbin.bined.jaguif.theme.settings.gui.ColorCellPanel();
@@ -224,11 +224,11 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
     private org.exbin.bined.jaguif.theme.settings.gui.ColorCellPanel colorCellPanel;
     private javax.swing.JLabel colorLabel;
     private javax.swing.JLabel endPositionLabel;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel endPositionSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel endPositionSwitchableSpinnerPanel;
     private javax.swing.JButton fromSelectionButton;
     private javax.swing.JLabel lengthLabel;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel lengthSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel lengthSwitchableSpinnerPanel;
     private javax.swing.JLabel startPositionLabel;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel startPositionSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel startPositionSwitchableSpinnerPanel;
     // End of variables declaration//GEN-END:variables
 }

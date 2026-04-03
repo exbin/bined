@@ -38,8 +38,8 @@ import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
-import org.exbin.bined.jaguif.action.CopyAsCodeAction;
-import org.exbin.bined.jaguif.action.PasteFromCodeAction;
+import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
+import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
 import org.exbin.bined.jaguif.macro.model.MacroRecord;
 
 /**

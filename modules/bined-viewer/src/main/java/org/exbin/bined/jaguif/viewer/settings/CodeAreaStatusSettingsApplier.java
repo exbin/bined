@@ -16,9 +16,9 @@
 package org.exbin.bined.jaguif.viewer.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.jaguif.BinaryStatus;
-import org.exbin.bined.jaguif.gui.BinaryStatusPanel;
-import org.exbin.bined.jaguif.settings.CodeAreaStatusOptions;
+import org.exbin.bined.jaguif.component.BinaryStatus;
+import org.exbin.bined.jaguif.component.gui.BinaryStatusPanel;
+import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;

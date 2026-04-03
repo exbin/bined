@@ -26,7 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
 import org.exbin.bined.swing.section.SectCodeArea;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.jaguif.App;

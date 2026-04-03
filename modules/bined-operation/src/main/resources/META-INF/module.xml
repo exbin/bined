@@ -15,7 +15,7 @@
     <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
     <module id="org.exbin.jaguif.operation.undo.api.OperationUndoModuleApi" />
     <module id="org.exbin.jaguif.utils.UtilsModule" />
-    <module id="org.exbin.bined.jaguif.BinedModule" />
+    <module id="org.exbin.bined.jaguif.component.BinedComponentModule" />
     <module id="org.exbin.bined.jaguif.search.BinedSearchModule" />
   </dependency>
 </module>

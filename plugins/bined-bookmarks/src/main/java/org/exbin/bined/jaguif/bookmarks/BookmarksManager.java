@@ -48,8 +48,8 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.BinEdFileManager;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.bookmarks.action.AddBookmarkAction;
 import org.exbin.bined.jaguif.bookmarks.action.EditBookmarkAction;
 import org.exbin.bined.jaguif.bookmarks.action.ManageBookmarksAction;
@@ -94,7 +94,7 @@ public class BookmarksManager {
         editBookmarkAction.setup(resourceBundle);
         manageBookmarksAction.setup(resourceBundle);
 
-        BinedModule binedModule = App.getModule(BinedModule.class);
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
 
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsStorage optionsStorage = optionsModule.getAppOptions();
@@ -252,9 +252,9 @@ public class BookmarksManager {
         bookmarksPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                return menuVariant == BinedModule.PopupMenuVariant.EDITOR;
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR;
             }
 
             @Override
@@ -262,7 +262,7 @@ public class BookmarksManager {
             }
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu bookmarksPopupMenu = UiUtils.createMenu();
             bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);
@@ -282,7 +282,7 @@ public class BookmarksManager {
             });
             return bookmarksPopupMenu;
         });
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void registerBookmarksComponentActions(JComponent component) {

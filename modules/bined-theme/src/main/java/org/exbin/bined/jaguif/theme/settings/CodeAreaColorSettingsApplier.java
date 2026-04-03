@@ -21,7 +21,7 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ContextComponent;
-import org.exbin.bined.jaguif.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.theme.BinedThemeModule;
 import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;

@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.FileProcessingMode;
+import org.exbin.bined.jaguif.component.FileProcessingMode;
 import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;

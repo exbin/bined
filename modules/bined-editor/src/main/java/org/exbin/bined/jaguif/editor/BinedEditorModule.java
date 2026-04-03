@@ -23,7 +23,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.editor.action.EditSelectionAction;
 import org.exbin.bined.jaguif.editor.action.ReloadFileAction;
@@ -155,9 +155,9 @@ public class BinedEditorModule implements Module {
 
     public void registerCodeAreaPopupMenu() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createEditSelectionAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_SELECTION_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_SELECTION_GROUP_ID));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 }

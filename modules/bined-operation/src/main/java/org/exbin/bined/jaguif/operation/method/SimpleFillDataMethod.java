@@ -28,7 +28,7 @@ import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.operation.method.gui.SimpleFillDataPanel;
 import org.exbin.bined.jaguif.search.SearchCondition;
 import org.exbin.bined.jaguif.search.gui.BinaryMultilinePanel;
@@ -73,7 +73,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         component.setSampleBinaryData(new ByteArrayEditableData());
         component.setController(() -> {
-            BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
             final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
 //            final WindowHandler dialog = windowModule.createWindow(dialogPanel, codeArea, "", Dialog.ModalityType.APPLICATION_MODAL);
             SearchCondition searchCondition = new SearchCondition();
@@ -83,7 +83,7 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             searchCondition.setBinaryData(conditionData);
             searchCondition.setSearchMode(SearchCondition.SearchMode.BINARY);
             multilinePanel.setCondition(searchCondition);
-            multilinePanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
+            multilinePanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.BASIC));
             DefaultControlPanel controlPanel = new DefaultControlPanel();
             final WindowHandler multilineDialog = windowModule.createDialog(component, Dialog.ModalityType.APPLICATION_MODAL, multilinePanel, controlPanel);
             windowModule.setWindowTitle(multilineDialog, multilinePanel.getResourceBundle());

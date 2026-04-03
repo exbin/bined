@@ -56,7 +56,7 @@ public class RandomDataPanel extends javax.swing.JPanel {
 
         buttonGroup = new javax.swing.ButtonGroup();
         lengthLabel = new javax.swing.JLabel();
-        lengthBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        lengthBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         randomDataLabel = new javax.swing.JLabel();
         fullBytesRadioButton = new javax.swing.JRadioButton();
         lowerHalfRadioButton = new javax.swing.JRadioButton();
@@ -233,7 +233,7 @@ public class RandomDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton alphabetOnlyRadioButton;
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JRadioButton fullBytesRadioButton;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel lengthLabel;
     private javax.swing.JRadioButton lowerHalfRadioButton;
     private javax.swing.JRadioButton numberDigitsRadioButton;

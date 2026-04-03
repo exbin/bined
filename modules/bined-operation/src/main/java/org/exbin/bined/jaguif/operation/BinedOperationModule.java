@@ -27,9 +27,9 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.action.api.ActionConsts;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.action.CopyAsCodeAction;
-import org.exbin.bined.jaguif.action.PasteFromCodeAction;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
+import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
 import org.exbin.bined.jaguif.operation.action.InsertDataAction;
 import org.exbin.bined.jaguif.operation.action.ConvertDataAction;
 import org.exbin.bined.jaguif.operation.action.CopyAsAction;
@@ -99,10 +99,10 @@ public class BinedOperationModule implements Module {
         insertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -121,10 +121,10 @@ public class BinedOperationModule implements Module {
         convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -143,10 +143,10 @@ public class BinedOperationModule implements Module {
         copyAsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -165,10 +165,10 @@ public class BinedOperationModule implements Module {
         pasteFromAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
 
             @Override
@@ -182,9 +182,9 @@ public class BinedOperationModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createInsertDataAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(createConvertDataAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_OPERATION_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_OPERATION_MENU_GROUP_ID));
         contribution = mgmt.registerMenuItem(createCopyAsAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
         mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeAction.ACTION_ID));
@@ -195,16 +195,16 @@ public class BinedOperationModule implements Module {
 
     public void registerBlockEditPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createInsertDataAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(createConvertDataAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
         contribution = mgmt.registerMenuItem(createCopyAsAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
         mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeAction.ACTION_ID));
         contribution = mgmt.registerMenuItem(createPasteFromAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
         mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeAction.ACTION_ID));
     }
 

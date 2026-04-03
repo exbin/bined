@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.operation.gui;
 
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.utils.TestApplication;
 import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.utils.UtilsModule;
@@ -34,7 +34,7 @@ public class BinaryPreviewPanelTest {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.utils.TestLanguageModule());
-            testApplication.addModule(BinedModule.MODULE_ID, new BinedModule());
+            testApplication.addModule(BinedComponentModule.MODULE_ID, new BinedComponentModule());
             WindowUtils.invokeWindow(new BinaryPreviewPanel());
         });
 

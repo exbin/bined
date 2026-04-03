@@ -19,10 +19,10 @@ import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.BinaryDataComponent;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.gui.BinEdComponentPanel;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.bined.jaguif.search.service.BinarySearchService;
 import org.exbin.bined.jaguif.search.service.impl.BinarySearchServiceImpl;
@@ -60,8 +60,8 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
             binarySearch = new BinarySearch();
             binarySearch.setBinarySearchService(binarySearchService);
             binarySearch.setPanelClosingListener(this::hideSearchPanel);
-            BinedModule binedModule = App.getModule(BinedModule.class);
-            binarySearch.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL));
+            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+            binarySearch.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.NORMAL));
         }
         
         return binarySearch;

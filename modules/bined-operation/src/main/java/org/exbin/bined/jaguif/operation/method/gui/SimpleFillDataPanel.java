@@ -63,7 +63,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
 
         fillWithbuttonGroup = new javax.swing.ButtonGroup();
         lengthLabel = new javax.swing.JLabel();
-        lengthBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        lengthBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         fillWithLabel = new javax.swing.JLabel();
         emptyRadioButton = new javax.swing.JRadioButton();
         spaceRadioButton = new javax.swing.JRadioButton();
@@ -250,7 +250,7 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton emptyRadioButton;
     private javax.swing.JLabel fillWithLabel;
     private javax.swing.ButtonGroup fillWithbuttonGroup;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel lengthLabel;
     private javax.swing.JButton sampleDataButton;
     private javax.swing.JRadioButton sampleRadioButton;

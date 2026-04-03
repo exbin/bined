@@ -54,7 +54,7 @@ import org.exbin.bined.jaguif.objectdata.source.ByteBufferPageProvider;
 import org.exbin.bined.jaguif.objectdata.source.CharBufferPageProvider;
 import org.exbin.bined.jaguif.objectdata.source.ReaderPageProvider;
 import org.exbin.bined.jaguif.objectdata.property.gui.InspectComponentPanel;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**

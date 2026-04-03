@@ -36,7 +36,7 @@ import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 

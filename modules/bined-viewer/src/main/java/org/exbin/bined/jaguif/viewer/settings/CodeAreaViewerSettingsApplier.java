@@ -28,7 +28,7 @@ import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.action.api.ContextComponent;
-import org.exbin.bined.jaguif.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;

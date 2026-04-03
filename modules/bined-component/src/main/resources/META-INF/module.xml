@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <id>org.exbin.bined.jaguif.BinedModule</id>
+  <id>org.exbin.bined.jaguif.component.BinedComponentModule</id>
   <name>BinEd Component Module</name>
   <provider>ExBin Project</provider>
   <homepage>https://bined.exbin.org</homepage>

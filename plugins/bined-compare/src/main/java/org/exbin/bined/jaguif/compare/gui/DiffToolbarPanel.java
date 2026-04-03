@@ -57,7 +57,7 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
 
     public DiffToolbarPanel() {
         LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
-        resourceBundle = languageModule.getBundle(org.exbin.bined.jaguif.BinedModule.class);
+        resourceBundle = languageModule.getBundle(org.exbin.bined.jaguif.component.BinedComponentModule.class);
         viewerResourceBundle = languageModule.getBundle(org.exbin.bined.jaguif.viewer.BinedViewerModule.class);
         codeTypeButtonGroup = new ButtonGroup();
         Action binaryCodeTypeAction = new AbstractAction() {

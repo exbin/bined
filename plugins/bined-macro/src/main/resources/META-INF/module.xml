@@ -6,7 +6,7 @@
   <homepage>https://bined.exbin.org</homepage>
   <description>Supporting for macro editing and execution capability</description>
   <dependency>
-    <module id="org.exbin.bined.jaguif.BinedModule" />
+    <module id="org.exbin.bined.jaguif.component.BinedComponentModule" />
     <module id="org.exbin.bined.jaguif.search.BinedSearchModule" />
     <module id="org.exbin.jaguif.ui.api.UiModuleApi" />
     <module id="org.exbin.jaguif.frame.api.FrameModuleApi" />

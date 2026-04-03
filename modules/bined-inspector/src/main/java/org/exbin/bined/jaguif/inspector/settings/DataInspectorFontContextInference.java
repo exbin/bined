@@ -20,7 +20,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.jaguif.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
 import org.exbin.bined.jaguif.inspector.BasicValuesInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
 import org.exbin.bined.jaguif.inspector.gui.BasicValuesPanel;

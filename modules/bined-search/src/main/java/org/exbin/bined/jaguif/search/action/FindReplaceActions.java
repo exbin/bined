@@ -32,8 +32,8 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
-import org.exbin.bined.jaguif.BinaryFileDocument;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.search.BinEdComponentSearch;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.jaguif.document.api.ContextDocument;
@@ -107,10 +107,10 @@ public class FindReplaceActions {
             putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId, String subMenuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                    BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
@@ -150,10 +150,10 @@ public class FindReplaceActions {
             putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId, String subMenuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                    BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override
@@ -198,10 +198,10 @@ public class FindReplaceActions {
             putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
                 public boolean shouldCreate(String menuId, String subMenuId) {
-                    BinedModule binedModule = App.getModule(BinedModule.class);
-                    BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                    BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                    BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
                     BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
+                    return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
 
                 @Override

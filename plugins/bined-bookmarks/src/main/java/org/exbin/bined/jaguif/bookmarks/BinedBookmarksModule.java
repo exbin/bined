@@ -24,12 +24,12 @@ import javax.swing.JMenu;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.PluginModule;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.bined.jaguif.BinEdComponentExtension;
-import org.exbin.bined.jaguif.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinEdComponentExtension;
+import org.exbin.bined.jaguif.component.BinEdFileManager;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.bookmarks.settings.BookmarkOptions;
-import org.exbin.bined.jaguif.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -73,7 +73,7 @@ public class BinedBookmarksModule implements PluginModule {
             
             registerSettings();
 
-            BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
             BinEdFileManager fileManager = binedModule.getFileManager();
             // TODO Rework to use different approach than extension
             fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
@@ -92,7 +92,7 @@ public class BinedBookmarksModule implements PluginModule {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> getBookmarksMenu());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.EDIT_FIND_MENU_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_FIND_MENU_GROUP_ID));
     }
 
     public void registerBookmarksPopupMenuActions() {

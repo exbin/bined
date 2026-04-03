@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.bined.jaguif.RelativePositionMode;
+import org.exbin.bined.jaguif.component.RelativePositionMode;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 

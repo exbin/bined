@@ -26,12 +26,12 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.action.api.ActionConsts;
-import org.exbin.bined.jaguif.BinEdComponentExtension;
+import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.BinEdFileManager;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.inspector.action.ShowParsingPanelAction;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorOptions;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorSettingsApplier;
@@ -91,7 +91,7 @@ public class BinedInspectorModule implements Module {
         BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
         inspectorManager.addInspector(new BasicValuesInspectorProvider(getResourceBundle()));
         basicValuesColorModifier = new BasicValuesPositionColorModifier();
-        BinedModule binedModule = App.getModule(BinedModule.class);
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addPainterColorModifier(basicValuesColorModifier);
         fileManager.addBinEdComponentExtension(new BinEdInspectorFileExtension());
@@ -105,11 +105,11 @@ public class BinedInspectorModule implements Module {
         showParsingPanelAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
                 boolean inShowSubmenu = BinedViewerModule.SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
-                return popupMenuVariant == BinedModule.PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
+                return popupMenuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
             }
 
             @Override
@@ -131,9 +131,9 @@ public class BinedInspectorModule implements Module {
 
     public void registerShowParsingPanelPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createShowParsingPanelAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
         contribution = subMgmt.registerMenuItem(createShowParsingPanelAction());

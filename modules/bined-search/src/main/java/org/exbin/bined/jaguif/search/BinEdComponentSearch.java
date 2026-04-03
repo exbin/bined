@@ -16,8 +16,8 @@
 package org.exbin.bined.jaguif.search;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.jaguif.BinEdComponentExtension;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.BinEdComponentExtension;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 
 /**

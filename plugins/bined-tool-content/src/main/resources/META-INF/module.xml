@@ -16,7 +16,7 @@
     <module id="org.exbin.jaguif.options.api.OptionsModuleApi" />
     <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
     <module id="org.exbin.jaguif.utils.UtilsModule" />
-    <module id="org.exbin.bined.jaguif.BinedModule" />
+    <module id="org.exbin.bined.jaguif.component.BinedComponentModule" />
     <module id="org.exbin.bined.jaguif.objectdata.BinedObjectDataModule" />
   </dependency>
 </module>

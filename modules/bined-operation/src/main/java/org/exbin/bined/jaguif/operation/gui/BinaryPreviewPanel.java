@@ -29,8 +29,8 @@ import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Binary data preview panel.
@@ -55,8 +55,8 @@ public class BinaryPreviewPanel extends javax.swing.JPanel {
         previewCodeArea.setContentData(new ByteArrayEditableData());
         previewCodeArea.setEditMode(EditMode.READ_ONLY);
 
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL);
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+        CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.NORMAL);
         previewCodeArea.setComponentPopupMenu(new JPopupMenu() {
             @Override
             public void show(@Nonnull Component invoker, int x, int y) {

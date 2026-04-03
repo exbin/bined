@@ -30,7 +30,7 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ContextComponent;
-import org.exbin.bined.jaguif.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
  * Show row position action.

@@ -41,12 +41,12 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.action.api.ContextComponent;
-import org.exbin.bined.jaguif.BinEdFileManager;
-import org.exbin.bined.jaguif.BinaryDocument;
-import org.exbin.bined.jaguif.BinaryStatus;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.BinedModule.PopupMenuVariant;
-import org.exbin.bined.jaguif.settings.CodeAreaStatusOptions;
+import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinaryDocument;
+import org.exbin.bined.jaguif.component.BinaryStatus;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.BinedComponentModule.PopupMenuVariant;
+import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceSettingsComponent;
@@ -144,7 +144,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerStatusBar() {
-        BinedModule binedModule = App.getModule(BinedModule.class);
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.registerStatusBar();
         BinaryStatus binaryStatus = fileManager.getBinaryStatus();
@@ -288,7 +288,7 @@ public class BinedViewerModule implements Module {
     public EncodingsManager getEncodingsManager() {
         if (encodingsManager == null) {
             ensureSetup();
-            BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
             BinEdFileManager fileManager = binedModule.getFileManager();
             encodingsManager = new EncodingsManager();
             fileManager.updateTextEncodingStatus(encodingsManager);
@@ -357,7 +357,7 @@ public class BinedViewerModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(createCodeAreaFontAction());
-        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(BinedModule.VIEW_FONT_SUB_MENU_ID));
+        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(BinedComponentModule.VIEW_FONT_SUB_MENU_ID));
     }
 
     public void registerViewModeMenu() {
@@ -459,12 +459,12 @@ public class BinedViewerModule implements Module {
 
     public void registerCodeAreaPopupMenu() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
 
         ActionMenuCreation showPositionCreating = new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
                 PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
                 boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
@@ -479,11 +479,11 @@ public class BinedViewerModule implements Module {
         AbstractAction showHeaderAction = createShowHeaderAction();
         showHeaderAction.putValue(ActionConsts.ACTION_MENU_CREATION, showPositionCreating);
         SequenceContribution contribution = mgmt.registerMenuItem(showHeaderAction);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
         AbstractAction showRowPositionAction = createShowRowPositionAction();
         showRowPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, showPositionCreating);
         contribution = mgmt.registerMenuItem(showRowPositionAction);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
             @Override
@@ -493,12 +493,12 @@ public class BinedViewerModule implements Module {
         getPositionCodeTypeActions();
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_POPUP_SUBMENU_ID, positionCodeTypeSubMenuAction);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_POPUP_SUBMENU_ID);
         ActionMenuCreation positionCodeTypeCreating = new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
                 PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
                 BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
                 return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
@@ -528,7 +528,7 @@ public class BinedViewerModule implements Module {
         };
         popupShowSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("popupShowSubMenu.shortDescription"));
         contribution = mgmt.registerMenuItem(SHOW_POPUP_SUBMENU_ID, popupShowSubMenuAction);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
         subMgmt = mgmt.getSubMenu(SHOW_POPUP_SUBMENU_ID);
         AbstractAction subShowHeaderAction = createShowHeaderAction();
         subShowHeaderAction.putValue(ActionConsts.ACTION_MENU_CREATION, showPositionCreating);

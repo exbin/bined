@@ -54,14 +54,14 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.diff.SectCodeAreaDiffPanel;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.BinEdCodeAreaAssessor;
-import org.exbin.bined.jaguif.BinaryStatusApi;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.action.GoToPositionAction;
+import org.exbin.bined.jaguif.component.BinEdCodeAreaAssessor;
+import org.exbin.bined.jaguif.component.BinaryStatusApi;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.editor.settings.BinaryEditorOptions;
-import org.exbin.bined.jaguif.gui.BinaryStatusPanel;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
-import org.exbin.bined.jaguif.settings.CodeAreaStatusOptions;
+import org.exbin.bined.jaguif.component.gui.BinaryStatusPanel;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaThemeOptions;
@@ -165,14 +165,14 @@ public class BinEdDiffPanel extends JPanel {
 
     private void init() {
         this.add(toolbarPanel, BorderLayout.NORTH);
-        goToPositionAction.setup(App.getModule(LanguageModuleApi.class).getBundle(BinedModule.class));
+        goToPositionAction.setup(App.getModule(LanguageModuleApi.class).getBundle(BinedComponentModule.class));
 
         registerBinaryStatus(leftStatusPanel, diffPanel.getLeftCodeArea());
         registerBinaryStatus(rightStatusPanel, diffPanel.getRightCodeArea());
 
         initialLoadFromPreferences();
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.NORMAL);
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+        CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.NORMAL);
         diffPanel.getLeftCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareLeft"));
         diffPanel.getRightCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareRight"));
 

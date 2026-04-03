@@ -45,9 +45,9 @@ import org.exbin.jaguif.addon.catalog.AddonCatalogModule;
 import org.exbin.jaguif.addon.manager.AddonManagerModule;
 import org.exbin.jaguif.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.jaguif.addon.update.api.AddonUpdateModuleApi;
-import org.exbin.bined.jaguif.BinaryFileDocument;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.FileProcessingMode;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.FileProcessingMode;
 import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.inspector.BinedInspectorModule;
 import org.exbin.jaguif.document.settings.StartupOptions;
@@ -160,7 +160,7 @@ public class BinedLauncherModule implements LauncherModule {
             final UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
             themeModule.registerThemeInit();
 
-            BinedModule binedModule = App.getModule(BinedModule.class);
+            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
             binedModule.registerDocument();
 
             uiModule.initSwingUi();

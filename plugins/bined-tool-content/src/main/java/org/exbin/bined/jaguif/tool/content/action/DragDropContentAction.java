@@ -35,8 +35,8 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.DialogParentComponent;
-import org.exbin.bined.jaguif.BinaryDocument;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinaryDocument;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.tool.content.StreamUtils;
 import org.exbin.bined.jaguif.tool.content.gui.DragDropContentPanel;
 import org.exbin.jaguif.docking.api.ContextDocking;
@@ -126,8 +126,8 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
         });
         dragDropContentPanel.setOpenAsTabEnabled(true);
         dragDropContentPanel.setSaveAsFileEnabled(true);
-        BinedModule binedModule = App.getModule(BinedModule.class);
-        dragDropContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedModule.PopupMenuVariant.BASIC));
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+        dragDropContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.BASIC));
 
         windowModule.setWindowTitle(dialog, dragDropContentPanel.getResourceBundle());
         controlPanel.setController(() -> {

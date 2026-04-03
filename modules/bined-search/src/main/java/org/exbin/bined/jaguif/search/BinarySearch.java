@@ -25,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.handler.CodeAreaPopupMenuHandler;
+import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.search.gui.BinaryMultilinePanel;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.bined.jaguif.search.gui.FindBinaryPanel;

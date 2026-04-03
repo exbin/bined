@@ -47,9 +47,9 @@ import org.exbin.jaguif.action.api.ActionManagement;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.BinaryDataComponent;
-import org.exbin.bined.jaguif.BinaryFileDocument;
-import org.exbin.bined.jaguif.BinedModule;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.macro.action.AddMacroAction;
 import org.exbin.bined.jaguif.macro.action.EditMacroAction;
 import org.exbin.bined.jaguif.macro.action.ManageMacrosAction;
@@ -301,9 +301,9 @@ public class MacroManager {
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedModule binedModule = App.getModule(BinedModule.class);
-                BinedModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                return menuVariant == BinedModule.PopupMenuVariant.EDITOR;
+                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
+                return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR;
             }
 
             @Override
@@ -330,7 +330,7 @@ public class MacroManager {
                 });
             }
         });
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu macrosPopupMenu = UiUtils.createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);
@@ -350,7 +350,7 @@ public class MacroManager {
             });
             return macrosPopupMenu;
         });
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void executeMacro(CodeAreaCore codeArea, int macroIndex) {

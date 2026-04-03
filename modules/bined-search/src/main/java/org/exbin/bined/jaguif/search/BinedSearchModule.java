@@ -24,9 +24,9 @@ import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.toolbar.api.ToolBarDefinitionManagement;
-import org.exbin.bined.jaguif.BinEdFileManager;
-import org.exbin.bined.jaguif.BinedModule;
-import org.exbin.bined.jaguif.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.search.action.FindReplaceActions;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -56,7 +56,7 @@ public class BinedSearchModule implements Module {
     }
 
     public void registerSearchComponent() {
-        BinedModule binedModule = App.getModule(BinedModule.class);
+        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new DefaultBinEdComponentSearch()));
     }
@@ -76,7 +76,7 @@ public class BinedSearchModule implements Module {
         getFindReplaceActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         // TODO SearchModule
-        String groupId = BinedModule.EDIT_FIND_MENU_GROUP_ID;
+        String groupId = BinedComponentModule.EDIT_FIND_MENU_GROUP_ID;
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
@@ -88,11 +88,11 @@ public class BinedSearchModule implements Module {
 
     public void registerEditFindPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditFindAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
         contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditReplaceAction());
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedModule.CODE_AREA_POPUP_FIND_GROUP_ID));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
     public void registerEditFindToolBarActions() {

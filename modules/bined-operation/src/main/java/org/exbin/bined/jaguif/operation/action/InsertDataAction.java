@@ -38,7 +38,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ContextComponent;
-import org.exbin.bined.jaguif.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.utils.ActionUtils;
 import org.exbin.jaguif.window.api.controller.DefaultControlController;
 import org.exbin.bined.jaguif.operation.BinedOperationModule;

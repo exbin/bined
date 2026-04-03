@@ -23,7 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.SelectionRange;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.RelativePositionMode;
+import org.exbin.bined.jaguif.component.RelativePositionMode;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
@@ -119,15 +119,15 @@ public class EditSelectionPanel extends javax.swing.JPanel {
         fromEndRadioButton = new javax.swing.JRadioButton();
         fromCursorRadioButton = new javax.swing.JRadioButton();
         positionLabel = new javax.swing.JLabel();
-        startPositionBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        startPositionBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         endPositionPanel = new javax.swing.JPanel();
         fromStartRadioButton1 = new javax.swing.JRadioButton();
         fromEndRadioButton1 = new javax.swing.JRadioButton();
         fromCursorRadioButton1 = new javax.swing.JRadioButton();
         positionLabel1 = new javax.swing.JLabel();
-        endPositionBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        endPositionBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         selectionLengthPanel = new javax.swing.JPanel();
-        lengthBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel();
+        lengthBaseSwitchableSpinnerPanel = new org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel();
         startPositionLabel = new javax.swing.JLabel();
         startPositionTextField = new javax.swing.JTextField();
         endPositionLabel = new javax.swing.JLabel();
@@ -603,7 +603,7 @@ public class EditSelectionPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel currentPositionLabel;
     private javax.swing.JTextField currentPositionTextField;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel endPositionBaseSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel endPositionBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel endPositionLabel;
     private javax.swing.JPanel endPositionPanel;
     private javax.swing.JTextField endPositionTextField;
@@ -614,11 +614,11 @@ public class EditSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton fromEndRadioButton1;
     private javax.swing.JRadioButton fromStartRadioButton;
     private javax.swing.JRadioButton fromStartRadioButton1;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel lengthBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel positionLabel;
     private javax.swing.JLabel positionLabel1;
     private javax.swing.JPanel selectionLengthPanel;
-    private org.exbin.bined.jaguif.gui.BaseSwitchableSpinnerPanel startPositionBaseSwitchableSpinnerPanel;
+    private org.exbin.bined.jaguif.component.gui.BaseSwitchableSpinnerPanel startPositionBaseSwitchableSpinnerPanel;
     private javax.swing.JLabel startPositionLabel;
     private javax.swing.JPanel startPositionPanel;
     private javax.swing.JTextField startPositionTextField;

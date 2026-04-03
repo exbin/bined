@@ -6,7 +6,7 @@
   <homepage>https://bined.exbin.org</homepage>
   <description>Module supporting editation of binary document in hexadecimal form</description>
   <dependency>
-    <module id="org.exbin.bined.jaguif.BinedModule" />
+    <module id="org.exbin.bined.jaguif.component.BinedComponentModule" />
     <module id="org.exbin.bined.jaguif.viewer.BinedViewerModule" />
     <module id="org.exbin.bined.jaguif.editor.BinedEditorModule" />
     <module id="org.exbin.bined.jaguif.theme.BinedThemeModule" />
