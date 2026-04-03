@@ -115,21 +115,21 @@ public class BinedThemeModule implements Module {
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(settingsGroup));
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaThemeSettingsComponent.COMPONENT_ID, new CodeAreaThemeSettingsComponent());
-        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage, SettingsPageContributionRule.Parameter.EXPAND_VERTICALLY));
 
         settingsPage = new SettingsPageContribution(SETTINGS_LAYOUT_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(settingsGroup));
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         registerComponent = settingsManagement.registerComponent(CodeAreaLayoutSettingsComponent.COMPONENT_ID, new CodeAreaLayoutSettingsComponent());
-        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage, SettingsPageContributionRule.Parameter.EXPAND_VERTICALLY));
 
         settingsPage = new SettingsPageContribution(SETTINGS_COLOR_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new GroupSequenceContributionRule(settingsGroup));
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         registerComponent = settingsManagement.registerComponent(CodeAreaColorSettingsComponent.COMPONENT_ID, new CodeAreaColorSettingsComponent());
-        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage, SettingsPageContributionRule.Parameter.EXPAND_VERTICALLY));
     }
 
     public void loadDefaultProfiles() {

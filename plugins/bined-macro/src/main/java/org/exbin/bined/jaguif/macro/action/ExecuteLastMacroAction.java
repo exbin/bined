@@ -32,9 +32,9 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.BinaryDataComponent;
 import org.exbin.bined.jaguif.macro.MacroManager;
-import org.exbin.bined.jaguif.macro.MacroStateChangeType;
+import org.exbin.bined.jaguif.macro.MacroStateUpdateType;
 import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
-import org.exbin.jaguif.context.api.StateChangeType;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.utils.ActionUtils;
 
 /**
@@ -64,11 +64,11 @@ public class ExecuteLastMacroAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                     updateByContext(instance);
                 });
-                registrar.registerStateChangeListener(ContextComponent.class, (ContextComponent instance, StateChangeType changeType) -> {
-                    if (MacroStateChangeType.LAST_MACRO.equals(changeType)) {
+                registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
+                    if (MacroStateUpdateType.LAST_MACRO.equals(updateType)) {
                         updateByContext(instance);
                     }
                 });

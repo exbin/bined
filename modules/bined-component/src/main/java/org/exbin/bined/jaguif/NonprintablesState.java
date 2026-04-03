@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.jaguif.context.api.StateChangeType;
+import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
  * Nonprintables state.
@@ -40,7 +40,7 @@ public interface NonprintablesState {
      */
     void setShowNonprintables(boolean showNonprintables);
 
-    public enum ChangeType implements StateChangeType {
+    public enum UpdateType implements StateUpdateType {
         NONPRINTABLES
     }
 }

@@ -88,11 +88,11 @@ public class HexCharactersCaseActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.HEX_CHARACTERS_CASE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.HEX_CHARACTERS_CASE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -132,11 +132,11 @@ public class HexCharactersCaseActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.HEX_CHARACTERS_CASE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.HEX_CHARACTERS_CASE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });

@@ -49,7 +49,7 @@ public class ReloadFileAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                     binaryFileDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                     setEnabled(binaryFileDocument != null);
                 });

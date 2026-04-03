@@ -128,7 +128,7 @@ public class FindReplaceActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+            registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                 binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                 setEnabled(binaryDocument != null);
             });
@@ -175,7 +175,7 @@ public class FindReplaceActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+            registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                 binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                 setEnabled(binaryDocument != null);
             });
@@ -219,7 +219,7 @@ public class FindReplaceActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+            registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                 binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                 setEnabled(binaryDocument != null);
             });

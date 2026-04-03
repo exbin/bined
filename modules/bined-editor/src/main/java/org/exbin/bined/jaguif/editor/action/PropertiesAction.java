@@ -56,11 +56,11 @@ public class PropertiesAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                     binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                     setEnabled(binaryDocument != null);
                 });
-                registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+                registrar.registerChangeListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
                     dialogParentComponent = instance;
                 });
             }

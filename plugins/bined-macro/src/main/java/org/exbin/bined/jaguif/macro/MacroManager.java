@@ -268,18 +268,18 @@ public class MacroManager {
             macrosMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
                 public void register(ContextChangeRegistration registrar) {
-                    registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                         binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                     });
-                    registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                    registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                         contextManager.changeActiveState(ContextComponent.class, instance);
                         binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                         updateMacrosMenu();
                     });
-                    registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
+                    registrar.registerChangeListener(DialogParentComponent.class, (instance) -> {
                         contextManager.changeActiveState(DialogParentComponent.class, instance);
                     });
-                    registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                    registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                         contextManager.changeActiveState(ContextDocument.class, instance);
                     });
                 }
@@ -314,18 +314,18 @@ public class MacroManager {
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                     binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                 });
-                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                     contextManager.changeActiveState(ContextComponent.class, instance);
                     binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                     updateMacrosMenu();
                 });
-                registrar.registerUpdateListener(DialogParentComponent.class, (instance) -> {
+                registrar.registerChangeListener(DialogParentComponent.class, (instance) -> {
                     contextManager.changeActiveState(DialogParentComponent.class, instance);
                 });
-                registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+                registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                     contextManager.changeActiveState(ContextDocument.class, instance);
                 });
             }
@@ -459,7 +459,7 @@ public class MacroManager {
      * @param codeArea code area
      */
     private void notifyMacroRecordingChange() {
-        contextManager.notifyActiveStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.MACRO_RECORDING);
+        contextManager.updateActiveState(ContextComponent.class, binaryDataComponent, MacroStateUpdateType.MACRO_RECORDING);
     }
 
     /**
@@ -468,7 +468,7 @@ public class MacroManager {
      * @param codeArea code area
      */
     private void notifyLastMacroChange() {
-        contextManager.notifyActiveStateChange(ContextComponent.class, binaryDataComponent, MacroStateChangeType.LAST_MACRO);
+        contextManager.updateActiveState(ContextComponent.class, binaryDataComponent, MacroStateUpdateType.LAST_MACRO);
     }
 
     public void notifyFindAgain() {

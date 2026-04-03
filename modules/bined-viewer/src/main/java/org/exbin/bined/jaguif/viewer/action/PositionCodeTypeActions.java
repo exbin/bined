@@ -95,11 +95,11 @@ public class PositionCodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.POSITION_CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -139,11 +139,11 @@ public class PositionCodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.POSITION_CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -183,11 +183,11 @@ public class PositionCodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.POSITION_CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.POSITION_CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });

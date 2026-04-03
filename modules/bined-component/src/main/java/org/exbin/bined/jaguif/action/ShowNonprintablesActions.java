@@ -96,11 +96,11 @@ public class ShowNonprintablesActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (NonprintablesState.ChangeType.NONPRINTABLES.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (NonprintablesState.UpdateType.NONPRINTABLES.equals(updateType)) {
                     updateByContext(instance);
                 }
             });

@@ -33,7 +33,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
-import org.exbin.jaguif.options.settings.api.VerticallyExpandable;
 
 /**
  * Theme profiles options panel.
@@ -41,7 +40,7 @@ import org.exbin.jaguif.options.settings.api.VerticallyExpandable;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent, VerticallyExpandable {
+public class ThemeProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesSettingsPanel.class);
 

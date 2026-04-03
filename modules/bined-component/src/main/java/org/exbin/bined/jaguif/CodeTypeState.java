@@ -20,7 +20,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
-import org.exbin.jaguif.context.api.StateChangeType;
+import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
  * Code type state.
@@ -75,7 +75,7 @@ public interface CodeTypeState {
      */
     void setCodeCharactersCase(CodeCharactersCase codeCharactersCase);
 
-    public enum ChangeType implements StateChangeType {
+    public enum UpdateType implements StateUpdateType {
         CODE_TYPE,
         POSITION_CODE_TYPE,
         HEX_CHARACTERS_CASE

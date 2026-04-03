@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.macro;
+package org.exbin.bined.jaguif.viewer;
 
-import org.exbin.jaguif.context.api.StateChangeType;
+import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
- * Macro state context change type.
+ * Binary data viewer update types.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public enum MacroStateChangeType implements StateChangeType {
-    MACRO_RECORDING,
-    LAST_MACRO
+public enum BinedViewerUpdateType implements StateUpdateType {
+    VIEW_MODE,
+    FONT,
+    ENCODING
 }

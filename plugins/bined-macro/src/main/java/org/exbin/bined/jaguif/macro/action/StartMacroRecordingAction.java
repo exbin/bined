@@ -29,7 +29,7 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.BinaryDataComponent;
 import org.exbin.bined.jaguif.macro.MacroManager;
-import org.exbin.bined.jaguif.macro.MacroStateChangeType;
+import org.exbin.bined.jaguif.macro.MacroStateUpdateType;
 import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 
 /**
@@ -55,11 +55,11 @@ public class StartMacroRecordingAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                     updateByContext(instance);
                 });
-                registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                    if (MacroStateChangeType.MACRO_RECORDING.equals(changeType)) {
+                registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                    if (MacroStateUpdateType.MACRO_RECORDING.equals(updateType)) {
                         updateByContext(instance);
                     }
                 });

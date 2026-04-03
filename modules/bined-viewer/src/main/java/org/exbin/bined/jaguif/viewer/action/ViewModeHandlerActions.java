@@ -31,7 +31,7 @@ import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.BinaryDataComponent;
-import org.exbin.bined.jaguif.viewer.BinedViewerChangeType;
+import org.exbin.bined.jaguif.viewer.BinedViewerUpdateType;
 
 /**
  * View mode actions.
@@ -96,11 +96,11 @@ public class ViewModeHandlerActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (BinedViewerChangeType.VIEW_MODE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (BinedViewerUpdateType.VIEW_MODE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -141,11 +141,11 @@ public class ViewModeHandlerActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (BinedViewerChangeType.VIEW_MODE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (BinedViewerUpdateType.VIEW_MODE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -185,11 +185,11 @@ public class ViewModeHandlerActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (BinedViewerChangeType.VIEW_MODE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (BinedViewerUpdateType.VIEW_MODE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });

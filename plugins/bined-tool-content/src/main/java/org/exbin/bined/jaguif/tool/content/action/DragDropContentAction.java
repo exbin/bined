@@ -140,11 +140,11 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
 
     @Override
     public void register(ContextChangeRegistration registrar) {
-        registrar.registerUpdateListener(ContextDocking.class, (instance) -> {
+        registrar.registerChangeListener(ContextDocking.class, (instance) -> {
             documentDocking = instance instanceof DocumentDocking ? (DocumentDocking) instance : null;
             setEnabled(documentDocking != null && dialogParentComponent != null);
         });
-        registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+        registrar.registerChangeListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
             setEnabled(documentDocking != null && dialogParentComponent != null);
         });

@@ -79,16 +79,16 @@ public class BinEdFileManager {
         ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
             ContextComponent component = contextManager.getActiveState(ContextComponent.class);
             if (component == binaryDataComponent) {
-                contextManager.notifyActiveStateChange(ContextComponent.class, component, SelectionController.ChangeType.CONTENT_STATE);
-                contextManager.notifyActiveStateChange(ContextComponent.class, component, ClipboardController.ChangeType.CONTENT_STATE);
-                contextManager.notifyActiveStateChange(ContextComponent.class, component, DeletionController.ChangeType.CONTENT_STATE);
+                contextManager.updateActiveState(ContextComponent.class, component, SelectionController.UpdateType.CONTENT_STATE);
+                contextManager.updateActiveState(ContextComponent.class, component, ClipboardController.UpdateType.CONTENT_STATE);
+                contextManager.updateActiveState(ContextComponent.class, component, DeletionController.UpdateType.CONTENT_STATE);
             }
         });
         CodeAreaUndoRedo codeAreaUndoRedo = new CodeAreaUndoRedo(codeArea);
         codeAreaUndoRedo.addChangeListener(() -> {
             ContextUndoRedo undoRedo = contextManager.getActiveState(ContextUndoRedo.class);
             if (undoRedo == binaryDataComponent) {
-                contextManager.notifyActiveStateChange(ContextUndoRedo.class, undoRedo, UndoRedoState.ChangeType.UNDO_REDO_STATE);
+                contextManager.updateActiveState(ContextUndoRedo.class, undoRedo, UndoRedoState.UpdateType.UNDO_REDO_STATE);
             }
         });
         binaryDataComponent.setUndoRedo(codeAreaUndoRedo);

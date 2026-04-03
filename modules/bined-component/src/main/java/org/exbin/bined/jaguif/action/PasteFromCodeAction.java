@@ -72,7 +72,7 @@ public class PasteFromCodeAction extends AbstractAction implements ActionContext
 
     @Override
     public void register(ContextChangeRegistration registrar) {
-        registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+        registrar.registerChangeListener(ContextComponent.class, (instance) -> {
             codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
             boolean hasInstance = codeArea != null;
             boolean hasSelection = hasInstance;

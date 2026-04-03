@@ -60,7 +60,7 @@ import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.context.api.StateChangeType;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -163,15 +163,15 @@ public class BinedViewerModule implements Module {
             }
         };
         action.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, (ActionContextChange) (ContextChangeRegistration registrar) -> {
-            registrar.registerStateChangeListener(ContextEncoding.class, (ContextEncoding instance, StateChangeType changeType) -> {
-                if (CharsetEncodingState.ChangeType.ENCODING.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextEncoding.class, (ContextEncoding instance, StateUpdateType updateType) -> {
+                if (CharsetEncodingState.UpdateType.ENCODING.equals(updateType)) {
                     fileManager.updateTextEncodingStatus(encodingsManager);
                 }
             });
-            registrar.registerUpdateListener(ContextEncoding.class, (instance) -> {
+            registrar.registerChangeListener(ContextEncoding.class, (instance) -> {
                 fileManager.updateTextEncodingStatus(encodingsManager);
             });
-            registrar.registerUpdateListener(ContextDocument.class, (instance) -> {
+            registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                 if (instance instanceof BinaryDocument) {
                     binaryStatus.updateStatus();
                 }

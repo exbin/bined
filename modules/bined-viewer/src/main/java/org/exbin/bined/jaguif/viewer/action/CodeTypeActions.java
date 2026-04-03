@@ -116,11 +116,11 @@ public class CodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -160,11 +160,11 @@ public class CodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -204,11 +204,11 @@ public class CodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -248,11 +248,11 @@ public class CodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });
@@ -313,11 +313,11 @@ public class CodeTypeActions {
 
         @Override
         public void register(ContextChangeRegistration registrar) {
-            registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+            registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                 updateByContext(instance);
             });
-            registrar.registerStateChangeListener(ContextComponent.class, (instance, changeType) -> {
-                if (CodeTypeState.ChangeType.CODE_TYPE.equals(changeType)) {
+            registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
+                if (CodeTypeState.UpdateType.CODE_TYPE.equals(updateType)) {
                     updateByContext(instance);
                 }
             });

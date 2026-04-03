@@ -99,7 +99,7 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
 
     @Override
     public void register(ContextChangeRegistration registrar) {
-        registrar.registerUpdateListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
+        registrar.registerChangeListener(DialogParentComponent.class, (DialogParentComponent instance) -> {
             dialogParentComponent = instance;
             setEnabled(dialogParentComponent != null);
         });

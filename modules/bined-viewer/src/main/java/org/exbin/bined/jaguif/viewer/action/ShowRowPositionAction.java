@@ -54,7 +54,7 @@ public class ShowRowPositionAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerUpdateListener(ContextComponent.class, (instance) -> {
+                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
                     codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
                     boolean hasInstance = instance != null;
                     if (codeArea != null) {
