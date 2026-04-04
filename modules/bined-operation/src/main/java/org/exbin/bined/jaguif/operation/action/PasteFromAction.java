@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.CaretCapable;
@@ -42,6 +41,8 @@ import org.exbin.bined.jaguif.operation.BinedOperationModule;
 import org.exbin.bined.jaguif.operation.api.DataOperationMethod;
 import org.exbin.bined.jaguif.operation.api.PasteFromDataMethod;
 import org.exbin.bined.jaguif.operation.gui.DataOperationPanel;
+import org.exbin.jaguif.help.api.HelpLink;
+import org.exbin.jaguif.help.api.HelpModuleApi;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.WindowHandler;
@@ -57,6 +58,7 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 public class PasteFromAction extends AbstractAction {
 
     public static final String ACTION_ID = "pasteFromAction";
+    public static final String HELP_ID = "paste-from";
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
@@ -98,8 +100,8 @@ public class PasteFromAction extends AbstractAction {
         });
         ResourceBundle panelResourceBundle = App.getModule(LanguageModuleApi.class).getResourceBundleByBundleName("org.exbin.bined.jaguif.operation.gui.resources.PasteFromDataControlPanel");
         DefaultControlPanel controlPanel = new DefaultControlPanel();
-//        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
-//        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         BinedOperationModule binedBlockEditModule = App.getModule(BinedOperationModule.class);
         dataOperationPanel.setDataMethods(binedBlockEditModule.getPasteFromDataMethods());
