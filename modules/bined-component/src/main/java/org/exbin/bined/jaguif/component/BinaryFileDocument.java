@@ -36,14 +36,19 @@ import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
+import org.exbin.bined.CodeAreaCaretPosition;
+import org.exbin.bined.EditMode;
+import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextActivable;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ComponentDocument;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.DocumentSource;
@@ -71,15 +76,45 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     protected final BinEdDataComponent dataComponent;
     protected DocumentSource documentSource = null;
-    private long documentOriginalSize;
-    private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
+    protected long documentOriginalSize;
+    protected FileProcessingMode initialProcessingMode = FileProcessingMode.MEMORY;
+    protected ActiveContextManagement activeContextManagement;
 
     public BinaryFileDocument() {
         dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
+        init();
     }
-    
+
     public BinaryFileDocument(BinEdDataComponent dataComponent) {
         this.dataComponent = dataComponent;
+        init();
+    }
+
+    private void init() {
+        SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
+        codeArea.addDataChangedListener(() -> {
+            if (activeContextManagement != null) {
+                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.DATA_CHANGED);
+            }
+        });
+
+        codeArea.addSelectionChangedListener(() -> {
+            if (activeContextManagement != null) {
+                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.SELECTION_CHANGED);
+            }
+        });
+
+        codeArea.addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
+            if (activeContextManagement != null) {
+                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.CURSOR_MOVED);
+            }
+        });
+
+        codeArea.addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
+            if (activeContextManagement != null) {
+                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.EDIT_MODE_CHANGED);
+            }
+        });
     }
 
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
@@ -87,12 +122,13 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
         settingsManager.applyContextOptions(ContextDocument.class, this, settingsOptionsProvider);
-        settingsManager.applyContextOptions(ContextFileDialogs.class, new ContextFileDialogs() {}, settingsOptionsProvider);
+        settingsManager.applyContextOptions(ContextFileDialogs.class, new ContextFileDialogs() {
+        }, settingsOptionsProvider);
         dataComponent.applySettings(settingsOptionsProvider);
     }
 
-    public void setInitialFileProcessing(FileProcessingMode initialFileProcessing) {
-        this.initialFileProcessing = initialFileProcessing;
+    public void setInitialProcessingMode(FileProcessingMode initialProcessingMode) {
+        this.initialProcessingMode = initialProcessingMode;
     }
 
     @Nonnull
@@ -110,11 +146,11 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         if (documentSource instanceof FileDocumentSource) {
             return ((FileDocumentSource) documentSource).getFile().getName();
         }
-        
+
         if (documentSource instanceof StreamDocumentSource) {
             return ((StreamDocumentSource) documentSource).getDocumentTitle();
         }
-        
+
         if (documentSource instanceof MemoryDocumentSource) {
             return ((MemoryDocumentSource) documentSource).getDocumentTitle();
         }
@@ -179,7 +215,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     @Override
     public void loadFrom(DocumentSource documentSource) {
         this.documentSource = documentSource;
-        loadContent(initialFileProcessing);
+        loadContent(initialProcessingMode);
     }
 
     public void loadContent(FileProcessingMode fileProcessingMode) {
@@ -341,13 +377,14 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     @Override
-    public void notifyActivated(ActiveContextManagement contextManager) {
-        contextManager.changeActiveState(ContextFont.class, dataComponent);
-        contextManager.changeActiveState(ContextEncoding.class, dataComponent);
+    public void notifyActivated(ActiveContextManagement contextManagement) {
+        activeContextManagement = contextManagement;
+        contextManagement.changeActiveState(ContextFont.class, dataComponent);
+        contextManagement.changeActiveState(ContextEncoding.class, dataComponent);
         // TODO contextManager.changeActiveState(UndoRedoState.class, );
-        contextManager.changeActiveState(ContextComponent.class, dataComponent);
-        contextManager.changeActiveState(ContextUndoRedo.class, dataComponent);
-        contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
+        contextManagement.changeActiveState(ContextComponent.class, dataComponent);
+        contextManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
+        contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull
             @Override
             public Component getComponent() {
@@ -357,12 +394,13 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     @Override
-    public void notifyDeactivated(ActiveContextManagement contextManager) {
-        contextManager.changeActiveState(ContextFont.class, null);
-        contextManager.changeActiveState(ContextEncoding.class, null);
-        contextManager.changeActiveState(ContextUndoRedo.class, null);
-        contextManager.changeActiveState(ContextComponent.class, null);
-        contextManager.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
+    public void notifyDeactivated(ActiveContextManagement contextManagement) {
+        activeContextManagement = null;
+        contextManagement.changeActiveState(ContextFont.class, null);
+        contextManagement.changeActiveState(ContextEncoding.class, null);
+        contextManagement.changeActiveState(ContextUndoRedo.class, null);
+        contextManagement.changeActiveState(ContextComponent.class, null);
+        contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Nonnull
             @Override
             public Component getComponent() {
@@ -379,5 +417,12 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         }
 
         return FileProcessingMode.MEMORY;
+    }
+
+    public enum UpdateType implements StateUpdateType {
+        DATA_CHANGED,
+        SELECTION_CHANGED,
+        CURSOR_MOVED,
+        EDIT_MODE_CHANGED
     }
 }

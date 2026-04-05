@@ -293,7 +293,7 @@ public class BinedComponentModule implements Module {
                 SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
                 binaryFileDocument.applySettings(settingsOptionsProvider);
                 binaryFileDocument.setContentData(new ByteArrayPagedData());
-                binaryFileDocument.setInitialFileProcessing(initialFileProcessing);
+                binaryFileDocument.setInitialProcessingMode(initialFileProcessing);
                 return binaryFileDocument;
             }
         });

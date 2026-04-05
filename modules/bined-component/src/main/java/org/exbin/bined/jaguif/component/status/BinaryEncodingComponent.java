@@ -25,8 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
-import org.exbin.bined.EditOperation;
-import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.App;
@@ -43,14 +41,15 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class BinaryEditModeComponent extends AbstractStatusBarComponent {
+public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
     protected final ResourceBundle resourceBundle;
 
-    protected EditOperation editOperation;
+    protected ContextEncoding contextEncoding = null;
+    protected EncodingsController controller; // TODO Drop
 
-    public BinaryEditModeComponent() {
+    public BinaryEncodingComponent() {
         component = new JLabel() {
 
             private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
@@ -102,17 +101,17 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
                         clear();
                     }
                 });
-                registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.EDIT_MODE_CHANGED)) {
+                /* registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
+                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.Update.ENCODING)) {
                         updateForDocument((BinaryFileDocument) instance);
                     } else {
                         clear();
                     }
-                });
+                }); */
             }
 
             private void updateForDocument(BinaryFileDocument document) {
-                editOperation = ((EditModeCapable) document.getCodeArea()).getActiveOperation();
+                contextEncoding = document instanceof ContextEncoding ? (ContextEncoding) document : null;
                 // TODO update();
             }
         });
@@ -125,15 +124,15 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     }
     
     private void clear() {
-        component.setText("");
+        // TODO
     }
 
     private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (evt.isShiftDown()) {
-                // TODO ((EncodingsController) controller).cyclePreviousEncoding();
+                ((EncodingsController) controller).cyclePreviousEncoding();
             } else {
-                // TODO ((EncodingsController) controller).cycleNextEncoding();
+                ((EncodingsController) controller).cycleNextEncoding();
             }
         } else {
             handleEncodingPopup(evt);
@@ -150,7 +149,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
 
     private void handleEncodingPopup(java.awt.event.MouseEvent evt) {
         if (evt.isPopupTrigger()) {
-            // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+            ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
         }
     }
 
