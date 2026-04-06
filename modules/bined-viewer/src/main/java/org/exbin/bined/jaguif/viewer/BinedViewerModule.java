@@ -43,7 +43,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdFileManager;
 import org.exbin.bined.jaguif.component.BinaryDocument;
-import org.exbin.bined.jaguif.component.BinaryStatus;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.BinedComponentModule.PopupMenuVariant;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
@@ -144,14 +143,12 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerStatusBar() {
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+        /* BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.registerStatusBar();
-        BinaryStatus binaryStatus = fileManager.getBinaryStatus();
-        fileManager.setBinaryStatusController(new BinaryStatusController(binaryStatus, encodingsManager));
+        fileManager.registerStatusBar(); */
 
         // TODO Replace with status bar contribution
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        /* FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ComponentFrame frameHandler = frameModule.getFrameHandler();
         ActionManagement actionManager = frameHandler.getActionManager();
         ActionModuleApi actionModuleApi = App.getModule(ActionModuleApi.class);
@@ -173,11 +170,11 @@ public class BinedViewerModule implements Module {
             });
             registrar.registerChangeListener(ContextDocument.class, (instance) -> {
                 if (instance instanceof BinaryDocument) {
-                    binaryStatus.updateStatus();
+                    // TODO binaryStatus.updateStatus();
                 }
             });
         });
-        actionContextRegistrar.registerActionContext(action);
+        actionContextRegistrar.registerActionContext(action); */
     }
 
     public void registerEncodings() {
@@ -210,7 +207,7 @@ public class BinedViewerModule implements Module {
         settingsManagement.registerApplySetting(TextEncodingOptions.class, new ApplySettingsContribution(BinaryEncodingSettingsApplier.APPLIER_ID, new BinaryEncodingSettingsApplier()));
         settingsManagement.registerApplyContextSetting(ContextComponent.class, new ApplySettingsContribution(BinaryFontSettingsApplier.APPLIER_ID, new BinaryFontSettingsApplier()));
         settingsManagement.registerApplySetting(TextFontOptions.class, new ApplySettingsContribution(BinaryFontSettingsApplier.APPLIER_ID, new BinaryFontSettingsApplier()));
-        settingsManagement.registerApplyContextSetting(BinaryStatus.class, new ApplySettingsContribution(CodeAreaStatusSettingsApplier.APPLIER_ID, new CodeAreaStatusSettingsApplier()));
+        settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(CodeAreaStatusSettingsApplier.APPLIER_ID, new CodeAreaStatusSettingsApplier()));
         settingsManagement.registerApplySetting(CodeAreaStatusOptions.class, new ApplySettingsContribution(CodeAreaStatusSettingsApplier.APPLIER_ID, new CodeAreaStatusSettingsApplier()));
 
         SettingsPageContribution pageContribution = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
@@ -291,7 +288,7 @@ public class BinedViewerModule implements Module {
             BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
             BinEdFileManager fileManager = binedModule.getFileManager();
             encodingsManager = new EncodingsManager();
-            fileManager.updateTextEncodingStatus(encodingsManager);
+            // TODO fileManager.updateTextEncodingStatus(encodingsManager);
             encodingsManager.init();
         }
 

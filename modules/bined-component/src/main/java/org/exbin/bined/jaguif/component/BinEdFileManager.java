@@ -35,15 +35,10 @@ import org.exbin.jaguif.action.api.DeletionController;
 import org.exbin.jaguif.action.api.SelectionController;
 import org.exbin.jaguif.action.api.clipboard.ClipboardController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.bined.jaguif.component.gui.BinaryStatusPanel;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
-import org.exbin.jaguif.text.encoding.EncodingsManager;
 import org.exbin.jaguif.operation.undo.api.ContextUndoRedo;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.operation.undo.api.UndoRedoState;
-import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
-import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
-import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 
 /**
  * File manager for binary editor.
@@ -53,7 +48,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 @ParametersAreNonnullByDefault
 public class BinEdFileManager {
 
-    private BinaryStatus binaryStatus = new BinaryStatus();
     private final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
     private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
     private final List<CodeAreaColorAssessor> painterPositionColorModifiers = new ArrayList<>();
@@ -100,19 +94,9 @@ public class BinEdFileManager {
         for (CodeAreaColorAssessor modifier : painterPositionColorModifiers) {
             painter.addColorModifier(modifier);
         }
-        binaryStatus.attachCodeArea(binaryDataComponent);
         binaryDataComponent.setContextProvider(contextManager);
-
-        OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
-        OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
-        SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
-        applySettings(settingsOptionsProvider);
     }
 
-    public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
-        binaryStatus.applySettings(settingsOptionsProvider);
-    }
-    
     public void initCommandHandler(BinEdDataComponent binaryDataComponent) {
         CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
         CodeAreaOperationCommandHandler commandHandler;
@@ -122,11 +106,6 @@ public class BinEdFileManager {
             commandHandler = new CodeAreaOperationCommandHandler(codeArea, binaryDataComponent.getUndoRedo().orElse(null));
         }
         codeArea.setCommandHandler(commandHandler);
-    }
-
-    @Nonnull
-    public BinaryStatus getBinaryStatus() {
-        return binaryStatus;
     }
 
     @Nonnull
@@ -148,25 +127,6 @@ public class BinEdFileManager {
 
     public void removePainterPriorityColorModifier(CodeAreaColorAssessor modifier) {
         painterPriorityPositionColorModifiers.remove(modifier);
-    }
-
-    public void registerStatusBar() {
-        registerStatusBar(new BinaryStatusPanel());
-    }
-
-    public void registerStatusBar(BinaryStatusPanel binaryStatusPanel) {
-        binaryStatus.setBinaryStatusPanel(binaryStatusPanel);
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        frameModule.registerStatusBar(BinedComponentModule.MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, binaryStatusPanel);
-        frameModule.switchStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
-    }
-
-    public void updateTextEncodingStatus(EncodingsManager encodingsHandler) {
-        binaryStatus.updateEncodingState();
-    }
-
-    public void setBinaryStatusController(BinaryStatusPanel.Controller binaryStatusController) {
-        binaryStatus.setBinaryStatusController(binaryStatusController);
     }
 
     public void setCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
