@@ -80,6 +80,7 @@ dependencies {
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-menu')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-menu-popup')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-toolbar')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-statusbar')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-sidebar')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-file')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-file-api')

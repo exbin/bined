@@ -15,6 +15,7 @@
  */
 package org.exbin.bined.jaguif.component.status;
 
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
@@ -29,13 +30,13 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
-import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
@@ -46,10 +47,11 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 @ParametersAreNonnullByDefault
 public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
+    public static final String CONTRIBUTION_ID = "binaryCursorPosition";
     protected static final String BR_TAG = "<br>";
 
     protected final JLabel component;
-    protected final ResourceBundle resourceBundle;
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryCursorPositionComponent.class);
 
     private int octalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
     private int decimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
@@ -61,8 +63,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
     public BinaryCursorPositionComponent() {
         component = new JLabel();
-        BinedComponentModule componentModule = App.getModule(BinedComponentModule.class);
-        resourceBundle = componentModule.getResourceBundle();
+        component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         component.addMouseListener(new MouseAdapter() {
@@ -115,7 +116,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     
     private void clear() {
         component.setText("-");
-        component.setToolTipText(resourceBundle.getString("documentSizeLabel.toolTipText"));
+        component.setToolTipText(resourceBundle.getString("cursorPositionLabel.toolTipText"));
     }
 
     private void updateCaretPosition() {

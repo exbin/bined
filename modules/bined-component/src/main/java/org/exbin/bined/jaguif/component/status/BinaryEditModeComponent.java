@@ -28,14 +28,13 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
-import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
-import org.exbin.jaguif.text.encoding.ContextEncoding;
 
 /**
  * BinEd edit mode status component.
@@ -45,35 +44,18 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 @ParametersAreNonnullByDefault
 public class BinaryEditModeComponent extends AbstractStatusBarComponent {
 
+    public static final String CONTRIBUTION_ID = "binaryEditMode";
     protected final JLabel component;
-    protected final ResourceBundle resourceBundle;
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEditModeComponent.class);
 
     protected EditOperation editOperation;
 
     public BinaryEditModeComponent() {
-        component = new JLabel() {
-
-            private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Dimension areaSize = getSize();
-
-                int h = areaSize.height;
-                int w = areaSize.width;
-                int size = Math.min(Math.max((h - 4) / 4, 2), 10);
-                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 - (h / 5), size, SwingConstants.NORTH, true);
-                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 + (h / 5), size, SwingConstants.SOUTH, true);
-            }
-        };
-
-        BinedComponentModule componentModule = App.getModule(BinedComponentModule.class);
-        resourceBundle = componentModule.getResourceBundle();
+        component = new JLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        component.setText(resourceBundle.getString("encodingLabel.text"));
+        component.setText("-");
         component.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText"));
-        component.setPreferredSize(new Dimension(148, component.getPreferredSize().height));
+        component.setPreferredSize(new Dimension(40, component.getPreferredSize().height));
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         component.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override

@@ -26,12 +26,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
-import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 
@@ -42,9 +41,11 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
  */
 @ParametersAreNonnullByDefault
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {
+    
+    public static final String CONTRIBUTION_ID = "binaryEncoding";
 
     protected final JLabel component;
-    protected final ResourceBundle resourceBundle;
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
     protected ContextEncoding contextEncoding = null;
     protected EncodingsController controller; // TODO Drop
@@ -67,8 +68,6 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
             }
         };
 
-        BinedComponentModule componentModule = App.getModule(BinedComponentModule.class);
-        resourceBundle = componentModule.getResourceBundle();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setText(resourceBundle.getString("encodingLabel.text"));
         component.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText"));

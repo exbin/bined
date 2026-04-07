@@ -52,6 +52,11 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
+import org.exbin.bined.jaguif.component.status.BinaryCursorPositionComponent;
+import org.exbin.bined.jaguif.component.status.BinaryDocumentSizeComponent;
+import org.exbin.bined.jaguif.component.status.BinaryEditModeComponent;
+import org.exbin.bined.jaguif.component.status.BinaryEncodingComponent;
+import org.exbin.bined.jaguif.component.status.BinaryProcessingModeComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
@@ -83,6 +88,10 @@ import org.exbin.jaguif.document.api.DocumentType;
 import org.exbin.jaguif.file.api.FileDocumentSource;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.statusbar.api.ComponentStatusBarContribution;
+import org.exbin.jaguif.statusbar.api.StatusBarComponent;
+import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
+import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 
 /**
  * Binary data editor module.
@@ -379,6 +388,77 @@ public class BinedComponentModule implements Module {
         contribution = mgmt.registerMenuItem(getSettingsAction());
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID));
     }
+    
+    public void registerStatusBar() {
+        StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
+        statusBarModule.registerStatusBar(BINARY_STATUS_BAR_ID, MODULE_ID);
+        StatusBarDefinitionManagement statusBarManager = statusBarModule.getStatusBarManager(BINARY_STATUS_BAR_ID, MODULE_ID);
+        statusBarManager.registerStatusBarContribution(new ComponentStatusBarContribution() {
+            @Nonnull
+            @Override
+            public StatusBarComponent createComponent() {
+                return new BinaryEncodingComponent();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return BinaryEncodingComponent.CONTRIBUTION_ID;
+            }
+        });
+        statusBarManager.registerStatusBarContribution(new ComponentStatusBarContribution() {
+            @Nonnull
+            @Override
+            public StatusBarComponent createComponent() {
+                return new BinaryDocumentSizeComponent();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return BinaryDocumentSizeComponent.CONTRIBUTION_ID;
+            }
+        });
+        statusBarManager.registerStatusBarContribution(new ComponentStatusBarContribution() {
+            @Nonnull
+            @Override
+            public StatusBarComponent createComponent() {
+                return new BinaryCursorPositionComponent();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return BinaryCursorPositionComponent.CONTRIBUTION_ID;
+            }
+        });
+        statusBarManager.registerStatusBarContribution(new ComponentStatusBarContribution() {
+            @Nonnull
+            @Override
+            public StatusBarComponent createComponent() {
+                return new BinaryProcessingModeComponent();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return BinaryProcessingModeComponent.CONTRIBUTION_ID;
+            }
+        });
+        statusBarManager.registerStatusBarContribution(new ComponentStatusBarContribution() {
+            @Nonnull
+            @Override
+            public StatusBarComponent createComponent() {
+                return new BinaryEditModeComponent();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return BinaryEditModeComponent.CONTRIBUTION_ID;
+            }
+        });
+    }
 
     public void start() {
         // TODO
@@ -389,10 +469,6 @@ public class BinedComponentModule implements Module {
             ((DocumentDocking) contextDocking).openNewDocument();
         }
         
-//        if (editorProvider instanceof MultiEditorProvider) {
-//            editorProvider.newFile();
-//        }
-
         // TODO Rework to use different approach than extension
         getFileManager().addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
             @Nonnull

@@ -189,6 +189,7 @@ public class BinedLauncherModule implements LauncherModule {
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
             ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
 
+            BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
             BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
             BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
             BinedThemeModule binedThemeModule = App.getModule(BinedThemeModule.class);
@@ -322,6 +323,7 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
+            binedComponentModule.registerStatusBar();
             binedViewerModule.registerStatusBar();
 
             if (demoMode) {

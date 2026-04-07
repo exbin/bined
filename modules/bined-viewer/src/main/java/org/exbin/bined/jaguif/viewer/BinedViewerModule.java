@@ -15,6 +15,7 @@
  */
 package org.exbin.bined.jaguif.viewer;
 
+import java.awt.BorderLayout;
 import org.exbin.bined.jaguif.viewer.action.ShowRowPositionAction;
 import org.exbin.bined.jaguif.viewer.action.CodeTypeActions;
 import org.exbin.bined.jaguif.viewer.action.ViewModeHandlerActions;
@@ -59,6 +60,8 @@ import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
@@ -80,6 +83,9 @@ import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsComponentContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
+import org.exbin.jaguif.statusbar.api.StatusBar;
+import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
+import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.encoding.EncodingsManager;
@@ -114,8 +120,6 @@ public class BinedViewerModule implements Module {
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
-    public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
-
     private java.util.ResourceBundle resourceBundle = null;
 
     private ViewModeHandlerActions viewModeActions;
@@ -143,6 +147,19 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerStatusBar() {
+        StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+        ContextRegistration contextRegistrar = contextModule.createContextRegistrator();
+        StatusBar statusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrar);
+        javax.swing.JPanel test = new javax.swing.JPanel(new BorderLayout());
+        // StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarManager();
+        // StatusBar statusBar = statusBarManager.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        //test.add(new javax.swing.JLabel("TEST"), BorderLayout.CENTER);
+        test.add(statusBar.getComponent(), BorderLayout.CENTER);
+        frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, test);
+        frameModule.switchStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        
         /* BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.registerStatusBar(); */

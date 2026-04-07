@@ -123,8 +123,8 @@ public class BinEdDiffPanel extends JPanel {
         toolbarPanel = new DiffToolbarPanel();
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarManager();
-        leftStatusBar = statusBarManager.createStatusBar(BinedViewerModule.BINARY_STATUS_BAR_ID);
-        rightStatusBar = statusBarManager.createStatusBar(BinedViewerModule.BINARY_STATUS_BAR_ID);
+        leftStatusBar = null; // TODO statusBarManager.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        rightStatusBar = null; // TODO statusBarManager.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
         toolbarPanel.setTargetComponent(diffPanel);
         toolbarPanel.setController(new DiffToolbarPanel.Controller() {
             @Nonnull
