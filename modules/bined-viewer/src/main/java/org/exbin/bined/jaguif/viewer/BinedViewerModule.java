@@ -34,16 +34,11 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.action.api.ActionConsts;
-import org.exbin.jaguif.action.api.ActionContextChange;
-import org.exbin.jaguif.action.api.ActionContextRegistration;
-import org.exbin.jaguif.action.api.ActionManagement;
-import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdFileManager;
-import org.exbin.bined.jaguif.component.BinaryDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.BinedComponentModule.PopupMenuVariant;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
@@ -59,10 +54,8 @@ import org.exbin.bined.jaguif.viewer.settings.GoToPositionOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
-import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
-import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -72,7 +65,6 @@ import org.exbin.jaguif.contribution.api.SubSequenceContributionRule;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.DocumentModuleApi;
-import org.exbin.jaguif.frame.api.ComponentFrame;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.toolbar.api.ToolBarDefinitionManagement;
@@ -84,10 +76,7 @@ import org.exbin.jaguif.options.settings.api.SettingsComponentContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 import org.exbin.jaguif.statusbar.api.StatusBar;
-import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
-import org.exbin.jaguif.text.encoding.CharsetEncodingState;
-import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.encoding.EncodingsManager;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingSettingsComponent;
@@ -159,39 +148,6 @@ public class BinedViewerModule implements Module {
         test.add(statusBar.getComponent(), BorderLayout.CENTER);
         frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, test);
         frameModule.switchStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        
-        /* BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
-        fileManager.registerStatusBar(); */
-
-        // TODO Replace with status bar contribution
-        /* FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ComponentFrame frameHandler = frameModule.getFrameHandler();
-        ActionManagement actionManager = frameHandler.getActionManager();
-        ActionModuleApi actionModuleApi = App.getModule(ActionModuleApi.class);
-        ActionContextRegistration actionContextRegistrar = actionModuleApi.createActionContextRegistrar(actionManager);
-        Action action = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                // ignore
-            }
-        };
-        action.putValue(ActionConsts.ACTION_CONTEXT_CHANGE, (ActionContextChange) (ContextChangeRegistration registrar) -> {
-            registrar.registerStateUpdateListener(ContextEncoding.class, (ContextEncoding instance, StateUpdateType updateType) -> {
-                if (CharsetEncodingState.UpdateType.ENCODING.equals(updateType)) {
-                    fileManager.updateTextEncodingStatus(encodingsManager);
-                }
-            });
-            registrar.registerChangeListener(ContextEncoding.class, (instance) -> {
-                fileManager.updateTextEncodingStatus(encodingsManager);
-            });
-            registrar.registerChangeListener(ContextDocument.class, (instance) -> {
-                if (instance instanceof BinaryDocument) {
-                    // TODO binaryStatus.updateStatus();
-                }
-            });
-        });
-        actionContextRegistrar.registerActionContext(action); */
     }
 
     public void registerEncodings() {

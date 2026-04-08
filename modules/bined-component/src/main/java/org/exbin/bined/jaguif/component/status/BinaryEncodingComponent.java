@@ -25,13 +25,16 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.jaguif.App;
+import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
+import org.exbin.jaguif.text.encoding.CharsetEncodingState;
+import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 
 /**
@@ -47,8 +50,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
-    protected ContextEncoding contextEncoding = null;
-    protected EncodingsController controller; // TODO Drop
+    protected BinEdDataComponent dataComponent = null;
 
     public BinaryEncodingComponent() {
         component = new JLabel() {
@@ -81,37 +83,43 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                encodingLabelMousePressed(evt);
+                handleEncodingPopup(evt);
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                encodingLabelMouseReleased(evt);
+                handleEncodingPopup(evt);
             }
         });
 
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextDocument.class, (ContextDocument instance) -> {
-                    if (instance instanceof BinaryFileDocument) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
+                    if (instance instanceof BinEdDataComponent) {
+                        dataComponent = (BinEdDataComponent) instance;
+                        update();
                     } else {
                         clear();
                     }
                 });
-                /* registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.Update.ENCODING)) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerChangeListener(ContextEncoding.class, (instance) -> {
+                    if (instance instanceof BinEdDataComponent) {
+                        dataComponent = (BinEdDataComponent) instance;
+                        update();
                     } else {
                         clear();
                     }
-                }); */
-            }
-
-            private void updateForDocument(BinaryFileDocument document) {
-                contextEncoding = document instanceof ContextEncoding ? (ContextEncoding) document : null;
-                // TODO update();
+                });
+                registrar.registerStateUpdateListener(ContextEncoding.class, (ContextEncoding instance, StateUpdateType updateType) -> {
+                    if (CharsetEncodingState.UpdateType.ENCODING.equals(updateType)) {
+                        update();
+                        // BinaryEncodingComponent.this.contextEncoding = instance;
+                    } else if (CharsetListEncodingState.UpdateType.ENCODING_LIST.equals(updateType)) {
+                        // TODO
+                        // BinaryEncodingComponent.this.contextEncoding = instance;
+                    }
+                });
             }
         });
     }
@@ -125,51 +133,26 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     private void clear() {
         // TODO
     }
+    
+    private void update() {
+        component.setText(dataComponent != null ? dataComponent.getEncoding() : "");
+    }
 
     private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (evt.isShiftDown()) {
-                ((EncodingsController) controller).cyclePreviousEncoding();
+                // TODO ((EncodingsController) controller).cyclePreviousEncoding();
             } else {
-                ((EncodingsController) controller).cycleNextEncoding();
+                // TODO ((EncodingsController) controller).cycleNextEncoding();
             }
         } else {
             handleEncodingPopup(evt);
         }
     }
 
-    private void encodingLabelMousePressed(java.awt.event.MouseEvent evt) {
-        handleEncodingPopup(evt);
-    }
-
-    private void encodingLabelMouseReleased(java.awt.event.MouseEvent evt) {
-        handleEncodingPopup(evt);
-    }
-
     private void handleEncodingPopup(java.awt.event.MouseEvent evt) {
         if (evt.isPopupTrigger()) {
-            ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+            // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
         }
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface EncodingsController {
-
-        /**
-         * Switches to next encoding in defined list.
-         */
-        void cycleNextEncoding();
-
-        /**
-         * Switches to previous encoding in defined list.
-         */
-        void cyclePreviousEncoding();
-
-        /**
-         * Handles encodings popup menu.
-         *
-         * @param mouseEvent mouse event
-         */
-        void encodingsPopupEncodingsMenu(MouseEvent mouseEvent);
     }
 }

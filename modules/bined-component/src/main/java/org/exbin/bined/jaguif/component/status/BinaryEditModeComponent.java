@@ -16,15 +16,11 @@
 package org.exbin.bined.jaguif.component.status;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicArrowButton;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
@@ -60,17 +56,17 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
         component.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                encodingLabelMouseClicked(evt);
+                handlePopup(evt);
             }
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                encodingLabelMousePressed(evt);
+                handlePopup(evt);
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                encodingLabelMouseReleased(evt);
+                handlePopup(evt);
             }
         });
 
@@ -105,55 +101,14 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     public JComponent getComponent() {
         return component;
     }
-    
+
     private void clear() {
         component.setText("");
     }
 
-    private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {
-        if (evt.getButton() == MouseEvent.BUTTON1) {
-            if (evt.isShiftDown()) {
-                // TODO ((EncodingsController) controller).cyclePreviousEncoding();
-            } else {
-                // TODO ((EncodingsController) controller).cycleNextEncoding();
-            }
-        } else {
-            handleEncodingPopup(evt);
-        }
-    }
-
-    private void encodingLabelMousePressed(java.awt.event.MouseEvent evt) {
-        handleEncodingPopup(evt);
-    }
-
-    private void encodingLabelMouseReleased(java.awt.event.MouseEvent evt) {
-        handleEncodingPopup(evt);
-    }
-
-    private void handleEncodingPopup(java.awt.event.MouseEvent evt) {
+    private void handlePopup(java.awt.event.MouseEvent evt) {
         if (evt.isPopupTrigger()) {
-            // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+            // TODO
         }
-    }
-
-    @ParametersAreNonnullByDefault
-    public interface EncodingsController {
-
-        /**
-         * Switches to next encoding in defined list.
-         */
-        void cycleNextEncoding();
-
-        /**
-         * Switches to previous encoding in defined list.
-         */
-        void cyclePreviousEncoding();
-
-        /**
-         * Handles encodings popup menu.
-         *
-         * @param mouseEvent mouse event
-         */
-        void encodingsPopupEncodingsMenu(MouseEvent mouseEvent);
     }
 }

@@ -161,9 +161,4 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
     public void removeBinaryAreaFocusListener(FocusListener focusListener) {
         codeArea.removeFocusListener(focusListener);
     }
-
-    @ParametersAreNonnullByDefault
-    public interface Controller {
-
-    }
 }
