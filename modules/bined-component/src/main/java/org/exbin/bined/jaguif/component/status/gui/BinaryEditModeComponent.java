@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component.status;
+package org.exbin.bined.jaguif.component.status.gui;
 
 import java.awt.Dimension;
 import java.util.ResourceBundle;
@@ -40,7 +40,6 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 @ParametersAreNonnullByDefault
 public class BinaryEditModeComponent extends AbstractStatusBarComponent {
 
-    public static final String CONTRIBUTION_ID = "binaryEditMode";
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEditModeComponent.class);
 
@@ -50,7 +49,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
         component = new JLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setText("-");
-        component.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText"));
+        component.setToolTipText(resourceBundle.getString("editModeLabel.toolTipText"));
         component.setPreferredSize(new Dimension(40, component.getPreferredSize().height));
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         component.addMouseListener(new java.awt.event.MouseAdapter() {

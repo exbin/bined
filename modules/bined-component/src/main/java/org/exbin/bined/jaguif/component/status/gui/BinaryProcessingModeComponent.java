@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component.status;
+package org.exbin.bined.jaguif.component.status.gui;
 
 import java.awt.Dimension;
 import java.util.ResourceBundle;
@@ -30,22 +30,21 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
- * BinEd edit mode status component.
+ * BinEd file processing mode status component.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
-    public static final String CONTRIBUTION_ID = "binaryProcessingMode";
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryProcessingModeComponent.class);
 
     public BinaryProcessingModeComponent() {
         component = new JLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-//        component.setText(resourceBundle.getString("encodingLabel.text"));
-//        component.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText"));
+        component.setText(resourceBundle.getString("processingModeLabel.text"));
+        component.setToolTipText(resourceBundle.getString("processingModeLabel.toolTipText"));
         component.setPreferredSize(new Dimension(20, component.getPreferredSize().height));
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         component.addMouseListener(new java.awt.event.MouseAdapter() {

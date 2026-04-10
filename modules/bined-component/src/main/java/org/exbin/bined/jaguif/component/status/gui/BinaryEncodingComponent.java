@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component.status;
+package org.exbin.bined.jaguif.component.status.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -44,8 +44,6 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
  */
 @ParametersAreNonnullByDefault
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {
-    
-    public static final String CONTRIBUTION_ID = "binaryEncoding";
 
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
@@ -129,11 +127,11 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     public JComponent getComponent() {
         return component;
     }
-    
+
     private void clear() {
         // TODO
     }
-    
+
     private void update() {
         component.setText(dataComponent != null ? dataComponent.getEncoding() : "");
     }
