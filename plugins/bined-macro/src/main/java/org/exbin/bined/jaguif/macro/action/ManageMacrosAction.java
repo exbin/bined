@@ -45,14 +45,14 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class ManageMacrosAction extends AbstractAction implements ActionContextChange {
 
-    public static final String ACTION_ID = "manageMacrosAction";
+    public static final String ACTION_ID = "manageMacros";
 
     private DialogParentComponent dialogParentComponent;
 
     public ManageMacrosAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

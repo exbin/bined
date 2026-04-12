@@ -47,18 +47,18 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 
 /**
- * Clipboard code actions.
+ * Paste from code action.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PasteFromCodeAction extends AbstractAction implements ActionContextChange {
 
-    public static final String ACTION_ID = "pasteFromCodeAction";
+    public static final String ACTION_ID = "pasteFromCode";
 
     protected CodeAreaCore codeArea;
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

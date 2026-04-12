@@ -68,8 +68,8 @@ import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 @ParametersAreNonnullByDefault
 public class CompareFilesAction extends AbstractAction implements ActionContextChange {
 
-    public static final String ACTION_ID = "compareFilesAction";
-    public static final String HELP_ID = "compare-files-action";
+    public static final String ACTION_ID = "compareFiles";
+    public static final String HELP_ID = "compare-files";
 
     private DocumentDocking documentDocking;
     private DialogParentComponent dialogParentComponent;
@@ -77,7 +77,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public CompareFilesAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

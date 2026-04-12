@@ -40,14 +40,14 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 @ParametersAreNonnullByDefault
 public class ShowHeaderAction extends AbstractAction {
 
-    public static final String ACTION_ID = "showHeaderAction";
+    public static final String ACTION_ID = "showHeader";
 
     private CodeAreaCore codeArea;
 
     public ShowHeaderAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);

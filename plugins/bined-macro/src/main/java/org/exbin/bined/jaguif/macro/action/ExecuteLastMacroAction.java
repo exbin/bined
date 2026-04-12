@@ -45,7 +45,7 @@ import org.exbin.jaguif.utils.ActionUtils;
 @ParametersAreNonnullByDefault
 public class ExecuteLastMacroAction extends AbstractAction {
 
-    public static final String ACTION_ID = "executeLastMacroAction";
+    public static final String ACTION_ID = "executeLastMacro";
 
     private CodeAreaCore codeArea;
     private ResourceBundle resourceBundle;
@@ -54,7 +54,7 @@ public class ExecuteLastMacroAction extends AbstractAction {
     public ExecuteLastMacroAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

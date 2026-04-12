@@ -30,21 +30,21 @@ import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
- * Row wrapping handler.
+ * Row wrapping action.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class RowWrappingAction extends AbstractAction {
 
-    public static final String ACTION_ID = "viewRowWrappingAction";
+    public static final String ACTION_ID = "rowWrapping";
 
     private CodeAreaCore codeArea;
 
     public RowWrappingAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);

@@ -40,14 +40,14 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 @ParametersAreNonnullByDefault
 public class ShowRowPositionAction extends AbstractAction {
 
-    public static final String ACTION_ID = "showRowPositionAction";
+    public static final String ACTION_ID = "showRowPosition";
 
     private CodeAreaCore codeArea;
 
     public ShowRowPositionAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);

@@ -20,20 +20,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.AbstractAction;
-import javax.swing.JMenuItem;
-import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
-import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
-import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
-import org.exbin.bined.jaguif.operation.action.InsertDataAction;
-import org.exbin.bined.jaguif.operation.action.ConvertDataAction;
-import org.exbin.bined.jaguif.operation.action.CopyAsAction;
-import org.exbin.bined.jaguif.operation.action.PasteFromAction;
+import org.exbin.bined.jaguif.component.contribution.CopyAsCodeContribution;
+import org.exbin.bined.jaguif.component.contribution.PasteFromCodeContribution;
 import org.exbin.bined.jaguif.operation.method.RandomDataMethod;
 import org.exbin.bined.jaguif.operation.method.SimpleFillDataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -41,6 +33,10 @@ import org.exbin.bined.jaguif.operation.api.ConvertDataMethod;
 import org.exbin.bined.jaguif.operation.api.CopyAsDataMethod;
 import org.exbin.bined.jaguif.operation.api.InsertDataMethod;
 import org.exbin.bined.jaguif.operation.api.PasteFromDataMethod;
+import org.exbin.bined.jaguif.operation.contribution.ConvertDataContribution;
+import org.exbin.bined.jaguif.operation.contribution.CopyAsContribution;
+import org.exbin.bined.jaguif.operation.contribution.InsertDataContribution;
+import org.exbin.bined.jaguif.operation.contribution.PasteFromContribution;
 import org.exbin.bined.jaguif.operation.method.Base64DataMethod;
 import org.exbin.bined.jaguif.operation.method.BitSwappingDataMethod;
 import org.exbin.bined.jaguif.operation.method.CompressionDataMethod;
@@ -52,10 +48,11 @@ import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule.NextToMode;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
-import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 
-
+/**
+ * BinEd operation module.
+ */
 @ParametersAreNonnullByDefault
 public class BinedOperationModule implements Module {
 
@@ -90,122 +87,42 @@ public class BinedOperationModule implements Module {
         addPasteFromDataMethod(fromTextDataMethod);
     }
 
-    @Nonnull
-    private AbstractAction createInsertDataAction() {
-        ensureSetup();
-        InsertDataAction insertDataAction = new InsertDataAction();
-        insertDataAction.setup(resourceBundle);
-
-        insertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        return insertDataAction;
-    }
-
-    @Nonnull
-    private AbstractAction createConvertDataAction() {
-        ensureSetup();
-        ConvertDataAction convertDataAction = new ConvertDataAction();
-        convertDataAction.setup(resourceBundle);
-
-        convertDataAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        return convertDataAction;
-    }
-
-    @Nonnull
-    private AbstractAction createCopyAsAction() {
-        ensureSetup();
-        CopyAsAction copyAsAction = new CopyAsAction();
-        copyAsAction.setup(resourceBundle);
-
-        copyAsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        return copyAsAction;
-    }
-
-    @Nonnull
-    private AbstractAction createPasteFromAction() {
-        ensureSetup();
-        PasteFromAction pasteFromAction = new PasteFromAction();
-        pasteFromAction.setup(resourceBundle);
-
-        pasteFromAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                return menuVariant != BinedComponentModule.PopupMenuVariant.BASIC && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-            }
-        });
-        return pasteFromAction;
-    }
-
     public void registerBlockEditActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createInsertDataAction());
+        SequenceContribution contribution = new InsertDataContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_OPERATION_MENU_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createConvertDataAction());
+        contribution = new ConvertDataContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_OPERATION_MENU_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createCopyAsAction());
+        contribution = new CopyAsCodeContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeAction.ACTION_ID));
-        contribution = mgmt.registerMenuItem(createPasteFromAction());
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeContribution.CONTRIBUTION_ID));
+        contribution = new PasteFromContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeAction.ACTION_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeContribution.CONTRIBUTION_ID));
     }
 
     public void registerBlockEditPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createInsertDataAction());
+        SequenceContribution contribution = new InsertDataContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createConvertDataAction());
+        contribution = new ConvertDataContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_OPERATION_GROUP_ID));
-        contribution = mgmt.registerMenuItem(createCopyAsAction());
+        contribution = new CopyAsContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeAction.ACTION_ID));
-        contribution = mgmt.registerMenuItem(createPasteFromAction());
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeContribution.CONTRIBUTION_ID));
+        contribution = new PasteFromContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_EDIT_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeAction.ACTION_ID));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, PasteFromCodeContribution.CONTRIBUTION_ID));
     }
 
     public void addInsertDataMethod(InsertDataMethod insertDataMethod) {

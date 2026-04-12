@@ -36,7 +36,7 @@ public class ClipboardCodeActions {
     public ClipboardCodeActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
@@ -53,7 +53,7 @@ public class ClipboardCodeActions {
                 super.actionPerformed(e);
             }
         };
-        copyAsCodeAction.setup(resourceBundle);
+        copyAsCodeAction.init(resourceBundle);
         return copyAsCodeAction;
     }
 
@@ -70,7 +70,7 @@ public class ClipboardCodeActions {
                 super.actionPerformed(e);
             }
         };
-        pasteFromCodeAction.setup(resourceBundle);
+        pasteFromCodeAction.init(resourceBundle);
         return pasteFromCodeAction;
     }
 

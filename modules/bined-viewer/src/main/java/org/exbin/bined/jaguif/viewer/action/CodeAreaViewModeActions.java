@@ -29,6 +29,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.viewer.BinedViewerUpdateType;
@@ -39,48 +40,66 @@ import org.exbin.bined.jaguif.viewer.BinedViewerUpdateType;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class ViewModeHandlerActions {
+public class CodeAreaViewModeActions {
 
     public static final String VIEW_MODE_RADIO_GROUP_ID = "viewModeRadioGroup";
 
     private ResourceBundle resourceBundle;
 
-    public ViewModeHandlerActions() {
+    public CodeAreaViewModeActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
     @Nonnull
     public DualModeAction createDualModeAction() {
         DualModeAction dualModeAction = new DualModeAction();
-        dualModeAction.setup(resourceBundle);
+        dualModeAction.init(resourceBundle);
         return dualModeAction;
     }
 
     @Nonnull
     public CodeMatrixModeAction createCodeMatrixModeAction() {
         CodeMatrixModeAction codeMatrixModeAction = new CodeMatrixModeAction();
-        codeMatrixModeAction.setup(resourceBundle);
+        codeMatrixModeAction.init(resourceBundle);
         return codeMatrixModeAction;
     }
 
     @Nonnull
     public TextPreviewModeAction createTextPreviewModeAction() {
         TextPreviewModeAction textPreviewModeAction = new TextPreviewModeAction();
-        textPreviewModeAction.setup(resourceBundle);
+        textPreviewModeAction.init(resourceBundle);
         return textPreviewModeAction;
+    }
+
+    @Nonnull
+    public ViewModeContribution createDualViewModeContribution() {
+        ViewModeContribution viewModeContribution = new ViewModeContribution(DualModeAction.ACTION_ID, CodeAreaViewMode.DUAL);
+        return viewModeContribution;
+    }
+
+    @Nonnull
+    public ViewModeContribution createMatrixModeViewModeContribution() {
+        ViewModeContribution viewModeContribution = new ViewModeContribution(DualModeAction.ACTION_ID, CodeAreaViewMode.CODE_MATRIX);
+        return viewModeContribution;
+    }
+
+    @Nonnull
+    public ViewModeContribution createTextPreviewViewModeContribution() {
+        ViewModeContribution viewModeContribution = new ViewModeContribution(DualModeAction.ACTION_ID, CodeAreaViewMode.TEXT_PREVIEW);
+        return viewModeContribution;
     }
 
     @ParametersAreNonnullByDefault
     public static class DualModeAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "dualViewModeAction";
+        public static final String ACTION_ID = "dualViewMode";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -120,11 +139,11 @@ public class ViewModeHandlerActions {
     @ParametersAreNonnullByDefault
     public static class CodeMatrixModeAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "codeMatrixViewModeAction";
+        public static final String ACTION_ID = "codeMatrixViewMode";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -165,11 +184,11 @@ public class ViewModeHandlerActions {
     @ParametersAreNonnullByDefault
     public static class TextPreviewModeAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "textPreviewViewModeAction";
+        public static final String ACTION_ID = "textPreviewViewMode";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -203,6 +222,48 @@ public class ViewModeHandlerActions {
                 putValue(Action.SELECTED_KEY, viewMode == CodeAreaViewMode.TEXT_PREVIEW);
             }
             setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public class ViewModeContribution implements ActionSequenceContribution {
+
+        private final String contributionId;
+        private final CodeAreaViewMode codeAreaViewMode;
+
+        public ViewModeContribution(String contributionId, CodeAreaViewMode codeAreaViewMode) {
+            this.contributionId = contributionId;
+            this.codeAreaViewMode = codeAreaViewMode;
+        }
+
+        @Nonnull
+        @Override
+        public Action createAction() {
+            switch (codeAreaViewMode) {
+                case DUAL: {
+                    DualModeAction action = new DualModeAction();
+                    action.init(resourceBundle);
+                    return action;
+                }
+                case CODE_MATRIX: {
+                    CodeMatrixModeAction action = new CodeMatrixModeAction();
+                    action.init(resourceBundle);
+                    return action;
+                }
+                case TEXT_PREVIEW: {
+                    TextPreviewModeAction action = new TextPreviewModeAction();
+                    action.init(resourceBundle);
+                    return action;
+                }
+            }
+
+            throw new IllegalStateException();
+        }
+
+        @Nonnull
+        @Override
+        public String getContributionId() {
+            return contributionId;
         }
     }
 

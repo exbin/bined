@@ -19,6 +19,7 @@ import org.exbin.bined.jaguif.print.action.PrintAction;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.jaguif.print.contribution.PrintContribution;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -62,7 +63,7 @@ public class BinedPrintModule implements Module {
     public PrintAction createPrintAction() {
         ensureSetup();
         PrintAction printAction = new PrintAction();
-        printAction.setup(resourceBundle);
+        printAction.init(resourceBundle);
         return printAction;
     }
 
@@ -70,7 +71,8 @@ public class BinedPrintModule implements Module {
         createPrintAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createPrintAction());
+        SequenceContribution contribution = new PrintContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 }

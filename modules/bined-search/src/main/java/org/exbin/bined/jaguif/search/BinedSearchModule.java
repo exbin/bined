@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.Action;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -33,6 +34,7 @@ import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.menu.api.ActionMenuContribution;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 
@@ -66,7 +68,7 @@ public class BinedSearchModule implements Module {
         if (findReplaceActions == null) {
             ensureSetup();
             findReplaceActions = new FindReplaceActions();
-            findReplaceActions.setup(resourceBundle);
+            findReplaceActions.init(resourceBundle);
         }
 
         return findReplaceActions;
@@ -78,20 +80,85 @@ public class BinedSearchModule implements Module {
         // TODO SearchModule
         String groupId = BinedComponentModule.EDIT_FIND_MENU_GROUP_ID;
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAction());
+        SequenceContribution contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return findReplaceActions.createEditFindAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "binarySearchFind";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
-        contribution = mgmt.registerMenuItem(findReplaceActions.createEditFindAgainAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return findReplaceActions.createEditFindAgainAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "binarySearchFindAgain";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
-        contribution = mgmt.registerMenuItem(findReplaceActions.createEditReplaceAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return findReplaceActions.createEditReplaceAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "binarySearchReplace";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
     }
 
     public void registerEditFindPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditFindAction());
+        SequenceContribution contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return findReplaceActions.createEditFindAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "binarySearchFind";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
-        contribution = mgmt.registerMenuItem(getFindReplaceActions().createEditReplaceAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return findReplaceActions.createEditReplaceAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "binarySearchReplace";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
@@ -102,7 +169,20 @@ public class BinedSearchModule implements Module {
         SequenceContribution contribution = mgmt.registerToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerToolBarRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerToolBarItem(findReplaceActions.createEditFindAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return findReplaceActions.createEditFindAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "binarySearchFind";
+            }
+        };
+        mgmt.registerToolBarContribution(contribution);
         mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
     }
 

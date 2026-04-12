@@ -20,10 +20,10 @@ import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
- * Font size settings options.
+ * Code area font size settings options.
  */
 @ParametersAreNonnullByDefault
-public class FontSizeOptions implements SettingsOptions {
+public class CodeAreaFontSizeOptions implements SettingsOptions {
 
     public static final String KEY_FONT_SIZE = "fontSize";
     public static final int DEFAULT_FONT_SIZE = 12;
@@ -32,7 +32,7 @@ public class FontSizeOptions implements SettingsOptions {
 
     private final OptionsStorage storage;
 
-    public FontSizeOptions(OptionsStorage storage) {
+    public CodeAreaFontSizeOptions(OptionsStorage storage) {
         this.storage = storage;
     }
 
@@ -60,7 +60,7 @@ public class FontSizeOptions implements SettingsOptions {
 
     @Override
     public void copyTo(SettingsOptions options) {
-        FontSizeOptions target = (FontSizeOptions) options;
+        CodeAreaFontSizeOptions target = (CodeAreaFontSizeOptions) options;
         target.setFontSize(getFontSize());
     }
 }

@@ -48,18 +48,18 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 
 /**
- * Copy as code actions.
+ * Copy as code action.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CopyAsCodeAction extends AbstractAction implements ActionContextChange {
 
-    public static final String ACTION_ID = "copyAsCodeAction";
+    public static final String ACTION_ID = "copyAsCode";
 
     protected CodeAreaCore codeArea;
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

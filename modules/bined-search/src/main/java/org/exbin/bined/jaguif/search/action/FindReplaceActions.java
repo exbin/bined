@@ -53,28 +53,28 @@ public class FindReplaceActions {
     public FindReplaceActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
     @Nonnull
     public EditFindAction createEditFindAction() {
         EditFindAction editFindAction = new EditFindAction();
-        editFindAction.setup(resourceBundle);
+        editFindAction.init(resourceBundle);
         return editFindAction;
     }
 
     @Nonnull
     public EditFindAgainAction createEditFindAgainAction() {
         EditFindAgainAction editFindAgainAction = new EditFindAgainAction();
-        editFindAgainAction.setup(resourceBundle);
+        editFindAgainAction.init(resourceBundle);
         return editFindAgainAction;
     }
 
     @Nonnull
     public EditReplaceAction createEditReplaceAction() {
         EditReplaceAction editReplaceAction = new EditReplaceAction();
-        editReplaceAction.setup(resourceBundle);
+        editReplaceAction.init(resourceBundle);
         return editReplaceAction;
     }
 
@@ -94,11 +94,11 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditFindAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "binarySearchFindAction";
+        public static final String ACTION_ID = "binarySearchFind";
 
         private BinaryFileDocument binaryDocument;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -138,11 +138,11 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditFindAgainAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "binarySearchFindAgainAction";
+        public static final String ACTION_ID = "binarySearchFindAgain";
 
         private BinaryFileDocument binaryDocument;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -185,11 +185,11 @@ public class FindReplaceActions {
     @ParametersAreNonnullByDefault
     public class EditReplaceAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "binarySearchReplaceAction";
+        public static final String ACTION_ID = "binarySearchReplace";
 
         private BinaryFileDocument binaryDocument;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);

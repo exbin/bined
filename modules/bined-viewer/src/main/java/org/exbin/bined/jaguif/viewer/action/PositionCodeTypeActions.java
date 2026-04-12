@@ -18,6 +18,7 @@ package org.exbin.bined.jaguif.viewer.action;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -28,9 +29,11 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.CodeTypeState;
+import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Position code type actions.
@@ -47,39 +50,53 @@ public class PositionCodeTypeActions {
     public PositionCodeTypeActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
     @Nonnull
     public OctalPositionCodeTypeAction createOctalCodeTypeAction() {
         OctalPositionCodeTypeAction octalPositionCodeTypeAction = new OctalPositionCodeTypeAction();
-        octalPositionCodeTypeAction.setup(resourceBundle);
+        octalPositionCodeTypeAction.init(resourceBundle);
         return octalPositionCodeTypeAction;
     }
 
     @Nonnull
     public DecimalPositionCodeTypeAction createDecimalCodeTypeAction() {
         DecimalPositionCodeTypeAction decimalPositionCodeTypeAction = new DecimalPositionCodeTypeAction();
-        decimalPositionCodeTypeAction.setup(resourceBundle);
+        decimalPositionCodeTypeAction.init(resourceBundle);
         return decimalPositionCodeTypeAction;
     }
 
     @Nonnull
     public HexadecimalPositionCodeTypeAction createHexadecimalCodeTypeAction() {
         HexadecimalPositionCodeTypeAction hexadecimalPositionCodeTypeAction = new HexadecimalPositionCodeTypeAction();
-        hexadecimalPositionCodeTypeAction.setup(resourceBundle);
+        hexadecimalPositionCodeTypeAction.init(resourceBundle);
         return hexadecimalPositionCodeTypeAction;
+    }
+
+    @Nonnull
+    public CodeTypeContribution createPositionCodeTypeContribution(PositionCodeType positionCodeType, @Nullable ActionMenuCreation positionCodeTypeCreating) {
+        switch (positionCodeType) {
+            case OCTAL:
+                return new CodeTypeContribution(OctalPositionCodeTypeAction.ACTION_ID, PositionCodeType.OCTAL, positionCodeTypeCreating);
+            case DECIMAL:
+                return new CodeTypeContribution(DecimalPositionCodeTypeAction.ACTION_ID, PositionCodeType.DECIMAL, positionCodeTypeCreating);
+            case HEXADECIMAL:
+                return new CodeTypeContribution(HexadecimalPositionCodeTypeAction.ACTION_ID, PositionCodeType.HEXADECIMAL, positionCodeTypeCreating);
+        }
+
+        throw new IllegalStateException();
     }
 
     @ParametersAreNonnullByDefault
     public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "octalPositionCodeTypeAction";
+        public static final String ACTION_ID = "octalPositionCodeType";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -119,11 +136,11 @@ public class PositionCodeTypeActions {
     @ParametersAreNonnullByDefault
     public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "decimalPositionCodeTypeAction";
+        public static final String ACTION_ID = "decimalPositionCodeType";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -163,11 +180,11 @@ public class PositionCodeTypeActions {
     @ParametersAreNonnullByDefault
     public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "hexadecimalPositionCodeTypeAction";
+        public static final String ACTION_ID = "hexadecimalPositionCodeType";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -201,6 +218,59 @@ public class PositionCodeTypeActions {
                 putValue(Action.SELECTED_KEY, positionCodeType == PositionCodeType.HEXADECIMAL);
             }
             setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public class CodeTypeContribution implements ActionSequenceContribution {
+
+        private final String contributionId;
+        private final PositionCodeType positionCodeType;
+        private final ActionMenuCreation positionCodeTypeCreating;
+
+        public CodeTypeContribution(String contributionId, PositionCodeType positionCodeType, @Nullable ActionMenuCreation positionCodeTypeCreating) {
+            this.contributionId = contributionId;
+            this.positionCodeType = positionCodeType;
+            this.positionCodeTypeCreating = positionCodeTypeCreating;
+        }
+
+        @Nonnull
+        @Override
+        public Action createAction() {
+            switch (positionCodeType) {
+                case OCTAL: {
+                    OctalPositionCodeTypeAction action = new OctalPositionCodeTypeAction();
+                    action.init(resourceBundle);
+                    if (positionCodeTypeCreating != null) {
+                        action.putValue(ActionConsts.ACTION_MENU_CREATION, positionCodeTypeCreating);
+                    }
+                    return action;
+                }
+                case DECIMAL: {
+                    DecimalPositionCodeTypeAction action = new DecimalPositionCodeTypeAction();
+                    action.init(resourceBundle);
+                    if (positionCodeTypeCreating != null) {
+                        action.putValue(ActionConsts.ACTION_MENU_CREATION, positionCodeTypeCreating);
+                    }
+                    return action;
+                }
+                case HEXADECIMAL: {
+                    HexadecimalPositionCodeTypeAction action = new HexadecimalPositionCodeTypeAction();
+                    action.init(resourceBundle);
+                    if (positionCodeTypeCreating != null) {
+                        action.putValue(ActionConsts.ACTION_MENU_CREATION, positionCodeTypeCreating);
+                    }
+                    return action;
+                }
+            }
+
+            throw new IllegalStateException();
+        }
+
+        @Nonnull
+        @Override
+        public String getContributionId() {
+            return contributionId;
         }
     }
 

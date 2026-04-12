@@ -55,7 +55,7 @@ import org.exbin.jaguif.window.api.WindowHandler;
 @ParametersAreNonnullByDefault
 public class ClipboardContentAction extends AbstractAction implements ActionContextChange {
 
-    public static final String ACTION_ID = "clipboardContentAction";
+    public static final String ACTION_ID = "clipboardContent";
     public static final String HELP_ID = "clipboard-content";
 
     protected DialogParentComponent dialogParentComponent;
@@ -64,7 +64,7 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
     public ClipboardContentAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

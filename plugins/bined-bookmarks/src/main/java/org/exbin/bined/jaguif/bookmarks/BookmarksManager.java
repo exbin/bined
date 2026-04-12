@@ -90,9 +90,9 @@ public class BookmarksManager {
     }
 
     public void init() {
-        addBookmarkAction.setup(resourceBundle);
-        editBookmarkAction.setup(resourceBundle);
-        manageBookmarksAction.setup(resourceBundle);
+        addBookmarkAction.init(resourceBundle);
+        editBookmarkAction.init(resourceBundle);
+        manageBookmarksAction.init(resourceBundle);
 
         BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
 

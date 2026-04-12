@@ -49,7 +49,7 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 @ParametersAreNonnullByDefault
 public class CopyAsAction extends AbstractAction {
 
-    public static final String ACTION_ID = "copyAsAction";
+    public static final String ACTION_ID = "copyAs";
     public static final String HELP_ID = "copy-as";
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
@@ -60,7 +60,7 @@ public class CopyAsAction extends AbstractAction {
     public CopyAsAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

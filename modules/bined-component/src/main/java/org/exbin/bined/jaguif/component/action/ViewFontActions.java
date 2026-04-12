@@ -32,7 +32,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.settings.FontSizeOptions;
+import org.exbin.bined.jaguif.component.settings.CodeAreaFontSizeOptions;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
 
@@ -42,17 +42,13 @@ import org.exbin.jaguif.utils.ActionUtils;
 @ParametersAreNonnullByDefault
 public class ViewFontActions {
 
-    public static final String ZOOM_IN_ACTION_ID = "zoomInAction";
-    public static final String ZOOM_OUT_ACTION_ID = "zoomOutAction";
-    public static final String RESET_FONT_SIZE_ACTION_ID = "resetFontSizeAction";
-
     private ResourceBundle resourceBundle;
-    private FontSizeOptions fontSizeOptions;
+    private CodeAreaFontSizeOptions fontSizeOptions;
 
     public ViewFontActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle, FontSizeOptions fontSizeOptions) {
+    public void init(ResourceBundle resourceBundle, CodeAreaFontSizeOptions fontSizeOptions) {
         this.resourceBundle = resourceBundle;
         this.fontSizeOptions = fontSizeOptions;
     }
@@ -60,7 +56,7 @@ public class ViewFontActions {
     @Nonnull
     public ZoomInAction createZoomInAction() {
         ZoomInAction zoomInAction = new ZoomInAction();
-        zoomInAction.setup(resourceBundle);
+        zoomInAction.init(resourceBundle);
         zoomInAction.setFontSizeOptions(fontSizeOptions);
         return zoomInAction;
     }
@@ -68,7 +64,7 @@ public class ViewFontActions {
     @Nonnull
     public ZoomOutAction createZoomOutAction() {
         ZoomOutAction zoomOutAction = new ZoomOutAction();
-        zoomOutAction.setup(resourceBundle);
+        zoomOutAction.init(resourceBundle);
         zoomOutAction.setFontSizeOptions(fontSizeOptions);
         return zoomOutAction;
     }
@@ -76,7 +72,7 @@ public class ViewFontActions {
     @Nonnull
     public ResetFontSizeAction createResetFontSizeAction() {
         ResetFontSizeAction resetFontSizeAction = new ResetFontSizeAction();
-        resetFontSizeAction.setup(resourceBundle);
+        resetFontSizeAction.init(resourceBundle);
         resetFontSizeAction.setFontSizeOptions(fontSizeOptions);
         return resetFontSizeAction;
     }
@@ -128,18 +124,20 @@ public class ViewFontActions {
     @ParametersAreNonnullByDefault
     public static class ZoomInAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "zoomIn";
+
         @Nullable
         private CodeAreaCore codeArea;
         @Nullable
-        private FontSizeOptions fontSizeOptions;
+        private CodeAreaFontSizeOptions fontSizeOptions;
 
-        public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
+        public void setFontSizeOptions(CodeAreaFontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;
         }
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(this, resourceBundle, ZOOM_IN_ACTION_ID);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
             putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionUtils.getMetaMask()));
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -154,7 +152,7 @@ public class ViewFontActions {
             SectCodeArea sectCodeArea = (SectCodeArea) codeArea;
             Font currentFont = sectCodeArea.getCodeFont();
             int currentSize = currentFont.getSize();
-            int newSize = Math.min(currentSize + 1, FontSizeOptions.MAX_FONT_SIZE);
+            int newSize = Math.min(currentSize + 1, CodeAreaFontSizeOptions.MAX_FONT_SIZE);
 
             if (newSize != currentSize) {
                 Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), newSize);
@@ -179,18 +177,20 @@ public class ViewFontActions {
     @ParametersAreNonnullByDefault
     public static class ZoomOutAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "zoomOut";
+
         @Nullable
         private CodeAreaCore codeArea;
         @Nullable
-        private FontSizeOptions fontSizeOptions;
+        private CodeAreaFontSizeOptions fontSizeOptions;
 
-        public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
+        public void setFontSizeOptions(CodeAreaFontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;
         }
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(this, resourceBundle, ZOOM_OUT_ACTION_ID);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
             putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionUtils.getMetaMask()));
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -205,7 +205,7 @@ public class ViewFontActions {
             SectCodeArea sectCodeArea = (SectCodeArea) codeArea;
             Font currentFont = sectCodeArea.getCodeFont();
             int currentSize = currentFont.getSize();
-            int newSize = Math.max(currentSize - 1, FontSizeOptions.MIN_FONT_SIZE);
+            int newSize = Math.max(currentSize - 1, CodeAreaFontSizeOptions.MIN_FONT_SIZE);
 
             if (newSize != currentSize) {
                 Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), newSize);
@@ -230,18 +230,20 @@ public class ViewFontActions {
     @ParametersAreNonnullByDefault
     public static class ResetFontSizeAction extends AbstractAction implements ActionContextChange {
 
+        public static final String ACTION_ID = "resetFontSize";
+
         @Nullable
         private CodeAreaCore codeArea;
         @Nullable
-        private FontSizeOptions fontSizeOptions;
+        private CodeAreaFontSizeOptions fontSizeOptions;
 
-        public void setFontSizeOptions(FontSizeOptions fontSizeOptions) {
+        public void setFontSizeOptions(CodeAreaFontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;
         }
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(this, resourceBundle, RESET_FONT_SIZE_ACTION_ID);
+            actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
             putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_0, ActionUtils.getMetaMask()));
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -255,12 +257,12 @@ public class ViewFontActions {
 
             SectCodeArea sectCodeArea = (SectCodeArea) codeArea;
             Font currentFont = sectCodeArea.getCodeFont();
-            Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), FontSizeOptions.DEFAULT_FONT_SIZE);
+            Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), CodeAreaFontSizeOptions.DEFAULT_FONT_SIZE);
             sectCodeArea.setCodeFont(newFont);
             codeArea.repaint();
 
             if (fontSizeOptions != null) {
-                fontSizeOptions.setFontSize(FontSizeOptions.DEFAULT_FONT_SIZE);
+                fontSizeOptions.setFontSize(CodeAreaFontSizeOptions.DEFAULT_FONT_SIZE);
             }
         }
 

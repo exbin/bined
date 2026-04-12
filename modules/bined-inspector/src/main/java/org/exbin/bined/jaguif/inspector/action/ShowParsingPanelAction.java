@@ -38,14 +38,14 @@ import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
 @ParametersAreNonnullByDefault
 public class ShowParsingPanelAction extends AbstractAction {
 
-    public static final String ACTION_ID = "showParsingPanelAction";
+    public static final String ACTION_ID = "showParsingPanel";
 
     private BinaryDataComponent binaryComponent;
 
     public ShowParsingPanelAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

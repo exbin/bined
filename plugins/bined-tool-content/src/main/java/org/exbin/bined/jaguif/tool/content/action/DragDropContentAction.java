@@ -56,7 +56,7 @@ import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 @ParametersAreNonnullByDefault
 public class DragDropContentAction extends AbstractAction implements ActionContextChange {
 
-    public static final String ACTION_ID = "dragDropContentAction";
+    public static final String ACTION_ID = "dragDropContent";
     public static final String HELP_ID = "drag-and-drop-content";
 
     private DialogParentComponent dialogParentComponent;
@@ -65,7 +65,7 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
     public DragDropContentAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         putValue(ActionConsts.ACTION_DIALOG_MODE, true);

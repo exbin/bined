@@ -51,7 +51,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class ManageBookmarksAction extends AbstractAction {
 
-    public static final String ACTION_ID = "manageBookmarksAction";
+    public static final String ACTION_ID = "manageBookmarks";
     public static final String HELP_ID = "bookmarks";
 
     private DialogParentComponent dialogParentComponent;
@@ -60,7 +60,7 @@ public class ManageBookmarksAction extends AbstractAction {
     public ManageBookmarksAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

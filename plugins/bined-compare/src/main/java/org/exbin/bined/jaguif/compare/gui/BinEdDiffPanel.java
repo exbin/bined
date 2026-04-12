@@ -167,7 +167,7 @@ public class BinEdDiffPanel extends JPanel {
 
     private void init() {
         this.add(toolbarPanel, BorderLayout.NORTH);
-        goToPositionAction.setup(App.getModule(LanguageModuleApi.class).getBundle(BinedComponentModule.class));
+        goToPositionAction.init(App.getModule(LanguageModuleApi.class).getBundle(BinedComponentModule.class));
 
         // TODO registerBinaryStatus(leftStatusBar, diffPanel.getLeftCodeArea());
         // TODO registerBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());

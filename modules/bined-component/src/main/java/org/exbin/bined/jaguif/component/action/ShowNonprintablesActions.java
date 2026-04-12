@@ -40,22 +40,22 @@ import org.exbin.jaguif.utils.ActionUtils;
 @ParametersAreNonnullByDefault
 public class ShowNonprintablesActions {
 
-    public static final String VIEW_NONPRINTABLES_ACTION_ID = "viewNonprintablesAction";
-    public static final String VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID = "viewNonprintablesToolbarAction";
+    public static final String VIEW_NONPRINTABLES_ACTION_ID = "viewNonprintables";
+    public static final String VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID = "viewNonprintablesToolbar";
 
     private ResourceBundle resourceBundle;
 
     public ShowNonprintablesActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
     @Nonnull
     public ViewNonprintablesAction createViewNonprintablesAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction();
-        viewNonprintablesAction.setup(resourceBundle);
+        viewNonprintablesAction.init(resourceBundle);
         return viewNonprintablesAction;
     }
 
@@ -63,7 +63,7 @@ public class ShowNonprintablesActions {
     public ViewNonprintablesAction createViewNonprintablesToolbarAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction() {
             @Override
-            public void setup(ResourceBundle resourceBundle) {
+            public void init(ResourceBundle resourceBundle) {
                 ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
                 actionModule.initAction(this, resourceBundle, VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID);
                 setEnabled(false);
@@ -71,7 +71,7 @@ public class ShowNonprintablesActions {
                 putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
             }
         };
-        viewNonprintablesAction.setup(resourceBundle);
+        viewNonprintablesAction.init(resourceBundle);
         return viewNonprintablesAction;
     }
 
@@ -80,7 +80,7 @@ public class ShowNonprintablesActions {
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, VIEW_NONPRINTABLES_ACTION_ID);
             setEnabled(false);

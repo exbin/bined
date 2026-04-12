@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.CaretCapable;
@@ -60,8 +59,8 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class InsertDataAction extends AbstractAction {
 
-    public static final String ACTION_ID = "insertDataAction";
-    public static final String HELP_ID = "insert-data-action";
+    public static final String ACTION_ID = "insertData";
+    public static final String HELP_ID = "insert-data";
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
@@ -71,7 +70,7 @@ public class InsertDataAction extends AbstractAction {
     public InsertDataAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

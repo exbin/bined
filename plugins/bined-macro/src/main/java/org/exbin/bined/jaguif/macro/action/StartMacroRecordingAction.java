@@ -40,7 +40,7 @@ import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 @ParametersAreNonnullByDefault
 public class StartMacroRecordingAction extends AbstractAction {
 
-    public static final String ACTION_ID = "startMacroRecordingAction";
+    public static final String ACTION_ID = "startMacroRecording";
 
     private CodeAreaCore codeArea;
     private MacroManager macroManager;
@@ -48,7 +48,7 @@ public class StartMacroRecordingAction extends AbstractAction {
     public StartMacroRecordingAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

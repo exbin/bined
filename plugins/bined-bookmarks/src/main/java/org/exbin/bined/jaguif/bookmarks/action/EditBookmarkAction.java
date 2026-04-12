@@ -47,7 +47,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class EditBookmarkAction extends AbstractAction {
 
-    public static final String ACTION_ID = "editBookmarkAction";
+    public static final String ACTION_ID = "editBookmark";
 
     private BookmarkRecord bookmarkRecord;
     private DialogParentComponent dialogParentComponent;
@@ -56,7 +56,7 @@ public class EditBookmarkAction extends AbstractAction {
     public EditBookmarkAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

@@ -33,6 +33,7 @@ import org.exbin.bined.jaguif.component.BinEdFileManager;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.inspector.action.ShowParsingPanelAction;
+import org.exbin.bined.jaguif.inspector.contribution.ShowParsingPanelContribution;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorOptions;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorSettingsApplier;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorSettingsComponent;
@@ -101,7 +102,7 @@ public class BinedInspectorModule implements Module {
     public ShowParsingPanelAction createShowParsingPanelAction() {
         ensureSetup();
         ShowParsingPanelAction showParsingPanelAction = new ShowParsingPanelAction();
-        showParsingPanelAction.setup(resourceBundle);
+        showParsingPanelAction.init(resourceBundle);
         showParsingPanelAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
@@ -125,18 +126,21 @@ public class BinedInspectorModule implements Module {
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_PARSING_PANEL_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
-        contribution = mgmt.registerMenuItem(createShowParsingPanelAction());
+        contribution = new ShowParsingPanelContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_PARSING_PANEL_MENU_GROUP_ID));
     }
 
     public void registerShowParsingPanelPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createShowParsingPanelAction());
+        SequenceContribution contribution = new ShowParsingPanelContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
-        contribution = subMgmt.registerMenuItem(createShowParsingPanelAction());
+        contribution = new ShowParsingPanelContribution();
+        subMgmt.registerMenuContribution(contribution);
         subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 

@@ -28,6 +28,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.CodeTypeState;
@@ -47,32 +48,44 @@ public class HexCharactersCaseActions {
     public HexCharactersCaseActions() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
     @Nonnull
     public UpperHexCharsAction createUpperHexCharsAction() {
         UpperHexCharsAction upperHexCharsAction = new UpperHexCharsAction();
-        upperHexCharsAction.setup(resourceBundle);
+        upperHexCharsAction.init(resourceBundle);
         return upperHexCharsAction;
     }
 
     @Nonnull
     public LowerHexCharsAction createLowerHexCharsAction() {
         LowerHexCharsAction lowerHexCharsAction = new LowerHexCharsAction();
-        lowerHexCharsAction.setup(resourceBundle);
+        lowerHexCharsAction.init(resourceBundle);
         return lowerHexCharsAction;
+    }
+
+    @Nonnull
+    public UpperHexCharsContribution createUpperHexCharsContribution() {
+        UpperHexCharsContribution upperHexCharsContribution = new UpperHexCharsContribution();
+        return upperHexCharsContribution;
+    }
+
+    @Nonnull
+    public LowerHexCharsContribution createLowerHexCharsContribution() {
+        LowerHexCharsContribution lowerHexCharsContribution = new LowerHexCharsContribution();
+        return lowerHexCharsContribution;
     }
 
     @ParametersAreNonnullByDefault
     public static class UpperHexCharsAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "upperHexCharactersAction";
+        public static final String ACTION_ID = "upperHexCharacters";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -112,11 +125,11 @@ public class HexCharactersCaseActions {
     @ParametersAreNonnullByDefault
     public static class LowerHexCharsAction extends AbstractAction implements ActionContextChange {
 
-        public static final String ACTION_ID = "lowerHexCharactersAction";
+        public static final String ACTION_ID = "lowerHexCharacters";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public void setup(ResourceBundle resourceBundle) {
+        public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             setEnabled(false);
@@ -150,6 +163,48 @@ public class HexCharactersCaseActions {
                 putValue(Action.SELECTED_KEY, codeCharactersCase == CodeCharactersCase.LOWER);
             }
             setEnabled(hasInstance);
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public class UpperHexCharsContribution implements ActionSequenceContribution {
+
+        public UpperHexCharsContribution() {
+        }
+
+        @Nonnull
+        @Override
+        public Action createAction() {
+            UpperHexCharsAction action = new UpperHexCharsAction();
+            action.init(resourceBundle);
+            return action;
+        }
+
+        @Nonnull
+        @Override
+        public String getContributionId() {
+            return UpperHexCharsAction.ACTION_ID;
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    public class LowerHexCharsContribution implements ActionSequenceContribution {
+
+        public LowerHexCharsContribution() {
+        }
+
+        @Nonnull
+        @Override
+        public Action createAction() {
+            LowerHexCharsAction action = new LowerHexCharsAction();
+            action.init(resourceBundle);
+            return action;
+        }
+
+        @Nonnull
+        @Override
+        public String getContributionId() {
+            return LowerHexCharsAction.ACTION_ID;
         }
     }
 

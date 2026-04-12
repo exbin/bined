@@ -40,7 +40,7 @@ import org.exbin.jaguif.window.api.WindowModuleApi;
 @ParametersAreNonnullByDefault
 public class PropertiesAction extends AbstractAction {
 
-    public static final String ACTION_ID = "propertiesAction";
+    public static final String ACTION_ID = "properties";
 
     private DialogParentComponent dialogParentComponent;
     private BinaryFileDocument binaryDocument;
@@ -48,7 +48,7 @@ public class PropertiesAction extends AbstractAction {
     public PropertiesAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

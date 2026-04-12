@@ -65,8 +65,8 @@ import org.exbin.jaguif.document.api.DocumentModuleApi;
 @ParametersAreNonnullByDefault
 public class ConvertDataAction extends AbstractAction {
 
-    public static final String ACTION_ID = "convertDataAction";
-    public static final String HELP_ID = "convert-data-action";
+    public static final String ACTION_ID = "convertData";
+    public static final String HELP_ID = "convert-data";
 
     private static final int PREVIEW_LENGTH_LIMIT = 4096;
 
@@ -76,7 +76,7 @@ public class ConvertDataAction extends AbstractAction {
     public ConvertDataAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

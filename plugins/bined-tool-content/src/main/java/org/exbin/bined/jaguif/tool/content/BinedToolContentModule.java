@@ -24,6 +24,8 @@ import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.tool.content.action.ClipboardContentAction;
 import org.exbin.bined.jaguif.tool.content.action.DragDropContentAction;
+import org.exbin.bined.jaguif.tool.content.contribution.ClipboardContentContribution;
+import org.exbin.bined.jaguif.tool.content.contribution.DragDropContentContribution;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -73,7 +75,7 @@ public class BinedToolContentModule implements PluginModule {
     public ClipboardContentAction createClipboardContentAction() {
         ensureSetup();
         ClipboardContentAction clipboardContentAction = new ClipboardContentAction();
-        clipboardContentAction.setup(resourceBundle);
+        clipboardContentAction.init(resourceBundle);
         return clipboardContentAction;
     }
 
@@ -81,7 +83,7 @@ public class BinedToolContentModule implements PluginModule {
     public DragDropContentAction createDragDropContentAction() {
         ensureSetup();
         DragDropContentAction dragDropContentAction = new DragDropContentAction();
-        dragDropContentAction.setup(resourceBundle);
+        dragDropContentAction.init(resourceBundle);
         return dragDropContentAction;
     }
 
@@ -89,7 +91,8 @@ public class BinedToolContentModule implements PluginModule {
         createClipboardContentAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createClipboardContentAction());
+        SequenceContribution contribution = new ClipboardContentContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
     }
 
@@ -97,7 +100,8 @@ public class BinedToolContentModule implements PluginModule {
         createDragDropContentAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createDragDropContentAction());
+        SequenceContribution contribution = new DragDropContentContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
     }
 }

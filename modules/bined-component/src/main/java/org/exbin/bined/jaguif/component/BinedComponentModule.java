@@ -52,6 +52,10 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
+import org.exbin.bined.jaguif.component.contribution.CopyAsCodeContribution;
+import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
+import org.exbin.bined.jaguif.component.contribution.PasteFromCodeContribution;
+import org.exbin.bined.jaguif.component.contribution.ViewNonprintablesContribution;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryCursorPositionStatusContrib;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryDocumentSizeStatusContrib;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryEditModeStatusContrib;
@@ -59,6 +63,7 @@ import org.exbin.bined.jaguif.component.status.contribution.BinaryEncodingStatus
 import org.exbin.bined.jaguif.component.status.contribution.BinaryProcessingModeStatusContrib;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
@@ -86,6 +91,7 @@ import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.document.api.DocumentType;
 import org.exbin.jaguif.file.api.FileDocumentSource;
+import org.exbin.jaguif.menu.api.ActionMenuContribution;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
@@ -159,12 +165,13 @@ public class BinedComponentModule implements Module {
         contribution = mgmt.registerMenuGroup(EDIT_FIND_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerMenuItem(createGoToPositionAction());
+        contribution = new GoToPositionContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_MENU_GROUP_ID));
     }
 
     @Nonnull
-    private Action getSettingsAction() {
+    private Action createSettingsAction() {
         OptionsSettingsModuleApi optionsModule = App.getModule(OptionsSettingsModuleApi.class);
 
         Action settingsAction = optionsModule.createSettingsAction();
@@ -186,7 +193,7 @@ public class BinedComponentModule implements Module {
         if (showNonprintablesActions == null) {
             ensureSetup();
             showNonprintablesActions = new ShowNonprintablesActions();
-            showNonprintablesActions.setup(resourceBundle);
+            showNonprintablesActions.init(resourceBundle);
         }
 
         return showNonprintablesActions;
@@ -196,7 +203,7 @@ public class BinedComponentModule implements Module {
     public GoToPositionAction createGoToPositionAction() {
         ensureSetup();
         GoToPositionAction goToPositionAction = new GoToPositionAction();
-        goToPositionAction.setup(resourceBundle);
+        goToPositionAction.init(resourceBundle);
         goToPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId) {
@@ -215,7 +222,7 @@ public class BinedComponentModule implements Module {
         if (clipboardCodeActions == null) {
             ensureSetup();
             clipboardCodeActions = new ClipboardCodeActions();
-            clipboardCodeActions.setup(resourceBundle);
+            clipboardCodeActions.init(resourceBundle);
         }
 
         return clipboardCodeActions;
@@ -227,9 +234,9 @@ public class BinedComponentModule implements Module {
             ensureSetup();
             viewFontActions = new ViewFontActions();
             OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-            org.exbin.bined.jaguif.component.settings.FontSizeOptions fontSizeOptions
-                    = new org.exbin.bined.jaguif.component.settings.FontSizeOptions(optionsModule.getAppOptions());
-            viewFontActions.setup(resourceBundle, fontSizeOptions);
+            org.exbin.bined.jaguif.component.settings.CodeAreaFontSizeOptions fontSizeOptions
+                    = new org.exbin.bined.jaguif.component.settings.CodeAreaFontSizeOptions(optionsModule.getAppOptions());
+            viewFontActions.init(resourceBundle, fontSizeOptions);
         }
 
         return viewFontActions;
@@ -245,7 +252,8 @@ public class BinedComponentModule implements Module {
         ToolBarDefinitionManagement mgmt = toolBarModule.getMainToolBarManager(MODULE_ID);
         SequenceContribution contribution = mgmt.registerToolBarGroup(BINED_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        contribution = mgmt.registerToolBarItem(showNonprintablesActions.createViewNonprintablesToolbarAction());
+        contribution = new ViewNonprintablesContribution();
+        mgmt.registerToolBarContribution(contribution);
         mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(BINED_TOOL_BAR_GROUP_ID));
     }
 
@@ -255,7 +263,8 @@ public class BinedComponentModule implements Module {
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_NONPRINTABLES_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
-        contribution = mgmt.registerMenuItem(showNonprintablesActions.createViewNonprintablesAction());
+        contribution = new ViewNonprintablesContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_NONPRINTABLES_MENU_GROUP_ID));
     }
 
@@ -315,13 +324,52 @@ public class BinedComponentModule implements Module {
 
         SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_FONT_ZOOM_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
-        contribution = mgmt.registerMenuItem(viewFontActions.createZoomInAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return viewFontActions.createZoomInAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return ViewFontActions.ZoomInAction.ACTION_ID;
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
-        contribution = mgmt.registerMenuItem(viewFontActions.createZoomOutAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return viewFontActions.createZoomOutAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return ViewFontActions.ZoomOutAction.ACTION_ID;
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
-        contribution = mgmt.registerMenuItem(viewFontActions.createResetFontSizeAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return viewFontActions.createResetFontSizeAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return ViewFontActions.ResetFontSizeAction.ACTION_ID;
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
     }
@@ -330,12 +378,14 @@ public class BinedComponentModule implements Module {
         getClipboardCodeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(clipboardCodeActions.createCopyAsCodeAction());
+        SequenceContribution contribution = new CopyAsCodeContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(RelativeSequenceContributionRule.NextToMode.AFTER, "copyAction"));
-        contribution = mgmt.registerMenuItem(clipboardCodeActions.createPasteFromCodeAction());
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(RelativeSequenceContributionRule.NextToMode.AFTER, "copy"));
+        contribution = new PasteFromCodeContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
-        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(RelativeSequenceContributionRule.NextToMode.AFTER, "pasteAction"));
+        mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(RelativeSequenceContributionRule.NextToMode.AFTER, "paste"));
     }
 
     public void registerCodeAreaPopupMenu() {
@@ -364,26 +414,131 @@ public class BinedComponentModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
 
-        contribution = mgmt.registerMenuItem(clipboardActions.createCutAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return clipboardActions.createCutAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "cut";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = mgmt.registerMenuItem(clipboardActions.createCopyAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return clipboardActions.createCopyAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "copy";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = mgmt.registerMenuItem(getClipboardCodeActions().createCopyAsCodeAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return getClipboardCodeActions().createCopyAsCodeAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "copyAsCode";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = mgmt.registerMenuItem(clipboardActions.createPasteAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return clipboardActions.createPasteAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "paste";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = mgmt.registerMenuItem(getClipboardCodeActions().createPasteFromCodeAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return getClipboardCodeActions().createPasteFromCodeAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "pasteFromCode";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = mgmt.registerMenuItem(clipboardActions.createDeleteAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return clipboardActions.createDeleteAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "delete";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
 
-        contribution = mgmt.registerMenuItem(clipboardActions.createSelectAllAction());
+        contribution = new ActionSequenceContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return clipboardActions.createSelectAllAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "selectAll";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
 
-        contribution = mgmt.registerMenuItem(createGoToPositionAction());
+        contribution = new GoToPositionContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
 
-        contribution = mgmt.registerMenuItem(getSettingsAction());
+        contribution = new ActionMenuContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return createSettingsAction();
+            }
+
+            @Nonnull
+            @Override
+            public String getContributionId() {
+                return "settings";
+            }
+        };
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID));
     }
 

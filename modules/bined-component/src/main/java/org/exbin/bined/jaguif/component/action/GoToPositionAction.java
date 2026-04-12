@@ -50,7 +50,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class GoToPositionAction extends AbstractAction {
 
-    public static final String ACTION_ID = "goToPositionAction";
+    public static final String ACTION_ID = "goToPosition";
     public static final String HELP_ID = "go-to-position";
 
     private CodeAreaCore codeArea;
@@ -58,7 +58,7 @@ public class GoToPositionAction extends AbstractAction {
     public GoToPositionAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

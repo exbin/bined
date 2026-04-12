@@ -24,6 +24,7 @@ import org.exbin.jaguif.PluginModule;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.compare.action.CompareFilesAction;
+import org.exbin.bined.jaguif.compare.contribution.CompareFilesContribution;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -56,7 +57,8 @@ public class BinedCompareModule implements PluginModule {
     public void registerToolsOptionsMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.TOOLS_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(createCompareFilesAction());
+        SequenceContribution contribution = new CompareFilesContribution();
+        mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
@@ -73,7 +75,7 @@ public class BinedCompareModule implements PluginModule {
     public AbstractAction createCompareFilesAction() {
         ensureSetup();
         CompareFilesAction compareFilesAction = new CompareFilesAction();
-        compareFilesAction.setup(resourceBundle);
+        compareFilesAction.init(resourceBundle);
         return compareFilesAction;
     }
 

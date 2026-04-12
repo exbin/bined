@@ -35,14 +35,14 @@ import org.exbin.jaguif.document.api.ContextDocument;
 @ParametersAreNonnullByDefault
 public class ReloadFileAction extends AbstractAction {
 
-    public static final String ACTION_ID = "reloadFileAction";
+    public static final String ACTION_ID = "reloadFile";
 
     protected BinaryFileDocument binaryFileDocument;
 
     public ReloadFileAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

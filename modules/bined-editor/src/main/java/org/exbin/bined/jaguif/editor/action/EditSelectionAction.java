@@ -51,7 +51,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class EditSelectionAction extends AbstractAction {
 
-    public static final String ACTION_ID = "editSelectionAction";
+    public static final String ACTION_ID = "editSelection";
     public static final String HELP_ID = "edit-selection";
 
     private CodeAreaCore codeArea;
@@ -59,7 +59,7 @@ public class EditSelectionAction extends AbstractAction {
     public EditSelectionAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);

@@ -42,7 +42,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @ParametersAreNonnullByDefault
 public class AddMacroAction extends AbstractAction {
 
-    public static final String ACTION_ID = "addMacroAction";
+    public static final String ACTION_ID = "addMacro";
 
     private MacroRecord macroRecord = null;
     private DialogParentComponent dialogParentComponent;
@@ -50,7 +50,7 @@ public class AddMacroAction extends AbstractAction {
     public AddMacroAction() {
     }
 
-    public void setup(ResourceBundle resourceBundle) {
+    public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
         setEnabled(false);
