@@ -32,16 +32,16 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.operation.api.CopyAsDataMethod;
+import org.exbin.bined.jaguif.operation.method.api.CopyAsDataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.bined.jaguif.operation.api.PreviewDataHandler;
+import org.exbin.bined.jaguif.operation.method.api.PreviewDataHandler;
 import org.exbin.bined.jaguif.operation.code.CodeExportFormat;
 import org.exbin.bined.jaguif.operation.code.CodeExportOptions;
 import org.exbin.bined.jaguif.operation.code.format.CHexArrayFormat;
 import org.exbin.bined.jaguif.operation.code.format.JavaByteArrayFormat;
 import org.exbin.bined.jaguif.operation.code.format.PythonBytesFormat;
 import org.exbin.bined.jaguif.operation.code.method.gui.CopyAsCodePanel;
-import org.exbin.bined.jaguif.operation.gui.TextPreviewPanel;
+import org.exbin.bined.jaguif.operation.method.gui.TextPreviewPanel;
 
 /**
  * Copy binary data as programming language code method.

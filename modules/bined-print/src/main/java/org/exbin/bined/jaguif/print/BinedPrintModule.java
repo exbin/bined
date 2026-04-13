@@ -68,7 +68,6 @@ public class BinedPrintModule implements Module {
     }
 
     public void registerPrintMenu() {
-        createPrintAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
         SequenceContribution contribution = new PrintContribution();

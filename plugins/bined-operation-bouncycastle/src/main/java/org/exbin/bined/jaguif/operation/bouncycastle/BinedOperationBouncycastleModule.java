@@ -23,7 +23,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.PluginModule;
-import org.exbin.bined.jaguif.operation.BinedOperationModule;
+import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.bined.jaguif.operation.bouncycastle.method.ComputeHashDataMethod;
 import org.exbin.bined.jaguif.operation.bouncycastle.method.SymmetricEncryptionMethod;
@@ -53,7 +53,7 @@ public class BinedOperationBouncycastleModule implements PluginModule {
 
         UiModuleApi uiModule = App.getModule(UiModuleApi.class);
         uiModule.addPostInitAction(() -> {
-            BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
+            BinedOperationMethodModule binedOperationModule = App.getModule(BinedOperationMethodModule.class);
 
             ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
             binedOperationModule.addConvertDataMethod(computeHashDataMethod);

@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.operation.api.ParamChangeListener;
+import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.bined.jaguif.operation.code.CodeExportFormat;
 import org.exbin.bined.jaguif.operation.code.CodeExportOptions;

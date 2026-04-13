@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.operation.api.ParamChangeListener;
+import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 import org.exbin.bined.jaguif.operation.bouncycastle.method.SymmetricEncryptionMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 

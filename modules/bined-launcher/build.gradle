@@ -76,7 +76,7 @@ dependencies {
     implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'modules', 'binary_data')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-component')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-search')
-    implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-operation')
+    implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-operation-method')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-inspector')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-objectdata')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-viewer')

@@ -178,8 +178,8 @@ public class BinEdDiffPanel extends JPanel {
         diffPanel.getLeftCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareLeft"));
         diffPanel.getRightCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareRight"));
 
-        diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
-        diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
+//        diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
+//        diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
         this.add(diffPanel, BorderLayout.CENTER);
         diffPanel.revalidate();
         diffPanel.repaint();

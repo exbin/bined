@@ -28,14 +28,14 @@ import org.exbin.bined.operation.swing.command.InsertDataCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.bined.jaguif.operation.api.PasteFromDataMethod;
-import org.exbin.bined.jaguif.operation.api.PreviewDataHandler;
+import org.exbin.bined.jaguif.operation.method.api.PasteFromDataMethod;
+import org.exbin.bined.jaguif.operation.method.api.PreviewDataHandler;
 import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
 import org.exbin.bined.jaguif.operation.code.format.CHexArrayParser;
 import org.exbin.bined.jaguif.operation.code.format.JavaByteArrayParser;
 import org.exbin.bined.jaguif.operation.code.format.PythonBytesParser;
 import org.exbin.bined.jaguif.operation.code.method.gui.PasteFromCodePanel;
-import org.exbin.bined.jaguif.operation.gui.BinaryPreviewPanel;
+import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 
 /**
  * Paste programming language code as binary data method.

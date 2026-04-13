@@ -16,7 +16,7 @@
     <module id="org.exbin.bined.jaguif.inspector.BinedInspectorModule" />
     <module id="org.exbin.bined.jaguif.macro.BinedMacroModule" />
     <module id="org.exbin.bined.jaguif.objectdata.BinedObjectDataModule" />
-    <module id="org.exbin.bined.jaguif.operation.BinedOperationModule" />
+    <module id="org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule" />
     <module id="org.exbin.bined.jaguif.search.BinedSearchModule" />
     <module id="org.exbin.bined.jaguif.tool.content.BinedToolContentModule" />
     <module id="org.exbin.jaguif.ui.api.UiModuleApi" />

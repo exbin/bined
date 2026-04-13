@@ -5,7 +5,7 @@ include ":deps"
 include ":modules:bined-component"
 include ":modules:bined-launcher"
 include ":modules:bined-search"
-include ":modules:bined-operation"
+include ":modules:bined-operation-method"
 include ":modules:bined-inspector"
 include ":modules:bined-objectdata"
 include ":modules:bined-viewer"
@@ -22,7 +22,7 @@ include ":plugins:bined-operation-code"
 include ":plugins:bined-help"
 include ":plugins:bined-inspector-pixelmap"
 include ":plugins:bined-inspector-table"
-include ":apps:bined-editor"
+include ":apps:bined-app"
 
 File placeholder = file("deps/.downloaded")
 if (placeholder.exists()) {

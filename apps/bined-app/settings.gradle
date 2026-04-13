@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+    	maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local/" }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'bined-app'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-component'
+    include ':modules:bined-launcher'
+    include ':modules:bined-inspector'
+    include ':modules:bined-objectdata'
+    include ':modules:bined-operation-method'
+    include ':modules:bined-search'
+    include ':modules:bined-viewer'
+    include ':modules:bined-editor'
+    include ':modules:bined-theme'
+    include ':modules:bined-print'
+    include ':modules:bined-legacy'
+    include ':plugins:bined-bookmarks'
+    include ':plugins:bined-compare'
+    include ':plugins:bined-macro'
+    include ':plugins:bined-tool-content'
+    include ':plugins:bined-operation-code'
+}
+
+apply from: '../apps-settings.gradle'

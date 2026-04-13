@@ -1,0 +1,138 @@
+/*
+ * Copyright (C) ExBin Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.exbin.bined.jaguif.operation.method.action;
+
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.event.ActionEvent;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
+import org.exbin.bined.EditOperation;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.operation.swing.command.CodeAreaCommand;
+import org.exbin.bined.swing.CodeAreaCommandHandler;
+import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.jaguif.App;
+import org.exbin.jaguif.action.api.ActionContextChange;
+import org.exbin.jaguif.action.api.ActionConsts;
+import org.exbin.jaguif.action.api.ActionModuleApi;
+import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
+import org.exbin.bined.jaguif.operation.method.api.DataOperationMethod;
+import org.exbin.bined.jaguif.operation.method.api.PasteFromDataMethod;
+import org.exbin.bined.jaguif.operation.method.gui.DataOperationPanel;
+import org.exbin.jaguif.help.api.HelpLink;
+import org.exbin.jaguif.help.api.HelpModuleApi;
+import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.window.api.WindowModuleApi;
+import org.exbin.jaguif.window.api.WindowHandler;
+import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
+import org.exbin.jaguif.window.api.controller.DefaultControlController;
+
+/**
+ * Paste from specific form of data into binary data action.
+ *
+ * @author ExBin Project (https://exbin.org)
+ */
+@ParametersAreNonnullByDefault
+public class PasteFromAction extends AbstractAction {
+
+    public static final String ACTION_ID = "pasteFrom";
+    public static final String HELP_ID = "paste-from";
+
+    private static final int PREVIEW_LENGTH_LIMIT = 4096;
+
+    private CodeAreaCore codeArea;
+    private PasteFromDataMethod lastMethod = null;
+
+    public PasteFromAction() {
+    }
+
+    public void init(ResourceBundle resourceBundle) {
+        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        actionModule.initAction(this, resourceBundle, ACTION_ID);
+        setEnabled(false);
+        putValue(ActionConsts.ACTION_DIALOG_MODE, true);
+        putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
+            @Override
+            public void register(ContextChangeRegistration registrar) {
+                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
+                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
+                    boolean hasInstance = instance != null;
+                    setEnabled(hasInstance && codeArea.isEditable());
+                });
+            }
+        });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        final DataOperationPanel dataOperationPanel = new DataOperationPanel();
+        dataOperationPanel.setController(() -> {
+            Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
+            if (optionalActiveMethod.isPresent()) {
+                PasteFromDataMethod activeMethod = (PasteFromDataMethod) optionalActiveMethod.get();
+                Component activeComponent = dataOperationPanel.getActiveComponent().get();
+                activeMethod.requestPreview((component) -> {
+                    dataOperationPanel.setPreviewComponent(component);
+                }, activeComponent, PREVIEW_LENGTH_LIMIT);
+            }
+        });
+        ResourceBundle panelResourceBundle = App.getModule(LanguageModuleApi.class).getResourceBundleByBundleName("org.exbin.bined.jaguif.operation.method.gui.resources.PasteFromDataControlPanel");
+        DefaultControlPanel controlPanel = new DefaultControlPanel();
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
+        WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+        BinedOperationMethodModule binedBlockEditModule = App.getModule(BinedOperationMethodModule.class);
+        dataOperationPanel.setDataMethods(binedBlockEditModule.getPasteFromDataMethods());
+        dataOperationPanel.selectActiveMethod(lastMethod);
+        final WindowHandler dialog = windowModule.createDialog(codeArea, Dialog.ModalityType.APPLICATION_MODAL, dataOperationPanel, controlPanel);
+        windowModule.addHeaderPanel(dialog.getWindow(), dataOperationPanel.getClass(), panelResourceBundle);
+        windowModule.setWindowTitle(dialog, panelResourceBundle);
+        controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
+            if (actionType == DefaultControlController.ControlActionType.OK) {
+                Optional<DataOperationMethod> optionalActiveMethod = dataOperationPanel.getActiveMethod();
+                if (optionalActiveMethod.isPresent()) {
+                    Component activeComponent = dataOperationPanel.getActiveComponent().get();
+                    PasteFromDataMethod activeMethod = (PasteFromDataMethod) optionalActiveMethod.get();
+                    long dataPosition = ((CaretCapable) codeArea).getDataPosition();
+                    EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
+                    CodeAreaCommand command = activeMethod.createPasteCommand(activeComponent, codeArea, dataPosition, activeOperation);
+
+                    CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
+                    if (commandHandler instanceof CodeAreaOperationCommandHandler) {
+                        ((CodeAreaOperationCommandHandler) commandHandler).getUndoRedo().execute(command);
+                    } else {
+                        command.execute();
+                    }
+                }
+                lastMethod = (PasteFromDataMethod) optionalActiveMethod.orElse(null);
+            }
+
+            dialog.close();
+            dialog.dispose();
+        });
+        SwingUtilities.invokeLater(dataOperationPanel::initFocus);
+        dialog.showCentered(codeArea);
+    }
+}

@@ -79,8 +79,8 @@ if (file('deps/.downloaded').exists()) {
     assemble.dependsOn("depsRebuild_${depsLevel}")
 }
 
-distTar.dependsOn project(':apps:bined-editor').tasks['createExe']
-distZip.dependsOn project(':apps:bined-editor').tasks['createExe']
+distTar.dependsOn project(':apps:bined-app').tasks['createExe']
+distZip.dependsOn project(':apps:bined-app').tasks['createExe']
 
 ospackage {
     packageName = 'bined'
@@ -115,7 +115,7 @@ ospackage {
         into '/usr/share/pixmaps'
     }
 
-    from (project(':apps:bined-editor').jar) {
+    from (project(':apps:bined-app').jar) {
         rename { filename -> "bined.jar" }
         into '/usr/share/bined'
     }
@@ -128,12 +128,12 @@ ospackage {
         into '/usr/share/bined/plugins'
     }
 
-    from ('apps/bined-editor/help') {
+    from ('apps/bined-app/help') {
         into 'usr/share/bined/help'
     }
 
-    project(':apps:bined-editor').plugins.withType(JavaPlugin) {
-        from(project(':apps:bined-editor').configurations.runtimeClasspath) {
+    project(':apps:bined-app').plugins.withType(JavaPlugin) {
+        from(project(':apps:bined-app').configurations.runtimeClasspath) {
             into('/usr/share/bined/lib')
             include '*'
         }
@@ -159,11 +159,11 @@ if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
 }
 
 task("copyDependencies", type: Copy) {
-    from(project(':apps:bined-editor').configurations.runtimeClasspath).into("$buildDir/jars")
+    from(project(':apps:bined-app').configurations.runtimeClasspath).into("$buildDir/jars")
 }
 
 task("copyJar", type: Copy) {
-    from(project(':apps:bined-editor').jar).into("$buildDir/jars")
+    from(project(':apps:bined-app').jar).into("$buildDir/jars")
 }
 
 if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
@@ -175,7 +175,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
         main {
             contents {
                 duplicatesStrategy = 'exclude'
-                from project(':apps:bined-editor').jar
+                from project(':apps:bined-app').jar
 
                 from project.rootDir
                 include 'LICENSE.txt'
@@ -210,7 +210,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                     }
                 }
 
-                from project(':apps:bined-editor').projectDir.absolutePath + '/build/launch4j'
+                from project(':apps:bined-app').projectDir.absolutePath + '/build/launch4j'
                 include "Bined.exe"
 
                 //            into('lib') {
@@ -218,14 +218,14 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 //            }
 
                 into('') {
-                    from project(':apps:bined-editor').jar.archiveFile
+                    from project(':apps:bined-app').jar.archiveFile
                     include '*'
                     rename { filename -> "bined.jar" }
                 }
 
-                project(':apps:bined-editor').plugins.withType(JavaPlugin) {
+                project(':apps:bined-app').plugins.withType(JavaPlugin) {
                     into('lib') {
-                        from project(':apps:bined-editor').configurations.runtimeClasspath
+                        from project(':apps:bined-app').configurations.runtimeClasspath
                         include '*'
                     }
                 }

@@ -24,7 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.operation.api.ParamChangeListener;
+import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 import org.exbin.bined.jaguif.operation.bouncycastle.method.ComputeHashDataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 

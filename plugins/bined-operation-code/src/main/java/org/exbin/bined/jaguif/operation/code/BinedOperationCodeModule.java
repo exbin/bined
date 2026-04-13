@@ -21,7 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.PluginModule;
-import org.exbin.bined.jaguif.operation.BinedOperationModule;
+import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
 import org.exbin.bined.jaguif.operation.code.method.CopyAsCodeDataMethod;
 import org.exbin.bined.jaguif.operation.code.method.PasteFromCodeDataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -43,7 +43,7 @@ public class BinedOperationCodeModule implements PluginModule {
 
     @Override
     public void register() {
-        BinedOperationModule operationModule = App.getModule(BinedOperationModule.class);
+        BinedOperationMethodModule operationModule = App.getModule(BinedOperationMethodModule.class);
         operationModule.addCopyAsDataMethod(new CopyAsCodeDataMethod());
         operationModule.addPasteFromDataMethod(new PasteFromCodeDataMethod());
     }

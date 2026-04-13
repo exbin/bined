@@ -36,14 +36,14 @@ import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.operation.api.ConvertDataMethod;
+import org.exbin.bined.jaguif.operation.method.api.ConvertDataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.bined.jaguif.operation.api.PreviewDataHandler;
-import org.exbin.bined.jaguif.operation.ConversionDataProvider;
-import org.exbin.bined.jaguif.operation.command.ConvertDataCommand;
-import org.exbin.bined.jaguif.operation.ConvertDataOperation;
+import org.exbin.bined.jaguif.operation.method.api.PreviewDataHandler;
+import org.exbin.bined.jaguif.operation.method.ConversionDataProvider;
+import org.exbin.bined.jaguif.operation.method.command.ConvertDataCommand;
+import org.exbin.bined.jaguif.operation.method.ConvertDataOperation;
 import org.exbin.bined.jaguif.operation.bouncycastle.method.gui.EncryptionPanel;
-import org.exbin.bined.jaguif.operation.gui.BinaryPreviewPanel;
+import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 
 /**
  * Encyption and decryption data conversion method.

@@ -10,7 +10,7 @@
     <module id="org.exbin.jaguif.utils.UtilsModule" />
     <module id="org.exbin.jaguif.ui.api.UiModuleApi" />
     <module id="org.exbin.bined.jaguif.component.BinedComponentModule" />
-    <module id="org.exbin.bined.jaguif.operation.BinedOperationModule" />
+    <module id="org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule" />
     <library maven="org.bouncycastle:bcprov-jdk18on:1.80" />
   </dependency>
 </module>

@@ -4,7 +4,7 @@ if (rootProject.path == ':') {
     include ':modules:bined-component'
     include ':modules:bined-inspector'
     include ':modules:bined-objectdata'
-    include ':modules:bined-operation'
+    include ':modules:bined-operation-method'
     include ':modules:bined-search'
     include ':modules:bined-viewer'
     include ':modules:bined-editor'

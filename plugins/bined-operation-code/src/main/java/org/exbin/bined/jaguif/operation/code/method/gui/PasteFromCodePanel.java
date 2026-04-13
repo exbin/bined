@@ -31,7 +31,7 @@ import javax.swing.event.DocumentListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.operation.api.ParamChangeListener;
+import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
 

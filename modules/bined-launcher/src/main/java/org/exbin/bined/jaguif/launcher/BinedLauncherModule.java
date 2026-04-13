@@ -52,7 +52,7 @@ import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.inspector.BinedInspectorModule;
 import org.exbin.jaguif.document.settings.StartupOptions;
 import org.exbin.jaguif.document.settings.StartupOptions.StartupBehavior;
-import org.exbin.bined.jaguif.operation.BinedOperationModule;
+import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorFontContextInference;
@@ -232,8 +232,8 @@ public class BinedLauncherModule implements LauncherModule {
             BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
             binedSearchModule.registerSearchComponent();
 
-            BinedOperationModule binedOperationModule = App.getModule(BinedOperationModule.class);
-            binedOperationModule.addBasicMethods();
+            BinedOperationMethodModule binedOperationMethodModule = App.getModule(BinedOperationMethodModule.class);
+            binedOperationMethodModule.addBasicMethods();
 
             AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
@@ -302,13 +302,13 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerEncodings();
             binedModule.registerGoToPosition();
             binedSearchModule.registerEditFindMenuActions();
-            binedOperationModule.registerBlockEditActions();
+            binedOperationMethodModule.registerBlockEditActions();
 
             binedModule.registerCodeAreaPopupMenu();
             binedViewerModule.registerCodeAreaPopupMenu();
             binedEditorModule.registerCodeAreaPopupMenu();
             binedSearchModule.registerEditFindPopupMenuActions();
-            binedOperationModule.registerBlockEditPopupMenuActions();
+            binedOperationMethodModule.registerBlockEditPopupMenuActions();
 
             binedEditorModule.registerPropertiesMenu();
             binedEditorModule.registerReloadFileMenu();
