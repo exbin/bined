@@ -268,7 +268,7 @@ public class CodeTypeActions {
             boolean hasInstance = context != null;
             if (hasInstance) {
                 CodeType codeType = binaryDataComponent.getCodeType();
-                putValue(Action.NAME, resourceBundle.getString(ACTION_ID + ".codeType." + codeType.name().toLowerCase()));
+                putValue(Action.NAME, resourceBundle.getString(ACTION_ID + "Action.codeType." + codeType.name().toLowerCase()));
             }
             setEnabled(hasInstance);
         }
