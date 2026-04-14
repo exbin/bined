@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ExBin Project
+ * Copyright (C) ExBin Project, https://exbin.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,13 +51,13 @@ public class BinedOperationBouncycastleModule implements PluginModule {
 
         UiModuleApi uiModule = App.getModule(UiModuleApi.class);
         uiModule.addPostInitAction(() -> {
-            BinedOperationMethodModule binedOperationModule = App.getModule(BinedOperationMethodModule.class);
+            BinedOperationMethodModule binedOperationMethodModule = App.getModule(BinedOperationMethodModule.class);
 
             ComputeHashDataMethod computeHashDataMethod = new ComputeHashDataMethod();
-            binedOperationModule.addConvertDataMethod(computeHashDataMethod);
+            binedOperationMethodModule.addConvertDataMethod(computeHashDataMethod);
 
             SymmetricEncryptionMethod encryptionMethod = new SymmetricEncryptionMethod();
-            binedOperationModule.addConvertDataMethod(encryptionMethod);
+            binedOperationMethodModule.addConvertDataMethod(encryptionMethod);
         });
     }
 

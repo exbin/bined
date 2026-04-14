@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ExBin Project
+ * Copyright (C) ExBin Project, https://exbin.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,9 @@ public class BinedOperationCodeModule implements PluginModule {
 
     @Override
     public void register() {
-        BinedOperationMethodModule operationModule = App.getModule(BinedOperationMethodModule.class);
-        operationModule.addCopyAsDataMethod(new CopyAsCodeDataMethod());
-        operationModule.addPasteFromDataMethod(new PasteFromCodeDataMethod());
+        BinedOperationMethodModule operationMethodModule = App.getModule(BinedOperationMethodModule.class);
+        operationMethodModule.addCopyAsDataMethod(new CopyAsCodeDataMethod());
+        operationMethodModule.addPasteFromDataMethod(new PasteFromCodeDataMethod());
     }
 
     @Nonnull

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) ExBin Project
+ * Copyright (C) ExBin Project, https://exbin.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ContextComponent;
-import org.exbin.jaguif.action.api.clipboard.ClipboardStateListener;
 import org.exbin.jaguif.action.api.clipboard.TextClipboardController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.context.api.ActiveContextProvider;
@@ -172,18 +171,13 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     }
 
     @Override
-    public boolean canPaste() {
+    public boolean isValidForPaste() {
         return codeArea.isEditable() && codeArea.canPaste();
     }
 
     @Override
     public boolean canDelete() {
         return codeArea.isEditable();
-    }
-
-    @Override
-    public void setUpdateListener(ClipboardStateListener updateListener) {
-        // componentPanel.setUpdateListener(updateListener);
     }
 
     @Nonnull
