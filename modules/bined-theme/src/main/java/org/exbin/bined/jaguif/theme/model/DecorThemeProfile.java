@@ -21,8 +21,6 @@ import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 
 /**
  * Decorations theme profile.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DecorThemeProfile implements ThemeProfile {

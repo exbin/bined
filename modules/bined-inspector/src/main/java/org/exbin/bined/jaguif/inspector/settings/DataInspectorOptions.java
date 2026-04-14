@@ -21,8 +21,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Data inspector options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataInspectorOptions implements SettingsOptions {

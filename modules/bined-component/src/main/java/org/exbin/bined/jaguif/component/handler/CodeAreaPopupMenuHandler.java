@@ -22,8 +22,6 @@ import org.exbin.bined.swing.section.SectCodeArea;
 
 /**
  * Code area popup menu handler.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface CodeAreaPopupMenuHandler {

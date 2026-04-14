@@ -31,8 +31,6 @@ import org.exbin.jaguif.utils.OkCancelControlComponent;
 
 /**
  * Convert data control panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCancelControlComponent, HelpLinkable {

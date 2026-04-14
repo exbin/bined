@@ -25,8 +25,6 @@ import javax.swing.AbstractListModel;
 
 /**
  * Theme profile list model.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ThemeProfilesListModel extends AbstractListModel<ThemeProfile> {

@@ -27,8 +27,6 @@ import org.exbin.bined.jaguif.operation.method.ConvertDataOperation;
 
 /**
  * Convert data command.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ConvertDataCommand extends CodeAreaCommand {

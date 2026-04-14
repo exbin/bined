@@ -39,8 +39,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Panel for table with values for binary data inspection.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ValuesTablePanel extends javax.swing.JPanel {

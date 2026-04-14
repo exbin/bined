@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Copy as code contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class CopyAsCodeContribution implements ActionSequenceContribution {
 

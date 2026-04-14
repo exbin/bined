@@ -24,8 +24,6 @@ import java.util.List;
 
 /**
  * Short list as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ShortListPageProvider implements PageProvider {

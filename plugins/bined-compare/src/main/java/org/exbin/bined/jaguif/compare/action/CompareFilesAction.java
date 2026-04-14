@@ -62,8 +62,6 @@ import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 
 /**
  * Compare files action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CompareFilesAction extends AbstractAction implements ActionContextChange {

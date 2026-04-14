@@ -45,8 +45,6 @@ import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 
 /**
  * Binary search service.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinarySearchServiceImpl implements BinarySearchService {

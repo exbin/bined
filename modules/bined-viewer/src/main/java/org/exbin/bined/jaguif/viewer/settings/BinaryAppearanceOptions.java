@@ -21,8 +21,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Binary appearance options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryAppearanceOptions implements SettingsOptions {

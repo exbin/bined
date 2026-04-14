@@ -23,8 +23,6 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * Parameters list table model for item editing.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PropertyTableModel extends AbstractTableModel {

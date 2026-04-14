@@ -67,8 +67,6 @@ import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Bookmarks manager.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BookmarksManager {

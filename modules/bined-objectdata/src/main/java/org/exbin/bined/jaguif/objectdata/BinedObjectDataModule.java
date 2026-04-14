@@ -25,8 +25,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Binary editor object data support module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedObjectDataModule implements Module {

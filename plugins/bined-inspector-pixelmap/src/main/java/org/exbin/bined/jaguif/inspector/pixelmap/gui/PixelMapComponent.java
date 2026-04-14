@@ -30,8 +30,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Pixel map component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PixelMapComponent extends JComponent {

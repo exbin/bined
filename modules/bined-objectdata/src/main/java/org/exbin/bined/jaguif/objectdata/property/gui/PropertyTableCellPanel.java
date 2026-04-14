@@ -26,8 +26,6 @@ import org.exbin.jaguif.window.api.WindowModuleApi;
 
 /**
  * Properties table cell panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PropertyTableCellPanel extends ComponentPropertyTableCellPanel {

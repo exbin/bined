@@ -22,8 +22,6 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 
 /**
  * Word (short) value type.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class WordValueRowType implements ValueRowType {
 

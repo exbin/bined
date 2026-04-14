@@ -19,8 +19,6 @@ import javax.annotation.Nonnull;
 
 /**
  * Simplified page provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public interface PageProvider {
 

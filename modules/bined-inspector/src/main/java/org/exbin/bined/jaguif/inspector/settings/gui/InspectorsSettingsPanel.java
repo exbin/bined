@@ -36,8 +36,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Inspectors settings panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class InspectorsSettingsPanel extends javax.swing.JPanel implements SettingsComponent {

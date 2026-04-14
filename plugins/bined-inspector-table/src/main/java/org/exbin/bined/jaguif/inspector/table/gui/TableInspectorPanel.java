@@ -31,8 +31,6 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 
 /**
  * Values table side inspector panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class TableInspectorPanel extends javax.swing.JPanel {

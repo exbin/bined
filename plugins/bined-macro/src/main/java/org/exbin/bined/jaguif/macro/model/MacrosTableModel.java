@@ -26,8 +26,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Table model for macros.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class MacrosTableModel extends AbstractTableModel {

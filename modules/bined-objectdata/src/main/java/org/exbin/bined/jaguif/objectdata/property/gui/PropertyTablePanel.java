@@ -29,8 +29,6 @@ import javax.swing.table.TableColumnModel;
 
 /**
  * Panel for properties of the inspected instance.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PropertyTablePanel extends javax.swing.JPanel {

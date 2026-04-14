@@ -22,8 +22,6 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 
 /**
  * Integer value type.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class IntegerValueRowType implements ValueRowType {
 

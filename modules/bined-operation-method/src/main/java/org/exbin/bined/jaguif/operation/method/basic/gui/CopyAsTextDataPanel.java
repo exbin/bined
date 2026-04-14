@@ -27,8 +27,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Copy data as text code panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CopyAsTextDataPanel extends javax.swing.JPanel {

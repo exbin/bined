@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Row wrapping contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class RowWrappingContribution implements ActionSequenceContribution {
 

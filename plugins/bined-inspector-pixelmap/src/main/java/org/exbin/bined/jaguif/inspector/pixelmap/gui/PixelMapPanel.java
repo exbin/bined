@@ -22,8 +22,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Pixel map side panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PixelMapPanel extends javax.swing.JPanel {

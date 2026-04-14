@@ -52,8 +52,6 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 
 /**
  * Layout profiles options page.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaLayoutSettingsComponent implements SettingsComponentProvider {

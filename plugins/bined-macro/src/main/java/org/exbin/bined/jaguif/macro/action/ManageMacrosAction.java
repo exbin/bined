@@ -39,8 +39,6 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 
 /**
  * Manage macros action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ManageMacrosAction extends AbstractAction implements ActionContextChange {

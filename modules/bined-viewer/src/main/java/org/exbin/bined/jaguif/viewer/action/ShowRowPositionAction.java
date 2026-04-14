@@ -34,8 +34,6 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
  * Show row position action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ShowRowPositionAction extends AbstractAction {

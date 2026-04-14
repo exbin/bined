@@ -24,8 +24,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Wrapper panel for setting default profile.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class NamedProfilePanel extends javax.swing.JPanel {

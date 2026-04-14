@@ -51,8 +51,6 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 
 /**
  * Paste from specific form of data into binary data action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PasteFromAction extends AbstractAction {

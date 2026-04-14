@@ -26,8 +26,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Go to position options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class GoToPositionOptions implements SettingsOptions {

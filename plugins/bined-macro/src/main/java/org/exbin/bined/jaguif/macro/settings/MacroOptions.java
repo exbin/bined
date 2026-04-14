@@ -25,8 +25,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Macro options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class MacroOptions implements SettingsOptions {

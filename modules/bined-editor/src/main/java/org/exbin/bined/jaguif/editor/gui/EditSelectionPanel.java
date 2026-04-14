@@ -28,8 +28,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Edit selection for binary editor.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class EditSelectionPanel extends javax.swing.JPanel {

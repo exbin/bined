@@ -22,8 +22,6 @@ import javax.swing.event.ListDataListener;
 
 /**
  * Interface for profile list panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface ProfileListPanel {

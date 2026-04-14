@@ -42,8 +42,6 @@ import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Code type actions.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeTypeActions {

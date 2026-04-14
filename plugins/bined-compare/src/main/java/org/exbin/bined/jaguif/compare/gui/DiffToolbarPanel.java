@@ -36,8 +36,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Diff toolbar panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DiffToolbarPanel extends javax.swing.JPanel {

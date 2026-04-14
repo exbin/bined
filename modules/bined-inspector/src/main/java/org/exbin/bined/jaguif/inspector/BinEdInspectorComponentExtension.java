@@ -36,8 +36,6 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 
 /**
  * BinEd component data inspector.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdInspectorComponentExtension implements BinEdComponentExtension {

@@ -23,8 +23,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Clipboard code actions.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ClipboardCodeActions {

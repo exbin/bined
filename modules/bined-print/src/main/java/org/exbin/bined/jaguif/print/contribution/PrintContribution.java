@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Print contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class PrintContribution implements ActionSequenceContribution {
 

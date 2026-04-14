@@ -28,8 +28,6 @@ import javax.swing.undo.UndoableEdit;
 
 /**
  * Undo manager with compound operations.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryCompoundUndoManager extends AbstractUndoableEdit implements UndoableEditListener {

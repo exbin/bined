@@ -22,8 +22,6 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
 /**
  * Data inspector text font options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataInspectorFontOptions extends TextFontOptions {

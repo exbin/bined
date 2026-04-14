@@ -54,8 +54,6 @@ import org.exbin.jaguif.App;
 
 /**
  * Binary editor search panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinarySearchPanel extends javax.swing.JPanel {

@@ -23,8 +23,6 @@ import javax.swing.AbstractListModel;
 
 /**
  * Component parents list model.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ComponentParentsListModel extends AbstractListModel<String> {

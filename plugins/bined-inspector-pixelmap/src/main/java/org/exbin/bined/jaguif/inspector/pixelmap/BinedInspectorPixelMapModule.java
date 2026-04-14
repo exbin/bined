@@ -29,8 +29,6 @@ import org.exbin.bined.jaguif.inspector.BinEdInspectorManager;
 
 /**
  * Binary editor data pixel map inspector plugin.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedInspectorPixelMapModule implements PluginModule {

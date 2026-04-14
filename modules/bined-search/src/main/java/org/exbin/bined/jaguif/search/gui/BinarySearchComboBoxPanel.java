@@ -42,8 +42,6 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 
 /**
  * Combo box panel supporting both binary and text values.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinarySearchComboBoxPanel extends JPanel {

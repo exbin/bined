@@ -31,8 +31,6 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 
 /**
  * Binary data editor operations module using bouncy castle library.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedOperationBouncycastleModule implements PluginModule {

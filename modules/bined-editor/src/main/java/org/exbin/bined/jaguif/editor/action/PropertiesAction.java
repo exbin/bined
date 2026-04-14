@@ -34,8 +34,6 @@ import org.exbin.jaguif.window.api.WindowModuleApi;
 
 /**
  * Properties action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PropertiesAction extends AbstractAction {

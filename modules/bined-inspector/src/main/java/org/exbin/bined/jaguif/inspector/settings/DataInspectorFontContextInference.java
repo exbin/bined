@@ -29,8 +29,6 @@ import org.exbin.jaguif.document.api.ContextDocument;
 
 /**
  * Text editor font context inference.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataInspectorFontContextInference implements DataInspectorFontInference {

@@ -22,8 +22,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Table inspector options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class TableInspectorOptions implements SettingsOptions {

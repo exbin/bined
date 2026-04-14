@@ -54,8 +54,6 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 
 /**
  * Binary editor data inspector module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedInspectorModule implements Module {

@@ -36,8 +36,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Binary editor data table inspector module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedInspectorTableModule implements PluginModule {

@@ -30,8 +30,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Theme profile panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ThemeProfilePanel extends javax.swing.JPanel {

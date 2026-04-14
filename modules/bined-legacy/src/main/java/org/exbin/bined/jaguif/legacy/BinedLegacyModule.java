@@ -53,8 +53,6 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
 /**
  * Binary data editor module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedLegacyModule implements Module {

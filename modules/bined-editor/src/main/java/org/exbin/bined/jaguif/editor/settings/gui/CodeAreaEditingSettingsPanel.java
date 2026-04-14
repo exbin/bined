@@ -30,8 +30,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Code area editing options panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {

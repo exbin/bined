@@ -24,8 +24,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * BinEd inspector.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface BinEdInspector {

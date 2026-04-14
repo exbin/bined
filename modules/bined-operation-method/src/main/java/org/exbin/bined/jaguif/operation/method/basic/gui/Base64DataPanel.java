@@ -25,8 +25,6 @@ import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 
 /**
  * Base 64 data component panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class Base64DataPanel extends javax.swing.JPanel {

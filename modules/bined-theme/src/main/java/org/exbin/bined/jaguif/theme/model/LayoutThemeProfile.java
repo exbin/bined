@@ -21,8 +21,6 @@ import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 
 /**
  * Layout theme profile.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class LayoutThemeProfile implements ThemeProfile {

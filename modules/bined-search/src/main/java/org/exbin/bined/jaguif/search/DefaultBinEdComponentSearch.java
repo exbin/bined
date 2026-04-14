@@ -29,8 +29,6 @@ import org.exbin.bined.jaguif.search.service.impl.BinarySearchServiceImpl;
 
 /**
  * Bined component search.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DefaultBinEdComponentSearch implements BinEdComponentSearch {

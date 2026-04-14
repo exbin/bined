@@ -25,8 +25,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Paste data from text code panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PasteFromTextDataPanel extends javax.swing.JPanel {

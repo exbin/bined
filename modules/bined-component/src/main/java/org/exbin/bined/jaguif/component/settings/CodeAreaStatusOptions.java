@@ -27,8 +27,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Code area status bar options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaStatusOptions implements SettingsOptions {

@@ -17,8 +17,6 @@ package org.exbin.bined.jaguif.operation.method.api;
 
 /**
  * Methods parameters change listener.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public interface ParamChangeListener {
 

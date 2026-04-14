@@ -22,8 +22,6 @@ import javax.swing.AbstractListModel;
 
 /**
  * List model for data flavors.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataFlavorsListModel extends AbstractListModel<String> {

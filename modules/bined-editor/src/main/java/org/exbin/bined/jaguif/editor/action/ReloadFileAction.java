@@ -29,8 +29,6 @@ import org.exbin.jaguif.document.api.ContextDocument;
 
 /**
  * Reload content of the currently active file.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ReloadFileAction extends AbstractAction {

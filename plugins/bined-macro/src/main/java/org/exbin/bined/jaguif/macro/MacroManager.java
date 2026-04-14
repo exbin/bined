@@ -76,8 +76,6 @@ import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Macros manager.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class MacroManager {

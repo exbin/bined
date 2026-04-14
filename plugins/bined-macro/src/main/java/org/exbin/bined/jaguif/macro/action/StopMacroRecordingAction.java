@@ -34,8 +34,6 @@ import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 
 /**
  * Stop macro recording action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class StopMacroRecordingAction extends AbstractAction {

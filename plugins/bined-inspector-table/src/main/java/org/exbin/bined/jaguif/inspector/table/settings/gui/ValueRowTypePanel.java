@@ -32,8 +32,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Value row type panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ValueRowTypePanel extends javax.swing.JPanel {

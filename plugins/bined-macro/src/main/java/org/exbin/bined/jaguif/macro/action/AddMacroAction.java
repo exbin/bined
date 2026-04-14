@@ -36,8 +36,6 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 
 /**
  * Add macro record action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class AddMacroAction extends AbstractAction {

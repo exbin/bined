@@ -45,8 +45,6 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 
 /**
  * Edit selection action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class EditSelectionAction extends AbstractAction {

@@ -23,8 +23,6 @@ import org.exbin.bined.jaguif.inspector.BinEdInspectorProvider;
 
 /**
  * Table inspector provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class TableInspectorProvider implements BinEdInspectorProvider {

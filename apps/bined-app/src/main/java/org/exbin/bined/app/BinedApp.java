@@ -26,8 +26,6 @@ import org.exbin.jaguif.basic.BasicModuleFileLocation;
 
 /**
  * The main class of the BinEd Binary / Hex Editor application.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedApp {

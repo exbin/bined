@@ -22,8 +22,6 @@ import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 
 /**
  * Binary data cursor position status contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class BinaryCursorPositionStatusContrib implements ComponentStatusBarContribution {
 

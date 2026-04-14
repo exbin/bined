@@ -55,8 +55,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Clipboard content panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ClipboardContentPanel extends javax.swing.JPanel {

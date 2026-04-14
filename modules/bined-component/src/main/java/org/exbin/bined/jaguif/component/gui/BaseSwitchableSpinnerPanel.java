@@ -46,8 +46,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Spinner supporting multiple bases.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BaseSwitchableSpinnerPanel extends javax.swing.JPanel {

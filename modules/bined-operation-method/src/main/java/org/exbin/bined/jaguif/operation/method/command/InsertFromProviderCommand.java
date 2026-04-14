@@ -26,8 +26,6 @@ import org.exbin.bined.jaguif.operation.method.InsertFromProviderOperation;
 
 /**
  * Insert data from provider command.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class InsertFromProviderCommand extends CodeAreaCommand {

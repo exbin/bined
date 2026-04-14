@@ -38,8 +38,6 @@ import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Binary editor component panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdComponentPanel extends javax.swing.JPanel {

@@ -25,8 +25,6 @@ import org.exbin.jaguif.utils.ComponentProvider;
 
 /**
  * Binary data component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface BinaryDataComponent extends ContextComponent, ComponentProvider, CodeTypeState, NonprintablesState {

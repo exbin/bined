@@ -50,8 +50,6 @@ import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 
 /**
  * Drag and drop content action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DragDropContentAction extends AbstractAction implements ActionContextChange {

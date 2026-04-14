@@ -27,8 +27,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Fill simple data component panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class SimpleFillDataPanel extends javax.swing.JPanel {

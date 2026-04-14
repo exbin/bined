@@ -28,8 +28,6 @@ import org.exbin.bined.jaguif.bookmarks.model.BookmarkRecord;
 
 /**
  * Bookmarks position color modifier.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BookmarksPositionColorModifier implements CodeAreaColorAssessor {

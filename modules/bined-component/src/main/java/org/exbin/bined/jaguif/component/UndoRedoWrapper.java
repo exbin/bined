@@ -36,8 +36,6 @@ import org.exbin.jaguif.operation.undo.api.UndoRedo;
 
 /**
  * Undo redo wrapper.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class UndoRedoWrapper implements UndoRedo {

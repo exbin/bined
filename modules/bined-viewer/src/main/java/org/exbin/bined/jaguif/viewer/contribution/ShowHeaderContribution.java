@@ -27,8 +27,6 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Show header contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ShowHeaderContribution implements ActionSequenceContribution {
 

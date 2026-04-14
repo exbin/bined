@@ -26,8 +26,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Color layout profile options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaColorProfileOptions implements SettingsOptions {

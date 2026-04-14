@@ -28,8 +28,6 @@ import org.exbin.jaguif.options.settings.api.SettingsComponent;
 
 /**
  * Code area editing options page.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaEditingSettingsComponent implements SettingsComponentProvider {

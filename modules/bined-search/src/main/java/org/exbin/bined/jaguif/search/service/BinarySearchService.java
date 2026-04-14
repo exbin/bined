@@ -22,8 +22,6 @@ import org.exbin.bined.jaguif.search.SearchParameters;
 
 /**
  * Binary search service.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface BinarySearchService {

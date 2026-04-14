@@ -28,8 +28,6 @@ import javax.swing.table.TableCellEditor;
 
 /**
  * Table model for color profile panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ColorCellTableEditor extends AbstractCellEditor implements TableCellEditor {

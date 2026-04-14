@@ -43,8 +43,6 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 
 /**
  * Binary editor macro support module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedMacroModule implements PluginModule {

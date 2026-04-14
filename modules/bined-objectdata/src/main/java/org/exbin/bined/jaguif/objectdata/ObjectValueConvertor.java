@@ -51,8 +51,6 @@ import java.util.Optional;
 
 /**
  * Class value convertor.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ObjectValueConvertor {

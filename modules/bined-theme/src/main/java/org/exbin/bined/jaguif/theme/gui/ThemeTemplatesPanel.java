@@ -37,8 +37,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Manage list of theme templates panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileListPanel {

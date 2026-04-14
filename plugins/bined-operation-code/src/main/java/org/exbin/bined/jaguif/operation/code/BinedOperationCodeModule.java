@@ -28,8 +28,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Module for operations to copy or paste from language programming codes.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedOperationCodeModule implements PluginModule {

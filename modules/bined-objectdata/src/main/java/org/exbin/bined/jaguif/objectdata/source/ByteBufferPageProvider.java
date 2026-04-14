@@ -24,8 +24,6 @@ import java.nio.ByteBuffer;
 
 /**
  * Byte buffer as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ByteBufferPageProvider implements PageProvider {

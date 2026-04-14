@@ -24,8 +24,6 @@ import java.nio.ByteBuffer;
 
 /**
  * Double array as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BoxedDoubleArrayPageProvider implements PageProvider {

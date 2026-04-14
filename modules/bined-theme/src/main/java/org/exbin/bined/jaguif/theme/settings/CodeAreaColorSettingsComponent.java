@@ -52,8 +52,6 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 
 /**
  * Color profiles settings component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaColorSettingsComponent implements SettingsComponentProvider {

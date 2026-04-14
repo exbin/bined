@@ -33,8 +33,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Color layout options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaColorOptions implements SettingsOptions {

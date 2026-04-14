@@ -19,8 +19,6 @@ import javax.annotation.Nonnull;
 
 /**
  * Value type interface.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public interface ValueRowType {
 

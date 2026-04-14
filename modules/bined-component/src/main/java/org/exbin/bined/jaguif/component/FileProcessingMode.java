@@ -17,8 +17,6 @@ package org.exbin.bined.jaguif.component;
 
 /**
  * File processing mode.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public enum FileProcessingMode implements BinEdFileProcessingMode {
     /**

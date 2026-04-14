@@ -29,8 +29,6 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Copy binary data as specific form contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class CopyAsContribution implements ActionSequenceContribution {
 

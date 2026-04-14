@@ -35,8 +35,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * File properties panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdFilePropertiesPanel extends javax.swing.JPanel {

@@ -36,8 +36,6 @@ import org.exbin.bined.jaguif.viewer.BinedViewerUpdateType;
 
 /**
  * View mode actions.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaViewModeActions {

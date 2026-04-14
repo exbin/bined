@@ -26,8 +26,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Layout profile options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaLayoutProfileOptions implements SettingsOptions {

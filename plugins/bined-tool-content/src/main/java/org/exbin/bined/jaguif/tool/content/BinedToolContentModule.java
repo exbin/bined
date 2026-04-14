@@ -34,8 +34,6 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 
 /**
  * Binary editor clipboard support module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedToolContentModule implements PluginModule {

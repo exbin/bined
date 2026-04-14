@@ -23,8 +23,6 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 
 /**
  * Double value type.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class DoubleValueRowType implements ValueRowType {
 

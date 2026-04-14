@@ -35,8 +35,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Inspection panel for instance component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class InspectComponentPanel extends javax.swing.JPanel {

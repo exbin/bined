@@ -30,8 +30,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Code area options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaOptions implements SettingsOptions {

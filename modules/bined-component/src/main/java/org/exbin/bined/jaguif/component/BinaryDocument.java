@@ -22,8 +22,6 @@ import org.exbin.jaguif.document.api.NamedDocument;
 
 /**
  * Binary document.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public interface BinaryDocument extends ContextDocument, NamedDocument {
 

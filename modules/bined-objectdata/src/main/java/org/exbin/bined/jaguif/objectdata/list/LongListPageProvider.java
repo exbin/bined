@@ -25,8 +25,6 @@ import java.util.List;
 
 /**
  * Long list as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class LongListPageProvider implements PageProvider {

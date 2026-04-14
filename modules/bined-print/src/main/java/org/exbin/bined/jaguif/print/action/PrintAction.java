@@ -41,8 +41,6 @@ import org.exbin.jaguif.utils.ActionUtils;
  * Print action.
  * 
  * TODO: Move to print module
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PrintAction extends AbstractAction {

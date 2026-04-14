@@ -30,8 +30,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Compute hash from provided data component panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ComputeHashDataPanel extends javax.swing.JPanel {

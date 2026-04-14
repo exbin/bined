@@ -96,8 +96,6 @@ import org.exbin.jaguif.text.font.settings.TextFontInference;
 
 /**
  * Binary editor launcher module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedLauncherModule implements LauncherModule {

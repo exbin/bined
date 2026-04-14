@@ -27,8 +27,6 @@ import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 
 /**
  * Fill simple data component panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BitSwappingDataPanel extends javax.swing.JPanel {

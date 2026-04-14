@@ -25,8 +25,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Byte buffer as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ReaderPageProvider implements PageProvider {

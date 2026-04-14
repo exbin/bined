@@ -56,8 +56,6 @@ import org.exbin.jaguif.text.font.TextFontState;
 
 /**
  * Binary data binaryComponent.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {

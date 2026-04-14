@@ -21,8 +21,6 @@ import org.exbin.bined.jaguif.objectdata.property.gui.PropertyTableItem;
 
 /**
  * Values table row item.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public abstract class ValueRowItem extends PropertyTableItem {

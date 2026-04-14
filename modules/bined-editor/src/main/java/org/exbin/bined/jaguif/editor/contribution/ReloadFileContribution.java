@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Reload content of the currently active file contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ReloadFileContribution implements ActionSequenceContribution {
 

@@ -25,8 +25,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Binary editor offline help module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedHelpModule implements Module {

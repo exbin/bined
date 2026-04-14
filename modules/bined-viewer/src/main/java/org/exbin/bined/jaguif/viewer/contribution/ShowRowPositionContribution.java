@@ -27,8 +27,6 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Show row position contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ShowRowPositionContribution implements ActionSequenceContribution {
 

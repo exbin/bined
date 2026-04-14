@@ -29,8 +29,6 @@ import javax.swing.plaf.basic.BasicBorders;
 
 /**
  * Empty property column panel with operation button.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ComponentPropertyTableCellPanel extends javax.swing.JPanel {

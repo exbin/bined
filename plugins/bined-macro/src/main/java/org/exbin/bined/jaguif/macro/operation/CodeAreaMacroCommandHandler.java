@@ -44,8 +44,6 @@ import org.exbin.bined.jaguif.macro.model.MacroRecord;
 
 /**
  * Command handler with support for macro recording.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler {

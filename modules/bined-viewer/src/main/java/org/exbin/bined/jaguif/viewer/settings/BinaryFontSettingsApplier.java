@@ -26,8 +26,6 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
 /**
  * Binary font settings applier.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryFontSettingsApplier implements SettingsApplier {

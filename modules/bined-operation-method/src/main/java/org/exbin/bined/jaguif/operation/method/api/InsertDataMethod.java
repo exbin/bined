@@ -24,8 +24,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Interface for insert data component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface InsertDataMethod extends DataOperationMethod {

@@ -31,8 +31,6 @@ import org.exbin.jaguif.menu.api.MenuModuleApi;
 
 /**
  * Binary data print module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedPrintModule implements Module {

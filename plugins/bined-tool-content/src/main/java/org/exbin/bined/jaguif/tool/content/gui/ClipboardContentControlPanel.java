@@ -29,8 +29,6 @@ import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Clipboard content control panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ClipboardContentControlPanel extends javax.swing.JPanel implements ClipboardContentControlController.ClipboardContentControlComponent, HelpLinkable {

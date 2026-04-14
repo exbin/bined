@@ -33,8 +33,6 @@ import org.exbin.jaguif.App;
 
 /**
  * Multiline search condition editor panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryMultilinePanel extends javax.swing.JPanel {

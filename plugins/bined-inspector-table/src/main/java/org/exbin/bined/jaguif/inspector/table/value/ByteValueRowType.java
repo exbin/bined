@@ -21,8 +21,6 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 
 /**
  * Byte value type.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ByteValueRowType implements ValueRowType {
 

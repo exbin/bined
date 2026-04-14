@@ -34,8 +34,6 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 
 /**
  * Data inspector settings component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataInspectorSettingsComponent implements SettingsComponentProvider {

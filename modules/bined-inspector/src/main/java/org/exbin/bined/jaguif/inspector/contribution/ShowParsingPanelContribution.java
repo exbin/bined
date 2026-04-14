@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Show parsing panel contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ShowParsingPanelContribution implements ActionSequenceContribution {
 

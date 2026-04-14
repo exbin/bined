@@ -26,8 +26,6 @@ import java.io.OutputStream;
 
 /**
  * Debugger value dual page data source.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PageProviderBinaryData implements BinaryData {

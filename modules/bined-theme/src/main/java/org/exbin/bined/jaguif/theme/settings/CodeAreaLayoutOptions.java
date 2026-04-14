@@ -25,8 +25,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Code area layout settings options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaLayoutOptions implements SettingsOptions {

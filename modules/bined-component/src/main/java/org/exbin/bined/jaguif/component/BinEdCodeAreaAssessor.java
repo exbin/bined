@@ -32,8 +32,6 @@ import org.exbin.bined.swing.CodeAreaPaintState;
 
 /**
  * Color assessor for binary editor with registrable modifiers.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCharAssessor {

@@ -24,8 +24,6 @@ import java.util.List;
 
 /**
  * Character list data as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CharListPageProvider implements PageProvider {

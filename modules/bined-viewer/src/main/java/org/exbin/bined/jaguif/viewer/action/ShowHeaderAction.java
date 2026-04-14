@@ -34,8 +34,6 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
  * Show header action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ShowHeaderAction extends AbstractAction {

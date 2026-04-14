@@ -42,8 +42,6 @@ import org.exbin.bined.jaguif.operation.method.basic.gui.CopyAsTextDataPanel;
 
 /**
  * Copy as text data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CopyAsTextDataMethod implements CopyAsDataMethod {

@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Drag and drop content contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class DragDropContentContribution implements ActionSequenceContribution {
 

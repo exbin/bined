@@ -25,8 +25,6 @@ import javax.swing.JDialog;
 
 /**
  * Simple color selection component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class SelectableColor extends javax.swing.JPanel {

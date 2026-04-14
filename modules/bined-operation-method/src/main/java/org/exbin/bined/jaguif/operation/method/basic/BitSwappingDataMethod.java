@@ -40,8 +40,6 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 
 /**
  * Bit swapping data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BitSwappingDataMethod implements ConvertDataMethod {

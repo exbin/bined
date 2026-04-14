@@ -25,8 +25,6 @@ import java.util.List;
 
 /**
  * Double list as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DoubleListPageProvider implements PageProvider {

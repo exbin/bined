@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Clipboard content contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ClipboardContentContribution implements ActionSequenceContribution {
 

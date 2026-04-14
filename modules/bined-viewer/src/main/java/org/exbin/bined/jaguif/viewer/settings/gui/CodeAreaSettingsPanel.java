@@ -33,8 +33,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Code area preference parameters panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaSettingsPanel extends javax.swing.JPanel implements SettingsComponent {

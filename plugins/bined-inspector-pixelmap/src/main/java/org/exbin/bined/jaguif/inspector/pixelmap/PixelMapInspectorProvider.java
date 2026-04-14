@@ -23,8 +23,6 @@ import org.exbin.bined.jaguif.inspector.BinEdInspectorProvider;
 
 /**
  * Pixel map inspector provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PixelMapInspectorProvider implements BinEdInspectorProvider {

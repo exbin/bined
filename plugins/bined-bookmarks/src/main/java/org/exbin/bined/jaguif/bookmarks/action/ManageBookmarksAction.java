@@ -45,8 +45,6 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 
 /**
  * Manage bookmarks action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ManageBookmarksAction extends AbstractAction {

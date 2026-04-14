@@ -45,8 +45,6 @@ import org.exbin.bined.jaguif.operation.method.gui.TextPreviewPanel;
 
 /**
  * Copy binary data as programming language code method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CopyAsCodeDataMethod implements CopyAsDataMethod {

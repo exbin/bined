@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Edit selection contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class EditSelectionContribution implements ActionSequenceContribution {
 

@@ -26,8 +26,6 @@ import javax.swing.UIManager;
 
 /**
  * Text preview panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class TextPreviewPanel extends javax.swing.JPanel {

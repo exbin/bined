@@ -27,8 +27,6 @@ import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Basic values inspector position color modifier.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {

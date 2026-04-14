@@ -24,8 +24,6 @@ import java.nio.CharBuffer;
 
 /**
  * Char buffer as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CharBufferPageProvider implements PageProvider {

@@ -34,8 +34,6 @@ import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Binary data preview panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryPreviewPanel extends javax.swing.JPanel {

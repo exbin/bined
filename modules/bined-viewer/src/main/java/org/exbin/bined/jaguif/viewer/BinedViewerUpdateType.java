@@ -19,8 +19,6 @@ import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
  * Binary data viewer update types.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public enum BinedViewerUpdateType implements StateUpdateType {
     VIEW_MODE,

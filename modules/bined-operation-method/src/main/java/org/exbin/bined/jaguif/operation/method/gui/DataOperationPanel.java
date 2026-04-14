@@ -33,8 +33,6 @@ import org.exbin.bined.jaguif.operation.method.api.DataOperationMethod;
 
 /**
  * Data operation panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataOperationPanel extends javax.swing.JPanel {

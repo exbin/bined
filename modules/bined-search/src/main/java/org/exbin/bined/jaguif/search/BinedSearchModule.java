@@ -40,8 +40,6 @@ import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 
 /**
  * Binary editor search module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedSearchModule implements Module {

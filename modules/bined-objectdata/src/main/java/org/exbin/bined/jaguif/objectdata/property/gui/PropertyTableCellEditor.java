@@ -26,8 +26,6 @@ import javax.swing.text.JTextComponent;
 
 /**
  * Property table cell renderer.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PropertyTableCellEditor extends DefaultCellEditor {

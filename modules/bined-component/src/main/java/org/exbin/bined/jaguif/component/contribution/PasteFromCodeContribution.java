@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Paste from code contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class PasteFromCodeContribution implements ActionSequenceContribution {
 

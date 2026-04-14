@@ -27,8 +27,6 @@ import org.exbin.bined.jaguif.bookmarks.model.BookmarksTableModel;
 
 /**
  * Table model for color value.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BookmarksManagerCellTableRenderer implements TableCellRenderer {

@@ -21,8 +21,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Import from code data panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ImportFromCodeDataPanel extends javax.swing.JPanel {

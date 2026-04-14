@@ -41,8 +41,6 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 
 /**
  * Edit bookmark record action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class EditBookmarkAction extends AbstractAction {

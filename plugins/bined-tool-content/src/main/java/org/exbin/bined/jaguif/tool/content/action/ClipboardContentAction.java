@@ -49,8 +49,6 @@ import org.exbin.jaguif.window.api.WindowHandler;
 
 /**
  * Clipboard content action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ClipboardContentAction extends AbstractAction implements ActionContextChange {

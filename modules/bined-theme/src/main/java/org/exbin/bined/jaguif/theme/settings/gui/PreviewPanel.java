@@ -38,8 +38,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Preview panel for code area.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PreviewPanel extends javax.swing.JPanel {

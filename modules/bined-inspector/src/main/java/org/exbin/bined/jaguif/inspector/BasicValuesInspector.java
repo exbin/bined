@@ -30,8 +30,6 @@ import org.exbin.bined.jaguif.inspector.gui.BasicValuesPanel;
 
 /**
  * BinEd basic values inspector.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BasicValuesInspector implements BinEdInspector {

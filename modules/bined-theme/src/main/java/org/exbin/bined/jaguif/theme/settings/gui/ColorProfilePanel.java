@@ -29,8 +29,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Color profile panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ColorProfilePanel extends javax.swing.JPanel {

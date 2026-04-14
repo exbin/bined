@@ -42,8 +42,6 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
  * BinEd edit mode status component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {

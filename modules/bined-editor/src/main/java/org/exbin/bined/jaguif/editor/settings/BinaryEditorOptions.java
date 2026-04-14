@@ -24,8 +24,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Binary editor options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryEditorOptions implements SettingsOptions {

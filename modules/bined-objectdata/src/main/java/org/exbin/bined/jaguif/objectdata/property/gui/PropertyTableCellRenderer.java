@@ -25,8 +25,6 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  * Property Table Cell Renderer.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PropertyTableCellRenderer implements TableCellRenderer {

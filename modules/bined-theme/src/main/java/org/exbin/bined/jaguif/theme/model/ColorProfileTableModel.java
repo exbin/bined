@@ -37,8 +37,6 @@ import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 
 /**
  * Table model for colors profile panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ColorProfileTableModel implements TableModel {

@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Go to position contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class GoToPositionContribution implements ActionSequenceContribution {
 

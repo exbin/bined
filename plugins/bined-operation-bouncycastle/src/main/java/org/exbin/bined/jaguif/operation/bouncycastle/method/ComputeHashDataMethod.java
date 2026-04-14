@@ -64,8 +64,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Compute Hash digest data component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ComputeHashDataMethod implements ConvertDataMethod {

@@ -58,8 +58,6 @@ import org.exbin.jaguif.document.api.DocumentModuleApi;
 
 /**
  * Convert data action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ConvertDataAction extends AbstractAction {

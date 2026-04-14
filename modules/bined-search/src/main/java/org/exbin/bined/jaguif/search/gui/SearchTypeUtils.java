@@ -32,8 +32,6 @@ import org.exbin.jaguif.utils.UiUtils;
  * Search type utility.
  * <p>
  * TODO: Refactor as component instead of utilities class.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class SearchTypeUtils {

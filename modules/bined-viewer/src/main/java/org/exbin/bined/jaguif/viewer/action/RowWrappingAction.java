@@ -31,8 +31,6 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
  * Row wrapping action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class RowWrappingAction extends AbstractAction {

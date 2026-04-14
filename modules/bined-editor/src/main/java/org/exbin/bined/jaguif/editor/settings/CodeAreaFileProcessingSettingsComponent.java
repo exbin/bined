@@ -28,8 +28,6 @@ import org.exbin.jaguif.options.settings.api.SettingsComponent;
 
 /**
  * Code area file processing options page.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaFileProcessingSettingsComponent implements SettingsComponentProvider {

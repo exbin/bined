@@ -29,8 +29,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Bookmark editor panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BookmarkEditorPanel extends javax.swing.JPanel {

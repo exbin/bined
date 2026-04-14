@@ -24,8 +24,6 @@ import org.exbin.bined.operation.BinaryDataUndoableOperation;
 
 /**
  * Operation to convert selection or all data into provided data.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ConvertDataOperation implements BinaryDataUndoableOperation {

@@ -41,8 +41,6 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 
 /**
  * Binary search.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinarySearch {

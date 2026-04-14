@@ -80,8 +80,6 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
 /**
  * BinEd diff panel to compare binary files.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdDiffPanel extends JPanel {

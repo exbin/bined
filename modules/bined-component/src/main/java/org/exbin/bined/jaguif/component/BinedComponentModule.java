@@ -99,8 +99,6 @@ import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 
 /**
  * Binary data editor module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedComponentModule implements Module {

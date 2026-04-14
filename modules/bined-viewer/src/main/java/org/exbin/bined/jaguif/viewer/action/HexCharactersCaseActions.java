@@ -35,8 +35,6 @@ import org.exbin.bined.jaguif.component.CodeTypeState;
 
 /**
  * Hex characters case actions.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class HexCharactersCaseActions {

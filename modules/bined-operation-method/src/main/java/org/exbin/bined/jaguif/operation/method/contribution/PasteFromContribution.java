@@ -29,8 +29,6 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Paste from specific form of data into binary data contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class PasteFromContribution implements ActionSequenceContribution {
 

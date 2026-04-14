@@ -24,8 +24,6 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 
 /**
  * Long value type.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class LongValueRowType implements ValueRowType {
 

@@ -24,8 +24,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Provider for code area command handler.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface CodeAreaCommandHandlerProvider {

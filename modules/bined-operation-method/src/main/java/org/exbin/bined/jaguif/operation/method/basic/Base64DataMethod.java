@@ -40,8 +40,6 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 
 /**
  * Base 64 data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class Base64DataMethod implements ConvertDataMethod {

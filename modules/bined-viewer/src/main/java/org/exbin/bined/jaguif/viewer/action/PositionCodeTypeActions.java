@@ -37,8 +37,6 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Position code type actions.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PositionCodeTypeActions {

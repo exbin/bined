@@ -22,8 +22,6 @@ import org.exbin.bined.PositionCodeType;
 
 /**
  * Document size format for status.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class StatusDocumentSizeFormat {

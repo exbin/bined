@@ -25,8 +25,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Go-to position panel for binary editor.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class GoToPositionPanel extends javax.swing.JPanel {

@@ -31,8 +31,6 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 
 /**
  * Text encoding settings component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryEncodingSettingsComponent implements SettingsComponentProvider {

@@ -26,8 +26,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Random data component panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class RandomDataPanel extends javax.swing.JPanel {

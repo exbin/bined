@@ -26,8 +26,6 @@ import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
 
 /**
  * Binary encoding settings applier.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryEncodingSettingsApplier implements SettingsApplier {

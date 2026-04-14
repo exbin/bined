@@ -17,8 +17,6 @@ package org.exbin.bined.jaguif.operation.method;
 
 /**
  * Enumeration of code separators.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public enum CodeSeparator {
 

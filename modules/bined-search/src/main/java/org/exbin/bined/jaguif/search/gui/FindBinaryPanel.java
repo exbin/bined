@@ -48,8 +48,6 @@ import org.exbin.jaguif.App;
 
 /**
  * Find text/binary data panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class FindBinaryPanel extends javax.swing.JPanel {

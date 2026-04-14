@@ -27,8 +27,6 @@ import org.exbin.bined.jaguif.operation.method.ReplaceDataOperation;
 
 /**
  * Replace data command.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ReplaceDataCommand extends CodeAreaCommand {

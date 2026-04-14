@@ -20,8 +20,6 @@ import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
  * Nonprintables state.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface NonprintablesState {

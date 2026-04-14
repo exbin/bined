@@ -40,8 +40,6 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 
 /**
  * Binary data editor bookmarks module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedBookmarksModule implements PluginModule {

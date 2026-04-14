@@ -24,8 +24,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Legacy preferences for version 0.1.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ConversionStorage implements OptionsStorage {

@@ -17,8 +17,6 @@ package org.exbin.bined.jaguif.component;
 
 /**
  * Mode for calculation of the go-to position in binary document.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public enum RelativePositionMode {
     /**

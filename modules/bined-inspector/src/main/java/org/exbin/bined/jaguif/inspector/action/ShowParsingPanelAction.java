@@ -32,8 +32,6 @@ import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
 
 /**
  * Show parsing panel action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ShowParsingPanelAction extends AbstractAction {

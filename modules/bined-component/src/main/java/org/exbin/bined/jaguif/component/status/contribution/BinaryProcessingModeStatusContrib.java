@@ -22,8 +22,6 @@ import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 
 /**
  * Binary data processing mode status contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class BinaryProcessingModeStatusContrib implements ComponentStatusBarContribution {
 

@@ -40,8 +40,6 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 
 /**
  * Generate random data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class RandomDataMethod implements InsertDataMethod {

@@ -39,8 +39,6 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 
 /**
  * BinEd edit mode status component.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {

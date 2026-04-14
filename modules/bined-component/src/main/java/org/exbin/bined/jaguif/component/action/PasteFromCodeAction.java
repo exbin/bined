@@ -48,8 +48,6 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 
 /**
  * Paste from code action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PasteFromCodeAction extends AbstractAction implements ActionContextChange {

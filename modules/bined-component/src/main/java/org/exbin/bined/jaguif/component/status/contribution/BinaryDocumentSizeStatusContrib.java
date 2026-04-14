@@ -22,8 +22,6 @@ import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 
 /**
  * Binary data document size status contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class BinaryDocumentSizeStatusContrib implements ComponentStatusBarContribution {
 

@@ -19,8 +19,6 @@ import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
  * Macro state context update type.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public enum MacroStateUpdateType implements StateUpdateType {
     MACRO_RECORDING,

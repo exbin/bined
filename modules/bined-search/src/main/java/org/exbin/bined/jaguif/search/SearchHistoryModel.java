@@ -25,8 +25,6 @@ import javax.swing.event.ListDataListener;
 
 /**
  * Search condition history model.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class SearchHistoryModel implements ComboBoxModel<SearchCondition> {

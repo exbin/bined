@@ -47,8 +47,6 @@ import org.exbin.bined.jaguif.operation.method.basic.gui.PasteFromTextDataPanel;
 
 /**
  * Paste from text data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PasteFromTextDataMethod implements PasteFromDataMethod {

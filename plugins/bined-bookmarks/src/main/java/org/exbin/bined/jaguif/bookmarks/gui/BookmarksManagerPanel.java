@@ -30,8 +30,6 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Bookmarks manager panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BookmarksManagerPanel extends javax.swing.JPanel {

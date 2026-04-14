@@ -34,8 +34,6 @@ import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 
 /**
  * Start macro recording action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class StartMacroRecordingAction extends AbstractAction {

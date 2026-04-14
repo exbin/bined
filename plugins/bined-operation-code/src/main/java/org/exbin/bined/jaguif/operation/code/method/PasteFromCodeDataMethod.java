@@ -39,8 +39,6 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 
 /**
  * Paste programming language code as binary data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class PasteFromCodeDataMethod implements PasteFromDataMethod {

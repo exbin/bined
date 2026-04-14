@@ -68,8 +68,6 @@ import org.exbin.jaguif.text.font.ContextFont;
 
 /**
  * BinEd binary document.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {

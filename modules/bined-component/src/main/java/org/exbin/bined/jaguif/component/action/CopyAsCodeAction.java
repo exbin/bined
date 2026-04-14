@@ -49,8 +49,6 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 
 /**
  * Copy as code action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CopyAsCodeAction extends AbstractAction implements ActionContextChange {

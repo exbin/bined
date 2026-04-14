@@ -38,8 +38,6 @@ import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 
 /**
  * Manage list of theme profiles panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileListPanel {

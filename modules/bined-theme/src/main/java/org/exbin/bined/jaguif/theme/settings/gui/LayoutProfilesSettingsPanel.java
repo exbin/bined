@@ -36,8 +36,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Layout profiles settings panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class LayoutProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent {

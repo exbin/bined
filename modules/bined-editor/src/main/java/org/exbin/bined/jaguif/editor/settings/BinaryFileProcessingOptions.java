@@ -25,8 +25,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Binary file processing options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinaryFileProcessingOptions implements SettingsOptions {

@@ -26,8 +26,6 @@ import javax.swing.JTable;
 
 /**
  * Table model for color profile panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ColorCellTableRenderer implements TableCellRenderer {

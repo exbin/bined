@@ -30,8 +30,6 @@ import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 
 /**
  * Wrapper panel for named profile.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ProfileSelectionPanel extends javax.swing.JPanel {

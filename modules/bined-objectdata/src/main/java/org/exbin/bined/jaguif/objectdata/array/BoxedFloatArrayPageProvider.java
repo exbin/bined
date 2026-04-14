@@ -24,8 +24,6 @@ import java.nio.ByteBuffer;
 
 /**
  * Float array as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BoxedFloatArrayPageProvider implements PageProvider {

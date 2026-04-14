@@ -53,8 +53,6 @@ import org.exbin.bined.jaguif.inspector.BinedInspectorModule;
 
 /**
  * Values side panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BasicValuesPanel extends javax.swing.JPanel {

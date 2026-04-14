@@ -24,8 +24,6 @@ import org.exbin.bined.operation.BinaryDataUndoableOperation;
 
 /**
  * Insert data from provider operation.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class InsertFromProviderOperation implements BinaryDataUndoableOperation {

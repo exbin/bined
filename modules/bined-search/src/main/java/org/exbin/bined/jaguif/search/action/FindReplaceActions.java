@@ -40,8 +40,6 @@ import org.exbin.jaguif.document.api.ContextDocument;
 
 /**
  * Find/replace actions for binary search.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class FindReplaceActions {

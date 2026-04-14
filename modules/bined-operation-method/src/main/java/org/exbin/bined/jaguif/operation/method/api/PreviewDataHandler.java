@@ -20,8 +20,6 @@ import javax.annotation.Nullable;
 
 /**
  * Interface preview data handling.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public interface PreviewDataHandler {
 

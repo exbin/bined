@@ -22,8 +22,6 @@ import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 
 /**
  * Bined component search.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface BinEdComponentSearch extends BinEdComponentExtension {

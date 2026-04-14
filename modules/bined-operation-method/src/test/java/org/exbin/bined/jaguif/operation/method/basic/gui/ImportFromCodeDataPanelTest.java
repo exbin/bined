@@ -15,7 +15,6 @@
  */
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
-import org.exbin.bined.jaguif.operation.method.basic.gui.ImportFromCodeDataPanel;
 import org.exbin.jaguif.utils.TestApplication;
 import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.utils.UtilsModule;

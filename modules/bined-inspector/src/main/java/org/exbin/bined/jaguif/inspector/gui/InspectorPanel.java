@@ -36,8 +36,6 @@ import org.exbin.bined.jaguif.inspector.settings.gui.InspectorRecord;
 
 /**
  * BinEd inspector right side panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class InspectorPanel extends javax.swing.JPanel {

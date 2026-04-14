@@ -24,8 +24,6 @@ import java.util.List;
 
 /**
  * Byte list as binary data provider.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ByteListPageProvider implements PageProvider {

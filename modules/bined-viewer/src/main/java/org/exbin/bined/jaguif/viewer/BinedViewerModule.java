@@ -92,8 +92,6 @@ import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 
 /**
  * Binary data viewer module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedViewerModule implements Module {

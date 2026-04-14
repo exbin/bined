@@ -24,8 +24,6 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
  * Show nonprintables contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class ViewNonprintablesContribution implements ActionSequenceContribution {
 

@@ -42,8 +42,6 @@ import org.exbin.jaguif.operation.undo.api.UndoRedoState;
 
 /**
  * File manager for binary editor.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinEdFileManager {

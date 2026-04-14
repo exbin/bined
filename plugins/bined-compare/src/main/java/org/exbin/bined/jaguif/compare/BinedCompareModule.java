@@ -33,8 +33,6 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 
 /**
  * Binary editor compare module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedCompareModule implements PluginModule {

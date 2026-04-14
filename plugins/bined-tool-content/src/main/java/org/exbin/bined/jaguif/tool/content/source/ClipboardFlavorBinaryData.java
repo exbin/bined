@@ -34,8 +34,6 @@ import org.exbin.jaguif.utils.ClipboardUtils;
 
 /**
  * Binary data access for clipboard flavor.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ClipboardFlavorBinaryData implements BinaryData {

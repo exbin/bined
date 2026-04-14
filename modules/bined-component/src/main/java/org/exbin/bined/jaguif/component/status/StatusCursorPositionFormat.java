@@ -22,8 +22,6 @@ import org.exbin.bined.PositionCodeType;
 
 /**
  * Cursor position format for status.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class StatusCursorPositionFormat {

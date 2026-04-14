@@ -48,8 +48,6 @@ import org.exbin.jaguif.window.api.WindowHandler;
 
 /**
  * Simple fill data method.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class SimpleFillDataMethod implements InsertDataMethod {

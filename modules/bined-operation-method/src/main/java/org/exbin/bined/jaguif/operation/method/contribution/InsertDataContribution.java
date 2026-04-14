@@ -29,8 +29,6 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 
 /**
  * Insert data contribution.
- *
- * @author ExBin Project (https://exbin.org)
  */
 public class InsertDataContribution implements ActionSequenceContribution {
 

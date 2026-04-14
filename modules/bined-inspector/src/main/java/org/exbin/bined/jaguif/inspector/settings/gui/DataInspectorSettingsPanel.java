@@ -36,8 +36,6 @@ import org.exbin.jaguif.text.font.settings.TextFontInference;
 
 /**
  * Data inspector settings panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class DataInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent {

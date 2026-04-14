@@ -20,8 +20,6 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 
 /**
  * Data provider for conversion operation.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public interface ConversionDataProvider {

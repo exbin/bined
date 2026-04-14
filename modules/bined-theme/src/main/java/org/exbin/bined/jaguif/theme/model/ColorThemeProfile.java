@@ -21,8 +21,6 @@ import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 
 /**
  * Color theme profile.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ColorThemeProfile implements ThemeProfile {

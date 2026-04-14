@@ -50,8 +50,6 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 
 /**
  * Binary data theme module.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedThemeModule implements Module {

@@ -29,8 +29,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 
 /**
  * Code area file processing options panel.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {

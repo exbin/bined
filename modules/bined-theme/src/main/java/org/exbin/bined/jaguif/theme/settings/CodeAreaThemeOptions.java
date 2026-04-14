@@ -27,8 +27,6 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Code area theme options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class CodeAreaThemeOptions implements SettingsOptions {

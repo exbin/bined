@@ -22,8 +22,6 @@ import org.exbin.jaguif.options.settings.api.SettingsOptions;
 
 /**
  * BinEd legacy options.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class BinedLegacyOptions implements SettingsOptions {

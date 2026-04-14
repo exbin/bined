@@ -39,8 +39,6 @@ import org.exbin.jaguif.utils.ActionUtils;
 
 /**
  * Execute last macro record action.
- *
- * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class ExecuteLastMacroAction extends AbstractAction {
