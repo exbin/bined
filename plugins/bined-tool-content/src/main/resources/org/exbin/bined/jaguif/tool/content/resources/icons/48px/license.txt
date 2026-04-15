@@ -1,0 +1,9 @@
+dragdrop.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+edit-paste-4.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various

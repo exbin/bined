@@ -1,0 +1,19 @@
+edit-copy-4.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+edit-paste-4.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+insert-rows.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+system-run-6.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various

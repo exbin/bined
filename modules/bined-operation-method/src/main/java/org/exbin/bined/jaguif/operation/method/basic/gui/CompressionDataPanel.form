@@ -226,7 +226,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="originalSizeValueLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="0 bytes"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/exbin/bined/jaguif/operation/method/basic/basic/gui/resources/CompressionDataPanel.properties" key="originalSizeValueLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="compressedSizeLabel">
@@ -238,7 +240,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="compressedSizeValueLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="0 bytes"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/exbin/bined/jaguif/operation/method/basic/basic/gui/resources/CompressionDataPanel.properties" key="compressedSizeValueLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="compressionRatioLabel">
@@ -250,7 +254,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="compressionRatioValueLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="0.0%"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="org/exbin/bined/jaguif/operation/method/basic/basic/gui/resources/CompressionDataPanel.properties" key="compressionRatioValueLabel.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>

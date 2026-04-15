@@ -39,7 +39,7 @@ import org.exbin.jaguif.utils.ActionUtils;
 public class ShowNonprintablesActions {
 
     public static final String VIEW_NONPRINTABLES_ACTION_ID = "viewNonprintables";
-    public static final String VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID = "viewNonprintablesToolbar";
+    public static final String TOGGLE_NONPRINTABLES_ACTION_ID = "toggleNonprintables";
 
     private ResourceBundle resourceBundle;
 
@@ -58,12 +58,12 @@ public class ShowNonprintablesActions {
     }
 
     @Nonnull
-    public ViewNonprintablesAction createViewNonprintablesToolbarAction() {
+    public ViewNonprintablesAction createToggleNonprintablesAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction() {
             @Override
             public void init(ResourceBundle resourceBundle) {
                 ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-                actionModule.initAction(this, resourceBundle, VIEW_NONPRINTABLES_TOOLBAR_ACTION_ID);
+                actionModule.initAction(this, resourceBundle, TOGGLE_NONPRINTABLES_ACTION_ID);
                 setEnabled(false);
                 putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
                 putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);

@@ -1,0 +1,29 @@
+edit-find-replace.png
+  Tango Icon Theme
+  link: tango-project.org
+  license: public domain
+
+edit-find.png
+  Tango Icon Theme
+  link: tango-project.org
+  license: public domain
+
+media-playback-stop-5.png
+  Tango Icon Theme
+  link: tango-project.org
+  license: public domain
+
+arrow-left.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+arrow-right.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+dialog-cancel-3.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various

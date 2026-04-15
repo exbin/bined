@@ -55,6 +55,7 @@ import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.component.contribution.CopyAsCodeContribution;
 import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.component.contribution.PasteFromCodeContribution;
+import org.exbin.bined.jaguif.component.contribution.ToggleNonprintablesContribution;
 import org.exbin.bined.jaguif.component.contribution.ViewNonprintablesContribution;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryCursorPositionStatusContrib;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryDocumentSizeStatusContrib;
@@ -250,7 +251,7 @@ public class BinedComponentModule implements Module {
         ToolBarDefinitionManagement mgmt = toolBarModule.getMainToolBarManager(MODULE_ID);
         SequenceContribution contribution = mgmt.registerToolBarGroup(BINED_TOOL_BAR_GROUP_ID);
         mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        contribution = new ViewNonprintablesContribution();
+        contribution = new ToggleNonprintablesContribution();
         mgmt.registerToolBarContribution(contribution);
         mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(BINED_TOOL_BAR_GROUP_ID));
     }

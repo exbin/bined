@@ -1,0 +1,19 @@
+colorize-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+edit-guides.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+format-font-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+thumbnail-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various

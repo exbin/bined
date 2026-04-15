@@ -31,7 +31,7 @@
         <Component class="javax.swing.JToggleButton" name="showNonprintablesToggleButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.ImageIcon(getClass().getResource(resourceBundle.getString(&quot;viewNonprintablesToolbarAction.smallIcon&quot;)))" type="code"/>
+              <Connection code="new javax.swing.ImageIcon(getClass().getResource(resourceBundle.getString(&quot;toggleNonprintablesAction.smallIcon&quot;)))" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="org/exbin/bined/jaguif/resources/BinedModule.properties" key="viewNonprintablesAction.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>

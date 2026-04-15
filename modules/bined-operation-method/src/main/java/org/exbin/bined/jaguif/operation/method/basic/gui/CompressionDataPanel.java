@@ -78,7 +78,7 @@ public class CompressionDataPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/exbin/bined/jaguif/operation/method/gui/resources/CompressionDataPanel"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/exbin/bined/jaguif/operation/method/basic/gui/resources/CompressionDataPanel"); // NOI18N
         operationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("operationPanel.title"))); // NOI18N
 
         operationLabel.setText(bundle.getString("operationLabel.text")); // NOI18N
@@ -161,15 +161,15 @@ public class CompressionDataPanel extends javax.swing.JPanel {
 
         originalSizeLabel.setText(bundle.getString("originalSizeLabel.text")); // NOI18N
 
-        originalSizeValueLabel.setText("0 bytes");
+        originalSizeValueLabel.setText(resourceBundle.getString("originalSizeValueLabel.text")); // NOI18N
 
         compressedSizeLabel.setText(bundle.getString("compressedSizeLabel.text")); // NOI18N
 
-        compressedSizeValueLabel.setText("0 bytes");
+        compressedSizeValueLabel.setText(resourceBundle.getString("compressedSizeValueLabel.text")); // NOI18N
 
         compressionRatioLabel.setText(bundle.getString("compressionRatioLabel.text")); // NOI18N
 
-        compressionRatioValueLabel.setText("0.0%");
+        compressionRatioValueLabel.setText(resourceBundle.getString("compressionRatioValueLabel.text")); // NOI18N
 
         javax.swing.GroupLayout statisticsPanelLayout = new javax.swing.GroupLayout(statisticsPanel);
         statisticsPanel.setLayout(statisticsPanelLayout);

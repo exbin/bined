@@ -1,0 +1,14 @@
+media-playback-start-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+media-playback-stop-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various
+
+media-record-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various

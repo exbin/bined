@@ -1,0 +1,4 @@
+document-properties-2.png
+  Open Icon Library
+  link: openiconlibrary.sourceforge.net
+  license: various

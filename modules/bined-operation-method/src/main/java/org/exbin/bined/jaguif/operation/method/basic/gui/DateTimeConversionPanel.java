@@ -67,7 +67,7 @@ public class DateTimeConversionPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/exbin/bined/jaguif/operation/method/gui/resources/DateTimeConversionPanel"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/exbin/bined/jaguif/operation/method/basic/gui/resources/DateTimeConversionPanel"); // NOI18N
         configurationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("configurationPanel.title"))); // NOI18N
 
         byteOrderLabel.setText(bundle.getString("byteOrderLabel.text")); // NOI18N

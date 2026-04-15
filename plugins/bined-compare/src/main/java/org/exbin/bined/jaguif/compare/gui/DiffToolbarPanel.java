@@ -216,7 +216,7 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
 
         toolBar.setRollover(true);
 
-        showNonprintablesToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(resourceBundle.getString("viewNonprintablesToolbarAction.smallIcon"))));
+        showNonprintablesToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(resourceBundle.getString("toggleNonprintablesAction.smallIcon"))));
         showNonprintablesToggleButton.setToolTipText(resourceBundle.getString("viewNonprintablesAction.text")); // NOI18N
         showNonprintablesToggleButton.setFocusable(false);
         showNonprintablesToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

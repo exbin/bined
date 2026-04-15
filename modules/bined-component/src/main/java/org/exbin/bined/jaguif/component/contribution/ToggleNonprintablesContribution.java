@@ -23,9 +23,9 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
- * Show nonprintables contribution.
+ * Toggle nonprintables contribution.
  */
-public class ViewNonprintablesContribution implements ActionSequenceContribution {
+public class ToggleNonprintablesContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "viewNonprintables";
 
@@ -34,7 +34,7 @@ public class ViewNonprintablesContribution implements ActionSequenceContribution
     public Action createAction() {
         BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
         ShowNonprintablesActions showNonprintablesActions = binedComponentModule.getShowNonprintablesActions();
-        ShowNonprintablesActions.ViewNonprintablesAction action = showNonprintablesActions.createViewNonprintablesAction();
+        ShowNonprintablesActions.ViewNonprintablesAction action = showNonprintablesActions.createToggleNonprintablesAction();
         action.init(binedComponentModule.getResourceBundle());
         return action;
     }
