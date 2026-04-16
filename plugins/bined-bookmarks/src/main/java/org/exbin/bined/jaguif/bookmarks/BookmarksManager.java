@@ -45,7 +45,6 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
-import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinEdFileManager;
@@ -63,7 +62,6 @@ import org.exbin.jaguif.utils.ActionUtils;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
-import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Bookmarks manager.
@@ -233,7 +231,8 @@ public class BookmarksManager {
                 }
             };
             bookmarksMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
-            bookmarksMenu = UiUtils.createMenu();
+            MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+            bookmarksMenu = menuModule.getMenuBuilder().createMenu();
             bookmarksMenu.setAction(bookmarksMenuAction);
             updateBookmarksMenu();
         }
@@ -262,7 +261,7 @@ public class BookmarksManager {
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, BinedBookmarksModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
-            JMenu bookmarksPopupMenu = UiUtils.createMenu();
+            JMenu bookmarksPopupMenu = menuModule.getMenuBuilder().createMenu();
             bookmarksPopupMenu.setAction(bookmarksPopupMenuAction);
             bookmarksPopupMenu.addMenuListener(new MenuListener() {
                 @Override
@@ -381,7 +380,7 @@ public class BookmarksManager {
     public void updateBookmarksMenu(JMenu menu) {
         menu.removeAll();
 
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         int recordsLimit = Math.min(bookmarkRecords.size(), 10);
         int metaMask = ActionUtils.getMetaMask();
         String bookmarkActionName = resourceBundle.getString("bookmarkAction.text");
@@ -423,12 +422,12 @@ public class BookmarksManager {
             });
             bookmarkAction.putValue(Action.SHORT_DESCRIPTION, bookmarkActionDescription);
 
-            menu.add(actionModule.actionToMenuItem(bookmarkAction));
+            menu.add(menuModule.actionToMenuItem(bookmarkAction));
         }
 
         if (!bookmarkRecords.isEmpty()) {
             menu.addSeparator();
         }
-        menu.add(actionModule.actionToMenuItem(manageBookmarksAction));
+        menu.add(menuModule.actionToMenuItem(manageBookmarksAction));
     }
 }

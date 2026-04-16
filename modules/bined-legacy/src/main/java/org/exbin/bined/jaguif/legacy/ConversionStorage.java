@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
@@ -89,7 +90,7 @@ public class ConversionStorage implements OptionsStorage {
     }
 
     @Override
-    public void put(String key, String value) {
+    public void put(String key, @Nullable String value) {
         throw new UnsupportedOperationException();
     }
 

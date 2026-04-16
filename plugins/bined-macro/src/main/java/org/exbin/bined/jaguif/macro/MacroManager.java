@@ -72,7 +72,6 @@ import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
-import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Macros manager.
@@ -282,7 +281,9 @@ public class MacroManager {
                     });
                 }
             });
-            macrosMenu = UiUtils.createMenu();
+
+            MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+            macrosMenu = menuModule.getMenuBuilder().createMenu();
             macrosMenu.setAction(macrosMenuAction);
             updateMacrosMenu();
         }
@@ -330,7 +331,7 @@ public class MacroManager {
         });
         MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
-            JMenu macrosPopupMenu = UiUtils.createMenu();
+            JMenu macrosPopupMenu = menuModule.getMenuBuilder().createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);
             macrosPopupMenu.addMenuListener(new MenuListener() {
                 @Override
@@ -491,7 +492,7 @@ public class MacroManager {
         SwingUtilities.invokeLater(() -> {
             menu.removeAll();
 
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
+            MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
             int recordsLimit = Math.min(macroRecords.size(), 10);
             String macroActionName = resourceBundle.getString("macroAction.defaultNamePrefix");
             String macroActionDescription = resourceBundle.getString("macroAction.shortDescription");
@@ -519,16 +520,16 @@ public class MacroManager {
                 macroAction.putValue(Action.SHORT_DESCRIPTION, macroActionDescription);
                 macroAction.setEnabled(enabled);
 
-                menu.add(actionModule.actionToMenuItem(macroAction));
+                menu.add(menuModule.actionToMenuItem(macroAction));
             }
 
             if (!macroRecords.isEmpty()) {
                 menu.addSeparator();
             }
-            menu.add(actionModule.actionToMenuItem(executeLastMacroAction));
-            menu.add(actionModule.actionToMenuItem(startMacroRecordingAction));
-            menu.add(actionModule.actionToMenuItem(stopMacroRecordingAction));
-            menu.add(actionModule.actionToMenuItem(manageMacrosAction));
+            menu.add(menuModule.actionToMenuItem(executeLastMacroAction));
+            menu.add(menuModule.actionToMenuItem(startMacroRecordingAction));
+            menu.add(menuModule.actionToMenuItem(stopMacroRecordingAction));
+            menu.add(menuModule.actionToMenuItem(manageMacrosAction));
         });
     }
 }

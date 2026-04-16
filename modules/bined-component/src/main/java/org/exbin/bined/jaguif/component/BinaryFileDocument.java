@@ -293,6 +293,10 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public boolean isModified() {
+        if (documentSource instanceof MemoryDocumentSource && dataComponent.getCodeArea().getDataSize() == 0) {
+            return false;
+        }
+
         Optional<BinaryDataUndoRedo> optUndoRedo = dataComponent.getUndoRedo();
         if (optUndoRedo.isPresent()) {
             return optUndoRedo.get().isModified();

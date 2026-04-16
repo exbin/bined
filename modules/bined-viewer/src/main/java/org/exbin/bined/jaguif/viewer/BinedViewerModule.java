@@ -58,6 +58,7 @@ import org.exbin.bined.jaguif.viewer.settings.GoToPositionOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
@@ -138,18 +139,14 @@ public class BinedViewerModule implements Module {
         }
     }
 
-    public void registerStatusBar() {
+    public void registerFrameStatusBar() {
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ContextRegistration contextRegistrar = contextModule.createContextRegistrator();
+        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
+        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
         StatusBar statusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrar);
-        javax.swing.JPanel test = new javax.swing.JPanel(new BorderLayout());
-        // StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarManager();
-        // StatusBar statusBar = statusBarManager.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        //test.add(new javax.swing.JLabel("TEST"), BorderLayout.CENTER);
-        test.add(statusBar.getComponent(), BorderLayout.CENTER);
-        frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, test);
+        frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, statusBar.getComponent());
         frameModule.switchStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
     }
 

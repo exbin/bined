@@ -602,7 +602,7 @@ public class BinedComponentModule implements Module {
         popupMenuVariant = variant;
         popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
 
-        final JPopupMenu popupMenu = UiUtils.createPopupMenu();
+        final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ActiveContextManagement contextManager = contextModule.createContextManager();
         BinaryDataComponent dataComponent = null;

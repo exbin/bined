@@ -26,6 +26,7 @@ import org.exbin.auxiliary.dropdownbutton.DropDownButton;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.search.SearchCondition;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.utils.UiUtils;
 
 /**
@@ -59,7 +60,8 @@ public class SearchTypeUtils {
             }
         };
         searchTypeButton.inheritFromAction(searchTypeAction);
-        JPopupMenu searchTypeMenu = UiUtils.createPopupMenu();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        JPopupMenu searchTypeMenu = menuModule.getMenuBuilder().createPopupMenu();
         {
             Action textSearchType = new AbstractAction(resourceBundle.getString("searchType.text.name")) {
                 @Override

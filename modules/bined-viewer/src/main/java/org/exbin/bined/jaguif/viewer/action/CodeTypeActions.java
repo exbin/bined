@@ -38,7 +38,7 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.action.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.CodeTypeState;
-import org.exbin.jaguif.utils.UiUtils;
+import org.exbin.jaguif.menu.api.MenuModuleApi;
 
 /**
  * Code type actions.
@@ -210,20 +210,21 @@ public class CodeTypeActions {
         private List<Action> dropDownActions;
 
         public void init(ResourceBundle resourceBundle) {
+            MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             putValue(ActionConsts.ACTION_TYPE, ActionType.CYCLE);
             ButtonGroup cycleButtonGroup = new ButtonGroup();
             Map<String, ButtonGroup> buttonGroups = new HashMap<>();
             buttonGroups.put(CODE_TYPE_RADIO_GROUP_ID, cycleButtonGroup);
-            JPopupMenu cycleCodeTypesPopupMenu = UiUtils.createPopupMenu();
+            JPopupMenu cycleCodeTypesPopupMenu = menuModule.getMenuBuilder().createPopupMenu();
             dropDownActions = new ArrayList<>();
             dropDownActions.add(createBinaryCodeTypeAction());
             dropDownActions.add(createOctalCodeTypeAction());
             dropDownActions.add(createDecimalCodeTypeAction());
             dropDownActions.add(createHexadecimalCodeTypeAction());
             for (Action dropDownAction : dropDownActions) {
-                cycleCodeTypesPopupMenu.add(actionModule.actionToMenuItem(dropDownAction, buttonGroups));
+                cycleCodeTypesPopupMenu.add(menuModule.actionToMenuItem(dropDownAction, buttonGroups));
             }
             setDropDownActions(dropDownActions);
             putValue(ActionConsts.CYCLE_POPUP_MENU, cycleCodeTypesPopupMenu);
