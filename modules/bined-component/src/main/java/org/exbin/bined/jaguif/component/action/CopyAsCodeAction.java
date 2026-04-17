@@ -43,7 +43,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 

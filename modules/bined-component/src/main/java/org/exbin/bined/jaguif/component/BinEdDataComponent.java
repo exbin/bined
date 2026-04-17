@@ -40,7 +40,7 @@ import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.clipboard.TextClipboardController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.context.api.ActiveContextProvider;

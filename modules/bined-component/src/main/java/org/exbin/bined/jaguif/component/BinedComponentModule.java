@@ -49,7 +49,7 @@ import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.jaguif.action.api.ActionModuleApi;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.component.contribution.CopyAsCodeContribution;

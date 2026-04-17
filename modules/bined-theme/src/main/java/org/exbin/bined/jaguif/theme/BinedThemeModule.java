@@ -25,7 +25,7 @@ import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorProfileOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorSettingsApplier;

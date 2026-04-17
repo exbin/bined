@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.viewer.settings;
 
 import java.nio.charset.UnsupportedCharsetException;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;

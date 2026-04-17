@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.editor.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.context.api.ActiveContextProvider;

@@ -38,7 +38,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdFileManager;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.BinedComponentModule.PopupMenuVariant;

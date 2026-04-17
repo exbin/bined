@@ -44,7 +44,7 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ActionManagement;
-import org.exbin.jaguif.action.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
