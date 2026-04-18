@@ -30,7 +30,6 @@ public class StatusDocumentSizeFormat {
     private boolean showRelative = true;
 
     public StatusDocumentSizeFormat() {
-
     }
 
     public StatusDocumentSizeFormat(PositionCodeType positionCodeType, boolean showRelative) {

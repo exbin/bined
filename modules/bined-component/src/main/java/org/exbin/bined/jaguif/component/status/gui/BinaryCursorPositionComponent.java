@@ -109,7 +109,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         updateCaretPosition();
         updateCursorPositionToolTip();
     }
-    
+
     private void clear() {
         component.setText("-");
         component.setToolTipText(resourceBundle.getString("cursorPositionLabel.toolTipText"));

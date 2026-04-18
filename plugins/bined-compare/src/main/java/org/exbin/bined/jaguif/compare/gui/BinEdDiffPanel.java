@@ -66,6 +66,9 @@ import org.exbin.bined.jaguif.theme.settings.CodeAreaThemeOptions;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaOptions;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaViewerSettingsApplier;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
@@ -121,8 +124,10 @@ public class BinEdDiffPanel extends JPanel {
         toolbarPanel = new DiffToolbarPanel();
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarManager();
-        leftStatusBar = null; // TODO statusBarManager.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        rightStatusBar = null; // TODO statusBarManager.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+        ContextRegistration contextRegistrator = contextModule.createContextRegistrator();
+        leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrator);
+        rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrator);
         toolbarPanel.setTargetComponent(diffPanel);
         toolbarPanel.setController(new DiffToolbarPanel.Controller() {
             @Nonnull
@@ -176,50 +181,14 @@ public class BinEdDiffPanel extends JPanel {
         diffPanel.getLeftCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareLeft"));
         diffPanel.getRightCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareRight"));
 
-//        diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
-//        diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
+        diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
+        diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
         this.add(diffPanel, BorderLayout.CENTER);
         diffPanel.revalidate();
         diffPanel.repaint();
         revalidate();
         repaint();
     }
-
-    /* public void registerBinaryStatus(BinaryStatusPanel binaryStatus, SectCodeArea codeArea) {
-        codeArea.addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
-            binaryStatus.setCursorPosition(caretPosition);
-        });
-        codeArea.addSelectionChangedListener(() -> {
-            binaryStatus.setSelectionRange(codeArea.getSelection());
-        });
-
-        codeArea.addEditModeChangedListener(binaryStatus::setEditMode);
-
-        codeArea.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                updateBinaryStatus(binaryStatus, codeArea);
-            }
-        });
-
-        updateBinaryStatus(binaryStatus, codeArea);
-
-        binaryStatus.setController(new BinaryStatusController(codeArea) {
-            @Override
-            public void notifyEncodingChanged(String encoding) {
-                binaryStatus.setEncoding(encoding);
-            }
-        });
-    }
-
-    private void updateBinaryStatus(BinaryStatusApi binaryStatus, SectCodeArea codeArea) {
-        binaryStatus.setEditMode(codeArea.getEditMode(), codeArea.getActiveOperation());
-        binaryStatus.setCursorPosition(codeArea.getActiveCaretPosition());
-        binaryStatus.setSelectionRange(codeArea.getSelection());
-        long dataSize = codeArea.getDataSize();
-        binaryStatus.setCurrentDocumentSize(dataSize, dataSize);
-        goToPositionAction.setCodeArea(codeArea);
-    } */
 
     private void initialLoadFromPreferences() {
         applyOptions(new BinEdApplyOptions() {

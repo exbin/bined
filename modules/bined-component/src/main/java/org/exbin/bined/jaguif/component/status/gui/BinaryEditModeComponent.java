@@ -107,7 +107,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     private void update() {
         switch (editMode) {
             case READ_ONLY:
-                component.setText(resourceBundle.getString("editMode.readonly"));
+                component.setText(resourceBundle.getString("editMode.readOnly"));
                 break;
             case INPLACE:
                 component.setText(resourceBundle.getString("editMode.inplace"));
@@ -125,7 +125,6 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
                         throw new AssertionError();
                 }
                 break;
-
             default:
                 throw new AssertionError();
         }

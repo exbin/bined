@@ -38,7 +38,7 @@ import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 
 /**
- * BinEd edit mode status component.
+ * BinEd encoding status component.
  */
 @ParametersAreNonnullByDefault
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {
@@ -127,11 +127,11 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     }
 
     private void clear() {
-        // TODO
+        component.setText("");
     }
 
     private void update() {
-        component.setText(dataComponent != null ? dataComponent.getEncoding() : "");
+        component.setText(dataComponent != null ? dataComponent.getEncoding() : "-");
     }
 
     private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {

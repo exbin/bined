@@ -99,7 +99,7 @@ public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
         updateDocumentSize();
         updateDocumentSizeToolTip();
     }
-    
+
     private void clear() {
         component.setText("-");
         component.setToolTipText(resourceBundle.getString("documentSizeLabel.toolTipText"));
