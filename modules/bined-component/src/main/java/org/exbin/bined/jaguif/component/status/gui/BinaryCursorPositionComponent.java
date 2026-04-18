@@ -87,8 +87,6 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                 registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
                     if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.CURSOR_MOVED || updateType == BinaryFileDocument.UpdateType.SELECTION_CHANGED)) {
                         updateForDocument((BinaryFileDocument) instance);
-                    } else {
-                        clear();
                     }
                 });
             }

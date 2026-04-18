@@ -42,14 +42,12 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.action.api.ActionConsts;
-import org.exbin.jaguif.action.api.ActionContextRegistration;
 import org.exbin.jaguif.action.api.ActionManagement;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.jaguif.action.api.ActionModuleApi;
-import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.component.contribution.CopyAsCodeContribution;
@@ -62,8 +60,10 @@ import org.exbin.bined.jaguif.component.status.contribution.BinaryDocumentSizeSt
 import org.exbin.bined.jaguif.component.status.contribution.BinaryEditModeStatusContrib;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryEncodingStatusContrib;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryProcessingModeStatusContrib;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -88,7 +88,6 @@ import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
-import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.document.api.DocumentType;
 import org.exbin.jaguif.file.api.FileDocumentSource;
@@ -624,10 +623,9 @@ public class BinedComponentModule implements Module {
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
 
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        ActionManagement actionManager = actionModule.createActionManager(contextManager);
-        ActionContextRegistration actionContextRegistrar = actionModule.createActionContextRegistrar(actionManager);
-        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, actionContextRegistrar);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(frameModule.getFrameHandler().getContextManager());
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar);
         return popupMenu;
     }
 

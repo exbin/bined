@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.EditModeCapable;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
@@ -41,6 +42,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEditModeComponent.class);
 
+    protected EditMode editMode;
     protected EditOperation editOperation;
 
     public BinaryEditModeComponent() {
@@ -80,15 +82,14 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
                 registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
                     if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.EDIT_MODE_CHANGED)) {
                         updateForDocument((BinaryFileDocument) instance);
-                    } else {
-                        clear();
                     }
                 });
             }
 
             private void updateForDocument(BinaryFileDocument document) {
+                editMode = ((EditModeCapable) document.getCodeArea()).getEditMode();
                 editOperation = ((EditModeCapable) document.getCodeArea()).getActiveOperation();
-                // TODO update();
+                update();
             }
         });
     }
@@ -101,6 +102,33 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
 
     private void clear() {
         component.setText("");
+    }
+
+    private void update() {
+        switch (editMode) {
+            case READ_ONLY:
+                component.setText(resourceBundle.getString("editMode.readonly"));
+                break;
+            case INPLACE:
+                component.setText(resourceBundle.getString("editMode.inplace"));
+                break;
+            case EXPANDING:
+            case CAPPED:
+                switch (editOperation) {
+                    case INSERT:
+                        component.setText(resourceBundle.getString("editMode.insert"));
+                        break;
+                    case OVERWRITE:
+                        component.setText(resourceBundle.getString("editMode.overwrite"));
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+                break;
+
+            default:
+                throw new AssertionError();
+        }
     }
 
     private void handlePopup(java.awt.event.MouseEvent evt) {

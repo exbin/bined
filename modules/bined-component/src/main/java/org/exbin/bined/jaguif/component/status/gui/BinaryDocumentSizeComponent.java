@@ -76,8 +76,6 @@ public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
                 registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
                     if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.DATA_CHANGED || updateType == BinaryFileDocument.UpdateType.SELECTION_CHANGED)) {
                         updateForDocument((BinaryFileDocument) instance);
-                    } else {
-                        clear();
                     }
                 });
             }
