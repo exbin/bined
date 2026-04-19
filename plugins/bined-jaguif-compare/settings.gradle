@@ -1,0 +1,10 @@
+rootProject.name = 'bined-jaguif-compare'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-viewer'
+    include ':modules:bined-jaguif-editor'
+    include ':modules:bined-jaguif-theme'
+}
+
+apply from: '../bined-plugins-settings.gradle'

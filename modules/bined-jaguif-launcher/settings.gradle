@@ -1,0 +1,19 @@
+rootProject.name = 'bined-jaguif-launcher'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-inspector'
+    include ':modules:bined-jaguif-objectdata'
+    include ':modules:bined-jaguif-operation-method'
+    include ':modules:bined-jaguif-search'
+    include ':modules:bined-jaguif-viewer'
+    include ':modules:bined-jaguif-editor'
+    include ':modules:bined-jaguif-theme'
+    include ':modules:bined-jaguif-legacy'
+    include ':plugins:bined-bookmarks'
+    include ':plugins:bined-compare'
+    include ':plugins:bined-macro'
+    include ':plugins:bined-tool-content'
+}
+
+apply from: '../bined-modules-settings.gradle'

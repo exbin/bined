@@ -1,9 +1,0 @@
-rootProject.name = 'bined-operation-code'
-
-if (rootProject.path == ':') {
-    include ':modules:bined-component'
-    include ':modules:bined-operation-method'
-    include ':modules:bined-search'
-}
-
-apply from: '../bined-plugins-settings.gradle'

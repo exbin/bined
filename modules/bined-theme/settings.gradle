@@ -1,7 +1,0 @@
-rootProject.name = 'bined-theme'
-
-if (rootProject.path == ':') {
-    include ':modules:bined-component'
-}
-
-apply from: '../bined-modules-settings.gradle'

@@ -1,0 +1,9 @@
+rootProject.name = 'bined-jaguif-operation-code'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-operation-method'
+    include ':modules:bined-jaguif-search'
+}
+
+apply from: '../bined-plugins-settings.gradle'

@@ -1,0 +1,9 @@
+rootProject.name = 'bined-jaguif-inspector'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-viewer'
+    include ':modules:bined-jaguif-search'
+}
+
+apply from: '../bined-modules-settings.gradle'

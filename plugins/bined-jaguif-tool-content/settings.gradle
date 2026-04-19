@@ -1,0 +1,8 @@
+rootProject.name = 'bined-jaguif-tool-content'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-objectdata'
+}
+
+apply from: '../bined-plugins-settings.gradle'

@@ -1,0 +1,10 @@
+rootProject.name = 'bined-jaguif-inspector-pixelmap'
+
+if (rootProject.path == ':') {
+    include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-inspector'
+    include ':modules:bined-jaguif-viewer'
+    include ':modules:bined-jaguif-search'
+}
+
+apply from: '../bined-plugins-settings.gradle'
