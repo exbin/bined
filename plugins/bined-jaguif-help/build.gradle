@@ -45,5 +45,5 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-component')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-search')
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
+    testCompileOnly group : 'junit', name: 'junit', version: '4.13.2'
 }

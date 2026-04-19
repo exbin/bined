@@ -32,8 +32,8 @@ public class CompareFilesPanelTest {
     public void testPanel() {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
-            testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.utils.TestLanguageModule());
-            testApplication.addModule(org.exbin.jaguif.options.api.OptionsModuleApi.MODULE_ID, new org.exbin.jaguif.options.api.utils.TestOptionsModule());
+            testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.TestLanguageModule());
+            testApplication.addModule(org.exbin.jaguif.options.api.OptionsModuleApi.MODULE_ID, new org.exbin.jaguif.options.api.TestOptionsModule());
 //            testApplication.addModule(org.exbin.jaguif.action.api.ActionModuleApi.MODULE_ID, );
             WindowUtils.invokeWindow(new CompareFilesPanel());
         });

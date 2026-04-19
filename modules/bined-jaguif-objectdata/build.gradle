@@ -44,5 +44,7 @@ dependencies {
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-utils')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-component')
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
+
+    testCompileOnly group : 'junit', name: 'junit', version: '4.13.2'
+    testImplementation project(path: moduleDepPath('Bined', 'modules', 'bined-jaguif-component'), configuration: 'tests')
 }

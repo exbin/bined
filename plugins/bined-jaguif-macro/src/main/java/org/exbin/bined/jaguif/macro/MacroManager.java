@@ -41,10 +41,9 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
-import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.action.api.ActionManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextUpdateManagement;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
@@ -99,7 +98,7 @@ public class MacroManager {
     private int lastActiveMacro = -1;
     private long lastMacroIndex = 0;
     private ActiveContextManagement contextManager;
-    private ActionManagement actionManager;
+    private ContextUpdateManagement updateManager;
 
     public MacroManager() {
     }
@@ -108,31 +107,34 @@ public class MacroManager {
         // TODO Use different context
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         contextManager = contextModule.createContextManager();
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        actionManager = actionModule.createActionManager(contextManager);
+        updateManager = contextModule.createContextUpdateManagement(contextManager);
+        updateManager.addRecord("macro");
         addMacroAction.init(resourceBundle);
         editMacroAction.init(resourceBundle);
         manageMacrosAction.init(resourceBundle);
-        actionManager.registerAction(manageMacrosAction);
-        actionManager.initAction(manageMacrosAction);
+        registerAction(manageMacrosAction);
         executeLastMacroAction.init(resourceBundle);
         executeLastMacroAction.setMacroManager(this);
-        actionManager.registerAction(executeLastMacroAction);
-        actionManager.initAction(executeLastMacroAction);
+        registerAction(executeLastMacroAction);
         startMacroRecordingAction.init(resourceBundle);
         startMacroRecordingAction.setMacroManager(this);
-        actionManager.registerAction(startMacroRecordingAction);
-        actionManager.initAction(startMacroRecordingAction);
+        registerAction(startMacroRecordingAction);
         stopMacroRecordingAction.init(resourceBundle);
         stopMacroRecordingAction.setMacroManager(this);
-        actionManager.registerAction(stopMacroRecordingAction);
-        actionManager.initAction(stopMacroRecordingAction);
+        registerAction(stopMacroRecordingAction);
 
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsStorage optionsStorage = optionsModule.getAppOptions();
         macroOptions = new MacroOptions(optionsStorage);
         loadMacroRecords();
         MacroManager.this.updateMacrosMenu();
+    }
+    
+    private void registerAction(Action action) {
+        ActionContextChange contextChange = (ActionContextChange) action.getValue(ActionConsts.ACTION_CONTEXT_CHANGE);
+        if (contextChange != null) {
+            updateManager.addContextItem("macro", contextChange);
+        }
     }
 
     private void loadMacroRecords() {
