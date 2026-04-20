@@ -63,7 +63,6 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
-import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
@@ -411,110 +410,26 @@ public class BinedComponentModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
 
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return clipboardActions.createCutAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "cut";
-            }
-        };
+        contribution = clipboardActions.createCutContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return clipboardActions.createCopyAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "copy";
-            }
-        };
+        contribution = clipboardActions.createCopyContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return getClipboardCodeActions().createCopyAsCodeAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "copyAsCode";
-            }
-        };
+        contribution = new CopyAsCodeContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return clipboardActions.createPasteAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "paste";
-            }
-        };
+        contribution = clipboardActions.createPasteContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return getClipboardCodeActions().createPasteFromCodeAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "pasteFromCode";
-            }
-        };
+        contribution = new PasteFromCodeContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return clipboardActions.createDeleteAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "delete";
-            }
-        };
+        contribution = clipboardActions.createDeleteContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
 
-        contribution = new ActionSequenceContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return clipboardActions.createSelectAllAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "selectAll";
-            }
-        };
+        contribution = clipboardActions.createSelectAllContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
 
@@ -553,7 +468,7 @@ public class BinedComponentModule implements Module {
     public void start() {
         // TODO
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement contextManager = frameModule.getFrameHandler().getContextManager();
+        ActiveContextManagement contextManager = frameModule.getFrameController().getContextManager();
         ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
         if (contextDocking instanceof DocumentDocking) {
             ((DocumentDocking) contextDocking).openNewDocument();
@@ -604,7 +519,7 @@ public class BinedComponentModule implements Module {
         BinaryDataComponent dataComponent = null;
         if (variant == PopupMenuVariant.EDITOR) {
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-            contextManager = frameModule.getFrameHandler().getContextManager();
+            contextManager = frameModule.getFrameController().getContextManager();
             ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
             contextManager.changeActiveState(ContextDocking.class, contextDocking);
             if (contextDocking instanceof DocumentDocking) {

@@ -69,7 +69,6 @@ import org.exbin.jaguif.contribution.api.SubSequenceContributionRule;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.DocumentModuleApi;
-import org.exbin.jaguif.frame.api.ComponentFrame;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.toolbar.api.ToolBarDefinitionManagement;
@@ -90,6 +89,7 @@ import org.exbin.jaguif.text.font.contribution.TextFontContribution;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
 import org.exbin.jaguif.text.font.settings.TextFontSettingsComponent;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
+import org.exbin.jaguif.frame.api.FrameController;
 
 /**
  * Binary data viewer module.
@@ -143,10 +143,10 @@ public class BinedViewerModule implements Module {
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ComponentFrame frameHandler = frameModule.getFrameHandler();
+        FrameController frameHandler = frameModule.getFrameController();
         ActiveContextManagement contextManager = frameHandler.getContextManager();
         ContextUpdateManagement updateManager = frameHandler.getUpdateManager();
-        updateManager.addRecord("mainStatusBar");
+        updateManager.addGroup("mainStatusBar");
         ContextRegistration contextRegistrar = contextModule.createContextRegistrator("mainStatusBar", updateManager, contextManager);
         StatusBar statusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrar);
         frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, statusBar.getComponent());

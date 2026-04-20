@@ -70,5 +70,4 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
     @Override
     public void dispose() {
     }
-
 }

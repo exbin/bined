@@ -108,7 +108,6 @@ public class MacroManager {
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         contextManager = contextModule.createContextManager();
         updateManager = contextModule.createContextUpdateManagement(contextManager);
-        updateManager.addRecord("macro");
         addMacroAction.init(resourceBundle);
         editMacroAction.init(resourceBundle);
         manageMacrosAction.init(resourceBundle);
@@ -133,7 +132,7 @@ public class MacroManager {
     private void registerAction(Action action) {
         ActionContextChange contextChange = (ActionContextChange) action.getValue(ActionConsts.ACTION_CONTEXT_CHANGE);
         if (contextChange != null) {
-            updateManager.addContextItem("macro", contextChange);
+            updateManager.addContextItem(contextChange);
         }
     }
 

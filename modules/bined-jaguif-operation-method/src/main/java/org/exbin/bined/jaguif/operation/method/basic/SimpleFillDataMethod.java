@@ -196,10 +196,4 @@ public class SimpleFillDataMethod implements InsertDataMethod {
             previewPanel.setPreviewData(previewBinaryData);
         });
     }
-
-    public enum FillWithType {
-        EMPTY,
-        SPACE,
-        SAMPLE
-    }
 }

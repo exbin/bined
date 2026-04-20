@@ -15,19 +15,12 @@
  */
 package org.exbin.bined.jaguif.component.action;
 
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.SelectionRange;
@@ -37,7 +30,6 @@ import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
@@ -45,6 +37,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.CodeClipboardData;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 
 /**
@@ -96,73 +89,15 @@ public class CopyAsCodeAction extends AbstractAction implements ActionContextCha
             CodeAreaCommandHandler commandHandler = codeArea.getCommandHandler();
             if (commandHandler instanceof CodeAreaOperationCommandHandler) {
                 DataFlavor binedDataFlavor = ((CodeAreaOperationCommandHandler) commandHandler).getBinedDataFlavor();
-                CodeDataClipboardData binaryData = new CodeDataClipboardData(copy, binedDataFlavor, codeType, charactersCase);
+                CodeClipboardData binaryData = new CodeClipboardData(copy, binedDataFlavor, codeType, charactersCase);
                 ((CodeAreaOperationCommandHandler) commandHandler).setClipboardContent(binaryData);
             } else if (commandHandler instanceof DefaultCodeAreaCommandHandler) {
                 DataFlavor binedDataFlavor = ((DefaultCodeAreaCommandHandler) commandHandler).getBinedDataFlavor();
-                CodeDataClipboardData binaryData = new CodeDataClipboardData(copy, binedDataFlavor, codeType, charactersCase);
+                CodeClipboardData binaryData = new CodeClipboardData(copy, binedDataFlavor, codeType, charactersCase);
                 ((DefaultCodeAreaCommandHandler) commandHandler).setClipboardContent(binaryData);
             } else {
                 throw new IllegalStateException();
             }
-        }
-    }
-
-    @ParametersAreNonnullByDefault
-    public static class CodeDataClipboardData implements CodeAreaSwingUtils.ClipboardData {
-
-        private final BinaryData data;
-        private final DataFlavor binaryDataFlavor;
-        private final CodeType codeType;
-        private final CodeCharactersCase charactersCase;
-
-        public CodeDataClipboardData(BinaryData data, DataFlavor binaryDataFlavor, CodeType codeType, CodeCharactersCase charactersCase) {
-            this.data = data;
-            this.binaryDataFlavor = binaryDataFlavor;
-            this.codeType = codeType;
-            this.charactersCase = charactersCase;
-        }
-
-        @Nonnull
-        @Override
-        public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[]{binaryDataFlavor, DataFlavor.stringFlavor};
-        }
-
-        @Override
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return flavor.equals(binaryDataFlavor) || flavor.equals(DataFlavor.stringFlavor);
-        }
-
-        @Nonnull
-        @Override
-        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-            if (flavor.equals(binaryDataFlavor)) {
-                return data;
-            } else {
-                int charsPerByte = codeType.getMaxDigitsForByte() + 1;
-                int textLength = (int) (data.getDataSize() * charsPerByte);
-                if (textLength > 0) {
-                    textLength--;
-                }
-
-                char[] targetData = new char[textLength];
-                Arrays.fill(targetData, ' ');
-                for (int i = 0; i < data.getDataSize(); i++) {
-                    CodeAreaUtils.byteToCharsCode(data.getByte(i), codeType, targetData, i * charsPerByte, charactersCase);
-                }
-                return new String(targetData);
-            }
-        }
-
-        @Override
-        public void lostOwnership(Clipboard clipboard, Transferable contents) {
-            // do nothing
-        }
-
-        @Override
-        public void dispose() {
-            data.dispose();
         }
     }
 }

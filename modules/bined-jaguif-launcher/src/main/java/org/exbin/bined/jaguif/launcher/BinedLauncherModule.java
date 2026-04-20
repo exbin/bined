@@ -85,7 +85,7 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 import org.exbin.jaguif.ui.theme.api.UiThemeModuleApi;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.sidebar.api.SideBarModuleApi;
-import org.exbin.jaguif.frame.api.ComponentFrame;
+import org.exbin.jaguif.frame.api.FrameController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingContextInference;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingInference;
@@ -211,7 +211,7 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             FrameModuleApi frameModuleApi = App.getModule(FrameModuleApi.class);
-            ActiveContextManagement contextManagement = frameModuleApi.getFrameHandler().getContextManager();
+            ActiveContextManagement contextManagement = frameModuleApi.getFrameController().getContextManager();
             OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
             settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(contextManagement));
             settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(contextManagement));
@@ -317,7 +317,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerHexCharactersCaseHandlerMenu();
             binedViewerModule.registerLayoutMenu();
 
-            final ComponentFrame frameHandler = frameModule.getFrameHandler();
+            final FrameController frameController = frameModule.getFrameController();
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
@@ -352,17 +352,17 @@ public class BinedLauncherModule implements LauncherModule {
             dockingModule.registerDocumentReceiver(documentDocking);
             addonManagerModule.registerAddonManagerMenuItem();
 
-            frameHandler.setDefaultSize(new Dimension(600, 400));
+            frameController.setDefaultSize(new Dimension(600, 400));
             frameModule.loadFramePosition();
             binedLegacyModule.importLegacySettings();
             optionsSettingsModule.initialLoadFromPreferences();
             if (fullScreenMode || demoMode) {
                 frameModule.switchFrameToFullscreen();
             }
-            frameHandler.loadMainMenu();
-            frameHandler.loadMainToolBar();
+            frameController.loadMainMenu();
+            frameController.loadMainToolBar();
 
-            frameHandler.showFrame();
+            frameController.showFrame();
 
             String filePath = null;
             List fileArgs = cl.getArgList();
@@ -415,7 +415,7 @@ public class BinedLauncherModule implements LauncherModule {
 
             // loadSampleFile();
             if (!demoMode) {
-                updateModule.checkOnStart(frameHandler.getFrame());
+                updateModule.checkOnStart(frameController.getFrame());
             }
         } catch (ParseException | RuntimeException ex) {
             Logger.getLogger(BinedLauncherModule.class.getName()).log(Level.SEVERE, null, ex);

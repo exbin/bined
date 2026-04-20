@@ -101,7 +101,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setComponentPopupMenu(menuPopupModule.createComponentPopupMenu(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, () -> {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-            return actionModule.createActionContextRegistrar(frameModule.getFrameHandler().getActionManager());
+            return actionModule.createActionContextRegistrar(frameModule.getFrameController().getActionManager());
         })); */
         codeArea.setComponentPopupMenu(codeAreaPopupMenu);
         add(codeArea);

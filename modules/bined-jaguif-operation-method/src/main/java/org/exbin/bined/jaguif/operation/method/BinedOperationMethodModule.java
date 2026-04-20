@@ -96,7 +96,7 @@ public class BinedOperationMethodModule implements Module {
         contribution = new ConvertDataContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.EDIT_OPERATION_MENU_GROUP_ID));
-        contribution = new CopyAsCodeContribution();
+        contribution = new CopyAsContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(MenuModuleApi.CLIPBOARD_ACTIONS_MENU_GROUP_ID));
         mgmt.registerMenuRule(contribution, new RelativeSequenceContributionRule(NextToMode.AFTER, CopyAsCodeContribution.CONTRIBUTION_ID));
@@ -168,11 +168,5 @@ public class BinedOperationMethodModule implements Module {
         }
 
         return resourceBundle;
-    }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 }

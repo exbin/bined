@@ -22,7 +22,7 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
-import org.exbin.bined.jaguif.operation.method.basic.SimpleFillDataMethod;
+import org.exbin.bined.jaguif.operation.method.basic.FillWithType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
@@ -186,17 +186,17 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
     }
 
     @Nonnull
-    public SimpleFillDataMethod.FillWithType getFillWithType() {
+    public FillWithType getFillWithType() {
         if (sampleRadioButton.isSelected()) {
-            return SimpleFillDataMethod.FillWithType.SAMPLE;
+            return FillWithType.SAMPLE;
         } else if (spaceRadioButton.isSelected()) {
-            return SimpleFillDataMethod.FillWithType.SPACE;
+            return FillWithType.SPACE;
         }
 
-        return SimpleFillDataMethod.FillWithType.EMPTY;
+        return FillWithType.EMPTY;
     }
 
-    public void setFillWith(SimpleFillDataMethod.FillWithType fillWithType) {
+    public void setFillWith(FillWithType fillWithType) {
         switch (fillWithType) {
             case EMPTY: {
                 emptyRadioButton.setSelected(true);
