@@ -24,8 +24,8 @@ import org.exbin.bined.jaguif.component.BinaryFileDocument;
 import org.exbin.bined.jaguif.inspector.BasicValuesInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
 import org.exbin.bined.jaguif.inspector.gui.BasicValuesPanel;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Text editor font context inference.
@@ -33,14 +33,14 @@ import org.exbin.jaguif.document.api.ContextDocument;
 @ParametersAreNonnullByDefault
 public class DataInspectorFontContextInference implements DataInspectorFontInference {
 
-    protected ActiveContextProvider contextProvider;
+    protected ContextStateProvider contextProvider;
 
-    public DataInspectorFontContextInference(ActiveContextProvider contextProvider) {
+    public DataInspectorFontContextInference(ContextStateProvider contextProvider) {
         this.contextProvider = contextProvider;
     }
 
     @Nonnull
-    public ActiveContextProvider getContextProvider() {
+    public ContextStateProvider getContextProvider() {
         return contextProvider;
     }
 

@@ -17,12 +17,12 @@ package org.exbin.bined.jaguif.search;
 
 import java.awt.BorderLayout;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JPopupMenu;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.bined.jaguif.search.service.BinarySearchService;
 import org.exbin.bined.jaguif.search.service.impl.BinarySearchServiceImpl;
@@ -58,8 +58,8 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
             binarySearch = new BinarySearch();
             binarySearch.setBinarySearchService(binarySearchService);
             binarySearch.setPanelClosingListener(this::hideSearchPanel);
-            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-            binarySearch.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.NORMAL));
+            BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+            binarySearch.setCodeAreaPopupMenu(binedComponentModule.createCodeAreaPopupMenu());
         }
         
         return binarySearch;
@@ -112,7 +112,7 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
     }
 
     @Override
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        getBinarySearch().getPanel().setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
+    public void setCodeAreaPopupMenu(JPopupMenu popupMenu) {
+        getBinarySearch().getPanel().setCodeAreaPopupMenu(popupMenu);
     }
 }

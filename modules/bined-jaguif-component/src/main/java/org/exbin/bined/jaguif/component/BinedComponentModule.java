@@ -18,7 +18,6 @@ package org.exbin.bined.jaguif.component;
 import org.exbin.bined.jaguif.component.action.ClipboardCodeActions;
 import org.exbin.bined.jaguif.component.action.ShowNonprintablesActions;
 import org.exbin.bined.jaguif.component.action.ViewFontActions;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
@@ -32,11 +31,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.Action;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
-import org.exbin.bined.basic.BasicCodeAreaZone;
+import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
@@ -63,6 +62,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
@@ -130,8 +130,6 @@ public class BinedComponentModule implements Module {
     private ShowNonprintablesActions showNonprintablesActions;
     private ClipboardCodeActions clipboardCodeActions;
     private ViewFontActions viewFontActions;
-    private PopupMenuVariant popupMenuVariant = PopupMenuVariant.NORMAL;
-    private BasicCodeAreaZone popupMenuPositionZone = BasicCodeAreaZone.UNKNOWN;
     private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
 
     public BinedComponentModule() {
@@ -173,12 +171,9 @@ public class BinedComponentModule implements Module {
         Action settingsAction = optionsModule.createSettingsAction();
         settingsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                return popupMenuVariant == PopupMenuVariant.EDITOR;
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                return contextDocument instanceof BinaryFileDocument;
             }
         });
         return settingsAction;
@@ -202,12 +197,9 @@ public class BinedComponentModule implements Module {
         goToPositionAction.init(resourceBundle);
         goToPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                return popupMenuVariant != PopupMenuVariant.BASIC;
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                ContextComponent contextComponent = contextState.getActiveState(ContextComponent.class);
+                return contextComponent instanceof BinaryDataComponent;
             }
         });
         return goToPositionAction;
@@ -506,18 +498,17 @@ public class BinedComponentModule implements Module {
     }
 
     @Nonnull
-    private JPopupMenu createCodeAreaPopupMenu(final SectCodeArea codeArea, String menuPostfix, PopupMenuVariant variant, int x, int y) {
+    public JPopupMenu createCodeAreaPopupMenu(final SectCodeArea codeArea, int x, int y) {
         getClipboardCodeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
 
-        popupMenuVariant = variant;
-        popupMenuPositionZone = codeArea.getPainter().getPositionZone(x, y);
+        CodeAreaZone codeAreaZone = codeArea.getPainter().getPositionZone(x, y);
 
         final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ActiveContextManagement contextManager;
         BinaryDataComponent dataComponent = null;
-        if (variant == PopupMenuVariant.EDITOR) {
+//        if (popupMenuVariant == PopupMenuVariant.EDITOR) {
             FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
             contextManager = frameModule.getFrameController().getContextManager();
             ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
@@ -527,46 +518,39 @@ public class BinedComponentModule implements Module {
                 contextManager.changeActiveState(ContextDocument.class, (ContextDocument) document);
                 dataComponent = ((BinaryFileDocument) document).getDataComponent();
             }
-        } else {
-            contextManager = contextModule.createContextManager();;
-            dataComponent = new BinEdDataComponent(codeArea);
-            ((BinEdDataComponent) dataComponent).setContextProvider(contextManager);
-        }
+//        } else {
+//        contextManager = contextModule.createContextManager();
+//        dataComponent = new BinEdDataComponent(codeArea);
+//        ((BinEdDataComponent) dataComponent).setContextManager(contextManager);
+//        }
 
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
+        contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
 
         ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
-        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar);
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
         return popupMenu;
     }
 
     @Nonnull
-    public PopupMenuVariant getPopupMenuVariant() {
-        return popupMenuVariant;
-    }
-
-    @Nonnull
-    public BasicCodeAreaZone getPopupMenuPositionZone() {
-        return popupMenuPositionZone;
-    }
-
-    @Nonnull
-    public JPopupMenu createBinEdComponentPopupMenu(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler, BinEdComponentPanel binaryPanel, int clickedX, int clickedY) {
-        return codeAreaPopupMenuHandler.createPopupMenu(binaryPanel.getCodeArea(), "", clickedX, clickedY);
-    }
-
-    @Nonnull
-    public CodeAreaPopupMenuHandler createCodeAreaPopupMenuHandler(PopupMenuVariant variant) {
-        return new CodeAreaPopupMenuHandler() {
-            @Nonnull
+    public JPopupMenu createCodeAreaPopupMenu() {
+        return new JPopupMenu() {
             @Override
-            public JPopupMenu createPopupMenu(SectCodeArea codeArea, String menuPostfix, int x, int y) {
-                return createCodeAreaPopupMenu(codeArea, menuPostfix, variant, x, y);
-            }
+            public void show(@Nonnull Component invoker, int x, int y) {
+                SectCodeArea codeArea;
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
+                    codeArea = (SectCodeArea) ((JViewport) invoker).getParent().getParent();
+                } else {
+                    codeArea = (SectCodeArea) invoker;
+                }
 
-            @Override
-            public void dropPopupMenu(String menuPostfix) {
+                JPopupMenu popupMenu = createCodeAreaPopupMenu(codeArea, clickedX, clickedY);
+                popupMenu.show(invoker, x, y);
             }
         };
     }
@@ -575,7 +559,6 @@ public class BinedComponentModule implements Module {
         MenuPopupModuleApi menuPopupModule = App.getModule(MenuPopupModuleApi.class);
         menuPopupModule.addComponentPopupEventDispatcher(new ComponentPopupEventDispatcher() {
 
-            private static final String DEFAULT_MENU_POSTFIX = ".default";
             private JPopupMenu popupMenu = null;
 
             @Override
@@ -583,11 +566,6 @@ public class BinedComponentModule implements Module {
                 Component component = getSource(mouseEvent);
                 if (component instanceof SectCodeArea) {
                     if (((SectCodeArea) component).getComponentPopupMenu() == null) {
-                        CodeAreaPopupMenuHandler handler = createCodeAreaPopupMenuHandler(PopupMenuVariant.NORMAL);
-                        if (popupMenu != null) {
-                            handler.dropPopupMenu(DEFAULT_MENU_POSTFIX);
-                        }
-
                         int x;
                         int y;
                         Point point = component.getMousePosition();
@@ -599,7 +577,7 @@ public class BinedComponentModule implements Module {
                             y = mouseEvent.getY();
                         }
 
-                        popupMenu = handler.createPopupMenu((SectCodeArea) component, DEFAULT_MENU_POSTFIX, x, y);
+                        popupMenu = createCodeAreaPopupMenu((SectCodeArea) component, x, y);
 
                         if (point != null) {
                             popupMenu.show(component, x, y);
@@ -619,15 +597,10 @@ public class BinedComponentModule implements Module {
 
                 if (component instanceof SectCodeArea) {
                     if (((SectCodeArea) component).getComponentPopupMenu() == null) {
-                        CodeAreaPopupMenuHandler handler = createCodeAreaPopupMenuHandler(PopupMenuVariant.NORMAL);
-                        if (popupMenu != null) {
-                            handler.dropPopupMenu(DEFAULT_MENU_POSTFIX);
-                        }
-
                         Point point = new Point(component.getWidth() / 2, component.getHeight() / 2);
                         int x = (int) point.getX();
                         int y = (int) point.getY();
-                        popupMenu = handler.createPopupMenu((SectCodeArea) component, DEFAULT_MENU_POSTFIX, x, y);
+                        popupMenu = createCodeAreaPopupMenu((SectCodeArea) component, x, y);
 
                         popupMenu.show(component, x, y);
                         return true;
@@ -646,9 +619,5 @@ public class BinedComponentModule implements Module {
 
     public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
         getFileManager().setCommandHandlerProvider(commandHandlerProvider);
-    }
-
-    public enum PopupMenuVariant {
-        BASIC, NORMAL, EDITOR
     }
 }

@@ -15,15 +15,10 @@
  */
 package org.exbin.bined.jaguif.component.gui;
 
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.FocusListener;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.command.EmptyBinaryDataUndoRedo;
 import org.exbin.bined.swing.section.SectCodeArea;
@@ -34,7 +29,6 @@ import org.exbin.bined.swing.capability.CharAssessorPainterCapable;
 import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Binary editor component panel.
@@ -60,50 +54,8 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, new EmptyBinaryDataUndoRedo());
         codeArea.setCommandHandler(commandHandler);
 
-        String popupMenuId = BinedComponentModule.BINARY_POPUP_MENU_ID + ".multi";
-
-        JPopupMenu codeAreaPopupMenu = new JPopupMenu() {
-            @Override
-            public void show(Component invoker, int x, int y) {
-                if (invoker == null) {
-                    return;
-                }
-
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.EDITOR);
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
-                popupMenu.addPopupMenuListener(new PopupMenuListener() {
-                    @Override
-                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                    }
-
-                    @Override
-                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                        codeAreaPopupMenuHandler.dropPopupMenu(popupMenuId);
-                    }
-
-                    @Override
-                    public void popupMenuCanceled(PopupMenuEvent e) {
-                    }
-                });
-                popupMenu.show(invoker, x, y);
-            }
-        };
-        // TODO
-        /*MenuPopupModuleApi menuPopupModule = App.getModule(MenuPopupModuleApi.class);
-        codeArea.setComponentPopupMenu(menuPopupModule.createComponentPopupMenu(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, () -> {
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-            return actionModule.createActionContextRegistrar(frameModule.getFrameController().getActionManager());
-        })); */
-        codeArea.setComponentPopupMenu(codeAreaPopupMenu);
+        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+        codeArea.setComponentPopupMenu(binedComponentModule.createCodeAreaPopupMenu());
         add(codeArea);
     }
 
@@ -117,13 +69,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         return codeArea;
     }
 
-    /* public void onInitFromPreferences(OptionsStorage options) {
-        org.exbin.bined.jaguif.settings.FontSizeOptions fontSizeOptions =
-            new org.exbin.bined.jaguif.settings.FontSizeOptions(options);
-        int fontSize = fontSizeOptions.getFontSize();
-        Font currentFont = codeArea.getCodeFont();
-        codeArea.setCodeFont(new Font(currentFont.getName(), currentFont.getStyle(), fontSize));
-    } */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -150,13 +95,5 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
 
     public void setContentData(BinaryData data) {
         codeArea.setContentData(data);
-    }
-
-    public void addBinaryAreaFocusListener(FocusListener focusListener) {
-        codeArea.addFocusListener(focusListener);
-    }
-
-    public void removeBinaryAreaFocusListener(FocusListener focusListener) {
-        codeArea.removeFocusListener(focusListener);
     }
 }

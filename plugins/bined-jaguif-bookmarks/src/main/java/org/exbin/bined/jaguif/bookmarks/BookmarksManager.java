@@ -34,7 +34,6 @@ import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MenuEvent;
@@ -55,8 +54,11 @@ import org.exbin.bined.jaguif.bookmarks.action.ManageBookmarksAction;
 import org.exbin.bined.jaguif.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.bined.jaguif.bookmarks.model.BookmarkRecord;
 import org.exbin.bined.jaguif.bookmarks.settings.BookmarkOptions;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
+import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.utils.ActionUtils;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -248,14 +250,9 @@ public class BookmarksManager {
         };
         bookmarksPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR;
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                return contextDocument instanceof BinaryFileDocument;
             }
         });
         bookmarksPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("bookmarksMenu.shortDescription"));

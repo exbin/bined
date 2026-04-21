@@ -124,8 +124,8 @@ public class DragDropContentAction extends AbstractAction implements ActionConte
         });
         dragDropContentPanel.setOpenAsTabEnabled(true);
         dragDropContentPanel.setSaveAsFileEnabled(true);
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-        dragDropContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.BASIC));
+        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+        dragDropContentPanel.setCodeAreaPopupMenu(binedComponentModule.createCodeAreaPopupMenu());
 
         windowModule.setWindowTitle(dialog, dragDropContentPanel.getResourceBundle());
         controlPanel.setController(() -> {

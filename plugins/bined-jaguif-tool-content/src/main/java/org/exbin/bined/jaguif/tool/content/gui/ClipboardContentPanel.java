@@ -49,7 +49,6 @@ import org.exbin.bined.jaguif.objectdata.source.ByteBufferPageProvider;
 import org.exbin.bined.jaguif.objectdata.source.CharBufferPageProvider;
 import org.exbin.bined.jaguif.objectdata.source.ReaderPageProvider;
 import org.exbin.bined.jaguif.objectdata.property.gui.InspectComponentPanel;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.jaguif.utils.ClipboardUtils;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
@@ -67,7 +66,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private final List<Object> dataContents = new ArrayList<>();
     private final ObjectValueConvertor objectValueConvertor = new ObjectValueConvertor();
 
-    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
+    private JPopupMenu codeAreaPopupMenu;
     private JComponent currentDataComponent = null;
     private InspectComponentPanel inspectComponentPanel = new InspectComponentPanel();
 
@@ -534,28 +533,9 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
     private javax.swing.JTextArea textDataTextArea;
     // End of variables declaration//GEN-END:variables
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
-        dataCodeArea.setComponentPopupMenu(new JPopupMenu() {
-            @Override
-            public void show(Component invoker, int x, int y) {
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(dataCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
-                popupMenu.show(invoker, x, y);
-                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-            }
-        });
-    }
-
-    public void detachMenu() {
-        if (codeAreaPopupMenuHandler != null) {
-            codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-        }
+    public void setCodeAreaPopupMenu(JPopupMenu popupMenu) {
+        this.codeAreaPopupMenu = popupMenu;
+        dataCodeArea.setComponentPopupMenu(popupMenu);
     }
 
     @ParametersAreNonnullByDefault

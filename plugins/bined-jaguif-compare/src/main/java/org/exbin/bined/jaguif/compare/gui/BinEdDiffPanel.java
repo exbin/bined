@@ -58,7 +58,6 @@ import org.exbin.bined.jaguif.component.BinEdCodeAreaAssessor;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.editor.settings.BinaryEditorOptions;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaLayoutOptions;
@@ -176,10 +175,10 @@ public class BinEdDiffPanel extends JPanel {
         // TODO registerBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
 
         initialLoadFromPreferences();
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-        CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.NORMAL);
-        diffPanel.getLeftCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareLeft"));
-        diffPanel.getRightCodeArea().setComponentPopupMenu(createPopupMenu(codeAreaPopupMenuHandler, "compareRight"));
+        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+        JPopupMenu codeAreaPopupMenu = binedComponentModule.createCodeAreaPopupMenu();
+        diffPanel.getLeftCodeArea().setComponentPopupMenu(codeAreaPopupMenu);
+        diffPanel.getRightCodeArea().setComponentPopupMenu(codeAreaPopupMenu);
 
         diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
         diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
@@ -310,45 +309,6 @@ public class BinEdDiffPanel extends JPanel {
     public void setRightContentData(BinaryData contentData) {
         diffPanel.setRightContentData(contentData);
         // TODO updateBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
-    }
-
-    @Nonnull
-    private JPopupMenu createPopupMenu(final CodeAreaPopupMenuHandler codeAreaPopupMenuHandler, String popupMenuId) {
-        return new JPopupMenu() {
-            @Override
-            public void show(Component invoker, int x, int y) {
-                if (codeAreaPopupMenuHandler == null || invoker == null) {
-                    return;
-                }
-
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-
-                SectCodeArea codeArea = invoker instanceof SectCodeArea ? (SectCodeArea) invoker
-                        : (SectCodeArea) invoker.getParent().getParent();
-
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, popupMenuId, clickedX, clickedY);
-                popupMenu.addPopupMenuListener(new PopupMenuListener() {
-                    @Override
-                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                    }
-
-                    @Override
-                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                        codeAreaPopupMenuHandler.dropPopupMenu(popupMenuId);
-                    }
-
-                    @Override
-                    public void popupMenuCanceled(PopupMenuEvent e) {
-                    }
-                });
-                popupMenu.show(invoker, x, y);
-            }
-        };
     }
 
     /* @ParametersAreNonnullByDefault

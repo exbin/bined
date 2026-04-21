@@ -43,7 +43,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.clipboard.TextClipboardController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.operation.undo.api.UndoRedoController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
@@ -64,7 +64,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     protected final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
     protected BinaryDataUndoRedo undoRedo;
     protected Font defaultFont;
-    protected ActiveContextProvider contextProvider;
+    protected ActiveContextManagement contextManagement;
     protected List<String> encodings = new ArrayList<>();
 
     public BinEdDataComponent(BinEdComponentPanel binaryComponent) {
@@ -101,8 +101,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         return codeArea;
     }
 
-    public void setContextProvider(ActiveContextProvider contextProvider) {
-        this.contextProvider = contextProvider;
+    public void setContextManager(ActiveContextManagement contextManagement) {
+        this.contextManagement = contextManagement;
     }
 
     @Override
@@ -189,8 +189,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setEncoding(String encoding) {
         ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
-        if (contextProvider != null) {
-            contextProvider.updateActiveState(ContextEncoding.class, CharsetEncodingState.UpdateType.ENCODING);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextEncoding.class, this, CharsetEncodingState.UpdateType.ENCODING);
         }
     }
 
@@ -204,8 +204,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     public void setEncodings(List<String> encodings) {
         this.encodings.clear();
         this.encodings.addAll(encodings);
-        if (contextProvider != null) {
-            contextProvider.updateActiveState(ContextEncoding.class, CharsetListEncodingState.UpdateType.ENCODING_LIST);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextEncoding.class, this, CharsetListEncodingState.UpdateType.ENCODING_LIST);
         }
     }
 
@@ -224,8 +224,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCurrentFont(Font font) {
         ((FontCapable) codeArea).setCodeFont(font);
-        if (contextProvider != null) {
-            contextProvider.updateActiveState(ContextComponent.class, TextFontState.UpdateType.FONT);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextComponent.class, this, TextFontState.UpdateType.FONT);
         }
     }
 
@@ -238,8 +238,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCodeType(CodeType codeType) {
         ((CodeTypeCapable) codeArea).setCodeType(codeType);
-        if (contextProvider != null) {
-            contextProvider.updateActiveState(ContextComponent.class, CodeTypeState.UpdateType.CODE_TYPE);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.CODE_TYPE);
         }
     }
 
@@ -252,8 +252,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setPositionCodeType(PositionCodeType positionCodeType) {
         ((PositionCodeTypeCapable) codeArea).setPositionCodeType(positionCodeType);
-        if (contextProvider != null) {
-            contextProvider.updateActiveState(ContextComponent.class, CodeTypeState.UpdateType.POSITION_CODE_TYPE);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.POSITION_CODE_TYPE);
         }
     }
 
@@ -266,8 +266,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCodeCharactersCase(CodeCharactersCase codeCharactersCase) {
         ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeCharactersCase);
-        if (contextProvider != null) {
-            contextProvider.updateActiveState(ContextComponent.class, CodeTypeState.UpdateType.HEX_CHARACTERS_CASE);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.HEX_CHARACTERS_CASE);
         }
     }
 
@@ -288,8 +288,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         if (nonprintablesCodeAreaAssessor != null) {
             nonprintablesCodeAreaAssessor.setShowNonprintables(showNonprintables);
             codeArea.repaint();
-            if (contextProvider != null) {
-                contextProvider.updateActiveState(ContextComponent.class, NonprintablesState.UpdateType.NONPRINTABLES);
+            if (contextManagement != null) {
+                contextManagement.updateActiveState(ContextComponent.class, this, NonprintablesState.UpdateType.NONPRINTABLES);
             }
         }
     }

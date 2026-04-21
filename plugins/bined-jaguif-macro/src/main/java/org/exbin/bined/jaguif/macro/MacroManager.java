@@ -28,7 +28,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -64,6 +63,7 @@ import org.exbin.bined.jaguif.macro.settings.MacroOptions;
 import org.exbin.bined.jaguif.search.BinEdComponentSearch;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.document.api.ContextDocument;
@@ -128,7 +128,7 @@ public class MacroManager {
         loadMacroRecords();
         MacroManager.this.updateMacrosMenu();
     }
-    
+
     private void registerAction(Action action) {
         ActionContextChange contextChange = (ActionContextChange) action.getValue(ActionConsts.ACTION_CONTEXT_CHANGE);
         if (contextChange != null) {
@@ -300,14 +300,9 @@ public class MacroManager {
         };
         macrosPopupMenuAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR;
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                return contextDocument instanceof BinaryFileDocument;
             }
         });
         macrosPopupMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("macrosMenu.shortDescription"));

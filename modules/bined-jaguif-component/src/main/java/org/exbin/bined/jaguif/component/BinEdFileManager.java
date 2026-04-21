@@ -92,7 +92,7 @@ public class BinEdFileManager {
         for (CodeAreaColorAssessor modifier : painterPositionColorModifiers) {
             painter.addColorModifier(modifier);
         }
-        binaryDataComponent.setContextProvider(contextManager);
+        binaryDataComponent.setContextManager(contextManager);
     }
 
     public void initCommandHandler(BinEdDataComponent binaryDataComponent) {

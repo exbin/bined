@@ -17,7 +17,6 @@ package org.exbin.bined.jaguif.search.gui;
 
 import org.exbin.bined.jaguif.search.SearchCondition;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.event.KeyListener;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -26,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
-import javax.swing.JViewport;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -36,7 +34,6 @@ import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 
@@ -205,22 +202,8 @@ public class BinarySearchComboBoxPanel extends JPanel {
         }
     }
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler, String postfix) {
-        codeArea.setComponentPopupMenu(new JPopupMenu() {
-            @Override
-            public void show(Component invoker, int x, int y) {
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-                String menuPostfix = ".search" + postfix;
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, menuPostfix, clickedX, clickedY);
-                popupMenu.show(invoker, x, y);
-                codeAreaPopupMenuHandler.dropPopupMenu(menuPostfix);
-            }
-        });
+    public void setCodeAreaPopupMenu(JPopupMenu popupMenu) {
+        codeArea.setComponentPopupMenu(popupMenu);
     }
 
     public void exclusiveUpdate(Runnable runnable) {

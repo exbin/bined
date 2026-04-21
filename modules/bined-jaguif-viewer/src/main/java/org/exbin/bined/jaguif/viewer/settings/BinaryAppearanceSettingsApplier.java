@@ -16,10 +16,10 @@
 package org.exbin.bined.jaguif.viewer.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Binary appearance settings applier.
@@ -30,7 +30,7 @@ public class BinaryAppearanceSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryAppearance";
 
     @Override
-    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+    public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
         ContextDocking instance = contextProvider.getActiveState(ContextDocking.class);
         BinaryAppearanceOptions options = settingsProvider.getSettingsOptions(BinaryAppearanceOptions.class);
         // TODO

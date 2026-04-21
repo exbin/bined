@@ -22,9 +22,9 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Binary editor settings applier.
@@ -35,7 +35,7 @@ public class BinaryEditorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryEditor";
 
     @Override
-    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+    public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
         ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinaryDataComponent)) {
             return;

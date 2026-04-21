@@ -24,10 +24,10 @@ import org.exbin.bined.jaguif.component.BinaryFileDocument;
 import org.exbin.bined.jaguif.inspector.BasicValuesInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
 import org.exbin.bined.jaguif.inspector.gui.BasicValuesPanel;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Data inspector settings component.
@@ -38,7 +38,7 @@ public class DataInspectorSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "dataInspector";
 
     @Override
-    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+    public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
         ContextDocument instance = contextProvider.getActiveState(ContextDocument.class);
         if (!(instance instanceof BinaryFileDocument)) {
             return;

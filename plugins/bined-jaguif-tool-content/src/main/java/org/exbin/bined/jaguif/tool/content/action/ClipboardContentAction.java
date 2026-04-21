@@ -123,8 +123,8 @@ public class ClipboardContentAction extends AbstractAction implements ActionCont
         });
         clipboardContentPanel.setOpenAsTabEnabled(true);
         clipboardContentPanel.setSaveAsFileEnabled(true);
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-        clipboardContentPanel.setCodeAreaPopupMenuHandler(binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.BASIC));
+        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+        clipboardContentPanel.setCodeAreaPopupMenu(binedComponentModule.createCodeAreaPopupMenu());
 
         windowModule.setWindowTitle(dialog, clipboardContentPanel.getResourceBundle());
         controlPanel.setController((actionType) -> {

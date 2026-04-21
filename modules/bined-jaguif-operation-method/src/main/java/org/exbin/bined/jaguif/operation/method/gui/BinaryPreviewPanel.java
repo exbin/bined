@@ -17,11 +17,8 @@ package org.exbin.bined.jaguif.operation.method.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JLabel;
-import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import org.exbin.auxiliary.binary_data.BinaryData;
@@ -30,7 +27,6 @@ import org.exbin.bined.EditMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 
 /**
  * Binary data preview panel.
@@ -53,22 +49,8 @@ public class BinaryPreviewPanel extends javax.swing.JPanel {
         previewCodeArea.setContentData(new ByteArrayEditableData());
         previewCodeArea.setEditMode(EditMode.READ_ONLY);
 
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-        CodeAreaPopupMenuHandler codeAreaPopupMenuHandler = binedModule.createCodeAreaPopupMenuHandler(BinedComponentModule.PopupMenuVariant.NORMAL);
-        previewCodeArea.setComponentPopupMenu(new JPopupMenu() {
-            @Override
-            public void show(@Nonnull Component invoker, int x, int y) {
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(previewCodeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
-                popupMenu.show(invoker, x, y);
-                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-            }
-        });
+        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+        previewCodeArea.setComponentPopupMenu(binedComponentModule.createCodeAreaPopupMenu());
     }
 
     public void setPreviewData(BinaryData previewBinaryData) {

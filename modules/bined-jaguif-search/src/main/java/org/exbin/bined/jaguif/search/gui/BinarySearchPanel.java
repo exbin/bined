@@ -36,6 +36,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
@@ -43,7 +44,6 @@ import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.CodeAreaUtils;
@@ -830,8 +830,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         findComboBoxEditorComponent.requestFocus();
     }
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        findComboBoxEditorComponent.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler, "");
+    public void setCodeAreaPopupMenu(JPopupMenu popupMenu) {
+        findComboBoxEditorComponent.setCodeAreaPopupMenu(popupMenu);
     }
 
     public void updateSearchHistory(SearchCondition condition) {

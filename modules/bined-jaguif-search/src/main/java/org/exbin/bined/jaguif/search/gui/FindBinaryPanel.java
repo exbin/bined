@@ -34,6 +34,7 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 import org.exbin.bined.ScrollBarVisibility;
 import org.exbin.bined.RowWrappingMode;
@@ -41,7 +42,6 @@ import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.jaguif.App;
@@ -65,7 +65,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     private ComboBoxEditor replaceComboBoxEditor;
     private List<SearchCondition> replaceHistory = new ArrayList<>();
 
-    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
     private MultilineEditorListener multilineEditorListener = null;
     private final SearchTypeUtils searchTypeUtils = new SearchTypeUtils();
 
@@ -585,15 +584,8 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         replaceComboBox.setModel(new SearchHistoryModel(replaceHistory));
     }
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
-        findComboBoxEditorComponent.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler, "FindBinaryPanel");
-    }
-
-    public void detachMenu() {
-        if (codeAreaPopupMenuHandler != null) {
-            codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-        }
+    public void setCodeAreaPopupMenu(JPopupMenu popupMenu) {
+        findComboBoxEditorComponent.setCodeAreaPopupMenu(popupMenu);
     }
 
     private void updateReplaceEnablement() {

@@ -23,9 +23,9 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.theme.BinedThemeModule;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Theme profiles settings applier.
@@ -36,7 +36,7 @@ public class CodeAreaThemeSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "codeAreaThemeApplier";
 
     @Override
-    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+    public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
         ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinaryDataComponent)) {
             return;

@@ -19,10 +19,10 @@ import java.nio.charset.UnsupportedCharsetException;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Binary font settings applier.
@@ -33,7 +33,7 @@ public class BinaryFontSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryFont";
 
     @Override
-    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+    public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
         ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
         if (!(instance instanceof BinEdDataComponent)) {
             return;

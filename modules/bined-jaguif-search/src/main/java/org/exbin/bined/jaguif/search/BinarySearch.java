@@ -22,10 +22,10 @@ import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JPopupMenu;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.search.gui.BinaryMultilinePanel;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.bined.jaguif.search.gui.FindBinaryPanel;
@@ -47,26 +47,26 @@ public class BinarySearch {
 
     public static final String HELP_ID = "find-or-replace-data";
 
-    private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinarySearch.class);
-    private static final int DEFAULT_DELAY = 500;
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinarySearch.class);
+    protected static final int DEFAULT_DELAY = 500;
 
-    private InvokeSearchThread invokeSearchThread;
-    private SearchThread searchThread;
+    protected InvokeSearchThread invokeSearchThread;
+    protected SearchThread searchThread;
 
-    private SearchOperation currentSearchOperation = SearchOperation.FIND;
-    private SearchParameters.SearchDirection currentSearchDirection = SearchParameters.SearchDirection.FORWARD;
-    private final SearchParameters currentSearchParameters = new SearchParameters();
-    private final ReplaceParameters currentReplaceParameters = new ReplaceParameters();
-    private BinarySearchService.FoundMatches foundMatches = new BinarySearchService.FoundMatches();
+    protected SearchOperation currentSearchOperation = SearchOperation.FIND;
+    protected SearchParameters.SearchDirection currentSearchDirection = SearchParameters.SearchDirection.FORWARD;
+    protected final SearchParameters currentSearchParameters = new SearchParameters();
+    protected final ReplaceParameters currentReplaceParameters = new ReplaceParameters();
+    protected BinarySearchService.FoundMatches foundMatches = new BinarySearchService.FoundMatches();
 
-    private final List<SearchCondition> searchHistory = new ArrayList<>();
-    private final List<SearchCondition> replaceHistory = new ArrayList<>();
+    protected final List<SearchCondition> searchHistory = new ArrayList<>();
+    protected final List<SearchCondition> replaceHistory = new ArrayList<>();
 
-    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
-    private PanelClosingListener panelClosingListener = null;
-    private BinarySearchService binarySearchService;
-    private final BinarySearchService.SearchStatusListener searchStatusListener;
-    private final BinarySearchPanel binarySearchPanel = new BinarySearchPanel();
+    protected JPopupMenu codeAreaPopupMenu;
+    protected PanelClosingListener panelClosingListener = null;
+    protected BinarySearchService binarySearchService;
+    protected final BinarySearchService.SearchStatusListener searchStatusListener;
+    protected final BinarySearchPanel binarySearchPanel = new BinarySearchPanel();
 
     public BinarySearch() {
         searchStatusListener = new BinarySearchService.SearchStatusListener() {
@@ -227,7 +227,7 @@ public class BinarySearch {
                 findBinaryPanel.setSearchHistory(searchHistory);
                 findBinaryPanel.setSearchParameters(currentSearchParameters);
                 findBinaryPanel.setReplaceParameters(currentReplaceParameters);
-                findBinaryPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
+                findBinaryPanel.setCodeAreaPopupMenu(codeAreaPopupMenu);
                 DefaultControlPanel controlPanel = new DefaultControlPanel(findBinaryPanel.getResourceBundle());
                 HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
                 helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
@@ -238,7 +238,7 @@ public class BinarySearch {
                     @Override
                     public SearchCondition multilineEdit(SearchCondition condition) {
                         final BinaryMultilinePanel multilinePanel = new BinaryMultilinePanel();
-                        multilinePanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
+                        multilinePanel.setCodeAreaPopupMenu(codeAreaPopupMenu);
                         multilinePanel.setCondition(condition);
                         DefaultControlPanel controlPanel = new DefaultControlPanel();
                         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
@@ -256,7 +256,6 @@ public class BinarySearch {
                             multilineDialog.dispose();
                         });
                         multilineDialog.showCentered(dialog.getWindow());
-                        multilinePanel.detachMenu();
                         return result.searchCondition;
                     }
 
@@ -277,7 +276,7 @@ public class BinarySearch {
                         binarySearchPanel.switchPanelMode(performReplace ? BinarySearchPanel.PanelMode.REPLACE : BinarySearchPanel.PanelMode.FIND);
                         invokeSearch(performReplace ? SearchOperation.REPLACE : SearchOperation.FIND, dialogSearchParameters, dialogReplaceParameters);
                     }
-                    findBinaryPanel.detachMenu();
+
                     dialog.close();
                     dialog.dispose();
                 });
@@ -310,9 +309,9 @@ public class BinarySearch {
         this.panelClosingListener = panelClosingListener;
     }
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
-        binarySearchPanel.setCodeAreaPopupMenuHandler(codeAreaPopupMenuHandler);
+    public void setCodeAreaPopupMenu(JPopupMenu codeAreaPopupMenu) {
+        this.codeAreaPopupMenu = codeAreaPopupMenu;
+        binarySearchPanel.setCodeAreaPopupMenu(codeAreaPopupMenu);
     }
 
     @Nonnull

@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JMenuItem;
+import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
@@ -33,9 +33,9 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
 import org.exbin.bined.jaguif.component.BinaryFileDocument;
-import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.search.BinEdComponentSearch;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.document.api.ContextDocument;
 
 /**
@@ -104,15 +104,10 @@ public class FindReplaceActions {
             putValue(ActionConsts.ACTION_DIALOG_MODE, true);
             putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
-                public boolean shouldCreate(String menuId, String subMenuId) {
-                    BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                    BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
-
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                    CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
+                    ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                    return contextDocument instanceof BinaryFileDocument && !(codeAreaZone == BasicCodeAreaZone.TOP_LEFT_CORNER || codeAreaZone == BasicCodeAreaZone.HEADER || codeAreaZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
             });
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -147,15 +142,10 @@ public class FindReplaceActions {
             putValue(Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
             putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
-                public boolean shouldCreate(String menuId, String subMenuId) {
-                    BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                    BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
-
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                    CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
+                    ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                    return contextDocument instanceof BinaryFileDocument && !(codeAreaZone == BasicCodeAreaZone.TOP_LEFT_CORNER || codeAreaZone == BasicCodeAreaZone.HEADER || codeAreaZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
             });
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);
@@ -195,15 +185,10 @@ public class FindReplaceActions {
             putValue(ActionConsts.ACTION_DIALOG_MODE, true);
             putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
                 @Override
-                public boolean shouldCreate(String menuId, String subMenuId) {
-                    BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                    BinedComponentModule.PopupMenuVariant menuVariant = binedModule.getPopupMenuVariant();
-                    BasicCodeAreaZone positionZone = binedModule.getPopupMenuPositionZone();
-                    return menuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && !(positionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || positionZone == BasicCodeAreaZone.HEADER || positionZone == BasicCodeAreaZone.ROW_POSITIONS);
-                }
-
-                @Override
-                public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                    CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
+                    ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                    return contextDocument instanceof BinaryFileDocument && !(codeAreaZone == BasicCodeAreaZone.TOP_LEFT_CORNER || codeAreaZone == BasicCodeAreaZone.HEADER || codeAreaZone == BasicCodeAreaZone.ROW_POSITIONS);
                 }
             });
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, this);

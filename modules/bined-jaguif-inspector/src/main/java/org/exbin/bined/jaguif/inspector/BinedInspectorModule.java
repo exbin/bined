@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JMenuItem;
+import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
@@ -30,6 +30,7 @@ import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.inspector.action.ShowParsingPanelAction;
@@ -39,6 +40,7 @@ import org.exbin.bined.jaguif.inspector.settings.DataInspectorSettingsApplier;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorSettingsComponent;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorFontOptions;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
@@ -103,17 +105,11 @@ public class BinedInspectorModule implements Module {
         showParsingPanelAction.init(resourceBundle);
         showParsingPanelAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                BinedComponentModule.PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
+                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
                 boolean inShowSubmenu = BinedViewerModule.SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
-                return popupMenuVariant == BinedComponentModule.PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
-                // menuItem.setSelected(Objects.requireNonNull(getActiveCodeArea().getLayoutProfile()).isShowHeader());
+                return contextDocument instanceof BinaryFileDocument && ((inShowSubmenu && codeAreaZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && codeAreaZone != BasicCodeAreaZone.CODE_AREA));
             }
         });
         return showParsingPanelAction;

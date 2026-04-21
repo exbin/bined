@@ -17,16 +17,13 @@ package org.exbin.bined.jaguif.search.gui;
 
 import org.exbin.bined.jaguif.search.SearchCondition;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
 import org.exbin.bined.swing.section.SectCodeArea;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.jaguif.App;
@@ -37,15 +34,13 @@ import org.exbin.jaguif.App;
 @ParametersAreNonnullByDefault
 public class BinaryMultilinePanel extends javax.swing.JPanel {
 
-    private static final String POPUP_MENU_POSTFIX = ".binaryMultilinePanel";
-
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryMultilinePanel.class);
     private SearchCondition condition;
 
     private JTextArea textArea;
     private JScrollPane scrollPane;
     private SectCodeArea codeArea;
-    private CodeAreaPopupMenuHandler codeAreaPopupMenuHandler;
+    private JPopupMenu codeAreaPopupMenu;
 
     public BinaryMultilinePanel() {
         initComponents();
@@ -94,7 +89,7 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
             codeArea.setContentData(condition.getBinaryData());
             codeArea.setFocusTraversalKeysEnabled(false);
             add(codeArea, BorderLayout.CENTER);
-            if (codeAreaPopupMenuHandler != null) {
+            if (codeAreaPopupMenu != null) {
                 attachPopupMenu();
             }
         } else {
@@ -112,33 +107,14 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
         repaint();
     }
 
-    public void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler) {
-        this.codeAreaPopupMenuHandler = codeAreaPopupMenuHandler;
+    public void setCodeAreaPopupMenu(JPopupMenu popupMenu) {
+        this.codeAreaPopupMenu = popupMenu;
         if (codeArea != null) {
             attachPopupMenu();
         }
     }
 
     private void attachPopupMenu() {
-        codeArea.setComponentPopupMenu(new JPopupMenu() {
-            @Override
-            public void show(@Nonnull Component invoker, int x, int y) {
-                int clickedX = x;
-                int clickedY = y;
-                if (invoker instanceof JViewport) {
-                    clickedX += invoker.getParent().getX();
-                    clickedY += invoker.getParent().getY();
-                }
-                JPopupMenu popupMenu = codeAreaPopupMenuHandler.createPopupMenu(codeArea, POPUP_MENU_POSTFIX, clickedX, clickedY);
-                popupMenu.show(invoker, x, y);
-                codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-            }
-        });
-    }
-
-    public void detachMenu() {
-        if (condition.getSearchMode() == SearchCondition.SearchMode.BINARY) {
-            codeAreaPopupMenuHandler.dropPopupMenu(POPUP_MENU_POSTFIX);
-        }
+        codeArea.setComponentPopupMenu(codeAreaPopupMenu);
     }
 }

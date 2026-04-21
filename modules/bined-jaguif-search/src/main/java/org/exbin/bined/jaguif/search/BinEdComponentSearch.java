@@ -16,8 +16,8 @@
 package org.exbin.bined.jaguif.search;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.JPopupMenu;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
-import org.exbin.bined.jaguif.component.handler.CodeAreaPopupMenuHandler;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 
 /**
@@ -51,9 +51,9 @@ public interface BinEdComponentSearch extends BinEdComponentExtension {
     void performFindAgain();
 
     /**
-     * Sets popup menu handler for binary component.
+     * Sets popup menu for binary component.
      *
-     * @param codeAreaPopupMenuHandler popup menu handler
+     * @param popupMenu popup menu
      */
-    void setCodeAreaPopupMenuHandler(CodeAreaPopupMenuHandler codeAreaPopupMenuHandler);
+    void setCodeAreaPopupMenu(JPopupMenu popupMenu);
 }

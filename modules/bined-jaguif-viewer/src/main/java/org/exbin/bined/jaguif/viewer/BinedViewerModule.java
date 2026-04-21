@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JMenuItem;
+import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.jaguif.App;
@@ -38,8 +38,8 @@ import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.component.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
-import org.exbin.bined.jaguif.component.BinedComponentModule.PopupMenuVariant;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.contribution.RowWrappingContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowHeaderContribution;
@@ -59,6 +59,7 @@ import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.context.api.ContextUpdateManagement;
 import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
@@ -453,16 +454,11 @@ public class BinedViewerModule implements Module {
 
         ActionMenuCreation showPositionCreating = new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
+                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
                 boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
-                return popupMenuVariant == PopupMenuVariant.EDITOR && ((inShowSubmenu && popupMenuPositionZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && popupMenuPositionZone != BasicCodeAreaZone.CODE_AREA));
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+                return contextDocument instanceof BinaryFileDocument && ((inShowSubmenu && codeAreaZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && codeAreaZone != BasicCodeAreaZone.CODE_AREA));
             }
         };
 
@@ -485,15 +481,10 @@ public class BinedViewerModule implements Module {
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_POPUP_SUBMENU_ID);
         ActionMenuCreation positionCodeTypeCreating = new ActionMenuCreation() {
             @Override
-            public boolean shouldCreate(String menuId, String subMenuId) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-                PopupMenuVariant popupMenuVariant = binedModule.getPopupMenuVariant();
-                BasicCodeAreaZone popupMenuPositionZone = binedModule.getPopupMenuPositionZone();
-                return popupMenuVariant == PopupMenuVariant.EDITOR && (popupMenuPositionZone == BasicCodeAreaZone.TOP_LEFT_CORNER || popupMenuPositionZone == BasicCodeAreaZone.HEADER || popupMenuPositionZone == BasicCodeAreaZone.ROW_POSITIONS);
-            }
-
-            @Override
-            public void onCreate(JMenuItem menuItem, String menuId, String subMenuId) {
+            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
+                CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
+                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                return contextDocument instanceof BinaryFileDocument && (codeAreaZone == BasicCodeAreaZone.TOP_LEFT_CORNER || codeAreaZone == BasicCodeAreaZone.HEADER || codeAreaZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
         };
         contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, positionCodeTypeCreating);

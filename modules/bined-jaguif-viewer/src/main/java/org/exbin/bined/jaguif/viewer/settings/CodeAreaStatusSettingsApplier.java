@@ -17,9 +17,9 @@ package org.exbin.bined.jaguif.viewer.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
-import org.exbin.jaguif.context.api.ActiveContextProvider;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
  * Code area status settings applier.
@@ -30,7 +30,7 @@ public class CodeAreaStatusSettingsApplier implements SettingsApplier {
     public static final String APPLIER_ID = "binaryStatus";
 
     @Override
-    public void applySettings(ActiveContextProvider contextProvider, SettingsOptionsProvider settingsProvider) {
+    public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
         /* BinaryStatus instance = contextProvider.getActiveState(BinaryStatus.class);
         if (!(instance instanceof BinaryStatus)) {
             return;
