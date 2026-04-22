@@ -25,9 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.Action;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
-import org.exbin.bined.jaguif.component.contribution.CopyAsCodeContribution;
-import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
-import org.exbin.bined.jaguif.component.contribution.PasteFromCodeContribution;
+import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryCursorPositionStatusContrib;
 import org.exbin.bined.jaguif.component.status.contribution.BinaryEditModeStatusContrib;
@@ -36,23 +34,16 @@ import org.exbin.bined.jaguif.document.status.contribution.BinaryDocumentSizeSta
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.jaguif.action.api.ActionConsts;
-import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.document.status.contribution.BinaryProcessingModeStatusContrib;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.jaguif.action.api.clipboard.ClipboardActionsApi;
-import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
-import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
-import org.exbin.jaguif.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.contribution.api.SubSequenceContribution;
 import org.exbin.jaguif.contribution.api.SubSequenceContributionRule;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.docking.api.DocumentDocking;
-import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.Document;
 import org.exbin.jaguif.document.api.DocumentSource;
 import org.exbin.jaguif.document.api.DocumentManagement;
@@ -79,23 +70,9 @@ public class BinedDocumentModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedDocumentModule.class);
 
-    public static final String EDIT_FIND_MENU_GROUP_ID = MODULE_ID + ".editFindMenuGroup";
-    public static final String EDIT_OPERATION_MENU_GROUP_ID = MODULE_ID + ".editOperationMenuGroup";
-    public static final String VIEW_NONPRINTABLES_MENU_GROUP_ID = MODULE_ID + ".viewNonprintablesMenuGroup";
     public static final String VIEW_FONT_SUB_MENU_ID = MODULE_ID + ".viewFontSubMenu";
     public static final String VIEW_FONT_ZOOM_MENU_GROUP_ID = MODULE_ID + ".viewZoomMenuGroup";
-
-    public static final String BINARY_POPUP_MENU_ID = MODULE_ID + ".binaryPopupMenu";
-    public static final String CODE_AREA_POPUP_MENU_ID = MODULE_ID + ".codeAreaPopupMenu";
-    public static final String CODE_AREA_POPUP_VIEW_GROUP_ID = MODULE_ID + ".viewPopupMenuGroup";
-    public static final String CODE_AREA_POPUP_EDIT_GROUP_ID = MODULE_ID + ".editPopupMenuGroup";
-    public static final String CODE_AREA_POPUP_SELECTION_GROUP_ID = MODULE_ID + ".selectionPopupMenuGroup";
-    public static final String CODE_AREA_POPUP_OPERATION_GROUP_ID = MODULE_ID + ".operationPopupMenuGroup";
-    public static final String CODE_AREA_POPUP_FIND_GROUP_ID = MODULE_ID + ".findPopupMenuGroup";
-    public static final String CODE_AREA_POPUP_TOOLS_GROUP_ID = MODULE_ID + ".toolsPopupMenuGroup";
-
     public static final String BINARY_DOCUMENT_ID = "binary";
-    public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
 
     private java.util.ResourceBundle resourceBundle = null;
 
@@ -114,21 +91,6 @@ public class BinedDocumentModule implements Module {
         }
 
         return resourceBundle;
-    }
-
-    @Nonnull
-    private Action createSettingsAction() {
-        OptionsSettingsModuleApi optionsModule = App.getModule(OptionsSettingsModuleApi.class);
-
-        Action settingsAction = optionsModule.createSettingsAction();
-        settingsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
-                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
-                return contextDocument instanceof BinaryFileDocument;
-            }
-        });
-        return settingsAction;
     }
 
     @Nonnull
@@ -254,80 +216,10 @@ public class BinedDocumentModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
     }
 
-    public void registerCodeAreaPopupMenu() {
-        ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        menuModule.registerMenu(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        ClipboardActionsApi clipboardActions = actionModule.getClipboardActions();
-
-        SequenceContribution contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
-        mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_EDIT_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_SELECTION_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_OPERATION_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_FIND_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_TOOLS_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-
-        contribution = clipboardActions.createCutContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = clipboardActions.createCopyContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new CopyAsCodeContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = clipboardActions.createPasteContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = new PasteFromCodeContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = clipboardActions.createDeleteContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-
-        contribution = clipboardActions.createSelectAllContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
-
-        contribution = new GoToPositionContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
-
-        contribution = new ActionMenuContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return createSettingsAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "settings";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID));
-    }
-
     public void registerStatusBar() {
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
-        statusBarModule.registerStatusBar(BINARY_STATUS_BAR_ID, MODULE_ID);
-        StatusBarDefinitionManagement statusBarManager = statusBarModule.getStatusBarManager(BINARY_STATUS_BAR_ID, MODULE_ID);
+        statusBarModule.registerStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, MODULE_ID);
+        StatusBarDefinitionManagement statusBarManager = statusBarModule.getStatusBarManager(BinedComponentModule.BINARY_STATUS_BAR_ID, MODULE_ID);
         statusBarManager.registerStatusBarContribution(new BinaryEncodingStatusContrib());
         statusBarManager.registerStatusBarContribution(new BinaryDocumentSizeStatusContrib());
         statusBarManager.registerStatusBarContribution(new BinaryCursorPositionStatusContrib());

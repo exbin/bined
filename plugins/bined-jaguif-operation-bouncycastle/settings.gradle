@@ -2,6 +2,7 @@ rootProject.name = 'bined-jaguif-operation-bouncycastle'
 
 if (rootProject.path == ':') {
     include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-document'
     include ':modules:bined-jaguif-operation-method'
     include ':modules:bined-jaguif-search'
 }

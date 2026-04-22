@@ -244,22 +244,6 @@ public class BinedComponentModule implements Module {
         contribution = new GoToPositionContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
-
-        /* contribution = new ActionMenuContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return createSettingsAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return "settings";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID)); */
     }
 
     @Nonnull
