@@ -24,6 +24,7 @@ repositories {
 
 dependencies {
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-component')
+    implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-document')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-viewer')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-editor')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-theme')

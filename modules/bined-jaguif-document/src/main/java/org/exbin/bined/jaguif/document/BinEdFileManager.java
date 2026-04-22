@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component;
+package org.exbin.bined.jaguif.document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.capability.SelectionCapable;
+import org.exbin.bined.jaguif.component.BinEdCodeAreaAssessor;
+import org.exbin.bined.jaguif.component.BinEdComponentExtension;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
+import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.swing.CodeAreaUndoRedo;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
@@ -34,7 +38,6 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DeletionController;
 import org.exbin.jaguif.action.api.SelectionController;
 import org.exbin.jaguif.action.api.clipboard.ClipboardController;
-import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.operation.undo.api.ContextUndoRedo;
 import org.exbin.jaguif.frame.api.FrameModuleApi;

@@ -17,24 +17,18 @@ package org.exbin.bined.jaguif.component;
 
 import org.exbin.bined.jaguif.component.action.ClipboardCodeActions;
 import org.exbin.bined.jaguif.component.action.ShowNonprintablesActions;
-import org.exbin.bined.jaguif.component.action.ViewFontActions;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.net.URI;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
-import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
@@ -42,7 +36,6 @@ import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
-import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.action.api.clipboard.ClipboardActionsApi;
 import org.exbin.jaguif.action.api.ActionModuleApi;
@@ -53,11 +46,6 @@ import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.component.contribution.PasteFromCodeContribution;
 import org.exbin.bined.jaguif.component.contribution.ToggleNonprintablesContribution;
 import org.exbin.bined.jaguif.component.contribution.ViewNonprintablesContribution;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryCursorPositionStatusContrib;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryDocumentSizeStatusContrib;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryEditModeStatusContrib;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryEncodingStatusContrib;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryProcessingModeStatusContrib;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
@@ -68,35 +56,16 @@ import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
-import org.exbin.jaguif.contribution.api.SubSequenceContribution;
-import org.exbin.jaguif.contribution.api.SubSequenceContributionRule;
-import org.exbin.jaguif.docking.api.ContextDocking;
-import org.exbin.jaguif.docking.api.DocumentDocking;
-import org.exbin.jaguif.document.api.ContextDocument;
-import org.exbin.jaguif.document.api.Document;
-import org.exbin.jaguif.document.api.DocumentSource;
-import org.exbin.jaguif.document.api.DocumentManagement;
-import org.exbin.jaguif.document.api.DocumentModuleApi;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.jaguif.menu.popup.api.MenuPopupModuleApi;
 import org.exbin.jaguif.menu.popup.api.ComponentPopupEventDispatcher;
-import org.exbin.jaguif.file.api.FileModuleApi;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
-import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
-import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
-import org.exbin.jaguif.document.api.DocumentType;
-import org.exbin.jaguif.file.api.FileDocumentSource;
-import org.exbin.jaguif.menu.api.ActionMenuContribution;
-import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
-import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
-import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
-import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 
 /**
- * Binary data editor module.
+ * Binary data component module.
  */
 @ParametersAreNonnullByDefault
 public class BinedComponentModule implements Module {
@@ -120,17 +89,12 @@ public class BinedComponentModule implements Module {
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
-    public static final String BINARY_DOCUMENT_ID = "binary";
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private BinEdFileManager fileManager = null;
-
     private ShowNonprintablesActions showNonprintablesActions;
     private ClipboardCodeActions clipboardCodeActions;
-    private ViewFontActions viewFontActions;
-    private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
 
     public BinedComponentModule() {
     }
@@ -142,12 +106,6 @@ public class BinedComponentModule implements Module {
         }
 
         return resourceBundle;
-    }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 
     public void registerGoToPosition() {
@@ -165,26 +123,10 @@ public class BinedComponentModule implements Module {
     }
 
     @Nonnull
-    private Action createSettingsAction() {
-        OptionsSettingsModuleApi optionsModule = App.getModule(OptionsSettingsModuleApi.class);
-
-        Action settingsAction = optionsModule.createSettingsAction();
-        settingsAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
-            @Override
-            public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
-                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
-                return contextDocument instanceof BinaryFileDocument;
-            }
-        });
-        return settingsAction;
-    }
-
-    @Nonnull
     public ShowNonprintablesActions getShowNonprintablesActions() {
         if (showNonprintablesActions == null) {
-            ensureSetup();
             showNonprintablesActions = new ShowNonprintablesActions();
-            showNonprintablesActions.init(resourceBundle);
+            showNonprintablesActions.init(getResourceBundle());
         }
 
         return showNonprintablesActions;
@@ -192,9 +134,8 @@ public class BinedComponentModule implements Module {
 
     @Nonnull
     public GoToPositionAction createGoToPositionAction() {
-        ensureSetup();
         GoToPositionAction goToPositionAction = new GoToPositionAction();
-        goToPositionAction.init(resourceBundle);
+        goToPositionAction.init(getResourceBundle());
         goToPositionAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
@@ -208,30 +149,11 @@ public class BinedComponentModule implements Module {
     @Nonnull
     public ClipboardCodeActions getClipboardCodeActions() {
         if (clipboardCodeActions == null) {
-            ensureSetup();
             clipboardCodeActions = new ClipboardCodeActions();
-            clipboardCodeActions.init(resourceBundle);
+            clipboardCodeActions.init(getResourceBundle());
         }
 
         return clipboardCodeActions;
-    }
-
-    @Nonnull
-    public ViewFontActions getViewFontActions() {
-        if (viewFontActions == null) {
-            ensureSetup();
-            viewFontActions = new ViewFontActions();
-            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
-            org.exbin.bined.jaguif.component.settings.CodeAreaFontSizeOptions fontSizeOptions
-                    = new org.exbin.bined.jaguif.component.settings.CodeAreaFontSizeOptions(optionsModule.getAppOptions());
-            viewFontActions.init(resourceBundle, fontSizeOptions);
-        }
-
-        return viewFontActions;
-    }
-
-    public void setInitialFileProcessing(FileProcessingMode initialFileProcessing) {
-        this.initialFileProcessing = initialFileProcessing;
     }
 
     public void registerShowNonprintablesToolBarActions() {
@@ -254,112 +176,6 @@ public class BinedComponentModule implements Module {
         contribution = new ViewNonprintablesContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_NONPRINTABLES_MENU_GROUP_ID));
-    }
-
-    public void registerDocument() {
-        DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
-        DocumentManagement documentManager = documentModule.getMainDocumentManager();
-        documentManager.registerDocumentType(new DocumentType() {
-            @Nonnull
-            @Override
-            public String getTypeId() {
-                return BINARY_DOCUMENT_ID;
-            }
-
-            @Nonnull
-            @Override
-            public BinaryFileDocument createDefaultDocument() {
-                BinaryFileDocument binaryDocument = createBinaryDocument();
-                binaryDocument.loadFrom(documentModule.createMemoryDocumentSource());
-                return binaryDocument;
-            }
-
-            @Nonnull
-            @Override
-            public Optional<Document> createDocument(DocumentSource documentSource) {
-                if (documentSource instanceof FileDocumentSource) {
-                    BinaryFileDocument document = createBinaryDocument();
-                    document.loadFrom(documentSource);
-                    return Optional.of(document);
-                }
-
-                return Optional.empty();
-            }
-
-            @Nonnull
-            private BinaryFileDocument createBinaryDocument() {
-                BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
-                getFileManager();
-                fileManager.initDataComponent(binaryFileDocument.getDataComponent());
-                fileManager.initCommandHandler(binaryFileDocument.getDataComponent());
-                OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
-                OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
-                SettingsOptionsProvider settingsOptionsProvider = settingsManager.getSettingsOptionsProvider();
-                binaryFileDocument.applySettings(settingsOptionsProvider);
-                binaryFileDocument.setContentData(new ByteArrayPagedData());
-                binaryFileDocument.setInitialProcessingMode(initialFileProcessing);
-                return binaryFileDocument;
-            }
-        });
-    }
-
-    public void registerViewZoomMenuActions() {
-        getViewFontActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        SubSequenceContribution subContribution = mgmt.registerMenuItem(VIEW_FONT_SUB_MENU_ID, resourceBundle.getString("viewFontSubMenu.name"));
-        mgmt.registerMenuRule(subContribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-
-        SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_FONT_ZOOM_MENU_GROUP_ID);
-        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
-        contribution = new ActionMenuContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return viewFontActions.createZoomInAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return ViewFontActions.ZoomInAction.ACTION_ID;
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
-        contribution = new ActionMenuContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return viewFontActions.createZoomOutAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return ViewFontActions.ZoomOutAction.ACTION_ID;
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
-        contribution = new ActionMenuContribution() {
-            @Nonnull
-            @Override
-            public Action createAction() {
-                return viewFontActions.createResetFontSizeAction();
-            }
-
-            @Nonnull
-            @Override
-            public String getContributionId() {
-                return ViewFontActions.ResetFontSizeAction.ACTION_ID;
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
     }
 
     public void registerClipboardCodeActions() {
@@ -429,7 +245,7 @@ public class BinedComponentModule implements Module {
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
 
-        contribution = new ActionMenuContribution() {
+        /* contribution = new ActionMenuContribution() {
             @Nonnull
             @Override
             public Action createAction() {
@@ -443,92 +259,63 @@ public class BinedComponentModule implements Module {
             }
         };
         mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID));
-    }
-
-    public void registerStatusBar() {
-        StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
-        statusBarModule.registerStatusBar(BINARY_STATUS_BAR_ID, MODULE_ID);
-        StatusBarDefinitionManagement statusBarManager = statusBarModule.getStatusBarManager(BINARY_STATUS_BAR_ID, MODULE_ID);
-        statusBarManager.registerStatusBarContribution(new BinaryEncodingStatusContrib());
-        statusBarManager.registerStatusBarContribution(new BinaryDocumentSizeStatusContrib());
-        statusBarManager.registerStatusBarContribution(new BinaryCursorPositionStatusContrib());
-        statusBarManager.registerStatusBarContribution(new BinaryProcessingModeStatusContrib());
-        statusBarManager.registerStatusBarContribution(new BinaryEditModeStatusContrib());
-    }
-
-    public void start() {
-        // TODO
-        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement contextManager = frameModule.getFrameController().getContextManager();
-        ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
-        if (contextDocking instanceof DocumentDocking) {
-            ((DocumentDocking) contextDocking).openNewDocument();
-        }
-
-        // TODO Rework to use different approach than extension
-        getFileManager().addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
-            @Override
-            public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
-                getViewFontActions();
-                viewFontActions.registerComponentActions(component.getCodeArea());
-                return Optional.empty();
-            }
-        });
-    }
-
-    public void startWithFile(String filePath) {
-        FileModuleApi fileModule = App.getModule(FileModuleApi.class);
-        URI uri = new File(filePath).toURI();
-        fileModule.openFile(uri);
-    }
-
-    @Nonnull
-    public BinEdFileManager getFileManager() {
-        if (fileManager == null) {
-            fileManager = new BinEdFileManager();
-        }
-        return fileManager;
-    }
-
-    @Nonnull
-    public String getNewFileTitlePrefix() {
-        return resourceBundle.getString("newFileTitlePrefix");
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_TOOLS_GROUP_ID)); */
     }
 
     @Nonnull
     public JPopupMenu createCodeAreaPopupMenu(final SectCodeArea codeArea, int x, int y) {
-        getClipboardCodeActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-
         CodeAreaZone codeAreaZone = codeArea.getPainter().getPositionZone(x, y);
 
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
+
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ActiveContextManagement contextManager;
-        BinaryDataComponent dataComponent = null;
-//        if (popupMenuVariant == PopupMenuVariant.EDITOR) {
-            FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-            contextManager = frameModule.getFrameController().getContextManager();
-            ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
-            contextManager.changeActiveState(ContextDocking.class, contextDocking);
-            if (contextDocking instanceof DocumentDocking) {
-                Document document = ((DocumentDocking) contextDocking).getActiveDocument().orElse(null);
-                contextManager.changeActiveState(ContextDocument.class, (ContextDocument) document);
-                dataComponent = ((BinaryFileDocument) document).getDataComponent();
-            }
-//        } else {
-//        contextManager = contextModule.createContextManager();
-//        dataComponent = new BinEdDataComponent(codeArea);
-//        ((BinEdDataComponent) dataComponent).setContextManager(contextManager);
-//        }
+        ActiveContextManagement contextManager = contextModule.createContextManager();
+        BinEdDataComponent dataComponent = new BinEdDataComponent(codeArea);
+        dataComponent.setContextManager(contextManager);
 
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
         contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
 
         ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
+        return popupMenu;
+    }
+
+    @Nonnull
+    public JPopupMenu createBinaryComponentPopupMenu(final BinEdDataComponent dataComponent, int x, int y) {
+        CodeAreaZone codeAreaZone = ((SectCodeArea) dataComponent.getCodeArea()).getPainter().getPositionZone(x, y);
+
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
+
+        ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+        ActiveContextManagement contextManager = contextModule.createContextManager();
+
+        contextManager.changeActiveState(ContextComponent.class, dataComponent);
+        contextManager.changeActiveState(DialogParentComponent.class, () -> dataComponent.getCodeArea());
+        contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
+
+        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
+        menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
+        return popupMenu;
+    }
+
+    @Nonnull
+    public JPopupMenu createBinaryDocumentPopupMenu(final SectCodeArea codeArea, int x, int y) {
+        CodeAreaZone codeAreaZone = codeArea.getPainter().getPositionZone(x, y);
+
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
+
+        ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+        FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
+        ActiveContextManagement frameContextManager = frameModule.getFrameController().getContextManager();
+        ActiveContextManagement contextManager = contextModule.createChildContextManager(frameContextManager);
+        contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
+        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
+
         menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
         return popupMenu;
     }
@@ -550,6 +337,52 @@ public class BinedComponentModule implements Module {
                 }
 
                 JPopupMenu popupMenu = createCodeAreaPopupMenu(codeArea, clickedX, clickedY);
+                popupMenu.show(invoker, x, y);
+            }
+        };
+    }
+
+    @Nonnull
+    public JPopupMenu createBinaryComponentPopupMenu(BinEdDataComponent dataComponent) {
+        return new JPopupMenu() {
+            @Override
+            public void show(@Nonnull Component invoker, int x, int y) {
+                SectCodeArea codeArea;
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
+                    codeArea = (SectCodeArea) ((JViewport) invoker).getParent().getParent();
+                } else {
+                    codeArea = (SectCodeArea) invoker;
+                }
+
+                if (dataComponent.getCodeArea() == codeArea) {
+                    JPopupMenu popupMenu = createBinaryComponentPopupMenu(dataComponent, clickedX, clickedY);
+                    popupMenu.show(invoker, x, y);
+                }
+            }
+        };
+    }
+
+    @Nonnull
+    public JPopupMenu createBinaryDocumentPopupMenu() {
+        return new JPopupMenu() {
+            @Override
+            public void show(@Nonnull Component invoker, int x, int y) {
+                SectCodeArea codeArea;
+                int clickedX = x;
+                int clickedY = y;
+                if (invoker instanceof JViewport) {
+                    clickedX += invoker.getParent().getX();
+                    clickedY += invoker.getParent().getY();
+                    codeArea = (SectCodeArea) ((JViewport) invoker).getParent().getParent();
+                } else {
+                    codeArea = (SectCodeArea) invoker;
+                }
+
+                JPopupMenu popupMenu = createBinaryDocumentPopupMenu(codeArea, clickedX, clickedY);
                 popupMenu.show(invoker, x, y);
             }
         };
@@ -615,9 +448,5 @@ public class BinedComponentModule implements Module {
                 return SwingUtilities.getDeepestComponentAt(e.getComponent(), e.getX(), e.getY());
             }
         });
-    }
-
-    public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
-        getFileManager().setCommandHandlerProvider(commandHandlerProvider);
     }
 }

@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component;
+package org.exbin.bined.jaguif.document;
 
 /**
- * File processing mode.
+ * BinEd file processing mode.
  */
-public enum FileProcessingMode implements BinEdFileProcessingMode {
-    /**
-     * Direct access to stream of externally handled file.
-     */
-    DIRECT,
-    /**
-     * Whole file is loaded to memory.
-     */
-    MEMORY,
-    /**
-     * File is handled using delta changes.
-     */
-    DELTA;
+public interface BinEdFileProcessingMode {
 }

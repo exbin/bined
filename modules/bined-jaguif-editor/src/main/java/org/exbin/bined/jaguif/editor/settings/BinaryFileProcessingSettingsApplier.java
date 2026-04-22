@@ -19,7 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.context.api.ContextStateProvider;
@@ -40,8 +40,8 @@ public class BinaryFileProcessingSettingsApplier implements SettingsApplier {
         }
 
         BinaryFileProcessingOptions options = settingsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
-        BinedComponentModule binEdModule = App.getModule(BinedComponentModule.class);
+        BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
         // TODO: Move to BinaryFileProcessing
-        binEdModule.setInitialFileProcessing(options.getFileProcessingMode());
+        binedDocumentModule.setInitialFileProcessing(options.getFileProcessingMode());
     }
 }

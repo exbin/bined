@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.status.StatusCursorPositionFormat;
-import org.exbin.bined.jaguif.component.status.StatusDocumentSizeFormat;
+import org.exbin.bined.jaguif.component.status.StatusDataSizeFormat;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
@@ -68,7 +68,7 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
         cursorPositionCodeTypeComboBox.setSelectedIndex(cursorPositionFormat.getCodeType().ordinal());
         cursorPositionShowOffsetCheckBox.setSelected(cursorPositionFormat.isShowOffset());
 
-        StatusDocumentSizeFormat documentSizeFormat = options.getDocumentSizeFormat();
+        StatusDataSizeFormat documentSizeFormat = options.getDataSizeFormat();
         documentSizeCodeTypeComboBox.setSelectedIndex(documentSizeFormat.getCodeType().ordinal());
         cursorPositionShowOffsetCheckBox.setSelected(documentSizeFormat.isShowRelative());
 
@@ -85,10 +85,10 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
         cursorPositionFormat.setShowOffset(cursorPositionShowOffsetCheckBox.isSelected());
         options.setCursorPositionFormat(cursorPositionFormat);
 
-        StatusDocumentSizeFormat documentSizeFormat = new StatusDocumentSizeFormat();
+        StatusDataSizeFormat documentSizeFormat = new StatusDataSizeFormat();
         documentSizeFormat.setCodeType(PositionCodeType.values()[documentSizeCodeTypeComboBox.getSelectedIndex()]);
         documentSizeFormat.setShowRelative(cursorPositionShowOffsetCheckBox.isSelected());
-        options.setDocumentSizeFormat(documentSizeFormat);
+        options.setDataSizeFormat(documentSizeFormat);
 
         options.setOctalSpaceGroupSize((int) octalGroupSizeSpinner.getValue());
         options.setDecimalSpaceGroupSize((int) decimalGroupSizeSpinner.getValue());

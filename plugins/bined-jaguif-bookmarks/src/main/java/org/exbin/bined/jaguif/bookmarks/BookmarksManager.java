@@ -46,7 +46,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.document.BinEdFileManager;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.bookmarks.action.AddBookmarkAction;
 import org.exbin.bined.jaguif.bookmarks.action.EditBookmarkAction;
@@ -54,7 +54,8 @@ import org.exbin.bined.jaguif.bookmarks.action.ManageBookmarksAction;
 import org.exbin.bined.jaguif.bookmarks.gui.BookmarksManagerPanel;
 import org.exbin.bined.jaguif.bookmarks.model.BookmarkRecord;
 import org.exbin.bined.jaguif.bookmarks.settings.BookmarkOptions;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
@@ -92,15 +93,14 @@ public class BookmarksManager {
         editBookmarkAction.init(resourceBundle);
         manageBookmarksAction.init(resourceBundle);
 
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-
         OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
         OptionsStorage optionsStorage = optionsModule.getAppOptions();
         bookmarkOptions = new BookmarkOptions(optionsStorage);
         loadBookmarkRecords();
         updateBookmarksMenu();
         bookmarksPositionColorModifier = new BookmarksPositionColorModifier(bookmarkRecords);
-        BinEdFileManager fileManager = binedModule.getFileManager();
+        BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+        BinEdFileManager fileManager = binedDocumentModule.getFileManager();
         fileManager.addPainterColorModifier(bookmarksPositionColorModifier);
     }
 

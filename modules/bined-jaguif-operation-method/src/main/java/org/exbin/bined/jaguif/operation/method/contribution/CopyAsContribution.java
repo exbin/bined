@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.basic.BasicCodeAreaZone;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
 import org.exbin.bined.jaguif.operation.method.action.CopyAsAction;
 import org.exbin.jaguif.App;

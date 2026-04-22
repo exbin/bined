@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component.status.contribution;
+package org.exbin.bined.jaguif.document.status.contribution;
 
 import javax.annotation.Nonnull;
-import org.exbin.bined.jaguif.component.status.gui.BinaryProcessingModeComponent;
+import org.exbin.bined.jaguif.document.status.gui.BinaryDocumentSizeComponent;
 import org.exbin.jaguif.statusbar.api.ComponentStatusBarContribution;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 
 /**
- * Binary data processing mode status contribution.
+ * Binary data document size status contribution.
  */
-public class BinaryProcessingModeStatusContrib implements ComponentStatusBarContribution {
+public class BinaryDocumentSizeStatusContrib implements ComponentStatusBarContribution {
 
-    public static final String CONTRIBUTION_ID = "binaryProcessingMode";
+    public static final String CONTRIBUTION_ID = "binaryDataSize";
 
     @Nonnull
     @Override
     public StatusBarComponent createComponent() {
-        return new BinaryProcessingModeComponent();
+        return new BinaryDocumentSizeComponent();
     }
 
     @Nonnull

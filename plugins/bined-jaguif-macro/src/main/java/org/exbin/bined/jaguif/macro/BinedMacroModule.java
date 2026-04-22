@@ -29,6 +29,7 @@ import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.ClipboardCodeActions;
 import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
 import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.bined.jaguif.macro.operation.MacroStep;
 import org.exbin.bined.jaguif.macro.settings.MacroOptions;
@@ -64,9 +65,10 @@ public class BinedMacroModule implements PluginModule {
             registerMacrosPopupMenuActions();
             registerSettings();
 
-            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-            binedModule.registerCodeAreaCommandHandlerProvider((codeArea, undoRedo) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoRedo) undoRedo));
-            ClipboardCodeActions clipboardCodeActions = binedModule.getClipboardCodeActions();
+            BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+            BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+            binedDocumentModule.registerCodeAreaCommandHandlerProvider((codeArea, undoRedo) -> new CodeAreaMacroCommandHandler(codeArea, (BinaryDataUndoRedo) undoRedo));
+            ClipboardCodeActions clipboardCodeActions = binedComponentModule.getClipboardCodeActions();
             clipboardCodeActions.setCopyAsCodeMethod(new ClipboardCodeActions.ActionMethod() {
                 @Override
                 public void performAction(CodeAreaCore codeArea) {
@@ -132,17 +134,9 @@ public class BinedMacroModule implements PluginModule {
     @Nonnull
     public MacroManager getMacroManager() {
         if (macroManager == null) {
-            ensureSetup();
-
             macroManager = new MacroManager();
             macroManager.init();
         }
         return macroManager;
-    }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 }

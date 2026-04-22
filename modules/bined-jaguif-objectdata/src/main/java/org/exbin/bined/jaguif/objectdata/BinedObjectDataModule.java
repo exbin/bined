@@ -45,10 +45,4 @@ public class BinedObjectDataModule implements Module {
 
         return resourceBundle;
     }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
 }

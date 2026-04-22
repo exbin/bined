@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.jaguif.component.status.StatusCursorPositionFormat;
-import org.exbin.bined.jaguif.component.status.StatusDocumentSizeFormat;
+import org.exbin.bined.jaguif.component.status.StatusDataSizeFormat;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
@@ -37,8 +37,8 @@ public class CodeAreaStatusOptions implements SettingsOptions {
 
     public static final String KEY_CURSOR_POSITION_CODE_TYPE = "statusCursorPositionFormat";
     public static final String KEY_CURSOR_POSITION_SHOW_OFFSET = "statusCursorShowOffset";
-    public static final String KEY_DOCUMENT_SIZE_CODE_TYPE = "statusDocumentSizeFormat";
-    public static final String KEY_DOCUMENT_SIZE_SHOW_RELATIVE = "statusDocumentShowRelative";
+    public static final String KEY_DATA_SIZE_CODE_TYPE = "statusDocumentSizeFormat";
+    public static final String KEY_DATA_SIZE_SHOW_RELATIVE = "statusDocumentShowRelative";
     public static final String KEY_OCTAL_SPACE_GROUP_SIZE = "statusOctalSpaceGroupSize";
     public static final String KEY_DECIMAL_SPACE_GROUP_SIZE = "statusDecimalSpaceGroupSize";
     public static final String KEY_HEXADECIMAL_SPACE_GROUP_SIZE = "statusHexadecimalSpaceGroupSize";
@@ -73,26 +73,26 @@ public class CodeAreaStatusOptions implements SettingsOptions {
     }
 
     @Nonnull
-    public PositionCodeType getDocumentSizeCodeType() {
+    public PositionCodeType getDataSizeCodeType() {
         PositionCodeType defaultCodeType = PositionCodeType.DECIMAL;
         try {
-            return PositionCodeType.valueOf(storage.get(KEY_DOCUMENT_SIZE_CODE_TYPE, defaultCodeType.name()));
+            return PositionCodeType.valueOf(storage.get(KEY_DATA_SIZE_CODE_TYPE, defaultCodeType.name()));
         } catch (Exception ex) {
             Logger.getLogger(CodeAreaStatusOptions.class.getName()).log(Level.SEVERE, null, ex);
             return defaultCodeType;
         }
     }
 
-    public void setDocumentSizeCodeType(PositionCodeType statusDocumentSizeCodeType) {
-        storage.put(KEY_DOCUMENT_SIZE_CODE_TYPE, statusDocumentSizeCodeType.name());
+    public void setDataSizeCodeType(PositionCodeType statusDataSizeCodeType) {
+        storage.put(KEY_DATA_SIZE_CODE_TYPE, statusDataSizeCodeType.name());
     }
 
-    public boolean isDocumentSizeShowRelative() {
-        return storage.getBoolean(KEY_DOCUMENT_SIZE_SHOW_RELATIVE, true);
+    public boolean isDataSizeShowRelative() {
+        return storage.getBoolean(KEY_DATA_SIZE_SHOW_RELATIVE, true);
     }
 
-    public void setDocumentSizeShowRelative(boolean statusDocumentSizeShowRelative) {
-        storage.putBoolean(KEY_DOCUMENT_SIZE_SHOW_RELATIVE, statusDocumentSizeShowRelative);
+    public void setDataSizeShowRelative(boolean statusDataSizeShowRelative) {
+        storage.putBoolean(KEY_DATA_SIZE_SHOW_RELATIVE, statusDataSizeShowRelative);
     }
 
     @Nonnull
@@ -101,8 +101,8 @@ public class CodeAreaStatusOptions implements SettingsOptions {
     }
 
     @Nonnull
-    public StatusDocumentSizeFormat getDocumentSizeFormat() {
-        return new StatusDocumentSizeFormat(getDocumentSizeCodeType(), isDocumentSizeShowRelative());
+    public StatusDataSizeFormat getDataSizeFormat() {
+        return new StatusDataSizeFormat(getDataSizeCodeType(), isDataSizeShowRelative());
     }
 
     public void setCursorPositionFormat(StatusCursorPositionFormat cursorPositionFormat) {
@@ -110,9 +110,9 @@ public class CodeAreaStatusOptions implements SettingsOptions {
         setCursorShowOffset(cursorPositionFormat.isShowOffset());
     }
 
-    public void setDocumentSizeFormat(StatusDocumentSizeFormat documentSizeFormat) {
-        setDocumentSizeCodeType(documentSizeFormat.getCodeType());
-        setDocumentSizeShowRelative(documentSizeFormat.isShowRelative());
+    public void setDataSizeFormat(StatusDataSizeFormat dataSizeFormat) {
+        setDataSizeCodeType(dataSizeFormat.getCodeType());
+        setDataSizeShowRelative(dataSizeFormat.isShowRelative());
     }
 
     public int getOctalSpaceGroupSize() {
@@ -145,8 +145,8 @@ public class CodeAreaStatusOptions implements SettingsOptions {
         with.setCursorPositionCodeType(getCursorPositionCodeType());
         with.setCursorShowOffset(isCursorShowOffset());
         with.setDecimalSpaceGroupSize(getDecimalSpaceGroupSize());
-        with.setDocumentSizeCodeType(getDocumentSizeCodeType());
-        with.setDocumentSizeShowRelative(isDocumentSizeShowRelative());
+        with.setDataSizeCodeType(getDataSizeCodeType());
+        with.setDataSizeShowRelative(isDataSizeShowRelative());
         with.setHexadecimalSpaceGroupSize(getHexadecimalSpaceGroupSize());
         with.setOctalSpaceGroupSize(getOctalSpaceGroupSize());
     }

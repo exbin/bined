@@ -37,10 +37,11 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.bined.jaguif.component.BinEdFileManager;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinEdFileManager;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.viewer.contribution.RowWrappingContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowHeaderContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowRowPositionContribution;
@@ -134,12 +135,6 @@ public class BinedViewerModule implements Module {
         return resourceBundle;
     }
 
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
-
     public void registerFrameStatusBar() {
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
@@ -229,42 +224,37 @@ public class BinedViewerModule implements Module {
 
     @Nonnull
     private AbstractAction createShowHeaderAction() {
-        ensureSetup();
         ShowHeaderAction showHeaderAction = new ShowHeaderAction();
-        showHeaderAction.init(resourceBundle);
+        showHeaderAction.init(getResourceBundle());
         return showHeaderAction;
     }
 
     @Nonnull
     private AbstractAction createShowRowPositionAction() {
-        ensureSetup();
         ShowRowPositionAction showRowPositionAction = new ShowRowPositionAction();
-        showRowPositionAction.init(resourceBundle);
+        showRowPositionAction.init(getResourceBundle());
         return showRowPositionAction;
     }
 
     @Nonnull
     public RowWrappingAction createRowWrappingAction() {
-        ensureSetup();
         RowWrappingAction rowWrappingAction = new RowWrappingAction();
-        rowWrappingAction.init(resourceBundle);
+        rowWrappingAction.init(getResourceBundle());
         return rowWrappingAction;
     }
 
     @Nonnull
     public TextFontAction createCodeAreaFontAction() {
-        ensureSetup();
         TextFontAction textFontAction = new TextFontAction();
-        textFontAction.init(resourceBundle);
+        textFontAction.init(getResourceBundle());
         return textFontAction;
     }
 
     @Nonnull
     public EncodingsManager getEncodingsManager() {
         if (encodingsManager == null) {
-            ensureSetup();
-            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-            BinEdFileManager fileManager = binedModule.getFileManager();
+            BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+            BinEdFileManager fileManager = binedDocumentModule.getFileManager();
             encodingsManager = new EncodingsManager();
             // TODO fileManager.updateTextEncodingStatus(encodingsManager);
             encodingsManager.init();
@@ -276,9 +266,8 @@ public class BinedViewerModule implements Module {
     @Nonnull
     public CodeAreaViewModeActions getViewModeActions() {
         if (viewModeActions == null) {
-            ensureSetup();
             viewModeActions = new CodeAreaViewModeActions();
-            viewModeActions.init(resourceBundle);
+            viewModeActions.init(getResourceBundle());
         }
 
         return viewModeActions;
@@ -287,9 +276,8 @@ public class BinedViewerModule implements Module {
     @Nonnull
     public CodeTypeActions getCodeTypeActions() {
         if (codeTypeActions == null) {
-            ensureSetup();
             codeTypeActions = new CodeTypeActions();
-            codeTypeActions.init(resourceBundle);
+            codeTypeActions.init(getResourceBundle());
         }
 
         return codeTypeActions;
@@ -298,9 +286,8 @@ public class BinedViewerModule implements Module {
     @Nonnull
     public PositionCodeTypeActions getPositionCodeTypeActions() {
         if (positionCodeTypeActions == null) {
-            ensureSetup();
             positionCodeTypeActions = new PositionCodeTypeActions();
-            positionCodeTypeActions.init(resourceBundle);
+            positionCodeTypeActions.init(getResourceBundle());
         }
 
         return positionCodeTypeActions;
@@ -309,9 +296,8 @@ public class BinedViewerModule implements Module {
     @Nonnull
     public HexCharactersCaseActions getHexCharactersCaseActions() {
         if (hexCharactersCaseActions == null) {
-            ensureSetup();
             hexCharactersCaseActions = new HexCharactersCaseActions();
-            hexCharactersCaseActions.init(resourceBundle);
+            hexCharactersCaseActions.init(getResourceBundle());
         }
 
         return hexCharactersCaseActions;

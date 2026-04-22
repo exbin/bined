@@ -71,12 +71,6 @@ public class BinedEditorModule implements Module {
         return resourceBundle;
     }
 
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
-
     public void registerSettings() {
         getResourceBundle();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
@@ -109,25 +103,22 @@ public class BinedEditorModule implements Module {
 
     @Nonnull
     public EditSelectionAction createEditSelectionAction() {
-        ensureSetup();
         EditSelectionAction editSelectionAction = new EditSelectionAction();
-        editSelectionAction.init(resourceBundle);
+        editSelectionAction.init(getResourceBundle());
         return editSelectionAction;
     }
 
     @Nonnull
     public PropertiesAction createPropertiesAction() {
-        ensureSetup();
         PropertiesAction propertiesAction = new PropertiesAction();
-        propertiesAction.init(resourceBundle);
+        propertiesAction.init(getResourceBundle());
         return propertiesAction;
     }
 
     @Nonnull
     private ReloadFileAction createReloadFileAction() {
-        ensureSetup();
         ReloadFileAction reloadFileAction = new ReloadFileAction();
-        reloadFileAction.init(resourceBundle);
+        reloadFileAction.init(getResourceBundle());
         return reloadFileAction;
     }
 

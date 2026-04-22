@@ -71,15 +71,8 @@ public class BinedCompareModule implements PluginModule {
 
     @Nonnull
     public AbstractAction createCompareFilesAction() {
-        ensureSetup();
         CompareFilesAction compareFilesAction = new CompareFilesAction();
-        compareFilesAction.init(resourceBundle);
+        compareFilesAction.init(getResourceBundle());
         return compareFilesAction;
-    }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 }

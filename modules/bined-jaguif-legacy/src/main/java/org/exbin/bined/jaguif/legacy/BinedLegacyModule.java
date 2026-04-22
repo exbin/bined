@@ -31,7 +31,7 @@ import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.bined.jaguif.component.FileProcessingMode;
+import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingOptions;
 import org.exbin.bined.jaguif.legacy.settings.BinedLegacyOptions;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorOptions;
@@ -76,12 +76,6 @@ public class BinedLegacyModule implements Module {
         return resourceBundle;
     }
     
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
-
     public void importLegacySettings() {
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();

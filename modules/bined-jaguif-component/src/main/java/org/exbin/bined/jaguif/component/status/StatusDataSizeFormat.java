@@ -21,18 +21,18 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.bined.PositionCodeType;
 
 /**
- * Document size format for status.
+ * Data size format for status.
  */
 @ParametersAreNonnullByDefault
-public class StatusDocumentSizeFormat {
+public class StatusDataSizeFormat {
 
     private PositionCodeType positionCodeType = PositionCodeType.DECIMAL;
     private boolean showRelative = true;
 
-    public StatusDocumentSizeFormat() {
+    public StatusDataSizeFormat() {
     }
 
-    public StatusDocumentSizeFormat(PositionCodeType positionCodeType, boolean showRelative) {
+    public StatusDataSizeFormat(PositionCodeType positionCodeType, boolean showRelative) {
         this.positionCodeType = positionCodeType;
         this.showRelative = showRelative;
     }

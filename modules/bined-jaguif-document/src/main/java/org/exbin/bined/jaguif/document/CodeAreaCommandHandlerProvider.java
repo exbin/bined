@@ -13,10 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component;
+package org.exbin.bined.jaguif.document;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
+import org.exbin.bined.swing.CodeAreaCore;
 
 /**
- * BinEd file processing mode.
+ * Provider for code area command handler.
  */
-public interface BinEdFileProcessingMode {
+@ParametersAreNonnullByDefault
+public interface CodeAreaCommandHandlerProvider {
+
+    @Nonnull
+    CodeAreaOperationCommandHandler createCommandHandler(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoHandler);
 }

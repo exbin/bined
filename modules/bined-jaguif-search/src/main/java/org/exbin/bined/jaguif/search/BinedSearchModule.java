@@ -25,9 +25,10 @@ import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.toolbar.api.ToolBarDefinitionManagement;
-import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.document.BinEdFileManager;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.search.action.FindReplaceActions;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -56,7 +57,7 @@ public class BinedSearchModule implements Module {
     }
 
     public void registerSearchComponent() {
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+        BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
         BinEdFileManager fileManager = binedModule.getFileManager();
         fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new DefaultBinEdComponentSearch()));
     }
@@ -64,9 +65,8 @@ public class BinedSearchModule implements Module {
     @Nonnull
     public FindReplaceActions getFindReplaceActions() {
         if (findReplaceActions == null) {
-            ensureSetup();
             findReplaceActions = new FindReplaceActions();
-            findReplaceActions.init(resourceBundle);
+            findReplaceActions.init(getResourceBundle());
         }
 
         return findReplaceActions;
@@ -191,11 +191,5 @@ public class BinedSearchModule implements Module {
         }
 
         return resourceBundle;
-    }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 }

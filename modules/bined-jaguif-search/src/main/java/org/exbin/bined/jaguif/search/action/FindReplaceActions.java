@@ -32,7 +32,7 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.search.BinEdComponentSearch;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.jaguif.context.api.ContextStateProvider;

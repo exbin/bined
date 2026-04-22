@@ -25,14 +25,14 @@ import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
-import org.exbin.bined.jaguif.component.status.StatusDocumentSizeFormat;
+import org.exbin.bined.jaguif.component.status.StatusDataSizeFormat;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.StateUpdateType;
-import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
@@ -40,23 +40,23 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
  * BinEd edit mode status component.
  */
 @ParametersAreNonnullByDefault
-public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
+public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     protected static final String BR_TAG = "<br>";
 
     protected final JLabel component;
-    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryDocumentSizeComponent.class);
+    protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryDataSizeComponent.class);
 
     private int octalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
     private int decimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
     private int hexadecimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
-    protected StatusDocumentSizeFormat documentSizeFormat = new StatusDocumentSizeFormat();
+    protected StatusDataSizeFormat dataSizeFormat = new StatusDataSizeFormat();
 
-    protected long documentSize;
-    protected long documentOriginalSize;
+    protected long dataSize;
+    protected long originalDataSize = 0;
     protected SelectionRange selectionRange;
 
-    public BinaryDocumentSizeComponent() {
+    public BinaryDataSizeComponent() {
         component = new JLabel();
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -66,24 +66,23 @@ public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextDocument.class, (ContextDocument instance) -> {
-                    if (instance instanceof BinaryFileDocument) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
+                    if (instance instanceof BinEdDataComponent) {
+                        updateForComponent((BinEdDataComponent) instance);
                     } else {
                         clear();
                     }
                 });
-                registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.DATA_CHANGED || updateType == BinaryFileDocument.UpdateType.SELECTION_CHANGED)) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
+                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.DATA_CHANGED || updateType == BinEdDataComponent.UpdateType.SELECTION_CHANGED)) {
+                        updateForComponent((BinEdDataComponent) instance);
                     }
                 });
             }
 
-            private void updateForDocument(BinaryFileDocument document) {
-                documentSize = document.getBinaryData().getDataSize();
-                documentOriginalSize = document.getDocumentOriginalSize();
-                selectionRange = ((SelectionCapable) document.getCodeArea()).getSelection();
+            private void updateForComponent(BinEdDataComponent component) {
+                dataSize = component.getCodeArea().getDataSize();
+                selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
                 update();
             }
         });
@@ -95,33 +94,36 @@ public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
         return component;
     }
 
-    private void update() {
-        updateDocumentSize();
-        updateDocumentSizeToolTip();
+    public void setOriginalDataSize(long originalDataSize) {
+        this.originalDataSize = originalDataSize;
     }
 
-    private void clear() {
+    protected void update() {
+        updateDataSize();
+        updateDataSizeToolTip();
+    }
+
+    protected void clear() {
         component.setText("-");
-        component.setToolTipText(resourceBundle.getString("documentSizeLabel.toolTipText"));
+        component.setToolTipText(resourceBundle.getString("dataSizeLabel.toolTipText"));
     }
 
-    private void updateDocumentSize() {
-        if (documentSize == -1) {
-            component.setText(documentSizeFormat.isShowRelative() ? "0 (0)" : "0");
+    private void updateDataSize() {
+        if (dataSize == -1) {
+            component.setText(dataSizeFormat.isShowRelative() ? "0 (0)" : "0");
         } else {
             StringBuilder labelBuilder = new StringBuilder();
             if (selectionRange != null && !selectionRange.isEmpty()) {
-                labelBuilder.append(String.format(
-                        resourceBundle.getString("documentSize.text"),
-                        numberToPosition(selectionRange.getLength(), documentSizeFormat.getCodeType()),
-                        numberToPosition(documentSize, documentSizeFormat.getCodeType())
+                labelBuilder.append(String.format(resourceBundle.getString("dataSize.text"),
+                        numberToPosition(selectionRange.getLength(), dataSizeFormat.getCodeType()),
+                        numberToPosition(dataSize, dataSizeFormat.getCodeType())
                 ));
             } else {
-                labelBuilder.append(numberToPosition(documentSize, documentSizeFormat.getCodeType()));
-                if (documentSizeFormat.isShowRelative()) {
-                    long difference = documentSize - documentOriginalSize;
+                labelBuilder.append(numberToPosition(dataSize, dataSizeFormat.getCodeType()));
+                if (dataSizeFormat.isShowRelative()) {
+                    long difference = dataSize - originalDataSize;
                     labelBuilder.append(difference > 0 ? " (+" : " (");
-                    labelBuilder.append(numberToPosition(difference, documentSizeFormat.getCodeType()));
+                    labelBuilder.append(numberToPosition(difference, dataSizeFormat.getCodeType()));
                     labelBuilder.append(")");
 
                 }
@@ -131,7 +133,7 @@ public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
         }
     }
 
-    private void updateDocumentSizeToolTip() {
+    private void updateDataSizeToolTip() {
         String octalPrefix = resourceBundle.getString("codeType.octal") + ": ";
         String decimalPrefix = resourceBundle.getString("codeType.decimal") + ": ";
         String hexadecimalPrefix = resourceBundle.getString("codeType.hexadecimal") + ": ";
@@ -147,10 +149,10 @@ public class BinaryDocumentSizeComponent extends AbstractStatusBarComponent {
             builder.append(BR_TAG);
         }
 
-        builder.append(resourceBundle.getString("documentSizeLabel.toolTipText")).append(BR_TAG);
-        builder.append(octalPrefix).append(numberToPosition(documentSize, PositionCodeType.OCTAL)).append(BR_TAG);
-        builder.append(decimalPrefix).append(numberToPosition(documentSize, PositionCodeType.DECIMAL)).append(BR_TAG);
-        builder.append(hexadecimalPrefix).append(numberToPosition(documentSize, PositionCodeType.HEXADECIMAL));
+        builder.append(resourceBundle.getString("dataSizeLabel.toolTipText")).append(BR_TAG);
+        builder.append(octalPrefix).append(numberToPosition(dataSize, PositionCodeType.OCTAL)).append(BR_TAG);
+        builder.append(decimalPrefix).append(numberToPosition(dataSize, PositionCodeType.DECIMAL)).append(BR_TAG);
+        builder.append(hexadecimalPrefix).append(numberToPosition(dataSize, PositionCodeType.HEXADECIMAL));
         builder.append("</body></html>");
 
         component.setToolTipText(builder.toString());

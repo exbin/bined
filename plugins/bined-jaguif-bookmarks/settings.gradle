@@ -2,6 +2,7 @@ rootProject.name = 'bined-jaguif-bookmarks'
 
 if (rootProject.path == ':') {
     include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-document'
     include ':modules:bined-jaguif-search'
     include ':modules:bined-jaguif-theme'
 }

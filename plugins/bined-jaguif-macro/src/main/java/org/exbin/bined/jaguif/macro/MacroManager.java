@@ -46,7 +46,7 @@ import org.exbin.jaguif.context.api.ContextUpdateManagement;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.macro.action.AddMacroAction;
 import org.exbin.bined.jaguif.macro.action.EditMacroAction;

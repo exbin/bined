@@ -62,26 +62,18 @@ public class BinedToolContentModule implements PluginModule {
             registerDragDropContentMenu();
         });
     }
-    
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
 
     @Nonnull
     public ClipboardContentAction createClipboardContentAction() {
-        ensureSetup();
         ClipboardContentAction clipboardContentAction = new ClipboardContentAction();
-        clipboardContentAction.init(resourceBundle);
+        clipboardContentAction.init(getResourceBundle());
         return clipboardContentAction;
     }
 
     @Nonnull
     public DragDropContentAction createDragDropContentAction() {
-        ensureSetup();
         DragDropContentAction dragDropContentAction = new DragDropContentAction();
-        dragDropContentAction.init(resourceBundle);
+        dragDropContentAction.init(getResourceBundle());
         return dragDropContentAction;
     }
 

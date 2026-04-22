@@ -43,7 +43,7 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.BinaryDocument;
+import org.exbin.bined.jaguif.document.BinaryDocument;
 import org.exbin.jaguif.utils.ActionUtils;
 import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
 import org.exbin.bined.jaguif.operation.method.api.ConvertDataMethod;

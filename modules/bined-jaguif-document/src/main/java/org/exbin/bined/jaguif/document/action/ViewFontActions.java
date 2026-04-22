@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component.action;
+package org.exbin.bined.jaguif.document.action;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -31,8 +31,8 @@ import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.settings.CodeAreaFontSizeOptions;
+import org.exbin.bined.jaguif.document.BinaryDataComponent;
+import org.exbin.bined.jaguif.document.settings.CodeAreaFontSizeOptions;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
 

@@ -76,12 +76,6 @@ public class BinedInspectorTableModule implements PluginModule {
         return resourceBundle;
     }
 
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
-
     @Nonnull
     public Map<String, ValueRowType> getValueRowTypes() {
         return valueRowTypes;

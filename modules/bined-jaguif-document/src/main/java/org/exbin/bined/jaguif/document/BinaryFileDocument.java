@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component;
+package org.exbin.bined.jaguif.document;
 
 import java.awt.Component;
 import java.io.File;
@@ -36,19 +36,16 @@ import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
-import org.exbin.bined.CodeAreaCaretPosition;
-import org.exbin.bined.EditMode;
-import org.exbin.bined.EditOperation;
+import org.exbin.bined.jaguif.component.BinEdComponentExtension;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
+import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
-import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextActivable;
-import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ComponentDocument;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.DocumentSource;
@@ -80,39 +77,10 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     public BinaryFileDocument() {
         dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
-        init();
     }
 
     public BinaryFileDocument(BinEdDataComponent dataComponent) {
         this.dataComponent = dataComponent;
-        init();
-    }
-
-    private void init() {
-        SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
-        codeArea.addDataChangedListener(() -> {
-            if (activeContextManagement != null) {
-                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.DATA_CHANGED);
-            }
-        });
-
-        codeArea.addSelectionChangedListener(() -> {
-            if (activeContextManagement != null) {
-                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.SELECTION_CHANGED);
-            }
-        });
-
-        codeArea.addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
-            if (activeContextManagement != null) {
-                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.CURSOR_MOVED);
-            }
-        });
-
-        codeArea.addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
-            if (activeContextManagement != null) {
-                activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.EDIT_MODE_CHANGED);
-            }
-        });
     }
 
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
@@ -263,7 +231,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
             BinaryData oldData = componentPanel.getContentData();
             if (fileProcessingMode == FileProcessingMode.DELTA) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
                 SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
                 FileDataSource openFileSource = new FileDataSource(file);
                 segmentsRepository.addDataSource(openFileSource);
@@ -330,7 +298,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
                 contentData = componentPanel.getContentData();
             }
             if (contentData instanceof DeltaDocument) {
-                BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
+                BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
                 SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
                 // TODO freezes window / replace with progress bar
                 DeltaDocument document = (DeltaDocument) contentData;
@@ -419,12 +387,5 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         }
 
         return FileProcessingMode.MEMORY;
-    }
-
-    public enum UpdateType implements StateUpdateType {
-        DATA_CHANGED,
-        SELECTION_CHANGED,
-        CURSOR_MOVED,
-        EDIT_MODE_CHANGED
     }
 }

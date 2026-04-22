@@ -55,7 +55,7 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setCommandHandler(commandHandler);
 
         BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
-        codeArea.setComponentPopupMenu(binedComponentModule.createCodeAreaPopupMenu());
+        codeArea.setComponentPopupMenu(binedComponentModule.createBinaryDocumentPopupMenu());
         add(codeArea);
     }
 

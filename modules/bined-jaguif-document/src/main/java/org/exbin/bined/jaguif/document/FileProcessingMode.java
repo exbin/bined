@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.component;
-
-import javax.annotation.Nonnull;
-import org.exbin.auxiliary.binary_data.BinaryData;
-import org.exbin.jaguif.document.api.ContextDocument;
-import org.exbin.jaguif.document.api.NamedDocument;
+package org.exbin.bined.jaguif.document;
 
 /**
- * Binary document.
+ * File processing mode.
  */
-public interface BinaryDocument extends ContextDocument, NamedDocument {
-
+public enum FileProcessingMode implements BinEdFileProcessingMode {
     /**
-     * Returns document binary data.
-     *
-     * @return binary data
+     * Direct access to stream of externally handled file.
      */
-    @Nonnull
-    BinaryData getBinaryData();
+    DIRECT,
+    /**
+     * Whole file is loaded to memory.
+     */
+    MEMORY,
+    /**
+     * File is handled using delta changes.
+     */
+    DELTA;
 }

@@ -35,7 +35,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.DialogParentComponent;
-import org.exbin.bined.jaguif.component.BinaryDocument;
+import org.exbin.bined.jaguif.document.BinaryDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.tool.content.StreamUtils;
 import org.exbin.bined.jaguif.tool.content.gui.ClipboardContentControlPanel;

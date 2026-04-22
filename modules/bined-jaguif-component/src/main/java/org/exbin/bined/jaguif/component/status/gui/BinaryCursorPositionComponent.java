@@ -29,14 +29,14 @@ import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.component.status.StatusCursorPositionFormat;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.StateUpdateType;
-import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
@@ -77,23 +77,23 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextDocument.class, (ContextDocument instance) -> {
-                    if (instance instanceof BinaryFileDocument) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
+                    if (instance instanceof BinEdDataComponent) {
+                        updateForComponent((BinEdDataComponent) instance);
                     } else {
                         clear();
                     }
                 });
-                registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.CURSOR_MOVED || updateType == BinaryFileDocument.UpdateType.SELECTION_CHANGED)) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
+                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.CURSOR_MOVED || updateType == BinEdDataComponent.UpdateType.SELECTION_CHANGED)) {
+                        updateForComponent((BinEdDataComponent) instance);
                     }
                 });
             }
 
-            private void updateForDocument(BinaryFileDocument document) {
-                caretPosition = ((CaretCapable) document.getCodeArea()).getActiveCaretPosition();
-                selectionRange = ((SelectionCapable) document.getCodeArea()).getSelection();
+            private void updateForComponent(BinEdDataComponent component) {
+                caretPosition = ((CaretCapable) component.getCodeArea()).getActiveCaretPosition();
+                selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
                 update();
             }
         });

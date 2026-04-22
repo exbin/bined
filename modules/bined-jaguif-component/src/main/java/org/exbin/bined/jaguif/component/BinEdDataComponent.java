@@ -23,12 +23,18 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
+import org.exbin.bined.EditMode;
+import org.exbin.bined.EditOperation;
 import org.exbin.bined.PositionCodeType;
+import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.CharsetCapable;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.capability.CodeTypeCapable;
+import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
@@ -44,6 +50,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.clipboard.TextClipboardController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.operation.undo.api.UndoRedoController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
@@ -54,7 +61,7 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.font.TextFontState;
 
 /**
- * Binary data binaryComponent.
+ * Binary data component.
  */
 @ParametersAreNonnullByDefault
 public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {
@@ -80,7 +87,30 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     }
     
     private void init() {
-        defaultFont = ((FontCapable) codeArea).getCodeFont();
+        defaultFont = ((SectCodeArea) codeArea).getCodeFont();
+        codeArea.addDataChangedListener(() -> {
+            if (contextManagement != null) {
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.DATA_CHANGED);
+            }
+        });
+
+        ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
+            if (contextManagement != null) {
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.SELECTION_CHANGED);
+            }
+        });
+
+        ((CaretCapable) codeArea).addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
+            if (contextManagement != null) {
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.CURSOR_MOVED);
+            }
+        });
+
+        ((EditModeCapable) codeArea).addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
+            if (contextManagement != null) {
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE_CHANGED);
+            }
+        });
     }
     
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
@@ -333,5 +363,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
 
         throw new IllegalStateException("Missing extension: " + clazz.toString());
+    }
+
+    public enum UpdateType implements StateUpdateType {
+        DATA_CHANGED,
+        SELECTION_CHANGED,
+        CURSOR_MOVED,
+        EDIT_MODE_CHANGED
     }
 }

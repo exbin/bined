@@ -45,9 +45,10 @@ import org.exbin.jaguif.addon.catalog.AddonCatalogModule;
 import org.exbin.jaguif.addon.manager.AddonManagerModule;
 import org.exbin.jaguif.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.jaguif.addon.update.api.AddonUpdateModuleApi;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
-import org.exbin.bined.jaguif.component.FileProcessingMode;
+import org.exbin.bined.jaguif.document.FileProcessingMode;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.inspector.BinedInspectorModule;
 import org.exbin.jaguif.document.settings.StartupOptions;
@@ -158,8 +159,8 @@ public class BinedLauncherModule implements LauncherModule {
             final UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
             themeModule.registerThemeInit();
 
-            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-            binedModule.registerDocument();
+            BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+            binedDocumentModule.registerDocument();
 
             uiModule.initSwingUi();
 
@@ -287,22 +288,22 @@ public class BinedLauncherModule implements LauncherModule {
             optionsSettingsModule.registerMenuAction();
 
             binedViewerModule.registerCodeTypeToolBarActions();
-            binedModule.registerShowNonprintablesToolBarActions();
+            binedComponentModule.registerShowNonprintablesToolBarActions();
 //                binedModule.registerEditFindToolBarActions();
-            binedModule.registerViewNonprintablesMenuActions();
-            binedModule.registerViewZoomMenuActions();
+            binedComponentModule.registerViewNonprintablesMenuActions();
+            binedDocumentModule.registerViewZoomMenuActions();
             binedInspectorModule.registerBasicInspector();
             binedInspectorModule.registerShowParsingPanelMenuActions();
             binedInspectorModule.registerShowParsingPanelPopupMenuActions();
             binedViewerModule.registerToolsOptionsMenuActions();
             binedEditorModule.registerEditSelectionAction();
-            binedModule.registerClipboardCodeActions();
+            binedComponentModule.registerClipboardCodeActions();
             binedViewerModule.registerEncodings();
-            binedModule.registerGoToPosition();
+            binedComponentModule.registerGoToPosition();
             binedSearchModule.registerEditFindMenuActions();
             binedOperationMethodModule.registerBlockEditActions();
 
-            binedModule.registerCodeAreaPopupMenu();
+            binedComponentModule.registerCodeAreaPopupMenu();
             binedViewerModule.registerCodeAreaPopupMenu();
             binedEditorModule.registerCodeAreaPopupMenu();
             binedSearchModule.registerEditFindPopupMenuActions();
@@ -321,7 +322,7 @@ public class BinedLauncherModule implements LauncherModule {
 //                UndoHandlerWrapper undoHandlerWrapper = new UndoHandlerWrapper();
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
-            binedComponentModule.registerStatusBar();
+            binedDocumentModule.registerStatusBar();
             binedViewerModule.registerFrameStatusBar();
 
             if (demoMode) {
@@ -382,7 +383,7 @@ public class BinedLauncherModule implements LauncherModule {
                         break;
                     case NEW_FILE:
                         // Start with a single new file
-                        binedModule.start();
+                        binedDocumentModule.start();
                         break;
                     case REOPEN_SESSION:
                         // Reopen last session files (only in multi-file mode)
@@ -390,9 +391,9 @@ public class BinedLauncherModule implements LauncherModule {
                             List<URI> sessionFiles = startupOptions.getLastSessionFiles();
                             if (sessionFiles.isEmpty()) {
                                 // No session files, fallback to new file
-                                binedModule.start();
+                                binedDocumentModule.start();
                             } else {
-                                binedModule.start();
+                                binedDocumentModule.start();
                                 // Load session files
                                 for (URI fileUri : sessionFiles) {
                                     try {
@@ -405,12 +406,12 @@ public class BinedLauncherModule implements LauncherModule {
                             }
                         } else {
                             // Single file mode, fallback to new file
-                            binedModule.start();
+                            binedDocumentModule.start();
                         }
                         break;
                 }
             } else {
-                binedModule.startWithFile(filePath);
+                binedDocumentModule.startWithFile(filePath);
             }
 
             // loadSampleFile();

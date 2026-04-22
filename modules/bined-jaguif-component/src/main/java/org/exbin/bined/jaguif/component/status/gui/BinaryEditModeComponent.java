@@ -24,12 +24,12 @@ import javax.swing.JLabel;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.StateUpdateType;
-import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
@@ -72,23 +72,23 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextDocument.class, (ContextDocument instance) -> {
-                    if (instance instanceof BinaryFileDocument) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
+                    if (instance instanceof BinEdDataComponent) {
+                        updateForComponent((BinEdDataComponent) instance);
                     } else {
                         clear();
                     }
                 });
-                registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.EDIT_MODE_CHANGED)) {
-                        updateForDocument((BinaryFileDocument) instance);
+                registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
+                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.EDIT_MODE_CHANGED)) {
+                        updateForComponent((BinEdDataComponent) instance);
                     }
                 });
             }
 
-            private void updateForDocument(BinaryFileDocument document) {
-                editMode = ((EditModeCapable) document.getCodeArea()).getEditMode();
-                editOperation = ((EditModeCapable) document.getCodeArea()).getActiveOperation();
+            private void updateForComponent(BinEdDataComponent component) {
+                editMode = ((EditModeCapable) component.getCodeArea()).getEditMode();
+                editOperation = ((EditModeCapable) component.getCodeArea()).getActiveOperation();
                 update();
             }
         });

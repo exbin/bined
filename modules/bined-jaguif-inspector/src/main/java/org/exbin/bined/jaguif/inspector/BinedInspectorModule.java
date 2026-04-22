@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.Action;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.basic.BasicCodeAreaZone;
 import org.exbin.jaguif.App;
@@ -29,10 +30,11 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.bined.jaguif.component.BinEdFileManager;
-import org.exbin.bined.jaguif.component.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.BinEdFileManager;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.inspector.action.ShowParsingPanelAction;
 import org.exbin.bined.jaguif.inspector.contribution.ShowParsingPanelContribution;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorOptions;
@@ -82,27 +84,20 @@ public class BinedInspectorModule implements Module {
         return resourceBundle;
     }
 
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
-    }
-
     public void registerBasicInspector() {
         BinEdInspectorManager inspectorManager = getBinEdInspectorManager();
         inspectorManager.addInspector(new BasicValuesInspectorProvider(getResourceBundle()));
         basicValuesColorModifier = new BasicValuesPositionColorModifier();
-        BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-        BinEdFileManager fileManager = binedModule.getFileManager();
+        BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+        BinEdFileManager fileManager = binedDocumentModule.getFileManager();
         fileManager.addPainterColorModifier(basicValuesColorModifier);
         fileManager.addBinEdComponentExtension(new BinEdInspectorFileExtension());
     }
 
     @Nonnull
     public ShowParsingPanelAction createShowParsingPanelAction() {
-        ensureSetup();
         ShowParsingPanelAction showParsingPanelAction = new ShowParsingPanelAction();
-        showParsingPanelAction.init(resourceBundle);
+        showParsingPanelAction.init(getResourceBundle());
         showParsingPanelAction.putValue(ActionConsts.ACTION_MENU_CREATION, new ActionMenuCreation() {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
@@ -128,12 +123,24 @@ public class BinedInspectorModule implements Module {
     public void registerShowParsingPanelPopupMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        SequenceContribution contribution = new ShowParsingPanelContribution();
+        SequenceContribution contribution = new ShowParsingPanelContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return createShowParsingPanelAction();
+            }
+        };
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_VIEW_GROUP_ID));
 
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
-        contribution = new ShowParsingPanelContribution();
+        contribution = new ShowParsingPanelContribution() {
+            @Nonnull
+            @Override
+            public Action createAction() {
+                return createShowParsingPanelAction();
+            }
+        };
         subMgmt.registerMenuContribution(contribution);
         subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }

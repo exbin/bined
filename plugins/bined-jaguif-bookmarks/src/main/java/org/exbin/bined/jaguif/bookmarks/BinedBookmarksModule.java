@@ -25,11 +25,12 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.PluginModule;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
-import org.exbin.bined.jaguif.component.BinEdFileManager;
+import org.exbin.bined.jaguif.document.BinEdFileManager;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.bookmarks.settings.BookmarkOptions;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -71,8 +72,8 @@ public class BinedBookmarksModule implements PluginModule {
             
             registerSettings();
 
-            BinedComponentModule binedModule = App.getModule(BinedComponentModule.class);
-            BinEdFileManager fileManager = binedModule.getFileManager();
+            BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+            BinEdFileManager fileManager = binedDocumentModule.getFileManager();
             // TODO Rework to use different approach than extension
             fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
                 @Nonnull
@@ -117,17 +118,9 @@ public class BinedBookmarksModule implements PluginModule {
     @Nonnull
     public BookmarksManager getBookmarksManager() {
         if (bookmarksManager == null) {
-            ensureSetup();
-
             bookmarksManager = new BookmarksManager();
             bookmarksManager.init();
         }
         return bookmarksManager;
-    }
-
-    private void ensureSetup() {
-        if (resourceBundle == null) {
-            getResourceBundle();
-        }
     }
 }

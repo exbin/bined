@@ -2,6 +2,7 @@ rootProject.name = 'bined-jaguif-launcher'
 
 if (rootProject.path == ':') {
     include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-document'
     include ':modules:bined-jaguif-inspector'
     include ':modules:bined-jaguif-objectdata'
     include ':modules:bined-jaguif-operation-method'
