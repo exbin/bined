@@ -20,14 +20,13 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Table model for color profile panel.
  */
-@ParametersAreNonnullByDefault
 public class ColorCellTableRenderer implements TableCellRenderer {
 
     public ColorCellTableRenderer() {
@@ -35,7 +34,11 @@ public class ColorCellTableRenderer implements TableCellRenderer {
 
     @Nonnull
     @Override
-    public Component getTableCellRendererComponent(JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (table == null) {
+            return new DefaultTableCellRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
+
         return new ColorCellPanel(new ColorCellPanel.ColorHandler() {
             @Nullable
             @Override

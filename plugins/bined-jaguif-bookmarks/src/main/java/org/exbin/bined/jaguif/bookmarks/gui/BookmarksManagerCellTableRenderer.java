@@ -18,7 +18,7 @@ package org.exbin.bined.jaguif.bookmarks.gui;
 import java.awt.Color;
 import java.awt.Component;
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JTable;
@@ -28,7 +28,6 @@ import org.exbin.bined.jaguif.bookmarks.model.BookmarksTableModel;
 /**
  * Table model for color value.
  */
-@ParametersAreNonnullByDefault
 public class BookmarksManagerCellTableRenderer implements TableCellRenderer {
 
     public BookmarksManagerCellTableRenderer() {
@@ -36,11 +35,13 @@ public class BookmarksManagerCellTableRenderer implements TableCellRenderer {
 
     @Nonnull
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JPanel renderComponent = new JPanel();
         renderComponent.setBorder(new BevelBorder(1));
-        BookmarksTableModel model = (BookmarksTableModel) table.getModel();
-        renderComponent.setBackground((Color) model.getValueAt(row, column));
+        if (table != null) {
+            BookmarksTableModel model = (BookmarksTableModel) table.getModel();
+            renderComponent.setBackground((Color) model.getValueAt(row, column));
+        }
         return renderComponent;
     }
 }

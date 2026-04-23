@@ -135,9 +135,9 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
         updateNonprintables();
         updateCycleButtonState();
     }
-    
+
     public void setTargetComponent(JComponent component) {
-        
+
     }
 
     private void updateCycleButtonState() {
@@ -235,7 +235,6 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
     private void showNonprintablesToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showNonprintablesToggleButtonActionPerformed
         controller.setShowNonprintables(showNonprintablesToggleButton.isSelected());
     }//GEN-LAST:event_showNonprintablesToggleButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar.Separator separator1;

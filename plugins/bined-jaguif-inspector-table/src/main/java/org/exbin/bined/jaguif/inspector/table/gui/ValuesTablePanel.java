@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -69,10 +70,12 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         nameCellRenderer = new DefaultTableCellRenderer() {
             @Nonnull
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JComponent component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                PropertyTableItem tableItem = ((PropertyTableModel) table.getModel()).getRow(row);
-                component.setToolTipText("(" + tableItem.getTypeName() + ") " + tableItem.getValueName());
+                if (table != null) {
+                    PropertyTableItem tableItem = ((PropertyTableModel) table.getModel()).getRow(row);
+                    component.setToolTipText("(" + tableItem.getTypeName() + ") " + tableItem.getValueName());
+                }
                 return component;
             }
         };
@@ -85,7 +88,7 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         valuesTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Nonnull
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (component instanceof JComponent) {
                     ((JComponent) component).setBorder(noFocusBorder);

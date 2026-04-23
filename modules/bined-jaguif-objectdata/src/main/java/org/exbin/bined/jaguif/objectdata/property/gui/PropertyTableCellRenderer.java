@@ -17,16 +17,16 @@ package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import java.awt.Component;
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
  * Property Table Cell Renderer.
  */
-@ParametersAreNonnullByDefault
 public class PropertyTableCellRenderer implements TableCellRenderer {
 
     public PropertyTableCellRenderer() {
@@ -34,7 +34,11 @@ public class PropertyTableCellRenderer implements TableCellRenderer {
 
     @Nonnull
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (table == null || value == null) {
+            return new DefaultTableCellRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
+
         Object fieldValue = ((PropertyTableItem) value).asBasicType();
         if (fieldValue == null) {
             JComponent component = new JLabel("<null>");
