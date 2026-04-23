@@ -325,7 +325,7 @@ public class MacroManager {
                 });
             }
         });
-        MenuDefinitionManagement mgmt = menuModule.getMenuManager(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, BinedMacroModule.MODULE_ID);
         SequenceContribution contribution = mgmt.registerMenuItem(() -> {
             JMenu macrosPopupMenu = menuModule.getMenuBuilder().createMenu();
             macrosPopupMenu.setAction(macrosPopupMenuAction);

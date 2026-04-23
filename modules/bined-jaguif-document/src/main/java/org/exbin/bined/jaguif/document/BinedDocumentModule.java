@@ -160,7 +160,7 @@ public class BinedDocumentModule implements Module {
     public void registerViewZoomMenuActions() {
         getViewFontActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuManager(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SubSequenceContribution subContribution = mgmt.registerMenuItem(VIEW_FONT_SUB_MENU_ID, resourceBundle.getString("viewFontSubMenu.name"));
         mgmt.registerMenuRule(subContribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
 
@@ -219,7 +219,7 @@ public class BinedDocumentModule implements Module {
     public void registerStatusBar() {
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         statusBarModule.registerStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, MODULE_ID);
-        StatusBarDefinitionManagement statusBarManager = statusBarModule.getStatusBarManager(BinedComponentModule.BINARY_STATUS_BAR_ID, MODULE_ID);
+        StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarDefinition(BinedComponentModule.BINARY_STATUS_BAR_ID, MODULE_ID);
         statusBarManager.registerStatusBarContribution(new BinaryEncodingStatusContrib());
         statusBarManager.registerStatusBarContribution(new BinaryDocumentSizeStatusContrib());
         statusBarManager.registerStatusBarContribution(new BinaryCursorPositionStatusContrib());

@@ -75,6 +75,8 @@ dependencies {
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-window')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-context')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-context-api')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-contribution')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-contribution-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-action')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-action-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-menu')

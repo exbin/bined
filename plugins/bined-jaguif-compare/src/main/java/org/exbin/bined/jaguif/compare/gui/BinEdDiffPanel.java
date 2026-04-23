@@ -122,7 +122,7 @@ public class BinEdDiffPanel extends JPanel {
         defaultColorProfile = leftCodeArea.getColorsProfile();
         toolbarPanel = new DiffToolbarPanel();
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
-        StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarManager();
+        StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarDefinition(BinedComponentModule.MODULE_ID);
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         ContextRegistration contextRegistrator = contextModule.createContextRegistrator();
         leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrator);
