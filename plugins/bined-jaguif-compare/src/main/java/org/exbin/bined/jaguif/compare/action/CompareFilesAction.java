@@ -133,7 +133,7 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
                 FileModuleApi fileModule = App.getModule(FileModuleApi.class);
                 FileDialogsProvider dialogsProvider = fileModule.getFileDialogsProvider();
                 OpenFileResult openFileResult = dialogsProvider.showOpenFileDialog(frameModule.getFrame(), new AllFileTypes(), null, null, null);
-                if (openFileResult.getDialogResult() != JFileChooser.APPROVE_OPTION) {
+                if (openFileResult.getResultType() != OpenFileResult.ResultType.APPROVED) {
                     return null;
                 }
                 

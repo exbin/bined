@@ -88,6 +88,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
         settingsManager.applyContextOptions(ContextDocument.class, this, settingsOptionsProvider);
+        // TODO change ContextFileDialogs to context
         settingsManager.applyContextOptions(ContextFileDialogs.class, new ContextFileDialogs() {
         }, settingsOptionsProvider);
         dataComponent.applySettings(settingsOptionsProvider);
