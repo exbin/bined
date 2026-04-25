@@ -124,7 +124,7 @@ public class BinedDocumentModule implements Module {
             @Override
             public BinaryFileDocument createDefaultDocument() {
                 BinaryFileDocument binaryDocument = createBinaryDocument();
-                binaryDocument.loadFrom(documentModule.createMemoryDocumentSource());
+                binaryDocument.loadFrom(documentModule.createEmptyDocumentSource());
                 return binaryDocument;
             }
 

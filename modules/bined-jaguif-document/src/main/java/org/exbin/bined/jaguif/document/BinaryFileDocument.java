@@ -50,7 +50,6 @@ import org.exbin.jaguif.document.api.ComponentDocument;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.DocumentSource;
 import org.exbin.jaguif.document.api.EditableDocument;
-import org.exbin.jaguif.document.api.MemoryDocumentSource;
 import org.exbin.jaguif.document.api.StreamDocumentSource;
 import org.exbin.jaguif.file.api.ContextFileDialogs;
 import org.exbin.jaguif.file.api.FileDocument;
@@ -62,6 +61,7 @@ import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.font.ContextFont;
+import org.exbin.jaguif.document.api.EmptyDocumentSource;
 
 /**
  * BinEd binary document.
@@ -118,8 +118,8 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
             return ((StreamDocumentSource) documentSource).getDocumentTitle();
         }
 
-        if (documentSource instanceof MemoryDocumentSource) {
-            return ((MemoryDocumentSource) documentSource).getDocumentTitle();
+        if (documentSource instanceof EmptyDocumentSource) {
+            return ((EmptyDocumentSource) documentSource).getDocumentTitle();
         }
 
         return "";
@@ -186,7 +186,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     public void loadContent(FileProcessingMode fileProcessingMode) {
-        if (documentSource instanceof MemoryDocumentSource) {
+        if (documentSource instanceof EmptyDocumentSource) {
             return;
         }
 
@@ -262,7 +262,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     @Override
     public boolean isModified() {
-        if (documentSource instanceof MemoryDocumentSource && dataComponent.getCodeArea().getDataSize() == 0) {
+        if (documentSource instanceof EmptyDocumentSource && dataComponent.getCodeArea().getDataSize() == 0) {
             return false;
         }
 
