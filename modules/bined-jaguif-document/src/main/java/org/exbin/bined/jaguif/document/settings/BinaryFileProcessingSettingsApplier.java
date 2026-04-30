@@ -13,33 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.viewer.settings;
+package org.exbin.bined.jaguif.document.settings;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.jaguif.App;
+import org.exbin.jaguif.context.api.ContextComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.context.api.ContextStateProvider;
 
 /**
- * Code area status settings applier.
+ * Binary file processing settings applier.
  */
 @ParametersAreNonnullByDefault
-public class CodeAreaStatusSettingsApplier implements SettingsApplier {
+public class BinaryFileProcessingSettingsApplier implements SettingsApplier {
 
-    public static final String APPLIER_ID = "binaryStatus";
+    public static final String APPLIER_ID = "binaryFileProcessing";
 
     @Override
     public void applySettings(ContextStateProvider contextProvider, SettingsOptionsProvider settingsProvider) {
-        /* BinaryStatus instance = contextProvider.getActiveState(BinaryStatus.class);
-        if (!(instance instanceof BinaryStatus)) {
+        ContextComponent instance = contextProvider.getActiveState(ContextComponent.class);
+        if (!(instance instanceof BinaryDataComponent)) {
             return;
         }
 
-        CodeAreaStatusOptions options = settingsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
-        BinaryStatusPanel binaryStatusPanel = ((BinaryStatus) instance).getBinaryStatusPanel();
-        if (binaryStatusPanel != null) {
-            binaryStatusPanel.loadFromOptions(options);
-        } */
-        // TODO binaryStatusPanel.setStatusOptions(options);
+        BinaryFileProcessingOptions options = settingsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
+        BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+        // TODO: Move to BinaryFileProcessing
+        binedDocumentModule.setInitialFileProcessing(options.getFileProcessingMode());
     }
 }

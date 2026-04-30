@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif.document.status.gui;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.bined.jaguif.component.status.gui.BinaryDataSizeComponent;
+import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;

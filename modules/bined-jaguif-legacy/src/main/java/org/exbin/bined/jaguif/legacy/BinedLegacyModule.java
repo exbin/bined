@@ -32,7 +32,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
-import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingOptions;
+import org.exbin.bined.jaguif.document.settings.BinaryFileProcessingOptions;
 import org.exbin.bined.jaguif.legacy.settings.BinedLegacyOptions;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaLayoutOptions;

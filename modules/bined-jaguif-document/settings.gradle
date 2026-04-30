@@ -2,6 +2,8 @@ rootProject.name = 'bined-jaguif-document'
 
 if (rootProject.path == ':') {
     include ':modules:bined-jaguif-component'
+    include ':modules:bined-jaguif-viewer'
+    include ':modules:bined-jaguif-editor'
 }
 
 apply from: '../bined-modules-settings.gradle'

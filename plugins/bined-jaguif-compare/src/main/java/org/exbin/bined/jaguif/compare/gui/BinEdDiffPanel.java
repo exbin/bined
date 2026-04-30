@@ -58,7 +58,7 @@ import org.exbin.bined.jaguif.component.BinEdCodeAreaAssessor;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.editor.settings.BinaryEditorOptions;
-import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
+import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaThemeOptions;

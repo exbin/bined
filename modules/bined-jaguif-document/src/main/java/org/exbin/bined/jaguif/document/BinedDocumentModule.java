@@ -27,14 +27,22 @@ import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryCursorPositionStatusContrib;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryEditModeStatusContrib;
-import org.exbin.bined.jaguif.component.status.contribution.BinaryEncodingStatusContrib;
+import org.exbin.bined.jaguif.document.action.PropertiesAction;
+import org.exbin.bined.jaguif.document.action.ReloadFileAction;
+import org.exbin.bined.jaguif.document.contribution.PropertiesContribution;
+import org.exbin.bined.jaguif.document.contribution.ReloadFileContribution;
+import org.exbin.bined.jaguif.document.settings.BinaryFileProcessingOptions;
+import org.exbin.bined.jaguif.document.settings.BinaryFileProcessingSettingsApplier;
+import org.exbin.bined.jaguif.document.settings.CodeAreaFileProcessingSettingsComponent;
+import org.exbin.bined.jaguif.viewer.status.contribution.BinaryCursorPositionStatusContrib;
+import org.exbin.bined.jaguif.viewer.status.contribution.BinaryEncodingStatusContrib;
 import org.exbin.bined.jaguif.document.status.contribution.BinaryDocumentSizeStatusContrib;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.bined.jaguif.document.status.contribution.BinaryProcessingModeStatusContrib;
+import static org.exbin.bined.jaguif.editor.BinedEditorModule.SETTINGS_PAGE_ID;
+import org.exbin.bined.jaguif.editor.status.contribution.BinaryEditModeStatusContrib;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
@@ -44,6 +52,7 @@ import org.exbin.jaguif.contribution.api.SubSequenceContribution;
 import org.exbin.jaguif.contribution.api.SubSequenceContributionRule;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.docking.api.DocumentDocking;
+import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.Document;
 import org.exbin.jaguif.document.api.DocumentSource;
 import org.exbin.jaguif.document.api.DocumentManagement;
@@ -57,10 +66,15 @@ import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.document.api.DocumentType;
 import org.exbin.jaguif.file.api.FileDocumentSource;
 import org.exbin.jaguif.menu.api.ActionMenuContribution;
+import org.exbin.jaguif.options.settings.api.ApplySettingsContribution;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
+import org.exbin.jaguif.options.settings.api.SettingsComponentContribution;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
+import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
+import org.exbin.jaguif.text.encoding.EncodingsManager;
 
 /**
  * Binary data component module.
@@ -80,6 +94,7 @@ public class BinedDocumentModule implements Module {
 
     private ViewFontActions viewFontActions;
     private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
+    private EncodingsManager encodingsManager;
 
     public BinedDocumentModule() {
     }
@@ -157,6 +172,33 @@ public class BinedDocumentModule implements Module {
         });
     }
 
+    public void registerSettings() {
+        getResourceBundle();
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+
+        settingsManagement.registerSettingsOptions(BinaryFileProcessingOptions.class, (optionsStorage) -> new BinaryFileProcessingOptions(optionsStorage));
+
+        settingsManagement.registerApplySetting(BinaryFileProcessingOptions.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
+        settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
+
+        SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
+        settingsManagement.registerPage(settingsPage);
+        settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
+        SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaFileProcessingSettingsComponent.COMPONENT_ID, new CodeAreaFileProcessingSettingsComponent());
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+    }
+
+    public void registerEncodings() {
+        getEncodingsManager();
+        encodingsManager.rebuildEncodings();
+
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
+        SequenceContribution contribution = mgmt.registerMenuItem(() -> encodingsManager.getToolsEncodingMenu());
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP_LAST));
+    }
+
     public void registerViewZoomMenuActions() {
         getViewFontActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -225,6 +267,51 @@ public class BinedDocumentModule implements Module {
         statusBarManager.registerStatusBarContribution(new BinaryCursorPositionStatusContrib());
         statusBarManager.registerStatusBarContribution(new BinaryProcessingModeStatusContrib());
         statusBarManager.registerStatusBarContribution(new BinaryEditModeStatusContrib());
+    }
+
+    @Nonnull
+    public PropertiesAction createPropertiesAction() {
+        PropertiesAction propertiesAction = new PropertiesAction();
+        propertiesAction.init(getResourceBundle());
+        return propertiesAction;
+    }
+
+    @Nonnull
+    private ReloadFileAction createReloadFileAction() {
+        ReloadFileAction reloadFileAction = new ReloadFileAction();
+        reloadFileAction.init(getResourceBundle());
+        return reloadFileAction;
+    }
+
+    public void registerPropertiesMenu() {
+        createPropertiesAction();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
+        SequenceContribution contribution = new PropertiesContribution();
+        mgmt.registerMenuContribution(contribution);
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
+    }
+
+    public void registerReloadFileMenu() {
+        createReloadFileAction();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
+        SequenceContribution contribution = new ReloadFileContribution();
+        mgmt.registerMenuContribution(contribution);
+        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
+    }
+
+    @Nonnull
+    public EncodingsManager getEncodingsManager() {
+        if (encodingsManager == null) {
+            BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+            BinEdFileManager fileManager = binedDocumentModule.getFileManager();
+            encodingsManager = new EncodingsManager();
+            // TODO fileManager.updateTextEncodingStatus(encodingsManager);
+            encodingsManager.init();
+        }
+
+        return encodingsManager;
     }
 
     public void start() {

@@ -30,6 +30,7 @@ import javax.swing.Action;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.basic.BasicCodeAreaZone;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -37,11 +38,8 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.bined.jaguif.document.BinEdFileManager;
-import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
-import org.exbin.bined.jaguif.component.settings.CodeAreaStatusOptions;
-import org.exbin.bined.jaguif.document.BinedDocumentModule;
+import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.contribution.RowWrappingContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowHeaderContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowRowPositionContribution;
@@ -83,7 +81,6 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 import org.exbin.jaguif.statusbar.api.StatusBar;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
-import org.exbin.jaguif.text.encoding.EncodingsManager;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingSettingsComponent;
 import org.exbin.jaguif.text.font.action.TextFontAction;
@@ -121,7 +118,6 @@ public class BinedViewerModule implements Module {
     private CodeTypeActions codeTypeActions;
     private PositionCodeTypeActions positionCodeTypeActions;
     private HexCharactersCaseActions hexCharactersCaseActions;
-    private EncodingsManager encodingsManager;
 
     public BinedViewerModule() {
     }
@@ -142,21 +138,11 @@ public class BinedViewerModule implements Module {
         FrameController frameHandler = frameModule.getFrameController();
         ActiveContextManagement contextManager = frameHandler.getContextManager();
         ContextUpdateManagement updateManager = frameHandler.getUpdateManager();
-        updateManager.addGroup("mainStatusBar");
-        ContextRegistration contextRegistrar = contextModule.createContextRegistrator("mainStatusBar", updateManager, contextManager);
+        updateManager.addGroup(FrameModuleApi.MAIN_STATUS_BAR_ID);
+        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(FrameModuleApi.MAIN_STATUS_BAR_ID, updateManager, contextManager);
         StatusBar statusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrar);
         frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, statusBar.getComponent());
         frameModule.switchStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
-    }
-
-    public void registerEncodings() {
-        getEncodingsManager();
-        encodingsManager.rebuildEncodings();
-
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(() -> encodingsManager.getToolsEncodingMenu());
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP_LAST));
     }
 
     public void registerSettings() {
@@ -248,19 +234,6 @@ public class BinedViewerModule implements Module {
         TextFontAction textFontAction = new TextFontAction();
         textFontAction.init(getResourceBundle());
         return textFontAction;
-    }
-
-    @Nonnull
-    public EncodingsManager getEncodingsManager() {
-        if (encodingsManager == null) {
-            BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
-            BinEdFileManager fileManager = binedDocumentModule.getFileManager();
-            encodingsManager = new EncodingsManager();
-            // TODO fileManager.updateTextEncodingStatus(encodingsManager);
-            encodingsManager.init();
-        }
-
-        return encodingsManager;
     }
 
     @Nonnull
@@ -442,9 +415,9 @@ public class BinedViewerModule implements Module {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
                 CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
-                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
+                ContextComponent contextComponent = contextState.getActiveState(ContextComponent.class);
                 boolean inShowSubmenu = SHOW_POPUP_SUBMENU_ID.equals(subMenuId);
-                return contextDocument instanceof BinaryFileDocument && ((inShowSubmenu && codeAreaZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && codeAreaZone != BasicCodeAreaZone.CODE_AREA));
+                return contextComponent instanceof BinaryDataComponent && ((inShowSubmenu && codeAreaZone == BasicCodeAreaZone.CODE_AREA) || (!inShowSubmenu && codeAreaZone != BasicCodeAreaZone.CODE_AREA));
             }
         };
 
@@ -469,8 +442,8 @@ public class BinedViewerModule implements Module {
             @Override
             public boolean shouldCreate(String menuId, String subMenuId, ContextStateProvider contextState) {
                 CodeAreaZone codeAreaZone = contextState.getActiveState(CodeAreaZone.class);
-                ContextDocument contextDocument = contextState.getActiveState(ContextDocument.class);
-                return contextDocument instanceof BinaryFileDocument && (codeAreaZone == BasicCodeAreaZone.TOP_LEFT_CORNER || codeAreaZone == BasicCodeAreaZone.HEADER || codeAreaZone == BasicCodeAreaZone.ROW_POSITIONS);
+                ContextComponent contextComponent = contextState.getActiveState(ContextComponent.class);
+                return contextComponent instanceof BinaryDataComponent && (codeAreaZone == BasicCodeAreaZone.TOP_LEFT_CORNER || codeAreaZone == BasicCodeAreaZone.HEADER || codeAreaZone == BasicCodeAreaZone.ROW_POSITIONS);
             }
         };
         contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, positionCodeTypeCreating);

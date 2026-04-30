@@ -15,7 +15,6 @@
  */
 package org.exbin.bined.jaguif.editor;
 
-import org.exbin.bined.jaguif.editor.action.PropertiesAction;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -26,16 +25,10 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.editor.action.EditSelectionAction;
-import org.exbin.bined.jaguif.editor.action.ReloadFileAction;
 import org.exbin.bined.jaguif.editor.contribution.EditSelectionContribution;
-import org.exbin.bined.jaguif.editor.contribution.PropertiesContribution;
-import org.exbin.bined.jaguif.editor.contribution.ReloadFileContribution;
 import org.exbin.bined.jaguif.editor.settings.BinaryEditorOptions;
 import org.exbin.bined.jaguif.editor.settings.BinaryEditorSettingsApplier;
-import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingOptions;
-import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingSettingsApplier;
 import org.exbin.bined.jaguif.editor.settings.CodeAreaEditingSettingsComponent;
-import org.exbin.bined.jaguif.editor.settings.CodeAreaFileProcessingSettingsComponent;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
@@ -77,19 +70,14 @@ public class BinedEditorModule implements Module {
         OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
 
         settingsManagement.registerSettingsOptions(BinaryEditorOptions.class, (optionsStorage) -> new BinaryEditorOptions(optionsStorage));
-        settingsManagement.registerSettingsOptions(BinaryFileProcessingOptions.class, (optionsStorage) -> new BinaryFileProcessingOptions(optionsStorage));
 
         settingsManagement.registerApplySetting(BinaryEditorOptions.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
         settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(BinaryEditorSettingsApplier.APPLIER_ID, new BinaryEditorSettingsApplier()));
-        settingsManagement.registerApplySetting(BinaryFileProcessingOptions.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
-        settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
 
         SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
-        SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaFileProcessingSettingsComponent.COMPONENT_ID, new CodeAreaFileProcessingSettingsComponent());
-        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
-        registerComponent = settingsManagement.registerComponent(CodeAreaEditingSettingsComponent.COMPONENT_ID, new CodeAreaEditingSettingsComponent());
+        SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaEditingSettingsComponent.COMPONENT_ID, new CodeAreaEditingSettingsComponent());
         settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
     }
 
@@ -106,38 +94,6 @@ public class BinedEditorModule implements Module {
         EditSelectionAction editSelectionAction = new EditSelectionAction();
         editSelectionAction.init(getResourceBundle());
         return editSelectionAction;
-    }
-
-    @Nonnull
-    public PropertiesAction createPropertiesAction() {
-        PropertiesAction propertiesAction = new PropertiesAction();
-        propertiesAction.init(getResourceBundle());
-        return propertiesAction;
-    }
-
-    @Nonnull
-    private ReloadFileAction createReloadFileAction() {
-        ReloadFileAction reloadFileAction = new ReloadFileAction();
-        reloadFileAction.init(getResourceBundle());
-        return reloadFileAction;
-    }
-
-    public void registerPropertiesMenu() {
-        createPropertiesAction();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
-        SequenceContribution contribution = new PropertiesContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
-    }
-
-    public void registerReloadFileMenu() {
-        createReloadFileAction();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.FILE_SUBMENU_ID);
-        SequenceContribution contribution = new ReloadFileContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
     public void registerEditSelectionAction() {

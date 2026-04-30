@@ -55,7 +55,7 @@ import org.exbin.jaguif.document.settings.StartupOptions;
 import org.exbin.jaguif.document.settings.StartupOptions.StartupBehavior;
 import org.exbin.bined.jaguif.operation.method.BinedOperationMethodModule;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceOptions;
-import org.exbin.bined.jaguif.editor.settings.BinaryFileProcessingOptions;
+import org.exbin.bined.jaguif.document.settings.BinaryFileProcessingOptions;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorFontContextInference;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorFontInference;
 import org.exbin.bined.jaguif.legacy.BinedLegacyModule;
@@ -298,7 +298,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerToolsOptionsMenuActions();
             binedEditorModule.registerEditSelectionAction();
             binedComponentModule.registerClipboardCodeActions();
-            binedViewerModule.registerEncodings();
+            binedDocumentModule.registerEncodings();
             binedComponentModule.registerGoToPosition();
             binedSearchModule.registerEditFindMenuActions();
             binedOperationMethodModule.registerBlockEditActions();
@@ -309,8 +309,8 @@ public class BinedLauncherModule implements LauncherModule {
             binedSearchModule.registerEditFindPopupMenuActions();
             binedOperationMethodModule.registerBlockEditPopupMenuActions();
 
-            binedEditorModule.registerPropertiesMenu();
-            binedEditorModule.registerReloadFileMenu();
+            binedDocumentModule.registerPropertiesMenu();
+            binedDocumentModule.registerReloadFileMenu();
             // TODO binedModule.registerPrintMenu();
             binedViewerModule.registerViewModeMenu();
             binedViewerModule.registerCodeTypeMenu();
