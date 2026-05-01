@@ -17,33 +17,28 @@ package org.exbin.bined.jaguif.compare.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseEvent;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.CodeAreaUtils;
+import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
+import org.exbin.bined.EditMode;
 import org.exbin.bined.EditOperation;
+import org.exbin.bined.PositionCodeType;
+import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.CharsetCapable;
+import org.exbin.bined.capability.EditModeCapable;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.CodeAreaPainter;
 import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.color.CodeAreaColorsProfile;
@@ -55,6 +50,9 @@ import org.exbin.bined.swing.section.diff.SectCodeAreaDiffPanel;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.BinEdCodeAreaAssessor;
+import org.exbin.bined.jaguif.component.BinEdComponentExtension;
+import org.exbin.bined.jaguif.component.BinEdDataComponent.UpdateType;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.editor.settings.BinaryEditorOptions;
@@ -62,21 +60,19 @@ import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaLayoutOptions;
 import org.exbin.bined.jaguif.theme.settings.CodeAreaThemeOptions;
-import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaOptions;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaViewerSettingsApplier;
+import org.exbin.bined.operation.command.BinaryDataUndoRedo;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.statusbar.api.StatusBar;
-import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
-import org.exbin.jaguif.text.encoding.CharsetEncodingState;
-import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
-import org.exbin.jaguif.text.encoding.EncodingsManager;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
@@ -94,6 +90,10 @@ public class BinEdDiffPanel extends JPanel {
     protected final SectionCodeAreaThemeProfile defaultThemeProfile;
     protected final CodeAreaColorsProfile defaultColorProfile;
 
+    protected ContextComponent leftContextComponent;
+    protected ContextComponent rightContextComponent;
+    protected ContextRegistration leftContextRegistrator;
+    protected ContextRegistration rightContextRegistrator;
     protected final DiffToolbarPanel toolbarPanel;
     protected final StatusBar leftStatusBar;
     protected final StatusBar rightStatusBar;
@@ -121,12 +121,18 @@ public class BinEdDiffPanel extends JPanel {
         defaultThemeProfile = leftCodeArea.getThemeProfile();
         defaultColorProfile = leftCodeArea.getColorsProfile();
         toolbarPanel = new DiffToolbarPanel();
+        leftContextComponent = new DiffContextComponent(leftCodeArea);
+        rightContextComponent = new DiffContextComponent(rightCodeArea);
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
-        StatusBarDefinitionManagement statusBarManager = statusBarModule.getMainStatusBarDefinition(BinedComponentModule.MODULE_ID);
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ContextRegistration contextRegistrator = contextModule.createContextRegistrator();
-        leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrator);
-        rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrator);
+        ActiveContextManagement leftContextManager = contextModule.createContextManager();
+        ActiveContextManagement rightContextManager = contextModule.createContextManager();
+        attachContext(leftCodeArea, leftContextComponent, leftContextManager);
+        attachContext(rightCodeArea, rightContextComponent, rightContextManager);
+        leftContextRegistrator = contextModule.createContextRegistrator(leftContextManager);
+        rightContextRegistrator = contextModule.createContextRegistrator(rightContextManager);
+        leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, leftContextRegistrator);
+        rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, rightContextRegistrator);
         toolbarPanel.setTargetComponent(diffPanel);
         toolbarPanel.setController(new DiffToolbarPanel.Controller() {
             @Nonnull
@@ -189,6 +195,25 @@ public class BinEdDiffPanel extends JPanel {
         repaint();
     }
 
+    private static void attachContext(SectCodeArea codeArea, ContextComponent contextComponent, ActiveContextManagement contextManagement) {
+        contextManagement.changeActiveState(ContextComponent.class, contextComponent);
+        codeArea.addDataChangedListener(() -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.DATA_CHANGED);
+        });
+
+        ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.SELECTION_CHANGED);
+        });
+
+        ((CaretCapable) codeArea).addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.CURSOR_MOVED);
+        });
+
+        ((EditModeCapable) codeArea).addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.EDIT_MODE_CHANGED);
+        });
+    }
+    
     private void initialLoadFromPreferences() {
         applyOptions(new BinEdApplyOptions() {
             @Nonnull
@@ -423,5 +448,75 @@ public class BinEdDiffPanel extends JPanel {
 
         @Nonnull
         CodeAreaThemeOptions getThemeOptions();
+    }
+    
+    public static class DiffContextComponent implements BinaryDataComponent {
+        
+        SectCodeArea codeArea;
+
+        public DiffContextComponent(SectCodeArea codeArea) {
+            this.codeArea = codeArea;
+        }
+
+        @Nonnull
+        @Override
+        public CodeAreaCore getCodeArea() {
+            return codeArea;
+        }
+
+        @Override
+        public Optional<BinaryDataUndoRedo> getUndoRedo() {
+            return Optional.empty();
+        }
+
+        @Override
+        public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public Component getComponent() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public CodeType getCodeType() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void setCodeType(CodeType codeType) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public PositionCodeType getPositionCodeType() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void setPositionCodeType(PositionCodeType positionCodeType) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public CodeCharactersCase getCodeCharactersCase() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void setCodeCharactersCase(CodeCharactersCase codeCharactersCase) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public boolean isShowNonprintables() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void setShowNonprintables(boolean showNonprintables) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 }
