@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
-import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -46,7 +45,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
-    protected BinEdDataComponent dataComponent = null;
+    protected CharsetEncodingState encodingState = null;
 
     public BinaryEncodingComponent() {
         component = new JLabel() {
@@ -92,16 +91,16 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
             @Override
             public void register(ContextChangeRegistration registrar) {
                 registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
-                    if (instance instanceof BinEdDataComponent) {
-                        dataComponent = (BinEdDataComponent) instance;
+                    if (instance instanceof CharsetEncodingState) {
+                        encodingState = (CharsetEncodingState) instance;
                         update();
                     } else {
                         clear();
                     }
                 });
                 registrar.registerChangeListener(ContextEncoding.class, (instance) -> {
-                    if (instance instanceof BinEdDataComponent) {
-                        dataComponent = (BinEdDataComponent) instance;
+                    if (instance instanceof CharsetEncodingState) {
+                        encodingState = (CharsetEncodingState) instance;
                         update();
                     } else {
                         clear();
@@ -131,7 +130,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     }
 
     private void update() {
-        component.setText(dataComponent != null ? dataComponent.getEncoding() : "-");
+        component.setText(encodingState != null ? encodingState.getEncoding() : "-");
     }
 
     private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {

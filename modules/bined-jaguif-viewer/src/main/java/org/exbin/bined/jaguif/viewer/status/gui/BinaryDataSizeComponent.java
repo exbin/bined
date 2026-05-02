@@ -26,6 +26,7 @@ import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
 import org.exbin.jaguif.App;
@@ -67,20 +68,20 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
             @Override
             public void register(ContextChangeRegistration registrar) {
                 registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
-                    if (instance instanceof BinEdDataComponent) {
-                        updateForComponent((BinEdDataComponent) instance);
+                    if (instance instanceof BinaryDataComponent) {
+                        updateForComponent((BinaryDataComponent) instance);
                     } else {
                         clear();
                     }
                 });
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.DATA_CHANGED || updateType == BinEdDataComponent.UpdateType.SELECTION_CHANGED)) {
-                        updateForComponent((BinEdDataComponent) instance);
+                    if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.DATA_CHANGED || updateType == BinEdDataComponent.UpdateType.SELECTION_CHANGED)) {
+                        updateForComponent((BinaryDataComponent) instance);
                     }
                 });
             }
 
-            private void updateForComponent(BinEdDataComponent component) {
+            private void updateForComponent(BinaryDataComponent component) {
                 dataSize = component.getCodeArea().getDataSize();
                 selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
                 update();

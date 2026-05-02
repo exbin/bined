@@ -68,11 +68,13 @@ import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextUpdateManagement;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.statusbar.api.StatusBar;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
+import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
@@ -129,8 +131,12 @@ public class BinEdDiffPanel extends JPanel {
         ActiveContextManagement rightContextManager = contextModule.createContextManager();
         attachContext(leftCodeArea, leftContextComponent, leftContextManager);
         attachContext(rightCodeArea, rightContextComponent, rightContextManager);
-        leftContextRegistrator = contextModule.createContextRegistrator(leftContextManager);
-        rightContextRegistrator = contextModule.createContextRegistrator(rightContextManager);
+        ContextUpdateManagement leftUpdateManagement = contextModule.createContextUpdateManagement(leftContextManager);
+        leftUpdateManagement.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        ContextUpdateManagement rightUpdateManagement = contextModule.createContextUpdateManagement(rightContextManager);
+        rightUpdateManagement.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        leftContextRegistrator = contextModule.createContextRegistrator(BinedComponentModule.BINARY_STATUS_BAR_ID, leftUpdateManagement, leftContextManager);
+        rightContextRegistrator = contextModule.createContextRegistrator(BinedComponentModule.BINARY_STATUS_BAR_ID, rightUpdateManagement, rightContextManager);
         leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, leftContextRegistrator);
         rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, rightContextRegistrator);
         toolbarPanel.setTargetComponent(diffPanel);
@@ -179,7 +185,6 @@ public class BinEdDiffPanel extends JPanel {
 
         // TODO registerBinaryStatus(leftStatusBar, diffPanel.getLeftCodeArea());
         // TODO registerBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
-
         initialLoadFromPreferences();
         BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
         JPopupMenu codeAreaPopupMenu = binedComponentModule.createCodeAreaPopupMenu();
@@ -213,7 +218,7 @@ public class BinEdDiffPanel extends JPanel {
             contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.EDIT_MODE_CHANGED);
         });
     }
-    
+
     private void initialLoadFromPreferences() {
         applyOptions(new BinEdApplyOptions() {
             @Nonnull
@@ -336,93 +341,6 @@ public class BinEdDiffPanel extends JPanel {
         // TODO updateBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
     }
 
-    /* @ParametersAreNonnullByDefault
-    private abstract class BinaryStatusController implements BinaryStatusPanel.Controller, BinaryStatusPanel.EncodingsController, BinaryStatusPanel.MemoryModeController {
-        
-        private EncodingsManager encodingsManager;
-        private CodeAreaCore codeArea;
-        private List<String> encodings = new ArrayList<>();
-
-        public BinaryStatusController(CodeAreaCore codeArea) {
-            this.codeArea = codeArea;
-            TextEncodingOptions textEncodingOptions = new TextEncodingOptions(optionsStorage);
-            encodings.addAll(textEncodingOptions.getEncodings());
-            try {
-                String encoding = textEncodingOptions.getSelectedEncoding();
-                ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
-                notifyEncodingChanged(encoding);
-            } catch (UnsupportedCharsetException ex) {
-                // ignore
-            }
-            
-            encodingsManager = new EncodingsManager();
-            encodingsManager.init();
-            encodingsManager.setEncodingState(new CharsetEncodingState() {
-                @Nonnull
-                @Override
-                public String getEncoding() {
-                    return ((CharsetCapable) codeArea).getCharset().name();
-                }
-
-                @Override
-                public void setEncoding(String encodingName) {
-                    ((CharsetCapable) codeArea).setCharset(Charset.forName(encodingName));
-                    notifyEncodingChanged(encodingName);
-                }
-            });
-            encodingsManager.setListEncodingState(new CharsetListEncodingState() {
-                @Nonnull
-                @Override
-                public List<String> getEncodings() {
-                    return encodings;
-                }
-
-                @Override
-                public void setEncodings(List<String> encodings) {
-                    BinaryStatusController.this.encodings.clear();
-                    BinaryStatusController.this.encodings.addAll(encodings);
-                    encodingsManager.rebuildEncodings();
-                }
-            });
-            encodingsManager.rebuildEncodings();
-        }
-        
-        public abstract void notifyEncodingChanged(String encoding);
-
-        @Override
-        public void changeEditOperation(EditOperation editOperation) {
-            SectCodeArea leftCodeArea = diffPanel.getLeftCodeArea();
-            SectCodeArea rightCodeArea = diffPanel.getRightCodeArea();
-            leftCodeArea.setEditOperation(editOperation);
-            rightCodeArea.setEditOperation(editOperation);
-        }
-
-        @Override
-        public void changeCursorPosition() {
-            goToPositionAction.actionPerformed();
-        }
-
-        @Override
-        public void cycleNextEncoding() {
-            encodingsManager.cycleNextEncoding();
-        }
-
-        @Override
-        public void cyclePreviousEncoding() {
-            encodingsManager.cyclePreviousEncoding();
-        }
-
-        @Override
-        public void encodingsPopupEncodingsMenu(MouseEvent mouseEvent) {
-            encodingsManager.popupEncodingsMenu(mouseEvent);
-        }
-
-        @Override
-        public void changeMemoryMode(BinaryStatusApi.MemoryMode memoryMode) {
-            // Ignore
-        }
-    } */
-
     public interface BinEdApplyOptions {
 
         @Nonnull
@@ -449,9 +367,9 @@ public class BinEdDiffPanel extends JPanel {
         @Nonnull
         CodeAreaThemeOptions getThemeOptions();
     }
-    
-    public static class DiffContextComponent implements BinaryDataComponent {
-        
+
+    public static class DiffContextComponent implements BinaryDataComponent, CharsetEncodingState {
+
         SectCodeArea codeArea;
 
         public DiffContextComponent(SectCodeArea codeArea) {
@@ -517,6 +435,17 @@ public class BinEdDiffPanel extends JPanel {
         @Override
         public void setShowNonprintables(boolean showNonprintables) {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Nonnull
+        @Override
+        public String getEncoding() {
+            return ((CharsetCapable) getCodeArea()).getCharset().toString();
+        }
+
+        @Override
+        public void setEncoding(String encodingName) {
+            ((CharsetCapable) getCodeArea()).setCharset(Charset.forName(encodingName));
         }
     }
 }
