@@ -2,7 +2,6 @@ rootProject.name = 'bined-jaguif-help'
 
 if (rootProject.path == ':') {
     include ':modules:bined-jaguif-component'
-    include ':modules:bined-jaguif-search'
 }
 
 apply from: '../bined-plugins-settings.gradle'
