@@ -41,7 +41,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.bined.jaguif.document.status.contribution.BinaryProcessingModeStatusContrib;
-import static org.exbin.bined.jaguif.editor.BinedEditorModule.SETTINGS_PAGE_ID;
+import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.editor.status.contribution.BinaryEditModeStatusContrib;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
@@ -182,7 +182,7 @@ public class BinedDocumentModule implements Module {
         settingsManagement.registerApplySetting(BinaryFileProcessingOptions.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
         settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
 
-        SettingsPageContribution settingsPage = new SettingsPageContribution(SETTINGS_PAGE_ID, resourceBundle);
+        SettingsPageContribution settingsPage = new SettingsPageContribution(BinedEditorModule.SETTINGS_PAGE_ID, resourceBundle);
         settingsManagement.registerPage(settingsPage);
         settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaFileProcessingSettingsComponent.COMPONENT_ID, new CodeAreaFileProcessingSettingsComponent());

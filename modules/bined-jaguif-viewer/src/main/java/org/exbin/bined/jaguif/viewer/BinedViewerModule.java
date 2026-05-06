@@ -297,6 +297,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerViewModeMenu() {
+        getResourceBundle();
         getViewModeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         Action viewSubMenuAction = new AbstractAction(resourceBundle.getString("viewModeSubMenu.text")) {
@@ -331,6 +332,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerCodeTypeMenu() {
+        getResourceBundle();
         getCodeTypeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         Action codeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("codeTypeSubMenu.text")) {
@@ -363,6 +365,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerPositionCodeTypeMenu() {
+        getResourceBundle();
         getPositionCodeTypeActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         Action positionCodeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("positionCodeTypeSubMenu.text")) {
@@ -387,6 +390,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerHexCharactersCaseHandlerMenu() {
+        getResourceBundle();
         getHexCharactersCaseActions();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         Action hexCharsCaseSubMenuAction = new AbstractAction(resourceBundle.getString("hexCharsCaseSubMenu.text")) {
@@ -408,6 +412,7 @@ public class BinedViewerModule implements Module {
     }
 
     public void registerCodeAreaPopupMenu() {
+        getResourceBundle();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
 
