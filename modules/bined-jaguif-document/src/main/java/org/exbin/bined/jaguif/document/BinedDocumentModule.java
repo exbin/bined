@@ -42,11 +42,13 @@ import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.bined.jaguif.document.status.contribution.BinaryProcessingModeStatusContrib;
 import org.exbin.bined.jaguif.editor.BinedEditorModule;
+import org.exbin.bined.jaguif.editor.settings.CodeAreaEditingSettingsComponent;
 import org.exbin.bined.jaguif.editor.status.contribution.BinaryEditModeStatusContrib;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
+import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.contribution.api.SubSequenceContribution;
 import org.exbin.jaguif.contribution.api.SubSequenceContributionRule;
@@ -70,7 +72,6 @@ import org.exbin.jaguif.options.settings.api.ApplySettingsContribution;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.SettingsComponentContribution;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
-import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
@@ -87,6 +88,7 @@ public class BinedDocumentModule implements Module {
     public static final String VIEW_FONT_SUB_MENU_ID = MODULE_ID + ".viewFontSubMenu";
     public static final String VIEW_FONT_ZOOM_MENU_GROUP_ID = MODULE_ID + ".viewZoomMenuGroup";
     public static final String BINARY_DOCUMENT_ID = "binary";
+    public static final String SETTINGS_PAGE_ID = "codeAreaFileProcessing";
 
     private java.util.ResourceBundle resourceBundle = null;
 
@@ -182,11 +184,9 @@ public class BinedDocumentModule implements Module {
         settingsManagement.registerApplySetting(BinaryFileProcessingOptions.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
         settingsManagement.registerApplyContextSetting(ContextDocument.class, new ApplySettingsContribution(BinaryFileProcessingSettingsApplier.APPLIER_ID, new BinaryFileProcessingSettingsApplier()));
 
-        SettingsPageContribution settingsPage = new SettingsPageContribution(BinedEditorModule.SETTINGS_PAGE_ID, resourceBundle);
-        settingsManagement.registerPage(settingsPage);
-        settingsManagement.registerSettingsRule(settingsPage, new SettingsPageContributionRule("binary"));
         SettingsComponentContribution registerComponent = settingsManagement.registerComponent(CodeAreaFileProcessingSettingsComponent.COMPONENT_ID, new CodeAreaFileProcessingSettingsComponent());
-        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(settingsPage));
+        settingsManagement.registerSettingsRule(registerComponent, new SettingsPageContributionRule(BinedEditorModule.SETTINGS_PAGE_ID));
+        settingsManagement.registerSettingsRule(registerComponent, new RelativeSequenceContributionRule(RelativeSequenceContributionRule.NextToMode.BEFORE, CodeAreaEditingSettingsComponent.COMPONENT_ID));
     }
 
     public void registerEncodings() {

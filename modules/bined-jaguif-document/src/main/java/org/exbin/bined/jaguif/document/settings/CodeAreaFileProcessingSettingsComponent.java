@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.document.settings.gui.CodeAreaFileProcessingSettingsPanel;
 import org.exbin.jaguif.options.settings.api.SettingsComponentProvider;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
@@ -38,8 +38,8 @@ public class CodeAreaFileProcessingSettingsComponent implements SettingsComponen
     @Override
     public SettingsComponent createComponent() {
         CodeAreaFileProcessingSettingsPanel panel = new CodeAreaFileProcessingSettingsPanel();
-        BinedEditorModule binedEditorModule = App.getModule(BinedEditorModule.class);
-        ResourceBundle resourceBundle = binedEditorModule.getResourceBundle();
+        BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
+        ResourceBundle resourceBundle = binedDocumentModule.getResourceBundle();
         List<String> fileHandlingModes = new ArrayList<>();
         fileHandlingModes.add(resourceBundle.getString("fileProcessingMode.memory"));
         fileHandlingModes.add(resourceBundle.getString("fileProcessingMode.delta"));

@@ -204,6 +204,7 @@ public class BinedLauncherModule implements LauncherModule {
             fileModule.registerSettings();
             binedViewerModule.registerSettings();
             binedEditorModule.registerSettings();
+            binedDocumentModule.registerSettings();
             binedThemeModule.registerSettings();
             binedInspectorModule.registerSettings();
             binedLegacyModule.registerSettings();
