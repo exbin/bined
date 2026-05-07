@@ -35,6 +35,7 @@ import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
+import org.exbin.auxiliary.binary_data.delta.file.FileDataSource.EditMode;
 import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
@@ -234,7 +235,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
             if (fileProcessingMode == FileProcessingMode.DELTA) {
                 BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
                 SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
-                FileDataSource openFileSource = new FileDataSource(file);
+                FileDataSource openFileSource = file.canWrite() ? new FileDataSource(file) : new FileDataSource(file, EditMode.READ_ONLY);
                 segmentsRepository.addDataSource(openFileSource);
                 DeltaDocument document = segmentsRepository.createDocument(openFileSource);
                 componentPanel.setContentData(document);
