@@ -20,11 +20,12 @@ import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ContextDocument;
 import static org.exbin.jaguif.statusbar.api.StatusBarComponent.KEY_CONTEXT_CHANGE;
 
 /**
- * BinEd file processing mode status component.
+ * Binary document data size status component.
  */
 @ParametersAreNonnullByDefault
 public class BinaryDocumentSizeComponent extends BinaryDataSizeComponent {
@@ -41,11 +42,11 @@ public class BinaryDocumentSizeComponent extends BinaryDataSizeComponent {
                         clear();
                     }
                 });
-                /* registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
+                registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
                     if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.ORIGINAL_SIZE)) {
                         updateForDocument((BinaryFileDocument) instance);
                     }
-                }); */
+                });
                 parentContextChange.register(registrar);
             }
 

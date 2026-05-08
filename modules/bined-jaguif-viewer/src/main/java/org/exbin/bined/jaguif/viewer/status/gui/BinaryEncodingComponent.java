@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+import org.exbin.bined.jaguif.component.BinaryEncodingListController;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -46,6 +47,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
     protected CharsetEncodingState encodingState = null;
+    protected BinaryEncodingListController encodingListController = null;
 
     public BinaryEncodingComponent() {
         component = new JLabel() {
@@ -134,11 +136,11 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     }
 
     private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {
-        if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1 && encodingListController != null) {
             if (evt.isShiftDown()) {
-                // TODO ((EncodingsController) controller).cyclePreviousEncoding();
+                encodingListController.cyclePreviousEncoding();
             } else {
-                // TODO ((EncodingsController) controller).cycleNextEncoding();
+                encodingListController.cycleNextEncoding();
             }
         } else {
             handleEncodingPopup(evt);

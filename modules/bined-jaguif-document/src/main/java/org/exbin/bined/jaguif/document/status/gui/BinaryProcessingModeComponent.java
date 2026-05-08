@@ -21,22 +21,24 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import org.exbin.bined.jaguif.document.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.document.api.ContextDocument;
+import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
- * BinEd file processing mode status component.
+ * Binary file processing mode status component.
  */
 @ParametersAreNonnullByDefault
 public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryProcessingModeComponent.class);
+    protected FileProcessingMode fileProcessingMode = FileProcessingMode.MEMORY;
 
     public BinaryProcessingModeComponent() {
         component = new JLabel();
@@ -65,9 +67,9 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextDocument.class, (ContextDocument instance) -> {
-                    if (instance instanceof BinaryFileDocument) {
-                        // TODO update();
+                registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
+                    if (instance instanceof BinaryDataComponent) {
+                        updateForComponent((BinaryDataComponent) instance);
                     } else {
                         clear();
                     }
@@ -78,6 +80,12 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
                     }
                 }); */
             }
+
+            private void updateForComponent(BinaryDataComponent component) {
+//                dataSize = component.getCodeArea().getDataSize();
+//                selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
+//                update();
+            }
         });
     }
 
@@ -86,7 +94,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
     public JComponent getComponent() {
         return component;
     }
-    
+
     private void clear() {
         // TODO
     }

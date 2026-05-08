@@ -47,6 +47,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextActivable;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ComponentDocument;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.DocumentSource;
@@ -336,6 +337,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         if (optUndoRedo.isPresent()) {
             optUndoRedo.get().setSyncPosition();
         }
+        if (activeContextManagement != null) {
+            activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.ORIGINAL_SIZE);
+        }
     }
 
     public long getDocumentOriginalSize() {
@@ -389,5 +393,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         }
 
         return FileProcessingMode.MEMORY;
+    }
+
+    public enum UpdateType implements StateUpdateType {
+        ORIGINAL_SIZE
     }
 }
