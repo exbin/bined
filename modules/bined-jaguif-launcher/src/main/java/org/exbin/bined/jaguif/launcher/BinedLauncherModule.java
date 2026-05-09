@@ -38,7 +38,7 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.LauncherModule;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.jaguif.about.api.AboutModuleApi;
+import org.exbin.jaguif.license.api.LicenseModuleApi;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.manager.ActionManagerModule;
 import org.exbin.jaguif.addon.catalog.AddonCatalogModule;
@@ -179,7 +179,7 @@ public class BinedLauncherModule implements LauncherModule {
             MenuPopupModuleApi menuPopupModule = App.getModule(MenuPopupModuleApi.class);
             ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
             SideBarModuleApi sideBarModule = App.getModule(SideBarModuleApi.class);
-            AboutModuleApi aboutModule = App.getModule(AboutModuleApi.class);
+            LicenseModuleApi licenseModule = App.getModule(LicenseModuleApi.class);
             HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
             HelpOnlineModuleApi helpOnlineModule = App.getModule(HelpOnlineModuleApi.class);
             OperationUndoModuleApi undoModule = App.getModule(OperationUndoModuleApi.class);
@@ -256,7 +256,8 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             // helpModule.registerMainMenu();
-            aboutModule.registerDefaultMenuItem();
+            licenseModule.registerBasicPages();
+            licenseModule.registerDefaultMenuItem();
             try {
                 helpOnlineModule.setOnlineHelpUrl(new URI(bundle.getString("online_help_url")).toURL());
             } catch (MalformedURLException | URISyntaxException ex) {
