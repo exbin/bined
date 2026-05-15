@@ -69,6 +69,7 @@ dependencies {
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-manager')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-manager-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-catalog')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-packs')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-text-encoding')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-text-font')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-help')

@@ -45,6 +45,7 @@ import org.exbin.jaguif.addon.catalog.AddonCatalogModule;
 import org.exbin.jaguif.addon.manager.AddonManagerModule;
 import org.exbin.jaguif.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.jaguif.addon.update.api.AddonUpdateModuleApi;
+import org.exbin.jaguif.addon.packs.AddonPacksModule;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
@@ -237,8 +238,11 @@ public class BinedLauncherModule implements LauncherModule {
 
             AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.setDevMode(devMode);
+            addonManagerModule.registerBasicAddonManager();
             AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
             addonCatalogModule.setDevMode(devMode);
+            AddonPacksModule addonPacksModule = App.getModule(AddonPacksModule.class);
+            addonPacksModule.registerPacksAddonManager();
 
             addonCatalogModule.setCatalogPageUrl("https://bined.exbin.org/");
             addonManagerModule.getAddonManager().setAddonCatalogService(addonCatalogModule.createCatalogService());
