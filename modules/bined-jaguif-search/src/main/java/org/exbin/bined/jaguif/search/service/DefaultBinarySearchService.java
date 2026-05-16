@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.search.service.impl;
+package org.exbin.bined.jaguif.search.service;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
@@ -32,7 +32,6 @@ import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.jaguif.search.ReplaceParameters;
 import org.exbin.bined.jaguif.search.SearchCondition;
 import org.exbin.bined.jaguif.search.SearchParameters;
-import org.exbin.bined.jaguif.search.service.BinarySearchService;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.BinaryDataRangeInputStream;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
@@ -47,13 +46,13 @@ import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
  * Binary search service.
  */
 @ParametersAreNonnullByDefault
-public class BinarySearchServiceImpl implements BinarySearchService {
+public class DefaultBinarySearchService implements BinarySearchService {
 
     private static final int MAX_MATCHES_COUNT = 100;
     private final SectCodeArea codeArea;
     private final SearchParameters lastSearchParameters = new SearchParameters();
 
-    public BinarySearchServiceImpl(SectCodeArea codeArea) {
+    public DefaultBinarySearchService(SectCodeArea codeArea) {
         this.codeArea = codeArea;
     }
 

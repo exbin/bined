@@ -25,7 +25,7 @@ import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.bined.jaguif.search.service.BinarySearchService;
-import org.exbin.bined.jaguif.search.service.impl.BinarySearchServiceImpl;
+import org.exbin.bined.jaguif.search.service.DefaultBinarySearchService;
 
 /**
  * Bined component search.
@@ -43,7 +43,7 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
         this.componentPanel = (BinEdComponentPanel) dataComponent.getComponent();
         SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
 
-        binarySearchService = new BinarySearchServiceImpl(codeArea);
+        binarySearchService = new DefaultBinarySearchService(codeArea);
     }
 
     @Override
