@@ -44,5 +44,4 @@ public class BinedHelpModule implements Module {
 
         return resourceBundle;
     }
-
 }

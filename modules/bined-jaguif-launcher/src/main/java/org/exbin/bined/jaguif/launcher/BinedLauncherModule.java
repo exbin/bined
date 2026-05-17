@@ -241,8 +241,9 @@ public class BinedLauncherModule implements LauncherModule {
             addonManagerModule.registerBasicAddonManager();
             AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
             addonCatalogModule.setDevMode(devMode);
+            addonCatalogModule.registerAddonManagerPages();
             AddonPacksModule addonPacksModule = App.getModule(AddonPacksModule.class);
-            addonPacksModule.registerPacksAddonManager();
+            addonPacksModule.registerAddonManagerPages();
 
             addonCatalogModule.setCatalogPageUrl("https://bined.exbin.org/");
             addonManagerModule.getAddonManager().setAddonCatalogService(addonCatalogModule.createCatalogService());
