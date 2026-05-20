@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'org.exbin.bined.jaguif'
-ext.libraryName = 'BinEd Object Data Support Framework Library'
-ext.libraryDescription = 'BinEd support library for object data'
+ext.libraryName = 'BinEd Hexadecimal Editor Library'
+ext.libraryDescription = 'Hexadecimal editor library'
 
 apply from: '../bined-modules.gradle'
 

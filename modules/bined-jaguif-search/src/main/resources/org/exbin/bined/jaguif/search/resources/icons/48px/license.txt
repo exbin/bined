@@ -1,4 +1,0 @@
-edit-find-5.png
-  Open Icon Library
-  link: openiconlibrary.sourceforge.net
-  license: various

@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'org.exbin.bined.jaguif'
-ext.libraryName = 'BinEd Operations Code Plugin'
-ext.libraryDescription = 'Operation to copy/paste binary data as code for programming languages'
+ext.libraryName = 'BinEd Hexadecimal Editor Library'
+ext.libraryDescription = 'Hexadecimal editor library'
 
 apply from: '../bined-plugins.gradle'
 
