@@ -3,9 +3,10 @@ rootProject.name = 'bined-jaguif-inspector-table'
 if (rootProject.path == ':') {
     include ':modules:bined-jaguif-component'
     include ':modules:bined-jaguif-document'
+    include ':modules:bined-jaguif-editor'
+    include ':modules:bined-jaguif-viewer'
     include ':modules:bined-jaguif-inspector'
     include ':modules:bined-jaguif-objectdata'
-    include ':modules:bined-jaguif-viewer'
     include ':modules:bined-jaguif-search'
 }
 
