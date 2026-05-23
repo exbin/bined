@@ -266,15 +266,15 @@ public class BinarySearch {
                 });
                 controlPanel.setController((DefaultControlController.ControlActionType actionType) -> {
                     if (actionType == DefaultControlController.ControlActionType.OK) {
-                        SearchParameters dialogSearchParameters = findBinaryPanel.getSearchParameters();
-                        dialogSearchParameters.setFromParameters(dialogSearchParameters);
-                        currentSearchDirection = dialogSearchParameters.getSearchDirection();
+                        SearchParameters searchParameters = findBinaryPanel.getSearchParameters();
+                        searchParameters.setFromParameters(searchParameters);
+                        currentSearchDirection = searchParameters.getSearchDirection();
 
-                        ReplaceParameters dialogReplaceParameters = new ReplaceParameters();
-                        dialogReplaceParameters.setFromParameters(findBinaryPanel.getReplaceParameters());
-                        boolean performReplace = dialogReplaceParameters.isPerformReplace();
+                        ReplaceParameters replaceParameters = new ReplaceParameters();
+                        replaceParameters.setFromParameters(findBinaryPanel.getReplaceParameters());
+                        boolean performReplace = replaceParameters.isPerformReplace();
                         binarySearchPanel.switchPanelMode(performReplace ? BinarySearchPanel.PanelMode.REPLACE : BinarySearchPanel.PanelMode.FIND);
-                        invokeSearch(performReplace ? SearchOperation.REPLACE : SearchOperation.FIND, dialogSearchParameters, dialogReplaceParameters);
+                        invokeSearch(performReplace ? SearchOperation.REPLACE : SearchOperation.FIND, searchParameters, replaceParameters);
                     }
 
                     dialog.close();

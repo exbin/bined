@@ -26,7 +26,7 @@ import org.exbin.bined.jaguif.search.SearchParameters;
 @ParametersAreNonnullByDefault
 public interface BinarySearchService {
 
-    void performFind(SearchParameters dialogSearchParameters, SearchStatusListener searchStatusListener);
+    void performFind(SearchParameters searchParameters, SearchStatusListener searchStatusListener);
 
     void setMatchIndex(int matchIndex);
 
