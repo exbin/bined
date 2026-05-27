@@ -23,7 +23,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
- * Edit selection contribution.
+ * Document properties contribution.
  */
 public class PropertiesContribution implements ActionSequenceContribution {
 

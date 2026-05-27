@@ -22,6 +22,5 @@ import org.exbin.jaguif.context.api.StateUpdateType;
  */
 public enum BinedViewerUpdateType implements StateUpdateType {
     VIEW_MODE,
-    FONT,
-    ENCODING
+    FONT
 }

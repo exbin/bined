@@ -207,7 +207,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public boolean canDelete() {
-        return codeArea.isEditable();
+        return codeArea.isEditable() && codeArea.hasSelection();
     }
 
     @Nonnull
