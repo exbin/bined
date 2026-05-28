@@ -27,8 +27,8 @@ import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
+import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
@@ -48,9 +48,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryDataSizeComponent.class);
 
-    private int octalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
-    private int decimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
-    private int hexadecimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
+    protected StatusNumericGrouping numericGrouping = new StatusNumericGrouping();
     protected StatusDataSizeFormat dataSizeFormat = new StatusDataSizeFormat();
 
     protected long dataSize;
@@ -62,7 +60,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        clear();
+        BinaryDataSizeComponent.this.clear();
 
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
@@ -168,15 +166,15 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         int spaceGroupSize = 0;
         switch (codeType) {
             case OCTAL: {
-                spaceGroupSize = octalSpaceGroupSize;
+                spaceGroupSize = numericGrouping.getOctalSpaceGroupSize();
                 break;
             }
             case DECIMAL: {
-                spaceGroupSize = decimalSpaceGroupSize;
+                spaceGroupSize = numericGrouping.getDecimalSpaceGroupSize();
                 break;
             }
             case HEXADECIMAL: {
-                spaceGroupSize = hexadecimalSpaceGroupSize;
+                spaceGroupSize = numericGrouping.getHexadecimalSpaceGroupSize();
                 break;
             }
             default:

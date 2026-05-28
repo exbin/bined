@@ -31,8 +31,8 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
+import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
@@ -52,12 +52,10 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryCursorPositionComponent.class);
 
-    protected int octalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;
-    protected int decimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_DECIMAL_SPACE_GROUP_SIZE;
-    protected int hexadecimalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_HEXADECIMAL_SPACE_GROUP_SIZE;
+    protected StatusNumericGrouping numericGrouping = new StatusNumericGrouping();
     protected StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
 
-    private CodeAreaCaretPosition caretPosition;
+    protected CodeAreaCaretPosition caretPosition;
     protected SelectionRange selectionRange;
 
     public BinaryCursorPositionComponent() {
@@ -73,7 +71,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                 }
             }
         });
-        clear();
+        BinaryCursorPositionComponent.this.clear();
 
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
@@ -111,7 +109,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         updateCursorPositionToolTip();
     }
 
-    private void clear() {
+    protected void clear() {
         component.setText("-");
         component.setToolTipText(resourceBundle.getString("cursorPositionLabel.toolTipText"));
     }
@@ -183,15 +181,15 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         int spaceGroupSize = 0;
         switch (codeType) {
             case OCTAL: {
-                spaceGroupSize = octalSpaceGroupSize;
+                spaceGroupSize = numericGrouping.getOctalSpaceGroupSize();
                 break;
             }
             case DECIMAL: {
-                spaceGroupSize = decimalSpaceGroupSize;
+                spaceGroupSize = numericGrouping.getDecimalSpaceGroupSize();
                 break;
             }
             case HEXADECIMAL: {
-                spaceGroupSize = hexadecimalSpaceGroupSize;
+                spaceGroupSize = numericGrouping.getHexadecimalSpaceGroupSize();
                 break;
             }
             default:
