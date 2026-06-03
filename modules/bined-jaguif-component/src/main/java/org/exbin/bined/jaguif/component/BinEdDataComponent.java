@@ -47,7 +47,7 @@ import org.exbin.bined.swing.capability.FontCapable;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.jaguif.action.api.clipboard.TextClipboardController;
+import org.exbin.jaguif.action.api.clipboard.TextClipboardOperationController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.StateUpdateType;
@@ -64,7 +64,7 @@ import org.exbin.jaguif.text.font.TextFontState;
  * Binary data component.
  */
 @ParametersAreNonnullByDefault
-public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {
+public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardOperationController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {
 
     protected final BinEdComponentPanel binaryComponent;
     protected final CodeAreaCore codeArea;

@@ -37,7 +37,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DeletionController;
 import org.exbin.jaguif.action.api.SelectionController;
-import org.exbin.jaguif.action.api.clipboard.ClipboardController;
+import org.exbin.jaguif.action.api.clipboard.ClipboardOperationController;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.operation.undo.api.ContextUndoRedo;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
@@ -75,7 +75,7 @@ public class BinEdFileManager {
             ContextComponent component = contextManager.getActiveState(ContextComponent.class);
             if (component == binaryDataComponent) {
                 contextManager.updateActiveState(ContextComponent.class, component, SelectionController.UpdateType.CONTENT_STATE);
-                contextManager.updateActiveState(ContextComponent.class, component, ClipboardController.UpdateType.CONTENT_STATE);
+                contextManager.updateActiveState(ContextComponent.class, component, ClipboardOperationController.UpdateType.CONTENT_STATE);
                 contextManager.updateActiveState(ContextComponent.class, component, DeletionController.UpdateType.CONTENT_STATE);
             }
         });

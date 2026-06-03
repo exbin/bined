@@ -37,7 +37,7 @@ import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.jaguif.action.api.clipboard.ClipboardActionsApi;
+import org.exbin.jaguif.action.api.clipboard.ClipboardOperationActions;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
@@ -197,7 +197,7 @@ public class BinedComponentModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        ClipboardActionsApi clipboardActions = actionModule.getClipboardActions();
+        ClipboardOperationActions clipboardOperationActions = actionModule.getClipboardOperationActions();
 
         SequenceContribution contribution = mgmt.registerMenuGroup(CODE_AREA_POPUP_VIEW_GROUP_ID);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
@@ -218,26 +218,26 @@ public class BinedComponentModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerMenuRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
 
-        contribution = clipboardActions.createCutContribution();
+        contribution = clipboardOperationActions.createCutContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = clipboardActions.createCopyContribution();
+        contribution = clipboardOperationActions.createCopyContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
         contribution = new CopyAsCodeContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = clipboardActions.createPasteContribution();
+        contribution = clipboardOperationActions.createPasteContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
         contribution = new PasteFromCodeContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
-        contribution = clipboardActions.createDeleteContribution();
+        contribution = clipboardOperationActions.createDeleteContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_EDIT_GROUP_ID));
 
-        contribution = clipboardActions.createSelectAllContribution();
+        contribution = clipboardOperationActions.createSelectAllContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_SELECTION_GROUP_ID));
 
