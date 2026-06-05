@@ -80,13 +80,13 @@ public class CodeAreaViewModeActions {
 
     @Nonnull
     public ViewModeContribution createMatrixModeViewModeContribution() {
-        ViewModeContribution viewModeContribution = new ViewModeContribution(DualModeAction.ACTION_ID, CodeAreaViewMode.CODE_MATRIX);
+        ViewModeContribution viewModeContribution = new ViewModeContribution(CodeMatrixModeAction.ACTION_ID, CodeAreaViewMode.CODE_MATRIX);
         return viewModeContribution;
     }
 
     @Nonnull
     public ViewModeContribution createTextPreviewViewModeContribution() {
-        ViewModeContribution viewModeContribution = new ViewModeContribution(DualModeAction.ACTION_ID, CodeAreaViewMode.TEXT_PREVIEW);
+        ViewModeContribution viewModeContribution = new ViewModeContribution(TextPreviewModeAction.ACTION_ID, CodeAreaViewMode.TEXT_PREVIEW);
         return viewModeContribution;
     }
 
