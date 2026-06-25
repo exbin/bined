@@ -18,9 +18,8 @@ package org.exbin.bined.jaguif.bookmarks;
 import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
 import org.exbin.bined.swing.CodeAreaPaintState;
@@ -29,7 +28,7 @@ import org.exbin.bined.jaguif.bookmarks.model.BookmarkRecord;
 /**
  * Bookmarks position color modifier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BookmarksPositionColorModifier implements CodeAreaColorAssessor {
 
     protected CodeAreaColorAssessor parentAssessor;
@@ -79,7 +78,6 @@ public class BookmarksPositionColorModifier implements CodeAreaColorAssessor {
         return null;
     }
 
-    @Nonnull
     @Override
     public Optional<CodeAreaColorAssessor> getParentColorAssessor() {
         return Optional.ofNullable(parentAssessor);

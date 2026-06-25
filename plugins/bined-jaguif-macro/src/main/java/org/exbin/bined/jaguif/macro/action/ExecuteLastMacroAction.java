@@ -18,7 +18,7 @@ package org.exbin.bined.jaguif.macro.action;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -40,7 +40,7 @@ import org.exbin.jaguif.utils.ActionUtils;
 /**
  * Execute last macro record action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ExecuteLastMacroAction extends AbstractAction {
 
     public static final String ACTION_ID = "executeLastMacro";

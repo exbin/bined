@@ -22,8 +22,7 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.CodeAreaUtils;
@@ -43,7 +42,7 @@ import org.exbin.bined.jaguif.operation.method.basic.gui.CopyAsTextDataPanel;
 /**
  * Copy as text data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CopyAsTextDataMethod implements CopyAsDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CopyAsTextDataPanel.class);
@@ -52,13 +51,11 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
     private long previewLengthLimit = 1024;
     private TextPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         CopyAsTextDataPanel component = new CopyAsTextDataPanel();
@@ -156,7 +153,6 @@ public class CopyAsTextDataMethod implements CopyAsDataMethod {
         });
     }
 
-    @Nonnull
     public String generateData(BinaryData sourceData, long position, int length, CodeType codeType, CodeCharactersCase codeCharactersCase, CodeSeparator codeSeparator, int codesPerRow) {
         if (length == 0) {
             return "";

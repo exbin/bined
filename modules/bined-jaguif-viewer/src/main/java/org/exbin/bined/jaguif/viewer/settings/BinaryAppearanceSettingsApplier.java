@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.viewer.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
@@ -24,7 +24,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Binary appearance settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryAppearanceSettingsApplier implements SettingsApplier {
     
     public static final String APPLIER_ID = "binaryAppearance";

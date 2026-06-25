@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.editor;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -44,7 +43,7 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 /**
  * Binary data editor module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedEditorModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedEditorModule.class);
@@ -55,7 +54,6 @@ public class BinedEditorModule implements Module {
     public BinedEditorModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedEditorModule.class);
@@ -89,7 +87,6 @@ public class BinedEditorModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
-    @Nonnull
     public EditSelectionAction createEditSelectionAction() {
         EditSelectionAction editSelectionAction = new EditSelectionAction();
         editSelectionAction.init(getResourceBundle());

@@ -20,9 +20,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -37,7 +36,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Inspectors settings panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class InspectorsSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorsSettingsPanel.class);
@@ -70,7 +69,6 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
         rowsList.addListSelectionListener((ListSelectionEvent e) -> updateStates());
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
@@ -349,7 +347,6 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
         settingsModifiedListener = listener;
     }
 
-    @Nonnull
     public List<InspectorRecord> getItems() {
         List<InspectorRecord> records = new ArrayList<>();
         DefaultListModel<InspectorRecord> model = (DefaultListModel<InspectorRecord>) rowsList.getModel();

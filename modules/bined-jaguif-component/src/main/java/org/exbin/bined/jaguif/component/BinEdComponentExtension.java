@@ -15,14 +15,14 @@
  */
 package org.exbin.bined.jaguif.component;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Binary data binaryComponent extension.
  * <p>
  * TODO: Rework using messaging
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinEdComponentExtension {
 
     /**

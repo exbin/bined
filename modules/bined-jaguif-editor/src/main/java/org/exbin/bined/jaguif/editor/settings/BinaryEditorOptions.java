@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.editor.settings;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
@@ -25,7 +24,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Binary editor options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryEditorOptions implements SettingsOptions {
 
     public static final String KEY_ENTER_KEY_HANDLING_MODE = "enterKeyHandlingMode";
@@ -37,7 +36,6 @@ public class BinaryEditorOptions implements SettingsOptions {
         this.storage = optionsStorage;
     }
 
-    @Nonnull
     public EnterKeyHandlingMode getEnterKeyHandlingMode() {
         EnterKeyHandlingMode defaultValue = EnterKeyHandlingMode.PLATFORM_SPECIFIC;
         try {
@@ -51,7 +49,6 @@ public class BinaryEditorOptions implements SettingsOptions {
         storage.put(KEY_ENTER_KEY_HANDLING_MODE, enterKeyHandlingMode.name());
     }
 
-    @Nonnull
     public TabKeyHandlingMode getTabKeyHandlingMode() {
         TabKeyHandlingMode defaultValue = TabKeyHandlingMode.PLATFORM_SPECIFIC;
         try {

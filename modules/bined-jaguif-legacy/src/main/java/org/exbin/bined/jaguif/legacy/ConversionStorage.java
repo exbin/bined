@@ -18,15 +18,14 @@ package org.exbin.bined.jaguif.legacy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Legacy preferences for version 0.1.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ConversionStorage implements OptionsStorage {
 
     protected OptionsStorage storage;
@@ -47,13 +46,11 @@ public class ConversionStorage implements OptionsStorage {
         return storage.exists(getKey(key));
     }
 
-    @Nonnull
     @Override
     public Optional<String> get(String key) {
         return storage.get(getKey(key));
     }
 
-    @Nonnull
     @Override
     public String get(String key, String def) {
         return storage.get(getKey(key), def);
@@ -134,7 +131,6 @@ public class ConversionStorage implements OptionsStorage {
         storage.sync();
     }
 
-    @Nonnull
     protected String getKey(String key) {
         // Recent file records conversion
         if (key.startsWith("recentFile.")) {

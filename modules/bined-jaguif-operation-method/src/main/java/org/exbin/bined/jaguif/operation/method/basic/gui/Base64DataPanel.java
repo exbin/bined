@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.basic.Base64DataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -26,7 +25,7 @@ import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 /**
  * Base 64 data component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class Base64DataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(Base64DataPanel.class);
@@ -41,7 +40,6 @@ public class Base64DataPanel extends javax.swing.JPanel {
     private void init() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -208,7 +206,6 @@ public class Base64DataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public Base64DataMethod.OperationType getOperationType() {
         return basicDecoderRadioButton.isSelected() ? Base64DataMethod.OperationType.BASIC_DECODER : Base64DataMethod.OperationType.BASIC_ENCODER;
     }

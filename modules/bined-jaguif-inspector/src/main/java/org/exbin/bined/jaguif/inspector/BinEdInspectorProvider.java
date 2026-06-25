@@ -15,13 +15,12 @@
  */
 package org.exbin.bined.jaguif.inspector;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * BinEd inspector provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinEdInspectorProvider {
 
     /**
@@ -29,7 +28,6 @@ public interface BinEdInspectorProvider {
      *
      * @return identifier
      */
-    @Nonnull
     String getId();
 
     /**
@@ -37,7 +35,6 @@ public interface BinEdInspectorProvider {
      *
      * @return name
      */
-    @Nonnull
     String getName();
 
     /**
@@ -45,6 +42,5 @@ public interface BinEdInspectorProvider {
      *
      * @return component
      */
-    @Nonnull
     BinEdInspector createInspector();
 }

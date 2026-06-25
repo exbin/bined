@@ -18,9 +18,8 @@ package org.exbin.bined.jaguif.operation.code.method.gui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
@@ -31,7 +30,7 @@ import org.exbin.bined.jaguif.operation.code.CodeExportOptions;
 /**
  * Copy as code method panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CopyAsCodePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CopyAsCodePanel.class);
@@ -106,7 +105,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         return null;
     }
 
-    @Nonnull
     public CodeExportOptions getCurrentOptions() {
         return currentOptions;
     }
@@ -139,7 +137,6 @@ public class CopyAsCodePanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }

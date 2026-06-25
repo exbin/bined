@@ -25,8 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -48,7 +47,7 @@ import org.exbin.bined.jaguif.operation.method.basic.gui.PasteFromTextDataPanel;
 /**
  * Paste from text data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PasteFromTextDataMethod implements PasteFromDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PasteFromTextDataPanel.class);
@@ -58,13 +57,11 @@ public class PasteFromTextDataMethod implements PasteFromDataMethod {
     private long previewLengthLimit = 0;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         PasteFromTextDataPanel component = new PasteFromTextDataPanel();
@@ -85,7 +82,6 @@ public class PasteFromTextDataMethod implements PasteFromDataMethod {
         ((PasteFromTextDataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createPasteCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         PasteFromTextDataPanel panel = (PasteFromTextDataPanel) component;
@@ -126,7 +122,6 @@ public class PasteFromTextDataMethod implements PasteFromDataMethod {
         });
     }
 
-    @Nonnull
     private ResultData generateData(CodeType codeType) {
         ResultData resultData = new ResultData();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -156,7 +151,6 @@ public class PasteFromTextDataMethod implements PasteFromDataMethod {
         return resultData;
     }
 
-    @Nonnull
     private CodeAreaCommand pasteBinaryData(BinaryData pastedData, CodeAreaCore codeArea) {
         DeleteSelectionCommand deleteSelectionCommand = null;
         if (codeArea.hasSelection()) {

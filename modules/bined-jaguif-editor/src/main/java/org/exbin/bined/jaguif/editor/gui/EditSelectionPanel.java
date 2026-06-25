@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.editor.gui;
 
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.SelectionRange;
 import org.exbin.jaguif.App;
@@ -29,7 +28,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Edit selection for binary editor.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class EditSelectionPanel extends javax.swing.JPanel {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EditSelectionPanel.class);
@@ -94,7 +93,6 @@ public class EditSelectionPanel extends javax.swing.JPanel {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -491,7 +489,6 @@ public class EditSelectionPanel extends javax.swing.JPanel {
         updateStartTargetPosition();
     }
 
-    @Nonnull
     public Optional<SelectionRange> getSelectionRange() {
         return Optional.of(new SelectionRange(getStartTargetPosition(), getEndTargetPosition()));
     }

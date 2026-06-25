@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.bookmarks.settings;
 
 import java.awt.Color;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.bookmarks.model.BookmarkRecord;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Code area bookmarks options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BookmarkOptions implements SettingsOptions {
 
     public static final String KEY_BOOKMARK_COUNT = "bookmarksCount";
@@ -47,7 +46,6 @@ public class BookmarkOptions implements SettingsOptions {
         return storage.getInt(KEY_BOOKMARK_COUNT, 0);
     }
 
-    @Nonnull
     public BookmarkRecord getBookmarkRecord(int index) {
         String prefix = KEY_BOOKMARK_VALUE_PREFIX + index + ".";
         long startPosition = storage.getLong(prefix + BOOKMARK_START_POSITION, 0);

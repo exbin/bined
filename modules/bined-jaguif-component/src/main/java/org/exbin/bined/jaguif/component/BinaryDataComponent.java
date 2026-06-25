@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.component;
 
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.context.api.ContextComponent;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.utils.ComponentProvider;
 /**
  * Binary data component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinaryDataComponent extends ContextComponent, ComponentProvider, CodeTypeState, NonprintablesState {
 
     /**
@@ -34,7 +33,6 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      *
      * @return code area component
      */
-    @Nonnull
     CodeAreaCore getCodeArea();
 
     /**
@@ -42,7 +40,6 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      *
      * @return undo redo
      */
-    @Nonnull
     Optional<BinaryDataUndoRedo> getUndoRedo();
 
     /**
@@ -52,6 +49,5 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      * @param clazz extension class
      * @return extension instance
      */
-    @Nonnull
     <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz);
 }

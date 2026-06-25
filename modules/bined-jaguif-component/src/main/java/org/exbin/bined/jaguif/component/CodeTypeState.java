@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.component;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.bined.PositionCodeType;
@@ -25,7 +24,7 @@ import org.exbin.jaguif.context.api.StateUpdateType;
 /**
  * Code type state.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface CodeTypeState {
 
     /**
@@ -33,7 +32,6 @@ public interface CodeTypeState {
      *
      * @return code type
      */
-    @Nonnull
     CodeType getCodeType();
 
     /**
@@ -48,7 +46,6 @@ public interface CodeTypeState {
      *
      * @return position code type
      */
-    @Nonnull
     PositionCodeType getPositionCodeType();
 
     /**
@@ -63,7 +60,6 @@ public interface CodeTypeState {
      *
      * @return code characters case
      */
-    @Nonnull
     CodeCharactersCase getCodeCharactersCase();
 
     /**

@@ -15,14 +15,13 @@
  */
 package org.exbin.bined.jaguif.theme.model;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
 
 /**
  * Decorations theme profile.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DecorThemeProfile implements ThemeProfile {
 
     private String profileName;
@@ -34,13 +33,11 @@ public class DecorThemeProfile implements ThemeProfile {
         this.themeProfile = themeProfile;
     }
 
-    @Nonnull
     @Override
     public String getProfileName() {
         return profileName;
     }
 
-    @Nonnull
     public SectionCodeAreaThemeProfile getThemeProfile() {
         return themeProfile;
     }

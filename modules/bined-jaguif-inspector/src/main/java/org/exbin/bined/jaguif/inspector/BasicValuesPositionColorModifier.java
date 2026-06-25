@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.inspector;
 
 import java.awt.Color;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.swing.CodeAreaColorAssessor;
 import org.exbin.bined.swing.CodeAreaPaintState;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.utils.UiUtils;
 /**
  * Basic values inspector position color modifier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {
 
     protected CodeAreaColorAssessor parentAssessor;
@@ -63,7 +62,6 @@ public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {
         return null;
     }
 
-    @Nonnull
     @Override
     public Optional<CodeAreaColorAssessor> getParentColorAssessor() {
         return Optional.ofNullable(parentAssessor);

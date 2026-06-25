@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.operation.bouncycastle;
 
 import java.security.Security;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.ModuleUtils;
@@ -32,7 +31,7 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 /**
  * Binary data editor operations module using bouncy castle library.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedOperationBouncycastleModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedOperationBouncycastleModule.class);
@@ -61,7 +60,6 @@ public class BinedOperationBouncycastleModule implements PluginModule {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOperationBouncycastleModule.class);

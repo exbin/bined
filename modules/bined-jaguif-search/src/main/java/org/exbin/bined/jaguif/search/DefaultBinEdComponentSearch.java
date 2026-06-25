@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif.search;
 
 import java.awt.BorderLayout;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
@@ -30,7 +30,7 @@ import org.exbin.bined.jaguif.search.service.DefaultBinarySearchService;
 /**
  * Bined component search.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
 
     private BinEdComponentPanel componentPanel;

@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.document.gui;
 import java.net.URI;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListModel;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.delta.DataSegment;
@@ -35,7 +34,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * File properties panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinEdFilePropertiesPanel.class);
@@ -44,7 +43,6 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }

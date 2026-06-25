@@ -16,13 +16,12 @@
 package org.exbin.bined.jaguif.operation.method.api;
 
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Interface for data operation method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface DataOperationMethod {
 
     /**
@@ -30,7 +29,6 @@ public interface DataOperationMethod {
      *
      * @return method name
      */
-    @Nonnull
     String getName();
 
     /**
@@ -38,7 +36,6 @@ public interface DataOperationMethod {
      *
      * @return method component
      */
-    @Nonnull
     Component createComponent();
 
     /**

@@ -20,9 +20,8 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -38,7 +37,7 @@ import org.exbin.bined.jaguif.theme.settings.CodeAreaColorOptions;
 /**
  * Table model for colors profile panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ColorProfileTableModel implements TableModel {
 
     private final List<TableModelListener> listeners = new ArrayList<>();
@@ -79,7 +78,6 @@ public class ColorProfileTableModel implements TableModel {
         rows.add(new ColorRow(getColorTypeText(CodeAreaColorOptions.NONPRINTABLES_BACKGROUND), CodeAreaNonprintablesColorType.NONPRINTABLES_BACKGROUND));
     }
 
-    @Nonnull
     private String getColorTypeText(String colorType) {
         return resourceBundle.getString("colorType." + colorType);
     }
@@ -103,7 +101,6 @@ public class ColorProfileTableModel implements TableModel {
         return 2;
     }
 
-    @Nonnull
     @Override
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
@@ -116,7 +113,6 @@ public class ColorProfileTableModel implements TableModel {
         throw createUnexpectedColumnException(columnIndex);
     }
 
-    @Nonnull
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
@@ -200,12 +196,11 @@ public class ColorProfileTableModel implements TableModel {
         listeners.forEach((listener) -> listener.tableChanged(new TableModelEvent(this, 0, rows.size() - 1, 1, TableModelEvent.UPDATE)));
     }
 
-    @Nonnull
     private static InvalidParameterException createUnexpectedColumnException(int columnIndex) {
         return new InvalidParameterException("Unexpected column index " + columnIndex);
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class ColorRow {
 
         String colorName;

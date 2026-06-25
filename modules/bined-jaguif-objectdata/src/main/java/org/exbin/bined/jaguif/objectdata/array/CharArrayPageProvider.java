@@ -18,13 +18,12 @@ package org.exbin.bined.jaguif.objectdata.array;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Character array as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CharArrayPageProvider implements PageProvider {
 
     private final char[] arrayRef;
@@ -33,7 +32,6 @@ public class CharArrayPageProvider implements PageProvider {
         this.arrayRef = arrayRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int pageSize = PageProviderBinaryData.PAGE_SIZE / 2;

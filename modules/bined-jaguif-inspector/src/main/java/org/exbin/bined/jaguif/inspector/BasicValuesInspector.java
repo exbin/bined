@@ -15,9 +15,8 @@
  */
 package org.exbin.bined.jaguif.inspector;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import org.exbin.bined.CodeAreaCaretListener;
 import org.exbin.bined.CodeAreaCaretPosition;
@@ -31,7 +30,7 @@ import org.exbin.bined.jaguif.inspector.gui.BasicValuesPanel;
 /**
  * BinEd basic values inspector.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BasicValuesInspector implements BinEdInspector {
 
     private BasicValuesPanel component;
@@ -42,7 +41,6 @@ public class BasicValuesInspector implements BinEdInspector {
     private CodeAreaCaretListener caretMovedListener;
     private BinaryDataUndoRedoChangeListener undoRedoChangeListener;
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         if (component == null) {
@@ -57,7 +55,6 @@ public class BasicValuesInspector implements BinEdInspector {
         return component;
     }
 
-    @Nonnull
     protected BasicValuesPanel createComponent() {
         return new BasicValuesPanel();
     }

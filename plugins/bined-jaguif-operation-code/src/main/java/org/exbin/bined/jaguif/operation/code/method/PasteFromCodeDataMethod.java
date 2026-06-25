@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.operation.code.method;
 import java.awt.Component;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.EditOperation;
@@ -40,7 +39,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Paste programming language code as binary data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PasteFromCodeDataMethod implements PasteFromDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PasteFromCodePanel.class);
@@ -59,13 +58,11 @@ public class PasteFromCodeDataMethod implements PasteFromDataMethod {
         );
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         final PasteFromCodePanel pasteFromCodePanel = new PasteFromCodePanel();
@@ -78,7 +75,6 @@ public class PasteFromCodeDataMethod implements PasteFromDataMethod {
         // ((PasteFromCodePanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createPasteCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         BinaryData parsedData = ((PasteFromCodePanel) component).getParsedData();

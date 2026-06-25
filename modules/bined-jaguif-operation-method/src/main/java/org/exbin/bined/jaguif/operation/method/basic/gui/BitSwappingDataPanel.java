@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListModel;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.basic.BitSwappingDataMethod;
@@ -28,7 +27,7 @@ import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 /**
  * Fill simple data component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BitSwappingDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BitSwappingDataPanel.class);
@@ -48,7 +47,6 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
         operationTypeList.setModel(operationTypesModel);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -134,7 +132,6 @@ public class BitSwappingDataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public Optional<BitSwappingDataMethod.OperationType> getOperationType() {
         int selectedIndex = operationTypeList.getSelectedIndex();
         return selectedIndex >= 0 ? Optional.of(BitSwappingDataMethod.OperationType.values()[selectedIndex]) : Optional.empty();

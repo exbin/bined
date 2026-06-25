@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.viewer.settings;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.viewer.settings.gui.BinaryAppearanceSettingsPanel;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsComponentProvider;
@@ -24,12 +23,11 @@ import org.exbin.jaguif.options.settings.api.SettingsComponentProvider;
 /**
  * Binary appearance settings component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryAppearanceSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "binaryAppearance";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         return new BinaryAppearanceSettingsPanel();

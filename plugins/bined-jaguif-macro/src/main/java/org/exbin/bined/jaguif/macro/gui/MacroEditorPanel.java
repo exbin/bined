@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.macro.gui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.macro.model.MacroRecord;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Macro editor panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacroEditorPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(MacroEditorPanel.class);
@@ -40,7 +39,6 @@ public class MacroEditorPanel extends javax.swing.JPanel {
     private void init() {
     }
 
-    @Nonnull
     public MacroRecord getMacroRecord() {
         MacroRecord macroRecord = new MacroRecord(
                 nameTextField.getText()
@@ -77,12 +75,10 @@ public class MacroEditorPanel extends javax.swing.JPanel {
         stepsTextArea.setText(stringBuilder.toString());
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 
-    @Nonnull
     public String getMacroName() {
         return nameTextField.getText();
     }
@@ -91,7 +87,6 @@ public class MacroEditorPanel extends javax.swing.JPanel {
         nameTextField.setText(name);
     }
 
-    @Nonnull
     public String getMacroSteps() {
         return stepsTextArea.getText();
     }

@@ -16,13 +16,13 @@
 package org.exbin.bined.jaguif.operation.method.api;
 
 import java.awt.Component;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Interface for copy as data component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface CopyAsDataMethod extends DataOperationMethod {
 
     /**

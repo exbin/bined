@@ -15,25 +15,24 @@
  */
 package org.exbin.bined.jaguif.viewer.status.contribution;
 
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
 import org.exbin.jaguif.statusbar.api.ComponentStatusBarContribution;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Binary data size status contribution.
  */
+@NullMarked
 public class BinaryDataSizeStatusContrib implements ComponentStatusBarContribution {
 
     public static final String CONTRIBUTION_ID = "binaryDataSize";
 
-    @Nonnull
     @Override
     public StatusBarComponent createComponent() {
         return new BinaryDataSizeComponent();
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

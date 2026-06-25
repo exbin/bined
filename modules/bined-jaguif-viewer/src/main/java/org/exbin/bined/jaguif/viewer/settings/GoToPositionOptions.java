@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.viewer.settings;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.jaguif.component.RelativePositionMode;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Go to position options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class GoToPositionOptions implements SettingsOptions {
 
     public static final String KEY_GO_TO_BINARY_POSITION_MODE = "goToBinaryPositionMode";
@@ -39,7 +38,6 @@ public class GoToPositionOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public RelativePositionMode getPositionMode() {
         RelativePositionMode defaultMode = RelativePositionMode.FROM_START;
         try {
@@ -54,7 +52,6 @@ public class GoToPositionOptions implements SettingsOptions {
         storage.put(KEY_GO_TO_BINARY_POSITION_MODE, positionMode.name());
     }
 
-    @Nonnull
     public PositionCodeType getGoToBinaryPositionValueType() {
         PositionCodeType defaultCodeType = PositionCodeType.DECIMAL;
         try {

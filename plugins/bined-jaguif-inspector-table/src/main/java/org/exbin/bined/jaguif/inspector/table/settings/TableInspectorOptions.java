@@ -15,15 +15,14 @@
  */
 package org.exbin.bined.jaguif.inspector.table.settings;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Table inspector options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TableInspectorOptions implements SettingsOptions {
 
     public static final String KEY_ROWS_COUNT = "table_inspector.rowCount";
@@ -44,7 +43,6 @@ public class TableInspectorOptions implements SettingsOptions {
         storage.putInt(KEY_ROWS_COUNT, rowsCount);
     }
 
-    @Nonnull
     public String getRowType(int rowIndex) {
         return storage.get(KEY_ROW_PREFIX + rowIndex + "." + KEY_ROW_TYPE, "");
     }

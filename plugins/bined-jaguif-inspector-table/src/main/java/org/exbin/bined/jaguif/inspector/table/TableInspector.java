@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.inspector.table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import org.exbin.bined.CodeAreaCaretListener;
 import org.exbin.bined.DataChangedListener;
@@ -41,7 +40,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 /**
  * Table inspector.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TableInspector implements BinEdInspector {
 
     protected TableInspectorPanel component;
@@ -50,7 +49,6 @@ public class TableInspector implements BinEdInspector {
     protected DataChangedListener dataChangedListener;
     protected CodeAreaCaretListener caretMovedListener;
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         if (component == null) {

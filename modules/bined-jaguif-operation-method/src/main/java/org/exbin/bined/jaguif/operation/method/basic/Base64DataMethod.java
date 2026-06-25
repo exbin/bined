@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.operation.method.basic;
 
 import java.awt.Component;
 import java.util.Base64;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -41,7 +40,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Base 64 data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class Base64DataMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(Base64DataPanel.class);
@@ -50,13 +49,11 @@ public class Base64DataMethod implements ConvertDataMethod {
     private long previewLengthLimit = 0;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         Base64DataPanel component = new Base64DataPanel();
@@ -68,7 +65,6 @@ public class Base64DataMethod implements ConvertDataMethod {
         ((Base64DataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         Base64DataPanel panel = (Base64DataPanel) component;

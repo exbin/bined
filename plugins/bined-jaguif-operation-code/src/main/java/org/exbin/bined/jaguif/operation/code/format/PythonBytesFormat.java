@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.operation.code.format;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.jaguif.operation.code.CodeExportFormat;
 import org.exbin.bined.jaguif.operation.code.CodeExportOptions;
@@ -24,22 +23,19 @@ import org.exbin.bined.jaguif.operation.code.CodeExportOptions;
 /**
  * Code format for Python array.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PythonBytesFormat implements CodeExportFormat {
 
-    @Nonnull
     @Override
     public String getFormatName() {
         return "Python bytes";
     }
 
-    @Nonnull
     @Override
     public String getLanguageName() {
         return "Python";
     }
 
-    @Nonnull
     @Override
     public String generateCode(BinaryData data, CodeExportOptions options) {
         StringBuilder code = new StringBuilder();
@@ -74,7 +70,6 @@ public class PythonBytesFormat implements CodeExportFormat {
         return code.toString();
     }
 
-    @Nonnull
     @Override
     public CodeExportOptions getDefaultOptions() {
         CodeExportOptions options = new CodeExportOptions();

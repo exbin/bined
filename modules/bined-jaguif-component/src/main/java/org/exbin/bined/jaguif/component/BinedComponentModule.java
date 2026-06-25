@@ -23,9 +23,8 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
@@ -67,7 +66,7 @@ import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 /**
  * Binary data component module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedComponentModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedComponentModule.class);
@@ -99,7 +98,6 @@ public class BinedComponentModule implements Module {
     public BinedComponentModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedComponentModule.class);
@@ -122,7 +120,6 @@ public class BinedComponentModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_MENU_GROUP_ID));
     }
 
-    @Nonnull
     public ShowNonprintablesActions getShowNonprintablesActions() {
         if (showNonprintablesActions == null) {
             showNonprintablesActions = new ShowNonprintablesActions();
@@ -132,7 +129,6 @@ public class BinedComponentModule implements Module {
         return showNonprintablesActions;
     }
 
-    @Nonnull
     public GoToPositionAction createGoToPositionAction() {
         GoToPositionAction goToPositionAction = new GoToPositionAction();
         goToPositionAction.init(getResourceBundle());
@@ -146,7 +142,6 @@ public class BinedComponentModule implements Module {
         return goToPositionAction;
     }
 
-    @Nonnull
     public ClipboardCodeActions getClipboardCodeActions() {
         if (clipboardCodeActions == null) {
             clipboardCodeActions = new ClipboardCodeActions();
@@ -246,7 +241,6 @@ public class BinedComponentModule implements Module {
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(CODE_AREA_POPUP_FIND_GROUP_ID));
     }
 
-    @Nonnull
     public JPopupMenu createCodeAreaPopupMenu(final SectCodeArea codeArea, int x, int y) {
         CodeAreaZone codeAreaZone = codeArea.getPainter().getPositionZone(x, y);
 
@@ -267,7 +261,6 @@ public class BinedComponentModule implements Module {
         return popupMenu;
     }
 
-    @Nonnull
     public JPopupMenu createBinaryComponentPopupMenu(final BinEdDataComponent dataComponent, int x, int y) {
         CodeAreaZone codeAreaZone = ((SectCodeArea) dataComponent.getCodeArea()).getPainter().getPositionZone(x, y);
 
@@ -286,7 +279,6 @@ public class BinedComponentModule implements Module {
         return popupMenu;
     }
 
-    @Nonnull
     public JPopupMenu createBinaryDocumentPopupMenu(final SectCodeArea codeArea, int x, int y) {
         CodeAreaZone codeAreaZone = codeArea.getPainter().getPositionZone(x, y);
 
@@ -304,11 +296,10 @@ public class BinedComponentModule implements Module {
         return popupMenu;
     }
 
-    @Nonnull
     public JPopupMenu createCodeAreaPopupMenu() {
         return new JPopupMenu() {
             @Override
-            public void show(@Nonnull Component invoker, int x, int y) {
+            public void show(Component invoker, int x, int y) {
                 SectCodeArea codeArea;
                 int clickedX = x;
                 int clickedY = y;
@@ -326,11 +317,10 @@ public class BinedComponentModule implements Module {
         };
     }
 
-    @Nonnull
     public JPopupMenu createBinaryComponentPopupMenu(BinEdDataComponent dataComponent) {
         return new JPopupMenu() {
             @Override
-            public void show(@Nonnull Component invoker, int x, int y) {
+            public void show(Component invoker, int x, int y) {
                 SectCodeArea codeArea;
                 int clickedX = x;
                 int clickedY = y;
@@ -350,11 +340,10 @@ public class BinedComponentModule implements Module {
         };
     }
 
-    @Nonnull
     public JPopupMenu createBinaryDocumentPopupMenu() {
         return new JPopupMenu() {
             @Override
-            public void show(@Nonnull Component invoker, int x, int y) {
+            public void show(Component invoker, int x, int y) {
                 SectCodeArea codeArea;
                 int clickedX = x;
                 int clickedY = y;

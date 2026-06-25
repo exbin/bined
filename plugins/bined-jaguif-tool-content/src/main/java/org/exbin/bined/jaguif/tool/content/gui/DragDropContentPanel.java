@@ -16,7 +16,6 @@
 package org.exbin.bined.jaguif.tool.content.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -35,14 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
-import javax.swing.JViewport;
 import javax.swing.border.BevelBorder;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EmptyBinaryData;
@@ -59,7 +56,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Clipboard content panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DragDropContentPanel extends javax.swing.JPanel {
 
     public static final String POPUP_MENU_POSTFIX = ".dragDropContentPanel";
@@ -229,7 +226,6 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         inspectComponentPanel.setShowPropertiesOnly(true);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -246,7 +242,6 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         saveAsFileButton.setEnabled(enabled);
     }
 
-    @Nonnull
     public Optional<BinaryData> getContentBinaryData() {
         BinaryData contentData = dataCodeArea.getContentData();
         return Optional.ofNullable(contentData instanceof EmptyBinaryData ? null : contentData);
@@ -539,7 +534,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         dataCodeArea.setComponentPopupMenu(popupMenu);
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class PropertyClass {
 
         Object classInst;
@@ -549,7 +544,7 @@ public class DragDropContentPanel extends javax.swing.JPanel {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private class ContentDropTarget extends DropTarget {
 
         @Override

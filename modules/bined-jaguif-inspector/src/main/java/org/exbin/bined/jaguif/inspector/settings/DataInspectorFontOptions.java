@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.inspector.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.PrefixOptionsStorage;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
@@ -23,7 +23,7 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 /**
  * Data inspector text font options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataInspectorFontOptions extends TextFontOptions {
 
     public static final String PREFIX = "data_inspector.";

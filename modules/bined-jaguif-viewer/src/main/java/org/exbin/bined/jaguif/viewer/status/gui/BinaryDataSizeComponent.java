@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.viewer.status.gui;
 
 import java.awt.Dimension;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.exbin.bined.CodeAreaUtils;
@@ -40,7 +39,7 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 /**
  * BinEd edit mode status component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     protected static final String BR_TAG = "<br>";
@@ -87,7 +86,6 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         });
     }
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         return component;
@@ -157,7 +155,6 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         component.setToolTipText(builder.toString());
     }
 
-    @Nonnull
     private String numberToPosition(long value, PositionCodeType codeType) {
         if (value == 0) {
             return "0";

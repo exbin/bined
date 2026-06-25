@@ -15,30 +15,28 @@
  */
 package org.exbin.bined.jaguif.inspector.table.value;
 
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowItem;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Byte value type.
  */
+@NullMarked
 public class ByteValueRowType implements ValueRowType {
 
     private boolean signed = false;
 
-    @Nonnull
     @Override
     public String getId() {
         return "byte";
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return "Byte";
     }
 
-    @Nonnull
     @Override
     public ValueRowItem createRowItem() {
         return new ValueRowItem(getId(), getName(), Byte.class.getTypeName(), null) {

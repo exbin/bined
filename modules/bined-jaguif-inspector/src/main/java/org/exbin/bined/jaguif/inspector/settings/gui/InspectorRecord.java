@@ -15,13 +15,12 @@
  */
 package org.exbin.bined.jaguif.inspector.settings.gui;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Inspector record for configuration.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class InspectorRecord {
 
     private final String id;
@@ -33,12 +32,10 @@ public class InspectorRecord {
         this.name = name;
     }
 
-    @Nonnull
     public String getId() {
         return id;
     }
 
-    @Nonnull
     public String getName() {
         return name;
     }

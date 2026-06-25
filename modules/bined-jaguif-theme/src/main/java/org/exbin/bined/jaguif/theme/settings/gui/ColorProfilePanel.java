@@ -20,8 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.jaguif.App;
@@ -30,7 +29,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Color profile panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ColorProfilePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilePanel.class);
@@ -52,19 +51,17 @@ public class ColorProfilePanel extends javax.swing.JPanel {
         colorTableModel.setColorProfile((SectionCodeAreaColorProfile) codeArea.getColorsProfile());
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 
-    public void setColorProfile(@Nonnull SectionCodeAreaColorProfile colorProfile) {
+    public void setColorProfile(SectionCodeAreaColorProfile colorProfile) {
         SectionCodeAreaColorProfile newColorProfile = colorProfile.createCopy();
         SectCodeArea codeArea = previewPanel.getCodeArea();
         codeArea.setColorsProfile(newColorProfile);
         colorTableModel.setColorProfile(newColorProfile);
     }
 
-    @Nonnull
     public SectionCodeAreaColorProfile getColorProfile() {
         SectCodeArea codeArea = previewPanel.getCodeArea();
         SectionCodeAreaColorProfile profile = (SectionCodeAreaColorProfile) codeArea.getColorsProfile();

@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.search;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
@@ -23,7 +23,7 @@ import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 /**
  * Bined component search.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinEdComponentSearch extends BinEdComponentExtension {
 
     /**

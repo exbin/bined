@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.tool.content;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.PluginModule;
 import org.exbin.jaguif.ModuleUtils;
@@ -35,7 +34,7 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 /**
  * Binary editor clipboard support module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedToolContentModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedToolContentModule.class);
@@ -45,7 +44,6 @@ public class BinedToolContentModule implements PluginModule {
     public BinedToolContentModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedToolContentModule.class);
@@ -63,14 +61,12 @@ public class BinedToolContentModule implements PluginModule {
         });
     }
 
-    @Nonnull
     public ClipboardContentAction createClipboardContentAction() {
         ClipboardContentAction clipboardContentAction = new ClipboardContentAction();
         clipboardContentAction.init(getResourceBundle());
         return clipboardContentAction;
     }
 
-    @Nonnull
     public DragDropContentAction createDragDropContentAction() {
         DragDropContentAction dragDropContentAction = new DragDropContentAction();
         dragDropContentAction.init(getResourceBundle());

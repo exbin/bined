@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.theme.gui;
 
 import java.awt.BorderLayout;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 /**
  * Wrapper panel for named profile.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ProfileSelectionPanel extends javax.swing.JPanel {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ProfileSelectionPanel.class);
@@ -63,7 +62,6 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public int getDefaultProfile() {
         return defaultProfileComboBox.getSelectedIndex();
     }
@@ -135,7 +133,7 @@ public class ProfileSelectionPanel extends javax.swing.JPanel {
         this.settingsModifiedListener = settingsModifiedListener;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private class ProfileListDataListener implements ListDataListener {
 
         private final ProfileListPanel listPanel;

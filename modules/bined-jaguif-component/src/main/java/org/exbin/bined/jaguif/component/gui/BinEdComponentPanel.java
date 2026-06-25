@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.component.gui;
 
 import java.awt.Font;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.command.EmptyBinaryDataUndoRedo;
@@ -33,7 +32,7 @@ import org.exbin.bined.jaguif.component.BinedComponentModule;
 /**
  * Binary editor component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdComponentPanel extends javax.swing.JPanel {
 
     protected SectCodeArea codeArea;
@@ -59,12 +58,10 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         add(codeArea);
     }
 
-    @Nonnull
     protected SectCodeArea createCodeArea() {
         return new SectCodeArea();
     }
 
-    @Nonnull
     public SectCodeArea getCodeArea() {
         return codeArea;
     }
@@ -88,7 +85,6 @@ public class BinEdComponentPanel extends javax.swing.JPanel {
         codeArea.setComponentPopupMenu(menu);
     }
 
-    @Nonnull
     public BinaryData getContentData() {
         return codeArea.getContentData();
     }

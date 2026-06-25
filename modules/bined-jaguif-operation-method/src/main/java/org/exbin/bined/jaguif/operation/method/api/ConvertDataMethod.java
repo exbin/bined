@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.api;
 
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -25,7 +24,7 @@ import org.exbin.bined.swing.CodeAreaCore;
 /**
  * Interface for convert data component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface ConvertDataMethod extends DataOperationMethod {
 
     /**
@@ -35,7 +34,6 @@ public interface ConvertDataMethod extends DataOperationMethod {
      * @param codeArea code area
      * @return generated command
      */
-    @Nonnull
     CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea);
 
     /**
@@ -45,7 +43,6 @@ public interface ConvertDataMethod extends DataOperationMethod {
      * @param codeArea code area
      * @return binary data
      */
-    @Nonnull
     BinaryData performDirectConvert(Component component, CodeAreaCore codeArea);
 
     /**

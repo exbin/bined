@@ -27,9 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
@@ -49,7 +48,7 @@ import org.exbin.jaguif.App;
 /**
  * Find text/binary data panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class FindBinaryPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(FindBinaryPanel.class);
@@ -96,7 +95,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
             private final JPanel emptyPanel = new JPanel();
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
-            @Nonnull
             @Override
             public Component getListCellRendererComponent(JList<? extends SearchCondition> list, SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
@@ -121,7 +119,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         });
         findComboBoxEditor = new ComboBoxEditor() {
 
-            @Nonnull
             @Override
             public Component getEditorComponent() {
                 return findComboBoxEditorComponent;
@@ -520,7 +517,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     private org.exbin.auxiliary.dropdownbutton.DropDownButton searchTypeButton;
     // End of variables declaration//GEN-END:variables
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -533,7 +529,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         return performReplaceCheckBox.isSelected();
     }
 
-    @Nonnull
     public SearchParameters getSearchParameters() {
         SearchParameters result = new SearchParameters();
         result.setCondition((SearchCondition) findComboBox.getEditor().getItem());
@@ -555,7 +550,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         updateFindStatus();
     }
 
-    @Nonnull
     public ReplaceParameters getReplaceParameters() {
         ReplaceParameters result = new ReplaceParameters();
         result.setCondition((SearchCondition) replaceComboBox.getEditor().getItem());
@@ -601,7 +595,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
         this.multilineEditorListener = multilineEditorListener;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static interface MultilineEditorListener {
 
         @Nullable

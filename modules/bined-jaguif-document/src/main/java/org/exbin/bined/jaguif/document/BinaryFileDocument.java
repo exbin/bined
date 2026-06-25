@@ -26,8 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.EmptyBinaryData;
@@ -68,7 +67,7 @@ import org.exbin.jaguif.document.api.EmptyDocumentSource;
 /**
  * BinEd binary document.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {
 
     protected final BinEdDataComponent dataComponent;
@@ -100,7 +99,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         this.initialProcessingMode = initialProcessingMode;
     }
 
-    @Nonnull
     @Override
     public Optional<URI> getFileUri() {
         if (!(documentSource instanceof FileDocumentSource)) {
@@ -109,7 +107,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         return Optional.of(((FileDocumentSource) documentSource).getFile().toURI());
     }
 
-    @Nonnull
     @Override
     public String getDocumentName() {
         if (documentSource instanceof FileDocumentSource) {
@@ -127,35 +124,29 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         return "";
     }
 
-    @Nonnull
     @Override
     public BinaryData getBinaryData() {
         return dataComponent.getCodeArea().getContentData();
     }
 
-    @Nonnull
     @Override
     public BinEdComponentPanel getComponent() {
         return (BinEdComponentPanel) dataComponent.getComponent();
     }
 
-    @Nonnull
     @Override
     public Optional<DocumentSource> getDocumentSource() {
         return Optional.ofNullable(documentSource);
     }
 
-    @Nonnull
     public BinEdDataComponent getDataComponent() {
         return dataComponent;
     }
 
-    @Nonnull
     public CodeAreaCore getCodeArea() {
         return dataComponent.getCodeArea();
     }
 
-    @Nonnull
     public Optional<BinaryDataUndoRedo> getUndoHandler() {
         return dataComponent.getUndoRedo();
     }
@@ -164,7 +155,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         dataComponent.setUndoRedo(undoHandler);
     }
 
-    @Nonnull
     public BinaryData getContentData() {
         CodeAreaCore codeArea = dataComponent.getCodeArea();
         return codeArea.getContentData();
@@ -346,7 +336,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         return documentOriginalSize;
     }
 
-    @Nonnull
     @SuppressWarnings("unchecked")
     public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
         return dataComponent.getComponentExtension(clazz);
@@ -361,7 +350,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         contextManagement.changeActiveState(ContextComponent.class, dataComponent);
         contextManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
         contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
-            @Nonnull
             @Override
             public Component getComponent() {
                 return dataComponent.getCodeArea();
@@ -377,7 +365,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         contextManagement.changeActiveState(ContextUndoRedo.class, null);
         contextManagement.changeActiveState(ContextComponent.class, null);
         contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
-            @Nonnull
             @Override
             public Component getComponent() {
                 return dataComponent.getCodeArea();
@@ -385,7 +372,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         });
     }
 
-    @Nonnull
     public FileProcessingMode getFileProcessingMode() {
         BinaryData contentData = getContentData();
         if (contentData instanceof DeltaDocument) {

@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.inspector.pixelmap;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import org.exbin.bined.DataChangedListener;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
@@ -27,7 +26,7 @@ import org.exbin.bined.jaguif.inspector.BinEdInspector;
 /**
  * Pixel map inspector.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PixelMapInspector implements BinEdInspector {
 
     protected PixelMapPanel component;
@@ -35,7 +34,6 @@ public class PixelMapInspector implements BinEdInspector {
 
     protected DataChangedListener dataChangedListener;
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         if (component == null) {

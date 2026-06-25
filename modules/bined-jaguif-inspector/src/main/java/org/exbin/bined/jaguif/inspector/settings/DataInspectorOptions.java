@@ -15,14 +15,14 @@
  */
 package org.exbin.bined.jaguif.inspector.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Data inspector options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataInspectorOptions implements SettingsOptions {
 
     public static final String KEY_SHOW_PARSING_PANEL = "showValuesPanel";

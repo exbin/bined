@@ -18,14 +18,13 @@ package org.exbin.bined.jaguif.objectdata.source;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.nio.ByteBuffer;
 
 /**
  * Byte buffer as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ByteBufferPageProvider implements PageProvider {
 
     private final ByteBuffer byteBuffer;
@@ -36,7 +35,6 @@ public class ByteBufferPageProvider implements PageProvider {
         documentSize = byteBuffer.remaining();
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int pageSize = PageProviderBinaryData.PAGE_SIZE;

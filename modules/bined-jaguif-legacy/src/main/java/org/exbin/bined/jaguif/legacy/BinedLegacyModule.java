@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.RowWrappingMode;
 import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
@@ -54,7 +53,7 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 /**
  * Binary data editor module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedLegacyModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedLegacyModule.class);
@@ -67,7 +66,6 @@ public class BinedLegacyModule implements Module {
     public BinedLegacyModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedLegacyModule.class);

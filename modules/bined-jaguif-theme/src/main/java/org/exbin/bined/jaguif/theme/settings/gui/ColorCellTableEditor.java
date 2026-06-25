@@ -19,9 +19,8 @@ import org.exbin.bined.jaguif.theme.model.ColorProfileTableModel;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
@@ -29,7 +28,7 @@ import javax.swing.table.TableCellEditor;
 /**
  * Table model for color profile panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ColorCellTableEditor extends AbstractCellEditor implements TableCellEditor {
 
     private Color currentColor = null;
@@ -37,7 +36,6 @@ public class ColorCellTableEditor extends AbstractCellEditor implements TableCel
     public ColorCellTableEditor() {
     }
 
-    @Nonnull
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         currentColor = (Color) value;
@@ -58,7 +56,6 @@ public class ColorCellTableEditor extends AbstractCellEditor implements TableCel
         });
     }
 
-    @Nonnull
     @Override
     public Optional<Object> getCellEditorValue() {
         return Optional.ofNullable(currentColor);

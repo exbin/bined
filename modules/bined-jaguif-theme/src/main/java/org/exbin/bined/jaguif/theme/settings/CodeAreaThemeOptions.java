@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.theme.settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.swing.section.layout.SectionCodeAreaDecorations;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Code area theme options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaThemeOptions implements SettingsOptions {
 
     public static final String KEY_THEMES_COUNT = "themeProfilesCount";
@@ -53,7 +52,6 @@ public class CodeAreaThemeOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public List<String> getThemeProfilesList() {
         List<String> profilesList = new ArrayList<>();
         int profilesCount = storage.getInt(KEY_THEMES_COUNT, 0);
@@ -83,7 +81,6 @@ public class CodeAreaThemeOptions implements SettingsOptions {
         storage.putInt(KEY_THEME_PROFILE_SELECTED, profileIndex);
     }
 
-    @Nonnull
     public SectionCodeAreaThemeProfile getThemeProfile(int profileIndex) {
         SectionCodeAreaThemeProfile themeProfile = new SectionCodeAreaThemeProfile();
         String themePrefix = KEY_THEME_VALUE_PREFIX + String.valueOf(profileIndex) + ".";

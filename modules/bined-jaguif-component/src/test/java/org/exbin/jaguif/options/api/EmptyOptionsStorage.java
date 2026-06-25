@@ -16,14 +16,13 @@
 package org.exbin.jaguif.options.api;
 
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Empty options storage.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class EmptyOptionsStorage implements OptionsStorage {
 
     @Override
@@ -35,13 +34,11 @@ public class EmptyOptionsStorage implements OptionsStorage {
         return false;
     }
 
-    @Nonnull
     @Override
     public Optional<String> get(String key) {
         return Optional.empty();
     }
 
-    @Nonnull
     @Override
     public String get(String key, String def) {
         return def;
@@ -52,7 +49,6 @@ public class EmptyOptionsStorage implements OptionsStorage {
         return def;
     }
 
-    @Nonnull
     @Override
     public byte[] getByteArray(String key, byte[] def) {
         return def;

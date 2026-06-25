@@ -16,13 +16,12 @@
 package org.exbin.jaguif.options.api;
 
 import java.io.InputStream;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Test implementation of preferences module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TestOptionsModule implements OptionsModuleApi {
 
     private final OptionsStorage appPreferences = new EmptyOptionsStorage();
@@ -39,19 +38,16 @@ public class TestOptionsModule implements OptionsModuleApi {
     public void setupAppOptions() {
     }
 
-    @Nonnull
     @Override
     public OptionsStorage getAppOptions() {
         return appPreferences;
     }
 
-    @Nonnull
     @Override
     public OptionsStorage createMemoryStorage() {
         return new EmptyOptionsStorage();
     }
 
-    @Nonnull
     @Override
     public OptionsStorage createStreamPreferencesStorage(InputStream inputStream) {
         return new EmptyOptionsStorage();

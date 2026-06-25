@@ -19,8 +19,7 @@ import java.awt.BorderLayout;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.section.theme.SectionBackgroundPaintMode;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.layout.SectionCodeAreaDecorations;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Theme profile panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ThemeProfilePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilePanel.class);
@@ -47,7 +46,6 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
         add(previewPanel, BorderLayout.CENTER);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -58,7 +56,6 @@ public class ThemeProfilePanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public SectionCodeAreaThemeProfile getThemeProfile() {
         SectCodeArea codeArea = previewPanel.getCodeArea();
         SectionCodeAreaThemeProfile themeProfile = codeArea.getThemeProfile();

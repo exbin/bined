@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
@@ -40,7 +40,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 /**
  * Manage macros action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ManageMacrosAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "manageMacros";

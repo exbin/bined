@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.theme;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
@@ -51,7 +50,7 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 /**
  * Binary data theme module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedThemeModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedThemeModule.class);
@@ -71,7 +70,6 @@ public class BinedThemeModule implements Module {
     public BinedThemeModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedThemeModule.class);
@@ -133,7 +131,6 @@ public class BinedThemeModule implements Module {
         defaultProfileLoaded = true;
     }
 
-    @Nonnull
     public SectionCodeAreaLayoutProfile getDefaultLayoutProfile() {
         if (!defaultProfileLoaded) {
             loadDefaultProfiles();
@@ -142,7 +139,6 @@ public class BinedThemeModule implements Module {
         return defaultLayoutProfile;
     }
 
-    @Nonnull
     public SectionCodeAreaThemeProfile getDefaultThemeProfile() {
         if (!defaultProfileLoaded) {
             loadDefaultProfiles();
@@ -151,7 +147,6 @@ public class BinedThemeModule implements Module {
         return defaultThemeProfile;
     }
 
-    @Nonnull
     public SectionCodeAreaColorProfile getDefaultColorProfile() {
         if (!defaultProfileLoaded) {
             loadDefaultProfiles();

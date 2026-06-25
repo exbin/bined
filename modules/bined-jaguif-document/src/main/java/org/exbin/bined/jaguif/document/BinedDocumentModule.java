@@ -20,8 +20,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.Action;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
@@ -80,7 +79,7 @@ import org.exbin.jaguif.text.encoding.EncodingsManager;
 /**
  * Binary data component module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedDocumentModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedDocumentModule.class);
@@ -101,7 +100,6 @@ public class BinedDocumentModule implements Module {
     public BinedDocumentModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedDocumentModule.class);
@@ -110,7 +108,6 @@ public class BinedDocumentModule implements Module {
         return resourceBundle;
     }
 
-    @Nonnull
     public ViewFontActions getViewFontActions() {
         if (viewFontActions == null) {
             viewFontActions = new ViewFontActions();
@@ -131,13 +128,11 @@ public class BinedDocumentModule implements Module {
         DocumentModuleApi documentModule = App.getModule(DocumentModuleApi.class);
         DocumentManagement documentManager = documentModule.getMainDocumentManager();
         documentManager.registerDocumentType(new DocumentType() {
-            @Nonnull
             @Override
             public String getTypeId() {
                 return BINARY_DOCUMENT_ID;
             }
 
-            @Nonnull
             @Override
             public BinaryFileDocument createDefaultDocument() {
                 BinaryFileDocument binaryDocument = createBinaryDocument();
@@ -145,7 +140,6 @@ public class BinedDocumentModule implements Module {
                 return binaryDocument;
             }
 
-            @Nonnull
             @Override
             public Optional<Document> createDocument(DocumentSource documentSource) {
                 if (documentSource instanceof FileDocumentSource) {
@@ -157,7 +151,6 @@ public class BinedDocumentModule implements Module {
                 return Optional.empty();
             }
 
-            @Nonnull
             private BinaryFileDocument createBinaryDocument() {
                 BinaryFileDocument binaryFileDocument = new BinaryFileDocument();
                 getFileManager();
@@ -209,13 +202,11 @@ public class BinedDocumentModule implements Module {
         SequenceContribution contribution = mgmt.registerMenuGroup(VIEW_FONT_ZOOM_MENU_GROUP_ID);
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return viewFontActions.createZoomInAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return ViewFontActions.ZoomInAction.ACTION_ID;
@@ -225,13 +216,11 @@ public class BinedDocumentModule implements Module {
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return viewFontActions.createZoomOutAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return ViewFontActions.ZoomOutAction.ACTION_ID;
@@ -241,13 +230,11 @@ public class BinedDocumentModule implements Module {
         mgmt.registerMenuRule(contribution, new SubSequenceContributionRule(subContribution.getContributionId()));
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(VIEW_FONT_ZOOM_MENU_GROUP_ID));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return viewFontActions.createResetFontSizeAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return ViewFontActions.ResetFontSizeAction.ACTION_ID;
@@ -269,14 +256,12 @@ public class BinedDocumentModule implements Module {
         statusBarManager.registerStatusBarContribution(new BinaryEditModeStatusContrib());
     }
 
-    @Nonnull
     public PropertiesAction createPropertiesAction() {
         PropertiesAction propertiesAction = new PropertiesAction();
         propertiesAction.init(getResourceBundle());
         return propertiesAction;
     }
 
-    @Nonnull
     private ReloadFileAction createReloadFileAction() {
         ReloadFileAction reloadFileAction = new ReloadFileAction();
         reloadFileAction.init(getResourceBundle());
@@ -301,7 +286,6 @@ public class BinedDocumentModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
-    @Nonnull
     public EncodingsManager getEncodingsManager() {
         if (encodingsManager == null) {
             BinedDocumentModule binedDocumentModule = App.getModule(BinedDocumentModule.class);
@@ -325,7 +309,6 @@ public class BinedDocumentModule implements Module {
 
         // TODO Rework to use different approach than extension
         getFileManager().addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-            @Nonnull
             @Override
             public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                 getViewFontActions();
@@ -341,7 +324,6 @@ public class BinedDocumentModule implements Module {
         fileModule.openFile(uri);
     }
 
-    @Nonnull
     public BinEdFileManager getFileManager() {
         if (fileManager == null) {
             fileManager = new BinEdFileManager();
@@ -349,7 +331,6 @@ public class BinedDocumentModule implements Module {
         return fileManager;
     }
 
-    @Nonnull
     public String getNewFileTitlePrefix() {
         return resourceBundle.getString("newFileTitlePrefix");
     }

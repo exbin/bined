@@ -20,14 +20,12 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import org.exbin.jaguif.language.api.*;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Test implementation of language module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TestLanguageModule implements LanguageModuleApi {
 
     private ResourceBundle appBundle;
@@ -45,7 +43,6 @@ public class TestLanguageModule implements LanguageModuleApi {
         }
     };
 
-    @Nonnull
     @Override
     public ResourceBundle getAppBundle() {
         if (appBundle == null) {
@@ -59,25 +56,21 @@ public class TestLanguageModule implements LanguageModuleApi {
         this.appBundle = appBundle;
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getBundle(Class<?> targetClass) {
         return ResourceBundle.getBundle(getResourceBaseNameBundleByClass(targetClass));
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundleByBundleName(String bundleName) {
         return ResourceBundle.getBundle(bundleName);
     }
 
-    @Nonnull
     @Override
     public String getActionWithDialogText(String actionTitle) {
         return actionTitle + "...";
     }
 
-    @Nonnull
     @Override
     public String getActionWithDialogText(ResourceBundle bundle, String key) {
         return bundle.getString(key) + "...";
@@ -88,7 +81,6 @@ public class TestLanguageModule implements LanguageModuleApi {
         throw new IllegalStateException();
     }
 
-    @Nonnull
     @Override
     public List<LanguageProvider> getLanguagePlugins() {
         throw new IllegalStateException();
@@ -99,7 +91,6 @@ public class TestLanguageModule implements LanguageModuleApi {
         throw new IllegalStateException();
     }
 
-    @Nonnull
     @Override
     public List<IconSetProvider> getIconSets() {
         throw new IllegalStateException();
@@ -123,7 +114,6 @@ public class TestLanguageModule implements LanguageModuleApi {
      * @param targetClass target class
      * @return name path
      */
-    @Nonnull
     public static String getClassNamePath(Class<?> targetClass) {
         return targetClass.getCanonicalName().replace(".", "/");
     }
@@ -135,7 +125,6 @@ public class TestLanguageModule implements LanguageModuleApi {
      * @param targetClass target class
      * @return base name string
      */
-    @Nonnull
     public static String getResourceBaseNameBundleByClass(Class<?> targetClass) {
         String classNamePath = getClassNamePath(targetClass);
         int classNamePos = classNamePath.lastIndexOf("/");

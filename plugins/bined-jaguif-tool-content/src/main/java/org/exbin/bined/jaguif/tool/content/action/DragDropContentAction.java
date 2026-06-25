@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.exbin.auxiliary.binary_data.BinaryData;
@@ -51,7 +51,7 @@ import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 /**
  * Drag and drop content action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DragDropContentAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "dragDropContent";

@@ -15,14 +15,14 @@
  */
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
  * Import from code data panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ImportFromCodeDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle;

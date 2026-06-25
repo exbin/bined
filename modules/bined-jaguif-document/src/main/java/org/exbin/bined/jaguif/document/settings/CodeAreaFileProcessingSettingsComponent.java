@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.document.settings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.document.settings.gui.CodeAreaFileProcessingSettingsPanel;
@@ -29,12 +28,11 @@ import org.exbin.jaguif.options.settings.api.SettingsComponent;
 /**
  * Code area file processing options page.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaFileProcessingSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "codeAreaFileProcessing";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         CodeAreaFileProcessingSettingsPanel panel = new CodeAreaFileProcessingSettingsPanel();

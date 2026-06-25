@@ -16,9 +16,8 @@
 package org.exbin.bined.jaguif.operation.bouncycastle.method.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 import org.exbin.bined.jaguif.operation.bouncycastle.method.SymmetricEncryptionMethod;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Encryption and decryption conversions component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class EncryptionPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(EncryptionPanel.class);
@@ -44,7 +43,6 @@ public class EncryptionPanel extends javax.swing.JPanel {
         algorithmComboBox.setSelectedIndex(1); // AES-256
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -207,14 +205,12 @@ public class EncryptionPanel extends javax.swing.JPanel {
         passwordField.requestFocus();
     }
 
-    @Nonnull
     public SymmetricEncryptionMethod.OperationType getOperationType() {
         return encryptRadioButton.isSelected()
                 ? SymmetricEncryptionMethod.OperationType.ENCRYPT
                 : SymmetricEncryptionMethod.OperationType.DECRYPT;
     }
 
-    @Nonnull
     public SymmetricEncryptionMethod.Algorithm getAlgorithm() {
         return algorithmComboBox.getSelectedIndex() == 0
                 ? SymmetricEncryptionMethod.Algorithm.AES_128

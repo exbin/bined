@@ -15,11 +15,12 @@
  */
 package org.exbin.bined.jaguif.objectdata;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Simplified page provider.
  */
+@NullMarked
 public interface PageProvider {
 
     /**
@@ -28,7 +29,6 @@ public interface PageProvider {
      * @param pageIndex page index
      * @return page data
      */
-    @Nonnull
     byte[] getPage(long pageIndex);
 
     /**

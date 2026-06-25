@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.jaguif.App;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Fill simple data component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SimpleFillDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(SimpleFillDataPanel.class);
@@ -41,7 +40,6 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -185,7 +183,6 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public FillWithType getFillWithType() {
         if (sampleRadioButton.isSelected()) {
             return FillWithType.SAMPLE;
@@ -235,7 +232,6 @@ public class SimpleFillDataPanel extends javax.swing.JPanel {
         lengthBaseSwitchableSpinnerPanel.acceptInput();
     }
 
-    @Nonnull
     public EditableBinaryData getSampleBinaryData() {
         return sampleBinaryData;
     }

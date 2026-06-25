@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.viewer.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.CodeCharactersCase;
@@ -36,7 +35,7 @@ import org.exbin.bined.jaguif.component.CodeTypeState;
 /**
  * Hex characters case actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class HexCharactersCaseActions {
 
     public static final String HEX_CHARACTERS_CASE_RADIO_GROUP_ID = "hexCharactersCaseRadioGroup";
@@ -50,33 +49,29 @@ public class HexCharactersCaseActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public UpperHexCharsAction createUpperHexCharsAction() {
         UpperHexCharsAction upperHexCharsAction = new UpperHexCharsAction();
         upperHexCharsAction.init(resourceBundle);
         return upperHexCharsAction;
     }
 
-    @Nonnull
     public LowerHexCharsAction createLowerHexCharsAction() {
         LowerHexCharsAction lowerHexCharsAction = new LowerHexCharsAction();
         lowerHexCharsAction.init(resourceBundle);
         return lowerHexCharsAction;
     }
 
-    @Nonnull
     public UpperHexCharsContribution createUpperHexCharsContribution() {
         UpperHexCharsContribution upperHexCharsContribution = new UpperHexCharsContribution();
         return upperHexCharsContribution;
     }
 
-    @Nonnull
     public LowerHexCharsContribution createLowerHexCharsContribution() {
         LowerHexCharsContribution lowerHexCharsContribution = new LowerHexCharsContribution();
         return lowerHexCharsContribution;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class UpperHexCharsAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "upperHexCharacters";
@@ -120,7 +115,7 @@ public class HexCharactersCaseActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class LowerHexCharsAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "lowerHexCharacters";
@@ -164,13 +159,12 @@ public class HexCharactersCaseActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class UpperHexCharsContribution implements ActionSequenceContribution {
 
         public UpperHexCharsContribution() {
         }
 
-        @Nonnull
         @Override
         public Action createAction() {
             UpperHexCharsAction action = new UpperHexCharsAction();
@@ -178,20 +172,18 @@ public class HexCharactersCaseActions {
             return action;
         }
 
-        @Nonnull
         @Override
         public String getContributionId() {
             return UpperHexCharsAction.ACTION_ID;
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class LowerHexCharsContribution implements ActionSequenceContribution {
 
         public LowerHexCharsContribution() {
         }
 
-        @Nonnull
         @Override
         public Action createAction() {
             LowerHexCharsAction action = new LowerHexCharsAction();
@@ -199,7 +191,6 @@ public class HexCharactersCaseActions {
             return action;
         }
 
-        @Nonnull
         @Override
         public String getContributionId() {
             return LowerHexCharsAction.ACTION_ID;

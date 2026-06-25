@@ -18,15 +18,14 @@ package org.exbin.bined.jaguif.theme.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractListModel;
 
 /**
  * Theme profile list model.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ThemeProfilesListModel extends AbstractListModel<ThemeProfile> {
 
     protected final List<ThemeProfile> profiles = new ArrayList<>();
@@ -52,7 +51,6 @@ public class ThemeProfilesListModel extends AbstractListModel<ThemeProfile> {
         return profiles.get(index);
     }
 
-    @Nonnull
     public List<ThemeProfile> getProfiles() {
         return profiles;
     }

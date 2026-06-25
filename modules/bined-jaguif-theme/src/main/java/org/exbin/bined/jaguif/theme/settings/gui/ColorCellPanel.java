@@ -17,8 +17,8 @@ package org.exbin.bined.jaguif.theme.settings.gui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import org.exbin.jaguif.App;
@@ -27,7 +27,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Color cell panel for color profile panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ColorCellPanel extends javax.swing.JPanel {
 
     private ColorHandler colorHandler;

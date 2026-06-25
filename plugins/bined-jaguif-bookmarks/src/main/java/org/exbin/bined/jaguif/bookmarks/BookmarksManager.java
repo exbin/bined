@@ -25,8 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -69,7 +68,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Bookmarks manager.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BookmarksManager {
 
     public static final String BOOKMARKS_POPUP_SUBMENU_ID = BinedBookmarksModule.MODULE_ID + ".bookmarksPopupSubMenu";
@@ -120,12 +119,10 @@ public class BookmarksManager {
         }
     }
 
-    @Nonnull
     public List<BookmarkRecord> getBookmarkRecords() {
         return bookmarkRecords;
     }
 
-    @Nonnull
     public AbstractAction getManageBookmarksAction() {
         return manageBookmarksAction;
     }
@@ -138,7 +135,6 @@ public class BookmarksManager {
         updateBookmarksMenu();
     }
 
-    @Nonnull
     public BookmarksManagerPanel createBookmarksManagerPanel() {
         final BookmarksManagerPanel bookmarksManagerPanel = new BookmarksManagerPanel();
         final DialogParentComponent dialogParentComponent = () -> bookmarksManagerPanel;
@@ -224,7 +220,6 @@ public class BookmarksManager {
         return bookmarksManagerPanel;
     }
 
-    @Nonnull
     public JMenu getBookmarksMenu() {
         if (bookmarksMenu == null) {
             Action bookmarksMenuAction = new AbstractAction(resourceBundle.getString("bookmarksMenu.text")) {

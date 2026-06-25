@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.api;
 
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.EditOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -25,7 +24,7 @@ import org.exbin.bined.swing.CodeAreaCore;
 /**
  * Interface for paste from data component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface PasteFromDataMethod extends DataOperationMethod {
 
     /**
@@ -37,7 +36,6 @@ public interface PasteFromDataMethod extends DataOperationMethod {
      * @param editOperation insert operation type
      * @return data insertion command
      */
-    @Nonnull
     CodeAreaCommand createPasteCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation);
 
     /**

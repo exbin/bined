@@ -18,12 +18,12 @@ package org.exbin.bined.jaguif.tool.content;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Utilities for stream data manipulations.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class StreamUtils {
 
     private static final int BUFFER_SIZE = 1024;

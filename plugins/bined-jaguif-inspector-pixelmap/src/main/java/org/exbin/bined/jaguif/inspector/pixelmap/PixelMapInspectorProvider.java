@@ -16,15 +16,14 @@
 package org.exbin.bined.jaguif.inspector.pixelmap;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.inspector.BinEdInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorProvider;
 
 /**
  * Pixel map inspector provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PixelMapInspectorProvider implements BinEdInspectorProvider {
 
     public static final String INSPECTOR_ID = "pixelMap";
@@ -36,19 +35,16 @@ public class PixelMapInspectorProvider implements BinEdInspectorProvider {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     @Override
     public String getId() {
         return INSPECTOR_ID;
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("pixelMapInspector.name");
     }
 
-    @Nonnull
     @Override
     public BinEdInspector createInspector() {
         if (inspector == null) {

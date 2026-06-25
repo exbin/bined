@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif.viewer.settings;
 
 import java.nio.charset.UnsupportedCharsetException;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
@@ -27,7 +27,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Binary font settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryFontSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "binaryFont";

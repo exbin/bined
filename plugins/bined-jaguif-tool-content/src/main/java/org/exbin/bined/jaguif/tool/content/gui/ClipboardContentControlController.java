@@ -15,18 +15,18 @@
  */
 package org.exbin.bined.jaguif.tool.content.gui;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.utils.OkCancelControlComponent;
 
 /**
  * Handler for clipboard content control panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface ClipboardContentControlController {
 
     void controlActionPerformed(ControlActionType actionType);
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface ClipboardContentControlComponent extends OkCancelControlComponent {
 
         void performClick(ControlActionType actionType);

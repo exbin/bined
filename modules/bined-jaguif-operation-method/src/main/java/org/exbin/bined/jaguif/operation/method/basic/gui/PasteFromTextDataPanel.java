@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeType;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Paste data from text code panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PasteFromTextDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle;
@@ -54,7 +53,6 @@ public class PasteFromTextDataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public CodeType getCodeType() {
         return CodeType.values()[codeTypeComboBox.getSelectedIndex()];
     }

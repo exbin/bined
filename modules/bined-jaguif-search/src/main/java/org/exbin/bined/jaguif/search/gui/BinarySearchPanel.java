@@ -28,9 +28,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
@@ -55,7 +54,7 @@ import org.exbin.jaguif.App;
 /**
  * Binary editor search panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinarySearchPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinarySearchPanel.class);
@@ -100,7 +99,7 @@ public class BinarySearchPanel extends javax.swing.JPanel {
 
         final KeyAdapter editorKeyListener = new KeyAdapter() {
             @Override
-            public void keyPressed(@Nonnull KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     controller.performEscape();
                 }
@@ -115,7 +114,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             private final JPanel emptyPanel = new JPanel();
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
-            @Nonnull
             @Override
             public Component getListCellRendererComponent(JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
@@ -142,7 +140,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         });
         findComboBoxEditor = new ComboBoxEditor() {
 
-            @Nonnull
             @Override
             public Component getEditorComponent() {
                 return findComboBoxEditorComponent;
@@ -165,7 +162,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 updateFindStatus();
             }
 
-            @Nonnull
             @Override
             public Object getItem() {
                 return findComboBoxEditorComponent.getItem();
@@ -194,9 +190,8 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             private final JPanel panel = new JPanel();
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
-            @Nonnull
             @Override
-            public Component getListCellRendererComponent(@Nonnull JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
                     return panel;
                 }
@@ -220,7 +215,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
             }
         });
         replaceComboBoxEditor = new ComboBoxEditor() {
-            @Nonnull
             @Override
             public Component getEditorComponent() {
                 return replaceComboBoxEditorComponent;
@@ -245,7 +239,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
                 }
             }
 
-            @Nonnull
             @Override
             public Object getItem() {
                 return replaceComboBoxEditorComponent.getItem();
@@ -325,7 +318,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         statusPanel.repaint();
     }
 
-    @Nonnull
     public SearchParameters getSearchParameters() {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.setMatchCase(matchCaseToggleButton.isSelected());
@@ -356,7 +348,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
         return searchParameters;
     }
 
-    @Nonnull
     public ReplaceParameters getReplaceParameters() {
         ReplaceParameters replaceParameters = new ReplaceParameters();
         replaceParameters.setCondition(new SearchCondition(replaceComboBoxEditorComponent.getItem()));
@@ -867,7 +858,6 @@ public class BinarySearchPanel extends javax.swing.JPanel {
          */
         void notifySearchChanging();
 
-        @Nonnull
         SearchParameters.SearchDirection getSearchDirection();
 
         void searchOptions();

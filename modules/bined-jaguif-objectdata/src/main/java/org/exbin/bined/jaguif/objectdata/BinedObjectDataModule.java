@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.objectdata;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Binary editor object data support module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedObjectDataModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedObjectDataModule.class);
@@ -37,7 +36,6 @@ public class BinedObjectDataModule implements Module {
     public BinedObjectDataModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedObjectDataModule.class);

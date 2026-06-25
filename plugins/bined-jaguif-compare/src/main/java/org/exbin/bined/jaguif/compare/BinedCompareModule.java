@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.compare;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.PluginModule;
@@ -34,7 +33,7 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 /**
  * Binary editor compare module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedCompareModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedCompareModule.class);
@@ -60,7 +59,6 @@ public class BinedCompareModule implements PluginModule {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedCompareModule.class);
@@ -69,7 +67,6 @@ public class BinedCompareModule implements PluginModule {
         return resourceBundle;
     }
 
-    @Nonnull
     public AbstractAction createCompareFilesAction() {
         CompareFilesAction compareFilesAction = new CompareFilesAction();
         compareFilesAction.init(getResourceBundle());

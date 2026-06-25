@@ -18,21 +18,21 @@ package org.exbin.bined.jaguif.theme.settings.gui;
 import org.exbin.bined.jaguif.theme.model.ColorProfileTableModel;
 import java.awt.Color;
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Table model for color profile panel.
  */
+@NullMarked
 public class ColorCellTableRenderer implements TableCellRenderer {
 
     public ColorCellTableRenderer() {
     }
 
-    @Nonnull
     @Override
     public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (table == null) {

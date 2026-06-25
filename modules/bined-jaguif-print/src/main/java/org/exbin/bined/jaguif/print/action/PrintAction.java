@@ -24,7 +24,7 @@ import java.awt.print.PrinterJob;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -42,7 +42,7 @@ import org.exbin.jaguif.utils.ActionUtils;
  * 
  * TODO: Move to print module
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PrintAction extends AbstractAction {
 
     public static final String ACTION_ID = "print";

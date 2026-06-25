@@ -59,6 +59,6 @@ dependencies {
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-editor')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-theme')
     implementation moduleDep('Bined', 'org.exbin.bined.jaguif', 'modules', 'bined-jaguif-inspector')
-    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    compileOnly group: 'org.jspecify', name: 'jspecify', version: '1.0.0'
     testCompileOnly group : 'junit', name: 'junit', version: '4.13.2'
 }

@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.macro.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -35,7 +35,7 @@ import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 /**
  * Start macro recording action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class StartMacroRecordingAction extends AbstractAction {
 
     public static final String ACTION_ID = "startMacroRecording";

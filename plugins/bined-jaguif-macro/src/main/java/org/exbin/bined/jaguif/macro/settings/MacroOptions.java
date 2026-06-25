@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.macro.settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.macro.model.MacroRecord;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Macro options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacroOptions implements SettingsOptions {
 
     public static final String KEY_MACROS_COUNT = "macrosCount";
@@ -45,7 +44,6 @@ public class MacroOptions implements SettingsOptions {
         return storage.getInt(KEY_MACROS_COUNT, 0);
     }
 
-    @Nonnull
     public MacroRecord getMacroRecord(int index) {
         String prefix = KEY_MACRO_VALUE_PREFIX + index + ".";
         String name = storage.get(prefix + MACRO_NAME, "");

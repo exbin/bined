@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.operation.method.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -31,7 +31,7 @@ import org.exbin.bined.jaguif.component.BinedComponentModule;
 /**
  * Binary data preview panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryPreviewPanel extends javax.swing.JPanel {
 
     private static final String POPUP_MENU_POSTFIX = ".binaryPreviewPanel";

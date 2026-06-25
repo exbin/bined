@@ -18,9 +18,8 @@ package org.exbin.bined.jaguif.operation.bouncycastle.method.gui;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import org.exbin.jaguif.App;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Compute hash from provided data component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ComputeHashDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ComputeHashDataPanel.class);
@@ -53,7 +52,6 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
         hashBitSizeComboBox.setModel(new DefaultComboBoxModel<>());
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -144,7 +142,6 @@ public class ComputeHashDataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public Optional<ComputeHashDataMethod.HashType> getHashType() {
         int selectedIndex = hashTypeList.getSelectedIndex();
         return selectedIndex >= 0 ? Optional.of(ComputeHashDataMethod.HashType.values()[selectedIndex]) : Optional.empty();

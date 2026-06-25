@@ -17,14 +17,13 @@ package org.exbin.bined.jaguif.component.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Clipboard code actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ClipboardCodeActions {
 
     protected ResourceBundle resourceBundle;
@@ -38,7 +37,6 @@ public class ClipboardCodeActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public CopyAsCodeAction createCopyAsCodeAction() {
         CopyAsCodeAction copyAsCodeAction = new CopyAsCodeAction() {
             @Override
@@ -55,7 +53,6 @@ public class ClipboardCodeActions {
         return copyAsCodeAction;
     }
 
-    @Nonnull
     public PasteFromCodeAction createPasteFromCodeAction() {
         PasteFromCodeAction pasteFromCodeAction = new PasteFromCodeAction() {
             @Override
@@ -80,7 +77,7 @@ public class ClipboardCodeActions {
         this.pasteFromCodeMethod = pasteFromCodeMethod;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface ActionMethod {
 
         void performAction(CodeAreaCore codeArea);

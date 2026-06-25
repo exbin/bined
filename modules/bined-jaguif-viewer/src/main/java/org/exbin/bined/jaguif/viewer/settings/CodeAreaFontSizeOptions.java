@@ -15,14 +15,14 @@
  */
 package org.exbin.bined.jaguif.viewer.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Code area font size settings options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaFontSizeOptions implements SettingsOptions {
 
     public static final String KEY_FONT_SIZE = "fontSize";

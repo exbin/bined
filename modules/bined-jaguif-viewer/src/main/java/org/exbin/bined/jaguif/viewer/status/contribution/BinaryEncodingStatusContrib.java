@@ -15,25 +15,24 @@
  */
 package org.exbin.bined.jaguif.viewer.status.contribution;
 
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryEncodingComponent;
 import org.exbin.jaguif.statusbar.api.ComponentStatusBarContribution;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Binary data encoding status contribution.
  */
+@NullMarked
 public class BinaryEncodingStatusContrib implements ComponentStatusBarContribution {
 
     public static final String CONTRIBUTION_ID = "binaryEncoding";
 
-    @Nonnull
     @Override
     public StatusBarComponent createComponent() {
         return new BinaryEncodingComponent();
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

@@ -20,7 +20,7 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.SwingUtilities;
@@ -54,7 +54,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 /**
  * Insert data action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class InsertDataAction extends AbstractAction {
 
     public static final String ACTION_ID = "insertData";

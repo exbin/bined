@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.viewer.contribution;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
@@ -24,14 +23,16 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Show header contribution.
  */
+@NullMarked
 public class ShowHeaderContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "showHeader";
-    
+
     protected ActionMenuCreation showPositionCreating;
 
     public ShowHeaderContribution() {
@@ -42,7 +43,6 @@ public class ShowHeaderContribution implements ActionSequenceContribution {
         this.showPositionCreating = showPositionCreating;
     }
 
-    @Nonnull
     @Override
     public Action createAction() {
         ShowHeaderAction action = new ShowHeaderAction();
@@ -54,7 +54,6 @@ public class ShowHeaderContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

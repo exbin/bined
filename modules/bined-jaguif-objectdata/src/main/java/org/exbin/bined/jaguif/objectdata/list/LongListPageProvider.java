@@ -18,15 +18,14 @@ package org.exbin.bined.jaguif.objectdata.list;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.math.BigInteger;
 import java.util.List;
 
 /**
  * Long list as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class LongListPageProvider implements PageProvider {
 
     public static final BigInteger BIG_INTEGER_BYTE_MASK = BigInteger.valueOf(255);
@@ -37,7 +36,6 @@ public class LongListPageProvider implements PageProvider {
         this.listRef = listRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int pageSize = PageProviderBinaryData.PAGE_SIZE / 8;

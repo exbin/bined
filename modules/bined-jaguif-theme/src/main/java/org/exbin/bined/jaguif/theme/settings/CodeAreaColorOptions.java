@@ -19,9 +19,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.color.BasicCodeAreaDecorationColorType;
 import org.exbin.bined.color.CodeAreaBasicColors;
 import org.exbin.bined.highlight.swing.color.CodeAreaColorizationColorType;
@@ -34,7 +33,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Color layout options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaColorOptions implements SettingsOptions {
 
     public static final String KEY_COLOR_PROFILES_COUNT = "colorProfilesCount";
@@ -73,7 +72,6 @@ public class CodeAreaColorOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public List<String> getColorProfilesList() {
         List<String> profilesList = new ArrayList<>();
         int profilesCount = storage.getInt(KEY_COLOR_PROFILES_COUNT, 0);
@@ -103,7 +101,6 @@ public class CodeAreaColorOptions implements SettingsOptions {
         storage.putInt(KEY_COLOR_PROFILE_SELECTED, profileIndex);
     }
 
-    @Nonnull
     public SectionCodeAreaColorProfile getColorsProfile(int profileIndex) {
         SectionCodeAreaColorProfile colorProfile = new SectionCodeAreaColorProfile();
         String colorProfilePrefix = KEY_COLOR_VALUE_PREFIX + String.valueOf(profileIndex) + ".";

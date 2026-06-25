@@ -19,9 +19,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Compare files panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CompareFilesPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CompareFilesPanel.class);
@@ -97,7 +96,6 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         rightComboBox.setSelectedIndex(index);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -259,11 +257,10 @@ public class CompareFilesPanel extends javax.swing.JPanel {
         @Nullable
         FileRecord openFile();
 
-        @Nonnull
         BinaryData getFileData(int index);
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class FileRecord {
 
         private final String name;
@@ -274,12 +271,10 @@ public class CompareFilesPanel extends javax.swing.JPanel {
             this.data = data;
         }
 
-        @Nonnull
         public String getName() {
             return name;
         }
 
-        @Nonnull
         public BinaryData getData() {
             return data;
         }

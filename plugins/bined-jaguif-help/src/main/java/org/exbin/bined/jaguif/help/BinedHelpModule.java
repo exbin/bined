@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.help;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Binary editor offline help module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedHelpModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedHelpModule.class);
@@ -36,7 +35,6 @@ public class BinedHelpModule implements Module {
     public BinedHelpModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedHelpModule.class);

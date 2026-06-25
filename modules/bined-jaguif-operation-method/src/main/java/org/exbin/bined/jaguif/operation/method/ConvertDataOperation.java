@@ -15,17 +15,17 @@
  */
 package org.exbin.bined.jaguif.operation.method;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.BinaryDataUndoableOperation;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Operation to convert selection or all data into provided data.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ConvertDataOperation implements BinaryDataUndoableOperation {
 
     protected final long startPosition;
@@ -40,7 +40,6 @@ public class ConvertDataOperation implements BinaryDataUndoableOperation {
         this.conversionDataProvider = conversionDataProvider;
     }
 
-    @Nonnull
     @Override
     public BasicBinaryDataOperationType getType() {
         return BasicBinaryDataOperationType.MODIFY_DATA;
@@ -51,12 +50,12 @@ public class ConvertDataOperation implements BinaryDataUndoableOperation {
         execute(contentData, false);
     }
 
-    @Nonnull
     @Override
     public BinaryDataUndoableOperation executeWithUndo(EditableBinaryData contentData) {
         return execute(contentData, true);
     }
 
+    @Nullable
     private BinaryDataUndoableOperation execute(EditableBinaryData contentData, boolean withUndo) {
         BinaryDataUndoableOperation undoOperation = null;
 

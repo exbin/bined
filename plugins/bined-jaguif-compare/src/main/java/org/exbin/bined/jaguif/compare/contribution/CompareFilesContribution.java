@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.compare.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.compare.BinedCompareModule;
 import org.exbin.bined.jaguif.compare.action.CompareFilesAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Compare files contribution.
  */
+@NullMarked
 public class CompareFilesContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "compareFiles";
 
-    @Nonnull
     @Override
     public Action createAction() {
         CompareFilesAction action = new CompareFilesAction();
@@ -38,7 +38,6 @@ public class CompareFilesContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

@@ -19,9 +19,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JTable;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.bookmarks.model.BookmarkRecord;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Bookmarks manager panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BookmarksManagerPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarksManagerPanel.class);
@@ -57,7 +56,6 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -219,7 +217,6 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
         controller.editRecord();
     }//GEN-LAST:event_editButtonActionPerformed
 
-    @Nonnull
     public List<BookmarkRecord> getBookmarkRecords() {
         return bookmarksTableModel.getRecords();
     }
@@ -247,7 +244,6 @@ public class BookmarksManagerPanel extends javax.swing.JPanel {
         return selectedRow >= 0 ? bookmarksTableModel.getRecords().get(selectedRow) : null;
     }
 
-    @Nonnull
     public JTable getTable() {
         return table;
     }

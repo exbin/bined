@@ -16,14 +16,13 @@
 package org.exbin.bined.jaguif.theme.settings.gui;
 
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.event.ListDataListener;
 
 /**
  * Interface for profile list panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface ProfileListPanel {
 
     /**
@@ -31,7 +30,6 @@ public interface ProfileListPanel {
      *
      * @return profile names
      */
-    @Nonnull
     List<String> getProfileNames();
 
     /**

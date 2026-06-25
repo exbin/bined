@@ -20,7 +20,7 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.EditOperation;
@@ -52,7 +52,7 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 /**
  * Paste from specific form of data into binary data action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PasteFromAction extends AbstractAction {
 
     public static final String ACTION_ID = "pasteFrom";

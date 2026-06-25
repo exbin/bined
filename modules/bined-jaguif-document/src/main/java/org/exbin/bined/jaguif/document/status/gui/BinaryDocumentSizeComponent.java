@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.document.status.gui;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -27,7 +27,7 @@ import static org.exbin.jaguif.statusbar.api.StatusBarComponent.KEY_CONTEXT_CHAN
 /**
  * Binary document data size status component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryDocumentSizeComponent extends BinaryDataSizeComponent {
 
     public BinaryDocumentSizeComponent() {

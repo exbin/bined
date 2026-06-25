@@ -16,9 +16,8 @@
 package org.exbin.bined.jaguif.inspector.pixelmap;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.ModuleUtils;
@@ -30,7 +29,7 @@ import org.exbin.bined.jaguif.inspector.BinEdInspectorManager;
 /**
  * Binary editor data pixel map inspector plugin.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedInspectorPixelMapModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedInspectorPixelMapModule.class);
@@ -43,7 +42,6 @@ public class BinedInspectorPixelMapModule implements PluginModule {
     public void updateActionStatus(@Nullable CodeAreaCore codeArea) {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedInspectorPixelMapModule.class);

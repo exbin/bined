@@ -23,9 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.basic.BasicCodeAreaSection;
 import org.exbin.bined.basic.MovementDirection;
@@ -45,7 +44,7 @@ import org.exbin.bined.jaguif.macro.model.MacroRecord;
 /**
  * Command handler with support for macro recording.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler {
 
     private final int metaMask = CodeAreaSwingUtils.getMetaMaskDown();
@@ -56,12 +55,10 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         super(codeArea, undoRedo);
     }
 
-    @Nonnull
     public static CodeAreaCommandHandler.CodeAreaCommandHandlerFactory createDefaultCodeAreaCommandHandlerFactory() {
         return (CodeAreaCore codeAreaCore) -> new CodeAreaMacroCommandHandler(codeAreaCore, new CodeAreaUndoRedo(codeAreaCore));
     }
 
-    @Nonnull
     public Optional<MacroRecord> getRecordingMacro() {
         return Optional.ofNullable(recordingMacro);
     }
@@ -359,7 +356,6 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         lastMacroStep = macroStep;
     }
 
-    @Nonnull
     public static String stepAsString(MacroStep macroStep, List<Object> parameters) {
         if (parameters.isEmpty()) {
             return macroStep.getOperationCode();
@@ -424,7 +420,6 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         return stringBuilder.toString();
     }
 
-    @Nonnull
     public static MacroOperation parseStep(String stepString) throws ParseException, NumberFormatException {
         String operationCode;
         List<Object> parameters = new ArrayList<>();

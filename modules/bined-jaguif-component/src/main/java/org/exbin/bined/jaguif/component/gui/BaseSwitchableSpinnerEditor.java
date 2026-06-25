@@ -24,8 +24,7 @@ import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -40,7 +39,7 @@ import org.exbin.bined.CodeCharactersCase;
 /**
  * Spinner editor supporting multiple bases.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListener, PropertyChangeListener, LayoutManager {
 
     private static final String SPINNER_PROPERTY = "value";
@@ -101,12 +100,10 @@ public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListene
         spinner.addChangeListener(this);
     }
 
-    @Nonnull
     private JTextField getTextField() {
         return textField;
     }
 
-    @Nonnull
     private JSpinner getSpinner() {
         return spinner;
     }
@@ -176,7 +173,6 @@ public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListene
     /**
      * Returns the size of the parents insets.
      */
-    @Nonnull
     private Dimension insetSize(Container parent) {
         Insets insets = parent.getInsets();
         int width = insets.left + insets.right;
@@ -184,7 +180,6 @@ public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListene
         return new Dimension(width, height);
     }
 
-    @Nonnull
     @Override
     public Dimension preferredLayoutSize(Container parent) {
         Dimension preferredSize = insetSize(parent);
@@ -196,7 +191,6 @@ public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListene
         return preferredSize;
     }
 
-    @Nonnull
     @Override
     public Dimension minimumLayoutSize(Container parent) {
         Dimension minimumSize = insetSize(parent);
@@ -234,7 +228,6 @@ public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListene
         textField.addFocusListener(listener);
     }
 
-    @Nonnull
     private String getValueAsString(long value) {
         if (value < 0) {
             return "-" + getNonNegativeValueAsString(-value);
@@ -242,7 +235,6 @@ public class BaseSwitchableSpinnerEditor extends JPanel implements ChangeListene
         return getNonNegativeValueAsString(value);
     }
 
-    @Nonnull
     private String getNonNegativeValueAsString(long value) {
         Arrays.fill(cache, ' ');
         CodeAreaUtils.longToBaseCode(cache, 0, value, numBase, LENGTH_LIMIT, false, CodeCharactersCase.LOWER);

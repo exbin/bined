@@ -22,9 +22,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -38,7 +37,7 @@ import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
 /**
  * Paste from code method panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PasteFromCodePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PasteFromCodePanel.class);
@@ -159,12 +158,10 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public BinaryData getResultData() {
         return parsedData;
     }
 
-    @Nonnull
     public String getErrorText() {
         return errorText;
     }
@@ -202,7 +199,6 @@ public class PasteFromCodePanel extends javax.swing.JPanel {
         return parsedData;
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }

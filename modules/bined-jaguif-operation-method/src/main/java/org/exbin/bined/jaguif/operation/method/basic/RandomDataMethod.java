@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.operation.method.basic;
 
 import java.awt.Component;
 import java.util.Random;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
@@ -41,7 +40,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Generate random data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class RandomDataMethod implements InsertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(RandomDataPanel.class);
@@ -50,13 +49,11 @@ public class RandomDataMethod implements InsertDataMethod {
     private long previewLengthLimit = 0;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         return new RandomDataPanel();
@@ -67,7 +64,6 @@ public class RandomDataMethod implements InsertDataMethod {
         ((RandomDataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         RandomDataPanel panel = (RandomDataPanel) component;

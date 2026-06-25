@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.objectdata;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,7 +26,7 @@ import java.io.OutputStream;
 /**
  * Debugger value dual page data source.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PageProviderBinaryData implements BinaryData {
 
     public static final int PAGE_SIZE = 2048;
@@ -82,13 +81,11 @@ public class PageProviderBinaryData implements BinaryData {
         return page.data[pageOffset];
     }
 
-    @Nonnull
     @Override
     public BinaryData copy() {
         return copy(0, getDataSize());
     }
 
-    @Nonnull
     @Override
     public BinaryData copy(long startFrom, long length) {
         ByteArrayEditableData result = new ByteArrayEditableData();
@@ -184,7 +181,6 @@ public class PageProviderBinaryData implements BinaryData {
         throw new UnsupportedOperationException("Save to stream is not supported");
     }
 
-    @Nonnull
     @Override
     public InputStream getDataInputStream() {
         throw new UnsupportedOperationException("Data input stream is not supported");
@@ -194,7 +190,6 @@ public class PageProviderBinaryData implements BinaryData {
     public void dispose() {
     }
 
-    @Nonnull
     private static IndexOutOfBoundsException createIndexOutOfBoundsException() {
         return new IndexOutOfBoundsException("Requested data out of bounds");
     }

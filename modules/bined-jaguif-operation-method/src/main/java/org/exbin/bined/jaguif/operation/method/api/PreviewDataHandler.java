@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.api;
 
 import java.awt.Component;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Interface preview data handling.

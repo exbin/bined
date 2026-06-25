@@ -15,14 +15,14 @@
  */
 package org.exbin.bined.jaguif.viewer.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 
 /**
  * Binary appearance options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryAppearanceOptions implements SettingsOptions {
 
     public static final String KEY_TEXT_WORD_WRAPPING = "textAppearance.wordWrap";

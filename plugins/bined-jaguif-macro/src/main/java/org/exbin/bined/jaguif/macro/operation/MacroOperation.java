@@ -16,13 +16,12 @@
 package org.exbin.bined.jaguif.macro.operation;
 
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Macro operation.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacroOperation {
 
     private final MacroStep macroStep;
@@ -33,12 +32,10 @@ public class MacroOperation {
         this.parameters = parameters;
     }
 
-    @Nonnull
     public MacroStep getMacroStep() {
         return macroStep;
     }
 
-    @Nonnull
     public List<Object> getParameters() {
         return parameters;
     }

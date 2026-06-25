@@ -15,17 +15,17 @@
  */
 package org.exbin.bined.jaguif.operation.method;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.operation.swing.BasicBinaryDataOperationType;
 import org.exbin.bined.operation.swing.RemoveDataOperation;
 import org.exbin.bined.operation.BinaryDataUndoableOperation;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Insert data from provider operation.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class InsertFromProviderOperation implements BinaryDataUndoableOperation {
 
     protected final long position;
@@ -38,7 +38,6 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
         this.dataOperationDataProvider = dataOperationDataProvider;
     }
 
-    @Nonnull
     @Override
     public BasicBinaryDataOperationType getType() {
         return BasicBinaryDataOperationType.INSERT_DATA;
@@ -49,12 +48,12 @@ public class InsertFromProviderOperation implements BinaryDataUndoableOperation 
         execute(contentData, false);
     }
 
-    @Nonnull
     @Override
     public BinaryDataUndoableOperation executeWithUndo(EditableBinaryData contentData) {
         return execute(contentData, true);
     }
 
+    @Nullable
     private BinaryDataUndoableOperation execute(EditableBinaryData contentData, boolean withUndo) {
         BinaryDataUndoableOperation undoOperation = null;
 

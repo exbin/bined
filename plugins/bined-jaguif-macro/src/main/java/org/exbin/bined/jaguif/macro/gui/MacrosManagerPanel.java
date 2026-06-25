@@ -20,8 +20,7 @@ import java.awt.BorderLayout;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JTable;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.macro.model.MacroRecord;
@@ -30,7 +29,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Macros manager panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacrosManagerPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(MacrosManagerPanel.class);
@@ -55,7 +54,6 @@ public class MacrosManagerPanel extends javax.swing.JPanel {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -217,7 +215,6 @@ public class MacrosManagerPanel extends javax.swing.JPanel {
         controller.editRecord();
     }//GEN-LAST:event_editButtonActionPerformed
 
-    @Nonnull
     public List<MacroRecord> getMacroRecords() {
         return macrosTableModel.getRecords();
     }
@@ -239,13 +236,11 @@ public class MacrosManagerPanel extends javax.swing.JPanel {
         table.repaint();
     }
 
-    @Nonnull
     public Optional<MacroRecord> getSelectedRecord() {
         int selectedRow = table.getSelectedRow();
         return selectedRow >= 0 ? Optional.of(macrosTableModel.getRecords().get(selectedRow)) : Optional.empty();
     }
 
-    @Nonnull
     public JTable getTable() {
         return table;
     }

@@ -19,9 +19,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -41,7 +40,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Panel for table with values for binary data inspection.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ValuesTablePanel extends javax.swing.JPanel {
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ValuesTablePanel.class);
@@ -68,7 +67,6 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         columns.getColumn(0).setWidth(80);
         columns.getColumn(1).setWidth(80);
         nameCellRenderer = new DefaultTableCellRenderer() {
-            @Nonnull
             @Override
             public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JComponent component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -86,7 +84,6 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         columns.getColumn(1).setCellEditor(valueCellEditor);
 
         valuesTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Nonnull
             @Override
             public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -103,7 +100,6 @@ public class ValuesTablePanel extends javax.swing.JPanel {
         this.controller = controller;
     }
 
-    @Nonnull
     public List<ValueRowItem> getValueRows() {
         List<ValueRowItem> rowItems = new ArrayList<>();
         int rowCount = tableModel.getRowCount();

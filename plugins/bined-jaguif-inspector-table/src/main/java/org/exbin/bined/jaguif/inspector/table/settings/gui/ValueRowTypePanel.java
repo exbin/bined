@@ -20,9 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -33,7 +32,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Value row type panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ValueRowTypePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ValueRowTypePanel.class);
@@ -60,7 +59,6 @@ public class ValueRowTypePanel extends javax.swing.JPanel {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -75,7 +73,6 @@ public class ValueRowTypePanel extends javax.swing.JPanel {
         this.valueRowTypes = valueRowTypes;
     }
     
-    @Nonnull
     public List<String> getSelectedItems() {
         int[] selectedIndices = rowsList.getSelectedIndices();
         List<String> typeIds = new ArrayList<>();

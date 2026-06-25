@@ -18,13 +18,12 @@ package org.exbin.bined.jaguif.macro.operation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Enumeration of currently supported operations.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public enum MacroStep {
     KEY_PRESSED("key-press"),
     ENTER_KEY("enter-key"),
@@ -59,12 +58,10 @@ public enum MacroStep {
         this.operationCode = operationCode;
     }
 
-    @Nonnull
     public String getOperationCode() {
         return operationCode;
     }
 
-    @Nonnull
     public static Optional<MacroStep> findByCode(String operationCode) {
         return Optional.ofNullable(MAP.get(operationCode));
     }

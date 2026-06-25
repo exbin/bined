@@ -41,8 +41,7 @@ import org.exbin.bined.jaguif.objectdata.list.IntegerListPageProvider;
 import org.exbin.bined.jaguif.objectdata.list.LongListPageProvider;
 import org.exbin.bined.jaguif.objectdata.list.ShortListPageProvider;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -52,7 +51,7 @@ import java.util.Optional;
 /**
  * Class value convertor.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ObjectValueConvertor {
 
     public static final BigInteger BIG_INTEGER_BYTE_MASK = BigInteger.valueOf(255);
@@ -63,7 +62,6 @@ public class ObjectValueConvertor {
     public ObjectValueConvertor() {
     }
 
-    @Nonnull
     public Optional<BinaryData> process(Object instance) {
         if (instance instanceof String) {
             return Optional.of(new ByteArrayData(((String) instance).getBytes(StandardCharsets.UTF_8)));
@@ -78,7 +76,6 @@ public class ObjectValueConvertor {
         return processSimpleValue(instance);
     }
 
-    @Nonnull
     public Optional<BinaryData> processSimpleValue(Object instance) {
         String typeName = instance.getClass().getTypeName();
         byte[] byteArray = null;
@@ -177,7 +174,6 @@ public class ObjectValueConvertor {
         return byteArray != null ? Optional.of(new ByteArrayData(byteArray)) : Optional.empty();
     }
 
-    @Nonnull
     public static Optional<BinaryData> processArrayValue(Object instance) {
         String typeName = instance.getClass().getComponentType().getTypeName();
         if (byte.class.getName().equals(typeName)) {
@@ -220,7 +216,6 @@ public class ObjectValueConvertor {
         return pageProvider != null ? Optional.of(new PageProviderBinaryData(pageProvider)) : Optional.empty();
     }
 
-    @Nonnull
     @SuppressWarnings("unchecked")
     public static Optional<BinaryData> processListValue(Object instance) {
         List<?> listInstance = (List<?>) instance;

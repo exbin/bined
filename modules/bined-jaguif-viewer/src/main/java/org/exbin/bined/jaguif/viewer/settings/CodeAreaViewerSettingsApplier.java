@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.viewer.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.capability.CodeCharactersCaseCapable;
 import org.exbin.bined.capability.CodeTypeCapable;
 import org.exbin.bined.capability.ViewModeCapable;
@@ -36,7 +36,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Code area viewer settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaViewerSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "codeAreaViewer";

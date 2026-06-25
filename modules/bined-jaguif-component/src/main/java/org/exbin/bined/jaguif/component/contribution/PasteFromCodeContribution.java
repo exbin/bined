@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.component.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Paste from code contribution.
  */
+@NullMarked
 public class PasteFromCodeContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "pasteFromCode";
 
-    @Nonnull
     @Override
     public Action createAction() {
         PasteFromCodeAction action = new PasteFromCodeAction();
@@ -38,7 +38,6 @@ public class PasteFromCodeContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

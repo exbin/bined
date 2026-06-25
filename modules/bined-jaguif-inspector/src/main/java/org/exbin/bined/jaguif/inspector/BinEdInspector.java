@@ -15,9 +15,8 @@
  */
 package org.exbin.bined.jaguif.inspector;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -25,7 +24,7 @@ import org.exbin.bined.swing.CodeAreaCore;
 /**
  * BinEd inspector.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinEdInspector {
 
     /**
@@ -33,7 +32,6 @@ public interface BinEdInspector {
      *
      * @return component
      */
-    @Nonnull
     JComponent getComponent();
 
     /**

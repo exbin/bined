@@ -16,14 +16,14 @@
 package org.exbin.bined.jaguif.inspector.pixelmap.gui;
 
 import java.awt.BorderLayout;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.CodeAreaCore;
 
 /**
  * Pixel map side panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PixelMapPanel extends javax.swing.JPanel {
 
     protected JScrollPane scrollPane;

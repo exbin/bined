@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -43,7 +42,7 @@ import org.exbin.jaguif.menu.api.MenuModuleApi;
 /**
  * Code type actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeTypeActions {
 
     public static final String BINARY_ACTION_ID = "binaryCodeType";
@@ -61,72 +60,62 @@ public class CodeTypeActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public CodeTypeAction createBinaryCodeTypeAction() {
         CodeTypeAction binaryCodeTypeAction = new CodeTypeAction(BINARY_ACTION_ID, CodeType.BINARY);
         binaryCodeTypeAction.init(resourceBundle);
         return binaryCodeTypeAction;
     }
 
-    @Nonnull
     public CodeTypeAction createOctalCodeTypeAction() {
         CodeTypeAction octalCodeTypeAction = new CodeTypeAction(OCTAL_ACTION_ID, CodeType.OCTAL);
         octalCodeTypeAction.init(resourceBundle);
         return octalCodeTypeAction;
     }
 
-    @Nonnull
     public CodeTypeAction createDecimalCodeTypeAction() {
         CodeTypeAction decimalCodeTypeAction = new CodeTypeAction(DECIMAL_ACTION_ID, CodeType.DECIMAL);
         decimalCodeTypeAction.init(resourceBundle);
         return decimalCodeTypeAction;
     }
 
-    @Nonnull
     public CodeTypeAction createHexadecimalCodeTypeAction() {
         CodeTypeAction hexadecimalCodeTypeAction = new CodeTypeAction(HEXADECIMAL_ACTION_ID, CodeType.HEXADECIMAL);
         hexadecimalCodeTypeAction.init(resourceBundle);
         return hexadecimalCodeTypeAction;
     }
 
-    @Nonnull
     public CycleCodeTypesAction createCycleCodeTypesAction() {
         CycleCodeTypesAction cycleCodeTypesAction = new CycleCodeTypesAction();
         cycleCodeTypesAction.init(resourceBundle);
         return cycleCodeTypesAction;
     }
 
-    @Nonnull
     public CodeTypeContribution createBinaryCodeTypeContribution() {
         CodeTypeContribution binaryCodeTypeContribution = new CodeTypeContribution(BINARY_ACTION_ID, CodeType.BINARY);
         return binaryCodeTypeContribution;
     }
 
-    @Nonnull
     public CodeTypeContribution createOctalCodeTypeContribution() {
         CodeTypeContribution octalCodeTypeContribution = new CodeTypeContribution(OCTAL_ACTION_ID, CodeType.OCTAL);
         return octalCodeTypeContribution;
     }
 
-    @Nonnull
     public CodeTypeContribution createDecimalCodeTypeContribution() {
         CodeTypeContribution decimalCodeTypeContribution = new CodeTypeContribution(DECIMAL_ACTION_ID, CodeType.DECIMAL);
         return decimalCodeTypeContribution;
     }
 
-    @Nonnull
     public CodeTypeContribution createHexadecimalCodeTypeContribution() {
         CodeTypeContribution hexadecimalCodeTypeContribution = new CodeTypeContribution(HEXADECIMAL_ACTION_ID, CodeType.HEXADECIMAL);
         return hexadecimalCodeTypeContribution;
     }
 
-    @Nonnull
     public CycleCodeTypesContribution createCycleCodeTypesContribution() {
         CycleCodeTypesContribution cycleCodeTypesContribution = new CycleCodeTypesContribution();
         return cycleCodeTypesContribution;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class CodeTypeAction extends AbstractAction implements ActionContextChange {
 
         private final String actionId;
@@ -174,10 +163,10 @@ public class CodeTypeActions {
             setEnabled(hasInstance);
         }
     }
-    
-    @ParametersAreNonnullByDefault
+
+    @NullMarked
     public class CodeTypeContribution implements ActionSequenceContribution {
-        
+
         private final String contributionId;
         private final CodeType codeType;
 
@@ -186,7 +175,6 @@ public class CodeTypeActions {
             this.codeType = codeType;
         }
 
-        @Nonnull
         @Override
         public Action createAction() {
             CodeTypeAction action = new CodeTypeAction(contributionId, codeType);
@@ -194,14 +182,13 @@ public class CodeTypeActions {
             return action;
         }
 
-        @Nonnull
         @Override
         public String getContributionId() {
             return contributionId;
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class CycleCodeTypesAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "cycleCodeTypes";
@@ -272,14 +259,13 @@ public class CodeTypeActions {
             setEnabled(hasInstance);
         }
     }
-    
-    @ParametersAreNonnullByDefault
+
+    @NullMarked
     public class CycleCodeTypesContribution implements ActionSequenceContribution {
-        
+
         public CycleCodeTypesContribution() {
         }
 
-        @Nonnull
         @Override
         public Action createAction() {
             CycleCodeTypesAction action = new CycleCodeTypesAction();
@@ -287,7 +273,6 @@ public class CodeTypeActions {
             return action;
         }
 
-        @Nonnull
         @Override
         public String getContributionId() {
             return CycleCodeTypesAction.ACTION_ID;

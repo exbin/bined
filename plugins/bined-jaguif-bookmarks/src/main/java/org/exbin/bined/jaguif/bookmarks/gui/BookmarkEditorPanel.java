@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.bookmarks.gui;
 
 import java.awt.Color;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.CodeAreaSelection;
 import org.exbin.jaguif.App;
@@ -30,7 +29,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Bookmark editor panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BookmarkEditorPanel extends javax.swing.JPanel {
 
     private final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BookmarkEditorPanel.class);
@@ -104,7 +103,6 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
         });
     }
 
-    @Nonnull
     public BookmarkRecord getBookmarkRecord() {
         return new BookmarkRecord(
                 startPositionSwitchableSpinnerPanel.getValue(),
@@ -127,7 +125,6 @@ public class BookmarkEditorPanel extends javax.swing.JPanel {
         fromSelectionButton.setEnabled(!selection.isEmpty());
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }

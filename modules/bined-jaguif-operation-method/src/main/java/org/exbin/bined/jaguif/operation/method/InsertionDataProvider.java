@@ -15,13 +15,13 @@
  */
 package org.exbin.bined.jaguif.operation.method;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 
 /**
  * Data provider for insertion operation.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface InsertionDataProvider {
 
     /**

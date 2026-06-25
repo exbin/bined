@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.GOST3411Digest;
@@ -65,7 +64,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Compute Hash digest data component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ComputeHashDataMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ComputeHashDataPanel.class);
@@ -76,13 +75,11 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
     private PreviewDataHandler previewDataHandler;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("component.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         ComputeHashDataPanel component = new ComputeHashDataPanel();
@@ -101,7 +98,6 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         ((ComputeHashDataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
@@ -126,7 +122,6 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, convertedDataLength, conversionDataProvider));
     }
 
-    @Nonnull
     @Override
     public BinaryData performDirectConvert(Component component, CodeAreaCore codeArea) {
         ComputeHashDataPanel panel = (ComputeHashDataPanel) component;
@@ -171,7 +166,6 @@ public class ComputeHashDataMethod implements ConvertDataMethod {
         return digest.getDigestSize();
     }
 
-    @Nonnull
     private Digest getDigest(HashType hashType, int bitSize) {
         switch (hashType) {
             case GOST3411:

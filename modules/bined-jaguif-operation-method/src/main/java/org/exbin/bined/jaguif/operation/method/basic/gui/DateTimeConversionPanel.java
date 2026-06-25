@@ -16,15 +16,14 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 import org.exbin.bined.jaguif.operation.method.basic.DateTimeConversionMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DateTimeConversionPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DateTimeConversionPanel.class);
@@ -43,7 +42,6 @@ public class DateTimeConversionPanel extends javax.swing.JPanel {
         timeUnitComboBox.setSelectedIndex(0);   // Seconds
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -167,7 +165,6 @@ public class DateTimeConversionPanel extends javax.swing.JPanel {
         byteOrderComboBox.requestFocus();
     }
 
-    @Nonnull
     public DateTimeConversionMethod.ConversionConfig getConversionConfig() {
         DateTimeConversionMethod.ByteOrderType byteOrder = byteOrderComboBox.getSelectedIndex() == 0
                 ? DateTimeConversionMethod.ByteOrderType.BIG_ENDIAN

@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.operation.method.command;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.capability.ScrollingCapable;
 import org.exbin.bined.operation.BinaryDataUndoableOperation;
@@ -28,7 +27,7 @@ import org.exbin.bined.jaguif.operation.method.ConvertDataOperation;
 /**
  * Convert data command.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ConvertDataCommand extends CodeAreaCommand {
 
     protected final ConvertDataOperation operation;
@@ -39,7 +38,6 @@ public class ConvertDataCommand extends CodeAreaCommand {
         this.operation = operation;
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommandType getType() {
         return CodeAreaCommandType.DATA_MODIFIED;

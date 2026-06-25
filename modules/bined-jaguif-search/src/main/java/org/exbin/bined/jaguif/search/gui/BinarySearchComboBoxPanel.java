@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.search.gui;
 import org.exbin.bined.jaguif.search.SearchCondition;
 import java.awt.CardLayout;
 import java.awt.event.KeyListener;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -40,7 +39,7 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 /**
  * Combo box panel supporting both binary and text values.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinarySearchComboBoxPanel extends JPanel {
 
     public static final String TEXT_MODE = "text";
@@ -100,7 +99,6 @@ public class BinarySearchComboBoxPanel extends JPanel {
         super.add(codeArea, BINARY_MODE);
     }
 
-    @Nonnull
     public SearchCondition getItem() {
         switch (item.getSearchMode()) {
             case TEXT:

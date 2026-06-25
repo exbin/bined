@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.viewer.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.section.layout.SectionCodeAreaLayoutProfile;
@@ -35,7 +35,7 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 /**
  * Show header action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ShowHeaderAction extends AbstractAction {
 
     public static final String ACTION_ID = "showHeader";

@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.operation.method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
@@ -53,7 +52,7 @@ import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 /**
  * BinEd operation module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedOperationMethodModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedOperationMethodModule.class);
@@ -141,27 +140,22 @@ public class BinedOperationMethodModule implements Module {
         pasteFromDataMethods.add(pasteFromDataMethod);
     }
 
-    @Nonnull
     public List<InsertDataMethod> getInsertDataMethods() {
         return insertDataMethods;
     }
 
-    @Nonnull
     public List<ConvertDataMethod> getConvertDataMethods() {
         return convertDataMethods;
     }
 
-    @Nonnull
     public List<CopyAsDataMethod> getCopyAsDataMethods() {
         return copyAsDataMethods;
     }
 
-    @Nonnull
     public List<PasteFromDataMethod> getPasteFromDataMethods() {
         return pasteFromDataMethods;
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOperationMethodModule.class);

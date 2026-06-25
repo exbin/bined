@@ -16,13 +16,12 @@
 package org.exbin.bined.jaguif.bookmarks.model;
 
 import java.awt.Color;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Bookmark record.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BookmarkRecord {
 
     private long startPosition;
@@ -70,7 +69,6 @@ public class BookmarkRecord {
         this.length = length;
     }
 
-    @Nonnull
     public Color getColor() {
         return color;
     }

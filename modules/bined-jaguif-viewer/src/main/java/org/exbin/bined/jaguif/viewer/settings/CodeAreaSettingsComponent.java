@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.viewer.settings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.settings.gui.CodeAreaSettingsPanel;
@@ -29,12 +28,11 @@ import org.exbin.jaguif.options.settings.api.SettingsComponentProvider;
 /**
  * Code area settings component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "codeArea";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);

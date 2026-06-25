@@ -15,25 +15,24 @@
  */
 package org.exbin.bined.jaguif.document.status.contribution;
 
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.document.status.gui.BinaryProcessingModeComponent;
 import org.exbin.jaguif.statusbar.api.ComponentStatusBarContribution;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Binary data processing mode status contribution.
  */
+@NullMarked
 public class BinaryProcessingModeStatusContrib implements ComponentStatusBarContribution {
 
     public static final String CONTRIBUTION_ID = "binaryProcessingMode";
 
-    @Nonnull
     @Override
     public StatusBarComponent createComponent() {
         return new BinaryProcessingModeComponent();
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

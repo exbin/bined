@@ -17,14 +17,14 @@ package org.exbin.bined.jaguif.inspector.settings;
 
 import java.awt.Font;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import org.exbin.jaguif.options.settings.api.InferenceOptions;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Data inspector text font inference.
  */
+@NullMarked
 public interface DataInspectorFontInference extends InferenceOptions {
 
-    @Nonnull
     Optional<Font> getInputFieldsFont();
 }

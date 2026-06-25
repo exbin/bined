@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.document.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
@@ -35,7 +35,7 @@ import org.exbin.jaguif.window.api.WindowModuleApi;
 /**
  * Properties action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PropertiesAction extends AbstractAction {
 
     public static final String ACTION_ID = "properties";

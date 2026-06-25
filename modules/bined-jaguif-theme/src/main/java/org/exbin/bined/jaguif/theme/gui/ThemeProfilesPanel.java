@@ -21,9 +21,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -39,7 +38,7 @@ import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 /**
  * Manage list of theme profiles panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileListPanel {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesPanel.class);
@@ -84,12 +83,10 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
         }
     }
 
-    @Nonnull
     public ThemeProfilesListModel getProfilesListModel() {
         return ((ThemeProfilesListModel) profilesList.getModel());
     }
 
-    @Nonnull
     @Override
     public List<String> getProfileNames() {
         List<String> profileNames = new ArrayList<>();
@@ -415,31 +412,26 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
     }
 
     
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static final class ProfileCellRenderer implements ListCellRenderer<ThemeProfile> {
 
         private final DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 
-        @Nonnull
         @Override
         public Component getListCellRendererComponent(JList<? extends ThemeProfile> list, @Nullable ThemeProfile value, int index, boolean isSelected, boolean cellHasFocus) {
             return defaultListCellRenderer.getListCellRendererComponent(list, value != null ? value.getProfileName() : null, index, isSelected, cellHasFocus);
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface Controller {
 
-        @Nonnull
         Optional<ThemeProfile> addProfile();
 
-        @Nonnull
         Optional<ThemeProfile> editProfile(ThemeProfile profile);
 
-        @Nonnull
         ThemeProfile copyProfile(ThemeProfile profile);
 
-        @Nonnull
         Optional<ThemeProfile> addTemplate();
 
         void updatePreview(PreviewPanel previewPanel, ThemeProfile themeProfile);

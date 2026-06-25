@@ -15,13 +15,13 @@
  */
 package org.exbin.bined.jaguif.component;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.context.api.StateUpdateType;
 
 /**
  * Nonprintables state.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface NonprintablesState {
 
     /**

@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.compare.gui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -37,7 +36,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Diff toolbar panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DiffToolbarPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle;
@@ -194,7 +193,6 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public JToolBar getToolBar() {
         return toolBar;
     }
@@ -242,10 +240,9 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface Controller {
 
-        @Nonnull
         CodeType getCodeType();
 
         void setCodeType(CodeType codeType);

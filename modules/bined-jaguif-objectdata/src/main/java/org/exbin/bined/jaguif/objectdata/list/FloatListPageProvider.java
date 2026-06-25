@@ -18,15 +18,14 @@ package org.exbin.bined.jaguif.objectdata.list;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
  * Float list as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class FloatListPageProvider implements PageProvider {
 
     private final byte[] valuesCache = new byte[4];
@@ -38,7 +37,6 @@ public class FloatListPageProvider implements PageProvider {
         this.listRef = listRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int pageSize = PageProviderBinaryData.PAGE_SIZE / 4;

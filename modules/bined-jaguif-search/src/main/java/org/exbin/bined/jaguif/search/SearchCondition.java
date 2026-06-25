@@ -16,9 +16,8 @@
 package org.exbin.bined.jaguif.search;
 
 import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
@@ -27,7 +26,7 @@ import org.exbin.bined.CodeAreaUtils;
 /**
  * Parameters for action to search for occurrences of text or data.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SearchCondition {
 
     private SearchMode searchMode = SearchMode.TEXT;
@@ -51,7 +50,6 @@ public class SearchCondition {
         }
     }
 
-    @Nonnull
     public SearchMode getSearchMode() {
         return searchMode;
     }
@@ -60,7 +58,6 @@ public class SearchCondition {
         this.searchMode = searchMode;
     }
 
-    @Nonnull
     public String getSearchText() {
         return searchText;
     }

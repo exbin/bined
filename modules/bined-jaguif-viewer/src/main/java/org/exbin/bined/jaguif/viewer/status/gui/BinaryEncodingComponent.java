@@ -19,8 +19,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -40,7 +39,7 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 /**
  * BinEd encoding status component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
@@ -121,7 +120,6 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
         });
     }
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         return component;

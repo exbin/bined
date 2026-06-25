@@ -18,9 +18,8 @@ package org.exbin.bined.jaguif.objectdata.property.gui;
 import java.awt.Component;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -30,7 +29,7 @@ import javax.swing.table.TableColumnModel;
 /**
  * Panel for properties of the inspected instance.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PropertyTablePanel extends javax.swing.JPanel {
 
     private final PropertyTableModel tableModel;
@@ -51,7 +50,6 @@ public class PropertyTablePanel extends javax.swing.JPanel {
         columns.getColumn(0).setWidth(190);
         columns.getColumn(1).setWidth(190);
         nameCellRenderer = new DefaultTableCellRenderer() {
-            @Nonnull
             @Override
             public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JComponent component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -69,7 +67,6 @@ public class PropertyTablePanel extends javax.swing.JPanel {
         columns.getColumn(1).setCellEditor(valueCellEditor);
 
         propertiesTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Nonnull
             @Override
             public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

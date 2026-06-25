@@ -23,8 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -75,7 +74,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Macros manager.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacroManager {
 
     public static final String MACROS_POPUP_SUBMENU_ID = BinedMacroModule.MODULE_ID + ".macrosPopupSubMenu";
@@ -152,12 +151,10 @@ public class MacroManager {
         }
     }
 
-    @Nonnull
     public List<MacroRecord> getMacroRecords() {
         return macroRecords;
     }
 
-    @Nonnull
     public AbstractAction getManageMacrosAction() {
         return manageMacrosAction;
     }
@@ -170,7 +167,6 @@ public class MacroManager {
         notifyLastMacroChange();
     }
 
-    @Nonnull
     public MacrosManagerPanel createMacrosManagerPanel() {
         final MacrosManagerPanel macrosManagerPanel = new MacrosManagerPanel();
         final DialogParentComponent dialogParentComponent = () -> macrosManagerPanel;
@@ -254,7 +250,6 @@ public class MacroManager {
         return macrosManagerPanel;
     }
 
-    @Nonnull
     public JMenu getMacrosMenu() {
         if (macrosMenu == null) {
             Action macrosMenuAction = new AbstractAction(resourceBundle.getString("macrosMenu.text")) {

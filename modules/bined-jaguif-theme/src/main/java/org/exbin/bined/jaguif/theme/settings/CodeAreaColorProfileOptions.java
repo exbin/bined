@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.theme.settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Color layout profile options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaColorProfileOptions implements SettingsOptions {
 
     private CodeAreaColorOptions options;
@@ -42,7 +41,6 @@ public class CodeAreaColorProfileOptions implements SettingsOptions {
         this.options = options;
     }
 
-    @Nonnull
     public List<String> getProfileNames() {
         List<String> profilesNames = new ArrayList<>();
         profileRecords.forEach((profile) -> {
@@ -51,7 +49,6 @@ public class CodeAreaColorProfileOptions implements SettingsOptions {
         return profilesNames;
     }
 
-    @Nonnull
     public SectionCodeAreaColorProfile getColorsProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
@@ -137,7 +134,7 @@ public class CodeAreaColorProfileOptions implements SettingsOptions {
     }
 
     @Immutable
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ProfileRecord {
 
         private final String name;
@@ -148,12 +145,10 @@ public class CodeAreaColorProfileOptions implements SettingsOptions {
             this.profile = profile;
         }
 
-        @Nonnull
         public String getName() {
             return name;
         }
 
-        @Nonnull
         public SectionCodeAreaColorProfile getProfile() {
             return profile;
         }

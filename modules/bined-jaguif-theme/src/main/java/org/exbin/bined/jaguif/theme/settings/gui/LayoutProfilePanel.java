@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.theme.settings.gui;
 import java.awt.BorderLayout;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.jaguif.App;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Layout profile panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class LayoutProfilePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LayoutProfilePanel.class);
@@ -44,12 +43,10 @@ public class LayoutProfilePanel extends javax.swing.JPanel {
         add(previewPanel, BorderLayout.CENTER);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 
-    @Nonnull
     public DefaultSectionCodeAreaLayoutProfile getLayoutProfile() {
         SectCodeArea codeArea = previewPanel.getCodeArea();
         DefaultSectionCodeAreaLayoutProfile layoutProfile = (DefaultSectionCodeAreaLayoutProfile) codeArea.getLayoutProfile();

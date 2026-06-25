@@ -15,15 +15,14 @@
  */
 package org.exbin.bined.jaguif.legacy.settings;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 
 /**
  * BinEd legacy options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedLegacyOptions implements SettingsOptions {
 
     public static final String KEY_LEGACY_IMPORTED = "legacy.imported";
@@ -34,7 +33,6 @@ public class BinedLegacyOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public String getLegacyImported() {
         return storage.get(KEY_LEGACY_IMPORTED, "");
     }

@@ -15,13 +15,13 @@
  */
 package org.exbin.bined.jaguif.component;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 
 /**
  * Binary charset encoding list controller interface.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinaryEncodingListController extends CharsetListEncodingState {
 
     /**

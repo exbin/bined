@@ -19,8 +19,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.CodeAreaZone;
@@ -41,7 +40,7 @@ import org.exbin.jaguif.document.api.ContextDocument;
 /**
  * Find/replace actions for binary search.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class FindReplaceActions {
 
     private ResourceBundle resourceBundle;
@@ -55,21 +54,18 @@ public class FindReplaceActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public EditFindAction createEditFindAction() {
         EditFindAction editFindAction = new EditFindAction();
         editFindAction.init(resourceBundle);
         return editFindAction;
     }
 
-    @Nonnull
     public EditFindAgainAction createEditFindAgainAction() {
         EditFindAgainAction editFindAgainAction = new EditFindAgainAction();
         editFindAgainAction.init(resourceBundle);
         return editFindAgainAction;
     }
 
-    @Nonnull
     public EditReplaceAction createEditReplaceAction() {
         EditReplaceAction editReplaceAction = new EditReplaceAction();
         editReplaceAction.init(resourceBundle);
@@ -89,7 +85,7 @@ public class FindReplaceActions {
         void performed();
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class EditFindAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "binarySearchFind";
@@ -128,7 +124,7 @@ public class FindReplaceActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class EditFindAgainAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "binarySearchFindAgain";
@@ -170,7 +166,7 @@ public class FindReplaceActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class EditReplaceAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "binarySearchReplace";

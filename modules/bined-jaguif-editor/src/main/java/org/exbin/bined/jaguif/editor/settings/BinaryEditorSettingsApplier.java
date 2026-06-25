@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.editor.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.swing.CodeAreaCommandHandler;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -29,7 +29,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Binary editor settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryEditorSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "binaryEditor";

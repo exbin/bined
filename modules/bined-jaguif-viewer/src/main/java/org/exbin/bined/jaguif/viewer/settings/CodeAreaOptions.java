@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.viewer.settings;
 import java.awt.Font;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Code area options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaOptions implements SettingsOptions {
 
     public static final String KEY_CODE_TYPE = "codeType";
@@ -57,7 +56,6 @@ public class CodeAreaOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public CodeType getCodeType() {
         CodeType defaultCodeType = CodeType.HEXADECIMAL;
         try {
@@ -80,7 +78,6 @@ public class CodeAreaOptions implements SettingsOptions {
         storage.putBoolean(KEY_SHOW_NONPRINTABLES, showNonprintables);
     }
 
-    @Nonnull
     public CodeCharactersCase getCodeCharactersCase() {
         CodeCharactersCase defaultCharactersCase = CodeCharactersCase.UPPER;
         try {
@@ -95,7 +92,6 @@ public class CodeAreaOptions implements SettingsOptions {
         storage.put(KEY_HEX_CHARACTERS_CASE, codeCharactersCase.name());
     }
 
-    @Nonnull
     public PositionCodeType getPositionCodeType() {
         PositionCodeType defaultCodeType = PositionCodeType.HEXADECIMAL;
         try {
@@ -110,7 +106,6 @@ public class CodeAreaOptions implements SettingsOptions {
         storage.put(KEY_POSITION_CODE_TYPE, positionCodeType.name());
     }
 
-    @Nonnull
     public CodeAreaViewMode getViewMode() {
         CodeAreaViewMode defaultMode = CodeAreaViewMode.DUAL;
         try {
@@ -141,7 +136,6 @@ public class CodeAreaOptions implements SettingsOptions {
         storage.putBoolean(KEY_CODE_COLORIZATION, codeColorization);
     }
 
-    @Nonnull
     public RowWrappingMode getRowWrappingMode() {
         RowWrappingMode defaultMode = RowWrappingMode.NO_WRAPPING;
         try {

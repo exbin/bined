@@ -25,9 +25,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -54,7 +53,7 @@ import org.exbin.bined.jaguif.inspector.BinedInspectorModule;
 /**
  * Values side panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BasicValuesPanel extends javax.swing.JPanel {
 
     public static final int UBYTE_MAX_VALUE = 255;
@@ -729,7 +728,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         registerFocusPainter(binedInspectorModule.getBasicValuesColorModifier());
     }
 
-    @Nonnull
     public Font getInputFieldsFont() {
         Font font = byteTextField.getFont();
         if (font == null) {
@@ -824,7 +822,6 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         return codeArea.isEditable();
     }
 
-    @Nonnull
     private ByteOrder getByteOrder() {
         return littleEndianRadioButton.isSelected() ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;
     }
@@ -863,7 +860,7 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         stringTextField.addFocusListener(new ValueFocusListener(colorModifier, 1));
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private class ValuesUpdater {
 
         private boolean updateInProgress = false;
@@ -1140,27 +1137,23 @@ public class BasicValuesPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     protected JLabel createLabel() {
         return new JLabel();
     }
 
-    @Nonnull
     protected JCheckBox createCheckBox() {
         return new JCheckBox();
     }
 
-    @Nonnull
     protected JTextField createTextField() {
         return new JTextField();
     }
 
-    @Nonnull
     protected JRadioButton createRadioButton() {
         return new JRadioButton();
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private class ValueFocusListener implements FocusListener {
 
         private BasicValuesPositionColorModifier colorModifier;

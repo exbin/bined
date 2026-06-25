@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -39,7 +38,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Table inspector settings panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TableInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(TableInspectorSettingsPanel.class);
@@ -73,7 +72,6 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
         this.controller = controller;
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
@@ -344,7 +342,6 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
         this.valueRowTypes = valueRowTypes;
     }
 
-    @Nonnull
     public List<String> getItems() {
         List<String> typeIds = new ArrayList<>();
         DefaultListModel<String> model = (DefaultListModel<String>) rowsList.getModel();

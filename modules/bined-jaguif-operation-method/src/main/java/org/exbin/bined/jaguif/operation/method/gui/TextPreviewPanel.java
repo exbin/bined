@@ -17,7 +17,7 @@ package org.exbin.bined.jaguif.operation.method.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 /**
  * Text preview panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TextPreviewPanel extends javax.swing.JPanel {
 
     protected final JScrollPane previewScrollPane;

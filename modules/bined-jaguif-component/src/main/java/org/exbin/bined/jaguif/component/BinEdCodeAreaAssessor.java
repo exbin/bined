@@ -19,9 +19,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaSection;
 import org.exbin.bined.highlight.swing.NonAsciiCodeAreaColorAssessor;
 import org.exbin.bined.highlight.swing.NonprintablesCodeAreaAssessor;
@@ -33,7 +32,7 @@ import org.exbin.bined.swing.CodeAreaPaintState;
 /**
  * Color assessor for binary editor with registrable modifiers.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCharAssessor {
 
     protected final List<CodeAreaColorAssessor> priorityColorModifiers = new ArrayList<>();
@@ -155,13 +154,11 @@ public class BinEdCodeAreaAssessor implements CodeAreaColorAssessor, CodeAreaCha
         return parentCharAssessor != null ? parentCharAssessor.getPreviewCursorCharacter(rowDataPosition, offsetDataPosition, columnPosition, cursorData, cursorDataLength, section) : ' ';
     }
 
-    @Nonnull
     @Override
     public Optional<CodeAreaCharAssessor> getParentCharAssessor() {
         return Optional.ofNullable(parentCharAssessor);
     }
 
-    @Nonnull
     @Override
     public Optional<CodeAreaColorAssessor> getParentColorAssessor() {
         return Optional.ofNullable(parentColorAssessor);

@@ -16,23 +16,23 @@
 package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Property Table Cell Renderer.
  */
+@NullMarked
 public class PropertyTableCellRenderer implements TableCellRenderer {
 
     public PropertyTableCellRenderer() {
     }
 
-    @Nonnull
     @Override
     public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (table == null || value == null) {

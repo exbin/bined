@@ -20,9 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.operation.command.BinaryDataCommand;
 import org.exbin.bined.operation.command.BinaryDataCommandType;
 import org.exbin.bined.operation.command.BinaryDataUndoableCommand;
@@ -37,7 +36,7 @@ import org.exbin.jaguif.operation.undo.api.UndoRedo;
 /**
  * Undo redo wrapper.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class UndoRedoWrapper implements UndoRedo {
 
     private BinaryDataUndoRedo undoRedo;
@@ -89,7 +88,6 @@ public class UndoRedoWrapper implements UndoRedo {
         undoRedo.execute(new BinaryCommandWrapper(command));
     }
 
-    @Nonnull
     @Override
     public List<Command> getCommandList() {
         List<Command> result = new ArrayList<>();
@@ -102,7 +100,6 @@ public class UndoRedoWrapper implements UndoRedo {
         return result;
     }
 
-    @Nonnull
     @Override
     public Optional<Command> getTopUndoCommand() {
         Optional<BinaryDataCommand> topUndoCommand = undoRedo.getTopUndoCommand();
@@ -180,7 +177,7 @@ public class UndoRedoWrapper implements UndoRedo {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class CommandWrapper implements Command {
 
         private final BinaryDataCommand command;
@@ -189,7 +186,6 @@ public class UndoRedoWrapper implements UndoRedo {
             this.command = command;
         }
 
-        @Nonnull
         @Override
         public CommandType getType() {
             return new BinaryCommandWrapperType(command.getType());
@@ -206,7 +202,7 @@ public class UndoRedoWrapper implements UndoRedo {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class UndoableCommandWrapper implements UndoableCommand {
 
         private final BinaryDataUndoableCommand command;
@@ -215,7 +211,6 @@ public class UndoRedoWrapper implements UndoRedo {
             this.command = command;
         }
 
-        @Nonnull
         @Override
         public CommandType getType() {
             return new BinaryCommandWrapperType(command.getType());
@@ -242,7 +237,7 @@ public class UndoRedoWrapper implements UndoRedo {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class BinaryCommandWrapper implements BinaryDataCommand {
 
         private final Command command;
@@ -251,7 +246,6 @@ public class UndoRedoWrapper implements UndoRedo {
             this.command = command;
         }
 
-        @Nonnull
         @Override
         public BinaryDataCommandType getType() {
             return ((BinaryCommandWrapperType) command.getType()).getCommandType();
@@ -268,7 +262,7 @@ public class UndoRedoWrapper implements UndoRedo {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class BinaryCommandWrapperType implements CommandType {
 
         private final BinaryDataCommandType commandType;
@@ -277,7 +271,6 @@ public class UndoRedoWrapper implements UndoRedo {
             this.commandType = commandType;
         }
 
-        @Nonnull
         public BinaryDataCommandType getCommandType() {
             return commandType;
         }

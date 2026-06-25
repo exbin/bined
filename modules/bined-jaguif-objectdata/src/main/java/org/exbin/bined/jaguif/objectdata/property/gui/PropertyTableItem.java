@@ -15,14 +15,13 @@
  */
 package org.exbin.bined.jaguif.objectdata.property.gui;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Parameters list table item record.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PropertyTableItem {
 
     private String valueName;
@@ -35,7 +34,6 @@ public class PropertyTableItem {
         this.value = value;
     }
 
-    @Nonnull
     public String getValueName() {
         return valueName;
     }
@@ -44,7 +42,6 @@ public class PropertyTableItem {
         this.valueName = valueName;
     }
 
-    @Nonnull
     public String getTypeName() {
         return typeName;
     }

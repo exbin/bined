@@ -17,8 +17,8 @@ package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.window.api.WindowHandler;
@@ -27,7 +27,7 @@ import org.exbin.jaguif.window.api.WindowModuleApi;
 /**
  * Properties table cell panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PropertyTableCellPanel extends ComponentPropertyTableCellPanel {
 
     private final String name;

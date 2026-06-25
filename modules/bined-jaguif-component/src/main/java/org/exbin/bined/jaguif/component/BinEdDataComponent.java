@@ -21,8 +21,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
@@ -63,7 +62,7 @@ import org.exbin.jaguif.text.font.TextFontState;
 /**
  * Binary data component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardOperationController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {
 
     protected final BinEdComponentPanel binaryComponent;
@@ -85,7 +84,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         this.codeArea = codeArea;
         init();
     }
-    
+
     private void init() {
         defaultFont = ((SectCodeArea) codeArea).getCodeFont();
         codeArea.addDataChangedListener(() -> {
@@ -112,20 +111,18 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
             }
         });
     }
-    
+
     public void applySettings(SettingsOptionsProvider settingsOptionsProvider) {
         OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
         OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
         settingsManager.applyContextOptions(ContextComponent.class, this, settingsOptionsProvider);
     }
 
-    @Nonnull
     @Override
     public Component getComponent() {
         return binaryComponent != null ? binaryComponent : codeArea;
     }
 
-    @Nonnull
     @Override
     public CodeAreaCore getCodeArea() {
         return codeArea;
@@ -210,7 +207,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         return codeArea.isEditable() && codeArea.hasSelection();
     }
 
-    @Nonnull
     @Override
     public String getEncoding() {
         return ((CharsetCapable) codeArea).getCharset().name();
@@ -224,7 +220,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     @Override
     public List<String> getEncodings() {
         return encodings;
@@ -239,13 +234,11 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     @Override
     public Font getCurrentFont() {
         return ((FontCapable) codeArea).getCodeFont();
     }
 
-    @Nonnull
     @Override
     public Font getDefaultFont() {
         return defaultFont;
@@ -259,7 +252,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     @Override
     public CodeType getCodeType() {
         return ((CodeTypeCapable) codeArea).getCodeType();
@@ -273,7 +265,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     @Override
     public PositionCodeType getPositionCodeType() {
         return ((PositionCodeTypeCapable) codeArea).getPositionCodeType();
@@ -287,7 +278,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     @Override
     public CodeCharactersCase getCodeCharactersCase() {
         return ((CodeCharactersCaseCapable) codeArea).getCodeCharactersCase();
@@ -324,7 +314,6 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     @Override
     public Optional<BinaryDataUndoRedo> getUndoRedo() {
         // TODO Replace with context undo
@@ -348,12 +337,10 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
     }
 
-    @Nonnull
     public List<BinEdComponentExtension> getComponentExtensions() {
         return componentExtensions;
     }
 
-    @Nonnull
     @Override
     public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
         for (BinEdComponentExtension extension : componentExtensions) {

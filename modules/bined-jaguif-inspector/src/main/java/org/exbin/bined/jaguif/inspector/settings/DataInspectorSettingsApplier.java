@@ -18,8 +18,8 @@ package org.exbin.bined.jaguif.inspector.settings;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.inspector.BasicValuesInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
@@ -32,7 +32,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Data inspector settings component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataInspectorSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "dataInspector";

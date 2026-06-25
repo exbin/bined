@@ -17,16 +17,15 @@ package org.exbin.bined.jaguif.theme.gui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
 /**
  * Simple color selection component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SelectableColor extends javax.swing.JPanel {
 
     private ColorChangedListener colorChangedListener = null;
@@ -122,7 +121,6 @@ public class SelectableColor extends javax.swing.JPanel {
         colorSelectionButton.setEnabled(enabled);
     }
 
-    @Nonnull
     public Color getColor() {
         return colorPreviewPanel.getBackground();
     }
@@ -140,7 +138,7 @@ public class SelectableColor extends javax.swing.JPanel {
         this.colorChangedListener = colorChangedListener;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static interface ColorChangedListener {
 
         void colorChanged(Color color);

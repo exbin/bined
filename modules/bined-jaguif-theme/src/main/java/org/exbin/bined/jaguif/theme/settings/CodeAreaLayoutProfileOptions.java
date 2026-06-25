@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.theme.settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.annotation.concurrent.Immutable;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Layout profile options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaLayoutProfileOptions implements SettingsOptions {
 
     private CodeAreaLayoutOptions options;
@@ -42,7 +41,6 @@ public class CodeAreaLayoutProfileOptions implements SettingsOptions {
         this.options = options;
     }
 
-    @Nonnull
     public List<String> getProfileNames() {
         List<String> profilesNames = new ArrayList<>();
         profileRecords.forEach((profile) -> {
@@ -51,7 +49,6 @@ public class CodeAreaLayoutProfileOptions implements SettingsOptions {
         return profilesNames;
     }
 
-    @Nonnull
     public DefaultSectionCodeAreaLayoutProfile getLayoutProfile(int index) {
         ProfileRecord record = profileRecords.get(index);
         if (record.profile == null) {
@@ -145,7 +142,7 @@ public class CodeAreaLayoutProfileOptions implements SettingsOptions {
     }
 
     @Immutable
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ProfileRecord {
 
         private final String name;
@@ -156,12 +153,10 @@ public class CodeAreaLayoutProfileOptions implements SettingsOptions {
             this.profile = profile;
         }
 
-        @Nonnull
         public String getName() {
             return name;
         }
 
-        @Nonnull
         public DefaultSectionCodeAreaLayoutProfile getProfile() {
             return profile;
         }

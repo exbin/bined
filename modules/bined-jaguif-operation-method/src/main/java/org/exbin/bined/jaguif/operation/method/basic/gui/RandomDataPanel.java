@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Random data component panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class RandomDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(RandomDataPanel.class);
@@ -38,7 +37,6 @@ public class RandomDataPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -171,7 +169,6 @@ public class RandomDataPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public RandomDataMethod.AlgorithmType getAlgorithmType() {
         if (lowerHalfRadioButton.isSelected()) {
             return RandomDataMethod.AlgorithmType.LOWER_HALF;

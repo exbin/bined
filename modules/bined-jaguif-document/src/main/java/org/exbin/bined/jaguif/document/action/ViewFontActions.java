@@ -19,9 +19,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
@@ -39,7 +38,7 @@ import org.exbin.jaguif.utils.ActionUtils;
 /**
  * View font actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ViewFontActions {
 
     private ResourceBundle resourceBundle;
@@ -53,7 +52,6 @@ public class ViewFontActions {
         this.fontSizeOptions = fontSizeOptions;
     }
 
-    @Nonnull
     public ZoomInAction createZoomInAction() {
         ZoomInAction zoomInAction = new ZoomInAction();
         zoomInAction.init(resourceBundle);
@@ -61,7 +59,6 @@ public class ViewFontActions {
         return zoomInAction;
     }
 
-    @Nonnull
     public ZoomOutAction createZoomOutAction() {
         ZoomOutAction zoomOutAction = new ZoomOutAction();
         zoomOutAction.init(resourceBundle);
@@ -69,7 +66,6 @@ public class ViewFontActions {
         return zoomOutAction;
     }
 
-    @Nonnull
     public ResetFontSizeAction createResetFontSizeAction() {
         ResetFontSizeAction resetFontSizeAction = new ResetFontSizeAction();
         resetFontSizeAction.init(resourceBundle);
@@ -121,7 +117,7 @@ public class ViewFontActions {
         component.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, inputMap); */
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ZoomInAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "zoomIn";
@@ -174,7 +170,7 @@ public class ViewFontActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ZoomOutAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "zoomOut";
@@ -227,7 +223,7 @@ public class ViewFontActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ResetFontSizeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "resetFontSize";

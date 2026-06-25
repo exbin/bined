@@ -19,8 +19,7 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -41,7 +40,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 /**
  * Add bookmark record action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class AddBookmarkAction extends AbstractAction {
 
     public static final String ACTION_ID = "addBookmark";
@@ -73,7 +72,6 @@ public class AddBookmarkAction extends AbstractAction {
         });
     }
 
-    @Nonnull
     public Optional<BookmarkRecord> getBookmarkRecord() {
         return Optional.ofNullable(bookmarkRecord);
     }

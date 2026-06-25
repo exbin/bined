@@ -17,8 +17,8 @@ package org.exbin.bined.jaguif.search;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -26,7 +26,7 @@ import javax.swing.event.ListDataListener;
 /**
  * Search condition history model.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SearchHistoryModel implements ComboBoxModel<SearchCondition> {
 
     public static final int HISTORY_LIMIT = 10;

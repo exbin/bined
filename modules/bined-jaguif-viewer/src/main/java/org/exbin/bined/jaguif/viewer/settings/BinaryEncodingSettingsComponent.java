@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.viewer.settings;
 
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsComponentProvider;
@@ -32,10 +31,9 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 /**
  * Text encoding settings component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryEncodingSettingsComponent implements SettingsComponentProvider {
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         TextEncodingSettingsPanel panel = new TextEncodingSettingsPanel();

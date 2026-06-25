@@ -22,8 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.basic.CodeAreaViewMode;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
@@ -35,7 +34,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Legacy preferences for version 0.1.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class LegacyPreferences {
 
     public static final String ENCODING_UTF8 = "UTF-8";
@@ -74,7 +73,6 @@ public class LegacyPreferences {
         this.storage = storage;
     }
 
-    @Nonnull
     public String getSelectedEncoding() {
         return storage.get(KEY_ENCODING_SELECTED, ENCODING_UTF8);
     }
@@ -83,7 +81,6 @@ public class LegacyPreferences {
         storage.put(KEY_ENCODING_SELECTED, encodingName);
     }
 
-    @Nonnull
     public Collection<String> getEncodings() {
         List<String> encodings = new ArrayList<>();
         String value;
@@ -107,7 +104,6 @@ public class LegacyPreferences {
         storage.remove(KEY_ENCODING_PREFIX + Integer.toString(encodings.size()));
     }
 
-    @Nonnull
     private SectionBackgroundPaintMode convertBackgroundPaintMode(String value) {
         if ("STRIPPED".equals(value)) {
             return SectionBackgroundPaintMode.STRIPED;
@@ -115,7 +111,6 @@ public class LegacyPreferences {
         return SectionBackgroundPaintMode.valueOf(value);
     }
 
-    @Nonnull
     public CodeType getCodeType() {
         return CodeType.valueOf(storage.get(KEY_CODE_TYPE, CodeType.HEXADECIMAL.name()));
     }
@@ -124,7 +119,6 @@ public class LegacyPreferences {
         storage.put(KEY_CODE_TYPE, codeType.name());
     }
 
-    @Nonnull
     public Font getCodeFont(Font initialFont) {
         String value;
         Map<TextAttribute, Object> attribs = new HashMap<>();
@@ -212,7 +206,6 @@ public class LegacyPreferences {
         storage.putBoolean(KEY_SHOW_VALUES_PANEL, showValuesPanel);
     }
 
-    @Nonnull
     public CodeCharactersCase getCodeCharactersCase() {
         return CodeCharactersCase.valueOf(storage.get(KEY_HEX_CHARACTERS_CASE, CodeCharactersCase.UPPER.name()));
     }
@@ -221,7 +214,6 @@ public class LegacyPreferences {
         storage.put(KEY_HEX_CHARACTERS_CASE, codeCharactersCase.name());
     }
 
-    @Nonnull
     public PositionCodeType getPositionCodeType() {
         return PositionCodeType.valueOf(storage.get(KEY_POSITION_CODE_TYPE, PositionCodeType.HEXADECIMAL.name()));
     }
@@ -230,12 +222,10 @@ public class LegacyPreferences {
         storage.put(KEY_POSITION_CODE_TYPE, positionCodeType.name());
     }
 
-    @Nonnull
     public SectionBackgroundPaintMode getBackgroundPaintMode() {
         return convertBackgroundPaintMode(storage.get(KEY_BACKGROUND_MODE, SectionBackgroundPaintMode.STRIPED.name()));
     }
 
-    @Nonnull
     public CodeAreaViewMode getViewMode() {
         String codeType = storage.get(KEY_VIEW_MODE, CodeAreaViewMode.DUAL.name());
         if ("HEXADECIMAL".equals(codeType)) {

@@ -17,14 +17,13 @@ package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractListModel;
 
 /**
  * Component parents list model.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ComponentParentsListModel extends AbstractListModel<String> {
 
     private final List<RowRecord> items = new ArrayList<>();
@@ -43,7 +42,6 @@ public class ComponentParentsListModel extends AbstractListModel<String> {
         fireIntervalAdded(this, size, size);
     }
 
-    @Nonnull
     public Object getItemObject(int index) {
         return items.get(index).object;
     }
@@ -53,13 +51,12 @@ public class ComponentParentsListModel extends AbstractListModel<String> {
         return items.size();
     }
 
-    @Nonnull
     @Override
     public String getElementAt(int index) {
         return items.get(index).name;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class RowRecord {
 
         String name;

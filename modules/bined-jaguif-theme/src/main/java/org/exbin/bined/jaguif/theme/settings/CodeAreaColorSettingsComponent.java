@@ -24,9 +24,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,18 +52,16 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 /**
  * Color profiles settings component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaColorSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "colorProfiles";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ColorProfilesSettingsPanel panel = new ColorProfilesSettingsPanel();
         panel.setThemeProfileController(new ThemeProfilesPanel.Controller() {
-            @Nonnull
             @Override
             public Optional<ThemeProfile> addProfile() {
                 ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
@@ -99,7 +96,6 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
                 return Optional.ofNullable(result[0]);
             }
 
-            @Nonnull
             @Override
             public Optional<ThemeProfile> editProfile(ThemeProfile profile) {
                 ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
@@ -134,7 +130,6 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
                 return Optional.ofNullable(result[0]);
             }
 
-            @Nonnull
             @Override
             public ThemeProfile copyProfile(ThemeProfile profile) {
                 ColorProfilePanel colorProfilePanel = new ColorProfilePanel();
@@ -170,7 +165,6 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
                 return result[0];
             }
 
-            @Nonnull
             @Override
             public Optional<ThemeProfile> addTemplate() {
                 ThemeTemplatesPanel templatePanel = new ThemeTemplatesPanel();
@@ -255,7 +249,6 @@ public class CodeAreaColorSettingsComponent implements SettingsComponentProvider
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    @Nonnull
     private static String getNewProfileName(ColorProfilesSettingsPanel panel, ResourceBundle resourceBundle) {
         String profileName = resourceBundle.getString("newProfile.profilePrefix");
         int profileIndex = 1;

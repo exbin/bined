@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.component.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.ShowNonprintablesActions;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Toggle nonprintables contribution.
  */
+@NullMarked
 public class ToggleNonprintablesContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "viewNonprintables";
 
-    @Nonnull
     @Override
     public Action createAction() {
         BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
@@ -39,7 +39,6 @@ public class ToggleNonprintablesContribution implements ActionSequenceContributi
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

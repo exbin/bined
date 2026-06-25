@@ -21,8 +21,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Arrays;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.CodeCharactersCase;
@@ -32,7 +31,7 @@ import org.exbin.bined.swing.CodeAreaSwingUtils;
 /**
  * Copy as code clipboard data.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeClipboardData implements CodeAreaSwingUtils.ClipboardData {
 
     protected final BinaryData data;
@@ -47,7 +46,6 @@ public class CodeClipboardData implements CodeAreaSwingUtils.ClipboardData {
         this.charactersCase = charactersCase;
     }
 
-    @Nonnull
     @Override
     public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[]{binaryDataFlavor, DataFlavor.stringFlavor};
@@ -58,7 +56,6 @@ public class CodeClipboardData implements CodeAreaSwingUtils.ClipboardData {
         return flavor.equals(binaryDataFlavor) || flavor.equals(DataFlavor.stringFlavor);
     }
 
-    @Nonnull
     @Override
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         if (flavor.equals(binaryDataFlavor)) {

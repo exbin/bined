@@ -15,13 +15,12 @@
  */
 package org.exbin.bined.jaguif.theme.model;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Theme profile.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface ThemeProfile {
 
     /**
@@ -29,7 +28,6 @@ public interface ThemeProfile {
      *
      * @return profile name
      */
-    @Nonnull
     String getProfileName();
 
     /**

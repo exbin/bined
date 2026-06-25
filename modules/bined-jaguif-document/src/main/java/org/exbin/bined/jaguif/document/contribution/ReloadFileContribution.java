@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.document.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.document.action.ReloadFileAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Reload content of the currently active file contribution.
  */
+@NullMarked
 public class ReloadFileContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "reloadFile";
 
-    @Nonnull
     @Override
     public Action createAction() {
         ReloadFileAction action = new ReloadFileAction();
@@ -38,7 +38,6 @@ public class ReloadFileContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

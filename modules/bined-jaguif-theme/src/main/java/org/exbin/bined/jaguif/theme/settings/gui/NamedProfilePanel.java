@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.theme.settings.gui;
 
 import java.awt.BorderLayout;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPanel;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -25,7 +24,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Wrapper panel for setting default profile.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class NamedProfilePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(NamedProfilePanel.class);
@@ -43,7 +42,6 @@ public class NamedProfilePanel extends javax.swing.JPanel {
         profileNameTextField.setText(profileName);
     }
 
-    @Nonnull
     public String getProfileName() {
         return profileNameTextField.getText();
     }

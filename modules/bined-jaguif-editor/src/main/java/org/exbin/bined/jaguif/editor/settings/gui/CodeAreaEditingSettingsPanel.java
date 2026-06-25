@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.editor.settings.gui;
 
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.basic.EnterKeyHandlingMode;
 import org.exbin.bined.basic.TabKeyHandlingMode;
 import org.exbin.jaguif.App;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Code area editing options panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
@@ -42,7 +41,6 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
         initComponents();
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;

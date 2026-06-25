@@ -16,14 +16,13 @@
 package org.exbin.bined.jaguif.viewer.status;
 
 import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.PositionCodeType;
 
 /**
  * Data size format for status.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class StatusDataSizeFormat {
 
     private PositionCodeType positionCodeType = PositionCodeType.DECIMAL;
@@ -37,7 +36,6 @@ public class StatusDataSizeFormat {
         this.showRelative = showRelative;
     }
 
-    @Nonnull
     public PositionCodeType getCodeType() {
         return positionCodeType;
     }

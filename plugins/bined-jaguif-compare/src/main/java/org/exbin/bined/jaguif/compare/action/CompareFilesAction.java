@@ -28,9 +28,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
@@ -62,7 +61,7 @@ import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 /**
  * Compare files action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CompareFilesAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "compareFiles";
@@ -125,9 +124,8 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
         }
 
         compareFilesPanel.setController(new CompareFilesPanel.Controller() {
-            @Nullable
             @Override
-            public CompareFilesPanel.FileRecord openFile() {
+            public CompareFilesPanel.@Nullable FileRecord openFile() {
                 FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);        
                 FileModuleApi fileModule = App.getModule(FileModuleApi.class);
                 FileDialogsProvider dialogsProvider = fileModule.getFileDialogsProvider();
@@ -148,7 +146,6 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
                 return null;
             }
 
-            @Nonnull
             @Override
             public BinaryData getFileData(int index) {
                 return ((BinaryFileDocument) fileDocuments.get(index)).getCodeArea().getContentData();

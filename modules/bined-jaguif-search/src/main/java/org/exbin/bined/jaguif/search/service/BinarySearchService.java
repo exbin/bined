@@ -15,15 +15,14 @@
  */
 package org.exbin.bined.jaguif.search.service;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.search.ReplaceParameters;
 import org.exbin.bined.jaguif.search.SearchParameters;
 
 /**
  * Binary search service.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface BinarySearchService {
 
     void performFind(SearchParameters searchParameters, SearchStatusListener searchStatusListener);
@@ -34,12 +33,11 @@ public interface BinarySearchService {
 
     void performReplace(SearchParameters searchParameters, ReplaceParameters replaceParameters);
 
-    @Nonnull
     SearchParameters getLastSearchParameters();
 
     void clearMatches();
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface SearchStatusListener {
 
         void setStatus(FoundMatches foundMatches, SearchParameters.MatchMode matchMode);

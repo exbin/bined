@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.tool.content.gui;
 
 import java.awt.event.ActionEvent;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JButton;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.help.api.HelpLink;
@@ -30,7 +29,7 @@ import org.exbin.jaguif.utils.UiUtils;
 /**
  * Clipboard content control panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ClipboardContentControlPanel extends javax.swing.JPanel implements ClipboardContentControlController.ClipboardContentControlComponent, HelpLinkable {
 
     private final java.util.ResourceBundle resourceBundle;
@@ -147,7 +146,6 @@ public class ClipboardContentControlPanel extends javax.swing.JPanel implements 
         }
     }
 
-    @Nonnull
     @Override
     public Optional<JButton> getDefaultButton() {
         return Optional.of(closeButton);

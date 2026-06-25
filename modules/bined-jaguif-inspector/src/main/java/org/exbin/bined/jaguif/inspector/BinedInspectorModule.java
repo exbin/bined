@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.inspector;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.Action;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.basic.BasicCodeAreaZone;
@@ -59,7 +58,7 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 /**
  * Binary editor data inspector module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedInspectorModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedInspectorModule.class);
@@ -75,7 +74,6 @@ public class BinedInspectorModule implements Module {
     public BinedInspectorModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedInspectorModule.class);
@@ -94,7 +92,6 @@ public class BinedInspectorModule implements Module {
         fileManager.addBinEdComponentExtension(new BinEdInspectorFileExtension());
     }
 
-    @Nonnull
     public ShowParsingPanelAction createShowParsingPanelAction() {
         ShowParsingPanelAction showParsingPanelAction = new ShowParsingPanelAction();
         showParsingPanelAction.init(getResourceBundle());
@@ -124,7 +121,6 @@ public class BinedInspectorModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = new ShowParsingPanelContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return createShowParsingPanelAction();
@@ -135,7 +131,6 @@ public class BinedInspectorModule implements Module {
 
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(BinedViewerModule.SHOW_POPUP_SUBMENU_ID);
         contribution = new ShowParsingPanelContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return createShowParsingPanelAction();
@@ -163,7 +158,6 @@ public class BinedInspectorModule implements Module {
         settingsManagement.registerSettingsRule(settingsComponent, new SettingsPageContributionRule(pageContribution));
     }
 
-    @Nonnull
     public BinEdInspectorManager getBinEdInspectorManager() {
         if (binEdInspectorManager == null) {
             binEdInspectorManager = new BinEdInspectorManager();
@@ -171,18 +165,16 @@ public class BinedInspectorModule implements Module {
         return binEdInspectorManager;
     }
 
-    @Nonnull
     public BasicValuesPositionColorModifier getBasicValuesColorModifier() {
         return Objects.requireNonNull(basicValuesColorModifier);
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class BinEdInspectorFileExtension implements BinEdFileManager.BinEdFileExtension {
 
         public BinEdInspectorFileExtension() {
         }
 
-        @Nonnull
         @Override
         public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
             BinEdInspectorComponentExtension binEdComponentInspector = new BinEdInspectorComponentExtension();

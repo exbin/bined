@@ -18,14 +18,13 @@ package org.exbin.bined.jaguif.objectdata.array;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.nio.ByteBuffer;
 
 /**
  * Double array as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DoubleArrayPageProvider implements PageProvider {
 
     private final byte[] valuesCache = new byte[8];
@@ -37,7 +36,6 @@ public class DoubleArrayPageProvider implements PageProvider {
         this.arrayRef = arrayRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int pageSize = PageProviderBinaryData.PAGE_SIZE / 8;

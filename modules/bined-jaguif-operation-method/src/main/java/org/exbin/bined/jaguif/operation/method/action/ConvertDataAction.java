@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.SwingUtilities;
@@ -59,7 +59,7 @@ import org.exbin.jaguif.document.api.DocumentModuleApi;
 /**
  * Convert data action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ConvertDataAction extends AbstractAction {
 
     public static final String ACTION_ID = "convertData";

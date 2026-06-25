@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.code;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.PluginModule;
@@ -29,7 +28,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Module for operations to copy or paste from language programming codes.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedOperationCodeModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedOperationCodeModule.class);
@@ -46,7 +45,6 @@ public class BinedOperationCodeModule implements PluginModule {
         operationMethodModule.addPasteFromDataMethod(new PasteFromCodeDataMethod());
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedOperationCodeModule.class);

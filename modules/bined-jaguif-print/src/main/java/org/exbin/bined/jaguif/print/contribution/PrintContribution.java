@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.print.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.print.BinedPrintModule;
 import org.exbin.bined.jaguif.print.action.PrintAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Print contribution.
  */
+@NullMarked
 public class PrintContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "print";
 
-    @Nonnull
     @Override
     public Action createAction() {
         PrintAction action = new PrintAction();
@@ -38,7 +38,6 @@ public class PrintContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

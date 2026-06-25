@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.editor.settings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.editor.settings.gui.CodeAreaEditingSettingsPanel;
@@ -29,12 +28,11 @@ import org.exbin.jaguif.options.settings.api.SettingsComponent;
 /**
  * Code area editing options page.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaEditingSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "codeAreaEditing";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         CodeAreaEditingSettingsPanel panel = new CodeAreaEditingSettingsPanel();

@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.search;
 
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.Action;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
@@ -42,7 +41,7 @@ import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 /**
  * Binary editor search module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedSearchModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedSearchModule.class);
@@ -62,7 +61,6 @@ public class BinedSearchModule implements Module {
         fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new DefaultBinEdComponentSearch()));
     }
 
-    @Nonnull
     public FindReplaceActions getFindReplaceActions() {
         if (findReplaceActions == null) {
             findReplaceActions = new FindReplaceActions();
@@ -79,13 +77,11 @@ public class BinedSearchModule implements Module {
         String groupId = BinedComponentModule.EDIT_FIND_MENU_GROUP_ID;
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
         SequenceContribution contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return findReplaceActions.createEditFindAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return "binarySearchFind";
@@ -94,13 +90,11 @@ public class BinedSearchModule implements Module {
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return findReplaceActions.createEditFindAgainAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return "binarySearchFindAgain";
@@ -109,13 +103,11 @@ public class BinedSearchModule implements Module {
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return findReplaceActions.createEditReplaceAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return "binarySearchReplace";
@@ -129,13 +121,11 @@ public class BinedSearchModule implements Module {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
         SequenceContribution contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return findReplaceActions.createEditFindAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return "binarySearchFind";
@@ -144,13 +134,11 @@ public class BinedSearchModule implements Module {
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return findReplaceActions.createEditReplaceAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return "binarySearchReplace";
@@ -168,13 +156,11 @@ public class BinedSearchModule implements Module {
         mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
         mgmt.registerToolBarRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
         contribution = new ActionMenuContribution() {
-            @Nonnull
             @Override
             public Action createAction() {
                 return findReplaceActions.createEditFindAction();
             }
 
-            @Nonnull
             @Override
             public String getContributionId() {
                 return "binarySearchFind";
@@ -184,7 +170,6 @@ public class BinedSearchModule implements Module {
         mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedSearchModule.class);

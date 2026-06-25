@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.viewer.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.PositionCodeType;
@@ -38,7 +37,7 @@ import org.exbin.jaguif.menu.api.ActionMenuCreation;
 /**
  * Position code type actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PositionCodeTypeActions {
 
     public static final String POSITION_CODE_TYPE_RADIO_GROUP_ID = "positionCodeTypeRadioGroup";
@@ -52,28 +51,24 @@ public class PositionCodeTypeActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public OctalPositionCodeTypeAction createOctalCodeTypeAction() {
         OctalPositionCodeTypeAction octalPositionCodeTypeAction = new OctalPositionCodeTypeAction();
         octalPositionCodeTypeAction.init(resourceBundle);
         return octalPositionCodeTypeAction;
     }
 
-    @Nonnull
     public DecimalPositionCodeTypeAction createDecimalCodeTypeAction() {
         DecimalPositionCodeTypeAction decimalPositionCodeTypeAction = new DecimalPositionCodeTypeAction();
         decimalPositionCodeTypeAction.init(resourceBundle);
         return decimalPositionCodeTypeAction;
     }
 
-    @Nonnull
     public HexadecimalPositionCodeTypeAction createHexadecimalCodeTypeAction() {
         HexadecimalPositionCodeTypeAction hexadecimalPositionCodeTypeAction = new HexadecimalPositionCodeTypeAction();
         hexadecimalPositionCodeTypeAction.init(resourceBundle);
         return hexadecimalPositionCodeTypeAction;
     }
 
-    @Nonnull
     public CodeTypeContribution createPositionCodeTypeContribution(PositionCodeType positionCodeType, @Nullable ActionMenuCreation positionCodeTypeCreating) {
         switch (positionCodeType) {
             case OCTAL:
@@ -87,7 +82,7 @@ public class PositionCodeTypeActions {
         throw new IllegalStateException();
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class OctalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "octalPositionCodeType";
@@ -131,7 +126,7 @@ public class PositionCodeTypeActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class DecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "decimalPositionCodeType";
@@ -175,7 +170,7 @@ public class PositionCodeTypeActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class HexadecimalPositionCodeTypeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "hexadecimalPositionCodeType";
@@ -219,7 +214,7 @@ public class PositionCodeTypeActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class CodeTypeContribution implements ActionSequenceContribution {
 
         private final String contributionId;
@@ -232,7 +227,6 @@ public class PositionCodeTypeActions {
             this.positionCodeTypeCreating = positionCodeTypeCreating;
         }
 
-        @Nonnull
         @Override
         public Action createAction() {
             switch (positionCodeType) {
@@ -265,7 +259,6 @@ public class PositionCodeTypeActions {
             throw new IllegalStateException();
         }
 
-        @Nonnull
         @Override
         public String getContributionId() {
             return contributionId;

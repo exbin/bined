@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.macro.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.table.AbstractTableModel;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -27,7 +26,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Table model for macros.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacrosTableModel extends AbstractTableModel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(MacrosTableModel.class);
@@ -48,7 +47,6 @@ public class MacrosTableModel extends AbstractTableModel {
         records = new ArrayList<>();
     }
 
-    @Nonnull
     public List<MacroRecord> getRecords() {
         return records;
     }
@@ -73,13 +71,11 @@ public class MacrosTableModel extends AbstractTableModel {
         return columnNames.length;
     }
 
-    @Nonnull
     @Override
     public String getColumnName(int columnIndex) {
         return columnNames[columnIndex];
     }
 
-    @Nonnull
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return getTypes()[columnIndex];
@@ -119,7 +115,6 @@ public class MacrosTableModel extends AbstractTableModel {
         throw new IllegalStateException();
     }
 
-    @Nonnull
     public Class[] getTypes() {
         return columnTypes;
     }

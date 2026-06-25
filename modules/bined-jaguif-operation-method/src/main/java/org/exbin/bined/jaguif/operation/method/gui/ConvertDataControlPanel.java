@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.operation.method.gui;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JButton;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.help.api.HelpLink;
@@ -32,7 +31,7 @@ import org.exbin.jaguif.utils.OkCancelControlComponent;
 /**
  * Convert data control panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCancelControlComponent, HelpLinkable {
 
     private final java.util.ResourceBundle resourceBundle;
@@ -60,7 +59,6 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -194,7 +192,6 @@ public class ConvertDataControlPanel extends javax.swing.JPanel implements OkCan
         }
     }
 
-    @Nonnull
     @Override
     public Optional<JButton> getDefaultButton() {
         return Optional.of(convertButton);

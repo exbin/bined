@@ -15,8 +15,7 @@
  */
 package org.exbin.bined.jaguif.operation.method.command;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.bined.operation.BinaryDataUndoableOperation;
 import org.exbin.bined.operation.swing.command.CodeAreaCommand;
@@ -27,7 +26,7 @@ import org.exbin.bined.jaguif.operation.method.InsertFromProviderOperation;
 /**
  * Insert data from provider command.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class InsertFromProviderCommand extends CodeAreaCommand {
 
     protected final InsertFromProviderOperation operation;
@@ -38,7 +37,6 @@ public class InsertFromProviderCommand extends CodeAreaCommand {
         this.operation = operation;
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommandType getType() {
         return CodeAreaCommandType.DATA_INSERTED;

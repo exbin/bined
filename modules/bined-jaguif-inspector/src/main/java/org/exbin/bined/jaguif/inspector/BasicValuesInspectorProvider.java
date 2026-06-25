@@ -16,13 +16,12 @@
 package org.exbin.bined.jaguif.inspector;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * BinEd basic values inspector.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
 
     public static final String INSPECTOR_ID = "basicValues";
@@ -33,19 +32,16 @@ public class BasicValuesInspectorProvider implements BinEdInspectorProvider {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     @Override
     public String getId() {
         return INSPECTOR_ID;
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("basicValuesInspector.name");
     }
 
-    @Nonnull
     @Override
     public BinEdInspector createInspector() {
         return new BasicValuesInspector();

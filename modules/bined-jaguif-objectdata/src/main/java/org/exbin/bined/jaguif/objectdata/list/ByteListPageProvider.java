@@ -18,14 +18,13 @@ package org.exbin.bined.jaguif.objectdata.list;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 /**
  * Byte list as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ByteListPageProvider implements PageProvider {
 
     private final List<Byte> listRef;
@@ -34,7 +33,6 @@ public class ByteListPageProvider implements PageProvider {
         this.listRef = listRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int startPos = (int) (pageIndex * PageProviderBinaryData.PAGE_SIZE);

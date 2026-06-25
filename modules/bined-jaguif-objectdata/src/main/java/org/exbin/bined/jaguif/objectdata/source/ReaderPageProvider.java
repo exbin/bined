@@ -20,13 +20,12 @@ import java.io.Reader;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Byte buffer as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ReaderPageProvider implements PageProvider {
 
     private final ReaderProvider readerProvider;
@@ -50,7 +49,6 @@ public class ReaderPageProvider implements PageProvider {
         } while (skipped > 0);
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         Reader reader = readerProvider.getReader();

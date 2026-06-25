@@ -15,14 +15,15 @@
  */
 package org.exbin.bined.jaguif.document;
 
-import javax.annotation.Nonnull;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.document.api.NamedDocument;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Binary document.
  */
+@NullMarked
 public interface BinaryDocument extends ContextDocument, NamedDocument {
 
     /**
@@ -30,6 +31,5 @@ public interface BinaryDocument extends ContextDocument, NamedDocument {
      *
      * @return binary data
      */
-    @Nonnull
     BinaryData getBinaryData();
 }

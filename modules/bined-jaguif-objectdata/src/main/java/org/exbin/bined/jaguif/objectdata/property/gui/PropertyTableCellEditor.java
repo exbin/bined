@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,7 +26,7 @@ import javax.swing.text.JTextComponent;
 /**
  * Property table cell renderer.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PropertyTableCellEditor extends DefaultCellEditor {
 
     public PropertyTableCellEditor() {
@@ -35,7 +34,6 @@ public class PropertyTableCellEditor extends DefaultCellEditor {
         setClickCountToStart(0);
     }
 
-    @Nonnull
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         Object fieldValue = ((PropertyTableItem) value).asBasicType();

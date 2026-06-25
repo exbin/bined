@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.viewer.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.options.settings.api.SettingsApplier;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.context.api.ContextStateProvider;
@@ -23,7 +23,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Code area status settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaStatusSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "binaryStatus";

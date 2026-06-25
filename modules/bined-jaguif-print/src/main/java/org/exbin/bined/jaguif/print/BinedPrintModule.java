@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.print;
 
 import org.exbin.bined.jaguif.print.action.PrintAction;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.print.contribution.PrintContribution;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
@@ -32,7 +31,7 @@ import org.exbin.jaguif.menu.api.MenuModuleApi;
 /**
  * Binary data print module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedPrintModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedPrintModule.class);
@@ -42,7 +41,6 @@ public class BinedPrintModule implements Module {
     public BinedPrintModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedPrintModule.class);
@@ -51,7 +49,6 @@ public class BinedPrintModule implements Module {
         return resourceBundle;
     }
 
-    @Nonnull
     public PrintAction createPrintAction() {
         PrintAction printAction = new PrintAction();
         printAction.init(getResourceBundle());

@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.tool.content.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.tool.content.BinedToolContentModule;
 import org.exbin.bined.jaguif.tool.content.action.DragDropContentAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Drag and drop content contribution.
  */
+@NullMarked
 public class DragDropContentContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "dragDropContent";
 
-    @Nonnull
     @Override
     public Action createAction() {
         DragDropContentAction action = new DragDropContentAction();
@@ -38,7 +38,6 @@ public class DragDropContentContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

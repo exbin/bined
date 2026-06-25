@@ -15,11 +15,12 @@
  */
 package org.exbin.bined.jaguif.inspector.table.api;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Value type interface.
  */
+@NullMarked
 public interface ValueRowType {
 
     /**
@@ -27,7 +28,6 @@ public interface ValueRowType {
      *
      * @return id
      */
-    @Nonnull
     String getId();
 
     /**
@@ -35,7 +35,6 @@ public interface ValueRowType {
      *
      * @return name
      */
-    @Nonnull
     String getName();
 
     /**
@@ -43,6 +42,5 @@ public interface ValueRowType {
      *
      * @return row item
      */
-    @Nonnull
     ValueRowItem createRowItem();
 }

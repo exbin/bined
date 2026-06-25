@@ -20,8 +20,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
@@ -32,7 +31,7 @@ import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
 /**
  * Values table side inspector panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TableInspectorPanel extends javax.swing.JPanel {
 
     protected JScrollPane scrollPane;
@@ -72,7 +71,6 @@ public class TableInspectorPanel extends javax.swing.JPanel {
         component.setController(controller);
     }
 
-    @Nonnull
     public List<ValueRowItem> getValueRows() {
         return component.getValueRows();
     }

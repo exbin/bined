@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.viewer.settings.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Binary viewer/editor appearance options panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceSettingsPanel.class);
@@ -39,7 +38,6 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
         initComponents();
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;

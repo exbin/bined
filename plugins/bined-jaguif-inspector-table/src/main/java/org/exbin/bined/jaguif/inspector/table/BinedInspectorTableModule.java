@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.inspector.table;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.PluginModule;
@@ -37,7 +36,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Binary editor data table inspector module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedInspectorTableModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedInspectorTableModule.class);
@@ -67,7 +66,6 @@ public class BinedInspectorTableModule implements PluginModule {
         valueRowTypes.put(valueRowType.getId(), valueRowType);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedInspectorTableModule.class);
@@ -76,7 +74,6 @@ public class BinedInspectorTableModule implements PluginModule {
         return resourceBundle;
     }
 
-    @Nonnull
     public Map<String, ValueRowType> getValueRowTypes() {
         return valueRowTypes;
     }

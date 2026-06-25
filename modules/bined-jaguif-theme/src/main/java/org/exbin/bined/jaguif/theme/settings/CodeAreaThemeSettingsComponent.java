@@ -24,9 +24,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -55,18 +54,16 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 /**
  * Theme profiles options page.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "themeProfiles";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         ThemeProfilesSettingsPanel panel = new ThemeProfilesSettingsPanel();
         panel.setThemeProfileController(new ThemeProfilesPanel.Controller() {
-            @Nonnull
             @Override
             public Optional<ThemeProfile> addProfile() {
                 ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
@@ -101,7 +98,6 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
                 return Optional.ofNullable(result[0]);
             }
 
-            @Nonnull
             @Override
             public Optional<ThemeProfile> editProfile(ThemeProfile profile) {
                 ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
@@ -136,7 +132,6 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
                 return Optional.ofNullable(result[0]);
             }
 
-            @Nonnull
             @Override
             public ThemeProfile copyProfile(ThemeProfile profile) {
                 ThemeProfilePanel themeProfilePanel = createThemeProfilePanel();
@@ -172,7 +167,6 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
                 return result[0];
             }
 
-            @Nonnull
             @Override
             public Optional<ThemeProfile> addTemplate() {
                 ThemeTemplatesPanel templatePanel = new ThemeTemplatesPanel();
@@ -253,7 +247,6 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
         return panel;
     }
 
-    @Nonnull
     private static ThemeProfilePanel createThemeProfilePanel() {
         ThemeProfilePanel themeProfilePanel = new ThemeProfilePanel();
         List<String> backgroundModes = new ArrayList<>();
@@ -269,7 +262,6 @@ public class CodeAreaThemeSettingsComponent implements SettingsComponentProvider
         return profileName != null && !"".equals(profileName.trim());
     }
 
-    @Nonnull
     private static String getNewProfileName(ThemeProfilesSettingsPanel panel, ResourceBundle resourceBundle) {
         String profileName = resourceBundle.getString("newProfile.profilePrefix");
         int profileIndex = 1;

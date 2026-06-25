@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
@@ -28,7 +27,7 @@ import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
 /**
  * Code parser for Java array.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class JavaByteArrayParser implements CodeImportFormat {
 
     // Pattern to match hex values like 0x1A, 0x2b, etc.
@@ -36,19 +35,16 @@ public class JavaByteArrayParser implements CodeImportFormat {
     // Pattern to detect Java byte array syntax
     private static final Pattern JAVA_PATTERN = Pattern.compile("(byte\\s*\\[\\s*\\]|new\\s+byte\\s*\\[|\\{\\s*0x)");
 
-    @Nonnull
     @Override
     public String getFormatName() {
         return "Java byte[]";
     }
 
-    @Nonnull
     @Override
     public String getLanguageName() {
         return "Java";
     }
 
-    @Nonnull
     @Override
     public BinaryData parseCode(String code) throws CodeParseException {
         if (code == null || code.trim().isEmpty()) {

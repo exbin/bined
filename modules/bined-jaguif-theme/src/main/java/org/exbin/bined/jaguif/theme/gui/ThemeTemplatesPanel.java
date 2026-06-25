@@ -19,9 +19,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -38,7 +37,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Manage list of theme templates panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileListPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeTemplatesPanel.class);
@@ -56,7 +55,6 @@ public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileLi
         templatesList.addListSelectionListener((ListSelectionEvent e) -> updateStates());
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -82,7 +80,6 @@ public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileLi
         templatesList.addListSelectionListener(listener);
     }
 
-    @Nonnull
     @Override
     public List<String> getProfileNames() {
         List<String> profileNames = new ArrayList<>();
@@ -90,7 +87,6 @@ public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileLi
         return profileNames;
     }
 
-    @Nonnull
     public ThemeProfilesListModel getProfilesListModel() {
         return ((ThemeProfilesListModel) templatesList.getModel());
     }
@@ -147,19 +143,18 @@ public class ThemeTemplatesPanel extends javax.swing.JPanel implements ProfileLi
     private javax.swing.JList<ThemeProfile> templatesList;
     // End of variables declaration//GEN-END:variables
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static final class ProfileCellRenderer implements ListCellRenderer<ThemeProfile> {
 
         private final DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 
-        @Nonnull
         @Override
         public Component getListCellRendererComponent(JList<? extends ThemeProfile> list, ThemeProfile value, int index, boolean isSelected, boolean cellHasFocus) {
             return defaultListCellRenderer.getListCellRendererComponent(list, value != null ? value.getProfileName() : null, index, isSelected, cellHasFocus);
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface Controller {
 
         void updatePreview(PreviewPanel previewPanel, ThemeProfile themeProfile);

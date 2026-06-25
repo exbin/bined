@@ -17,14 +17,13 @@ package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.table.AbstractTableModel;
 
 /**
  * Parameters list table model for item editing.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PropertyTableModel extends AbstractTableModel {
 
     protected List<PropertyTableItem> items;
@@ -50,13 +49,11 @@ public class PropertyTableModel extends AbstractTableModel {
         return columnNames.length;
     }
 
-    @Nonnull
     @Override
     public String getColumnName(int columnIndex) {
         return columnNames[columnIndex];
     }
 
-    @Nonnull
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return getTypes()[columnIndex];
@@ -67,7 +64,6 @@ public class PropertyTableModel extends AbstractTableModel {
         return columnsEditable[columnIndex];
     }
 
-    @Nonnull
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
@@ -80,7 +76,6 @@ public class PropertyTableModel extends AbstractTableModel {
         }
     }
 
-    @Nonnull
     public PropertyTableItem getRow(int rowIndex) {
         return items.get(rowIndex);
     }
@@ -103,7 +98,6 @@ public class PropertyTableModel extends AbstractTableModel {
         fireTableRowsInserted(items.size() - 1, items.size() - 1);
     }
 
-    @Nonnull
     public List<PropertyTableItem> getItems() {
         return items;
     }
@@ -112,7 +106,6 @@ public class PropertyTableModel extends AbstractTableModel {
         this.items = attributes;
     }
 
-    @Nonnull
     public Class[] getTypes() {
         return columnTypes;
     }

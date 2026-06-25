@@ -15,7 +15,6 @@
  */
 package org.exbin.bined.jaguif.operation.method.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.basic.BasicCodeAreaZone;
@@ -28,15 +27,16 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Convert data contribution.
  */
+@NullMarked
 public class ConvertDataContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "convertData";
 
-    @Nonnull
     @Override
     public Action createAction() {
         ConvertDataAction action = new ConvertDataAction();
@@ -55,7 +55,6 @@ public class ConvertDataContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

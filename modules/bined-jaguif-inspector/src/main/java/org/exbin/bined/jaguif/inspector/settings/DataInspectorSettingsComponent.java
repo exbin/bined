@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.inspector.settings;
 
 import java.awt.Font;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.inspector.settings.gui.DataInspectorSettingsPanel;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
@@ -35,12 +34,11 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 /**
  * Data inspector settings component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataInspectorSettingsComponent implements SettingsComponentProvider {
 
     public static final String COMPONENT_ID = "dataInspector";
 
-    @Nonnull
     @Override
     public SettingsComponent createComponent() {
         DataInspectorSettingsPanel panel = new DataInspectorSettingsPanel();

@@ -16,31 +16,29 @@
 package org.exbin.bined.jaguif.inspector.table.value;
 
 import java.nio.ByteOrder;
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowItem;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Integer value type.
  */
+@NullMarked
 public class IntegerValueRowType implements ValueRowType {
 
     private boolean signed = false;
     private ByteOrder byteOrder = ByteOrder.LITTLE_ENDIAN;
 
-    @Nonnull
     @Override
     public String getId() {
         return "integer";
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return "Integer";
     }
 
-    @Nonnull
     @Override
     public ValueRowItem createRowItem() {
         return new ValueRowItem(getId(), getName(), Integer.class.getTypeName(), null) {

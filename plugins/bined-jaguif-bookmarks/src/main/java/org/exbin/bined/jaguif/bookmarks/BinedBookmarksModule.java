@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.bookmarks;
 
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import org.exbin.jaguif.App;
@@ -42,7 +41,7 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 /**
  * Binary data editor bookmarks module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedBookmarksModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedBookmarksModule.class);
@@ -54,7 +53,6 @@ public class BinedBookmarksModule implements PluginModule {
     public BinedBookmarksModule() {
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedBookmarksModule.class);
@@ -76,7 +74,6 @@ public class BinedBookmarksModule implements PluginModule {
             BinEdFileManager fileManager = binedDocumentModule.getFileManager();
             // TODO Rework to use different approach than extension
             fileManager.addBinEdComponentExtension(new BinEdFileManager.BinEdFileExtension() {
-                @Nonnull
                 @Override
                 public Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component) {
                     getBookmarksManager();
@@ -98,7 +95,6 @@ public class BinedBookmarksModule implements PluginModule {
         getBookmarksManager().registerBookmarksPopupMenuActions();
     }
 
-    @Nonnull
     public AbstractAction getManageBookmarksAction() {
         return getBookmarksManager().getManageBookmarksAction();
     }
@@ -110,12 +106,10 @@ public class BinedBookmarksModule implements PluginModule {
         settingsManagement.registerSettingsOptions(BookmarkOptions.class, (optionsStorage) -> new BookmarkOptions(optionsStorage));
     }
 
-    @Nonnull
     public JMenu getBookmarksMenu() {
         return getBookmarksManager().getBookmarksMenu();
     }
 
-    @Nonnull
     public BookmarksManager getBookmarksManager() {
         if (bookmarksManager == null) {
             bookmarksManager = new BookmarksManager();

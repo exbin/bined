@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.operation.method.basic;
 
 import java.awt.Component;
 import java.awt.Dialog;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -49,7 +48,7 @@ import org.exbin.jaguif.window.api.WindowHandler;
 /**
  * Simple fill data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SimpleFillDataMethod implements InsertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(SimpleFillDataPanel.class);
@@ -58,13 +57,11 @@ public class SimpleFillDataMethod implements InsertDataMethod {
     private BinaryPreviewPanel previewPanel;
     private long previewLengthLimit = 0;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         SimpleFillDataPanel component = new SimpleFillDataPanel();
@@ -111,7 +108,6 @@ public class SimpleFillDataMethod implements InsertDataMethod {
         ((SimpleFillDataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createInsertCommand(Component component, CodeAreaCore codeArea, long position, EditOperation editOperation) {
         SimpleFillDataPanel panel = (SimpleFillDataPanel) component;

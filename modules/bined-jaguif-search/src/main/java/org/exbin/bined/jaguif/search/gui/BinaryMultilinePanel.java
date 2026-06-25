@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.search.gui;
 import org.exbin.bined.jaguif.search.SearchCondition;
 import java.awt.BorderLayout;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -31,7 +30,7 @@ import org.exbin.jaguif.App;
 /**
  * Multiline search condition editor panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryMultilinePanel.class);
@@ -46,7 +45,6 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -66,12 +64,10 @@ public class BinaryMultilinePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    @Nonnull
     public String getMultilineText() {
         return textArea.getText();
     }
 
-    @Nonnull
     public SearchCondition getCondition() {
         if (condition.getSearchMode() == SearchCondition.SearchMode.BINARY) {
             condition.setBinaryData((EditableBinaryData) codeArea.getContentData());

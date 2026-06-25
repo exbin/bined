@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.document.settings;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Binary file processing options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryFileProcessingOptions implements SettingsOptions {
 
     public static final String KEY_FILE_PROCESSING_MODE = "fileHandlingMode";
@@ -37,7 +36,6 @@ public class BinaryFileProcessingOptions implements SettingsOptions {
         this.storage = optionsStorage;
     }
 
-    @Nonnull
     public FileProcessingMode getFileProcessingMode() {
         FileProcessingMode defaultFileHandlingMode = FileProcessingMode.DELTA;
         try {

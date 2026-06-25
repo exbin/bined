@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.component.gui;
 
 import org.exbin.bined.jaguif.component.RelativePositionMode;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Go-to position panel for binary editor.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class GoToPositionPanel extends javax.swing.JPanel {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(GoToPositionPanel.class);
@@ -262,7 +261,6 @@ public class GoToPositionPanel extends javax.swing.JPanel {
         positionBaseSwitchableSpinnerPanel.requestFocusInWindow();
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }

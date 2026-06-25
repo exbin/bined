@@ -28,9 +28,8 @@ import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -53,7 +52,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Compression conversion data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CompressionDataMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CompressionDataPanel.class);
@@ -62,13 +61,11 @@ public class CompressionDataMethod implements ConvertDataMethod {
     private long previewLengthLimit = 0;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         CompressionDataPanel component = new CompressionDataPanel();
@@ -80,7 +77,6 @@ public class CompressionDataMethod implements ConvertDataMethod {
         ((CompressionDataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         CompressionDataPanel panel = (CompressionDataPanel) component;
@@ -106,7 +102,6 @@ public class CompressionDataMethod implements ConvertDataMethod {
         return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
     }
 
-    @Nonnull
     @Override
     public BinaryData performDirectConvert(Component component, CodeAreaCore codeArea) {
         CompressionDataPanel panel = (CompressionDataPanel) component;
@@ -144,7 +139,6 @@ public class CompressionDataMethod implements ConvertDataMethod {
      * @return result message
      * @throws IllegalStateException on conversion error
      */
-    @Nonnull
     public String convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType,
             CompressionAlgorithm algorithm, boolean autoDetect, EditableBinaryData targetBinaryData,
             long targetPosition) throws IllegalStateException {

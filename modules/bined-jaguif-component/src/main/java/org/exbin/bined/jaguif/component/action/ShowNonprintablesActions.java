@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.component.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.jaguif.App;
@@ -35,7 +34,7 @@ import org.exbin.jaguif.utils.ActionUtils;
 /**
  * Show nonprintables actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ShowNonprintablesActions {
 
     public static final String VIEW_NONPRINTABLES_ACTION_ID = "viewNonprintables";
@@ -50,14 +49,12 @@ public class ShowNonprintablesActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public ViewNonprintablesAction createViewNonprintablesAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction();
         viewNonprintablesAction.init(resourceBundle);
         return viewNonprintablesAction;
     }
 
-    @Nonnull
     public ViewNonprintablesAction createToggleNonprintablesAction() {
         ViewNonprintablesAction viewNonprintablesAction = new ViewNonprintablesAction() {
             @Override
@@ -73,7 +70,7 @@ public class ShowNonprintablesActions {
         return viewNonprintablesAction;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ViewNonprintablesAction extends AbstractAction implements ActionContextChange {
 
         private BinaryDataComponent binaryDataComponent;

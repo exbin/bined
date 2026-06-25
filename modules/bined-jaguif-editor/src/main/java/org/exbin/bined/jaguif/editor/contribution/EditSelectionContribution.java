@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.editor.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.editor.action.EditSelectionAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Edit selection contribution.
  */
+@NullMarked
 public class EditSelectionContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "editSelection";
 
-    @Nonnull
     @Override
     public Action createAction() {
         EditSelectionAction action = new EditSelectionAction();
@@ -38,7 +38,6 @@ public class EditSelectionContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

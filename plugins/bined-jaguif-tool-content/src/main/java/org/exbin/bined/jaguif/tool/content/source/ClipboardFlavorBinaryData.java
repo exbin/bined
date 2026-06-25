@@ -23,8 +23,7 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
@@ -35,7 +34,7 @@ import org.exbin.jaguif.utils.ClipboardUtils;
 /**
  * Binary data access for clipboard flavor.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ClipboardFlavorBinaryData implements BinaryData {
 
 	public static final String BROKEN_DATA_SOURCE_EXCEPTION = "Broken data source";
@@ -105,7 +104,6 @@ public class ClipboardFlavorBinaryData implements BinaryData {
         return cachePages[usedPage].page[pageOffset];
     }
 
-    @Nonnull
     @Override
     public BinaryData copy() {
         ClipboardFlavorBinaryData copy = new ClipboardFlavorBinaryData();
@@ -117,7 +115,6 @@ public class ClipboardFlavorBinaryData implements BinaryData {
         return copy;
     }
 
-    @Nonnull
     @Override
     public synchronized BinaryData copy(long startFrom, long length) {
         long pageIndex = startFrom / PAGE_SIZE;
@@ -182,7 +179,6 @@ public class ClipboardFlavorBinaryData implements BinaryData {
         }
     }
 
-    @Nonnull
     @Override
     public InputStream getDataInputStream() {
         try {
@@ -216,7 +212,6 @@ public class ClipboardFlavorBinaryData implements BinaryData {
         resetCache();
     }
 
-    @Nonnull
     private InputStream getInputStream(long position) throws IOException {
         if (cacheInputStream != null && position == cachePosition) {
             return cacheInputStream;

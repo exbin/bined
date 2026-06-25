@@ -16,14 +16,13 @@
 package org.exbin.bined.jaguif.tool.content.gui;
 
 import java.awt.datatransfer.DataFlavor;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractListModel;
 
 /**
  * List model for data flavors.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataFlavorsListModel extends AbstractListModel<String> {
 
     private DataFlavor[] dataFlavors = null;
@@ -43,7 +42,6 @@ public class DataFlavorsListModel extends AbstractListModel<String> {
         return dataFlavors == null ? 0 : dataFlavors.length;
     }
 
-    @Nonnull
     @Override
     public String getElementAt(int index) {
         DataFlavor dataFlavor = dataFlavors[index];

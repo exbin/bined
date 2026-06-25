@@ -20,7 +20,7 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -46,7 +46,7 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 /**
  * Copy binary data as specific form action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CopyAsAction extends AbstractAction {
 
     public static final String ACTION_ID = "copyAs";

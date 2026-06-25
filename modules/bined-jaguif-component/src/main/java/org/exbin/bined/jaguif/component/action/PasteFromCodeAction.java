@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.CharsetStreamTranslator;
@@ -49,7 +49,7 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 /**
  * Paste from code action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PasteFromCodeAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "pasteFromCode";

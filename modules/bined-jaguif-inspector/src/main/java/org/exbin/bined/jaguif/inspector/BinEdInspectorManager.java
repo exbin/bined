@@ -18,18 +18,16 @@ package org.exbin.bined.jaguif.inspector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * BinEd inspector manager.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdInspectorManager {
 
     protected final List<BinEdInspectorProvider> inspectorProviders = new ArrayList<>();
     
-    @Nonnull
     public List<BinEdInspectorProvider> getInspectorProviders() {
         return inspectorProviders;
     }
@@ -39,7 +37,6 @@ public class BinEdInspectorManager {
         this.inspectorProviders.addAll(inspectorProviders);
     }
 
-    @Nonnull
     public <T extends BinEdInspectorProvider> Optional<T> getInspectorProvider(Class<T> clazz) {
         for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
             if (clazz.isInstance(inspectorProvider)) {

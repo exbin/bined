@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.component.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Copy as code contribution.
  */
+@NullMarked
 public class CopyAsCodeContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "copyAsCode";
 
-    @Nonnull
     @Override
     public Action createAction() {
         CopyAsCodeAction action = new CopyAsCodeAction();
@@ -38,7 +38,6 @@ public class CopyAsCodeContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.CodeCharactersCase;
 import org.exbin.bined.CodeType;
 import org.exbin.jaguif.App;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Copy data as text code panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CopyAsTextDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle;
@@ -69,7 +68,6 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
         codeSeparatorComboBox.setSelectedIndex(1);
     }
 
-    @Nonnull
     public CodeType getCodeType() {
         return CodeType.values()[codeTypeComboBox.getSelectedIndex()];
     }
@@ -78,12 +76,10 @@ public class CopyAsTextDataPanel extends javax.swing.JPanel {
         codeTypeComboBox.setSelectedIndex(codeType.ordinal());
     }
 
-    @Nonnull
     public CodeCharactersCase getCodeCharactersCase() {
         return CodeCharactersCase.values()[codeCharactersComboBox.getSelectedIndex()];
     }
 
-    @Nonnull
     public CodeSeparator getCodeSeparator() {
         return CodeSeparator.values()[codeSeparatorComboBox.getSelectedIndex()];
     }

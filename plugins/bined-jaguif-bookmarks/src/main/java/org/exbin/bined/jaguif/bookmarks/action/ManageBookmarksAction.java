@@ -21,8 +21,8 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
@@ -46,7 +46,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 /**
  * Manage bookmarks action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ManageBookmarksAction extends AbstractAction {
 
     public static final String ACTION_ID = "manageBookmarks";

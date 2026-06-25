@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.theme.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.theme.SectionCodeAreaThemeProfile;
@@ -30,7 +30,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Theme profiles settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaThemeSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "codeAreaThemeApplier";

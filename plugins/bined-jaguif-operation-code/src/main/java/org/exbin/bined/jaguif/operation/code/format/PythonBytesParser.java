@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
@@ -28,7 +27,7 @@ import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
 /**
  * Code parser for Python array.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PythonBytesParser implements CodeImportFormat {
 
     // Pattern to match hex escape sequences like \x1A, \x2b, etc.
@@ -36,19 +35,16 @@ public class PythonBytesParser implements CodeImportFormat {
     // Pattern to detect Python bytes syntax
     private static final Pattern PYTHON_PATTERN = Pattern.compile("b['\"]");
 
-    @Nonnull
     @Override
     public String getFormatName() {
         return "Python bytes";
     }
 
-    @Nonnull
     @Override
     public String getLanguageName() {
         return "Python";
     }
 
-    @Nonnull
     @Override
     public BinaryData parseCode(String code) throws CodeParseException {
         if (code == null || code.trim().isEmpty()) {

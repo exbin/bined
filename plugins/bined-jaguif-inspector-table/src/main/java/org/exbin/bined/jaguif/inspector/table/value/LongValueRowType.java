@@ -18,31 +18,29 @@ package org.exbin.bined.jaguif.inspector.table.value;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowItem;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Long value type.
  */
+@NullMarked
 public class LongValueRowType implements ValueRowType {
 
     private boolean signed = false;
     private ByteOrder byteOrder = ByteOrder.LITTLE_ENDIAN;
 
-    @Nonnull
     @Override
     public String getId() {
         return "long";
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return "Long";
     }
 
-    @Nonnull
     @Override
     public ValueRowItem createRowItem() {
         return new ValueRowItem(getId(), getName(), Long.class.getTypeName(), null) {

@@ -16,31 +16,29 @@
 package org.exbin.bined.jaguif.inspector.table.value;
 
 import java.nio.ByteOrder;
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowItem;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Word (short) value type.
  */
+@NullMarked
 public class WordValueRowType implements ValueRowType {
 
     private boolean signed = false;
     private ByteOrder byteOrder = ByteOrder.LITTLE_ENDIAN;
 
-    @Nonnull
     @Override
     public String getId() {
         return "word";
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return "Word";
     }
 
-    @Nonnull
     @Override
     public ValueRowItem createRowItem() {
         return new ValueRowItem(getId(), getName(), Short.class.getTypeName(), null) {

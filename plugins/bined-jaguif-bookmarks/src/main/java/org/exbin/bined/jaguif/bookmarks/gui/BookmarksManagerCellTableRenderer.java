@@ -17,23 +17,23 @@ package org.exbin.bined.jaguif.bookmarks.gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import javax.swing.JPanel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import org.exbin.bined.jaguif.bookmarks.model.BookmarksTableModel;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Table model for color value.
  */
+@NullMarked
 public class BookmarksManagerCellTableRenderer implements TableCellRenderer {
 
     public BookmarksManagerCellTableRenderer() {
     }
 
-    @Nonnull
     @Override
     public Component getTableCellRendererComponent(@Nullable JTable table, @Nullable Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JPanel renderComponent = new JPanel();

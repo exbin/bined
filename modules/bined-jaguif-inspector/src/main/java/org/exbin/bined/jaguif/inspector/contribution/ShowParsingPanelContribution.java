@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.inspector.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.inspector.BinedInspectorModule;
 import org.exbin.bined.jaguif.inspector.action.ShowParsingPanelAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Show parsing panel contribution.
  */
+@NullMarked
 public class ShowParsingPanelContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "properties";
 
-    @Nonnull
     @Override
     public Action createAction() {
         ShowParsingPanelAction action = new ShowParsingPanelAction();
@@ -38,7 +38,6 @@ public class ShowParsingPanelContribution implements ActionSequenceContribution 
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

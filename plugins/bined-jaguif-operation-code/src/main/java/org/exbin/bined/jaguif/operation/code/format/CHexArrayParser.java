@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
@@ -28,7 +27,7 @@ import org.exbin.bined.jaguif.operation.code.CodeImportFormat;
 /**
  * Code parser for C array.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CHexArrayParser implements CodeImportFormat {
 
     // Pattern to match hex values like 0x1A, 0x2b, etc.
@@ -36,19 +35,16 @@ public class CHexArrayParser implements CodeImportFormat {
     // Pattern to detect C array syntax
     private static final Pattern C_PATTERN = Pattern.compile("(unsigned\\s+char|char)\\s*\\w*\\s*\\[|\\{\\s*0x");
 
-    @Nonnull
     @Override
     public String getFormatName() {
         return "C unsigned char[]";
     }
 
-    @Nonnull
     @Override
     public String getLanguageName() {
         return "C/C++";
     }
 
-    @Nonnull
     @Override
     public BinaryData parseCode(String code) throws CodeParseException {
         if (code == null || code.trim().isEmpty()) {

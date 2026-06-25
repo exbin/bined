@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.editor.status.gui;
 
 import java.awt.Dimension;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.exbin.bined.EditMode;
@@ -36,7 +35,7 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 /**
  * BinEd edit mode status component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryEditModeComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
@@ -94,7 +93,6 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
         });
     }
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         return component;

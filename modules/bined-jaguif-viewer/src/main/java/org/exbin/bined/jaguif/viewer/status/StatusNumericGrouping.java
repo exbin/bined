@@ -15,13 +15,13 @@
  */
 package org.exbin.bined.jaguif.viewer.status;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 
 /**
  * Numeric grouping for binary status.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class StatusNumericGrouping {
 
     protected int octalSpaceGroupSize = CodeAreaStatusOptions.DEFAULT_OCTAL_SPACE_GROUP_SIZE;

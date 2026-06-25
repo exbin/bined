@@ -15,14 +15,13 @@
  */
 package org.exbin.bined.jaguif.operation.code;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.BinaryData;
 
 /**
  * Code import format.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface CodeImportFormat {
 
     /**
@@ -30,7 +29,6 @@ public interface CodeImportFormat {
      *
      * @return format display name
      */
-    @Nonnull
     String getFormatName();
 
     /**
@@ -38,7 +36,6 @@ public interface CodeImportFormat {
      *
      * @return language name
      */
-    @Nonnull
     String getLanguageName();
 
     /**
@@ -48,7 +45,6 @@ public interface CodeImportFormat {
      * @return parsed binary data
      * @throws CodeParseException if code cannot be parsed
      */
-    @Nonnull
     BinaryData parseCode(String code) throws CodeParseException;
 
     /**

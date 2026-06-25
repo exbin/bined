@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.inspector.settings.gui;
 import java.awt.Font;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorFontInference;
 import org.exbin.bined.jaguif.inspector.settings.DataInspectorOptions;
@@ -37,7 +36,7 @@ import org.exbin.jaguif.text.font.settings.TextFontInference;
 /**
  * Data inspector settings panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataInspectorSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorSettingsPanel.class);
@@ -55,7 +54,6 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
         fontChangePanel.add(textFontSettingsPanel);
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
@@ -85,13 +83,11 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
             Optional<Font> optFont = inference.getInputFieldsFont();
             if (optFont.isPresent()) {
                 textFontSettingsPanel.setTextFontInference(new TextFontInference() {
-                    @Nonnull
                     @Override
                     public Optional<Font> getCurrentFont() {
                         return inference.getInputFieldsFont();
                     }
 
-                    @Nonnull
                     @Override
                     public Optional<Font> getDefaultFont() {
                         return Optional.of(new Font(Font.SANS_SERIF, Font.PLAIN, 13));

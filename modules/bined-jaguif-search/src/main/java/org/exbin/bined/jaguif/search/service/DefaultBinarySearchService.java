@@ -26,8 +26,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.jaguif.search.ReplaceParameters;
 import org.exbin.bined.jaguif.search.SearchCondition;
@@ -45,7 +44,7 @@ import org.exbin.bined.swing.capability.ColorAssessorPainterCapable;
 /**
  * Binary search service.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DefaultBinarySearchService implements BinarySearchService {
 
     private static final int MAX_MATCHES_COUNT = 100;
@@ -478,7 +477,6 @@ public class DefaultBinarySearchService implements BinarySearchService {
         }
     }
 
-    @Nonnull
     @Override
     public SearchParameters getLastSearchParameters() {
         return lastSearchParameters;

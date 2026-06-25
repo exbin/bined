@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -99,7 +99,7 @@ import org.exbin.jaguif.text.font.settings.TextFontInference;
 /**
  * Binary editor launcher module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedLauncherModule implements LauncherModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedLauncherModule.class);

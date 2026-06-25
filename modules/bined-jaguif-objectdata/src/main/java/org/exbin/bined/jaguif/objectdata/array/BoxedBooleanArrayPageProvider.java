@@ -18,13 +18,12 @@ package org.exbin.bined.jaguif.objectdata.array;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Boolean array as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BoxedBooleanArrayPageProvider implements PageProvider {
 
     private final Boolean[] arrayRef;
@@ -33,7 +32,6 @@ public class BoxedBooleanArrayPageProvider implements PageProvider {
         this.arrayRef = arrayRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int startPos = (int) (pageIndex * PageProviderBinaryData.PAGE_SIZE * 8);

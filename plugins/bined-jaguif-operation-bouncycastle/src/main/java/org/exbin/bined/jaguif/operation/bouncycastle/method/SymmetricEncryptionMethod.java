@@ -19,8 +19,7 @@ import java.awt.Component;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -48,7 +47,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Encyption and decryption data conversion method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SymmetricEncryptionMethod implements ConvertDataMethod {
 
     private static final String PROVIDER = "BC";
@@ -62,13 +61,11 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
     private PreviewDataHandler previewDataHandler;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("component.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         EncryptionPanel component = new EncryptionPanel();
@@ -80,7 +77,6 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         ((EncryptionPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         EncryptionPanel panel = (EncryptionPanel) component;
@@ -106,7 +102,6 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
     }
 
-    @Nonnull
     @Override
     public BinaryData performDirectConvert(Component component, CodeAreaCore codeArea) {
         EncryptionPanel panel = (EncryptionPanel) component;
@@ -130,7 +125,6 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         return binaryData;
     }
 
-    @Nonnull
     public String convertData(BinaryData sourceBinaryData, long position, long length, OperationType operationType,
                             Algorithm algorithm, char[] password, EditableBinaryData targetBinaryData, long targetPosition) {
 
@@ -206,7 +200,6 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
         return cipher.doFinal(encrypted);
     }
 
-    @Nonnull
     private SecretKey deriveKey(char[] password, byte[] salt, int keySize) throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256", PROVIDER);
         KeySpec spec = new PBEKeySpec(password, salt, ITERATION_COUNT, keySize);
@@ -283,7 +276,6 @@ public class SymmetricEncryptionMethod implements ConvertDataMethod {
             this.keySize = keySize;
         }
 
-        @Nonnull
         public String getTransformation() {
             return transformation;
         }

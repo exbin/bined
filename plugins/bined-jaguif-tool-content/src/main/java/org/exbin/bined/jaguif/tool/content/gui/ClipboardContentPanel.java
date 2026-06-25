@@ -29,8 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -53,7 +52,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Clipboard content panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ClipboardContentPanel extends javax.swing.JPanel {
 
     public static final String POPUP_MENU_POSTFIX = ".clipboardContentPanel";
@@ -232,7 +231,6 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         ((DataFlavorsListModel) flavorsList.getModel()).setDataFlavors(dataFlavors);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -249,7 +247,6 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         saveAsFileButton.setEnabled(enabled);
     }
 
-    @Nonnull
     public Optional<BinaryData> getContentBinaryData() {
         BinaryData contentData = dataCodeArea.getContentData();
         return Optional.ofNullable(contentData instanceof EmptyBinaryData ? null : contentData);
@@ -536,7 +533,7 @@ public class ClipboardContentPanel extends javax.swing.JPanel {
         dataCodeArea.setComponentPopupMenu(popupMenu);
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     private static class PropertyClass {
 
         Object classInst;

@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.theme.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.bined.swing.section.color.SectionCodeAreaColorProfile;
@@ -30,7 +30,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Color profiles settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaColorSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "codeAreaColorApplier";

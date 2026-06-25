@@ -18,7 +18,7 @@ package org.exbin.bined.jaguif.component.action;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.CodeCharactersCase;
@@ -43,7 +43,7 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 /**
  * Copy as code action.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CopyAsCodeAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "copyAsCode";

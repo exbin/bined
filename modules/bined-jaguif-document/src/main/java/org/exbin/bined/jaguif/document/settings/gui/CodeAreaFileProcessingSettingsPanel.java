@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.document.settings.gui;
 
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.bined.jaguif.document.settings.BinaryFileProcessingOptions;
@@ -30,7 +29,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Code area file processing options panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaFileProcessingSettingsPanel.class);
@@ -41,7 +40,6 @@ public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel impl
         initComponents();
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;

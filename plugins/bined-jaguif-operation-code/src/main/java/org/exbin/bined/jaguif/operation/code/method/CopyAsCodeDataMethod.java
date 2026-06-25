@@ -21,9 +21,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
@@ -46,7 +45,7 @@ import org.exbin.bined.jaguif.operation.method.gui.TextPreviewPanel;
 /**
  * Copy binary data as programming language code method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CopyAsCodeDataMethod implements CopyAsDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CopyAsCodePanel.class);
@@ -65,13 +64,11 @@ public class CopyAsCodeDataMethod implements CopyAsDataMethod {
         );
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         final CopyAsCodePanel copyAsCodePanel = new CopyAsCodePanel();
@@ -152,7 +149,6 @@ public class CopyAsCodeDataMethod implements CopyAsDataMethod {
         });
     }
 
-    @Nonnull
     protected ResultData generateData(BinaryData sourceData, @Nullable CodeExportFormat format, CodeExportOptions options) {
         ResultData resultData = new ResultData();
         if (format == null) {

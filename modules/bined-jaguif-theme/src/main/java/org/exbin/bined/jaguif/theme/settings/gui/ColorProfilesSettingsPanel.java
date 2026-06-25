@@ -20,8 +20,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.theme.gui.ThemeProfilesPanel;
 import org.exbin.bined.jaguif.theme.model.ColorThemeProfile;
@@ -37,7 +36,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Color profiles settings panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ColorProfilesSettingsPanel.class);
@@ -61,13 +60,11 @@ public class ColorProfilesSettingsPanel extends javax.swing.JPanel implements Se
         profilesPanel.setSettingsModifiedListener(() -> notifyModified());
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 
-    @Nonnull
     public List<ThemeProfile> getProfiles() {
         return profilesPanel.getProfilesListModel().getProfiles();
     }

@@ -19,7 +19,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeListener;
@@ -31,7 +31,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Spinner supporting multiple bases.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BaseSwitchableSpinnerPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BaseSwitchableSpinnerPanel.class);

@@ -15,9 +15,8 @@
  */
 package org.exbin.bined.jaguif.document;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.operation.swing.CodeAreaOperationCommandHandler;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -25,9 +24,8 @@ import org.exbin.bined.swing.CodeAreaCore;
 /**
  * Provider for code area command handler.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface CodeAreaCommandHandlerProvider {
 
-    @Nonnull
     CodeAreaOperationCommandHandler createCommandHandler(CodeAreaCore codeArea, @Nullable BinaryDataUndoRedo undoHandler);
 }

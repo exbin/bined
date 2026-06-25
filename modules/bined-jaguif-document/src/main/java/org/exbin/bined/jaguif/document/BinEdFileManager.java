@@ -18,8 +18,7 @@ package org.exbin.bined.jaguif.document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.bined.capability.SelectionCapable;
@@ -46,7 +45,7 @@ import org.exbin.jaguif.operation.undo.api.UndoRedoState;
 /**
  * File manager for binary editor.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdFileManager {
 
     private final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
@@ -109,7 +108,6 @@ public class BinEdFileManager {
         codeArea.setCommandHandler(commandHandler);
     }
 
-    @Nonnull
     public SegmentsRepository getSegmentsRepository() {
         return segmentsRepository;
     }
@@ -138,15 +136,13 @@ public class BinEdFileManager {
         binEdComponentExtensions.add(extension);
     }
 
-    @Nonnull
     public Iterable<BinEdFileExtension> getBinEdComponentExtensions() {
         return binEdComponentExtensions;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface BinEdFileExtension {
 
-        @Nonnull
         Optional<BinEdComponentExtension> createComponentExtension(BinEdComponentPanel component);
     }
 }

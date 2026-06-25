@@ -22,8 +22,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -45,7 +44,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Date time conversion method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DateTimeConversionMethod implements ConvertDataMethod {
 
     private java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DateTimeConversionPanel.class);
@@ -54,13 +53,11 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
     private long previewLengthLimit = 0;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         DateTimeConversionPanel component = new DateTimeConversionPanel();
@@ -72,7 +69,6 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
         ((DateTimeConversionPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         DateTimeConversionPanel panel = (DateTimeConversionPanel) component;
@@ -96,7 +92,6 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
         return new ConvertDataCommand(codeArea, new ConvertDataOperation(position, length, length, conversionDataProvider));
     }
 
-    @Nonnull
     @Override
     public BinaryData performDirectConvert(Component component, CodeAreaCore codeArea) {
         DateTimeConversionPanel panel = (DateTimeConversionPanel) component;
@@ -130,7 +125,6 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
      * @return result message
      * @throws IllegalStateException on conversion error
      */
-    @Nonnull
     public static String convertData(BinaryData sourceBinaryData, long position, long length, ConversionConfig config,
             EditableBinaryData targetBinaryData, long targetPosition) throws IllegalStateException {
 
@@ -210,7 +204,6 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
      * @param config conversion configuration
      * @return formatted date/time string
      */
-    @Nonnull
     private static String formatDateTime(long timestamp, ConversionConfig config) {
         Instant instant = Instant.ofEpochSecond(timestamp);
 
@@ -314,7 +307,7 @@ public class DateTimeConversionMethod implements ConvertDataMethod {
     /**
      * Conversion configuration holder.
      */
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class ConversionConfig {
 
         public ByteOrderType byteOrder;

@@ -21,7 +21,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.bined.capability.CaretCapable;
@@ -31,7 +31,7 @@ import org.exbin.bined.swing.CodeAreaCore;
 /**
  * Pixel map component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PixelMapComponent extends JComponent {
 
     protected int pixelSize = 5;

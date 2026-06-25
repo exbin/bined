@@ -17,9 +17,8 @@ package org.exbin.bined.jaguif.inspector.settings;
 
 import java.awt.Font;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.inspector.BasicValuesInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
@@ -30,7 +29,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Text editor font context inference.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataInspectorFontContextInference implements DataInspectorFontInference {
 
     protected ContextStateProvider contextProvider;
@@ -39,12 +38,10 @@ public class DataInspectorFontContextInference implements DataInspectorFontInfer
         this.contextProvider = contextProvider;
     }
 
-    @Nonnull
     public ContextStateProvider getContextProvider() {
         return contextProvider;
     }
 
-    @Nonnull
     @Override
     public Optional<Font> getInputFieldsFont() {
         ContextDocument contextDocument = contextProvider.getActiveState(ContextDocument.class);

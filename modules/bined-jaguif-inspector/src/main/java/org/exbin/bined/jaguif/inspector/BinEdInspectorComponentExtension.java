@@ -18,8 +18,8 @@ package org.exbin.bined.jaguif.inspector;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JScrollPane;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
@@ -37,7 +37,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 /**
  * BinEd component data inspector.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdInspectorComponentExtension implements BinEdComponentExtension {
 
     private BinaryDataComponent dataComponent;

@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.viewer.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import org.exbin.bined.basic.CodeAreaViewMode;
@@ -37,7 +36,7 @@ import org.exbin.bined.jaguif.viewer.BinedViewerUpdateType;
 /**
  * View mode actions.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaViewModeActions {
 
     public static final String VIEW_MODE_RADIO_GROUP_ID = "viewModeRadioGroup";
@@ -51,46 +50,40 @@ public class CodeAreaViewModeActions {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     public DualModeAction createDualModeAction() {
         DualModeAction dualModeAction = new DualModeAction();
         dualModeAction.init(resourceBundle);
         return dualModeAction;
     }
 
-    @Nonnull
     public CodeMatrixModeAction createCodeMatrixModeAction() {
         CodeMatrixModeAction codeMatrixModeAction = new CodeMatrixModeAction();
         codeMatrixModeAction.init(resourceBundle);
         return codeMatrixModeAction;
     }
 
-    @Nonnull
     public TextPreviewModeAction createTextPreviewModeAction() {
         TextPreviewModeAction textPreviewModeAction = new TextPreviewModeAction();
         textPreviewModeAction.init(resourceBundle);
         return textPreviewModeAction;
     }
 
-    @Nonnull
     public ViewModeContribution createDualViewModeContribution() {
         ViewModeContribution viewModeContribution = new ViewModeContribution(DualModeAction.ACTION_ID, CodeAreaViewMode.DUAL);
         return viewModeContribution;
     }
 
-    @Nonnull
     public ViewModeContribution createMatrixModeViewModeContribution() {
         ViewModeContribution viewModeContribution = new ViewModeContribution(CodeMatrixModeAction.ACTION_ID, CodeAreaViewMode.CODE_MATRIX);
         return viewModeContribution;
     }
 
-    @Nonnull
     public ViewModeContribution createTextPreviewViewModeContribution() {
         ViewModeContribution viewModeContribution = new ViewModeContribution(TextPreviewModeAction.ACTION_ID, CodeAreaViewMode.TEXT_PREVIEW);
         return viewModeContribution;
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class DualModeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "dualViewMode";
@@ -134,7 +127,7 @@ public class CodeAreaViewModeActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class CodeMatrixModeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "codeMatrixViewMode";
@@ -179,7 +172,7 @@ public class CodeAreaViewModeActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public static class TextPreviewModeAction extends AbstractAction implements ActionContextChange {
 
         public static final String ACTION_ID = "textPreviewViewMode";
@@ -223,7 +216,7 @@ public class CodeAreaViewModeActions {
         }
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public class ViewModeContribution implements ActionSequenceContribution {
 
         private final String contributionId;
@@ -234,7 +227,6 @@ public class CodeAreaViewModeActions {
             this.codeAreaViewMode = codeAreaViewMode;
         }
 
-        @Nonnull
         @Override
         public Action createAction() {
             switch (codeAreaViewMode) {
@@ -258,7 +250,6 @@ public class CodeAreaViewModeActions {
             throw new IllegalStateException();
         }
 
-        @Nonnull
         @Override
         public String getContributionId() {
             return contributionId;

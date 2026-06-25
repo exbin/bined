@@ -15,12 +15,12 @@
  */
 package org.exbin.bined.jaguif.operation.code;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Code export options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeExportOptions {
 
     private boolean uppercaseHex = true;

@@ -18,14 +18,13 @@ package org.exbin.bined.jaguif.objectdata.list;
 import org.exbin.bined.jaguif.objectdata.PageProvider;
 import org.exbin.bined.jaguif.objectdata.PageProviderBinaryData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 /**
  * Character list data as binary data provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CharListPageProvider implements PageProvider {
 
     private final List<Character> listRef;
@@ -34,7 +33,6 @@ public class CharListPageProvider implements PageProvider {
         this.listRef = listRef;
     }
 
-    @Nonnull
     @Override
     public byte[] getPage(long pageIndex) {
         int pageSize = PageProviderBinaryData.PAGE_SIZE / 2;

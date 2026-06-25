@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.macro;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JMenu;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -45,7 +44,7 @@ import org.exbin.jaguif.ui.api.UiModuleApi;
 /**
  * Binary editor macro support module.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinedMacroModule implements PluginModule {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedMacroModule.class);
@@ -99,7 +98,6 @@ public class BinedMacroModule implements PluginModule {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedMacroModule.class);
@@ -126,12 +124,10 @@ public class BinedMacroModule implements PluginModule {
         settingsManagement.registerSettingsOptions(MacroOptions.class, (optionsStorage) -> new MacroOptions(optionsStorage));
     }
 
-    @Nonnull
     public JMenu getMacrosMenu() {
         return getMacroManager().getMacrosMenu();
     }
 
-    @Nonnull
     public MacroManager getMacroManager() {
         if (macroManager == null) {
             macroManager = new MacroManager();

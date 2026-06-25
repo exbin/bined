@@ -19,8 +19,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.exbin.bined.CodeAreaCaretPosition;
@@ -44,7 +43,7 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 /**
  * BinEd edit mode status component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
     protected static final String BR_TAG = "<br>";
@@ -98,7 +97,6 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         });
     }
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         return component;
@@ -172,7 +170,6 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         component.setToolTipText(builder.toString());
     }
 
-    @Nonnull
     private String numberToPosition(long value, PositionCodeType codeType) {
         if (value == 0) {
             return "0";

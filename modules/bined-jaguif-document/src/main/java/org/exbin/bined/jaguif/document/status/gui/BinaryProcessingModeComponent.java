@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.document.status.gui;
 
 import java.awt.Dimension;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
@@ -33,7 +32,7 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 /**
  * Binary file processing mode status component.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
@@ -89,7 +88,6 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
         });
     }
 
-    @Nonnull
     @Override
     public JComponent getComponent() {
         return component;

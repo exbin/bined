@@ -15,25 +15,24 @@
  */
 package org.exbin.bined.jaguif.viewer.status.contribution;
 
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
 import org.exbin.jaguif.statusbar.api.ComponentStatusBarContribution;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Binary data cursor position status contribution.
  */
+@NullMarked
 public class BinaryCursorPositionStatusContrib implements ComponentStatusBarContribution {
 
     public static final String CONTRIBUTION_ID = "binaryCursorPosition";
 
-    @Nonnull
     @Override
     public StatusBarComponent createComponent() {
         return new BinaryCursorPositionComponent();
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

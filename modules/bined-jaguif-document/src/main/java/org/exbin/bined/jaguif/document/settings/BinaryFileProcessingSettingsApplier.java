@@ -15,7 +15,7 @@
  */
 package org.exbin.bined.jaguif.document.settings;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
@@ -27,7 +27,7 @@ import org.exbin.jaguif.context.api.ContextStateProvider;
 /**
  * Binary file processing settings applier.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryFileProcessingSettingsApplier implements SettingsApplier {
 
     public static final String APPLIER_ID = "binaryFileProcessing";

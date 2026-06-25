@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.viewer.settings.gui;
 
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
@@ -32,7 +31,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 /**
  * Editor status bar options panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsComponent {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StatusSettingsPanel.class);
@@ -43,7 +42,6 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
         initComponents();
     }
 
-    @Nonnull
     @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;

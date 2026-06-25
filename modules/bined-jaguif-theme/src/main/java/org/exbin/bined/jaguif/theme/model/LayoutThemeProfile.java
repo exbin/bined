@@ -15,14 +15,13 @@
  */
 package org.exbin.bined.jaguif.theme.model;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 
 /**
  * Layout theme profile.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class LayoutThemeProfile implements ThemeProfile {
 
     private String profileName;
@@ -34,13 +33,11 @@ public class LayoutThemeProfile implements ThemeProfile {
         this.layoutProfile = layoutProfile;
     }
 
-    @Nonnull
     @Override
     public String getProfileName() {
         return profileName;
     }
 
-    @Nonnull
     public DefaultSectionCodeAreaLayoutProfile getLayoutProfile() {
         return layoutProfile;
     }

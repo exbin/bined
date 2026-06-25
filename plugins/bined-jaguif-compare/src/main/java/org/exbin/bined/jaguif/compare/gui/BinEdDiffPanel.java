@@ -20,8 +20,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.nio.charset.Charset;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import org.exbin.auxiliary.binary_data.BinaryData;
@@ -81,7 +80,7 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 /**
  * BinEd diff panel to compare binary files.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinEdDiffPanel extends JPanel {
 
     protected final OptionsStorage optionsStorage;
@@ -141,7 +140,6 @@ public class BinEdDiffPanel extends JPanel {
         rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, rightContextRegistrator);
         toolbarPanel.setTargetComponent(diffPanel);
         toolbarPanel.setController(new DiffToolbarPanel.Controller() {
-            @Nonnull
             @Override
             public CodeType getCodeType() {
                 return leftCodeArea.getCodeType();
@@ -221,49 +219,41 @@ public class BinEdDiffPanel extends JPanel {
 
     private void initialLoadFromPreferences() {
         applyOptions(new BinEdApplyOptions() {
-            @Nonnull
             @Override
             public CodeAreaOptions getCodeAreaOptions() {
                 return new CodeAreaOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public TextEncodingOptions getEncodingOptions() {
                 return new TextEncodingOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public TextFontOptions getFontOptions() {
                 return new TextFontOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public BinaryEditorOptions getEditorOptions() {
                 return new BinaryEditorOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public CodeAreaStatusOptions getStatusOptions() {
                 return new CodeAreaStatusOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public CodeAreaLayoutOptions getLayoutOptions() {
                 return new CodeAreaLayoutOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public CodeAreaColorOptions getColorOptions() {
                 return new CodeAreaColorOptions(optionsStorage);
             }
 
-            @Nonnull
             @Override
             public CodeAreaThemeOptions getThemeOptions() {
                 return new CodeAreaThemeOptions(optionsStorage);
@@ -343,28 +333,20 @@ public class BinEdDiffPanel extends JPanel {
 
     public interface BinEdApplyOptions {
 
-        @Nonnull
         CodeAreaOptions getCodeAreaOptions();
 
-        @Nonnull
         TextEncodingOptions getEncodingOptions();
 
-        @Nonnull
         TextFontOptions getFontOptions();
 
-        @Nonnull
         BinaryEditorOptions getEditorOptions();
 
-        @Nonnull
         CodeAreaStatusOptions getStatusOptions();
 
-        @Nonnull
         CodeAreaLayoutOptions getLayoutOptions();
 
-        @Nonnull
         CodeAreaColorOptions getColorOptions();
 
-        @Nonnull
         CodeAreaThemeOptions getThemeOptions();
     }
 
@@ -376,7 +358,6 @@ public class BinEdDiffPanel extends JPanel {
             this.codeArea = codeArea;
         }
 
-        @Nonnull
         @Override
         public CodeAreaCore getCodeArea() {
             return codeArea;
@@ -437,7 +418,6 @@ public class BinEdDiffPanel extends JPanel {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        @Nonnull
         @Override
         public String getEncoding() {
             return ((CharsetCapable) getCodeArea()).getCharset().toString();

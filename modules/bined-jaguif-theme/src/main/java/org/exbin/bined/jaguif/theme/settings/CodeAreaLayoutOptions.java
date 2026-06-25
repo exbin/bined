@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.theme.settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.section.layout.DefaultSectionCodeAreaLayoutProfile;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
@@ -26,7 +25,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Code area layout settings options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaLayoutOptions implements SettingsOptions {
 
     public static final String KEY_LAYOUT_PROFILES_COUNT = "layoutProfilesCount";
@@ -52,7 +51,6 @@ public class CodeAreaLayoutOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public List<String> getLayoutProfilesList() {
         List<String> profilesList = new ArrayList<>();
         int profilesCount = storage.getInt(KEY_LAYOUT_PROFILES_COUNT, 0);
@@ -82,7 +80,6 @@ public class CodeAreaLayoutOptions implements SettingsOptions {
         storage.putInt(KEY_LAYOUT_PROFILE_SELECTED, profileIndex);
     }
 
-    @Nonnull
     public DefaultSectionCodeAreaLayoutProfile getLayoutProfile(int profileIndex) {
         DefaultSectionCodeAreaLayoutProfile layoutProfile = new DefaultSectionCodeAreaLayoutProfile();
         String layoutPrefix = KEY_LAYOUT_VALUE_PREFIX + String.valueOf(profileIndex) + ".";

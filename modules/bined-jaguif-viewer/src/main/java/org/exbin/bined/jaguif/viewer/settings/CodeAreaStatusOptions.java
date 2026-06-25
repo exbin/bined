@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.viewer.settings;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
@@ -28,7 +27,7 @@ import org.exbin.jaguif.options.api.OptionsStorage;
 /**
  * Code area status bar options.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CodeAreaStatusOptions implements SettingsOptions {
 
     public static final int DEFAULT_OCTAL_SPACE_GROUP_SIZE = 4;
@@ -49,7 +48,6 @@ public class CodeAreaStatusOptions implements SettingsOptions {
         this.storage = storage;
     }
 
-    @Nonnull
     public PositionCodeType getCursorPositionCodeType() {
         PositionCodeType defaultCodeType = PositionCodeType.DECIMAL;
         try {
@@ -72,7 +70,6 @@ public class CodeAreaStatusOptions implements SettingsOptions {
         storage.putBoolean(KEY_CURSOR_POSITION_SHOW_OFFSET, statusCursorShowOffset);
     }
 
-    @Nonnull
     public PositionCodeType getDataSizeCodeType() {
         PositionCodeType defaultCodeType = PositionCodeType.DECIMAL;
         try {
@@ -95,12 +92,10 @@ public class CodeAreaStatusOptions implements SettingsOptions {
         storage.putBoolean(KEY_DATA_SIZE_SHOW_RELATIVE, statusDataSizeShowRelative);
     }
 
-    @Nonnull
     public StatusCursorPositionFormat getCursorPositionFormat() {
         return new StatusCursorPositionFormat(getCursorPositionCodeType(), isCursorShowOffset());
     }
 
-    @Nonnull
     public StatusDataSizeFormat getDataSizeFormat() {
         return new StatusDataSizeFormat(getDataSizeCodeType(), isDataSizeShowRelative());
     }

@@ -17,8 +17,7 @@ package org.exbin.bined.jaguif.operation.method.basic;
 
 import java.awt.Component;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.SwingUtilities;
 import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
@@ -41,7 +40,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 /**
  * Bit swapping data method.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BitSwappingDataMethod implements ConvertDataMethod {
 
     private static final int BUFFER_SIZE = 4096;
@@ -52,13 +51,11 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
     private long previewLengthLimit = 0;
     private BinaryPreviewPanel previewPanel;
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("method.name");
     }
 
-    @Nonnull
     @Override
     public Component createComponent() {
         BitSwappingDataPanel component = new BitSwappingDataPanel();
@@ -70,7 +67,6 @@ public class BitSwappingDataMethod implements ConvertDataMethod {
         ((BitSwappingDataPanel) component).initFocus();
     }
 
-    @Nonnull
     @Override
     public CodeAreaCommand createConvertCommand(Component component, CodeAreaCore codeArea) {
         BitSwappingDataPanel panel = (BitSwappingDataPanel) component;

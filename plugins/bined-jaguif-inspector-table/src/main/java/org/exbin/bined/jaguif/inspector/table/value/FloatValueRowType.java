@@ -17,30 +17,28 @@ package org.exbin.bined.jaguif.inspector.table.value;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import javax.annotation.Nonnull;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowItem;
 import org.exbin.bined.jaguif.inspector.table.api.ValueRowType;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Float value type.
  */
+@NullMarked
 public class FloatValueRowType implements ValueRowType {
 
     private ByteOrder byteOrder = ByteOrder.LITTLE_ENDIAN;
 
-    @Nonnull
     @Override
     public String getId() {
         return "float";
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return "Float";
     }
 
-    @Nonnull
     @Override
     public ValueRowItem createRowItem() {
         return new ValueRowItem(getId(), getName(), Short.class.getTypeName(), null) {

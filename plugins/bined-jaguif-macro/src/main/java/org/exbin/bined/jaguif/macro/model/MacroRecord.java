@@ -18,13 +18,12 @@ package org.exbin.bined.jaguif.macro.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Macro record.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class MacroRecord {
 
     private String name;
@@ -55,7 +54,6 @@ public class MacroRecord {
         }
     }
 
-    @Nonnull
     public String getName() {
         return name;
     }
@@ -64,7 +62,6 @@ public class MacroRecord {
         this.name = name;
     }
 
-    @Nonnull
     public List<String> getSteps() {
         return steps;
     }
@@ -88,7 +85,6 @@ public class MacroRecord {
         return steps.isEmpty();
     }
 
-    @Nonnull
     public Optional<String> getLastStep() {
         if (steps.isEmpty()) {
             return Optional.empty();

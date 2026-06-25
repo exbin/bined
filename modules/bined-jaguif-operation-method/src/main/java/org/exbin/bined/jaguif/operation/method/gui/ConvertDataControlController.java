@@ -15,13 +15,13 @@
  */
 package org.exbin.bined.jaguif.operation.method.gui;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.utils.OkCancelControlComponent;
 
 /**
  * Handler for convert data control panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public interface ConvertDataControlController {
 
     /**
@@ -31,7 +31,7 @@ public interface ConvertDataControlController {
      */
     void controlActionPerformed(ControlActionType actionType);
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface ConvertDataControlComponent extends OkCancelControlComponent {
 
         void performClick(ControlActionType actionType);

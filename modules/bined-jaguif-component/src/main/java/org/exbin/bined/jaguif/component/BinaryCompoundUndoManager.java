@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif.component;
 
 import java.util.ArrayList;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
@@ -29,7 +29,7 @@ import javax.swing.undo.UndoableEdit;
 /**
  * Undo manager with compound operations.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class BinaryCompoundUndoManager extends AbstractUndoableEdit implements UndoableEditListener {
 
     private DocumentEvent.EventType lastEditType = null;

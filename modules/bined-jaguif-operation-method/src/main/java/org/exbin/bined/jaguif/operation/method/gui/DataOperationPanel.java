@@ -21,9 +21,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -34,7 +33,7 @@ import org.exbin.bined.jaguif.operation.method.api.DataOperationMethod;
 /**
  * Data operation panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class DataOperationPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataOperationPanel.class);
@@ -77,7 +76,6 @@ public class DataOperationPanel extends javax.swing.JPanel {
         });
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -93,12 +91,10 @@ public class DataOperationPanel extends javax.swing.JPanel {
         }
     }
 
-    @Nonnull
     public Optional<DataOperationMethod> getActiveMethod() {
         return Optional.ofNullable(activeMethod);
     }
 
-    @Nonnull
     public Optional<Component> getActiveComponent() {
         return Optional.ofNullable(activeComponent);
     }

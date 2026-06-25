@@ -16,15 +16,14 @@
 package org.exbin.bined.jaguif.inspector.table;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.inspector.BinEdInspector;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorProvider;
 
 /**
  * Table inspector provider.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class TableInspectorProvider implements BinEdInspectorProvider {
 
     public static final String INSPECTOR_ID = "table";
@@ -36,19 +35,16 @@ public class TableInspectorProvider implements BinEdInspectorProvider {
         this.resourceBundle = resourceBundle;
     }
 
-    @Nonnull
     @Override
     public String getId() {
         return INSPECTOR_ID;
     }
 
-    @Nonnull
     @Override
     public String getName() {
         return resourceBundle.getString("tableInspector.name");
     }
 
-    @Nonnull
     @Override
     public BinEdInspector createInspector() {
         if (inspector == null) {

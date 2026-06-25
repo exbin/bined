@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.operation.method.basic.gui;
 
 import java.util.ResourceBundle;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.operation.method.basic.CompressionDataMethod;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -26,7 +25,7 @@ import org.exbin.bined.jaguif.operation.method.api.ParamChangeListener;
 /**
  * Compression data panel.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class CompressionDataPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CompressionDataPanel.class);
@@ -46,7 +45,6 @@ public class CompressionDataPanel extends javax.swing.JPanel {
         updateStatistics(0, 0);
     }
 
-    @Nonnull
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -253,14 +251,12 @@ public class CompressionDataPanel extends javax.swing.JPanel {
         compressRadioButton.requestFocus();
     }
 
-    @Nonnull
     public CompressionDataMethod.OperationType getOperationType() {
         return compressRadioButton.isSelected()
                 ? CompressionDataMethod.OperationType.COMPRESS
                 : CompressionDataMethod.OperationType.DECOMPRESS;
     }
 
-    @Nonnull
     public CompressionDataMethod.CompressionAlgorithm getAlgorithm() {
         switch (algorithmComboBox.getSelectedIndex()) {
             case 0:

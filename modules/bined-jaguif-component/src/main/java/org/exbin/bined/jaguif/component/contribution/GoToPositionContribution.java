@@ -15,21 +15,21 @@
  */
 package org.exbin.bined.jaguif.component.contribution;
 
-import javax.annotation.Nonnull;
 import javax.swing.Action;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Go to position contribution.
  */
+@NullMarked
 public class GoToPositionContribution implements ActionSequenceContribution {
 
     public static final String CONTRIBUTION_ID = "goToPosition";
 
-    @Nonnull
     @Override
     public Action createAction() {
         GoToPositionAction action = new GoToPositionAction();
@@ -38,7 +38,6 @@ public class GoToPositionContribution implements ActionSequenceContribution {
         return action;
     }
 
-    @Nonnull
     @Override
     public String getContributionId() {
         return CONTRIBUTION_ID;

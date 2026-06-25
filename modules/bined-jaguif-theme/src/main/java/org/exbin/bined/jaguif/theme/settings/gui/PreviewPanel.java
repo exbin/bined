@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import org.exbin.auxiliary.binary_data.array.ByteArrayEditableData;
 import org.exbin.bined.EditMode;
 import org.exbin.bined.RowWrappingMode;
@@ -39,7 +38,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 /**
  * Preview panel for code area.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class PreviewPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(PreviewPanel.class);
@@ -57,7 +56,6 @@ public class PreviewPanel extends javax.swing.JPanel {
         init();
     }
 
-    @Nonnull
     public SectCodeArea getCodeArea() {
         return codeArea;
     }

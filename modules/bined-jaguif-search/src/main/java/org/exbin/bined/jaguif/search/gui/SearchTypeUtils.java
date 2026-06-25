@@ -16,8 +16,7 @@
 package org.exbin.bined.jaguif.search.gui;
 
 import java.awt.event.ActionEvent;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
@@ -27,14 +26,13 @@ import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.search.SearchCondition;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
-import org.exbin.jaguif.utils.UiUtils;
 
 /**
  * Search type utility.
  * <p>
  * TODO: Refactor as component instead of utilities class.
  */
-@ParametersAreNonnullByDefault
+@NullMarked
 public class SearchTypeUtils {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(SearchTypeUtils.class);
@@ -107,11 +105,10 @@ public class SearchTypeUtils {
 
     public interface SearchModeProvider {
 
-        @Nonnull
         SearchCondition.SearchMode getCurrentMode();
     }
 
-    @ParametersAreNonnullByDefault
+    @NullMarked
     public interface SearchTypeChangeListener {
 
         void searchTypeChanged(SearchCondition.SearchMode searchMode);
