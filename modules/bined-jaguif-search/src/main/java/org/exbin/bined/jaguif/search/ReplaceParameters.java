@@ -23,9 +23,9 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class ReplaceParameters {
 
-    private SearchCondition condition = new SearchCondition();
-    private boolean performReplace;
-    private boolean replaceAll;
+    protected SearchCondition condition = new SearchCondition();
+    protected boolean performReplace;
+    protected boolean replaceAll;
 
     public ReplaceParameters() {
     }

@@ -32,7 +32,7 @@ import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.macro.BinedMacroModule;
 import org.exbin.bined.jaguif.macro.MacroManager;
 import org.exbin.bined.jaguif.macro.gui.MacrosManagerPanel;
-import org.exbin.bined.jaguif.macro.model.MacroRecord;
+import org.exbin.bined.jaguif.macro.MacroRecord;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.WindowHandler;
 import org.exbin.jaguif.window.api.gui.DefaultControlPanel;

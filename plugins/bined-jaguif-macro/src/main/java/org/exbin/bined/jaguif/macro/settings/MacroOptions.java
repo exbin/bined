@@ -18,7 +18,7 @@ package org.exbin.bined.jaguif.macro.settings;
 import java.util.ArrayList;
 import java.util.List;
 import org.jspecify.annotations.NullMarked;
-import org.exbin.bined.jaguif.macro.model.MacroRecord;
+import org.exbin.bined.jaguif.macro.MacroRecord;
 import org.exbin.jaguif.options.settings.api.SettingsOptions;
 import org.exbin.jaguif.options.api.OptionsStorage;
 

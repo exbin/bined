@@ -19,7 +19,7 @@ import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 
 /**
- * Numeric grouping for binary status.
+ * Numeric grouping for binary data status.
  */
 @NullMarked
 public class StatusNumericGrouping {

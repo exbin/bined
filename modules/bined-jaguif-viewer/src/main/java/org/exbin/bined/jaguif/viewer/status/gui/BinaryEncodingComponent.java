@@ -37,7 +37,7 @@ import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 
 /**
- * BinEd encoding status component.
+ * Binary data encoding status component.
  */
 @NullMarked
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {

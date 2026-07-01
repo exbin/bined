@@ -33,7 +33,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
- * BinEd edit mode status component.
+ * Binary data edit mode status component.
  */
 @NullMarked
 public class BinaryEditModeComponent extends AbstractStatusBarComponent {

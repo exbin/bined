@@ -54,7 +54,6 @@ import org.exbin.bined.jaguif.macro.action.ExecuteLastMacroAction;
 import org.exbin.bined.jaguif.macro.action.StartMacroRecordingAction;
 import org.exbin.bined.jaguif.macro.action.StopMacroRecordingAction;
 import org.exbin.bined.jaguif.macro.gui.MacrosManagerPanel;
-import org.exbin.bined.jaguif.macro.model.MacroRecord;
 import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.bined.jaguif.macro.operation.MacroOperation;
 import org.exbin.bined.jaguif.macro.operation.MacroStep;

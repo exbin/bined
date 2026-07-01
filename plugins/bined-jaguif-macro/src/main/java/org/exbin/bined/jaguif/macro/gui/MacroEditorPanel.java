@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
-import org.exbin.bined.jaguif.macro.model.MacroRecord;
+import org.exbin.bined.jaguif.macro.MacroRecord;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**

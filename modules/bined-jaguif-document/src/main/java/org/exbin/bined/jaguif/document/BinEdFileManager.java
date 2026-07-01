@@ -48,11 +48,11 @@ import org.exbin.jaguif.operation.undo.api.UndoRedoState;
 @NullMarked
 public class BinEdFileManager {
 
-    private final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
-    private final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
-    private final List<CodeAreaColorAssessor> painterPositionColorModifiers = new ArrayList<>();
-    private final List<CodeAreaColorAssessor> painterPriorityPositionColorModifiers = new ArrayList<>();
-    private CodeAreaCommandHandlerProvider commandHandlerProvider = null;
+    protected final SegmentsRepository segmentsRepository = new SegmentsRepository(() -> new ByteArrayEditableData());
+    protected final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
+    protected final List<CodeAreaColorAssessor> painterPositionColorModifiers = new ArrayList<>();
+    protected final List<CodeAreaColorAssessor> painterPriorityPositionColorModifiers = new ArrayList<>();
+    protected CodeAreaCommandHandlerProvider commandHandlerProvider = null;
 
     public BinEdFileManager() {
     }

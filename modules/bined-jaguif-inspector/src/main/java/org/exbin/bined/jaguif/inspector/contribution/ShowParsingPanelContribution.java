@@ -28,7 +28,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class ShowParsingPanelContribution implements ActionSequenceContribution {
 
-    public static final String CONTRIBUTION_ID = "properties";
+    public static final String CONTRIBUTION_ID = "parsingPanel";
 
     @Override
     public Action createAction() {

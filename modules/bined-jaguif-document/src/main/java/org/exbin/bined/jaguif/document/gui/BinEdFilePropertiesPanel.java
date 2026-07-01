@@ -151,11 +151,13 @@ public class BinEdFilePropertiesPanel extends javax.swing.JPanel {
             DefaultDoublyLinkedList<DataSegment> segments = ((DeltaDocument) contentData).getSegments();
             DataSegment segment = segments.first();
             DefaultListModel<String> listModel = (DefaultListModel<String>) structureList.getModel();
+            String fileSegment = resourceBundle.getString("deltaDocument.fileSegment");
+            String memorySegment = resourceBundle.getString("deltaDocument.memorySegment");
             while (segment != null) {
                 if (segment instanceof SourceSegment) {
-                    listModel.addElement("FILE: " + ((SourceSegment) segment).getStartPosition() + ", " + ((SourceSegment) segment).getLength());
+                    listModel.addElement(String.format(fileSegment, ((SourceSegment) segment).getStartPosition(), ((SourceSegment) segment).getLength()));
                 } else {
-                    listModel.addElement("MEMORY: " + ((MemorySegment) segment).getStartPosition() + ", " + ((MemorySegment) segment).getLength());
+                    listModel.addElement(String.format(memorySegment, ((MemorySegment) segment).getStartPosition(), ((MemorySegment) segment).getLength()));
                 }
                 segment = segment.getNext();
             }

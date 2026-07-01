@@ -21,7 +21,7 @@ import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.jspecify.annotations.NullMarked;
 
 /**
- * Binary data processing mode status contribution.
+ * Binary document processing mode status contribution.
  */
 @NullMarked
 public class BinaryProcessingModeStatusContrib implements ComponentStatusBarContribution {

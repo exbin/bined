@@ -62,7 +62,7 @@ import org.exbin.bined.jaguif.operation.method.gui.BinaryPreviewPanel;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
 /**
- * Compute Hash digest data component.
+ * Compute Hash digest data method.
  */
 @NullMarked
 public class ComputeHashDataMethod implements ConvertDataMethod {

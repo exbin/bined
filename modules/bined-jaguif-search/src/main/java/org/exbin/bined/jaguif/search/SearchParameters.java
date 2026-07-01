@@ -23,12 +23,12 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class SearchParameters {
 
-    private SearchCondition condition = new SearchCondition();
-    private long startPosition;
-    private boolean searchFromCursor;
-    private boolean matchCase = true;
-    private MatchMode matchMode = MatchMode.MULTIPLE;
-    private SearchDirection searchDirection = SearchDirection.FORWARD;
+    protected SearchCondition condition = new SearchCondition();
+    protected long startPosition;
+    protected boolean searchFromCursor;
+    protected boolean matchCase = true;
+    protected MatchMode matchMode = MatchMode.MULTIPLE;
+    protected SearchDirection searchDirection = SearchDirection.FORWARD;
 
     public SearchParameters() {
     }

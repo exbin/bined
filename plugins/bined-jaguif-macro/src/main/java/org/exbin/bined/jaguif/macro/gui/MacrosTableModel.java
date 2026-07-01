@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.macro.model;
+package org.exbin.bined.jaguif.macro.gui;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.table.AbstractTableModel;
+import org.exbin.bined.jaguif.macro.MacroRecord;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 

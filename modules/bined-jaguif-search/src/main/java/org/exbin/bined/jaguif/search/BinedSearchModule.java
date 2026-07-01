@@ -39,7 +39,7 @@ import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 
 /**
- * Binary editor search module.
+ * Binary data search module.
  */
 @NullMarked
 public class BinedSearchModule implements Module {

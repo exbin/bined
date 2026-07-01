@@ -27,7 +27,7 @@ import org.jspecify.annotations.NullMarked;
 public interface BinaryDocument extends ContextDocument, NamedDocument {
 
     /**
-     * Returns document binary data.
+     * Returns binary data.
      *
      * @return binary data
      */

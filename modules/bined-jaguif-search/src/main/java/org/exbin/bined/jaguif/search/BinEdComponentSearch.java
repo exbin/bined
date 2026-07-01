@@ -18,7 +18,6 @@ package org.exbin.bined.jaguif.search;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
-import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 
 /**
  * Bined component search.
@@ -27,11 +26,14 @@ import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 public interface BinEdComponentSearch extends BinEdComponentExtension {
 
     /**
-     * Shows search panel.
-     *
-     * @param panelMode panel mode
+     * Shows search find panel.
      */
-    void showSearchPanel(BinarySearchPanel.PanelMode panelMode);
+    void showSearchFindPanel();
+
+    /**
+     * Shows search replace panel.
+     */
+    void showSearchReplacePanel();
 
     /**
      * Hides search panel.

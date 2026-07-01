@@ -96,7 +96,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
             @Override
-            public Component getListCellRendererComponent(JList<? extends SearchCondition> list, SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
                     return emptyPanel;
                 }
@@ -174,7 +174,7 @@ public class FindBinaryPanel extends javax.swing.JPanel {
             private final DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
 
             @Override
-            public Component getListCellRendererComponent(JList<? extends SearchCondition> list, SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<? extends SearchCondition> list, @Nullable SearchCondition value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value == null) {
                     return emptyPanel;
                 }
@@ -253,7 +253,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dropDownButtonPanel1 = new org.exbin.auxiliary.dropdownbutton.DropDownButtonPanel();
         findPanel = new javax.swing.JPanel();
         findLabel = new javax.swing.JLabel();
         findComboBox = new javax.swing.JComboBox<>();
@@ -498,7 +497,6 @@ public class FindBinaryPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.exbin.auxiliary.dropdownbutton.DropDownButtonPanel dropDownButtonPanel1;
     private javax.swing.JComboBox<SearchCondition> findComboBox;
     private javax.swing.JLabel findLabel;
     private javax.swing.JButton findMultilineButton;

@@ -30,7 +30,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
- * Binary file processing mode status component.
+ * Binary document processing mode status component.
  */
 @NullMarked
 public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {

@@ -29,7 +29,7 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.bined.jaguif.macro.gui.MacroEditorPanel;
-import org.exbin.bined.jaguif.macro.model.MacroRecord;
+import org.exbin.bined.jaguif.macro.MacroRecord;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.WindowHandler;
 import org.exbin.jaguif.window.api.gui.DefaultControlPanel;

@@ -23,7 +23,6 @@ import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.bined.jaguif.search.service.BinarySearchService;
 import org.exbin.bined.jaguif.search.service.DefaultBinarySearchService;
 
@@ -70,7 +69,7 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
     }
 
     @Override
-    public void showSearchPanel(BinarySearchPanel.PanelMode panelMode) {
+    public void showSearchFindPanel() {
         if (!binarySearchPanelVisible) {
             getBinarySearch();
             componentPanel.add(binarySearch.getPanel(), BorderLayout.SOUTH);
@@ -78,7 +77,19 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
             binarySearchPanelVisible = true;
             binarySearch.getPanel().requestSearchFocus();
         }
-        binarySearch.getPanel().switchPanelMode(panelMode);
+        binarySearch.getPanel().switchToFindMode();
+    }
+
+    @Override
+    public void showSearchReplacePanel() {
+        if (!binarySearchPanelVisible) {
+            getBinarySearch();
+            componentPanel.add(binarySearch.getPanel(), BorderLayout.SOUTH);
+            componentPanel.revalidate();
+            binarySearchPanelVisible = true;
+            binarySearch.getPanel().requestSearchFocus();
+        }
+        binarySearch.getPanel().switchToReplaceMode();
     }
 
     @Override
@@ -107,7 +118,7 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
         if (binarySearchPanelVisible) {
             binarySearchService.performFindAgain(getBinarySearch().getSearchStatusListener());
         } else {
-            showSearchPanel(BinarySearchPanel.PanelMode.FIND);
+            showSearchFindPanel();
         }
     }
 

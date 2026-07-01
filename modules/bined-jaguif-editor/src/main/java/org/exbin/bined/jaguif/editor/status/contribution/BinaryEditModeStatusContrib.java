@@ -21,7 +21,7 @@ import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.jspecify.annotations.NullMarked;
 
 /**
- * Binary data cursor position status contribution.
+ * Binary data edit mode status contribution.
  */
 @NullMarked
 public class BinaryEditModeStatusContrib implements ComponentStatusBarContribution {

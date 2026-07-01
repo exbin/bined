@@ -26,5 +26,10 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public interface DataInspectorFontInference extends InferenceOptions {
 
+    /**
+     * Returns input field font.
+     *
+     * @return font
+     */
     Optional<Font> getInputFieldsFont();
 }

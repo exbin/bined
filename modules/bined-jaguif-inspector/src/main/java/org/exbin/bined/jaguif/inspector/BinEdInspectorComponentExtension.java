@@ -40,11 +40,11 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @NullMarked
 public class BinEdInspectorComponentExtension implements BinEdComponentExtension {
 
-    private BinaryDataComponent dataComponent;
-    private InspectorPanel inspectorPanel;
-    private boolean parsingPanelVisible = false;
+    protected BinaryDataComponent dataComponent;
+    protected InspectorPanel inspectorPanel;
+    protected boolean parsingPanelVisible = false;
 
-    private JScrollPane parsingPanelScrollPane;
+    protected JScrollPane parsingPanelScrollPane;
 
     public BinEdInspectorComponentExtension() {
     }
@@ -60,14 +60,14 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
             BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
             List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
             inspectorPanel.setInspectorProviders(inspectorProviders);
-            
+
             inspectorPanel.setController(new InspectorPanel.Controller() {
                 @Override
                 public void invokeSettings() {
                     WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
                     DefaultControlPanel controlPanel = new DefaultControlPanel();
                     InspectorsSettingsPanel settingsPanel = new InspectorsSettingsPanel();
-                    
+
                     BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
                     BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
                     List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
@@ -84,7 +84,6 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
                                 inspectorPanel.setInspectorRecords(settingsPanel.getItems());
                                 // TODO
                                 break;
-
                             case CANCEL:
                                 break;
                             default:
@@ -104,7 +103,7 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
             setShowParsingPanel(true);
         });
     }
-    
+
     @Override
     public void onDataChange() {
     }

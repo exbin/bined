@@ -25,7 +25,7 @@ import org.exbin.jaguif.document.api.ContextDocument;
 import static org.exbin.jaguif.statusbar.api.StatusBarComponent.KEY_CONTEXT_CHANGE;
 
 /**
- * Binary document data size status component.
+ * Binary data document size status component.
  */
 @NullMarked
 public class BinaryDocumentSizeComponent extends BinaryDataSizeComponent {

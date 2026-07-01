@@ -25,7 +25,7 @@ import org.exbin.auxiliary.binary_data.EditableBinaryData;
 public interface ConversionDataProvider {
 
     /**
-     * Provides data into given binary data.
+     * Provides data access into given binary data.
      *
      * @param binaryData editable data target
      * @param position position

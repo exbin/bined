@@ -39,7 +39,7 @@ import org.exbin.bined.swing.CodeAreaSwingUtils;
 import org.exbin.bined.swing.basic.DefaultCodeAreaCommandHandler;
 import org.exbin.bined.jaguif.component.action.CopyAsCodeAction;
 import org.exbin.bined.jaguif.component.action.PasteFromCodeAction;
-import org.exbin.bined.jaguif.macro.model.MacroRecord;
+import org.exbin.bined.jaguif.macro.MacroRecord;
 
 /**
  * Command handler with support for macro recording.

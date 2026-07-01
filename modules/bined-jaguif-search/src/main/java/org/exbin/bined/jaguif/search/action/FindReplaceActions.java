@@ -33,7 +33,6 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.search.BinEdComponentSearch;
-import org.exbin.bined.jaguif.search.gui.BinarySearchPanel;
 import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.document.api.ContextDocument;
 
@@ -112,7 +111,7 @@ public class FindReplaceActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
-            componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.FIND);
+            componentExtension.showSearchFindPanel();
         }
 
         @Override
@@ -193,7 +192,7 @@ public class FindReplaceActions {
         @Override
         public void actionPerformed(ActionEvent e) {
             BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
-            componentExtension.showSearchPanel(BinarySearchPanel.PanelMode.REPLACE);
+            componentExtension.showSearchReplacePanel();
         }
 
         @Override

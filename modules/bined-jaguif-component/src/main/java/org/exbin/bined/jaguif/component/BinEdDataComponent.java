@@ -58,6 +58,7 @@ import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.font.TextFontState;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data component.
@@ -320,7 +321,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         return Optional.ofNullable(undoRedo);
     }
 
-    public void setUndoRedo(BinaryDataUndoRedo undoRedo) {
+    public void setUndoRedo(@Nullable BinaryDataUndoRedo undoRedo) {
         this.undoRedo = undoRedo;
         CodeAreaOperationCommandHandler commandHandler = new CodeAreaOperationCommandHandler(codeArea, undoRedo == null ? new CodeAreaUndoRedo(codeArea) : undoRedo);
         codeArea.setCommandHandler(commandHandler);
