@@ -74,17 +74,31 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
         component.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                encodingLabelMouseClicked(evt);
+                if (evt.getButton() == MouseEvent.BUTTON1 && encodingListController != null) {
+                    if (evt.isShiftDown()) {
+                        encodingListController.cyclePreviousEncoding();
+                    } else {
+                        encodingListController.cycleNextEncoding();
+                    }
+                } else {
+                    processPopupMenu(evt);
+                }
             }
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                handleEncodingPopup(evt);
+                processPopupMenu(evt);
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                handleEncodingPopup(evt);
+                processPopupMenu(evt);
+            }
+
+            private void processPopupMenu(java.awt.event.MouseEvent evt) {
+                if (evt.isPopupTrigger()) {
+                    // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+                }
             }
         });
 
@@ -131,23 +145,5 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
     private void update() {
         component.setText(encodingState != null ? encodingState.getEncoding() : "-");
-    }
-
-    private void encodingLabelMouseClicked(java.awt.event.MouseEvent evt) {
-        if (evt.getButton() == MouseEvent.BUTTON1 && encodingListController != null) {
-            if (evt.isShiftDown()) {
-                encodingListController.cyclePreviousEncoding();
-            } else {
-                encodingListController.cycleNextEncoding();
-            }
-        } else {
-            handleEncodingPopup(evt);
-        }
-    }
-
-    private void handleEncodingPopup(java.awt.event.MouseEvent evt) {
-        if (evt.isPopupTrigger()) {
-            // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
-        }
     }
 }

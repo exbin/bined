@@ -45,9 +45,8 @@ public class ShowHeaderContribution implements ActionSequenceContribution {
 
     @Override
     public Action createAction() {
-        ShowHeaderAction action = new ShowHeaderAction();
         BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
-        action.init(binedViewerModule.getResourceBundle());
+        ShowHeaderAction action = binedViewerModule.createShowHeaderAction();
         if (showPositionCreating != null) {
             action.putValue(ActionConsts.ACTION_MENU_CREATION, showPositionCreating);
         }

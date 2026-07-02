@@ -59,6 +59,28 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        component.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                processPopupMenu(evt);
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                processPopupMenu(evt);
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                processPopupMenu(evt);
+            }
+
+            private void processPopupMenu(java.awt.event.MouseEvent evt) {
+                if (evt.isPopupTrigger()) {
+                    // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+                }
+            }
+        });
         BinaryDataSizeComponent.this.clear();
 
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {

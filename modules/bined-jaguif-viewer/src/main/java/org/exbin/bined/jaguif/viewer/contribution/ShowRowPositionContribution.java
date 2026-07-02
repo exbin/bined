@@ -45,9 +45,8 @@ public class ShowRowPositionContribution implements ActionSequenceContribution {
 
     @Override
     public Action createAction() {
-        ShowRowPositionAction action = new ShowRowPositionAction();
         BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
-        action.init(binedViewerModule.getResourceBundle());
+        ShowRowPositionAction action = binedViewerModule.createShowRowPositionAction();
         if (showPositionCreating != null) {
             action.putValue(ActionConsts.ACTION_MENU_CREATION, showPositionCreating);
         }

@@ -206,13 +206,13 @@ public class BinedViewerModule implements Module {
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
     }
 
-    private AbstractAction createShowHeaderAction() {
+    public ShowHeaderAction createShowHeaderAction() {
         ShowHeaderAction showHeaderAction = new ShowHeaderAction();
         showHeaderAction.init(getResourceBundle());
         return showHeaderAction;
     }
 
-    private AbstractAction createShowRowPositionAction() {
+    public ShowRowPositionAction createShowRowPositionAction() {
         ShowRowPositionAction showRowPositionAction = new ShowRowPositionAction();
         showRowPositionAction.init(getResourceBundle());
         return showRowPositionAction;
