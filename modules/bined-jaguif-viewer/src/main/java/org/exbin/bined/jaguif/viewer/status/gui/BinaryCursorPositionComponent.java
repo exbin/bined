@@ -16,12 +16,12 @@
 package org.exbin.bined.jaguif.viewer.status.gui;
 
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import org.exbin.bined.CodeAreaCaretPosition;
 import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.PositionCodeType;
@@ -30,14 +30,19 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.jaguif.App;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
+import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
@@ -46,6 +51,7 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 @NullMarked
 public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
+    public static final String POPUP_MENU_ID = "binaryCursorPosition";
     protected static final String BR_TAG = "<br>";
 
     protected final JLabel component;
@@ -84,7 +90,13 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
-                    // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+                    ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator();
+                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextModule.getMainContextManager());
+                    MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+                    JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
+                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
+                    popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
         });
@@ -118,6 +130,12 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     @Override
     public JComponent getComponent() {
         return component;
+    }
+    
+    public void registerPopupMenu() {
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        menuModule.registerMenu(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
+        // TODO menuModule.createMenuDefinition(menuManagement, KEY_ID, KEY_ID);
     }
 
     private void update() {
