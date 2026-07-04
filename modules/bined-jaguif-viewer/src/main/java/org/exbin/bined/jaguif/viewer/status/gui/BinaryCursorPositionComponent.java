@@ -30,9 +30,11 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
+import org.exbin.bined.jaguif.viewer.status.contribution.CopyPositionContribution;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -41,7 +43,9 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
+import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
@@ -132,10 +136,64 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         return component;
     }
     
-    public void registerPopupMenu() {
+    public static void registerPopupMenu() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
-        // TODO menuModule.createMenuDefinition(menuManagement, KEY_ID, KEY_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
+
+        SequenceContribution contribution;
+        /*cursorPositionCodeTypeMenu.setText(resourceBundle.getString("cursorPositionCodeTypeMenu.text")); // NOI18N
+        cursorPositionCodeTypeMenu.setName("cursorPositionCodeTypeMenu"); // NOI18N
+
+        cursorPositionModeButtonGroup.add(octalCursorPositionModeRadioButtonMenuItem);
+        octalCursorPositionModeRadioButtonMenuItem.setText(resourceBundle.getString("octalCursorPositionModeRadioButtonMenuItem.text")); // NOI18N
+        octalCursorPositionModeRadioButtonMenuItem.setName("octalCursorPositionModeRadioButtonMenuItem"); // NOI18N
+        octalCursorPositionModeRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                octalCursorPositionModeRadioButtonMenuItemActionPerformed(evt);
+            }
+        });
+        cursorPositionCodeTypeMenu.add(octalCursorPositionModeRadioButtonMenuItem);
+
+        cursorPositionModeButtonGroup.add(decimalCursorPositionModeRadioButtonMenuItem);
+        decimalCursorPositionModeRadioButtonMenuItem.setSelected(true);
+        decimalCursorPositionModeRadioButtonMenuItem.setText(resourceBundle.getString("decimalCursorPositionModeRadioButtonMenuItem.text")); // NOI18N
+        decimalCursorPositionModeRadioButtonMenuItem.setName("decimalCursorPositionModeRadioButtonMenuItem"); // NOI18N
+        decimalCursorPositionModeRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                decimalCursorPositionModeRadioButtonMenuItemActionPerformed(evt);
+            }
+        });
+        cursorPositionCodeTypeMenu.add(decimalCursorPositionModeRadioButtonMenuItem);
+
+        cursorPositionModeButtonGroup.add(hexadecimalCursorPositionModeRadioButtonMenuItem);
+        hexadecimalCursorPositionModeRadioButtonMenuItem.setText(resourceBundle.getString("hexadecimalCursorPositionModeRadioButtonMenuItem.text")); // NOI18N
+        hexadecimalCursorPositionModeRadioButtonMenuItem.setName("hexadecimalCursorPositionModeRadioButtonMenuItem"); // NOI18N
+        hexadecimalCursorPositionModeRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hexadecimalCursorPositionModeRadioButtonMenuItemActionPerformed(evt);
+            }
+        });
+        cursorPositionCodeTypeMenu.add(hexadecimalCursorPositionModeRadioButtonMenuItem);
+
+        positionPopupMenu.add(cursorPositionCodeTypeMenu);
+
+        cursorPositionShowOffsetCheckBoxMenuItem.setSelected(true);
+        cursorPositionShowOffsetCheckBoxMenuItem.setText(resourceBundle.getString("cursorPositionShowOffsetCheckBoxMenuItem.text")); // NOI18N
+        cursorPositionShowOffsetCheckBoxMenuItem.setName("cursorPositionShowOffsetCheckBoxMenuItem"); // NOI18N
+        cursorPositionShowOffsetCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cursorPositionShowOffsetCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        positionPopupMenu.add(cursorPositionShowOffsetCheckBoxMenuItem);
+        positionPopupMenu.add(jSeparator2);*/
+
+        contribution = new CopyPositionContribution();
+        mgmt.registerMenuContribution(contribution);
+
+        contribution = new GoToPositionContribution();
+        mgmt.registerMenuContribution(contribution);
     }
 
     private void update() {

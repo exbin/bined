@@ -22,15 +22,20 @@ import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import org.exbin.bined.jaguif.component.BinaryEncodingListController;
 import org.exbin.jaguif.App;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.exbin.jaguif.context.api.ContextModuleApi;
+import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
+import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
@@ -42,6 +47,7 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 @NullMarked
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
+    public static final String POPUP_MENU_ID = "binaryEncoding";
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
@@ -97,7 +103,13 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
-                    // TODO ((EncodingsController) controller).encodingsPopupEncodingsMenu(evt);
+                    ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
+                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator();
+                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextModule.getMainContextManager());
+                    MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+                    JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
+                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
+                    popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
         });

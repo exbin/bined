@@ -54,6 +54,7 @@ import org.exbin.bined.jaguif.viewer.settings.GoToPositionOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
+import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
@@ -466,5 +467,9 @@ public class BinedViewerModule implements Module {
         contribution = new ShowRowPositionContribution(showPositionCreating);
         subMgmt.registerMenuContribution(contribution);
         subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
+    }
+    
+    public void registerCursorPositionStatusMenu() {
+        BinaryCursorPositionComponent.registerPopupMenu();
     }
 }
