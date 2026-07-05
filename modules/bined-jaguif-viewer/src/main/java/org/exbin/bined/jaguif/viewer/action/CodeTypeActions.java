@@ -157,8 +157,7 @@ public class CodeTypeActions {
             binaryDataComponent = context instanceof BinaryDataComponent ? (BinaryDataComponent) context : null;
             boolean hasInstance = context != null;
             if (hasInstance) {
-                CodeType codeType = binaryDataComponent.getCodeType();
-                putValue(Action.SELECTED_KEY, codeType == codeType);
+                putValue(Action.SELECTED_KEY, codeType == binaryDataComponent.getCodeType());
             }
             setEnabled(hasInstance);
         }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.viewer.status.action;
+package org.exbin.bined.jaguif.viewer.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
@@ -30,16 +30,16 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
- * Copy position action.
+ * Show cursor position offset action.
  */
 @NullMarked
-public class CopyPositionAction extends AbstractAction {
+public class ShowCursorPositionOffsetAction extends AbstractAction {
 
-    public static final String ACTION_ID = "copyPosition";
+    public static final String ACTION_ID = "showCursorPositionOffset";
 
     private CodeAreaCore codeArea;
 
-    public CopyPositionAction() {
+    public ShowCursorPositionOffsetAction() {
     }
 
     public void init(ResourceBundle resourceBundle) {

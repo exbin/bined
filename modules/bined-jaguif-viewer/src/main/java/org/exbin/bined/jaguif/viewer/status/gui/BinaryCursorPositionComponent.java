@@ -16,8 +16,11 @@
 package org.exbin.bined.jaguif.viewer.status.gui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -32,9 +35,11 @@ import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.bined.jaguif.viewer.action.PositionCodeTypeActions;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
-import org.exbin.bined.jaguif.viewer.status.contribution.CopyPositionContribution;
+import org.exbin.bined.jaguif.viewer.contribution.CopyPositionContribution;
+import org.exbin.bined.jaguif.viewer.contribution.ShowCursorPositionOffsetContribution;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -43,10 +48,14 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
+import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
+import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
+import org.exbin.jaguif.contribution.api.SeparationSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
+import org.exbin.jaguif.menu.api.SubMenuContribution;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
@@ -56,6 +65,8 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
     public static final String POPUP_MENU_ID = "binaryCursorPosition";
+    public static final String SETTINGS_GROUP_ID = "cursorPositionSettings";
+    public static final String CODE_TYPE_SUBMENU_ID = "positionCodeType";
     protected static final String BR_TAG = "<br>";
 
     protected final JLabel component;
@@ -137,57 +148,37 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     }
     
     public static void registerPopupMenu() {
+        ResourceBundle componentResourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryCursorPositionComponent.class);
+        BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
+        ResourceBundle viewerResourceBundle = viewerModule.getResourceBundle();
+        PositionCodeTypeActions positionCodeTypeActions = viewerModule.getPositionCodeTypeActions();
 
+        GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(SETTINGS_GROUP_ID);
+        Action viewSubMenuAction = new AbstractAction(componentResourceBundle.getString("cursorPositionCodeTypeMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, componentResourceBundle.getString("viewModeSubMenu.shortDescription"));
+        SubMenuContribution subMenu = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, viewSubMenuAction);
+        mgmt.registerMenuRule(subMenu, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
+        mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
+        MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
+        
         SequenceContribution contribution;
-        /*cursorPositionCodeTypeMenu.setText(resourceBundle.getString("cursorPositionCodeTypeMenu.text")); // NOI18N
-        cursorPositionCodeTypeMenu.setName("cursorPositionCodeTypeMenu"); // NOI18N
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+        subMgmt.registerMenuContribution(contribution);
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
+        subMgmt.registerMenuContribution(contribution);
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL, null);
+        subMgmt.registerMenuContribution(contribution);
 
-        cursorPositionModeButtonGroup.add(octalCursorPositionModeRadioButtonMenuItem);
-        octalCursorPositionModeRadioButtonMenuItem.setText(resourceBundle.getString("octalCursorPositionModeRadioButtonMenuItem.text")); // NOI18N
-        octalCursorPositionModeRadioButtonMenuItem.setName("octalCursorPositionModeRadioButtonMenuItem"); // NOI18N
-        octalCursorPositionModeRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                octalCursorPositionModeRadioButtonMenuItemActionPerformed(evt);
-            }
-        });
-        cursorPositionCodeTypeMenu.add(octalCursorPositionModeRadioButtonMenuItem);
-
-        cursorPositionModeButtonGroup.add(decimalCursorPositionModeRadioButtonMenuItem);
-        decimalCursorPositionModeRadioButtonMenuItem.setSelected(true);
-        decimalCursorPositionModeRadioButtonMenuItem.setText(resourceBundle.getString("decimalCursorPositionModeRadioButtonMenuItem.text")); // NOI18N
-        decimalCursorPositionModeRadioButtonMenuItem.setName("decimalCursorPositionModeRadioButtonMenuItem"); // NOI18N
-        decimalCursorPositionModeRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                decimalCursorPositionModeRadioButtonMenuItemActionPerformed(evt);
-            }
-        });
-        cursorPositionCodeTypeMenu.add(decimalCursorPositionModeRadioButtonMenuItem);
-
-        cursorPositionModeButtonGroup.add(hexadecimalCursorPositionModeRadioButtonMenuItem);
-        hexadecimalCursorPositionModeRadioButtonMenuItem.setText(resourceBundle.getString("hexadecimalCursorPositionModeRadioButtonMenuItem.text")); // NOI18N
-        hexadecimalCursorPositionModeRadioButtonMenuItem.setName("hexadecimalCursorPositionModeRadioButtonMenuItem"); // NOI18N
-        hexadecimalCursorPositionModeRadioButtonMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hexadecimalCursorPositionModeRadioButtonMenuItemActionPerformed(evt);
-            }
-        });
-        cursorPositionCodeTypeMenu.add(hexadecimalCursorPositionModeRadioButtonMenuItem);
-
-        positionPopupMenu.add(cursorPositionCodeTypeMenu);
-
-        cursorPositionShowOffsetCheckBoxMenuItem.setSelected(true);
-        cursorPositionShowOffsetCheckBoxMenuItem.setText(resourceBundle.getString("cursorPositionShowOffsetCheckBoxMenuItem.text")); // NOI18N
-        cursorPositionShowOffsetCheckBoxMenuItem.setName("cursorPositionShowOffsetCheckBoxMenuItem"); // NOI18N
-        cursorPositionShowOffsetCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cursorPositionShowOffsetCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        positionPopupMenu.add(cursorPositionShowOffsetCheckBoxMenuItem);
-        positionPopupMenu.add(jSeparator2);*/
+        contribution = new ShowCursorPositionOffsetContribution();
+        mgmt.registerMenuContribution(contribution);
+        mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
 
         contribution = new CopyPositionContribution();
         mgmt.registerMenuContribution(contribution);

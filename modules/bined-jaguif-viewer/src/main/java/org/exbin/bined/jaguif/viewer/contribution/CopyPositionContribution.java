@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.viewer.status.contribution;
+package org.exbin.bined.jaguif.viewer.contribution;
 
 import javax.swing.Action;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
-import org.exbin.bined.jaguif.viewer.status.action.CopyPositionAction;
+import org.exbin.bined.jaguif.viewer.action.CopyPositionAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.jspecify.annotations.NullMarked;
