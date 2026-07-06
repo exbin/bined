@@ -146,30 +146,28 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     public JComponent getComponent() {
         return component;
     }
-    
+
     public static void registerPopupMenu() {
         ResourceBundle componentResourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryCursorPositionComponent.class);
         BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
-        ResourceBundle viewerResourceBundle = viewerModule.getResourceBundle();
         PositionCodeTypeActions positionCodeTypeActions = viewerModule.getPositionCodeTypeActions();
 
         GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(SETTINGS_GROUP_ID);
-        Action viewSubMenuAction = new AbstractAction(componentResourceBundle.getString("cursorPositionCodeTypeMenu.text")) {
+        mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
+        Action codeTypeSubMenuAction = new AbstractAction(componentResourceBundle.getString("codeTypeSubMenu.text")) {
             @Override
             public void actionPerformed(ActionEvent e) {
             }
         };
-        viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, componentResourceBundle.getString("viewModeSubMenu.shortDescription"));
-        SubMenuContribution subMenu = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, viewSubMenuAction);
-        mgmt.registerMenuRule(subMenu, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
+        codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, componentResourceBundle.getString("codeTypeSubMenu.shortDescription"));
+        SubMenuContribution subMenu = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
         mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
-        
-        SequenceContribution contribution;
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+
+        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
         subMgmt.registerMenuContribution(contribution);
         contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
         subMgmt.registerMenuContribution(contribution);
@@ -178,7 +176,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
         contribution = new ShowCursorPositionOffsetContribution();
         mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
 
         contribution = new CopyPositionContribution();
         mgmt.registerMenuContribution(contribution);

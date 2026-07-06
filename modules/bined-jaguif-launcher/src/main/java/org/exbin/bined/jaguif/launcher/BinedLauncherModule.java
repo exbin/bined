@@ -330,6 +330,7 @@ public class BinedLauncherModule implements LauncherModule {
 
 //                undoModule.setUndoHandler(((UndoFileHandler) editorProvider).getUndoHandler());
             binedDocumentModule.registerStatusBar();
+            binedViewerModule.registerCursorPositionStatusMenu();
             binedViewerModule.registerFrameStatusBar();
 
             if (demoMode) {

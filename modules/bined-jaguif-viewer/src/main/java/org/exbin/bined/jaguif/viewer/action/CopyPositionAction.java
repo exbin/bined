@@ -45,7 +45,7 @@ public class CopyPositionAction extends AbstractAction {
     public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
         actionModule.initAction(this, resourceBundle, ACTION_ID);
-        putValue(ActionConsts.ACTION_TYPE, ActionType.CHECK);
+        putValue(ActionConsts.ACTION_TYPE, ActionType.PUSH);
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
