@@ -38,8 +38,11 @@ import org.exbin.bined.jaguif.viewer.action.ShowHeaderAction;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
+import org.exbin.bined.jaguif.viewer.contribution.CopyPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.contribution.RowWrappingContribution;
+import org.exbin.bined.jaguif.viewer.contribution.ShowCursorPositionOffsetContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowHeaderContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowRowPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceOptions;
@@ -54,7 +57,6 @@ import org.exbin.bined.jaguif.viewer.settings.GoToPositionOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
-import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
@@ -89,6 +91,7 @@ import org.exbin.jaguif.text.font.settings.TextFontOptions;
 import org.exbin.jaguif.text.font.settings.TextFontSettingsComponent;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 import org.exbin.jaguif.frame.api.FrameController;
+import org.exbin.jaguif.menu.api.SubMenuContribution;
 
 /**
  * Binary data viewer module.
@@ -109,6 +112,9 @@ public class BinedViewerModule implements Module {
     public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
     public static final String POSITION_CODE_TYPE_POPUP_SUBMENU_ID = MODULE_ID + ".positionCodeTypePopupSubMenu";
     public static final String SHOW_POPUP_SUBMENU_ID = MODULE_ID + ".showPopupSubMenu";
+    public static final String BINARY_CURSOR_POSITION_MENU_ID = "binaryCursorPosition";
+    public static final String BINARY_CURSOR_POSITION_SETTINGS_GROUP_ID = "cursorPositionSettings";
+    public static final String BINARY_CURSOR_POSITION_CODE_TYPE_SUBMENU_ID = "positionCodeType";
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
@@ -470,6 +476,39 @@ public class BinedViewerModule implements Module {
     }
     
     public void registerCursorPositionStatusMenu() {
-        BinaryCursorPositionComponent.registerPopupMenu();
+        getPositionCodeTypeActions();
+        getResourceBundle();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        menuModule.registerMenu(BINARY_CURSOR_POSITION_MENU_ID, BinedViewerModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_CURSOR_POSITION_MENU_ID, BinedViewerModule.MODULE_ID);
+
+        GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(BINARY_CURSOR_POSITION_SETTINGS_GROUP_ID);
+        mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
+        Action codeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("cursorPositionCodeTypeSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("cursorPositionCodeTypeSubMenu.shortDescription"));
+        SubMenuContribution subMenu = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
+        mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
+        MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
+
+        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+        subMgmt.registerMenuContribution(contribution);
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
+        subMgmt.registerMenuContribution(contribution);
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL, null);
+        subMgmt.registerMenuContribution(contribution);
+
+        contribution = new ShowCursorPositionOffsetContribution();
+        mgmt.registerMenuContribution(contribution);
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
+
+        contribution = new CopyPositionContribution();
+        mgmt.registerMenuContribution(contribution);
+
+        contribution = new GoToPositionContribution();
+        mgmt.registerMenuContribution(contribution);
     }
 }

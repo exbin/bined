@@ -16,11 +16,8 @@
 package org.exbin.bined.jaguif.viewer.status.gui;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -33,13 +30,9 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
-import org.exbin.bined.jaguif.viewer.action.PositionCodeTypeActions;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
-import org.exbin.bined.jaguif.viewer.contribution.CopyPositionContribution;
-import org.exbin.bined.jaguif.viewer.contribution.ShowCursorPositionOffsetContribution;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -48,14 +41,8 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
-import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
-import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
-import org.exbin.jaguif.contribution.api.SeparationSequenceContributionRule;
-import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
-import org.exbin.jaguif.menu.api.SubMenuContribution;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
@@ -64,9 +51,6 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 @NullMarked
 public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
-    public static final String POPUP_MENU_ID = "binaryCursorPosition";
-    public static final String SETTINGS_GROUP_ID = "cursorPositionSettings";
-    public static final String CODE_TYPE_SUBMENU_ID = "positionCodeType";
     protected static final String BR_TAG = "<br>";
 
     protected final JLabel component;
@@ -110,7 +94,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextModule.getMainContextManager());
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
-                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
+                    menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_CURSOR_POSITION_MENU_ID, contextRegistrar, popupContextManager);
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
@@ -145,44 +129,6 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     @Override
     public JComponent getComponent() {
         return component;
-    }
-
-    public static void registerPopupMenu() {
-        ResourceBundle componentResourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryCursorPositionComponent.class);
-        BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        menuModule.registerMenu(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(POPUP_MENU_ID, BinedViewerModule.MODULE_ID);
-        PositionCodeTypeActions positionCodeTypeActions = viewerModule.getPositionCodeTypeActions();
-
-        GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(SETTINGS_GROUP_ID);
-        mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        Action codeTypeSubMenuAction = new AbstractAction(componentResourceBundle.getString("codeTypeSubMenu.text")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        };
-        codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, componentResourceBundle.getString("codeTypeSubMenu.shortDescription"));
-        SubMenuContribution subMenu = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
-        mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
-        MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
-
-        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
-        subMgmt.registerMenuContribution(contribution);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
-        subMgmt.registerMenuContribution(contribution);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL, null);
-        subMgmt.registerMenuContribution(contribution);
-
-        contribution = new ShowCursorPositionOffsetContribution();
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
-
-        contribution = new CopyPositionContribution();
-        mgmt.registerMenuContribution(contribution);
-
-        contribution = new GoToPositionContribution();
-        mgmt.registerMenuContribution(contribution);
     }
 
     private void update() {
