@@ -112,9 +112,15 @@ public class BinedViewerModule implements Module {
     public static final String HEX_CHARACTERS_CASE_SUBMENU_ID = MODULE_ID + ".hexCharactersCaseSubMenu";
     public static final String POSITION_CODE_TYPE_POPUP_SUBMENU_ID = MODULE_ID + ".positionCodeTypePopupSubMenu";
     public static final String SHOW_POPUP_SUBMENU_ID = MODULE_ID + ".showPopupSubMenu";
+
     public static final String BINARY_CURSOR_POSITION_MENU_ID = "binaryCursorPosition";
     public static final String BINARY_CURSOR_POSITION_SETTINGS_GROUP_ID = "cursorPositionSettings";
     public static final String BINARY_CURSOR_POSITION_CODE_TYPE_SUBMENU_ID = "positionCodeType";
+    public static final String BINARY_DATA_SIZE_MENU_ID = "binaryDataSize";
+    public static final String BINARY_DATA_SIZE_SETTINGS_GROUP_ID = "dataSizeSettings";
+    public static final String BINARY_DATA_SIZE_CODE_TYPE_SUBMENU_ID = "dataSizeCodeType";
+    public static final String BINARY_ENCODING_MENU_ID = "binaryEncoding";
+    public static final String BINARY_ENCODING_SETTINGS_GROUP_ID = "binaryEncodingSettings";
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
@@ -510,5 +516,25 @@ public class BinedViewerModule implements Module {
 
         contribution = new GoToPositionContribution();
         mgmt.registerMenuContribution(contribution);
+    }
+
+    public void registerDataSizeStatusMenu() {
+        getPositionCodeTypeActions();
+        getResourceBundle();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        menuModule.registerMenu(BINARY_DATA_SIZE_MENU_ID, BinedViewerModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_DATA_SIZE_MENU_ID, BinedViewerModule.MODULE_ID);
+
+        // TODO
+    }
+
+    public void registerBinaryEncodingStatusMenu() {
+        getPositionCodeTypeActions();
+        getResourceBundle();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        menuModule.registerMenu(BINARY_ENCODING_MENU_ID, BinedViewerModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_ENCODING_MENU_ID, BinedViewerModule.MODULE_ID);
+
+        // TODO
     }
 }
