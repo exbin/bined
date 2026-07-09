@@ -39,11 +39,13 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
+import org.exbin.bined.jaguif.viewer.contribution.CopyDataSizeContribution;
 import org.exbin.bined.jaguif.viewer.contribution.CopyPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.contribution.RowWrappingContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowCursorPositionOffsetContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowHeaderContribution;
+import org.exbin.bined.jaguif.viewer.contribution.ShowRelativeDataSizeContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowRowPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryAppearanceSettingsApplier;
@@ -310,9 +312,9 @@ public class BinedViewerModule implements Module {
         };
         viewSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("viewModeSubMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(VIEW_MODE_SUBMENU_ID, viewSubMenuAction);
+        mgmt.registerMenuItem(VIEW_MODE_SUBMENU_ID, viewSubMenuAction);
         mgmt = mgmt.getSubMenu(VIEW_MODE_SUBMENU_ID);
-        contribution = viewModeActions.createDualViewModeContribution();
+        SequenceContribution contribution = viewModeActions.createDualViewModeContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = viewModeActions.createMatrixModeViewModeContribution();
@@ -345,11 +347,11 @@ public class BinedViewerModule implements Module {
         };
         codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("codeTypeSubMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
+        mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
         mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
         GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(CODE_TYPE_MENU_GROUP_ID);
         mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = codeTypeActions.createBinaryCodeTypeContribution();
+        SequenceContribution contribution = codeTypeActions.createBinaryCodeTypeContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
@@ -379,9 +381,9 @@ public class BinedViewerModule implements Module {
         positionCodeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("positionCodeTypeSubMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction);
+        mgmt.registerMenuItem(POSITION_CODE_TYPE_SUBMENU_ID, positionCodeTypeSubMenuAction);
         mgmt = mgmt.getSubMenu(POSITION_CODE_TYPE_SUBMENU_ID);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
@@ -404,9 +406,9 @@ public class BinedViewerModule implements Module {
         hexCharsCaseSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("hexCharsCaseSubMenu.shortDescription"));
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         mgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
-        SequenceContribution contribution = mgmt.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
+        mgmt.registerMenuItem(HEX_CHARACTERS_CASE_SUBMENU_ID, hexCharsCaseSubMenuAction);
         mgmt = mgmt.getSubMenu(HEX_CHARACTERS_CASE_SUBMENU_ID);
-        contribution = hexCharactersCaseActions.createUpperHexCharsContribution();
+        SequenceContribution contribution = hexCharactersCaseActions.createUpperHexCharsContribution();
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
         contribution = hexCharactersCaseActions.createLowerHexCharsContribution();
@@ -525,7 +527,31 @@ public class BinedViewerModule implements Module {
         menuModule.registerMenu(BINARY_DATA_SIZE_MENU_ID, BinedViewerModule.MODULE_ID);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_DATA_SIZE_MENU_ID, BinedViewerModule.MODULE_ID);
 
-        // TODO
+        GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(BINARY_DATA_SIZE_SETTINGS_GROUP_ID);
+        mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
+        Action codeTypeSubMenuAction = new AbstractAction(resourceBundle.getString("dataSizeCodeTypeSubMenu.text")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        codeTypeSubMenuAction.putValue(Action.SHORT_DESCRIPTION, resourceBundle.getString("dataSizeCodeTypeSubMenu.shortDescription"));
+        SubMenuContribution subMenu = mgmt.registerMenuItem(CODE_TYPE_SUBMENU_ID, codeTypeSubMenuAction);
+        mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
+        MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
+
+        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+        subMgmt.registerMenuContribution(contribution);
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
+        subMgmt.registerMenuContribution(contribution);
+        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL, null);
+        subMgmt.registerMenuContribution(contribution);
+
+        contribution = new ShowRelativeDataSizeContribution();
+        mgmt.registerMenuContribution(contribution);
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
+
+        contribution = new CopyDataSizeContribution();
+        mgmt.registerMenuContribution(contribution);
     }
 
     public void registerBinaryEncodingStatusMenu() {
