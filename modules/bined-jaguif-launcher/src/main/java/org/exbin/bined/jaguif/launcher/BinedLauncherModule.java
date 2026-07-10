@@ -333,6 +333,8 @@ public class BinedLauncherModule implements LauncherModule {
             binedViewerModule.registerCursorPositionStatusMenu();
             binedViewerModule.registerDataSizeStatusMenu();
             binedViewerModule.registerBinaryEncodingStatusMenu();
+            binedEditorModule.registerEditModeStatusMenu();
+            binedDocumentModule.registerProcessingModeStatusMenu();
             binedViewerModule.registerFrameStatusBar();
 
             if (demoMode) {

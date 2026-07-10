@@ -382,6 +382,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     public enum UpdateType implements StateUpdateType {
-        ORIGINAL_SIZE
+        ORIGINAL_SIZE,
+        PROCESSING_MODE
     }
 }

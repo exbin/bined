@@ -48,6 +48,7 @@ public class BinedEditorModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedEditorModule.class);
     public static final String SETTINGS_PAGE_ID = "codeAreaEditing";
+    public static final String EDIT_MODE_MENU_ID = "editMode";
 
     private java.util.ResourceBundle resourceBundle = null;
 
@@ -109,5 +110,14 @@ public class BinedEditorModule implements Module {
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_SELECTION_GROUP_ID));
         mgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.BOTTOM));
+    }
+
+    public void registerEditModeStatusMenu() {
+        getResourceBundle();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        menuModule.registerMenu(EDIT_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(EDIT_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
+
+        // TODO
     }
 }

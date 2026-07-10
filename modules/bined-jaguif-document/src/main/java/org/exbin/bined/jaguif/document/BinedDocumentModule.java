@@ -88,6 +88,7 @@ public class BinedDocumentModule implements Module {
     public static final String VIEW_FONT_ZOOM_MENU_GROUP_ID = MODULE_ID + ".viewZoomMenuGroup";
     public static final String BINARY_DOCUMENT_ID = "binary";
     public static final String SETTINGS_PAGE_ID = "codeAreaFileProcessing";
+    public static final String PROCESSING_MODE_MENU_ID = "processingMode";
 
     private java.util.ResourceBundle resourceBundle = null;
 
@@ -337,5 +338,14 @@ public class BinedDocumentModule implements Module {
 
     public void registerCodeAreaCommandHandlerProvider(CodeAreaCommandHandlerProvider commandHandlerProvider) {
         getFileManager().setCommandHandlerProvider(commandHandlerProvider);
+    }
+
+    public void registerProcessingModeStatusMenu() {
+        getResourceBundle();
+        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
+        menuModule.registerMenu(PROCESSING_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(PROCESSING_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
+
+        // TODO
     }
 }

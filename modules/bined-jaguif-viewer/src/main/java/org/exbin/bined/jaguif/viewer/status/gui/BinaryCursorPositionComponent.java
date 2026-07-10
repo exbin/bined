@@ -112,7 +112,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                     }
                 });
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.CURSOR_MOVED || updateType == BinEdDataComponent.UpdateType.SELECTION_CHANGED)) {
+                    if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.CURSOR_POSITION || updateType == BinEdDataComponent.UpdateType.SELECTION)) {
                         updateForComponent((BinaryDataComponent) instance);
                     }
                 });
@@ -245,5 +245,9 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
             builder.insert(0, "-");
         }
         return builder.toString();
+    }
+
+    public enum UpdateType implements StateUpdateType {
+        CURSOR_POSITION_FORMAT
     }
 }

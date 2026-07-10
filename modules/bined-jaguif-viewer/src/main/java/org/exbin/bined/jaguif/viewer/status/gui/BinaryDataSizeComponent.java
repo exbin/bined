@@ -106,7 +106,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
                     }
                 });
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.DATA_CHANGED || updateType == BinEdDataComponent.UpdateType.SELECTION_CHANGED)) {
+                    if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.DATA_CONTENT || updateType == BinEdDataComponent.UpdateType.SELECTION)) {
                         updateForComponent((BinaryDataComponent) instance);
                     }
                 });
@@ -141,26 +141,26 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     private void updateDataSize() {
         if (dataSize == -1) {
-            component.setText(dataSizeFormat.isShowRelative() ? "0 (0)" : "0");
+            component.setText(dataSizeFormat.isShowRelative() ? "- (-)" : "-");
         } else {
-            StringBuilder labelBuilder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             if (selectionRange != null && !selectionRange.isEmpty()) {
-                labelBuilder.append(String.format(resourceBundle.getString("dataSize.text"),
+                builder.append(String.format(resourceBundle.getString("dataSize.text"),
                         numberToPosition(selectionRange.getLength(), dataSizeFormat.getCodeType()),
                         numberToPosition(dataSize, dataSizeFormat.getCodeType())
                 ));
             } else {
-                labelBuilder.append(numberToPosition(dataSize, dataSizeFormat.getCodeType()));
+                builder.append(numberToPosition(dataSize, dataSizeFormat.getCodeType()));
                 if (dataSizeFormat.isShowRelative()) {
                     long difference = dataSize - originalDataSize;
-                    labelBuilder.append(difference > 0 ? " (+" : " (");
-                    labelBuilder.append(numberToPosition(difference, dataSizeFormat.getCodeType()));
-                    labelBuilder.append(")");
+                    builder.append(difference > 0 ? " (+" : " (");
+                    builder.append(numberToPosition(difference, dataSizeFormat.getCodeType()));
+                    builder.append(")");
 
                 }
             }
 
-            component.setText(labelBuilder.toString());
+            component.setText(builder.toString());
         }
     }
 
@@ -235,5 +235,9 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
             builder.insert(0, "-");
         }
         return builder.toString();
+    }
+
+    public enum UpdateType implements StateUpdateType {
+        DATA_SIZE_FORMAT
     }
 }

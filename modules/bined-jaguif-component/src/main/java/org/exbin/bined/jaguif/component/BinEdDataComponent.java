@@ -90,25 +90,25 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         defaultFont = ((SectCodeArea) codeArea).getCodeFont();
         codeArea.addDataChangedListener(() -> {
             if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.DATA_CHANGED);
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.DATA_CONTENT);
             }
         });
 
         ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
             if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.SELECTION_CHANGED);
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.SELECTION);
             }
         });
 
         ((CaretCapable) codeArea).addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
             if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.CURSOR_MOVED);
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.CURSOR_POSITION);
             }
         });
 
         ((EditModeCapable) codeArea).addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
             if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE_CHANGED);
+                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE);
             }
         });
     }
@@ -354,9 +354,9 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     }
 
     public enum UpdateType implements StateUpdateType {
-        DATA_CHANGED,
-        SELECTION_CHANGED,
-        CURSOR_MOVED,
-        EDIT_MODE_CHANGED
+        DATA_CONTENT,
+        SELECTION,
+        CURSOR_POSITION,
+        EDIT_MODE
     }
 }

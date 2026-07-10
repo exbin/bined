@@ -79,7 +79,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
                     }
                 });
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.EDIT_MODE_CHANGED)) {
+                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.EDIT_MODE)) {
                         updateForComponent((BinEdDataComponent) instance);
                     }
                 });
