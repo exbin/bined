@@ -20,10 +20,6 @@ package org.exbin.bined.jaguif.document;
  */
 public enum FileProcessingMode implements BinEdFileProcessingMode {
     /**
-     * Direct access to stream of externally handled file.
-     */
-    DIRECT,
-    /**
      * Whole file is loaded to memory.
      */
     MEMORY,
