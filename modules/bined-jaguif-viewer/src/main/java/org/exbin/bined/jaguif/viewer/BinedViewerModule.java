@@ -40,7 +40,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.viewer.contribution.CopyDataSizeContribution;
-import org.exbin.bined.jaguif.viewer.contribution.CopyPositionContribution;
+import org.exbin.bined.jaguif.viewer.contribution.CopyCursorPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.contribution.RowWrappingContribution;
 import org.exbin.bined.jaguif.viewer.contribution.ShowCursorPositionOffsetContribution;
@@ -513,7 +513,7 @@ public class BinedViewerModule implements Module {
         mgmt.registerMenuContribution(contribution);
         mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
 
-        contribution = new CopyPositionContribution();
+        contribution = new CopyCursorPositionContribution();
         mgmt.registerMenuContribution(contribution);
 
         contribution = new GoToPositionContribution();

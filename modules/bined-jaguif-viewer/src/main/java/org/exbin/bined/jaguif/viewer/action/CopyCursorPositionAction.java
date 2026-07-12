@@ -15,6 +15,9 @@
  */
 package org.exbin.bined.jaguif.viewer.action;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
@@ -30,16 +33,16 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 
 /**
- * Copy position action.
+ * Copy cursor position action.
  */
 @NullMarked
-public class CopyPositionAction extends AbstractAction {
+public class CopyCursorPositionAction extends AbstractAction {
 
-    public static final String ACTION_ID = "copyPosition";
+    public static final String ACTION_ID = "copyCursorPosition";
 
     private CodeAreaCore codeArea;
 
-    public CopyPositionAction() {
+    public CopyCursorPositionAction() {
     }
 
     public void init(ResourceBundle resourceBundle) {
@@ -59,7 +62,7 @@ public class CopyPositionAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-// TODO        boolean lineWraping = ((BinEdEditorProvider) editorProvider).changeLineWrap();
-//        putValue(Action.SELECTED_KEY, lineWraping);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        // TODO clipboard.setContents(new StringSelection(documentSizeLabel.getText()), null);
     }
 }

@@ -17,22 +17,22 @@ package org.exbin.bined.jaguif.viewer.contribution;
 
 import javax.swing.Action;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
-import org.exbin.bined.jaguif.viewer.action.CopyPositionAction;
+import org.exbin.bined.jaguif.viewer.action.CopyCursorPositionAction;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.jspecify.annotations.NullMarked;
 
 /**
- * Copy position contribution.
+ * Copy cursor position contribution.
  */
 @NullMarked
-public class CopyPositionContribution implements ActionSequenceContribution {
+public class CopyCursorPositionContribution implements ActionSequenceContribution {
 
-    public static final String CONTRIBUTION_ID = "copyPosition";
+    public static final String CONTRIBUTION_ID = "copyCursorPosition";
 
     @Override
     public Action createAction() {
-        CopyPositionAction action = new CopyPositionAction();
+        CopyCursorPositionAction action = new CopyCursorPositionAction();
         BinedViewerModule binedViewerModule = App.getModule(BinedViewerModule.class);
         action.init(binedViewerModule.getResourceBundle());
         return action;

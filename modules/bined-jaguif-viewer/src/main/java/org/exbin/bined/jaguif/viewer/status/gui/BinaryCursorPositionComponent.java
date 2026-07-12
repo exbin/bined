@@ -90,8 +90,9 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator();
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextModule.getMainContextManager());
+                    ActiveContextManagement contextManager = contextModule.getMainContextManager();
+                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
                     menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_CURSOR_POSITION_MENU_ID, contextRegistrar, popupContextManager);
@@ -132,8 +133,8 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     }
 
     private void update() {
-        updateCaretPosition();
-        updateCursorPositionToolTip();
+        component.setText(getCaretPosition());
+        component.setToolTipText(getCursorPositionToolTip());
     }
 
     protected void clear() {
@@ -141,31 +142,31 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         component.setToolTipText(resourceBundle.getString("cursorPositionLabel.toolTipText"));
     }
 
-    private void updateCaretPosition() {
+    public String getCaretPosition() {
         if (caretPosition == null) {
-            component.setText("-");
-        } else {
-            StringBuilder labelBuilder = new StringBuilder();
-            if (selectionRange != null && !selectionRange.isEmpty()) {
-                long first = selectionRange.getFirst();
-                long last = selectionRange.getLast();
-                labelBuilder.append(String.format(
-                        resourceBundle.getString("caretPosition.text"),
-                        numberToPosition(first, cursorPositionFormat.getCodeType()),
-                        numberToPosition(last, cursorPositionFormat.getCodeType())
-                ));
-            } else {
-                labelBuilder.append(numberToPosition(caretPosition.getDataPosition(), cursorPositionFormat.getCodeType()));
-                if (cursorPositionFormat.isShowOffset()) {
-                    labelBuilder.append(":");
-                    labelBuilder.append(caretPosition.getCodeOffset());
-                }
-            }
-            component.setText(labelBuilder.toString());
+            return "-";
         }
+
+        StringBuilder labelBuilder = new StringBuilder();
+        if (selectionRange != null && !selectionRange.isEmpty()) {
+            long first = selectionRange.getFirst();
+            long last = selectionRange.getLast();
+            labelBuilder.append(String.format(
+                    resourceBundle.getString("caretPosition.text"),
+                    numberToPosition(first, cursorPositionFormat.getCodeType()),
+                    numberToPosition(last, cursorPositionFormat.getCodeType())
+            ));
+        } else {
+            labelBuilder.append(numberToPosition(caretPosition.getDataPosition(), cursorPositionFormat.getCodeType()));
+            if (cursorPositionFormat.isShowOffset()) {
+                labelBuilder.append(":");
+                labelBuilder.append(caretPosition.getCodeOffset());
+            }
+        }
+        return labelBuilder.toString();
     }
 
-    private void updateCursorPositionToolTip() {
+    public String getCursorPositionToolTip() {
         StringBuilder builder = new StringBuilder();
         builder.append("<html><body>");
         if (caretPosition == null) {
@@ -196,7 +197,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         }
         builder.append("</body></html>");
 
-        component.setToolTipText(builder.toString());
+        return builder.toString();
     }
 
     private String numberToPosition(long value, PositionCodeType codeType) {

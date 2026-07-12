@@ -104,8 +104,9 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator();
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextModule.getMainContextManager());
+                    ActiveContextManagement contextManager = contextModule.getMainContextManager();
+                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
                     menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
