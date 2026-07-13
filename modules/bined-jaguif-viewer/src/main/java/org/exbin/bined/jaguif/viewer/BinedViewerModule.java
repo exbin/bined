@@ -22,13 +22,19 @@ import org.exbin.bined.jaguif.viewer.action.RowWrappingAction;
 import org.exbin.bined.jaguif.viewer.action.HexCharactersCaseActions;
 import org.exbin.bined.jaguif.viewer.action.PositionCodeTypeActions;
 import java.awt.event.ActionEvent;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import org.exbin.bined.CodeAreaCaretPosition;
+import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.CodeAreaZone;
 import org.exbin.bined.PositionCodeType;
+import org.exbin.bined.SelectionRange;
 import org.exbin.bined.basic.BasicCodeAreaZone;
+import org.exbin.bined.capability.CaretCapable;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
@@ -59,6 +65,9 @@ import org.exbin.bined.jaguif.viewer.settings.GoToPositionOptions;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
+import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
+import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
@@ -94,6 +103,7 @@ import org.exbin.jaguif.text.font.settings.TextFontSettingsComponent;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 import org.exbin.jaguif.frame.api.FrameController;
 import org.exbin.jaguif.menu.api.SubMenuContribution;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data viewer module.
@@ -132,6 +142,7 @@ public class BinedViewerModule implements Module {
     private CodeTypeActions codeTypeActions;
     private PositionCodeTypeActions positionCodeTypeActions;
     private HexCharactersCaseActions hexCharactersCaseActions;
+    private StatusBar frameStatusBar;
 
     public BinedViewerModule() {
     }
@@ -153,11 +164,15 @@ public class BinedViewerModule implements Module {
         ContextUpdateManagement updateManager = frameHandler.getUpdateManager();
         updateManager.addGroup(FrameModuleApi.MAIN_STATUS_BAR_ID);
         ContextRegistration contextRegistrar = contextModule.createContextRegistrator(FrameModuleApi.MAIN_STATUS_BAR_ID, updateManager, contextManager);
-        StatusBar statusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrar);
-        frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, statusBar.getComponent());
+        frameStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, contextRegistrar);
+        frameModule.registerStatusBar(MODULE_ID, BinedComponentModule.BINARY_STATUS_BAR_ID, frameStatusBar.getComponent());
         frameModule.switchStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID);
     }
 
+    public Optional<StatusBar> getFrameStatusBar() {
+        return Optional.ofNullable(frameStatusBar);
+    }
+    
     public void registerSettings() {
         getResourceBundle();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
@@ -562,5 +577,84 @@ public class BinedViewerModule implements Module {
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_ENCODING_MENU_ID, BinedViewerModule.MODULE_ID);
 
         // TODO
+    }
+
+    public String getCaretPositionAsText(@Nullable CodeAreaCore codeArea, StatusNumericGrouping numericGrouping, StatusCursorPositionFormat cursorPositionFormat) {
+        if (codeArea == null) {
+            return "-";
+        }
+
+        CodeAreaCaretPosition caretPosition = ((CaretCapable) codeArea).getActiveCaretPosition();
+        SelectionRange selectionRange = ((SelectionCapable) codeArea).getSelection();
+        StringBuilder labelBuilder = new StringBuilder();
+        if (!selectionRange.isEmpty()) {
+            long first = selectionRange.getFirst();
+            long last = selectionRange.getLast();
+            labelBuilder.append(String.format(
+                    resourceBundle.getString("cursorPositionFormat.withSelection"),
+                    getPositionAsText(first, cursorPositionFormat.getCodeType(), numericGrouping),
+                    getPositionAsText(last, cursorPositionFormat.getCodeType(), numericGrouping)
+            ));
+        } else {
+            String basePosition = getPositionAsText(caretPosition.getDataPosition(), cursorPositionFormat.getCodeType(), numericGrouping);
+            if (cursorPositionFormat.isShowOffset()) {
+                labelBuilder.append(String.format(
+                        resourceBundle.getString("cursorPositionFormat.withOffset"),
+                        basePosition,
+                        getPositionAsText(caretPosition.getCodeOffset(), cursorPositionFormat.getCodeType(), numericGrouping)
+                ));
+            } else {
+                labelBuilder.append(basePosition);
+            }
+        }
+        return labelBuilder.toString();
+    }
+
+    public String getPositionAsText(long position, PositionCodeType codeType, StatusNumericGrouping numericGrouping) {
+        if (position == 0) {
+            return "0";
+        }
+
+        int spaceGroupSize = 0;
+        switch (codeType) {
+            case OCTAL: {
+                spaceGroupSize = numericGrouping.getOctalSpaceGroupSize();
+                break;
+            }
+            case DECIMAL: {
+                spaceGroupSize = numericGrouping.getDecimalSpaceGroupSize();
+                break;
+            }
+            case HEXADECIMAL: {
+                spaceGroupSize = numericGrouping.getHexadecimalSpaceGroupSize();
+                break;
+            }
+            default:
+                throw CodeAreaUtils.getInvalidTypeException(codeType);
+        }
+
+        long remainder = position > 0 ? position : -position;
+        StringBuilder builder = new StringBuilder();
+        int base = codeType.getBase();
+        int groupSize = spaceGroupSize == 0 ? -1 : spaceGroupSize;
+        while (remainder > 0) {
+            if (groupSize >= 0) {
+                if (groupSize == 0) {
+                    builder.insert(0, ' ');
+                    groupSize = spaceGroupSize - 1;
+                } else {
+                    groupSize--;
+                }
+            }
+
+            int digit = (int) (remainder % base);
+            remainder = remainder / base;
+            builder.insert(0, CodeAreaUtils.UPPER_HEX_CODES[digit]);
+        }
+
+        if (position < 0) {
+            builder.insert(0, "-");
+        }
+        return builder.toString();
     }
 }

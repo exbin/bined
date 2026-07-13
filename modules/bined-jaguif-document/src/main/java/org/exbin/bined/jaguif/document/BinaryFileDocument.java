@@ -39,6 +39,7 @@ import org.exbin.auxiliary.binary_data.paged.PagedData;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
@@ -77,7 +78,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     protected ActiveContextManagement activeContextManagement;
 
     public BinaryFileDocument() {
+        BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
         dataComponent = new BinEdDataComponent(new BinEdComponentPanel());
+        dataComponent.setStatusBar(viewerModule.getFrameStatusBar().orElse(null));
     }
 
     public BinaryFileDocument(BinEdDataComponent dataComponent) {

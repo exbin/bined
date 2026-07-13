@@ -54,6 +54,8 @@ import org.exbin.jaguif.operation.undo.api.UndoRedoController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.statusbar.api.StatusBar;
+import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
@@ -73,6 +75,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     protected Font defaultFont;
     protected ActiveContextManagement contextManagement;
     protected List<String> encodings = new ArrayList<>();
+    protected StatusBar statusBar = null;
 
     public BinEdDataComponent(BinEdComponentPanel binaryComponent) {
         this.binaryComponent = binaryComponent;
@@ -127,6 +130,15 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public CodeAreaCore getCodeArea() {
         return codeArea;
+    }
+
+    @Override
+    public Optional<ActiveContextManagement> getContextManagement() {
+        return Optional.ofNullable(contextManagement);
+    }
+
+    public void setContextManagement(ActiveContextManagement contextManagement) {
+        this.contextManagement = contextManagement;
     }
 
     public void setContextManager(ActiveContextManagement contextManagement) {
@@ -342,6 +354,14 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         return componentExtensions;
     }
 
+    public Optional<StatusBar> getStatusBar() {
+        return Optional.ofNullable(statusBar);
+    }
+
+    public void setStatusBar(@Nullable StatusBar statusBar) {
+        this.statusBar = statusBar;
+    }
+
     @Override
     public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
         for (BinEdComponentExtension extension : componentExtensions) {
@@ -351,6 +371,17 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         }
 
         throw new IllegalStateException("Missing extension: " + clazz.toString());
+    }
+
+    @Override
+    public <T extends StatusBarComponent> Optional<T> getStatusBarComponent(Class<T> clazz) {
+        for (int i = 0; i < statusBar.getItemsCount(); i++) {
+            StatusBarComponent component = statusBar.getItem(i);
+            if (clazz.isInstance(component)) {
+                return Optional.of(clazz.cast(component));
+            }
+        }
+        return Optional.empty();
     }
 
     public enum UpdateType implements StateUpdateType {

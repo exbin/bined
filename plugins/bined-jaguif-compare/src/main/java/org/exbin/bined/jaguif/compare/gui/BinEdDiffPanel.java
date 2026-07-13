@@ -72,6 +72,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
 import org.exbin.jaguif.statusbar.api.StatusBar;
+import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
@@ -369,7 +370,17 @@ public class BinEdDiffPanel extends JPanel {
         }
 
         @Override
+        public Optional<ActiveContextManagement> getContextManagement() {
+            return Optional.empty();
+        }
+
+        @Override
         public <T extends BinEdComponentExtension> T getComponentExtension(Class<T> clazz) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public <T extends StatusBarComponent> Optional<T> getStatusBarComponent(Class<T> clazz) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

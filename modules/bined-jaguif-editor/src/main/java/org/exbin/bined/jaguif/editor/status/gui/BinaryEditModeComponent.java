@@ -47,7 +47,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     public BinaryEditModeComponent() {
         component = new JLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        component.setText("-");
+        clear();
         component.setToolTipText(resourceBundle.getString("editModeLabel.toolTipText"));
         component.setPreferredSize(new Dimension(40, component.getPreferredSize().height));
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());

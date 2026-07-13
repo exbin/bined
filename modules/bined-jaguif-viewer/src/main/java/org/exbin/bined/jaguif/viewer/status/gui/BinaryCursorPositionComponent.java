@@ -23,7 +23,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import org.exbin.bined.CodeAreaCaretPosition;
-import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.CaretCapable;
@@ -33,6 +32,7 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
+import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextChange;
@@ -58,11 +58,12 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
     protected StatusNumericGrouping numericGrouping = new StatusNumericGrouping();
     protected StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
+    protected BinedViewerModule viewerModule;
 
-    protected CodeAreaCaretPosition caretPosition;
-    protected SelectionRange selectionRange;
+    protected BinaryDataComponent binaryDataComponent;
 
     public BinaryCursorPositionComponent() {
+        viewerModule = App.getModule(BinedViewerModule.class);
         component = new JLabel();
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -90,7 +91,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = contextModule.getMainContextManager();
+                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -120,8 +121,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
             }
 
             private void updateForComponent(BinaryDataComponent component) {
-                caretPosition = ((CaretCapable) component.getCodeArea()).getActiveCaretPosition();
-                selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
+                binaryDataComponent = component;
                 update();
             }
         });
@@ -132,8 +132,16 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         return component;
     }
 
+    public StatusNumericGrouping getNumericGrouping() {
+        return numericGrouping;
+    }
+
+    public StatusCursorPositionFormat getCursorPositionFormat() {
+        return cursorPositionFormat;
+    }
+
     private void update() {
-        component.setText(getCaretPosition());
+        component.setText(viewerModule.getCaretPositionAsText(binaryDataComponent.getCodeArea(), numericGrouping, cursorPositionFormat));
         component.setToolTipText(getCursorPositionToolTip());
     }
 
@@ -142,109 +150,40 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         component.setToolTipText(resourceBundle.getString("cursorPositionLabel.toolTipText"));
     }
 
-    public String getCaretPosition() {
-        if (caretPosition == null) {
-            return "-";
-        }
-
-        StringBuilder labelBuilder = new StringBuilder();
-        if (selectionRange != null && !selectionRange.isEmpty()) {
-            long first = selectionRange.getFirst();
-            long last = selectionRange.getLast();
-            labelBuilder.append(String.format(
-                    resourceBundle.getString("caretPosition.text"),
-                    numberToPosition(first, cursorPositionFormat.getCodeType()),
-                    numberToPosition(last, cursorPositionFormat.getCodeType())
-            ));
-        } else {
-            labelBuilder.append(numberToPosition(caretPosition.getDataPosition(), cursorPositionFormat.getCodeType()));
-            if (cursorPositionFormat.isShowOffset()) {
-                labelBuilder.append(":");
-                labelBuilder.append(caretPosition.getCodeOffset());
-            }
-        }
-        return labelBuilder.toString();
-    }
-
     public String getCursorPositionToolTip() {
+        CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
         StringBuilder builder = new StringBuilder();
         builder.append("<html><body>");
-        if (caretPosition == null) {
+        if (codeArea == null) {
             builder.append(resourceBundle.getString("cursorPositionLabel.toolTipText"));
         } else {
+            CodeAreaCaretPosition caretPosition = ((CaretCapable) codeArea).getActiveCaretPosition();
+            SelectionRange selectionRange = ((SelectionCapable) codeArea).getSelection();
             String octalPrefix = resourceBundle.getString("codeType.octal") + ": ";
             String decimalPrefix = resourceBundle.getString("codeType.decimal") + ": ";
             String hexadecimalPrefix = resourceBundle.getString("codeType.hexadecimal") + ": ";
-            if (selectionRange != null && !selectionRange.isEmpty()) {
+            if (!selectionRange.isEmpty()) {
                 long first = selectionRange.getFirst();
                 long last = selectionRange.getLast();
                 builder.append(resourceBundle.getString("selectionFromLabel.toolTipText")).append(BR_TAG);
-                builder.append(octalPrefix).append(numberToPosition(first, PositionCodeType.OCTAL)).append(BR_TAG);
-                builder.append(decimalPrefix).append(numberToPosition(first, PositionCodeType.DECIMAL)).append(BR_TAG);
-                builder.append(hexadecimalPrefix).append(numberToPosition(first, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
+                builder.append(octalPrefix).append(viewerModule.getPositionAsText(first, PositionCodeType.OCTAL, numericGrouping)).append(BR_TAG);
+                builder.append(decimalPrefix).append(viewerModule.getPositionAsText(first, PositionCodeType.DECIMAL, numericGrouping)).append(BR_TAG);
+                builder.append(hexadecimalPrefix).append(viewerModule.getPositionAsText(first, PositionCodeType.HEXADECIMAL, numericGrouping)).append(BR_TAG);
                 builder.append(BR_TAG);
                 builder.append(resourceBundle.getString("selectionToLabel.toolTipText")).append(BR_TAG);
-                builder.append(octalPrefix).append(numberToPosition(last, PositionCodeType.OCTAL)).append(BR_TAG);
-                builder.append(decimalPrefix).append(numberToPosition(last, PositionCodeType.DECIMAL)).append(BR_TAG);
-                builder.append(hexadecimalPrefix).append(numberToPosition(first, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
+                builder.append(octalPrefix).append(viewerModule.getPositionAsText(last, PositionCodeType.OCTAL, numericGrouping)).append(BR_TAG);
+                builder.append(decimalPrefix).append(viewerModule.getPositionAsText(last, PositionCodeType.DECIMAL, numericGrouping)).append(BR_TAG);
+                builder.append(hexadecimalPrefix).append(viewerModule.getPositionAsText(first, PositionCodeType.HEXADECIMAL, numericGrouping)).append(BR_TAG);
             } else {
                 long dataPosition = caretPosition.getDataPosition();
                 builder.append(resourceBundle.getString("cursorPositionLabel.toolTipText")).append(BR_TAG);
-                builder.append(octalPrefix).append(numberToPosition(dataPosition, PositionCodeType.OCTAL)).append(BR_TAG);
-                builder.append(decimalPrefix).append(numberToPosition(dataPosition, PositionCodeType.DECIMAL)).append(BR_TAG);
-                builder.append(hexadecimalPrefix).append(numberToPosition(dataPosition, PositionCodeType.HEXADECIMAL));
+                builder.append(octalPrefix).append(viewerModule.getPositionAsText(dataPosition, PositionCodeType.OCTAL, numericGrouping)).append(BR_TAG);
+                builder.append(decimalPrefix).append(viewerModule.getPositionAsText(dataPosition, PositionCodeType.DECIMAL, numericGrouping)).append(BR_TAG);
+                builder.append(hexadecimalPrefix).append(viewerModule.getPositionAsText(dataPosition, PositionCodeType.HEXADECIMAL, numericGrouping));
             }
         }
         builder.append("</body></html>");
 
-        return builder.toString();
-    }
-
-    private String numberToPosition(long value, PositionCodeType codeType) {
-        if (value == 0) {
-            return "0";
-        }
-
-        int spaceGroupSize = 0;
-        switch (codeType) {
-            case OCTAL: {
-                spaceGroupSize = numericGrouping.getOctalSpaceGroupSize();
-                break;
-            }
-            case DECIMAL: {
-                spaceGroupSize = numericGrouping.getDecimalSpaceGroupSize();
-                break;
-            }
-            case HEXADECIMAL: {
-                spaceGroupSize = numericGrouping.getHexadecimalSpaceGroupSize();
-                break;
-            }
-            default:
-                throw CodeAreaUtils.getInvalidTypeException(codeType);
-        }
-
-        long remainder = value > 0 ? value : -value;
-        StringBuilder builder = new StringBuilder();
-        int base = codeType.getBase();
-        int groupSize = spaceGroupSize == 0 ? -1 : spaceGroupSize;
-        while (remainder > 0) {
-            if (groupSize >= 0) {
-                if (groupSize == 0) {
-                    builder.insert(0, ' ');
-                    groupSize = spaceGroupSize - 1;
-                } else {
-                    groupSize--;
-                }
-            }
-
-            int digit = (int) (remainder % base);
-            remainder = remainder / base;
-            builder.insert(0, CodeAreaUtils.UPPER_HEX_CODES[digit]);
-        }
-
-        if (value < 0) {
-            builder.insert(0, "-");
-        }
         return builder.toString();
     }
 

@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
@@ -31,6 +30,10 @@ import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
+import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
+import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
 
 /**
  * Copy cursor position action.
@@ -40,7 +43,7 @@ public class CopyCursorPositionAction extends AbstractAction {
 
     public static final String ACTION_ID = "copyCursorPosition";
 
-    private CodeAreaCore codeArea;
+    private BinaryDataComponent binaryDataComponent;
 
     public CopyCursorPositionAction() {
     }
@@ -53,16 +56,30 @@ public class CopyCursorPositionAction extends AbstractAction {
             @Override
             public void register(ContextChangeRegistration registrar) {
                 registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    setEnabled(instance != null);
+                    binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
+                    setEnabled(binaryDataComponent != null);
                 });
             }
         });
+        setEnabled(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        BinaryCursorPositionComponent component = binaryDataComponent.getStatusBarComponent(BinaryCursorPositionComponent.class).orElse(null);
+        BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
+        StatusNumericGrouping numericGrouping;
+        StatusCursorPositionFormat cursorPositionFormat;
+        if (component != null) {
+            numericGrouping = component.getNumericGrouping();
+            cursorPositionFormat = component.getCursorPositionFormat();
+        } else {
+            // TODO Load from settings
+            numericGrouping = new StatusNumericGrouping();
+            cursorPositionFormat = new StatusCursorPositionFormat();
+        }
+
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        // TODO clipboard.setContents(new StringSelection(documentSizeLabel.getText()), null);
+        clipboard.setContents(new StringSelection(viewerModule.getCaretPositionAsText(binaryDataComponent.getCodeArea(), numericGrouping, cursorPositionFormat)), null);
     }
 }

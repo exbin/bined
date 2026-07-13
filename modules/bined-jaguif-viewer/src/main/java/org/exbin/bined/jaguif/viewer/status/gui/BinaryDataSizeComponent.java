@@ -131,8 +131,8 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
     }
 
     protected void update() {
-        updateDataSize();
-        updateDataSizeToolTip();
+        component.setText(getDataSize());
+        component.setToolTipText(getDataSizeToolTip());
     }
 
     protected void clear() {
@@ -140,32 +140,32 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         component.setToolTipText(resourceBundle.getString("dataSizeLabel.toolTipText"));
     }
 
-    private void updateDataSize() {
+    public String getDataSize() {
         if (dataSize == -1) {
-            component.setText(dataSizeFormat.isShowRelative() ? "- (-)" : "-");
-        } else {
-            StringBuilder builder = new StringBuilder();
-            if (selectionRange != null && !selectionRange.isEmpty()) {
-                builder.append(String.format(resourceBundle.getString("dataSize.text"),
-                        numberToPosition(selectionRange.getLength(), dataSizeFormat.getCodeType()),
-                        numberToPosition(dataSize, dataSizeFormat.getCodeType())
-                ));
-            } else {
-                builder.append(numberToPosition(dataSize, dataSizeFormat.getCodeType()));
-                if (dataSizeFormat.isShowRelative()) {
-                    long difference = dataSize - originalDataSize;
-                    builder.append(difference > 0 ? " (+" : " (");
-                    builder.append(numberToPosition(difference, dataSizeFormat.getCodeType()));
-                    builder.append(")");
-
-                }
-            }
-
-            component.setText(builder.toString());
+            return dataSizeFormat.isShowRelative() ? "- (-)" : "-";
         }
+
+        StringBuilder builder = new StringBuilder();
+        if (selectionRange != null && !selectionRange.isEmpty()) {
+            builder.append(String.format(resourceBundle.getString("dataSize.text"),
+                    numberToPosition(selectionRange.getLength(), dataSizeFormat.getCodeType()),
+                    numberToPosition(dataSize, dataSizeFormat.getCodeType())
+            ));
+        } else {
+            builder.append(numberToPosition(dataSize, dataSizeFormat.getCodeType()));
+            if (dataSizeFormat.isShowRelative()) {
+                long difference = dataSize - originalDataSize;
+                builder.append(difference > 0 ? " (+" : " (");
+                builder.append(numberToPosition(difference, dataSizeFormat.getCodeType()));
+                builder.append(")");
+
+            }
+        }
+
+        return builder.toString();
     }
 
-    private void updateDataSizeToolTip() {
+    public String getDataSizeToolTip() {
         String octalPrefix = resourceBundle.getString("codeType.octal") + ": ";
         String decimalPrefix = resourceBundle.getString("codeType.decimal") + ": ";
         String hexadecimalPrefix = resourceBundle.getString("codeType.hexadecimal") + ": ";
@@ -187,7 +187,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         builder.append(hexadecimalPrefix).append(numberToPosition(dataSize, PositionCodeType.HEXADECIMAL));
         builder.append("</body></html>");
 
-        component.setToolTipText(builder.toString());
+        return builder.toString();
     }
 
     private String numberToPosition(long value, PositionCodeType codeType) {
