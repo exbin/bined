@@ -45,6 +45,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
+import org.exbin.bined.jaguif.viewer.action.CursorPositionCodeTypeActions;
 import org.exbin.bined.jaguif.viewer.contribution.CopyDataSizeContribution;
 import org.exbin.bined.jaguif.viewer.contribution.CopyCursorPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
@@ -499,7 +500,6 @@ public class BinedViewerModule implements Module {
     }
     
     public void registerCursorPositionStatusMenu() {
-        getPositionCodeTypeActions();
         getResourceBundle();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         menuModule.registerMenu(BINARY_CURSOR_POSITION_MENU_ID, BinedViewerModule.MODULE_ID);
@@ -517,11 +517,13 @@ public class BinedViewerModule implements Module {
         mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
 
-        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+        CursorPositionCodeTypeActions codeTypeActions = new CursorPositionCodeTypeActions();
+        codeTypeActions.init(getResourceBundle());
+        SequenceContribution contribution = codeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL);
         subMgmt.registerMenuContribution(contribution);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
+        contribution = codeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL);
         subMgmt.registerMenuContribution(contribution);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL, null);
+        contribution = codeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL);
         subMgmt.registerMenuContribution(contribution);
 
         contribution = new ShowCursorPositionOffsetContribution();

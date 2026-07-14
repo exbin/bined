@@ -29,6 +29,7 @@ import org.exbin.bined.capability.CaretCapable;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
@@ -72,7 +73,9 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() > 1) {
-                    // TODO controller.changeCursorPosition();
+                    GoToPositionAction goToPositionAction = new GoToPositionAction();
+                    goToPositionAction.setCodeArea(binaryDataComponent.getCodeArea());
+                    goToPositionAction.actionPerformed();
                 } else {
                     processPopupMenu(evt);
                 }
@@ -93,6 +96,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
                     ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    popupContextManager.changeActiveState(BinaryCursorPositionComponent.class, BinaryCursorPositionComponent.this);
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
@@ -116,6 +120,11 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
                     if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.CURSOR_POSITION || updateType == BinEdDataComponent.UpdateType.SELECTION)) {
                         updateForComponent((BinaryDataComponent) instance);
+                    }
+                });
+                registrar.registerStateUpdateListener(BinaryCursorPositionComponent.class, (instance, updateType) -> {
+                    if (updateType == UpdateType.CURSOR_POSITION_FORMAT) {
+                        update();
                     }
                 });
             }
@@ -185,6 +194,16 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
         builder.append("</body></html>");
 
         return builder.toString();
+    }
+
+    public void setCursorPositionCodeType(PositionCodeType positionCodeType) {
+        cursorPositionFormat.setCodeType(positionCodeType);
+        update();
+    }
+
+    public void setCursorPositionShowOffset(boolean showOffset) {
+        cursorPositionFormat.setShowOffset(showOffset);
+        update();
     }
 
     public enum UpdateType implements StateUpdateType {

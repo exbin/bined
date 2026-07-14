@@ -19,15 +19,14 @@ import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
-import org.exbin.bined.swing.CodeAreaCore;
+import javax.swing.Action;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
 
 /**
  * Show cursor position offset action.
@@ -37,7 +36,7 @@ public class ShowCursorPositionOffsetAction extends AbstractAction {
 
     public static final String ACTION_ID = "showCursorPositionOffset";
 
-    private CodeAreaCore codeArea;
+    private BinaryCursorPositionComponent statusComponent;
 
     public ShowCursorPositionOffsetAction() {
     }
@@ -49,17 +48,26 @@ public class ShowCursorPositionOffsetAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    setEnabled(instance != null);
+                registrar.registerChangeListener(BinaryCursorPositionComponent.class, (instance) -> {
+                    statusComponent = instance;
+                    update();
                 });
+                registrar.registerStateUpdateListener(BinaryCursorPositionComponent.class, (instance, updateType) -> {
+                    if (BinaryCursorPositionComponent.UpdateType.CURSOR_POSITION_FORMAT.equals(updateType)) {
+                        update();
+                    }
+                });
+            }
+
+            private void update() {
+                setEnabled(statusComponent != null);
+                putValue(Action.SELECTED_KEY, statusComponent.getCursorPositionFormat().isShowOffset());
             }
         });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-// TODO        boolean lineWraping = ((BinEdEditorProvider) editorProvider).changeLineWrap();
-//        putValue(Action.SELECTED_KEY, lineWraping);
+        statusComponent.setCursorPositionShowOffset(!statusComponent.getCursorPositionFormat().isShowOffset());
     }
 }
