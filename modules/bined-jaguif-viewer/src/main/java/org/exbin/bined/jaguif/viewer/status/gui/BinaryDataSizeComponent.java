@@ -21,12 +21,12 @@ import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
-import org.exbin.bined.CodeAreaUtils;
 import org.exbin.bined.PositionCodeType;
 import org.exbin.bined.SelectionRange;
 import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.jaguif.App;
@@ -55,12 +55,15 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     protected StatusNumericGrouping numericGrouping = new StatusNumericGrouping();
     protected StatusDataSizeFormat dataSizeFormat = new StatusDataSizeFormat();
+    protected BinedViewerModule viewerModule;
 
+    protected BinaryDataComponent binaryDataComponent;
     protected long dataSize;
     protected long originalDataSize = 0;
     protected SelectionRange selectionRange;
 
     public BinaryDataSizeComponent() {
+        viewerModule = App.getModule(BinedViewerModule.class);
         component = new JLabel();
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -84,8 +87,9 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = contextModule.getMainContextManager();
+                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    popupContextManager.changeActiveState(BinaryDataSizeComponent.class, BinaryDataSizeComponent.this);
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
@@ -111,9 +115,15 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
                         updateForComponent((BinaryDataComponent) instance);
                     }
                 });
+                registrar.registerStateUpdateListener(BinaryDataSizeComponent.class, (instance, updateType) -> {
+                    if (instance == BinaryDataSizeComponent.this && updateType == UpdateType.DATA_SIZE_FORMAT) {
+                        update();
+                    }
+                });
             }
 
             private void updateForComponent(BinaryDataComponent component) {
+                binaryDataComponent = component;
                 dataSize = component.getCodeArea().getDataSize();
                 selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
                 update();
@@ -126,43 +136,30 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         return component;
     }
 
+    public StatusNumericGrouping getNumericGrouping() {
+        return numericGrouping;
+    }
+
+    public StatusDataSizeFormat getDataSizeFormat() {
+        return dataSizeFormat;
+    }
+
+    public long getOriginalDataSize() {
+        return originalDataSize;
+    }
+
     public void setOriginalDataSize(long originalDataSize) {
         this.originalDataSize = originalDataSize;
     }
 
     protected void update() {
-        component.setText(getDataSize());
+        component.setText(viewerModule.getDataSizeAsText(dataSize, originalDataSize, selectionRange, numericGrouping, dataSizeFormat));
         component.setToolTipText(getDataSizeToolTip());
     }
 
     protected void clear() {
         component.setText("-");
         component.setToolTipText(resourceBundle.getString("dataSizeLabel.toolTipText"));
-    }
-
-    public String getDataSize() {
-        if (dataSize == -1) {
-            return dataSizeFormat.isShowRelative() ? "- (-)" : "-";
-        }
-
-        StringBuilder builder = new StringBuilder();
-        if (selectionRange != null && !selectionRange.isEmpty()) {
-            builder.append(String.format(resourceBundle.getString("dataSize.text"),
-                    numberToPosition(selectionRange.getLength(), dataSizeFormat.getCodeType()),
-                    numberToPosition(dataSize, dataSizeFormat.getCodeType())
-            ));
-        } else {
-            builder.append(numberToPosition(dataSize, dataSizeFormat.getCodeType()));
-            if (dataSizeFormat.isShowRelative()) {
-                long difference = dataSize - originalDataSize;
-                builder.append(difference > 0 ? " (+" : " (");
-                builder.append(numberToPosition(difference, dataSizeFormat.getCodeType()));
-                builder.append(")");
-
-            }
-        }
-
-        return builder.toString();
     }
 
     public String getDataSizeToolTip() {
@@ -175,67 +172,29 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         if (selectionRange != null && !selectionRange.isEmpty()) {
             long length = selectionRange.getLength();
             builder.append(resourceBundle.getString("selectionLengthLabel.toolTipText")).append(BR_TAG);
-            builder.append(octalPrefix).append(numberToPosition(length, PositionCodeType.OCTAL)).append(BR_TAG);
-            builder.append(decimalPrefix).append(numberToPosition(length, PositionCodeType.DECIMAL)).append(BR_TAG);
-            builder.append(hexadecimalPrefix).append(numberToPosition(length, PositionCodeType.HEXADECIMAL)).append(BR_TAG);
+            builder.append(octalPrefix).append(viewerModule.getPositionAsText(length, PositionCodeType.OCTAL, numericGrouping)).append(BR_TAG);
+            builder.append(decimalPrefix).append(viewerModule.getPositionAsText(length, PositionCodeType.DECIMAL, numericGrouping)).append(BR_TAG);
+            builder.append(hexadecimalPrefix).append(viewerModule.getPositionAsText(length, PositionCodeType.HEXADECIMAL, numericGrouping)).append(BR_TAG);
             builder.append(BR_TAG);
         }
 
         builder.append(resourceBundle.getString("dataSizeLabel.toolTipText")).append(BR_TAG);
-        builder.append(octalPrefix).append(numberToPosition(dataSize, PositionCodeType.OCTAL)).append(BR_TAG);
-        builder.append(decimalPrefix).append(numberToPosition(dataSize, PositionCodeType.DECIMAL)).append(BR_TAG);
-        builder.append(hexadecimalPrefix).append(numberToPosition(dataSize, PositionCodeType.HEXADECIMAL));
+        builder.append(octalPrefix).append(viewerModule.getPositionAsText(dataSize, PositionCodeType.OCTAL, numericGrouping)).append(BR_TAG);
+        builder.append(decimalPrefix).append(viewerModule.getPositionAsText(dataSize, PositionCodeType.DECIMAL, numericGrouping)).append(BR_TAG);
+        builder.append(hexadecimalPrefix).append(viewerModule.getPositionAsText(dataSize, PositionCodeType.HEXADECIMAL, numericGrouping));
         builder.append("</body></html>");
 
         return builder.toString();
     }
 
-    private String numberToPosition(long value, PositionCodeType codeType) {
-        if (value == 0) {
-            return "0";
-        }
+    public void setDataSizeCodeType(PositionCodeType positionCodeType) {
+        dataSizeFormat.setCodeType(positionCodeType);
+        update();
+    }
 
-        int spaceGroupSize = 0;
-        switch (codeType) {
-            case OCTAL: {
-                spaceGroupSize = numericGrouping.getOctalSpaceGroupSize();
-                break;
-            }
-            case DECIMAL: {
-                spaceGroupSize = numericGrouping.getDecimalSpaceGroupSize();
-                break;
-            }
-            case HEXADECIMAL: {
-                spaceGroupSize = numericGrouping.getHexadecimalSpaceGroupSize();
-                break;
-            }
-            default:
-                throw CodeAreaUtils.getInvalidTypeException(codeType);
-        }
-
-        long remainder = value > 0 ? value : -value;
-        StringBuilder builder = new StringBuilder();
-        int base = codeType.getBase();
-        int groupSize = spaceGroupSize == 0 ? -1 : spaceGroupSize;
-        while (remainder > 0) {
-            if (groupSize >= 0) {
-                if (groupSize == 0) {
-                    builder.insert(0, ' ');
-                    groupSize = spaceGroupSize - 1;
-                } else {
-                    groupSize--;
-                }
-            }
-
-            int digit = (int) (remainder % base);
-            remainder = remainder / base;
-            builder.insert(0, CodeAreaUtils.UPPER_HEX_CODES[digit]);
-        }
-
-        if (value < 0) {
-            builder.insert(0, "-");
-        }
-        return builder.toString();
+    public void setDataSizeShowRelative(boolean showRelative) {
+        dataSizeFormat.setShowRelative(showRelative);
+        update();
     }
 
     public enum UpdateType implements StateUpdateType {

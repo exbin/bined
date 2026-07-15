@@ -123,7 +123,7 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
                     }
                 });
                 registrar.registerStateUpdateListener(BinaryCursorPositionComponent.class, (instance, updateType) -> {
-                    if (updateType == UpdateType.CURSOR_POSITION_FORMAT) {
+                    if (instance == BinaryCursorPositionComponent.this && updateType == UpdateType.CURSOR_POSITION_FORMAT) {
                         update();
                     }
                 });

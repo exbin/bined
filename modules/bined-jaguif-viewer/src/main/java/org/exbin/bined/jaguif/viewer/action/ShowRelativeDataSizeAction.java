@@ -19,15 +19,14 @@ import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
-import org.exbin.bined.swing.CodeAreaCore;
+import javax.swing.Action;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
 
 /**
  * Show relative data size action.
@@ -37,7 +36,7 @@ public class ShowRelativeDataSizeAction extends AbstractAction {
 
     public static final String ACTION_ID = "showRelativeDataSize";
 
-    private CodeAreaCore codeArea;
+    private BinaryDataSizeComponent statusComponent;
 
     public ShowRelativeDataSizeAction() {
     }
@@ -49,17 +48,26 @@ public class ShowRelativeDataSizeAction extends AbstractAction {
         putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
-                registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    setEnabled(instance != null);
+                registrar.registerChangeListener(BinaryDataSizeComponent.class, (instance) -> {
+                    statusComponent = instance;
+                    update();
                 });
+                registrar.registerStateUpdateListener(BinaryDataSizeComponent.class, (instance, updateType) -> {
+                    if (BinaryDataSizeComponent.UpdateType.DATA_SIZE_FORMAT.equals(updateType)) {
+                        update();
+                    }
+                });
+            }
+
+            private void update() {
+                setEnabled(statusComponent != null);
+                putValue(Action.SELECTED_KEY, statusComponent.getDataSizeFormat().isShowRelative());
             }
         });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-// TODO        boolean lineWraping = ((BinEdEditorProvider) editorProvider).changeLineWrap();
-//        putValue(Action.SELECTED_KEY, lineWraping);
+        statusComponent.setDataSizeShowRelative(!statusComponent.getDataSizeFormat().isShowRelative());
     }
 }

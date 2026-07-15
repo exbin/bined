@@ -46,6 +46,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.contribution.GoToPositionContribution;
 import org.exbin.bined.jaguif.viewer.action.CursorPositionCodeTypeActions;
+import org.exbin.bined.jaguif.viewer.action.DataSizeCodeTypeActions;
 import org.exbin.bined.jaguif.viewer.contribution.CopyDataSizeContribution;
 import org.exbin.bined.jaguif.viewer.contribution.CopyCursorPositionContribution;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
@@ -67,6 +68,7 @@ import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsApplier;
 import org.exbin.bined.jaguif.viewer.settings.BinaryEncodingSettingsComponent;
 import org.exbin.bined.jaguif.viewer.settings.BinaryFontSettingsApplier;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
+import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
@@ -517,13 +519,13 @@ public class BinedViewerModule implements Module {
         mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
 
-        CursorPositionCodeTypeActions codeTypeActions = new CursorPositionCodeTypeActions();
-        codeTypeActions.init(getResourceBundle());
-        SequenceContribution contribution = codeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL);
+        CursorPositionCodeTypeActions actions = new CursorPositionCodeTypeActions();
+        actions.init(getResourceBundle());
+        SequenceContribution contribution = actions.createPositionCodeTypeContribution(PositionCodeType.OCTAL);
         subMgmt.registerMenuContribution(contribution);
-        contribution = codeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL);
+        contribution = actions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL);
         subMgmt.registerMenuContribution(contribution);
-        contribution = codeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL);
+        contribution = actions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL);
         subMgmt.registerMenuContribution(contribution);
 
         contribution = new ShowCursorPositionOffsetContribution();
@@ -556,11 +558,13 @@ public class BinedViewerModule implements Module {
         mgmt.registerMenuRule(subMenu, new GroupSequenceContributionRule(groupContribution));
         MenuDefinitionManagement subMgmt = mgmt.getSubMenu(CODE_TYPE_SUBMENU_ID);
 
-        SequenceContribution contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.OCTAL, null);
+        DataSizeCodeTypeActions actions = new DataSizeCodeTypeActions();
+        actions.init(getResourceBundle());
+        SequenceContribution contribution = actions.createDataSizeCodeTypeContribution(PositionCodeType.OCTAL);
         subMgmt.registerMenuContribution(contribution);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.DECIMAL, null);
+        contribution = actions.createDataSizeCodeTypeContribution(PositionCodeType.DECIMAL);
         subMgmt.registerMenuContribution(contribution);
-        contribution = positionCodeTypeActions.createPositionCodeTypeContribution(PositionCodeType.HEXADECIMAL, null);
+        contribution = actions.createDataSizeCodeTypeContribution(PositionCodeType.HEXADECIMAL);
         subMgmt.registerMenuContribution(contribution);
 
         contribution = new ShowRelativeDataSizeContribution();
@@ -612,6 +616,31 @@ public class BinedViewerModule implements Module {
         return labelBuilder.toString();
     }
 
+    public String getDataSizeAsText(long dataSize, long originalDataSize, SelectionRange selectionRange, StatusNumericGrouping numericGrouping, StatusDataSizeFormat dataSizeFormat) {
+        if (dataSize == -1) {
+            return dataSizeFormat.isShowRelative() ? "- (-)" : "-";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (selectionRange != null && !selectionRange.isEmpty()) {
+            builder.append(String.format(resourceBundle.getString("dataSize.text"),
+                    getPositionAsText(selectionRange.getLength(), dataSizeFormat.getCodeType(), numericGrouping),
+                    getPositionAsText(dataSize, dataSizeFormat.getCodeType(), numericGrouping)
+            ));
+        } else {
+            builder.append(getPositionAsText(dataSize, dataSizeFormat.getCodeType(), numericGrouping));
+            if (dataSizeFormat.isShowRelative()) {
+                long difference = dataSize - originalDataSize;
+                builder.append(difference > 0 ? " (+" : " (");
+                builder.append(getPositionAsText(difference, dataSizeFormat.getCodeType(), numericGrouping));
+                builder.append(")");
+
+            }
+        }
+
+        return builder.toString();
+    }
+    
     public String getPositionAsText(long position, PositionCodeType codeType, StatusNumericGrouping numericGrouping) {
         if (position == 0) {
             return "0";

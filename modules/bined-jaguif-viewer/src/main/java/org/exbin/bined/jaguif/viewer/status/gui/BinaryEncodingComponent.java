@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.BinaryEncodingListController;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
@@ -51,6 +52,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
+    protected BinaryDataComponent binaryDataComponent;
     protected CharsetEncodingState encodingState = null;
     protected BinaryEncodingListController encodingListController = null;
 
@@ -104,9 +106,10 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = contextModule.getMainContextManager();
+                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
+                    popupContextManager.changeActiveState(BinaryEncodingComponent.class, BinaryEncodingComponent.this);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
                     menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);

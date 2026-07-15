@@ -15,11 +15,15 @@
  */
 package org.exbin.bined.jaguif.viewer.action;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
-import org.exbin.bined.swing.CodeAreaCore;
+import org.exbin.bined.SelectionRange;
+import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
@@ -28,6 +32,10 @@ import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
+import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
+import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
 
 /**
  * Copy data size action.
@@ -37,7 +45,7 @@ public class CopyDataSizeAction extends AbstractAction {
 
     public static final String ACTION_ID = "copyDataSize";
 
-    private CodeAreaCore codeArea;
+    private BinaryDataComponent binaryDataComponent;
 
     public CopyDataSizeAction() {
     }
@@ -50,16 +58,35 @@ public class CopyDataSizeAction extends AbstractAction {
             @Override
             public void register(ContextChangeRegistration registrar) {
                 registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                    codeArea = instance instanceof BinaryDataComponent ? ((BinaryDataComponent) instance).getCodeArea() : null;
-                    setEnabled(instance != null);
+                    binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
+                    setEnabled(binaryDataComponent != null);
                 });
             }
         });
+        setEnabled(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-// TODO        boolean lineWraping = ((BinEdEditorProvider) editorProvider).changeLineWrap();
-//        putValue(Action.SELECTED_KEY, lineWraping);
+        BinaryDataSizeComponent component = binaryDataComponent.getStatusBarComponent(BinaryDataSizeComponent.class).orElse(null);
+        BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
+        StatusNumericGrouping numericGrouping;
+        StatusDataSizeFormat dataSizeFormat;
+        long originalDataSize;
+        if (component != null) {
+            numericGrouping = component.getNumericGrouping();
+            dataSizeFormat = component.getDataSizeFormat();
+            originalDataSize = component.getOriginalDataSize();
+        } else {
+            // TODO Load from settings
+            numericGrouping = new StatusNumericGrouping();
+            dataSizeFormat = new StatusDataSizeFormat();
+            originalDataSize = 0;
+        }
+
+        long dataSize = binaryDataComponent.getCodeArea().getDataSize();
+        SelectionRange selectionRange = ((SelectionCapable) binaryDataComponent.getCodeArea()).getSelection();
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new StringSelection(viewerModule.getDataSizeAsText(dataSize, originalDataSize, selectionRange, numericGrouping, dataSizeFormat)), null);
     }
 }
