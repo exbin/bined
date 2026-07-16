@@ -22,6 +22,7 @@ import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
+import org.exbin.bined.jaguif.editor.action.EditModeActions;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.editor.action.EditSelectionAction;
 import org.exbin.bined.jaguif.editor.contribution.EditSelectionContribution;
@@ -49,6 +50,7 @@ public class BinedEditorModule implements Module {
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedEditorModule.class);
     public static final String SETTINGS_PAGE_ID = "codeAreaEditing";
     public static final String EDIT_MODE_MENU_ID = "editMode";
+    public static final String BINARY_EDIT_MODE_MENU_ID = "binaryEditMode";
 
     private java.util.ResourceBundle resourceBundle = null;
 
@@ -94,6 +96,12 @@ public class BinedEditorModule implements Module {
         return editSelectionAction;
     }
 
+    public EditModeActions createEditModeActions() {
+        EditModeActions editModeActions = new EditModeActions();
+        editModeActions.init(getResourceBundle());
+        return editModeActions;
+    }
+
     public void registerEditSelectionAction() {
         createEditSelectionAction();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -115,9 +123,14 @@ public class BinedEditorModule implements Module {
     public void registerEditModeStatusMenu() {
         getResourceBundle();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        menuModule.registerMenu(EDIT_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(EDIT_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
+        menuModule.registerMenu(BINARY_EDIT_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
+        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_EDIT_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
 
-        // TODO
+        EditModeActions actions = createEditModeActions();
+        actions.init(getResourceBundle());
+        SequenceContribution contribution = actions.createInsertEditModeOperationContribution();
+        mgmt.registerMenuContribution(contribution);
+        contribution = actions.createOverwriteEditModeOperationContribution();
+        mgmt.registerMenuContribution(contribution);
     }
 }

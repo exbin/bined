@@ -16,6 +16,7 @@
 package org.exbin.bined.jaguif.component;
 
 import java.util.Optional;
+import org.exbin.bined.EditOperation;
 import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -68,4 +69,11 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      * @return status bar component
      */
     <T extends StatusBarComponent> Optional<T> getStatusBarComponent(Class<T> clazz);
+
+    /**
+     * Sets edit operation.
+     *
+     * @param editOperation edit operation
+     */
+    void setEditOperation(EditOperation editOperation);
 }

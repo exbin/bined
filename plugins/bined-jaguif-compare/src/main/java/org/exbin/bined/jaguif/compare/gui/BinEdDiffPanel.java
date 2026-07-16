@@ -430,6 +430,11 @@ public class BinEdDiffPanel extends JPanel {
         }
 
         @Override
+        public void setEditOperation(EditOperation editOperation) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
         public String getEncoding() {
             return ((CharsetCapable) getCodeArea()).getCharset().toString();
         }

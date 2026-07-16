@@ -328,6 +328,14 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     }
 
     @Override
+    public void setEditOperation(EditOperation editOperation) {
+        ((EditModeCapable) codeArea).setEditOperation(editOperation);
+        if (contextManagement != null) {
+            contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE);
+        }
+    }
+
+    @Override
     public Optional<BinaryDataUndoRedo> getUndoRedo() {
         // TODO Replace with context undo
         return Optional.ofNullable(undoRedo);
