@@ -31,6 +31,7 @@ import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.action.GoToPositionAction;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.bined.swing.CodeAreaCore;
@@ -44,6 +45,8 @@ import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
+import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
@@ -58,13 +61,20 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryCursorPositionComponent.class);
 
     protected StatusNumericGrouping numericGrouping = new StatusNumericGrouping();
-    protected StatusCursorPositionFormat cursorPositionFormat = new StatusCursorPositionFormat();
+    protected StatusCursorPositionFormat cursorPositionFormat;
     protected BinedViewerModule viewerModule;
 
     protected BinaryDataComponent binaryDataComponent;
 
     public BinaryCursorPositionComponent() {
         viewerModule = App.getModule(BinedViewerModule.class);
+
+        OptionsSettingsModuleApi optionsSettings = App.getModule(OptionsSettingsModuleApi.class);
+        SettingsOptionsProvider settingsOptionsProvider = optionsSettings.getMainSettingsManager().getSettingsOptionsProvider();
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
+        cursorPositionFormat = options.getCursorPositionFormat();
+        numericGrouping.setFromOptions(options);
+
         component = new JLabel();
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -198,11 +208,19 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
 
     public void setCursorPositionCodeType(PositionCodeType positionCodeType) {
         cursorPositionFormat.setCodeType(positionCodeType);
-        update();
+        save();
     }
 
     public void setCursorPositionShowOffset(boolean showOffset) {
         cursorPositionFormat.setShowOffset(showOffset);
+        save();
+    }
+
+    public void save() {
+        OptionsSettingsModuleApi optionsSettings = App.getModule(OptionsSettingsModuleApi.class);
+        SettingsOptionsProvider settingsOptionsProvider = optionsSettings.getMainSettingsManager().getSettingsOptionsProvider();
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
+        options.setCursorPositionFormat(cursorPositionFormat);
         update();
     }
 

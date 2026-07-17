@@ -21,7 +21,9 @@ import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
@@ -33,14 +35,13 @@ import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
+import org.exbin.jaguif.text.encoding.EncodingsManager;
 
 /**
  * Binary document processing mode status component.
  */
 @NullMarked
 public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
-
-    public static final String POPUP_MENU_ID = "binaryProcessingMode";
 
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryProcessingModeComponent.class);
@@ -79,7 +80,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
-                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
+                    menuModule.buildMenu(popupMenu, BinedDocumentModule.PROCESSING_MODE_MENU_ID, contextRegistrar, popupContextManager);
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }

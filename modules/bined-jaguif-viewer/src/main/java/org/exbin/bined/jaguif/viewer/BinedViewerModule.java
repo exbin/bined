@@ -76,6 +76,7 @@ import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.context.api.ContextUpdateManagement;
+import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContribution;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -106,6 +107,7 @@ import org.exbin.jaguif.text.font.settings.TextFontSettingsComponent;
 import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 import org.exbin.jaguif.frame.api.FrameController;
 import org.exbin.jaguif.menu.api.SubMenuContribution;
+import org.exbin.jaguif.text.encoding.contribution.ManageEncodingsContribution;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -175,7 +177,7 @@ public class BinedViewerModule implements Module {
     public Optional<StatusBar> getFrameStatusBar() {
         return Optional.ofNullable(frameStatusBar);
     }
-    
+
     public void registerSettings() {
         getResourceBundle();
         OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
@@ -500,7 +502,7 @@ public class BinedViewerModule implements Module {
         subMgmt.registerMenuContribution(contribution);
         subMgmt.registerMenuRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.TOP));
     }
-    
+
     public void registerCursorPositionStatusMenu() {
         getResourceBundle();
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -582,7 +584,12 @@ public class BinedViewerModule implements Module {
         menuModule.registerMenu(BINARY_ENCODING_MENU_ID, BinedViewerModule.MODULE_ID);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BINARY_ENCODING_MENU_ID, BinedViewerModule.MODULE_ID);
 
-        // TODO
+        GroupSequenceContribution groupContribution = mgmt.registerMenuGroup(BINARY_ENCODING_SETTINGS_GROUP_ID);
+        mgmt.registerMenuRule(groupContribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
+
+        ActionSequenceContribution contribution = new ManageEncodingsContribution();
+        mgmt.registerMenuContribution(contribution);
+        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupContribution));
     }
 
     public String getCaretPositionAsText(@Nullable CodeAreaCore codeArea, StatusNumericGrouping numericGrouping, StatusCursorPositionFormat cursorPositionFormat) {
@@ -618,29 +625,32 @@ public class BinedViewerModule implements Module {
 
     public String getDataSizeAsText(long dataSize, long originalDataSize, SelectionRange selectionRange, StatusNumericGrouping numericGrouping, StatusDataSizeFormat dataSizeFormat) {
         if (dataSize == -1) {
-            return dataSizeFormat.isShowRelative() ? "- (-)" : "-";
+            return "-";
         }
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder labelBuilder = new StringBuilder();
         if (selectionRange != null && !selectionRange.isEmpty()) {
-            builder.append(String.format(resourceBundle.getString("dataSize.text"),
+            labelBuilder.append(String.format(resourceBundle.getString("dataSizeFormat.withSelection"),
                     getPositionAsText(selectionRange.getLength(), dataSizeFormat.getCodeType(), numericGrouping),
                     getPositionAsText(dataSize, dataSizeFormat.getCodeType(), numericGrouping)
             ));
         } else {
-            builder.append(getPositionAsText(dataSize, dataSizeFormat.getCodeType(), numericGrouping));
+            String baseDataSize = getPositionAsText(dataSize, dataSizeFormat.getCodeType(), numericGrouping);
             if (dataSizeFormat.isShowRelative()) {
                 long difference = dataSize - originalDataSize;
-                builder.append(difference > 0 ? " (+" : " (");
-                builder.append(getPositionAsText(difference, dataSizeFormat.getCodeType(), numericGrouping));
-                builder.append(")");
-
+                labelBuilder.append(String.format(
+                        resourceBundle.getString("dataSizeFormat.withDifference"),
+                        baseDataSize,
+                        (difference > 0 ? "+" : "") + getPositionAsText(difference, dataSizeFormat.getCodeType(), numericGrouping)
+                ));
+            } else {
+                labelBuilder.append(baseDataSize);
             }
         }
 
-        return builder.toString();
+        return labelBuilder.toString();
     }
-    
+
     public String getPositionAsText(long position, PositionCodeType codeType, StatusNumericGrouping numericGrouping) {
         if (position == 0) {
             return "0";

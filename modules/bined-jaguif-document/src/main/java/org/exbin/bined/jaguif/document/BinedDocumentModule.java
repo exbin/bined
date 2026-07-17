@@ -26,6 +26,7 @@ import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
 import org.exbin.bined.jaguif.component.BinEdComponentExtension;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.document.action.ProcessingModeActions;
 import org.exbin.bined.jaguif.document.action.PropertiesAction;
 import org.exbin.bined.jaguif.document.action.ReloadFileAction;
 import org.exbin.bined.jaguif.document.contribution.PropertiesContribution;
@@ -119,6 +120,12 @@ public class BinedDocumentModule implements Module {
         }
 
         return viewFontActions;
+    }
+
+    public ProcessingModeActions createProcessingModeActions() {
+        ProcessingModeActions processingModeActions = new ProcessingModeActions();
+        processingModeActions.init(getResourceBundle());
+        return processingModeActions;
     }
 
     public void setInitialFileProcessing(FileProcessingMode initialFileProcessing) {
@@ -346,6 +353,11 @@ public class BinedDocumentModule implements Module {
         menuModule.registerMenu(PROCESSING_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(PROCESSING_MODE_MENU_ID, BinedEditorModule.MODULE_ID);
 
-        // TODO
+        ProcessingModeActions actions = createProcessingModeActions();
+        actions.init(getResourceBundle());
+        SequenceContribution contribution = actions.createMemoryProcessingModeContribution();
+        mgmt.registerMenuContribution(contribution);
+        contribution = actions.createDeltaProcessingModeContribution();
+        mgmt.registerMenuContribution(contribution);
     }
 }

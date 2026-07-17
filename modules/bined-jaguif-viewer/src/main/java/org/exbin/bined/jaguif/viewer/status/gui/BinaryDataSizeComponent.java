@@ -27,6 +27,7 @@ import org.exbin.bined.capability.SelectionCapable;
 import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.jaguif.App;
@@ -39,6 +40,8 @@ import org.exbin.jaguif.context.api.ContextRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
+import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
+import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 
 /**
@@ -54,7 +57,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryDataSizeComponent.class);
 
     protected StatusNumericGrouping numericGrouping = new StatusNumericGrouping();
-    protected StatusDataSizeFormat dataSizeFormat = new StatusDataSizeFormat();
+    protected StatusDataSizeFormat dataSizeFormat;
     protected BinedViewerModule viewerModule;
 
     protected BinaryDataComponent binaryDataComponent;
@@ -64,6 +67,13 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     public BinaryDataSizeComponent() {
         viewerModule = App.getModule(BinedViewerModule.class);
+
+        OptionsSettingsModuleApi optionsSettings = App.getModule(OptionsSettingsModuleApi.class);
+        SettingsOptionsProvider settingsOptionsProvider = optionsSettings.getMainSettingsManager().getSettingsOptionsProvider();
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
+        dataSizeFormat = options.getDataSizeFormat();
+        numericGrouping.setFromOptions(options);
+
         component = new JLabel();
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -189,11 +199,19 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     public void setDataSizeCodeType(PositionCodeType positionCodeType) {
         dataSizeFormat.setCodeType(positionCodeType);
-        update();
+        save();
     }
 
     public void setDataSizeShowRelative(boolean showRelative) {
         dataSizeFormat.setShowRelative(showRelative);
+        save();
+    }
+
+    public void save() {
+        OptionsSettingsModuleApi optionsSettings = App.getModule(OptionsSettingsModuleApi.class);
+        SettingsOptionsProvider settingsOptionsProvider = optionsSettings.getMainSettingsManager().getSettingsOptionsProvider();
+        CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
+        options.setDataSizeFormat(dataSizeFormat);
         update();
     }
 

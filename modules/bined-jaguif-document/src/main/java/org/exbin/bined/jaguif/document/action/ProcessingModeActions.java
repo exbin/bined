@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.bined.jaguif.editor.action;
+package org.exbin.bined.jaguif.document.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
@@ -36,110 +36,58 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 
 /**
- * Binary edit mode operation actions.
+ * Binary processing mode actions.
  */
 @NullMarked
-public class EditModeActions {
+public class ProcessingModeActions {
 
-    public static final String EDIT_MODE_RADIO_GROUP_ID = "editModeRadioGroup";
+    public static final String PROCESSING_MODE_RADIO_GROUP_ID = "processingModeRadioGroup";
     private ResourceBundle resourceBundle;
 
-    public EditModeActions() {
+    public ProcessingModeActions() {
     }
 
     public void init(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
-    public SwitchEditOperationAction createSwitchEditOperationAction() {
-        SwitchEditOperationAction switchEditOperationAction = new SwitchEditOperationAction();
-        switchEditOperationAction.init(resourceBundle);
-        return switchEditOperationAction;
-    }
-
-    public InsertEditModeOperationAction createInsertEditModeOperationAction() {
-        InsertEditModeOperationAction insertEditModeOperationAction = new InsertEditModeOperationAction();
+    public MemoryProcessingModeAction createMemoryProcessingModeAction() {
+        MemoryProcessingModeAction insertEditModeOperationAction = new MemoryProcessingModeAction();
         insertEditModeOperationAction.init(resourceBundle);
         return insertEditModeOperationAction;
     }
 
-    public OverwriteEditModeOperationAction createOverwriteEditModeOperationAction() {
-        OverwriteEditModeOperationAction overwriteEditModeOperationAction = new OverwriteEditModeOperationAction();
+    public DeltaProcessingModeAction createDeltaProcessingModeAction() {
+        DeltaProcessingModeAction overwriteEditModeOperationAction = new DeltaProcessingModeAction();
         overwriteEditModeOperationAction.init(resourceBundle);
         return overwriteEditModeOperationAction;
     }
 
-    public SwitchEditOperationContribution createSwitchEditOperationContribution() {
-        SwitchEditOperationContribution switchEditOperationContribution = new SwitchEditOperationContribution(SwitchEditOperationAction.ACTION_ID);
-        return switchEditOperationContribution;
-    }
-
-    public InsertEditModeOperationContribution createInsertEditModeOperationContribution() {
-        InsertEditModeOperationContribution insertEditModeOperationContribution = new InsertEditModeOperationContribution(InsertEditModeOperationAction.ACTION_ID);
+    public MemoryProcessingModeContribution createMemoryProcessingModeContribution() {
+        MemoryProcessingModeContribution insertEditModeOperationContribution = new MemoryProcessingModeContribution(MemoryProcessingModeAction.ACTION_ID);
         return insertEditModeOperationContribution;
     }
 
-    public OverwriteEditModeOperationContribution createOverwriteEditModeOperationContribution() {
-        OverwriteEditModeOperationContribution overwriteEditModeOperationContribution = new OverwriteEditModeOperationContribution(OverwriteEditModeOperationAction.ACTION_ID);
+    public DeltaProcessingModeContribution createDeltaProcessingModeContribution() {
+        DeltaProcessingModeContribution overwriteEditModeOperationContribution = new DeltaProcessingModeContribution(DeltaProcessingModeAction.ACTION_ID);
         return overwriteEditModeOperationContribution;
     }
 
     @NullMarked
-    public class SwitchEditOperationAction extends AbstractAction {
+    public class MemoryProcessingModeAction extends AbstractAction {
 
-        public static final String ACTION_ID = "switchEditOperation";
-
-        private BinaryDataComponent binaryDataComponent;
-
-        public SwitchEditOperationAction() {
-        }
-
-        public void init(ResourceBundle resourceBundle) {
-            ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
-            actionModule.initAction(this, resourceBundle, ACTION_ID);
-            putValue(ActionConsts.ACTION_TYPE, ActionType.PUSH);
-            putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
-                @Override
-                public void register(ContextChangeRegistration registrar) {
-                    registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                        binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
-                        setEnabled(instance != null);
-                    });
-                }
-            });
-            setEnabled(false);
-        }
-
-        public void setBinaryDataComponent(BinaryDataComponent binaryDataComponent) {
-            this.binaryDataComponent = binaryDataComponent;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
-            EditMode editMode = ((EditModeCapable) codeArea).getEditMode();
-            if (editMode == EditMode.EXPANDING || editMode == EditMode.CAPPED) {
-                EditOperation activeOperation = ((EditModeCapable) codeArea).getActiveOperation();
-                binaryDataComponent.setEditOperation(activeOperation == EditOperation.INSERT ? EditOperation.OVERWRITE : EditOperation.INSERT);
-            }
-        }
-    }
-
-    @NullMarked
-    public class InsertEditModeOperationAction extends AbstractAction {
-
-        public static final String ACTION_ID = "insertEditModeOperation";
+        public static final String ACTION_ID = "memoryProcessingMode";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public InsertEditModeOperationAction() {
+        public MemoryProcessingModeAction() {
         }
 
         public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            putValue(ActionConsts.ACTION_RADIO_GROUP, EDIT_MODE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, PROCESSING_MODE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
                 public void register(ContextChangeRegistration registrar) {
@@ -173,20 +121,20 @@ public class EditModeActions {
     }
 
     @NullMarked
-    public class OverwriteEditModeOperationAction extends AbstractAction {
+    public class DeltaProcessingModeAction extends AbstractAction {
 
-        public static final String ACTION_ID = "overwriteEditModeOperation";
+        public static final String ACTION_ID = "deltaProcessingMode";
 
         private BinaryDataComponent binaryDataComponent;
 
-        public OverwriteEditModeOperationAction() {
+        public DeltaProcessingModeAction() {
         }
 
         public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);
             actionModule.initAction(this, resourceBundle, ACTION_ID);
             putValue(ActionConsts.ACTION_TYPE, ActionType.RADIO);
-            putValue(ActionConsts.ACTION_RADIO_GROUP, EDIT_MODE_RADIO_GROUP_ID);
+            putValue(ActionConsts.ACTION_RADIO_GROUP, PROCESSING_MODE_RADIO_GROUP_ID);
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
                 public void register(ContextChangeRegistration registrar) {
@@ -220,17 +168,17 @@ public class EditModeActions {
     }
 
     @NullMarked
-    public class SwitchEditOperationContribution implements ActionSequenceContribution {
+    public class MemoryProcessingModeContribution implements ActionSequenceContribution {
 
         private final String contributionId;
 
-        public SwitchEditOperationContribution(String contributionId) {
+        public MemoryProcessingModeContribution(String contributionId) {
             this.contributionId = contributionId;
         }
 
         @Override
         public Action createAction() {
-            SwitchEditOperationAction action = new SwitchEditOperationAction();
+            MemoryProcessingModeAction action = new MemoryProcessingModeAction();
             action.init(resourceBundle);
             return action;
         }
@@ -242,39 +190,17 @@ public class EditModeActions {
     }
 
     @NullMarked
-    public class InsertEditModeOperationContribution implements ActionSequenceContribution {
+    public class DeltaProcessingModeContribution implements ActionSequenceContribution {
 
         private final String contributionId;
 
-        public InsertEditModeOperationContribution(String contributionId) {
+        public DeltaProcessingModeContribution(String contributionId) {
             this.contributionId = contributionId;
         }
 
         @Override
         public Action createAction() {
-            InsertEditModeOperationAction action = new InsertEditModeOperationAction();
-            action.init(resourceBundle);
-            return action;
-        }
-
-        @Override
-        public String getContributionId() {
-            return contributionId;
-        }
-    }
-
-    @NullMarked
-    public class OverwriteEditModeOperationContribution implements ActionSequenceContribution {
-
-        private final String contributionId;
-
-        public OverwriteEditModeOperationContribution(String contributionId) {
-            this.contributionId = contributionId;
-        }
-
-        @Override
-        public Action createAction() {
-            OverwriteEditModeOperationAction action = new OverwriteEditModeOperationAction();
+            DeltaProcessingModeAction action = new DeltaProcessingModeAction();
             action.init(resourceBundle);
             return action;
         }

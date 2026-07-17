@@ -25,8 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
-import org.exbin.bined.jaguif.component.BinaryEncodingListController;
+import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
@@ -41,6 +42,7 @@ import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
+import org.exbin.jaguif.text.encoding.EncodingsManager;
 
 /**
  * Binary data encoding status component.
@@ -48,13 +50,11 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 @NullMarked
 public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
-    public static final String POPUP_MENU_ID = "binaryEncoding";
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
     protected BinaryDataComponent binaryDataComponent;
     protected CharsetEncodingState encodingState = null;
-    protected BinaryEncodingListController encodingListController = null;
 
     public BinaryEncodingComponent() {
         component = new JLabel() {
@@ -82,11 +82,15 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
         component.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getButton() == MouseEvent.BUTTON1 && encodingListController != null) {
+                if (evt.getButton() == MouseEvent.BUTTON1 && binaryDataComponent != null) {
+                    EncodingsManager encodingsManager = new EncodingsManager();
+                    encodingsManager.init();
+                    encodingsManager.setEncodingState((BinEdDataComponent) binaryDataComponent);
+                    encodingsManager.setListEncodingState((BinEdDataComponent) binaryDataComponent);
                     if (evt.isShiftDown()) {
-                        encodingListController.cyclePreviousEncoding();
+                        encodingsManager.cyclePreviousEncoding();
                     } else {
-                        encodingListController.cycleNextEncoding();
+                        encodingsManager.cycleNextEncoding();
                     }
                 } else {
                     processPopupMenu(evt);
@@ -112,7 +116,14 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
                     popupContextManager.changeActiveState(BinaryEncodingComponent.class, BinaryEncodingComponent.this);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
-                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
+                    if (binaryDataComponent instanceof BinEdDataComponent) {
+                        EncodingsManager encodingsManager = new EncodingsManager();
+                        encodingsManager.init();
+                        encodingsManager.setEncodingState((BinEdDataComponent) binaryDataComponent);
+                        encodingsManager.setListEncodingState((BinEdDataComponent) binaryDataComponent);
+                        encodingsManager.fillEncodingsPopupMenu(popupMenu);
+                    }
+                    menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_ENCODING_MENU_ID, contextRegistrar, popupContextManager);
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
@@ -121,6 +132,9 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
         putValue(KEY_CONTEXT_CHANGE, new ContextChange() {
             @Override
             public void register(ContextChangeRegistration registrar) {
+                registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
+                    binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
+                });
                 registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
                     if (instance instanceof CharsetEncodingState) {
                         encodingState = (CharsetEncodingState) instance;

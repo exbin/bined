@@ -60,4 +60,10 @@ public class StatusNumericGrouping {
     public void setHexadecimalSpaceGroupSize(int hexadecimalSpaceGroupSize) {
         this.hexadecimalSpaceGroupSize = hexadecimalSpaceGroupSize;
     }
+    
+    public void setFromOptions(CodeAreaStatusOptions options) {
+        octalSpaceGroupSize = options.getOctalSpaceGroupSize();
+        decimalSpaceGroupSize = options.getDecimalSpaceGroupSize();
+        hexadecimalSpaceGroupSize = options.getHexadecimalSpaceGroupSize();
+    }
 }
