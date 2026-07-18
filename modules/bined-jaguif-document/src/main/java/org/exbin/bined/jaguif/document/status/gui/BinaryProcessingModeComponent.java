@@ -21,8 +21,8 @@ import org.jspecify.annotations.NullMarked;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
-import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.jaguif.App;
@@ -32,10 +32,12 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.StateUpdateType;
+import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
-import org.exbin.jaguif.text.encoding.EncodingsManager;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary document processing mode status component.
@@ -45,8 +47,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryProcessingModeComponent.class);
-    protected BinaryDataComponent binaryDataComponent;
-    protected FileProcessingMode fileProcessingMode = FileProcessingMode.MEMORY;
+    protected BinaryFileDocument binaryFileDocument;
 
     public BinaryProcessingModeComponent() {
         component = new JLabel();
@@ -74,7 +75,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
+                    ActiveContextManagement contextManager = binaryFileDocument.getDataComponent().getContextManagement().orElse(contextModule.getMainContextManager());
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
                     popupContextManager.changeActiveState(BinaryProcessingModeComponent.class, BinaryProcessingModeComponent.this);
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
@@ -91,23 +92,28 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
             public void register(ContextChangeRegistration registrar) {
                 registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
                     if (instance instanceof BinaryDataComponent) {
-                        updateForComponent((BinaryDataComponent) instance);
+                        updateForDocument(binaryFileDocument);
                     } else {
                         clear();
                     }
                 });
-                /* registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.Update.ENCODING)) {
+                registrar.registerChangeListener(ContextDocument.class, (ContextDocument instance) -> {
+                    if (instance instanceof BinaryFileDocument) {
+                        updateForDocument((BinaryFileDocument) instance);
+                    } else {
+                        clear();
+                    }
+                });
+                registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
+                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.PROCESSING_MODE)) {
                         updateForDocument((BinaryFileDocument) instance);
                     }
-                }); */
+                });
             }
 
-            private void updateForComponent(BinaryDataComponent component) {
-                binaryDataComponent = component;
-//                dataSize = component.getCodeArea().getDataSize();
-//                selectionRange = ((SelectionCapable) component.getCodeArea()).getSelection();
-//                update();
+            private void updateForDocument(@Nullable BinaryFileDocument document) {
+                binaryFileDocument = document;
+                update();
             }
         });
     }
@@ -115,6 +121,20 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
     @Override
     public JComponent getComponent() {
         return component;
+    }
+
+    private void update() {
+        if (binaryFileDocument == null) {
+            component.setText("");
+        } else {
+            FileProcessingMode fileProcessingMode = binaryFileDocument.getFileProcessingMode();
+
+            if (FileProcessingMode.MEMORY.equals(fileProcessingMode)) {
+                component.setText(resourceBundle.getString("fileProcessingMode.memory"));
+            } else if (FileProcessingMode.DELTA.equals(fileProcessingMode)) {
+                component.setText(resourceBundle.getString("fileProcessingMode.delta"));
+            }
+        }
     }
 
     private void clear() {

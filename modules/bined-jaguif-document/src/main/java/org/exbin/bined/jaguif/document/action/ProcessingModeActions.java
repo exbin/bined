@@ -20,20 +20,19 @@ import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import org.exbin.bined.EditMode;
-import org.exbin.bined.EditOperation;
-import org.exbin.bined.capability.EditModeCapable;
-import org.exbin.bined.jaguif.component.BinEdDataComponent;
-import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.action.api.ActionContextChange;
 import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
-import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
+import org.exbin.bined.jaguif.document.FileProcessingMode;
+import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.exbin.jaguif.docking.api.ContextDocking;
+import org.exbin.jaguif.docking.api.DocumentDocking;
+import org.exbin.jaguif.document.api.ContextDocument;
 
 /**
  * Binary processing mode actions.
@@ -78,7 +77,8 @@ public class ProcessingModeActions {
 
         public static final String ACTION_ID = "memoryProcessingMode";
 
-        private BinaryDataComponent binaryDataComponent;
+        private BinaryFileDocument binaryFileDocument;
+        private DocumentDocking documentDocking;
 
         public MemoryProcessingModeAction() {
         }
@@ -91,20 +91,24 @@ public class ProcessingModeActions {
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
                 public void register(ContextChangeRegistration registrar) {
-                    registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                        binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
+                    registrar.registerChangeListener(ContextDocument.class, (instance) -> {
+                        binaryFileDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                         update();
                     });
-                    registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
-                        if (BinEdDataComponent.UpdateType.EDIT_MODE.equals(updateType)) {
+                    registrar.registerChangeListener(ContextDocking.class, (instance) -> {
+                        documentDocking = instance instanceof DocumentDocking ? (DocumentDocking) instance : null;
+                        update();
+                    });
+                    registrar.registerStateUpdateListener(ContextDocument.class, (instance, updateType) -> {
+                        if (BinaryFileDocument.UpdateType.PROCESSING_MODE.equals(updateType)) {
                             update();
                         }
                     });
                 }
 
                 void update() {
-                    setEnabled(binaryDataComponent != null);
-                    putValue(Action.SELECTED_KEY, ((EditModeCapable) binaryDataComponent.getCodeArea()).getActiveOperation() == EditOperation.INSERT);
+                    setEnabled(binaryFileDocument != null && documentDocking != null);
+                    putValue(Action.SELECTED_KEY, binaryFileDocument != null && binaryFileDocument.getFileProcessingMode() == FileProcessingMode.MEMORY);
                 }
             });
             setEnabled(false);
@@ -112,11 +116,7 @@ public class ProcessingModeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
-            EditMode editMode = ((EditModeCapable) codeArea).getEditMode();
-            if (editMode == EditMode.EXPANDING || editMode == EditMode.CAPPED) {
-                binaryDataComponent.setEditOperation(EditOperation.INSERT);
-            }
+            changeFileProcessingMode(documentDocking, binaryFileDocument, FileProcessingMode.MEMORY);
         }
     }
 
@@ -125,7 +125,8 @@ public class ProcessingModeActions {
 
         public static final String ACTION_ID = "deltaProcessingMode";
 
-        private BinaryDataComponent binaryDataComponent;
+        private BinaryFileDocument binaryFileDocument;
+        private DocumentDocking documentDocking;
 
         public DeltaProcessingModeAction() {
         }
@@ -138,20 +139,24 @@ public class ProcessingModeActions {
             putValue(ActionConsts.ACTION_CONTEXT_CHANGE, new ActionContextChange() {
                 @Override
                 public void register(ContextChangeRegistration registrar) {
-                    registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                        binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
+                    registrar.registerChangeListener(ContextDocument.class, (instance) -> {
+                        binaryFileDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                         update();
                     });
-                    registrar.registerStateUpdateListener(ContextComponent.class, (instance, updateType) -> {
-                        if (BinEdDataComponent.UpdateType.EDIT_MODE.equals(updateType)) {
+                    registrar.registerChangeListener(ContextDocking.class, (instance) -> {
+                        documentDocking = instance instanceof DocumentDocking ? (DocumentDocking) instance : null;
+                        update();
+                    });
+                    registrar.registerStateUpdateListener(ContextDocument.class, (instance, updateType) -> {
+                        if (BinaryFileDocument.UpdateType.PROCESSING_MODE.equals(updateType)) {
                             update();
                         }
                     });
                 }
 
                 void update() {
-                    setEnabled(binaryDataComponent != null);
-                    putValue(Action.SELECTED_KEY, ((EditModeCapable) binaryDataComponent.getCodeArea()).getActiveOperation() == EditOperation.OVERWRITE);
+                    setEnabled(binaryFileDocument != null && documentDocking != null);
+                    putValue(Action.SELECTED_KEY, binaryFileDocument != null && binaryFileDocument.getFileProcessingMode() == FileProcessingMode.DELTA);
                 }
             });
             setEnabled(false);
@@ -159,11 +164,7 @@ public class ProcessingModeActions {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
-            EditMode editMode = ((EditModeCapable) codeArea).getEditMode();
-            if (editMode == EditMode.EXPANDING || editMode == EditMode.CAPPED) {
-                binaryDataComponent.setEditOperation(EditOperation.OVERWRITE);
-            }
+            changeFileProcessingMode(documentDocking, binaryFileDocument, FileProcessingMode.DELTA);
         }
     }
 
@@ -208,6 +209,21 @@ public class ProcessingModeActions {
         @Override
         public String getContributionId() {
             return contributionId;
+        }
+    }
+
+    public void changeFileProcessingMode(DocumentDocking docking, BinaryFileDocument binaryFileDocument, FileProcessingMode fileProcessingMode) {
+        if (binaryFileDocument.getFileProcessingMode() == fileProcessingMode) {
+            return;
+        }
+
+        if (docking.releaseDocument(binaryFileDocument)) {
+            binaryFileDocument.loadContent(fileProcessingMode);
+
+            ActiveContextManagement context = binaryFileDocument.getDataComponent().getContextManagement().orElse(null);
+            if (context != null) {
+                context.updateActiveState(ContextDocument.class, binaryFileDocument, BinaryFileDocument.UpdateType.PROCESSING_MODE);
+            }
         }
     }
 }

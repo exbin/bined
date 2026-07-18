@@ -160,6 +160,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
 
     public void setOriginalDataSize(long originalDataSize) {
         this.originalDataSize = originalDataSize;
+        update();
     }
 
     protected void update() {

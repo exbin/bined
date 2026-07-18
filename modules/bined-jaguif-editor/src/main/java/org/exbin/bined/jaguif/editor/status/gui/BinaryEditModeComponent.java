@@ -101,15 +101,15 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
             @Override
             public void register(ContextChangeRegistration registrar) {
                 registrar.registerChangeListener(ContextComponent.class, (ContextComponent instance) -> {
-                    if (instance instanceof BinEdDataComponent) {
-                        updateForComponent((BinEdDataComponent) instance);
+                    if (instance instanceof BinaryDataComponent) {
+                        updateForComponent((BinaryDataComponent) instance);
                     } else {
                         clear();
                     }
                 });
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinEdDataComponent && (updateType == BinEdDataComponent.UpdateType.EDIT_MODE)) {
-                        updateForComponent((BinEdDataComponent) instance);
+                    if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.EDIT_MODE)) {
+                        updateForComponent((BinaryDataComponent) instance);
                     }
                 });
             }

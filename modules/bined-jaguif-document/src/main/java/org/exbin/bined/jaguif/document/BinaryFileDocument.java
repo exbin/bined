@@ -182,6 +182,18 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
 
     public void loadContent(FileProcessingMode fileProcessingMode) {
         if (documentSource instanceof EmptyDocumentSource) {
+            BinEdComponentPanel componentPanel = getComponent();
+            BinaryData oldData = componentPanel.getContentData();
+            if (fileProcessingMode == FileProcessingMode.DELTA) {
+                BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
+                SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
+                DeltaDocument document = segmentsRepository.createDocument();
+                componentPanel.setContentData(document);
+            } else {
+                ByteArrayPagedData data = new ByteArrayPagedData();
+                componentPanel.setContentData(data);
+            }
+            oldData.dispose();
             return;
         }
 
@@ -349,7 +361,6 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         activeContextManagement = contextManagement;
         contextManagement.changeActiveState(ContextFont.class, dataComponent);
         contextManagement.changeActiveState(ContextEncoding.class, dataComponent);
-        // TODO contextManager.changeActiveState(UndoRedoState.class, );
         contextManagement.changeActiveState(ContextComponent.class, dataComponent);
         contextManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
         contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
