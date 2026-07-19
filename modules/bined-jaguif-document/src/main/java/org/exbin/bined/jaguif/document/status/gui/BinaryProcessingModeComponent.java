@@ -105,8 +105,8 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
                     }
                 });
                 registrar.registerStateUpdateListener(ContextDocument.class, (ContextDocument instance, StateUpdateType updateType) -> {
-                    if (instance instanceof BinaryFileDocument && (updateType == BinaryFileDocument.UpdateType.PROCESSING_MODE)) {
-                        updateForDocument((BinaryFileDocument) instance);
+                    if (instance instanceof BinaryFileDocument && instance == binaryFileDocument && (updateType == BinaryFileDocument.UpdateType.PROCESSING_MODE)) {
+                        updateForDocument(binaryFileDocument);
                     }
                 });
             }
