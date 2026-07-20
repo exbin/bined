@@ -302,7 +302,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedInspectorModule.registerBasicInspector();
             binedInspectorModule.registerShowParsingPanelMenuActions();
             binedInspectorModule.registerShowParsingPanelPopupMenuActions();
-            binedViewerModule.registerToolsOptionsMenuActions();
+            binedViewerModule.registerViewOptionsMenuActions();
             binedEditorModule.registerEditSelectionAction();
             binedComponentModule.registerClipboardCodeActions();
             binedDocumentModule.registerEncodings();

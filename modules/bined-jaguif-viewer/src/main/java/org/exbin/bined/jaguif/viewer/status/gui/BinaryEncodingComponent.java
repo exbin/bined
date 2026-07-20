@@ -85,8 +85,8 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
                 if (evt.getButton() == MouseEvent.BUTTON1 && binaryDataComponent != null) {
                     EncodingsManager encodingsManager = new EncodingsManager();
                     encodingsManager.init();
-                    encodingsManager.setEncodingState((BinEdDataComponent) binaryDataComponent);
-                    encodingsManager.setListEncodingState((BinEdDataComponent) binaryDataComponent);
+                    encodingsManager.setEncodingState((CharsetEncodingState) binaryDataComponent);
+                    encodingsManager.setListEncodingState((CharsetListEncodingState) binaryDataComponent);
                     if (evt.isShiftDown()) {
                         encodingsManager.cyclePreviousEncoding();
                     } else {
@@ -119,8 +119,8 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
                     if (binaryDataComponent instanceof BinEdDataComponent) {
                         EncodingsManager encodingsManager = new EncodingsManager();
                         encodingsManager.init();
-                        encodingsManager.setEncodingState((BinEdDataComponent) binaryDataComponent);
-                        encodingsManager.setListEncodingState((BinEdDataComponent) binaryDataComponent);
+                        encodingsManager.setEncodingState((CharsetEncodingState) binaryDataComponent);
+                        encodingsManager.setListEncodingState((CharsetListEncodingState) binaryDataComponent);
                         encodingsManager.fillEncodingsPopupMenu(popupMenu);
                     }
                     menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_ENCODING_MENU_ID, contextRegistrar, popupContextManager);

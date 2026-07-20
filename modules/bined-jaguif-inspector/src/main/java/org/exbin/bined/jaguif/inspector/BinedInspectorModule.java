@@ -166,6 +166,7 @@ public class BinedInspectorModule implements Module {
     }
 
     public BasicValuesPositionColorModifier getBasicValuesColorModifier() {
+        // TODO Instance per code area
         return Objects.requireNonNull(basicValuesColorModifier);
     }
 

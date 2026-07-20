@@ -73,10 +73,11 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
             }
 
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
-                if (evt.isPopupTrigger()) {
+                if (evt.isPopupTrigger() && binaryFileDocument != null) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
                     ActiveContextManagement contextManager = binaryFileDocument.getDataComponent().getContextManagement().orElse(contextModule.getMainContextManager());
                     ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    popupContextManager.changeActiveState(ContextDocument.class, binaryFileDocument);
                     popupContextManager.changeActiveState(BinaryProcessingModeComponent.class, BinaryProcessingModeComponent.this);
                     ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
@@ -125,7 +126,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
     private void update() {
         if (binaryFileDocument == null) {
-            component.setText("");
+            component.setText("-");
         } else {
             FileProcessingMode fileProcessingMode = binaryFileDocument.getFileProcessingMode();
 

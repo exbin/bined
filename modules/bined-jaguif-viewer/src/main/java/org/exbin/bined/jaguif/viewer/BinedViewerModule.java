@@ -313,7 +313,7 @@ public class BinedViewerModule implements Module {
         mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(BINED_TOOL_BAR_GROUP_ID));
     }
 
-    public void registerToolsOptionsMenuActions() {
+    public void registerViewOptionsMenuActions() {
         MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
         MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.VIEW_SUBMENU_ID);
         SequenceContribution contribution = new TextFontContribution();
