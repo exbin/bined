@@ -147,12 +147,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     @Override
     public boolean canUndo() {
-        return undoRedo != null ? undoRedo.canUndo() : false;
+        return undoRedo != null && undoRedo.canUndo();
     }
 
     @Override
     public boolean canRedo() {
-        return undoRedo != null ? undoRedo.canRedo() : false;
+        return undoRedo != null && undoRedo.canRedo();
     }
 
     @Override
@@ -308,10 +308,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     public boolean isShowNonprintables() {
         ColorAssessorPainterCapable painter = (ColorAssessorPainterCapable) ((SectCodeArea) codeArea).getPainter();
         NonprintablesCodeAreaAssessor nonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(painter, NonprintablesCodeAreaAssessor.class);
-        if (nonprintablesCodeAreaAssessor != null) {
-            return nonprintablesCodeAreaAssessor.isShowNonprintables();
-        }
-        return false;
+        return nonprintablesCodeAreaAssessor != null && nonprintablesCodeAreaAssessor.isShowNonprintables();
     }
 
     @Override

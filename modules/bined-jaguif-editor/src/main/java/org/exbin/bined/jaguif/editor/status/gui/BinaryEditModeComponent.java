@@ -53,7 +53,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     protected BinaryDataComponent binaryDataComponent;
 
     public BinaryEditModeComponent() {
-        component = new JLabel();
+        component = createLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         clear();
         component.setToolTipText(resourceBundle.getString("editModeLabel.toolTipText"));
@@ -156,5 +156,9 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
             default:
                 throw new AssertionError();
         }
+    }
+    
+    protected JLabel createLabel() {
+        return new JLabel();
     }
 }

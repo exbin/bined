@@ -57,23 +57,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     protected CharsetEncodingState encodingState = null;
 
     public BinaryEncodingComponent() {
-        component = new JLabel() {
-
-            private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Dimension areaSize = getSize();
-
-                int h = areaSize.height;
-                int w = areaSize.width;
-                int size = Math.min(Math.max((h - 4) / 4, 2), 10);
-                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 - (h / 5), size, SwingConstants.NORTH, true);
-                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 + (h / 5), size, SwingConstants.SOUTH, true);
-            }
-        };
-
+        component = createLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setText(resourceBundle.getString("encodingLabel.text"));
         component.setToolTipText(resourceBundle.getString("encodingLabel.toolTipText"));
@@ -175,5 +159,24 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
 
     private void update() {
         component.setText(encodingState != null ? encodingState.getEncoding() : "-");
+    }
+    
+    protected JLabel createLabel() {
+        return new JLabel() {
+
+            private final BasicArrowButton basicArrowButton = new BasicArrowButton(SwingConstants.NORTH);
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Dimension areaSize = getSize();
+
+                int h = areaSize.height;
+                int w = areaSize.width;
+                int size = Math.min(Math.max((h - 4) / 4, 2), 10);
+                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 - (h / 5), size, SwingConstants.NORTH, true);
+                basicArrowButton.paintTriangle(g, w - size * 2, (h - size) / 2 + (h / 5), size, SwingConstants.SOUTH, true);
+            }
+        };
     }
 }

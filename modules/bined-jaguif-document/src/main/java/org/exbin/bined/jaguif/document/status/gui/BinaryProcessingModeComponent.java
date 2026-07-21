@@ -50,7 +50,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
     protected BinaryFileDocument binaryFileDocument;
 
     public BinaryProcessingModeComponent() {
-        component = new JLabel();
+        component = createLabel();
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setText(resourceBundle.getString("processingModeLabel.text"));
         component.setToolTipText(resourceBundle.getString("processingModeLabel.toolTipText"));
@@ -140,5 +140,9 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
     private void clear() {
         // TODO
+    }
+    
+    protected JLabel createLabel() {
+        return new JLabel();
     }
 }

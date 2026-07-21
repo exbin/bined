@@ -74,7 +74,7 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         dataSizeFormat = options.getDataSizeFormat();
         numericGrouping.setFromOptions(options);
 
-        component = new JLabel();
+        component = createLabel();
         component.setPreferredSize(new Dimension(160, component.getPreferredSize().height));
         component.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         component.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -214,6 +214,10 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
         CodeAreaStatusOptions options = settingsOptionsProvider.getSettingsOptions(CodeAreaStatusOptions.class);
         options.setDataSizeFormat(dataSizeFormat);
         update();
+    }
+    
+    protected JLabel createLabel() {
+        return new JLabel();
     }
 
     public enum UpdateType implements StateUpdateType {

@@ -31,6 +31,7 @@ import org.exbin.auxiliary.binary_data.BinaryData;
 import org.exbin.auxiliary.binary_data.EditableBinaryData;
 import org.exbin.auxiliary.binary_data.EmptyBinaryData;
 import org.exbin.auxiliary.binary_data.array.paged.ByteArrayPagedData;
+import org.exbin.auxiliary.binary_data.delta.DataSource;
 import org.exbin.auxiliary.binary_data.delta.DeltaDocument;
 import org.exbin.auxiliary.binary_data.delta.SegmentsRepository;
 import org.exbin.auxiliary.binary_data.delta.file.FileDataSource;
@@ -286,6 +287,30 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         // TODO
     }
 
+    public void closeData() {
+        CodeAreaCore codeArea = getCodeArea();
+        BinaryDataUndoRedo undoRedo = getUndoHandler().orElse(null);
+        if (undoRedo != null) {
+            undoRedo.clear();
+        }
+        BinaryData data = codeArea.getContentData();
+        codeArea.setContentData(null);
+        if (data instanceof DeltaDocument) {
+            BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
+            SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
+            DataSource fileSource = ((DeltaDocument) data).getDataSource();
+            data.dispose();
+            if (fileSource != null) {
+                segmentsRepository.detachFileSource(fileSource);
+                segmentsRepository.dropDocument((DeltaDocument) data);
+            }
+        } else {
+            if (data != null) {
+                data.dispose();
+            }
+        }
+    }
+    
     @Override
     public boolean canSave() {
         return true;
