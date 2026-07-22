@@ -299,11 +299,16 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
             BinedDocumentModule binedModule = App.getModule(BinedDocumentModule.class);
             SegmentsRepository segmentsRepository = binedModule.getFileManager().getSegmentsRepository();
             DataSource fileSource = ((DeltaDocument) data).getDataSource();
-            data.dispose();
             if (fileSource != null) {
                 segmentsRepository.detachFileSource(fileSource);
                 segmentsRepository.dropDocument((DeltaDocument) data);
+                try {
+                    fileSource.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(BinaryFileDocument.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            data.dispose();
         } else {
             if (data != null) {
                 data.dispose();

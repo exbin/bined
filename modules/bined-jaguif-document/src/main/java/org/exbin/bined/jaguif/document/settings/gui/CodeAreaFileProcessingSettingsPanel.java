@@ -54,15 +54,13 @@ public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel impl
     @Override
     public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         BinaryFileProcessingOptions options = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
-        // Skip direct file processing mode
-        fileProcessingModeComboBox.setSelectedIndex(options.getFileProcessingMode().ordinal() - 1);
+        fileProcessingModeComboBox.setSelectedIndex(options.getFileProcessingMode().ordinal());
     }
 
     @Override
     public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         BinaryFileProcessingOptions options = settingsOptionsProvider.getSettingsOptions(BinaryFileProcessingOptions.class);
-        // Skip direct file processing mode
-        options.setFileProcessingMode(FileProcessingMode.values()[fileProcessingModeComboBox.getSelectedIndex() + 1]);
+        options.setFileProcessingMode(FileProcessingMode.values()[fileProcessingModeComboBox.getSelectedIndex()]);
     }
 
     /**
