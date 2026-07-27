@@ -65,6 +65,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.font.ContextFont;
 import org.exbin.jaguif.document.api.EmptyDocumentSource;
+import org.exbin.jaguif.search.api.ContextSearch;
 
 /**
  * BinEd binary document.
@@ -393,6 +394,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         contextManagement.changeActiveState(ContextEncoding.class, dataComponent);
         contextManagement.changeActiveState(ContextComponent.class, dataComponent);
         contextManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
+        contextManagement.changeActiveState(ContextSearch.class, new dataComponent);
         contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Override
             public Component getComponent() {
@@ -406,8 +408,9 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         activeContextManagement = null;
         contextManagement.changeActiveState(ContextFont.class, null);
         contextManagement.changeActiveState(ContextEncoding.class, null);
-        contextManagement.changeActiveState(ContextUndoRedo.class, null);
         contextManagement.changeActiveState(ContextComponent.class, null);
+        contextManagement.changeActiveState(ContextUndoRedo.class, null);
+        contextManagement.changeActiveState(ContextSearch.class, null);
         contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Override
             public Component getComponent() {

@@ -33,6 +33,7 @@ import org.exbin.bined.jaguif.macro.operation.CodeAreaMacroCommandHandler;
 import org.exbin.bined.jaguif.macro.operation.MacroStep;
 import org.exbin.bined.jaguif.macro.settings.MacroOptions;
 import org.exbin.bined.jaguif.search.BinedSearchModule;
+import org.exbin.bined.jaguif.search.FindAgainListener;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -92,8 +93,17 @@ public class BinedMacroModule implements PluginModule {
             });
 
             BinedSearchModule binedSearchModule = App.getModule(BinedSearchModule.class);
-            binedSearchModule.getFindReplaceActions().addFindAgainListener(() -> {
-                getMacroManager().notifyFindAgain();
+            binedSearchModule.addFindAgainListener(new FindAgainListener() {
+                @Override
+                public void findNext() {
+                    getMacroManager().notifyFindAgain();
+                }
+
+                @Override
+                public void findPrevious() {
+                    // TODO separate find previous again
+                    getMacroManager().notifyFindAgain();
+                }
             });
         });
     }

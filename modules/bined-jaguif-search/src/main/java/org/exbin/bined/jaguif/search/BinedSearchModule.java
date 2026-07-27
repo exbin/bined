@@ -15,28 +15,19 @@
  */
 package org.exbin.bined.jaguif.search;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
-import javax.swing.Action;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
-import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
-import org.exbin.jaguif.toolbar.api.ToolBarDefinitionManagement;
 import org.exbin.bined.jaguif.document.BinEdFileManager;
-import org.exbin.bined.jaguif.component.BinedComponentModule;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
+import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.document.BinedDocumentModule;
-import org.exbin.bined.jaguif.search.action.FindReplaceActions;
-import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
-import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
-import org.exbin.jaguif.contribution.api.SeparationSequenceContributionRule;
-import org.exbin.jaguif.contribution.api.SequenceContribution;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.jaguif.menu.api.ActionMenuContribution;
-import org.exbin.jaguif.menu.api.MenuModuleApi;
-import org.exbin.jaguif.toolbar.api.ToolBarModuleApi;
 
 /**
  * Binary data search module.
@@ -46,11 +37,9 @@ public class BinedSearchModule implements Module {
 
     public static final String MODULE_ID = ModuleUtils.getModuleIdByApi(BinedSearchModule.class);
 
-    public static final String EDIT_FIND_TOOL_BAR_GROUP_ID = MODULE_ID + ".editFindToolBarGroup";
-
     private java.util.ResourceBundle resourceBundle = null;
 
-    private FindReplaceActions findReplaceActions;
+    private final List<FindAgainListener> findAgainListeners = new ArrayList<>();
 
     public BinedSearchModule() {
     }
@@ -61,120 +50,27 @@ public class BinedSearchModule implements Module {
         fileManager.addBinEdComponentExtension((BinEdComponentPanel component) -> Optional.of(new DefaultBinEdComponentSearch()));
     }
 
-    public FindReplaceActions getFindReplaceActions() {
-        if (findReplaceActions == null) {
-            findReplaceActions = new FindReplaceActions();
-            findReplaceActions.init(getResourceBundle());
-        }
-
-        return findReplaceActions;
-    }
-
-    public void registerEditFindMenuActions() {
-        getFindReplaceActions();
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        // TODO SearchModule
-        String groupId = BinedComponentModule.EDIT_FIND_MENU_GROUP_ID;
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(MODULE_ID).getSubMenu(MenuModuleApi.EDIT_SUBMENU_ID);
-        SequenceContribution contribution = new ActionMenuContribution() {
-            @Override
-            public Action createAction() {
-                return findReplaceActions.createEditFindAction();
-            }
-
-            @Override
-            public String getContributionId() {
-                return "binarySearchFind";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
-        contribution = new ActionMenuContribution() {
-            @Override
-            public Action createAction() {
-                return findReplaceActions.createEditFindAgainAction();
-            }
-
-            @Override
-            public String getContributionId() {
-                return "binarySearchFindAgain";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
-        contribution = new ActionMenuContribution() {
-            @Override
-            public Action createAction() {
-                return findReplaceActions.createEditReplaceAction();
-            }
-
-            @Override
-            public String getContributionId() {
-                return "binarySearchReplace";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(groupId));
-    }
-
-    public void registerEditFindPopupMenuActions() {
-        MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
-        MenuDefinitionManagement mgmt = menuModule.getMainMenuDefinition(BinedComponentModule.CODE_AREA_POPUP_MENU_ID, MODULE_ID);
-        SequenceContribution contribution = new ActionMenuContribution() {
-            @Override
-            public Action createAction() {
-                return findReplaceActions.createEditFindAction();
-            }
-
-            @Override
-            public String getContributionId() {
-                return "binarySearchFind";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
-        contribution = new ActionMenuContribution() {
-            @Override
-            public Action createAction() {
-                return findReplaceActions.createEditReplaceAction();
-            }
-
-            @Override
-            public String getContributionId() {
-                return "binarySearchReplace";
-            }
-        };
-        mgmt.registerMenuContribution(contribution);
-        mgmt.registerMenuRule(contribution, new GroupSequenceContributionRule(BinedComponentModule.CODE_AREA_POPUP_FIND_GROUP_ID));
-    }
-
-    public void registerEditFindToolBarActions() {
-        getFindReplaceActions();
-        ToolBarModuleApi toolBarModule = App.getModule(ToolBarModuleApi.class);
-        ToolBarDefinitionManagement mgmt = toolBarModule.getMainToolBarDefinition(MODULE_ID);
-        SequenceContribution contribution = mgmt.registerToolBarGroup(EDIT_FIND_TOOL_BAR_GROUP_ID);
-        mgmt.registerToolBarRule(contribution, new PositionSequenceContributionRule(PositionSequenceContributionRule.PositionMode.MIDDLE));
-        mgmt.registerToolBarRule(contribution, new SeparationSequenceContributionRule(SeparationSequenceContributionRule.SeparationMode.AROUND));
-        contribution = new ActionMenuContribution() {
-            @Override
-            public Action createAction() {
-                return findReplaceActions.createEditFindAction();
-            }
-
-            @Override
-            public String getContributionId() {
-                return "binarySearchFind";
-            }
-        };
-        mgmt.registerToolBarContribution(contribution);
-        mgmt.registerToolBarRule(contribution, new GroupSequenceContributionRule(EDIT_FIND_TOOL_BAR_GROUP_ID));
-    }
-
     public ResourceBundle getResourceBundle() {
         if (resourceBundle == null) {
             resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinedSearchModule.class);
         }
 
         return resourceBundle;
+    }
+
+    public List<FindAgainListener> getFindAgainListeners() {
+        return findAgainListeners;
+    }
+
+    public void addFindAgainListener(FindAgainListener findAgainListener) {
+        findAgainListeners.add(findAgainListener);
+    }
+
+    public void removeFindAgainListener(FindAgainListener findAgainListener) {
+        findAgainListeners.remove(findAgainListener);
+    }
+    
+    public BinarySearchController createBinarySearchController(BinaryFileDocument binaryDocument) {
+        return new BinarySearchController(binaryDocument);
     }
 }

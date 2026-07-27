@@ -89,6 +89,7 @@ import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.sidebar.api.SideBarModuleApi;
 import org.exbin.jaguif.frame.api.FrameController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
+import org.exbin.jaguif.search.api.SearchModuleApi;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingContextInference;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingInference;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingsContextInference;
@@ -187,6 +188,7 @@ public class BinedLauncherModule implements LauncherModule {
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
             AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
+            SearchModuleApi searchModule = App.getModule(SearchModuleApi.class);
             ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
 
             BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
@@ -307,13 +309,13 @@ public class BinedLauncherModule implements LauncherModule {
             binedComponentModule.registerClipboardCodeActions();
             binedDocumentModule.registerEncodings();
             binedComponentModule.registerGoToPosition();
-            binedSearchModule.registerEditFindMenuActions();
+            searchModule.registerEditFindMenuActions();
             binedOperationMethodModule.registerBlockEditActions();
 
             binedComponentModule.registerCodeAreaPopupMenu();
             binedViewerModule.registerCodeAreaPopupMenu();
             binedEditorModule.registerCodeAreaPopupMenu();
-            binedSearchModule.registerEditFindPopupMenuActions();
+            searchModule.registerEditFindPopupMenuActions(BinedComponentModule.CODE_AREA_POPUP_MENU_ID);
             binedOperationMethodModule.registerBlockEditPopupMenuActions();
 
             binedDocumentModule.registerPropertiesMenu();
