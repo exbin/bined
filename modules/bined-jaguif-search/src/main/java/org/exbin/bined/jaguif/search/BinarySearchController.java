@@ -16,7 +16,7 @@
 package org.exbin.bined.jaguif.search;
 
 import java.util.List;
-import org.exbin.bined.jaguif.document.BinaryFileDocument;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.search.api.FindSearchController;
 import org.exbin.jaguif.search.api.ReplaceSearchController;
@@ -28,15 +28,15 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class BinarySearchController implements FindSearchController, ReplaceSearchController {
 
-    protected final BinaryFileDocument binaryDocument;
+    protected final BinaryDataComponent binaryDataComponent;
 
-    public BinarySearchController(BinaryFileDocument binaryDocument) {
-        this.binaryDocument = binaryDocument;
+    public BinarySearchController(BinaryDataComponent binaryDataComponent) {
+        this.binaryDataComponent = binaryDataComponent;
     }
 
     @Override
     public void performFind() {
-        BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
+        BinEdComponentSearch componentExtension = binaryDataComponent.getComponentExtension(BinEdComponentSearch.class);
         componentExtension.showSearchFindPanel();
     }
 
@@ -44,7 +44,7 @@ public class BinarySearchController implements FindSearchController, ReplaceSear
     public void performFindNext() {
         BinedSearchModule searchModule = App.getModule(BinedSearchModule.class);
         List<FindAgainListener> findAgainListeners = searchModule.getFindAgainListeners();
-        BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
+        BinEdComponentSearch componentExtension = binaryDataComponent.getComponentExtension(BinEdComponentSearch.class);
         componentExtension.performFindAgain();
 
         for (FindAgainListener findAgainListener : findAgainListeners) {
@@ -56,7 +56,7 @@ public class BinarySearchController implements FindSearchController, ReplaceSear
     public void performFindPrevious() {
         BinedSearchModule searchModule = App.getModule(BinedSearchModule.class);
         List<FindAgainListener> findAgainListeners = searchModule.getFindAgainListeners();
-        BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
+        BinEdComponentSearch componentExtension = binaryDataComponent.getComponentExtension(BinEdComponentSearch.class);
         // TODO find previous
         componentExtension.performFindAgain();
 
@@ -78,7 +78,7 @@ public class BinarySearchController implements FindSearchController, ReplaceSear
 
     @Override
     public void performReplace() {
-        BinEdComponentSearch componentExtension = binaryDocument.getComponentExtension(BinEdComponentSearch.class);
+        BinEdComponentSearch componentExtension = binaryDataComponent.getComponentExtension(BinEdComponentSearch.class);
         componentExtension.showSearchReplacePanel();
     }
 }

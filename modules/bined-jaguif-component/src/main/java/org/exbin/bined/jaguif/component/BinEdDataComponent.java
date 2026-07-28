@@ -54,6 +54,7 @@ import org.exbin.jaguif.operation.undo.api.UndoRedoController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.exbin.jaguif.search.api.ContextSearch;
 import org.exbin.jaguif.statusbar.api.StatusBar;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
@@ -76,6 +77,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     protected ActiveContextManagement contextManagement;
     protected List<String> encodings = new ArrayList<>();
     protected StatusBar statusBar = null;
+    protected ContextSearch searchController;
 
     public BinEdDataComponent(BinEdComponentPanel binaryComponent) {
         this.binaryComponent = binaryComponent;
@@ -143,6 +145,16 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
 
     public void setContextManager(ActiveContextManagement contextManagement) {
         this.contextManagement = contextManagement;
+    }
+
+    @Override
+    public Optional<ContextSearch> getSearchController() {
+        return Optional.ofNullable(searchController);
+    }
+
+    @Override
+    public void setSearchController(@Nullable ContextSearch searchController) {
+        this.searchController = searchController;
     }
 
     @Override

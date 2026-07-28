@@ -22,8 +22,10 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.context.api.ActiveContextManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
+import org.exbin.jaguif.search.api.ContextSearch;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.utils.ComponentProvider;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data component.
@@ -76,4 +78,18 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      * @param editOperation edit operation
      */
     void setEditOperation(EditOperation editOperation);
+
+    /**
+     * Returns search controller.
+     *
+     * @return search controller
+     */
+    Optional<ContextSearch> getSearchController();
+
+    /**
+     * Sets search controller.
+     *
+     * @param searchController search controller
+     */
+    void setSearchController(@Nullable ContextSearch searchController);
 }

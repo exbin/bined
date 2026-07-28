@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.jspecify.annotations.NullMarked;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.Module;
 import org.exbin.jaguif.ModuleUtils;
 import org.exbin.bined.jaguif.document.BinEdFileManager;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 
@@ -70,7 +70,7 @@ public class BinedSearchModule implements Module {
         findAgainListeners.remove(findAgainListener);
     }
     
-    public BinarySearchController createBinarySearchController(BinaryFileDocument binaryDocument) {
-        return new BinarySearchController(binaryDocument);
+    public BinarySearchController createBinarySearchController(BinaryDataComponent binaryComponent) {
+        return new BinarySearchController(binaryComponent);
     }
 }

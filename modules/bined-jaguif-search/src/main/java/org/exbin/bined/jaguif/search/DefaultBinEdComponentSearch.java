@@ -18,6 +18,7 @@ package org.exbin.bined.jaguif.search;
 import java.awt.BorderLayout;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JPopupMenu;
+import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.swing.section.SectCodeArea;
 import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
@@ -43,6 +44,7 @@ public class DefaultBinEdComponentSearch implements BinEdComponentSearch {
         SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
 
         binarySearchService = new DefaultBinarySearchService(codeArea);
+        dataComponent.setSearchController(new BinarySearchController((BinEdDataComponent) dataComponent));
     }
 
     @Override

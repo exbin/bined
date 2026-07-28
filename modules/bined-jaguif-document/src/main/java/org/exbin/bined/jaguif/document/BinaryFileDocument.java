@@ -394,7 +394,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         contextManagement.changeActiveState(ContextEncoding.class, dataComponent);
         contextManagement.changeActiveState(ContextComponent.class, dataComponent);
         contextManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
-        contextManagement.changeActiveState(ContextSearch.class, new dataComponent);
+        contextManagement.changeActiveState(ContextSearch.class, dataComponent.getSearchController().orElse(null));
         contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
             @Override
             public Component getComponent() {

@@ -71,6 +71,7 @@ import org.exbin.jaguif.context.api.ContextUpdateManagement;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
+import org.exbin.jaguif.search.api.ContextSearch;
 import org.exbin.jaguif.statusbar.api.StatusBar;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
@@ -442,6 +443,16 @@ public class BinEdDiffPanel extends JPanel {
         @Override
         public void setEncoding(String encodingName) {
             ((CharsetCapable) getCodeArea()).setCharset(Charset.forName(encodingName));
+        }
+
+        @Override
+        public Optional<ContextSearch> getSearchController() {
+            return Optional.empty();
+        }
+
+        @Override
+        public void setSearchController(ContextSearch searchController) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 }
