@@ -25,7 +25,7 @@ To start the application directly, there are multiple options.
 
 If you installed version for Windows via installer, you can start the application via Start menu in applications list.
 
-Alternativelly, go to the directory where your application is installed.
+Alternatively, go to the directory where your application is installed.
 
 You can start "bined.exe" on MS Windows systems or on systems with Windows emulation installed - for example using Wine.
 

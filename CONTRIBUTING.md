@@ -12,8 +12,8 @@ https://bined.exbin.org/?p=participate
 
 This project uses Java programming language and Swing library.
 
-- Project uses dependecy between multiple GitHub repositories and might require manual building of dependecies and publishing them to the local maven repository
-- It's recommended to use NetBeans (NetBeans Mattise) for GUI form creation / edit, but not required
+- Project uses dependency between multiple GitHub repositories and might require manual building of dependencies and publishing them to the local maven repository
+- It's recommended to use NetBeans (NetBeans Matisse) for GUI form creation / edit, but not required
 
 ## Reporting Bugs
 

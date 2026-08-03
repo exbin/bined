@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -73,35 +74,35 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         if (isMacroRecording()) {
             switch (keyEvent.getKeyCode()) {
                 case KeyEvent.VK_LEFT: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.LEFT));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList(MovementDirection.LEFT));
                     break;
                 }
                 case KeyEvent.VK_RIGHT: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.RIGHT));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList(MovementDirection.RIGHT));
                     break;
                 }
                 case KeyEvent.VK_UP: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.UP));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList(MovementDirection.UP));
                     break;
                 }
                 case KeyEvent.VK_DOWN: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.DOWN));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList(MovementDirection.DOWN));
                     break;
                 }
                 case KeyEvent.VK_HOME: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_START : MovementDirection.ROW_START));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_START : MovementDirection.ROW_START));
                     break;
                 }
                 case KeyEvent.VK_END: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_END : MovementDirection.ROW_END));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList((keyEvent.getModifiersEx() & metaMask) > 0 ? MovementDirection.DOC_END : MovementDirection.ROW_END));
                     break;
                 }
                 case KeyEvent.VK_PAGE_UP: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.PAGE_UP));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList(MovementDirection.PAGE_UP));
                     break;
                 }
                 case KeyEvent.VK_PAGE_DOWN: {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Arrays.asList(MovementDirection.PAGE_DOWN));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(isSelecting(keyEvent) ? MacroStep.SELECTION_UPDATE : MacroStep.CARET_MOVE, Collections.singletonList(MovementDirection.PAGE_DOWN));
                     break;
                 }
                 case KeyEvent.VK_INSERT: {
@@ -120,10 +121,10 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
         if (recordingMacro != null && keyValue != KeyEvent.CHAR_UNDEFINED) {
             CodeAreaSection section = ((CaretCapable) codeArea).getActiveSection();
             if (section != BasicCodeAreaSection.TEXT_PREVIEW) {
-                CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, Arrays.asList(String.valueOf(keyValue)));
+                CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, Collections.singletonList(String.valueOf(keyValue)));
             } else {
                 if (keyValue > DefaultCodeAreaCommandHandler.LAST_CONTROL_CODE && keyValue != DELETE_CHAR) {
-                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, Arrays.asList(String.valueOf(keyValue)));
+                    CodeAreaMacroCommandHandler.this.appendMacroOperationStep(MacroStep.KEY_PRESSED, Collections.singletonList(String.valueOf(keyValue)));
                 }
             }
         }
@@ -310,7 +311,7 @@ public class CodeAreaMacroCommandHandler extends CodeAreaOperationCommandHandler
     }
 
     public void appendMacroOperationStep(MacroStep macroStep) {
-        CodeAreaMacroCommandHandler.this.appendMacroOperationStep(macroStep, Arrays.asList());
+        CodeAreaMacroCommandHandler.this.appendMacroOperationStep(macroStep, Collections.emptyList());
     }
 
     public void appendMacroOperationStep(MacroStep macroStep, List<Object> parameters) {

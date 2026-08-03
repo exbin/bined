@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -364,7 +365,7 @@ public class MacroManager {
                         if (!parameters.isEmpty()) {
                             String text = (String) parameters.get(0);
                             for (char character : text.toCharArray()) {
-                                commandHandler.executeMacroStep(macroStep, Arrays.asList(character));
+                                commandHandler.executeMacroStep(macroStep, Collections.singletonList(character));
                             }
                             continue;
                         }
@@ -372,9 +373,9 @@ public class MacroManager {
                     }
                     case CARET_MOVE: {
                         if (parameters.size() > 1) {
-                            Integer count = (Integer) parameters.get(1);
+                            int count = (Integer) parameters.get(1);
                             for (int i = 0; i < count; i++) {
-                                commandHandler.executeMacroStep(macroStep, Arrays.asList(parameters.get(0)));
+                                commandHandler.executeMacroStep(macroStep, Collections.singletonList(parameters.get(0)));
                             }
                             continue;
                         }

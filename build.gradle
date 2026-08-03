@@ -51,7 +51,7 @@ if (file('deps/.downloaded').exists()) {
         depsLevel = project.gradle.startParameter.projectProperties['moduleDep'] + 1
     } else {
         depsLevel = 1
-        println "Due to dependecy download(s) gradle build must be executed again after finishing"
+        println "Due to dependency download(s) gradle build must be executed again after finishing"
     }
     def artefactBuild = project.tasks.create([name: "depsRebuild_${depsLevel}", type: GradleBuild])
     artefactBuild.tasks = project.gradle.startParameter.taskNames
