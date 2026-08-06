@@ -1,8 +1,8 @@
 cask "bined" do
-  version "0.2.4"
-  sha256 "ef16ef1583fb93251dfa1bef1527727bfdb5562753d66df764cf0a851c60e97b"
+  version "0.2.5"
+  sha256 "580a20383d4e7aa9a2504a89bbf3d81a89eedce19a3d7f1ef44a76e0bf04ad69"
 
-  url "https://bined.exbin.org/download/bined-#{version}.dmg"
+  url "https://bined.exbin.org/download/?f=bined-#{version}.dmg"
   name "BinEd"
   desc "Free and open source hex viewer/editor written in Java"
   homepage "https://bined.exbin.org/editor"

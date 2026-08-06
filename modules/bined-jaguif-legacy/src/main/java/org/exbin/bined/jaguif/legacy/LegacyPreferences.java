@@ -67,7 +67,7 @@ public class LegacyPreferences {
     public static final String KEY_CODE_COLORIZATION = "codeColorization";
     public static final String KEY_SHOW_VALUES_PANEL = "valuesPanel";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public LegacyPreferences(OptionsStorage storage) {
         this.storage = storage;

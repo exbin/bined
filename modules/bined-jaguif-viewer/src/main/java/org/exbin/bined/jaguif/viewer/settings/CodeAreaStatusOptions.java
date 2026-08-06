@@ -42,7 +42,7 @@ public class CodeAreaStatusOptions implements SettingsOptions {
     public static final String KEY_DECIMAL_SPACE_GROUP_SIZE = "statusDecimalSpaceGroupSize";
     public static final String KEY_HEXADECIMAL_SPACE_GROUP_SIZE = "statusHexadecimalSpaceGroupSize";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public CodeAreaStatusOptions(OptionsStorage storage) {
         this.storage = storage;

@@ -45,7 +45,7 @@ public class CodeAreaLayoutOptions implements SettingsOptions {
     public static final String LAYOUT_SPACE_GROUP_SIZE = "spaceGroupSize";
     public static final String LAYOUT_DOUBLE_SPACE_GROUP_SIZE = "doubleSpaceGroupSize";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public CodeAreaLayoutOptions(OptionsStorage storage) {
         this.storage = storage;

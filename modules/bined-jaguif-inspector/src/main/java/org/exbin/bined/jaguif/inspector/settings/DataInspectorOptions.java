@@ -30,7 +30,7 @@ public class DataInspectorOptions implements SettingsOptions {
     public static final String KEY_INSPECTOR_HIDE_POSTFIX = ".hide";
     public static final String KEY_INSPECTOR_POSITION_POSTFIX = ".position";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public DataInspectorOptions(OptionsStorage storage) {
         this.storage = storage;

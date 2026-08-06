@@ -30,7 +30,7 @@ public class CodeAreaFontSizeOptions implements SettingsOptions {
     public static final int MIN_FONT_SIZE = 6;
     public static final int MAX_FONT_SIZE = 72;
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public CodeAreaFontSizeOptions(OptionsStorage storage) {
         this.storage = storage;

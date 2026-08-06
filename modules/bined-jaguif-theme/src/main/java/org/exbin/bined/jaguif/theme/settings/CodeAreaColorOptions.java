@@ -66,7 +66,7 @@ public class CodeAreaColorOptions implements SettingsOptions {
     public static final String NONPRINTABLES_COLOR = "nonprintablesColor";
     public static final String NONPRINTABLES_BACKGROUND = "nonprintablesBackground";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public CodeAreaColorOptions(OptionsStorage storage) {
         this.storage = storage;

@@ -46,7 +46,7 @@ public class CodeAreaThemeOptions implements SettingsOptions {
     public static final String THEME_DECORATION_BOX_LINES = THEME_DECORATION_PREFIX + SectionCodeAreaDecorations.BOX_LINES.getId();
     public static final String THEME_DECORATION_GROUP_LINES = THEME_DECORATION_PREFIX + SectionCodeAreaDecorations.GROUP_LINES.getId();
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public CodeAreaThemeOptions(OptionsStorage storage) {
         this.storage = storage;

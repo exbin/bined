@@ -32,7 +32,7 @@ public class GoToPositionOptions implements SettingsOptions {
     public static final String KEY_GO_TO_BINARY_POSITION_MODE = "goToBinaryPositionMode";
     public static final String KEY_GO_TO_BINARY_POSITION_VALUE_TYPE = "goToBinaryPositionValueType";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public GoToPositionOptions(OptionsStorage storage) {
         this.storage = storage;

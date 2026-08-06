@@ -30,7 +30,7 @@ public class BinaryFileProcessingOptions implements SettingsOptions {
 
     public static final String KEY_FILE_PROCESSING_MODE = "fileHandlingMode";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public BinaryFileProcessingOptions(OptionsStorage optionsStorage) {
         this.storage = optionsStorage;

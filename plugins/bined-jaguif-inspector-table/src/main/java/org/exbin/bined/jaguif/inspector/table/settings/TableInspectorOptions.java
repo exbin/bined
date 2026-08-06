@@ -29,7 +29,7 @@ public class TableInspectorOptions implements SettingsOptions {
     public static final String KEY_ROW_PREFIX = "table_inspector.row.";
     public static final String KEY_ROW_TYPE = "type";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public TableInspectorOptions(OptionsStorage storage) {
         this.storage = storage;

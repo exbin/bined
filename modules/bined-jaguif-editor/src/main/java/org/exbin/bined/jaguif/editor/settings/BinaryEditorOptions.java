@@ -30,7 +30,7 @@ public class BinaryEditorOptions implements SettingsOptions {
     public static final String KEY_ENTER_KEY_HANDLING_MODE = "enterKeyHandlingMode";
     public static final String KEY_TAB_KEY_HANDLING_MODE = "tabKeyHandlingMode";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public BinaryEditorOptions(OptionsStorage optionsStorage) {
         this.storage = optionsStorage;

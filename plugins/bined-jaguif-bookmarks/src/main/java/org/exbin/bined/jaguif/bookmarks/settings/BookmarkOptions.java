@@ -36,7 +36,7 @@ public class BookmarkOptions implements SettingsOptions {
     public static final String BOOKMARK_LENGTH = "length";
     public static final String BOOKMARK_COLOR = "bookmarkColor";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public BookmarkOptions(OptionsStorage storage) {
         this.storage = storage;

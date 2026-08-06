@@ -34,7 +34,7 @@ public class MacroOptions implements SettingsOptions {
     public static final String MACRO_NAME = "name";
     public static final String STEP = "step";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public MacroOptions(OptionsStorage storage) {
         this.storage = storage;

@@ -50,7 +50,7 @@ public class CodeAreaOptions implements SettingsOptions {
 
     public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public CodeAreaOptions(OptionsStorage storage) {
         this.storage = storage;

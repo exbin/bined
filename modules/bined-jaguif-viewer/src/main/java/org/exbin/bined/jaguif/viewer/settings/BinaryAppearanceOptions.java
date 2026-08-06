@@ -28,7 +28,7 @@ public class BinaryAppearanceOptions implements SettingsOptions {
     public static final String KEY_TEXT_WORD_WRAPPING = "textAppearance.wordWrap";
     public static final String KEY_MULTIFILE_MODE = "multiFileMode";
 
-    private final OptionsStorage storage;
+    protected final OptionsStorage storage;
 
     public BinaryAppearanceOptions(OptionsStorage storage) {
         this.storage = storage;
