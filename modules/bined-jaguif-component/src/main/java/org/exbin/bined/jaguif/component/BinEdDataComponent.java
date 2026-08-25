@@ -48,7 +48,7 @@ import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.clipboard.TextClipboardOperationController;
 import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.operation.undo.api.UndoRedoController;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsManagement;
@@ -74,7 +74,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     protected final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
     protected BinaryDataUndoRedo undoRedo;
     protected Font defaultFont;
-    protected ActiveContextManagement contextManagement;
+    protected ContextStateManagement stateManagement;
     protected List<String> encodings = new ArrayList<>();
     protected StatusBar statusBar = null;
     protected ContextSearch searchController;
@@ -94,26 +94,26 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     private void init() {
         defaultFont = ((SectCodeArea) codeArea).getCodeFont();
         codeArea.addDataChangedListener(() -> {
-            if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.DATA_CONTENT);
+            if (stateManagement != null) {
+                stateManagement.updateActiveState(ContextComponent.class, this, UpdateType.DATA_CONTENT);
             }
         });
 
         ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
-            if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.SELECTION);
+            if (stateManagement != null) {
+                stateManagement.updateActiveState(ContextComponent.class, this, UpdateType.SELECTION);
             }
         });
 
         ((CaretCapable) codeArea).addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
-            if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.CURSOR_POSITION);
+            if (stateManagement != null) {
+                stateManagement.updateActiveState(ContextComponent.class, this, UpdateType.CURSOR_POSITION);
             }
         });
 
         ((EditModeCapable) codeArea).addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
-            if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE);
+            if (stateManagement != null) {
+                stateManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE);
             }
         });
     }
@@ -135,16 +135,12 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     }
 
     @Override
-    public Optional<ActiveContextManagement> getContextManagement() {
-        return Optional.ofNullable(contextManagement);
+    public Optional<ContextStateManagement> getStateManagement() {
+        return Optional.ofNullable(stateManagement);
     }
 
-    public void setContextManagement(ActiveContextManagement contextManagement) {
-        this.contextManagement = contextManagement;
-    }
-
-    public void setContextManager(ActiveContextManagement contextManagement) {
-        this.contextManagement = contextManagement;
+    public void setStateManagement(ContextStateManagement stateManagement) {
+        this.stateManagement = stateManagement;
     }
 
     @Override
@@ -240,8 +236,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setEncoding(String encoding) {
         ((CharsetCapable) codeArea).setCharset(Charset.forName(encoding));
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextEncoding.class, this, CharsetEncodingState.UpdateType.ENCODING);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextEncoding.class, this, CharsetEncodingState.UpdateType.ENCODING);
         }
     }
 
@@ -254,8 +250,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     public void setEncodings(List<String> encodings) {
         this.encodings.clear();
         this.encodings.addAll(encodings);
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextEncoding.class, this, CharsetListEncodingState.UpdateType.ENCODING_LIST);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextEncoding.class, this, CharsetListEncodingState.UpdateType.ENCODING_LIST);
         }
     }
 
@@ -272,8 +268,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCurrentFont(Font font) {
         ((FontCapable) codeArea).setCodeFont(font);
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextComponent.class, this, TextFontState.UpdateType.FONT);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextComponent.class, this, TextFontState.UpdateType.FONT);
         }
     }
 
@@ -285,8 +281,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCodeType(CodeType codeType) {
         ((CodeTypeCapable) codeArea).setCodeType(codeType);
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.CODE_TYPE);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.CODE_TYPE);
         }
     }
 
@@ -298,8 +294,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setPositionCodeType(PositionCodeType positionCodeType) {
         ((PositionCodeTypeCapable) codeArea).setPositionCodeType(positionCodeType);
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.POSITION_CODE_TYPE);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.POSITION_CODE_TYPE);
         }
     }
 
@@ -311,8 +307,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setCodeCharactersCase(CodeCharactersCase codeCharactersCase) {
         ((CodeCharactersCaseCapable) codeArea).setCodeCharactersCase(codeCharactersCase);
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.HEX_CHARACTERS_CASE);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextComponent.class, this, CodeTypeState.UpdateType.HEX_CHARACTERS_CASE);
         }
     }
 
@@ -330,8 +326,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
         if (nonprintablesCodeAreaAssessor != null) {
             nonprintablesCodeAreaAssessor.setShowNonprintables(showNonprintables);
             codeArea.repaint();
-            if (contextManagement != null) {
-                contextManagement.updateActiveState(ContextComponent.class, this, NonprintablesState.UpdateType.NONPRINTABLES);
+            if (stateManagement != null) {
+                stateManagement.updateActiveState(ContextComponent.class, this, NonprintablesState.UpdateType.NONPRINTABLES);
             }
         }
     }
@@ -339,8 +335,8 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setEditOperation(EditOperation editOperation) {
         ((EditModeCapable) codeArea).setEditOperation(editOperation);
-        if (contextManagement != null) {
-            contextManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextComponent.class, this, UpdateType.EDIT_MODE);
         }
     }
 

@@ -28,7 +28,7 @@ import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.docking.api.DocumentDocking;
@@ -220,9 +220,9 @@ public class ProcessingModeActions {
         if (docking.releaseDocument(binaryFileDocument)) {
             binaryFileDocument.loadContent(fileProcessingMode);
 
-            ActiveContextManagement context = binaryFileDocument.getDataComponent().getContextManagement().orElse(null);
-            if (context != null) {
-                context.updateActiveState(ContextDocument.class, binaryFileDocument, BinaryFileDocument.UpdateType.PROCESSING_MODE);
+            ContextStateManagement stateManagement = binaryFileDocument.getDataComponent().getStateManagement().orElse(null);
+            if (stateManagement != null) {
+                stateManagement.updateActiveState(ContextDocument.class, binaryFileDocument, BinaryFileDocument.UpdateType.PROCESSING_MODE);
             }
         }
     }

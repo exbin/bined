@@ -63,11 +63,11 @@ import org.exbin.bined.jaguif.viewer.settings.CodeAreaOptions;
 import org.exbin.bined.jaguif.viewer.settings.CodeAreaViewerSettingsApplier;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
-import org.exbin.jaguif.context.api.ContextUpdateManagement;
+import org.exbin.jaguif.context.api.ContextMonitoringManagement;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.api.OptionsStorage;
 import org.exbin.jaguif.options.api.OptionsModuleApi;
@@ -95,8 +95,8 @@ public class BinEdDiffPanel extends JPanel {
 
     protected ContextComponent leftContextComponent;
     protected ContextComponent rightContextComponent;
-    protected ContextRegistration leftContextRegistrator;
-    protected ContextRegistration rightContextRegistrator;
+    protected ContextMonitoringRegistration leftContextRegistrator;
+    protected ContextMonitoringRegistration rightContextRegistrator;
     protected final DiffToolbarPanel toolbarPanel;
     protected final StatusBar leftStatusBar;
     protected final StatusBar rightStatusBar;
@@ -128,16 +128,16 @@ public class BinEdDiffPanel extends JPanel {
         rightContextComponent = new DiffContextComponent(rightCodeArea);
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ActiveContextManagement leftContextManager = contextModule.createContextManager();
-        ActiveContextManagement rightContextManager = contextModule.createContextManager();
+        ContextStateManagement leftContextManager = contextModule.createStateManager();
+        ContextStateManagement rightContextManager = contextModule.createStateManager();
         attachContext(leftCodeArea, leftContextComponent, leftContextManager);
         attachContext(rightCodeArea, rightContextComponent, rightContextManager);
-        ContextUpdateManagement leftUpdateManagement = contextModule.createContextUpdateManagement(leftContextManager);
+        ContextMonitoringManagement leftUpdateManagement = contextModule.createMonitoringManager(leftContextManager);
         leftUpdateManagement.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        ContextUpdateManagement rightUpdateManagement = contextModule.createContextUpdateManagement(rightContextManager);
+        ContextMonitoringManagement rightUpdateManagement = contextModule.createMonitoringManager(rightContextManager);
         rightUpdateManagement.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        leftContextRegistrator = contextModule.createContextRegistrator(BinedComponentModule.BINARY_STATUS_BAR_ID, leftUpdateManagement, leftContextManager);
-        rightContextRegistrator = contextModule.createContextRegistrator(BinedComponentModule.BINARY_STATUS_BAR_ID, rightUpdateManagement, rightContextManager);
+        leftContextRegistrator = contextModule.createMonitoringRegistrator(leftUpdateManagement, leftContextManager);
+        rightContextRegistrator = contextModule.createMonitoringRegistrator(rightUpdateManagement, rightContextManager);
         leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, leftContextRegistrator);
         rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, rightContextRegistrator);
         toolbarPanel.setTargetComponent(diffPanel);
@@ -200,7 +200,7 @@ public class BinEdDiffPanel extends JPanel {
         repaint();
     }
 
-    private static void attachContext(SectCodeArea codeArea, ContextComponent contextComponent, ActiveContextManagement contextManagement) {
+    private static void attachContext(SectCodeArea codeArea, ContextComponent contextComponent, ContextStateManagement contextManagement) {
         contextManagement.changeActiveState(ContextComponent.class, contextComponent);
         codeArea.addDataChangedListener(() -> {
             contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.DATA_CONTENT);
@@ -371,7 +371,7 @@ public class BinEdDiffPanel extends JPanel {
         }
 
         @Override
-        public Optional<ActiveContextManagement> getContextManagement() {
+        public Optional<ContextStateManagement> getStateManagement() {
             return Optional.empty();
         }
 

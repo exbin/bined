@@ -36,12 +36,12 @@ import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
@@ -104,10 +104,10 @@ public class BinaryCursorPositionComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    ContextStateManagement contextManager = binaryDataComponent.getStateManagement().orElse(contextModule.getMainStateManager());
+                    ContextStateManagement popupContextManager = contextModule.createChildStateManager(contextManager);
                     popupContextManager.changeActiveState(BinaryCursorPositionComponent.class, BinaryCursorPositionComponent.this);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
+                    ContextMonitoringRegistration contextRegistrar = contextModule.createMonitoringRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
                     menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_CURSOR_POSITION_MENU_ID, contextRegistrar, popupContextManager);

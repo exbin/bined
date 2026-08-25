@@ -46,9 +46,9 @@ import org.exbin.bined.jaguif.component.contribution.PasteFromCodeContribution;
 import org.exbin.bined.jaguif.component.contribution.ToggleNonprintablesContribution;
 import org.exbin.bined.jaguif.component.contribution.ViewNonprintablesContribution;
 import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
@@ -248,15 +248,15 @@ public class BinedComponentModule implements Module {
         final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
 
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ActiveContextManagement contextManager = contextModule.createContextManager();
+        ContextStateManagement contextManager = contextModule.createStateManager();
         BinEdDataComponent dataComponent = new BinEdDataComponent(codeArea);
-        dataComponent.setContextManager(contextManager);
+        dataComponent.setStateManagement(contextManager);
 
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, () -> codeArea);
         contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
 
-        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
+        ContextMonitoringRegistration contextRegistrar = contextModule.createMonitoringRegistrator(contextManager);
         menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
         return popupMenu;
     }
@@ -268,13 +268,13 @@ public class BinedComponentModule implements Module {
         final JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
 
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ActiveContextManagement contextManager = contextModule.createContextManager();
+        ContextStateManagement contextManager = contextModule.createStateManager();
 
         contextManager.changeActiveState(ContextComponent.class, dataComponent);
         contextManager.changeActiveState(DialogParentComponent.class, () -> dataComponent.getCodeArea());
         contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
 
-        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
+        ContextMonitoringRegistration contextRegistrar = contextModule.createMonitoringRegistrator(contextManager);
         menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
         return popupMenu;
     }
@@ -287,10 +287,10 @@ public class BinedComponentModule implements Module {
 
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement frameContextManager = frameModule.getFrameController().getContextManager();
-        ActiveContextManagement contextManager = contextModule.createChildContextManager(frameContextManager);
+        ContextStateManagement frameContextManager = frameModule.getFrameController().getStateManager();
+        ContextStateManagement contextManager = contextModule.createChildStateManager(frameContextManager);
         contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
-        ContextRegistration contextRegistrar = contextModule.createContextRegistrator(contextManager);
+        ContextMonitoringRegistration contextRegistrar = contextModule.createMonitoringRegistrator(contextManager);
 
         menuModule.buildMenu(popupMenu, CODE_AREA_POPUP_MENU_ID, contextRegistrar, contextManager);
         return popupMenu;

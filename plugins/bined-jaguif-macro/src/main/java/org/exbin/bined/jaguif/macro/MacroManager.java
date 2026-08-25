@@ -42,7 +42,7 @@ import org.exbin.jaguif.action.api.ActionConsts;
 import org.exbin.jaguif.menu.api.ActionMenuCreation;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
-import org.exbin.jaguif.context.api.ContextUpdateManagement;
+import org.exbin.jaguif.context.api.ContextMonitoringManagement;
 import org.exbin.jaguif.action.api.DialogParentComponent;
 import org.exbin.jaguif.menu.api.MenuDefinitionManagement;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
@@ -60,7 +60,7 @@ import org.exbin.bined.jaguif.macro.operation.MacroOperation;
 import org.exbin.bined.jaguif.macro.operation.MacroStep;
 import org.exbin.bined.jaguif.macro.settings.MacroOptions;
 import org.exbin.bined.jaguif.search.BinEdComponentSearch;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.context.api.ContextStateProvider;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
@@ -96,8 +96,8 @@ public class MacroManager {
     private JMenu macrosMenu;
     private int lastActiveMacro = -1;
     private long lastMacroIndex = 0;
-    private ActiveContextManagement contextManager;
-    private ContextUpdateManagement updateManager;
+    private ContextStateManagement stateManager;
+    private ContextMonitoringManagement monitoringManager;
 
     public MacroManager() {
     }
@@ -105,8 +105,8 @@ public class MacroManager {
     public void init() {
         // TODO Use different context
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        contextManager = contextModule.createContextManager();
-        updateManager = contextModule.createContextUpdateManagement(contextManager);
+        stateManager = contextModule.createStateManager();
+        monitoringManager = contextModule.createMonitoringManager(stateManager);
         addMacroAction.init(resourceBundle);
         editMacroAction.init(resourceBundle);
         manageMacrosAction.init(resourceBundle);
@@ -131,7 +131,7 @@ public class MacroManager {
     private void registerAction(Action action) {
         ActionContextChange contextChange = (ActionContextChange) action.getValue(ActionConsts.ACTION_CONTEXT_CHANGE);
         if (contextChange != null) {
-            updateManager.addContextItem(contextChange);
+            monitoringManager.addContextItem(contextChange);
         }
     }
 
@@ -265,15 +265,15 @@ public class MacroManager {
                         binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                     });
                     registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                        contextManager.changeActiveState(ContextComponent.class, instance);
+                        stateManager.changeActiveState(ContextComponent.class, instance);
                         binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                         updateMacrosMenu();
                     });
                     registrar.registerChangeListener(DialogParentComponent.class, (instance) -> {
-                        contextManager.changeActiveState(DialogParentComponent.class, instance);
+                        stateManager.changeActiveState(DialogParentComponent.class, instance);
                     });
                     registrar.registerChangeListener(ContextDocument.class, (instance) -> {
-                        contextManager.changeActiveState(ContextDocument.class, instance);
+                        stateManager.changeActiveState(ContextDocument.class, instance);
                     });
                 }
             });
@@ -308,15 +308,15 @@ public class MacroManager {
                     binaryDocument = instance instanceof BinaryFileDocument ? (BinaryFileDocument) instance : null;
                 });
                 registrar.registerChangeListener(ContextComponent.class, (instance) -> {
-                    contextManager.changeActiveState(ContextComponent.class, instance);
+                    stateManager.changeActiveState(ContextComponent.class, instance);
                     binaryDataComponent = instance instanceof BinaryDataComponent ? (BinaryDataComponent) instance : null;
                     updateMacrosMenu();
                 });
                 registrar.registerChangeListener(DialogParentComponent.class, (instance) -> {
-                    contextManager.changeActiveState(DialogParentComponent.class, instance);
+                    stateManager.changeActiveState(DialogParentComponent.class, instance);
                 });
                 registrar.registerChangeListener(ContextDocument.class, (instance) -> {
-                    contextManager.changeActiveState(ContextDocument.class, instance);
+                    stateManager.changeActiveState(ContextDocument.class, instance);
                 });
             }
         });
@@ -449,7 +449,7 @@ public class MacroManager {
      * @param codeArea code area
      */
     private void notifyMacroRecordingChange() {
-        contextManager.updateActiveState(ContextComponent.class, binaryDataComponent, MacroStateUpdateType.MACRO_RECORDING);
+        stateManager.updateActiveState(ContextComponent.class, binaryDataComponent, MacroStateUpdateType.MACRO_RECORDING);
     }
 
     /**
@@ -458,7 +458,7 @@ public class MacroManager {
      * @param codeArea code area
      */
     private void notifyLastMacroChange() {
-        contextManager.updateActiveState(ContextComponent.class, binaryDataComponent, MacroStateUpdateType.LAST_MACRO);
+        stateManager.updateActiveState(ContextComponent.class, binaryDataComponent, MacroStateUpdateType.LAST_MACRO);
     }
 
     public void notifyFindAgain() {

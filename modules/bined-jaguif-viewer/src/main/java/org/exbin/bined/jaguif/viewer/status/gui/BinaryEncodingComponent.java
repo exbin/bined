@@ -29,12 +29,12 @@ import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
@@ -94,10 +94,10 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
-                    popupContextManager.changeActiveState(BinaryEncodingComponent.class, BinaryEncodingComponent.this);
+                    ContextStateManagement stateManager = binaryDataComponent.getStateManagement().orElse(contextModule.getMainStateManager());
+                    ContextStateManagement popupStateManager = contextModule.createChildStateManager(stateManager);
+                    ContextMonitoringRegistration monitoringRegistrar = contextModule.createMonitoringRegistrator(popupStateManager);
+                    popupStateManager.changeActiveState(BinaryEncodingComponent.class, BinaryEncodingComponent.this);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
                     if (binaryDataComponent instanceof BinEdDataComponent) {
@@ -107,7 +107,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
                         encodingsManager.setListEncodingState((CharsetListEncodingState) binaryDataComponent);
                         encodingsManager.fillEncodingsPopupMenu(popupMenu);
                     }
-                    menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_ENCODING_MENU_ID, contextRegistrar, popupContextManager);
+                    menuModule.buildMenu(popupMenu, BinedViewerModule.BINARY_ENCODING_MENU_ID, monitoringRegistrar, popupStateManager);
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }

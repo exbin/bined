@@ -45,7 +45,7 @@ import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.editor.settings.CodeAreaEditingSettingsComponent;
 import org.exbin.bined.jaguif.editor.status.contribution.BinaryEditModeStatusContrib;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.contribution.api.GroupSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.PositionSequenceContributionRule;
 import org.exbin.jaguif.contribution.api.RelativeSequenceContributionRule;
@@ -309,8 +309,8 @@ public class BinedDocumentModule implements Module {
     public void start() {
         // TODO
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement contextManager = frameModule.getFrameController().getContextManager();
-        ContextDocking contextDocking = contextManager.getActiveState(ContextDocking.class);
+        ContextStateManagement stateManager = frameModule.getFrameController().getStateManager();
+        ContextDocking contextDocking = stateManager.getActiveState(ContextDocking.class);
         if (contextDocking instanceof DocumentDocking) {
             ((DocumentDocking) contextDocking).openNewDocument();
         }

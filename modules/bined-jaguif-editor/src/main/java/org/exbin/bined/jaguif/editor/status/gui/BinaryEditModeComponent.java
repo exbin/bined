@@ -30,12 +30,12 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.editor.BinedEditorModule;
 import org.exbin.bined.jaguif.editor.action.EditModeActions;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
@@ -85,10 +85,10 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
+                    ContextStateManagement contextManager = binaryDataComponent.getStateManagement().orElse(contextModule.getMainStateManager());
+                    ContextStateManagement popupContextManager = contextModule.createChildStateManager(contextManager);
                     popupContextManager.changeActiveState(BinaryEditModeComponent.class, BinaryEditModeComponent.this);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
+                    ContextMonitoringRegistration contextRegistrar = contextModule.createMonitoringRegistrator(popupContextManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
                     menuModule.buildMenu(popupMenu, BinedEditorModule.BINARY_EDIT_MODE_MENU_ID, contextRegistrar, popupContextManager);

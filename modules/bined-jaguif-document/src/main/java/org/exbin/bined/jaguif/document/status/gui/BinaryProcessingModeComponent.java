@@ -26,12 +26,12 @@ import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.document.BinedDocumentModule;
 import org.exbin.bined.jaguif.document.FileProcessingMode;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
@@ -75,14 +75,14 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger() && binaryFileDocument != null) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = binaryFileDocument.getDataComponent().getContextManagement().orElse(contextModule.getMainContextManager());
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
-                    popupContextManager.changeActiveState(ContextDocument.class, binaryFileDocument);
-                    popupContextManager.changeActiveState(BinaryProcessingModeComponent.class, BinaryProcessingModeComponent.this);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
+                    ContextStateManagement stateManager = binaryFileDocument.getDataComponent().getStateManagement().orElse(contextModule.getMainStateManager());
+                    ContextStateManagement popupStateManager = contextModule.createChildStateManager(stateManager);
+                    popupStateManager.changeActiveState(ContextDocument.class, binaryFileDocument);
+                    popupStateManager.changeActiveState(BinaryProcessingModeComponent.class, BinaryProcessingModeComponent.this);
+                    ContextMonitoringRegistration monitoringRegistrar = contextModule.createMonitoringRegistrator(popupStateManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
-                    menuModule.buildMenu(popupMenu, BinedDocumentModule.PROCESSING_MODE_MENU_ID, contextRegistrar, popupContextManager);
+                    menuModule.buildMenu(popupMenu, BinedDocumentModule.PROCESSING_MODE_MENU_ID, monitoringRegistrar, popupStateManager);
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }

@@ -63,7 +63,7 @@ import org.exbin.bined.jaguif.legacy.BinedLegacyModule;
 import org.exbin.bined.jaguif.search.BinedSearchModule;
 import org.exbin.bined.jaguif.theme.BinedThemeModule;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.docking.api.DockingModuleApi;
 import org.exbin.jaguif.docking.api.DocumentDocking;
@@ -216,12 +216,12 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             FrameModuleApi frameModuleApi = App.getModule(FrameModuleApi.class);
-            ActiveContextManagement contextManagement = frameModuleApi.getFrameController().getContextManager();
+            ContextStateManagement stateManagement = frameModuleApi.getFrameController().getStateManager();
             OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
-            settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(contextManagement));
-            settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(contextManagement));
-            settingsManager.registerInferenceOptions(TextFontInference.class, new TextFontContextInference((contextManagement)));
-            settingsManager.registerInferenceOptions(DataInspectorFontInference.class, new DataInspectorFontContextInference(contextManagement));
+            settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(stateManagement));
+            settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(stateManagement));
+            settingsManager.registerInferenceOptions(TextFontInference.class, new TextFontContextInference((stateManagement)));
+            settingsManager.registerInferenceOptions(DataInspectorFontInference.class, new DataInspectorFontContextInference(stateManagement));
             documentRecentModule.registerRecentFilesUpdate();
 
             fileModule.registerFileProviders();

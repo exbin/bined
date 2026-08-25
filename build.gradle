@@ -141,7 +141,7 @@ ospackage {
 }
 
 // Breaks for Java 8+ and in some Gradle versions :-/
-if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+/* if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
     buildRpm {
         from ('src/ospackage/bined.png') {
             // Doesn't propagate correctly from ospackage task, so repeat it here
@@ -156,7 +156,7 @@ if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
         arch = 'all'
         requires('default-jre', '1.8.0', GREATER | EQUAL)
     }
-}
+} */
 
 task("copyDependencies", type: Copy) {
     from(project(':apps:bined-app').configurations.runtimeClasspath).into("$buildDir/jars")

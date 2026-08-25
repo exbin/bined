@@ -46,7 +46,7 @@ import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.App;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DialogParentComponent;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextActivable;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.document.api.ComponentDocument;
@@ -77,7 +77,7 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     protected DocumentSource documentSource = null;
     protected long documentOriginalSize;
     protected FileProcessingMode initialProcessingMode = FileProcessingMode.MEMORY;
-    protected ActiveContextManagement activeContextManagement;
+    protected ContextStateManagement stateManagement;
 
     public BinaryFileDocument() {
         BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);
@@ -373,8 +373,8 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
         if (optUndoRedo.isPresent()) {
             optUndoRedo.get().setSyncPosition();
         }
-        if (activeContextManagement != null) {
-            activeContextManagement.updateActiveState(ContextDocument.class, this, UpdateType.ORIGINAL_SIZE);
+        if (stateManagement != null) {
+            stateManagement.updateActiveState(ContextDocument.class, this, UpdateType.ORIGINAL_SIZE);
         }
     }
 
@@ -388,35 +388,25 @@ public class BinaryFileDocument implements BinaryDocument, ComponentDocument, Fi
     }
 
     @Override
-    public void notifyActivated(ActiveContextManagement contextManagement) {
-        activeContextManagement = contextManagement;
-        contextManagement.changeActiveState(ContextFont.class, dataComponent);
-        contextManagement.changeActiveState(ContextEncoding.class, dataComponent);
-        contextManagement.changeActiveState(ContextComponent.class, dataComponent);
-        contextManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
-        contextManagement.changeActiveState(ContextSearch.class, dataComponent.getSearchController().orElse(null));
-        contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
-            @Override
-            public Component getComponent() {
-                return dataComponent.getCodeArea();
-            }
-        });
+    public void notifyActivated(ContextStateManagement stateManagement) {
+        this.stateManagement = stateManagement;
+        stateManagement.changeActiveState(ContextFont.class, dataComponent);
+        stateManagement.changeActiveState(ContextEncoding.class, dataComponent);
+        stateManagement.changeActiveState(ContextComponent.class, dataComponent);
+        stateManagement.changeActiveState(ContextUndoRedo.class, dataComponent);
+        stateManagement.changeActiveState(ContextSearch.class, dataComponent.getSearchController().orElse(null));
+        stateManagement.changeActiveState(DialogParentComponent.class, (DialogParentComponent) dataComponent::getCodeArea);
     }
 
     @Override
-    public void notifyDeactivated(ActiveContextManagement contextManagement) {
-        activeContextManagement = null;
-        contextManagement.changeActiveState(ContextFont.class, null);
-        contextManagement.changeActiveState(ContextEncoding.class, null);
-        contextManagement.changeActiveState(ContextComponent.class, null);
-        contextManagement.changeActiveState(ContextUndoRedo.class, null);
-        contextManagement.changeActiveState(ContextSearch.class, null);
-        contextManagement.changeActiveState(DialogParentComponent.class, new DialogParentComponent() {
-            @Override
-            public Component getComponent() {
-                return dataComponent.getCodeArea();
-            }
-        });
+    public void notifyDeactivated(ContextStateManagement stateManagement) {
+        this.stateManagement = null;
+        stateManagement.changeActiveState(ContextFont.class, null);
+        stateManagement.changeActiveState(ContextEncoding.class, null);
+        stateManagement.changeActiveState(ContextComponent.class, null);
+        stateManagement.changeActiveState(ContextUndoRedo.class, null);
+        stateManagement.changeActiveState(ContextSearch.class, null);
+        stateManagement.changeActiveState(DialogParentComponent.class, (DialogParentComponent) dataComponent::getCodeArea);
     }
 
     public FileProcessingMode getFileProcessingMode() {

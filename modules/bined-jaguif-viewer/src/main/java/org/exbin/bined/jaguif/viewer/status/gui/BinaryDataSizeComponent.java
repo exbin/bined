@@ -31,12 +31,12 @@ import org.exbin.bined.jaguif.viewer.settings.CodeAreaStatusOptions;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.jaguif.App;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextChange;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.context.api.ContextModuleApi;
-import org.exbin.jaguif.context.api.ContextRegistration;
+import org.exbin.jaguif.context.api.ContextMonitoringRegistration;
 import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
@@ -97,13 +97,13 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
             private void processPopupMenu(java.awt.event.MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-                    ActiveContextManagement contextManager = binaryDataComponent.getContextManagement().orElse(contextModule.getMainContextManager());
-                    ActiveContextManagement popupContextManager = contextModule.createChildContextManager(contextManager);
-                    popupContextManager.changeActiveState(BinaryDataSizeComponent.class, BinaryDataSizeComponent.this);
-                    ContextRegistration contextRegistrar = contextModule.createContextRegistrator(popupContextManager);
+                    ContextStateManagement stateManager = binaryDataComponent.getStateManagement().orElse(contextModule.getMainStateManager());
+                    ContextStateManagement popupStateManager = contextModule.createChildStateManager(stateManager);
+                    popupStateManager.changeActiveState(BinaryDataSizeComponent.class, BinaryDataSizeComponent.this);
+                    ContextMonitoringRegistration monitoringRegistrar = contextModule.createMonitoringRegistrator(popupStateManager);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
-                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, contextRegistrar, popupContextManager);
+                    menuModule.buildMenu(popupMenu, POPUP_MENU_ID, monitoringRegistrar, popupStateManager);
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }

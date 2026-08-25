@@ -20,7 +20,7 @@ import org.exbin.bined.EditOperation;
 import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.search.api.ContextSearch;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
@@ -48,11 +48,11 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
     Optional<BinaryDataUndoRedo> getUndoRedo();
 
     /**
-     * Returns context management if available.
+     * Returns context state management if available.
      *
-     * @return context management
+     * @return context state management
      */
-    Optional<ActiveContextManagement> getContextManagement();
+    Optional<ContextStateManagement> getStateManagement();
 
     /**
      * Returns assigned extension.

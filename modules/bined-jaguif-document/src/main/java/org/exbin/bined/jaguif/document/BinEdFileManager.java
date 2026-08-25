@@ -37,7 +37,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.jaguif.action.api.DeletionController;
 import org.exbin.jaguif.action.api.SelectionController;
 import org.exbin.jaguif.action.api.clipboard.ClipboardOperationController;
-import org.exbin.jaguif.context.api.ActiveContextManagement;
+import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.operation.undo.api.ContextUndoRedo;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.operation.undo.api.UndoRedoState;
@@ -59,7 +59,7 @@ public class BinEdFileManager {
 
     public void initDataComponent(BinEdDataComponent binaryDataComponent) {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ActiveContextManagement contextManager = frameModule.getFrameController().getContextManager();
+        ContextStateManagement stateManager = frameModule.getFrameController().getStateManager();
         BinEdComponentPanel componentPanel = (BinEdComponentPanel) binaryDataComponent.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);
@@ -71,18 +71,18 @@ public class BinEdFileManager {
         }
         CodeAreaCore codeArea = binaryDataComponent.getCodeArea();
         ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
-            ContextComponent component = contextManager.getActiveState(ContextComponent.class);
+            ContextComponent component = stateManager.getActiveState(ContextComponent.class);
             if (component == binaryDataComponent) {
-                contextManager.updateActiveState(ContextComponent.class, component, SelectionController.UpdateType.CONTENT_STATE);
-                contextManager.updateActiveState(ContextComponent.class, component, ClipboardOperationController.UpdateType.CONTENT_STATE);
-                contextManager.updateActiveState(ContextComponent.class, component, DeletionController.UpdateType.CONTENT_STATE);
+                stateManager.updateActiveState(ContextComponent.class, component, SelectionController.UpdateType.CONTENT_STATE);
+                stateManager.updateActiveState(ContextComponent.class, component, ClipboardOperationController.UpdateType.CONTENT_STATE);
+                stateManager.updateActiveState(ContextComponent.class, component, DeletionController.UpdateType.CONTENT_STATE);
             }
         });
         CodeAreaUndoRedo codeAreaUndoRedo = new CodeAreaUndoRedo(codeArea);
         codeAreaUndoRedo.addChangeListener(() -> {
-            ContextUndoRedo undoRedo = contextManager.getActiveState(ContextUndoRedo.class);
+            ContextUndoRedo undoRedo = stateManager.getActiveState(ContextUndoRedo.class);
             if (undoRedo == binaryDataComponent) {
-                contextManager.updateActiveState(ContextUndoRedo.class, undoRedo, UndoRedoState.UpdateType.UNDO_REDO_STATE);
+                stateManager.updateActiveState(ContextUndoRedo.class, undoRedo, UndoRedoState.UpdateType.UNDO_REDO_STATE);
             }
         });
         binaryDataComponent.setUndoRedo(codeAreaUndoRedo);
@@ -94,7 +94,7 @@ public class BinEdFileManager {
         for (CodeAreaColorAssessor modifier : painterPositionColorModifiers) {
             painter.addColorModifier(modifier);
         }
-        binaryDataComponent.setContextManager(contextManager);
+        binaryDataComponent.setStateManagement(stateManager);
     }
 
     public void initCommandHandler(BinEdDataComponent binaryDataComponent) {
