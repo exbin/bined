@@ -16,9 +16,7 @@
 package org.exbin.bined.jaguif.objectdata.property.gui;
 
 import org.exbin.jaguif.utils.TestApplication;
-import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.utils.WindowUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -27,12 +25,9 @@ import org.junit.Test;
 public class PropertyTablePanelTest {
 
     @Test
-    @Ignore
     public void testPanel() {
         TestApplication.run(() -> {
-            WindowUtils.invokeWindow(new PropertyTablePanel());
+            WindowUtils.wrapInWindow(new PropertyTablePanel());
         });
-
-        UiUtils.waitForUiThread();
     }
 }

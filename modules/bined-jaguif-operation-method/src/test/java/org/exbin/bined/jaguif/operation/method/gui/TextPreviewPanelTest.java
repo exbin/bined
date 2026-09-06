@@ -17,10 +17,8 @@ package org.exbin.bined.jaguif.operation.method.gui;
 
 import org.exbin.bined.jaguif.operation.method.gui.TextPreviewPanel;
 import org.exbin.jaguif.utils.TestApplication;
-import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.utils.UtilsModule;
 import org.exbin.jaguif.utils.WindowUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,14 +27,11 @@ import org.junit.Test;
 public class TextPreviewPanelTest {
 
     @Test
-    @Ignore
     public void testPanel() {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.TestLanguageModule());
-            WindowUtils.invokeWindow(new TextPreviewPanel());
+            WindowUtils.wrapInWindow(new TextPreviewPanel());
         });
-
-        UiUtils.waitForUiThread();
     }
 }

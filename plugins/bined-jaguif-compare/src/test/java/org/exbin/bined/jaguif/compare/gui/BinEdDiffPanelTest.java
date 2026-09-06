@@ -16,10 +16,8 @@
 package org.exbin.bined.jaguif.compare.gui;
 
 import org.exbin.jaguif.utils.TestApplication;
-import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.utils.UtilsModule;
 import org.exbin.jaguif.utils.WindowUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,14 +26,17 @@ import org.junit.Test;
 public class BinEdDiffPanelTest {
 
     @Test
-    @Ignore
     public void testPanel() {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.TestLanguageModule());
-            WindowUtils.invokeWindow(new BinEdDiffPanel());
+            testApplication.addModule(org.exbin.jaguif.options.api.OptionsModuleApi.MODULE_ID, new org.exbin.jaguif.options.api.TestOptionsModule());
+            testApplication.addModule(org.exbin.jaguif.statusbar.api.StatusBarModuleApi.MODULE_ID, new org.exbin.jaguif.statusbar.StatusBarModule());
+            testApplication.addModule(org.exbin.jaguif.context.api.ContextModuleApi.MODULE_ID, new org.exbin.jaguif.context.ContextModule());
+            testApplication.addModule(org.exbin.jaguif.contribution.api.ContributionModuleApi.MODULE_ID, new org.exbin.jaguif.contribution.ContributionModule());
+            testApplication.addModule(org.exbin.jaguif.action.api.ActionModuleApi.MODULE_ID, new org.exbin.jaguif.action.ActionModule());
+            testApplication.addModule(org.exbin.bined.jaguif.component.BinedComponentModule.MODULE_ID, new org.exbin.bined.jaguif.component.BinedComponentModule());
+            WindowUtils.wrapInWindow(new BinEdDiffPanel());
         });
-
-        UiUtils.waitForUiThread();
     }
 }

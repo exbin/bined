@@ -16,9 +16,8 @@
 package org.exbin.bined.jaguif.component.gui;
 
 import org.exbin.jaguif.utils.TestApplication;
-import org.exbin.jaguif.utils.UiUtils;
+import org.exbin.jaguif.utils.UtilsModule;
 import org.exbin.jaguif.utils.WindowUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -27,10 +26,12 @@ import org.junit.Test;
 public class BinEdComponentPanelTest {
 
     @Test
-    @Ignore
     public void testPanel() {
-        TestApplication.run(() -> WindowUtils.invokeWindow(new BinEdComponentPanel()));
-
-        UiUtils.waitForUiThread();
+        TestApplication testApplication = UtilsModule.createTestApplication();
+        testApplication.launch(() -> {
+            testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.TestLanguageModule());
+            testApplication.addModule(org.exbin.bined.jaguif.component.BinedComponentModule.MODULE_ID, new org.exbin.bined.jaguif.component.BinedComponentModule());
+            WindowUtils.wrapInWindow(new BinEdComponentPanel());
+        });
     }
 }

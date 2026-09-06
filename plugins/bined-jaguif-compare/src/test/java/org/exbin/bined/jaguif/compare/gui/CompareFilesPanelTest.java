@@ -16,10 +16,8 @@
 package org.exbin.bined.jaguif.compare.gui;
 
 import org.exbin.jaguif.utils.TestApplication;
-import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.utils.UtilsModule;
 import org.exbin.jaguif.utils.WindowUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,16 +26,13 @@ import org.junit.Test;
 public class CompareFilesPanelTest {
 
     @Test
-    @Ignore
     public void testPanel() {
         TestApplication testApplication = UtilsModule.createTestApplication();
         testApplication.launch(() -> {
             testApplication.addModule(org.exbin.jaguif.language.api.LanguageModuleApi.MODULE_ID, new org.exbin.jaguif.language.api.TestLanguageModule());
             testApplication.addModule(org.exbin.jaguif.options.api.OptionsModuleApi.MODULE_ID, new org.exbin.jaguif.options.api.TestOptionsModule());
 //            testApplication.addModule(org.exbin.jaguif.action.api.ActionModuleApi.MODULE_ID, );
-            WindowUtils.invokeWindow(new CompareFilesPanel());
+            WindowUtils.wrapInWindow(new CompareFilesPanel());
         });
-
-        UiUtils.waitForUiThread();
     }
 }
