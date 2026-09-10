@@ -216,7 +216,7 @@ public class BinedLauncherModule implements LauncherModule {
             }
 
             FrameModuleApi frameModuleApi = App.getModule(FrameModuleApi.class);
-            ContextStateManagement stateManagement = frameModuleApi.getFrameController().getStateManager();
+            ContextStateManagement stateManagement = frameModuleApi.getFrameStateManager();
             OptionsSettingsManagement settingsManager = optionsSettingsModule.getMainSettingsManager();
             settingsManager.registerInferenceOptions(TextEncodingInference.class, new TextEncodingContextInference(stateManagement));
             settingsManager.registerInferenceOptions(TextEncodingsInference.class, new TextEncodingsContextInference(stateManagement));

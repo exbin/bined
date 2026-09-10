@@ -287,7 +287,7 @@ public class BinedComponentModule implements Module {
 
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ContextStateManagement frameContextManager = frameModule.getFrameController().getStateManager();
+        ContextStateManagement frameContextManager = frameModule.getFrameStateManager();
         ContextStateManagement contextManager = contextModule.createChildStateManager(frameContextManager);
         contextManager.changeActiveState(CodeAreaZone.class, codeAreaZone);
         ContextMonitoringRegistration contextRegistrar = contextModule.createMonitoringRegistrator(contextManager);

@@ -59,7 +59,7 @@ public class BinEdFileManager {
 
     public void initDataComponent(BinEdDataComponent binaryDataComponent) {
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ContextStateManagement stateManager = frameModule.getFrameController().getStateManager();
+        ContextStateManagement stateManager = frameModule.getFrameStateManager();
         BinEdComponentPanel componentPanel = (BinEdComponentPanel) binaryDataComponent.getComponent();
         for (BinEdFileExtension fileExtension : binEdComponentExtensions) {
             Optional<BinEdComponentExtension> componentExtension = fileExtension.createComponentExtension(componentPanel);

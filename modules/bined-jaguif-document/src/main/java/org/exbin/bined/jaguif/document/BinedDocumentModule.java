@@ -309,7 +309,7 @@ public class BinedDocumentModule implements Module {
     public void start() {
         // TODO
         FrameModuleApi frameModule = App.getModule(FrameModuleApi.class);
-        ContextStateManagement stateManager = frameModule.getFrameController().getStateManager();
+        ContextStateManagement stateManager = frameModule.getFrameStateManager();
         ContextDocking contextDocking = stateManager.getActiveState(ContextDocking.class);
         if (contextDocking instanceof DocumentDocking) {
             ((DocumentDocking) contextDocking).openNewDocument();
