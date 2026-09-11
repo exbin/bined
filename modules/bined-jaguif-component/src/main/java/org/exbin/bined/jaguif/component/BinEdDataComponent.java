@@ -151,6 +151,9 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     @Override
     public void setSearchController(@Nullable ContextSearch searchController) {
         this.searchController = searchController;
+        if (stateManagement != null) {
+            stateManagement.changeActiveState(ContextSearch.class, searchController);
+        }
     }
 
     @Override
