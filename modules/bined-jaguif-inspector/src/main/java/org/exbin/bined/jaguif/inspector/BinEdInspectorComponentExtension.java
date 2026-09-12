@@ -29,7 +29,6 @@ import org.exbin.bined.jaguif.component.gui.BinEdComponentPanel;
 import org.exbin.bined.jaguif.inspector.gui.InspectorPanel;
 import org.exbin.bined.jaguif.inspector.settings.gui.InspectorRecord;
 import org.exbin.bined.jaguif.inspector.settings.gui.InspectorsSettingsPanel;
-import org.exbin.jaguif.utils.UiUtils;
 import org.exbin.jaguif.window.api.WindowHandler;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
@@ -53,55 +52,53 @@ public class BinEdInspectorComponentExtension implements BinEdComponentExtension
     public void onCreate(BinaryDataComponent dataComponent) {
         this.dataComponent = dataComponent;
 
-        UiUtils.runInUiThread(() -> {
-            SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
-            this.inspectorPanel = new InspectorPanel();
-            BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
-            BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-            List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
-            inspectorPanel.setInspectorProviders(inspectorProviders);
+        SectCodeArea codeArea = (SectCodeArea) dataComponent.getCodeArea();
+        this.inspectorPanel = new InspectorPanel();
+        BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+        BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+        List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
+        inspectorPanel.setInspectorProviders(inspectorProviders);
 
-            inspectorPanel.setController(new InspectorPanel.Controller() {
-                @Override
-                public void invokeSettings() {
-                    WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
-                    DefaultControlPanel controlPanel = new DefaultControlPanel();
-                    InspectorsSettingsPanel settingsPanel = new InspectorsSettingsPanel();
+        inspectorPanel.setController(new InspectorPanel.Controller() {
+            @Override
+            public void invokeSettings() {
+                WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
+                DefaultControlPanel controlPanel = new DefaultControlPanel();
+                InspectorsSettingsPanel settingsPanel = new InspectorsSettingsPanel();
 
-                    BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
-                    BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
-                    List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
-                    List<InspectorRecord> inspectorRecords = new ArrayList<>();
-                    for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
-                        inspectorRecords.add(new InspectorRecord(inspectorProvider.getId(), inspectorProvider.getName()));
-                    }
-                    settingsPanel.setItems(inspectorRecords);
-
-                    WindowHandler dialog = windowModule.createDialog(settingsPanel, controlPanel);
-                    controlPanel.setController((actionType) -> {
-                        switch (actionType) {
-                            case OK:
-                                inspectorPanel.setInspectorRecords(settingsPanel.getItems());
-                                // TODO
-                                break;
-                            case CANCEL:
-                                break;
-                            default:
-                                throw new AssertionError();
-                        }
-                        dialog.close();
-                    });
-                    windowModule.setWindowTitle(dialog, settingsPanel.getResourceBundle());
-                    dialog.showCentered(inspectorPanel);
+                BinedInspectorModule binedInspectorModule = App.getModule(BinedInspectorModule.class);
+                BinEdInspectorManager inspectorManager = binedInspectorModule.getBinEdInspectorManager();
+                List<BinEdInspectorProvider> inspectorProviders = inspectorManager.getInspectorProviders();
+                List<InspectorRecord> inspectorRecords = new ArrayList<>();
+                for (BinEdInspectorProvider inspectorProvider : inspectorProviders) {
+                    inspectorRecords.add(new InspectorRecord(inspectorProvider.getId(), inspectorProvider.getName()));
                 }
-            });
-            inspectorPanel.setCodeArea(codeArea, null);
+                settingsPanel.setItems(inspectorRecords);
 
-            parsingPanelScrollPane = new JScrollPane();
-            parsingPanelScrollPane.setViewportView(inspectorPanel);
-            parsingPanelScrollPane.setBorder(null);
-            setShowParsingPanel(true);
+                WindowHandler dialog = windowModule.createDialog(settingsPanel, controlPanel);
+                controlPanel.setController((actionType) -> {
+                    switch (actionType) {
+                        case OK:
+                            inspectorPanel.setInspectorRecords(settingsPanel.getItems());
+                            // TODO
+                            break;
+                        case CANCEL:
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+                    dialog.close();
+                });
+                windowModule.setWindowTitle(dialog, settingsPanel.getResourceBundle());
+                dialog.showCentered(inspectorPanel);
+            }
         });
+        inspectorPanel.setCodeArea(codeArea, null);
+
+        parsingPanelScrollPane = new JScrollPane();
+        parsingPanelScrollPane.setViewportView(inspectorPanel);
+        parsingPanelScrollPane.setBorder(null);
+        setShowParsingPanel(true);
     }
 
     @Override
