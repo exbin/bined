@@ -93,10 +93,10 @@ public class BinEdDiffPanel extends JPanel {
     protected final SectionCodeAreaThemeProfile defaultThemeProfile;
     protected final CodeAreaColorsProfile defaultColorProfile;
 
-    protected ContextComponent leftContextComponent;
-    protected ContextComponent rightContextComponent;
-    protected ContextMonitoringRegistration leftContextRegistrator;
-    protected ContextMonitoringRegistration rightContextRegistrator;
+    protected BinaryDataComponent leftContextComponent;
+    protected BinaryDataComponent rightContextComponent;
+    protected ContextStateManagement leftContextManager;
+    protected ContextStateManagement rightContextManager;
     protected final DiffToolbarPanel toolbarPanel;
     protected final StatusBar leftStatusBar;
     protected final StatusBar rightStatusBar;
@@ -128,16 +128,16 @@ public class BinEdDiffPanel extends JPanel {
         rightContextComponent = new DiffContextComponent(rightCodeArea);
         StatusBarModuleApi statusBarModule = App.getModule(StatusBarModuleApi.class);
         ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
-        ContextStateManagement leftContextManager = contextModule.createStateManager();
-        ContextStateManagement rightContextManager = contextModule.createStateManager();
+        leftContextManager = contextModule.createStateManager();
+        rightContextManager = contextModule.createStateManager();
         attachContext(leftCodeArea, leftContextComponent, leftContextManager);
         attachContext(rightCodeArea, rightContextComponent, rightContextManager);
-        ContextMonitoringManagement leftUpdateManagement = contextModule.createMonitoringManager(leftContextManager);
-        leftUpdateManagement.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        ContextMonitoringManagement rightUpdateManagement = contextModule.createMonitoringManager(rightContextManager);
-        rightUpdateManagement.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
-        leftContextRegistrator = contextModule.createMonitoringRegistrator(leftUpdateManagement, leftContextManager);
-        rightContextRegistrator = contextModule.createMonitoringRegistrator(rightUpdateManagement, rightContextManager);
+        ContextMonitoringManagement leftMonitoringManager = contextModule.createMonitoringManager(leftContextManager);
+        leftMonitoringManager.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        ContextMonitoringManagement rightMonitoringManager = contextModule.createMonitoringManager(rightContextManager);
+        rightMonitoringManager.addGroup(BinedComponentModule.BINARY_STATUS_BAR_ID);
+        ContextMonitoringRegistration leftContextRegistrator = contextModule.createMonitoringRegistrator(leftMonitoringManager, leftContextManager);
+        ContextMonitoringRegistration rightContextRegistrator = contextModule.createMonitoringRegistrator(rightMonitoringManager, rightContextManager);
         leftStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, leftContextRegistrator);
         rightStatusBar = statusBarModule.createStatusBar(BinedComponentModule.BINARY_STATUS_BAR_ID, rightContextRegistrator);
         toolbarPanel.setTargetComponent(diffPanel);
@@ -200,8 +200,9 @@ public class BinEdDiffPanel extends JPanel {
         repaint();
     }
 
-    private static void attachContext(SectCodeArea codeArea, ContextComponent contextComponent, ContextStateManagement contextManagement) {
+    private static void attachContext(SectCodeArea codeArea, BinaryDataComponent contextComponent, ContextStateManagement contextManagement) {
         contextManagement.changeActiveState(ContextComponent.class, contextComponent);
+        contextManagement.changeActiveState(ContextSearch.class, contextComponent.getSearchController().orElse(null));
         codeArea.addDataChangedListener(() -> {
             contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.DATA_CONTENT);
         });
@@ -325,12 +326,12 @@ public class BinEdDiffPanel extends JPanel {
 
     public void setLeftContentData(BinaryData contentData) {
         diffPanel.setLeftContentData(contentData);
-        // TODO updateBinaryStatus(leftStatusBar, diffPanel.getLeftCodeArea());
+        leftContextManager.updateActiveState(ContextComponent.class, leftContextComponent, BinaryDataComponent.UpdateType.ORIGINAL_SIZE);
     }
 
     public void setRightContentData(BinaryData contentData) {
         diffPanel.setRightContentData(contentData);
-        // TODO updateBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
+        rightContextManager.updateActiveState(ContextComponent.class, rightContextComponent, BinaryDataComponent.UpdateType.ORIGINAL_SIZE);
     }
 
     public interface BinEdApplyOptions {

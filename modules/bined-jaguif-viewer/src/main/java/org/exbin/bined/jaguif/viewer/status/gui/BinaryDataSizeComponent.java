@@ -122,12 +122,19 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
                 });
                 registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
                     if (instance instanceof BinaryDataComponent && (updateType == BinEdDataComponent.UpdateType.DATA_CONTENT || updateType == BinEdDataComponent.UpdateType.SELECTION)) {
+                        originalDataSize = ((BinaryDataComponent) instance).getCodeArea().getDataSize();
                         updateForComponent((BinaryDataComponent) instance);
                     }
                 });
                 registrar.registerStateUpdateListener(BinaryDataSizeComponent.class, (instance, updateType) -> {
                     if (instance == BinaryDataSizeComponent.this && updateType == UpdateType.DATA_SIZE_FORMAT) {
                         update();
+                    }
+                });
+                registrar.registerStateUpdateListener(ContextComponent.class, (ContextComponent instance, StateUpdateType updateType) -> {
+                    if (instance instanceof BinaryDataComponent && (updateType == BinaryDataComponent.UpdateType.ORIGINAL_SIZE)) {
+                        originalDataSize = ((BinaryDataComponent) instance).getCodeArea().getDataSize();
+                        updateForComponent((BinaryDataComponent) instance);
                     }
                 });
             }

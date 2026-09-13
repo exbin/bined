@@ -22,6 +22,7 @@ import org.exbin.bined.operation.command.BinaryDataUndoRedo;
 import org.exbin.bined.swing.CodeAreaCore;
 import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextComponent;
+import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.search.api.ContextSearch;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.utils.ComponentProvider;
@@ -92,4 +93,8 @@ public interface BinaryDataComponent extends ContextComponent, ComponentProvider
      * @param searchController search controller
      */
     void setSearchController(@Nullable ContextSearch searchController);
+
+    public enum UpdateType implements StateUpdateType {
+        ORIGINAL_SIZE,
+    }
 }
