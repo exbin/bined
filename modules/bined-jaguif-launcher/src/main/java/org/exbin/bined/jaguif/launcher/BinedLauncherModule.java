@@ -44,7 +44,6 @@ import org.exbin.jaguif.action.manager.ActionManagerModule;
 import org.exbin.jaguif.addon.catalog.AddonCatalogModule;
 import org.exbin.jaguif.addon.manager.AddonManagerModule;
 import org.exbin.jaguif.addon.manager.api.AddonManagerModuleApi;
-import org.exbin.jaguif.addon.update.api.AddonUpdateModuleApi;
 import org.exbin.jaguif.addon.packs.AddonPacksModule;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.bined.jaguif.component.BinedComponentModule;
@@ -63,6 +62,7 @@ import org.exbin.bined.jaguif.legacy.BinedLegacyModule;
 import org.exbin.bined.jaguif.search.BinedSearchModule;
 import org.exbin.bined.jaguif.theme.BinedThemeModule;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
+import org.exbin.jaguif.ApplicationBundleKeys;
 import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.context.api.ContextModuleApi;
 import org.exbin.jaguif.docking.api.DockingModuleApi;
@@ -96,6 +96,7 @@ import org.exbin.jaguif.text.encoding.settings.TextEncodingsContextInference;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingsInference;
 import org.exbin.jaguif.text.font.settings.TextFontContextInference;
 import org.exbin.jaguif.text.font.settings.TextFontInference;
+import org.exbin.jaguif.update.check.api.UpdateCheckModuleApi;
 
 /**
  * Binary editor launcher module.
@@ -187,7 +188,7 @@ public class BinedLauncherModule implements LauncherModule {
             OperationUndoModuleApi undoModule = App.getModule(OperationUndoModuleApi.class);
             FileModuleApi fileModule = App.getModule(FileModuleApi.class);
             OptionsSettingsModuleApi optionsSettingsModule = App.getModule(OptionsSettingsModuleApi.class);
-            AddonUpdateModuleApi updateModule = App.getModule(AddonUpdateModuleApi.class);
+            UpdateCheckModuleApi updateModule = App.getModule(UpdateCheckModuleApi.class);
             SearchModuleApi searchModule = App.getModule(SearchModuleApi.class);
             ContextModuleApi contextModule = App.getModule(ContextModuleApi.class);
 
@@ -239,7 +240,6 @@ public class BinedLauncherModule implements LauncherModule {
             binedOperationMethodModule.addBasicMethods();
 
             AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
-            addonManagerModule.setDevMode(devMode);
             addonManagerModule.registerBasicAddonManager();
             AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
             addonCatalogModule.setDevMode(devMode);
@@ -248,8 +248,9 @@ public class BinedLauncherModule implements LauncherModule {
             addonPacksModule.registerAddonManagerPages();
 
             addonCatalogModule.setCatalogPageUrl("https://bined.exbin.org/");
-            addonManagerModule.getAddonManager().setAddonCatalogService(addonCatalogModule.createCatalogService());
-            // TODO addonManagerModule.setManualLegacyGitHubUrl("https://github.com/exbin/bined/releases/tag/");
+            // TODO addonManagerModule.getAddonManager().setAddonCatalogService(addonCatalogModule.createCatalogService());
+            ResourceBundle appBundle = App.getAppBundle();
+            addonManagerModule.setManualCatalogUrl("https://github.com/exbin/bined/releases/tag/"  + appBundle.getString(ApplicationBundleKeys.APPLICATION_RELEASE));
 
             frameModule.init();
             if (!demoMode) {
