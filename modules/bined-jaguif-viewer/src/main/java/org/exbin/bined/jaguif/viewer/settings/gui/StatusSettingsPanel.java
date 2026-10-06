@@ -27,6 +27,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Editor status bar options panel.
@@ -36,7 +37,7 @@ public class StatusSettingsPanel extends javax.swing.JPanel implements SettingsC
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(StatusSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
 
     public StatusSettingsPanel() {
         initComponents();

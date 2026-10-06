@@ -90,10 +90,10 @@ public class BinedComponentModule implements Module {
 
     public static final String BINARY_STATUS_BAR_ID = "binaryStatusBar";
 
-    private java.util.ResourceBundle resourceBundle = null;
+    private java.util.@Nullable ResourceBundle resourceBundle = null;
 
-    private ShowNonprintablesActions showNonprintablesActions;
-    private ClipboardCodeActions clipboardCodeActions;
+    private @Nullable ShowNonprintablesActions showNonprintablesActions;
+    private @Nullable ClipboardCodeActions clipboardCodeActions;
 
     public BinedComponentModule() {
     }

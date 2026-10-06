@@ -34,9 +34,9 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 @NullMarked
 public class BaseSwitchableSpinnerPanel extends javax.swing.JPanel {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BaseSwitchableSpinnerPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BaseSwitchableSpinnerPanel.class);
 
-    private final BaseSwitchableSpinnerEditor spinnerEditor;
+    protected final BaseSwitchableSpinnerEditor spinnerEditor;
 
     public BaseSwitchableSpinnerPanel() {
         initComponents();

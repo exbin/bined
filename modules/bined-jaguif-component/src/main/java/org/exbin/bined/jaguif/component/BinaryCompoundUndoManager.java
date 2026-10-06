@@ -25,6 +25,7 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoableEdit;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Undo manager with compound operations.
@@ -32,11 +33,11 @@ import javax.swing.undo.UndoableEdit;
 @NullMarked
 public class BinaryCompoundUndoManager extends AbstractUndoableEdit implements UndoableEditListener {
 
-    private DocumentEvent.EventType lastEditType = null;
-    private final ArrayList<MyCompoundEdit> edits = new ArrayList<>();
-    private MyCompoundEdit current;
-    private int pointer = -1;
-    private int lastOffset = -1;
+    protected DocumentEvent.@Nullable EventType lastEditType = null;
+    protected final ArrayList<MyCompoundEdit> edits = new ArrayList<>();
+    protected @Nullable MyCompoundEdit current;
+    protected int pointer = -1;
+    protected int lastOffset = -1;
 
     public BinaryCompoundUndoManager() {
     }

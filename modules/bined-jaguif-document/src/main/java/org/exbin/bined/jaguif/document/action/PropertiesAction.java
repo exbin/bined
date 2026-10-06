@@ -31,6 +31,7 @@ import org.exbin.jaguif.document.api.ContextDocument;
 import org.exbin.jaguif.window.api.gui.CloseControlPanel;
 import org.exbin.jaguif.window.api.WindowHandler;
 import org.exbin.jaguif.window.api.WindowModuleApi;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Properties action.
@@ -40,8 +41,8 @@ public class PropertiesAction extends AbstractAction {
 
     public static final String ACTION_ID = "properties";
 
-    private DialogParentComponent dialogParentComponent;
-    private BinaryFileDocument binaryDocument;
+    private @Nullable DialogParentComponent dialogParentComponent;
+    private @Nullable BinaryFileDocument binaryDocument;
 
     public PropertiesAction() {
     }

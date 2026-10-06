@@ -42,6 +42,7 @@ import org.exbin.jaguif.help.api.HelpModuleApi;
 import org.exbin.jaguif.window.api.WindowHandler;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Edit selection action.
@@ -52,7 +53,7 @@ public class EditSelectionAction extends AbstractAction {
     public static final String ACTION_ID = "editSelection";
     public static final String HELP_ID = "edit-selection";
 
-    private CodeAreaCore codeArea;
+    private @Nullable CodeAreaCore codeArea;
 
     public EditSelectionAction() {
     }

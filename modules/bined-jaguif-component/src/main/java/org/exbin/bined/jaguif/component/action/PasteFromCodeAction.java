@@ -45,6 +45,7 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Paste from code action.
@@ -54,7 +55,7 @@ public class PasteFromCodeAction extends AbstractAction implements ActionContext
 
     public static final String ACTION_ID = "pasteFromCode";
 
-    protected CodeAreaCore codeArea;
+    protected @Nullable CodeAreaCore codeArea;
 
     public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

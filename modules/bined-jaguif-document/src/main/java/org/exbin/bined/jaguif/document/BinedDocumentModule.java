@@ -76,6 +76,7 @@ import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
 import org.exbin.jaguif.statusbar.api.StatusBarDefinitionManagement;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 import org.exbin.jaguif.text.encoding.EncodingsManager;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data component module.
@@ -93,11 +94,11 @@ public class BinedDocumentModule implements Module {
 
     private java.util.ResourceBundle resourceBundle = null;
 
-    private BinEdFileManager fileManager = null;
+    private @Nullable BinEdFileManager fileManager = null;
 
-    private ViewFontActions viewFontActions;
+    private @Nullable ViewFontActions viewFontActions;
     private FileProcessingMode initialFileProcessing = FileProcessingMode.MEMORY;
-    private EncodingsManager encodingsManager;
+    private @Nullable EncodingsManager encodingsManager;
 
     public BinedDocumentModule() {
     }

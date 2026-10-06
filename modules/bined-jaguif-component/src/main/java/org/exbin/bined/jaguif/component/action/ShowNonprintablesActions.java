@@ -30,6 +30,7 @@ import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.NonprintablesState;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.utils.ActionUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Show nonprintables actions.
@@ -40,7 +41,7 @@ public class ShowNonprintablesActions {
     public static final String VIEW_NONPRINTABLES_ACTION_ID = "viewNonprintables";
     public static final String TOGGLE_NONPRINTABLES_ACTION_ID = "toggleNonprintables";
 
-    private ResourceBundle resourceBundle;
+    protected @Nullable ResourceBundle resourceBundle;
 
     public ShowNonprintablesActions() {
     }
@@ -73,7 +74,7 @@ public class ShowNonprintablesActions {
     @NullMarked
     public static class ViewNonprintablesAction extends AbstractAction implements ActionContextChange {
 
-        private BinaryDataComponent binaryDataComponent;
+        private @Nullable BinaryDataComponent binaryDataComponent;
 
         public void init(ResourceBundle resourceBundle) {
             ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

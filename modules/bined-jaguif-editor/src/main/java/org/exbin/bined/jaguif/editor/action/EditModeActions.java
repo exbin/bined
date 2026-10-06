@@ -34,6 +34,7 @@ import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary edit mode operation actions.
@@ -89,7 +90,7 @@ public class EditModeActions {
 
         public static final String ACTION_ID = "switchEditOperation";
 
-        private BinaryDataComponent binaryDataComponent;
+        private @Nullable BinaryDataComponent binaryDataComponent;
 
         public SwitchEditOperationAction() {
         }
@@ -130,7 +131,7 @@ public class EditModeActions {
 
         public static final String ACTION_ID = "insertEditModeOperation";
 
-        private BinaryDataComponent binaryDataComponent;
+        private @Nullable BinaryDataComponent binaryDataComponent;
 
         public InsertEditModeOperationAction() {
         }
@@ -177,7 +178,7 @@ public class EditModeActions {
 
         public static final String ACTION_ID = "overwriteEditModeOperation";
 
-        private BinaryDataComponent binaryDataComponent;
+        private @Nullable BinaryDataComponent binaryDataComponent;
 
         public OverwriteEditModeOperationAction() {
         }

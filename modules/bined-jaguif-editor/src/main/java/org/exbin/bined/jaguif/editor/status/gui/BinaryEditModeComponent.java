@@ -40,6 +40,7 @@ import org.exbin.jaguif.context.api.StateUpdateType;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data edit mode status component.
@@ -50,7 +51,7 @@ public class BinaryEditModeComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEditModeComponent.class);
 
-    protected BinaryDataComponent binaryDataComponent;
+    protected @Nullable BinaryDataComponent binaryDataComponent;
 
     public BinaryEditModeComponent() {
         component = createLabel();

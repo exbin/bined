@@ -23,6 +23,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary viewer/editor appearance options panel.
@@ -32,7 +33,7 @@ public class BinaryAppearanceSettingsPanel extends javax.swing.JPanel implements
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryAppearanceSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
 
     public BinaryAppearanceSettingsPanel() {
         initComponents();

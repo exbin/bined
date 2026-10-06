@@ -34,6 +34,7 @@ import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusCursorPositionFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Copy cursor position action.
@@ -43,7 +44,7 @@ public class CopyCursorPositionAction extends AbstractAction {
 
     public static final String ACTION_ID = "copyCursorPosition";
 
-    private BinaryDataComponent binaryDataComponent;
+    protected @Nullable BinaryDataComponent binaryDataComponent;
 
     public CopyCursorPositionAction() {
     }

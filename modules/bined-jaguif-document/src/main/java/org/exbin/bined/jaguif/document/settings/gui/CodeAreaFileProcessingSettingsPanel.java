@@ -25,6 +25,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Code area file processing options panel.
@@ -34,7 +35,7 @@ public class CodeAreaFileProcessingSettingsPanel extends javax.swing.JPanel impl
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaFileProcessingSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
 
     public CodeAreaFileProcessingSettingsPanel() {
         initComponents();

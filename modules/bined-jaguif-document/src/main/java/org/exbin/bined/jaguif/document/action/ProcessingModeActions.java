@@ -33,6 +33,7 @@ import org.exbin.jaguif.contribution.api.ActionSequenceContribution;
 import org.exbin.jaguif.docking.api.ContextDocking;
 import org.exbin.jaguif.docking.api.DocumentDocking;
 import org.exbin.jaguif.document.api.ContextDocument;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary processing mode actions.
@@ -77,8 +78,8 @@ public class ProcessingModeActions {
 
         public static final String ACTION_ID = "memoryProcessingMode";
 
-        private BinaryFileDocument binaryFileDocument;
-        private DocumentDocking documentDocking;
+        private @Nullable BinaryFileDocument binaryFileDocument;
+        private @Nullable DocumentDocking documentDocking;
 
         public MemoryProcessingModeAction() {
         }
@@ -125,8 +126,8 @@ public class ProcessingModeActions {
 
         public static final String ACTION_ID = "deltaProcessingMode";
 
-        private BinaryFileDocument binaryFileDocument;
-        private DocumentDocking documentDocking;
+        private @Nullable BinaryFileDocument binaryFileDocument;
+        private @Nullable DocumentDocking documentDocking;
 
         public DeltaProcessingModeAction() {
         }

@@ -43,6 +43,7 @@ import org.exbin.jaguif.text.encoding.CharsetEncodingState;
 import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
 import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.encoding.EncodingsManager;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data encoding status component.
@@ -53,8 +54,8 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryEncodingComponent.class);
 
-    protected BinaryDataComponent binaryDataComponent;
-    protected CharsetEncodingState encodingState = null;
+    protected @Nullable BinaryDataComponent binaryDataComponent;
+    protected @Nullable CharsetEncodingState encodingState = null;
 
     public BinaryEncodingComponent() {
         component = createLabel();

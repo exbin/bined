@@ -31,6 +31,7 @@ import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Show header action.
@@ -40,7 +41,7 @@ public class ShowHeaderAction extends AbstractAction {
 
     public static final String ACTION_ID = "showHeader";
 
-    private CodeAreaCore codeArea;
+    protected @Nullable CodeAreaCore codeArea;
 
     public ShowHeaderAction() {
     }

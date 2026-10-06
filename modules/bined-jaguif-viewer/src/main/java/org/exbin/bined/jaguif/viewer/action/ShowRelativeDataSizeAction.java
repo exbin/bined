@@ -27,6 +27,7 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Show relative data size action.
@@ -36,7 +37,7 @@ public class ShowRelativeDataSizeAction extends AbstractAction {
 
     public static final String ACTION_ID = "showRelativeDataSize";
 
-    private BinaryDataSizeComponent statusComponent;
+    protected @Nullable BinaryDataSizeComponent statusComponent;
 
     public ShowRelativeDataSizeAction() {
     }

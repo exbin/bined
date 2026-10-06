@@ -31,6 +31,7 @@ import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Show row position action.
@@ -40,7 +41,7 @@ public class ShowRowPositionAction extends AbstractAction {
 
     public static final String ACTION_ID = "showRowPosition";
 
-    private CodeAreaCore codeArea;
+    protected @Nullable CodeAreaCore codeArea;
 
     public ShowRowPositionAction() {
     }

@@ -41,6 +41,7 @@ import org.exbin.jaguif.context.api.ContextStateManagement;
 import org.exbin.jaguif.operation.undo.api.ContextUndoRedo;
 import org.exbin.jaguif.frame.api.FrameModuleApi;
 import org.exbin.jaguif.operation.undo.api.UndoRedoState;
+import org.jspecify.annotations.Nullable;
 
 /**
  * File manager for binary editor.
@@ -52,7 +53,7 @@ public class BinEdFileManager {
     protected final List<BinEdFileExtension> binEdComponentExtensions = new ArrayList<>();
     protected final List<CodeAreaColorAssessor> painterPositionColorModifiers = new ArrayList<>();
     protected final List<CodeAreaColorAssessor> painterPriorityPositionColorModifiers = new ArrayList<>();
-    protected CodeAreaCommandHandlerProvider commandHandlerProvider = null;
+    protected @Nullable CodeAreaCommandHandlerProvider commandHandlerProvider = null;
 
     public BinEdFileManager() {
     }

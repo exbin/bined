@@ -41,8 +41,8 @@ import org.exbin.jaguif.utils.ActionUtils;
 @NullMarked
 public class ViewFontActions {
 
-    private ResourceBundle resourceBundle;
-    private CodeAreaFontSizeOptions fontSizeOptions;
+    private @Nullable ResourceBundle resourceBundle;
+    private @Nullable CodeAreaFontSizeOptions fontSizeOptions;
 
     public ViewFontActions() {
     }
@@ -175,10 +175,8 @@ public class ViewFontActions {
 
         public static final String ACTION_ID = "zoomOut";
 
-        @Nullable
-        private CodeAreaCore codeArea;
-        @Nullable
-        private CodeAreaFontSizeOptions fontSizeOptions;
+        private @Nullable CodeAreaCore codeArea;
+        private @Nullable CodeAreaFontSizeOptions fontSizeOptions;
 
         public void setFontSizeOptions(CodeAreaFontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;
@@ -228,10 +226,8 @@ public class ViewFontActions {
 
         public static final String ACTION_ID = "resetFontSize";
 
-        @Nullable
-        private CodeAreaCore codeArea;
-        @Nullable
-        private CodeAreaFontSizeOptions fontSizeOptions;
+        private @Nullable CodeAreaCore codeArea;
+        private @Nullable CodeAreaFontSizeOptions fontSizeOptions;
 
         public void setFontSizeOptions(CodeAreaFontSizeOptions fontSizeOptions) {
             this.fontSizeOptions = fontSizeOptions;

@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 import org.jspecify.annotations.NullMarked;
 import org.exbin.bined.swing.CodeAreaCore;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Clipboard code actions.
@@ -26,9 +27,9 @@ import org.exbin.bined.swing.CodeAreaCore;
 @NullMarked
 public class ClipboardCodeActions {
 
-    protected ResourceBundle resourceBundle;
-    protected ActionMethod copyAsCodeMethod = null;
-    protected ActionMethod pasteFromCodeMethod = null;
+    protected @Nullable ResourceBundle resourceBundle;
+    protected @Nullable ActionMethod copyAsCodeMethod = null;
+    protected @Nullable ActionMethod pasteFromCodeMethod = null;
 
     public ClipboardCodeActions() {
     }

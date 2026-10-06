@@ -140,13 +140,13 @@ public class BinedViewerModule implements Module {
 
     private static final String BINED_TOOL_BAR_GROUP_ID = MODULE_ID + ".binedToolBarGroup";
 
-    private java.util.ResourceBundle resourceBundle = null;
+    private java.util.@Nullable ResourceBundle resourceBundle = null;
 
-    private CodeAreaViewModeActions viewModeActions;
-    private CodeTypeActions codeTypeActions;
-    private PositionCodeTypeActions positionCodeTypeActions;
-    private HexCharactersCaseActions hexCharactersCaseActions;
-    private StatusBar frameStatusBar;
+    private @Nullable CodeAreaViewModeActions viewModeActions;
+    private @Nullable CodeTypeActions codeTypeActions;
+    private @Nullable PositionCodeTypeActions positionCodeTypeActions;
+    private @Nullable HexCharactersCaseActions hexCharactersCaseActions;
+    private @Nullable StatusBar frameStatusBar;
 
     public BinedViewerModule() {
     }

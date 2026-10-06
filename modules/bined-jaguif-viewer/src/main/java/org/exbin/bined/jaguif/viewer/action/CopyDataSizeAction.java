@@ -36,6 +36,7 @@ import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.bined.jaguif.viewer.status.StatusDataSizeFormat;
 import org.exbin.bined.jaguif.viewer.status.StatusNumericGrouping;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryDataSizeComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Copy data size action.
@@ -45,7 +46,7 @@ public class CopyDataSizeAction extends AbstractAction {
 
     public static final String ACTION_ID = "copyDataSize";
 
-    private BinaryDataComponent binaryDataComponent;
+    protected @Nullable BinaryDataComponent binaryDataComponent;
 
     public CopyDataSizeAction() {
     }

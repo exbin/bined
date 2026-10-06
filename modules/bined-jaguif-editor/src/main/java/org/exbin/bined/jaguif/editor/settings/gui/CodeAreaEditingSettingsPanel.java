@@ -26,6 +26,7 @@ import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 import org.exbin.jaguif.options.settings.api.SettingsComponent;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Code area editing options panel.
@@ -35,7 +36,7 @@ public class CodeAreaEditingSettingsPanel extends javax.swing.JPanel implements 
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CodeAreaEditingSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
 
     public CodeAreaEditingSettingsPanel() {
         initComponents();

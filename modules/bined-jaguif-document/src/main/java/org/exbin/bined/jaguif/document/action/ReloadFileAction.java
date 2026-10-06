@@ -26,6 +26,7 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.bined.jaguif.document.BinaryFileDocument;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.jaguif.document.api.ContextDocument;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Reload content of the currently active file.
@@ -35,7 +36,7 @@ public class ReloadFileAction extends AbstractAction {
 
     public static final String ACTION_ID = "reloadFile";
 
-    protected BinaryFileDocument binaryFileDocument;
+    protected @Nullable BinaryFileDocument binaryFileDocument;
 
     public ReloadFileAction() {
     }

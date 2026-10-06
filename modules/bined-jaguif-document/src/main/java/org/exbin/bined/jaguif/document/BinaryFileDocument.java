@@ -65,6 +65,7 @@ import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.font.ContextFont;
 import org.exbin.jaguif.document.api.EmptyDocumentSource;
 import org.exbin.jaguif.search.api.ContextSearch;
+import org.jspecify.annotations.Nullable;
 
 /**
  * BinEd binary document.
@@ -73,10 +74,10 @@ import org.exbin.jaguif.search.api.ContextSearch;
 public class BinaryFileDocument implements BinaryDocument, ComponentDocument, FileDocument, EditableDocument, ContextActivable {
 
     protected final BinEdDataComponent dataComponent;
-    protected DocumentSource documentSource = null;
+    protected @Nullable DocumentSource documentSource = null;
     protected long documentOriginalSize;
     protected FileProcessingMode initialProcessingMode = FileProcessingMode.MEMORY;
-    protected ContextStateManagement stateManagement;
+    protected @Nullable ContextStateManagement stateManagement;
 
     public BinaryFileDocument() {
         BinedViewerModule viewerModule = App.getModule(BinedViewerModule.class);

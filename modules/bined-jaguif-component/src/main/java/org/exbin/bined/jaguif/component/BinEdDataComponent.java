@@ -69,15 +69,15 @@ import org.jspecify.annotations.Nullable;
 @NullMarked
 public class BinEdDataComponent implements ContextComponent, BinaryDataComponent, TextClipboardOperationController, CharsetEncodingState, CharsetListEncodingState, TextFontState, UndoRedoController {
 
-    protected final BinEdComponentPanel binaryComponent;
+    protected final @Nullable BinEdComponentPanel binaryComponent;
     protected final CodeAreaCore codeArea;
     protected final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
     protected BinaryDataUndoRedo undoRedo;
     protected Font defaultFont;
-    protected ContextStateManagement stateManagement;
+    protected @Nullable ContextStateManagement stateManagement;
     protected List<String> encodings = new ArrayList<>();
-    protected StatusBar statusBar = null;
-    protected ContextSearch searchController;
+    protected @Nullable StatusBar statusBar = null;
+    protected @Nullable ContextSearch searchController;
 
     public BinEdDataComponent(BinEdComponentPanel binaryComponent) {
         this.binaryComponent = binaryComponent;

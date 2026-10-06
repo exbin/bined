@@ -39,8 +39,8 @@ import org.exbin.jaguif.operation.undo.api.UndoRedo;
 @NullMarked
 public class UndoRedoWrapper implements UndoRedo {
 
-    private BinaryDataUndoRedo undoRedo;
-    private final Map<UndoRedoChangeListener, BinaryDataUndoRedoChangeListener> listenersMap = new HashMap<>();
+    protected @Nullable BinaryDataUndoRedo undoRedo;
+    protected final Map<UndoRedoChangeListener, BinaryDataUndoRedoChangeListener> listenersMap = new HashMap<>();
 
     public UndoRedoWrapper() {
     }

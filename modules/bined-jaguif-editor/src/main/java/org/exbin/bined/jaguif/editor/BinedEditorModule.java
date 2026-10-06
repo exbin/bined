@@ -40,6 +40,7 @@ import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsComponentContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data editor module.
@@ -52,7 +53,7 @@ public class BinedEditorModule implements Module {
     public static final String EDIT_MODE_MENU_ID = "editMode";
     public static final String BINARY_EDIT_MODE_MENU_ID = "binaryEditMode";
 
-    private java.util.ResourceBundle resourceBundle = null;
+    private java.util.@Nullable ResourceBundle resourceBundle = null;
 
     public BinedEditorModule() {
     }

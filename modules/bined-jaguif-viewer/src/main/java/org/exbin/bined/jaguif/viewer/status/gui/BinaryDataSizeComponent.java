@@ -43,6 +43,7 @@ import org.exbin.jaguif.menu.api.MenuModuleApi;
 import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.statusbar.api.AbstractStatusBarComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary data size status component.
@@ -60,10 +61,10 @@ public class BinaryDataSizeComponent extends AbstractStatusBarComponent {
     protected StatusDataSizeFormat dataSizeFormat;
     protected BinedViewerModule viewerModule;
 
-    protected BinaryDataComponent binaryDataComponent;
+    protected @Nullable BinaryDataComponent binaryDataComponent;
     protected long dataSize;
     protected long originalDataSize = 0;
-    protected SelectionRange selectionRange;
+    protected @Nullable SelectionRange selectionRange;
 
     public BinaryDataSizeComponent() {
         viewerModule = App.getModule(BinedViewerModule.class);

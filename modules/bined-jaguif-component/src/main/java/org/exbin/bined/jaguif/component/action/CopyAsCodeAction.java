@@ -39,6 +39,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.component.CodeClipboardData;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Copy as code action.
@@ -48,7 +49,7 @@ public class CopyAsCodeAction extends AbstractAction implements ActionContextCha
 
     public static final String ACTION_ID = "copyAsCode";
 
-    protected CodeAreaCore codeArea;
+    protected @Nullable CodeAreaCore codeArea;
 
     public void init(ResourceBundle resourceBundle) {
         ActionModuleApi actionModule = App.getModule(ActionModuleApi.class);

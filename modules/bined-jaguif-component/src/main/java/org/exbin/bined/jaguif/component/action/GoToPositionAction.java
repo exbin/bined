@@ -41,6 +41,7 @@ import org.exbin.jaguif.window.api.controller.DefaultControlController;
 import org.exbin.jaguif.window.api.controller.DefaultControlController.ControlActionType;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Go to position action.
@@ -51,7 +52,7 @@ public class GoToPositionAction extends AbstractAction {
     public static final String ACTION_ID = "goToPosition";
     public static final String HELP_ID = "go-to-position";
 
-    private CodeAreaCore codeArea;
+    protected @Nullable CodeAreaCore codeArea;
 
     public GoToPositionAction() {
     }

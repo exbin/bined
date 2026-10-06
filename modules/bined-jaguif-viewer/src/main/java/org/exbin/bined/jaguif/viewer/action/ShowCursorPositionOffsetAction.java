@@ -27,6 +27,7 @@ import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.api.ActionType;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.bined.jaguif.viewer.status.gui.BinaryCursorPositionComponent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Show cursor position offset action.
@@ -36,7 +37,7 @@ public class ShowCursorPositionOffsetAction extends AbstractAction {
 
     public static final String ACTION_ID = "showCursorPositionOffset";
 
-    private BinaryCursorPositionComponent statusComponent;
+    protected @Nullable BinaryCursorPositionComponent statusComponent;
 
     public ShowCursorPositionOffsetAction() {
     }
