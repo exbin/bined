@@ -41,7 +41,7 @@ public class InspectorsSettingsPanel extends javax.swing.JPanel implements Setti
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorsSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
     protected boolean showMode = true;
 
     public InspectorsSettingsPanel() {

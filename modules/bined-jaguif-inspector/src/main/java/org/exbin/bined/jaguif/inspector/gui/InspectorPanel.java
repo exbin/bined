@@ -41,13 +41,13 @@ import org.exbin.bined.jaguif.inspector.settings.gui.InspectorRecord;
 public class InspectorPanel extends javax.swing.JPanel {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(InspectorPanel.class);
-    protected SectCodeArea codeArea;
-    protected BinaryDataUndoRedo undoRedo;
+    protected @Nullable SectCodeArea codeArea;
+    protected @Nullable BinaryDataUndoRedo undoRedo;
     protected Map<String, BinEdInspectorProvider> inspectorProviders = new HashMap<>();
     protected List<BinEdInspector> inspectors = new ArrayList<>();
-    protected BinEdInspector currentInspector = null;
-    protected JComponent currentComponent = null;
-    protected Controller controller;
+    protected @Nullable BinEdInspector currentInspector = null;
+    protected @Nullable JComponent currentComponent = null;
+    protected @Nullable Controller controller;
 
     public InspectorPanel() {
         initComponents();

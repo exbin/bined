@@ -26,6 +26,7 @@ import org.exbin.jaguif.App;
 import org.exbin.bined.jaguif.theme.settings.gui.ProfileListPanel;
 import org.exbin.jaguif.language.api.LanguageModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Wrapper panel for named profile.
@@ -34,7 +35,7 @@ import org.exbin.jaguif.options.settings.api.SettingsModifiedListener;
 public class ProfileSelectionPanel extends javax.swing.JPanel {
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ProfileSelectionPanel.class);
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
 
     public ProfileSelectionPanel(JPanel profilePanel) {
         initComponents();

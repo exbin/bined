@@ -29,6 +29,7 @@ import org.exbin.jaguif.context.api.ContextComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.jaguif.context.api.ContextChangeRegistration;
 import org.exbin.bined.jaguif.inspector.BinEdInspectorComponentExtension;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Show parsing panel action.
@@ -38,7 +39,7 @@ public class ShowParsingPanelAction extends AbstractAction {
 
     public static final String ACTION_ID = "showParsingPanel";
 
-    private BinaryDataComponent binaryComponent;
+    protected @Nullable BinaryDataComponent binaryComponent;
 
     public ShowParsingPanelAction() {
     }

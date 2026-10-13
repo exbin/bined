@@ -39,11 +39,10 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 @NullMarked
 public class BinEdInspectorComponentExtension implements BinEdComponentExtension {
 
-    protected BinaryDataComponent dataComponent;
-    protected InspectorPanel inspectorPanel;
+    protected @Nullable BinaryDataComponent dataComponent;
+    protected @Nullable InspectorPanel inspectorPanel;
+    protected @Nullable JScrollPane parsingPanelScrollPane;
     protected boolean parsingPanelVisible = false;
-
-    protected JScrollPane parsingPanelScrollPane;
 
     public BinEdInspectorComponentExtension() {
     }

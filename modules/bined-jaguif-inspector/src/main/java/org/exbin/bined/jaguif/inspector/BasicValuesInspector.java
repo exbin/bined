@@ -33,13 +33,13 @@ import org.exbin.bined.jaguif.inspector.gui.BasicValuesPanel;
 @NullMarked
 public class BasicValuesInspector implements BinEdInspector {
 
-    protected BasicValuesPanel component;
-    protected CodeAreaCore codeArea;
-    protected BinaryDataUndoRedo undoRedo;
+    protected @Nullable BasicValuesPanel component;
+    protected @Nullable CodeAreaCore codeArea;
+    protected @Nullable BinaryDataUndoRedo undoRedo;
 
-    protected DataChangedListener dataChangedListener;
-    protected CodeAreaCaretListener caretMovedListener;
-    protected BinaryDataUndoRedoChangeListener undoRedoChangeListener;
+    protected @Nullable DataChangedListener dataChangedListener;
+    protected @Nullable CodeAreaCaretListener caretMovedListener;
+    protected @Nullable BinaryDataUndoRedoChangeListener undoRedoChangeListener;
 
     @Override
     public JComponent getComponent() {

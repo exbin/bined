@@ -43,8 +43,8 @@ public class TableInspectorSettingsPanel extends javax.swing.JPanel implements S
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(TableInspectorSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
-    protected Controller controller = null;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable Controller controller = null;
     protected Map<String, ValueRowType> valueRowTypes;
 
     public TableInspectorSettingsPanel() {

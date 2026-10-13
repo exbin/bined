@@ -30,7 +30,7 @@ import org.exbin.jaguif.utils.UiUtils;
 @NullMarked
 public class BasicValuesPositionColorModifier implements CodeAreaColorAssessor {
 
-    protected CodeAreaColorAssessor parentAssessor;
+    protected @Nullable CodeAreaColorAssessor parentAssessor;
     protected long position = -1;
     protected long length;
     protected Color color;

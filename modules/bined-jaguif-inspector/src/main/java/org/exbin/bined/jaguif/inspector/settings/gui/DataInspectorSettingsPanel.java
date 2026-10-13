@@ -32,6 +32,7 @@ import org.exbin.jaguif.options.settings.api.SettingsOptionsProvider;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
 import org.exbin.jaguif.text.font.settings.gui.TextFontSettingsPanel;
 import org.exbin.jaguif.text.font.settings.TextFontInference;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Data inspector settings panel.
@@ -41,7 +42,7 @@ public class DataInspectorSettingsPanel extends javax.swing.JPanel implements Se
 
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(DataInspectorSettingsPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
     protected TextFontSettingsPanel textFontSettingsPanel;
 
     public DataInspectorSettingsPanel() {

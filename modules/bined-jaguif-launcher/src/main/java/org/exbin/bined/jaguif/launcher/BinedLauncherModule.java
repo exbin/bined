@@ -240,6 +240,7 @@ public class BinedLauncherModule implements LauncherModule {
             binedOperationMethodModule.addBasicMethods();
 
             AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
+            addonManagerModule.registerBasicCategories();
             addonManagerModule.registerBasicAddonManager();
             AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
             addonCatalogModule.setDevMode(devMode);

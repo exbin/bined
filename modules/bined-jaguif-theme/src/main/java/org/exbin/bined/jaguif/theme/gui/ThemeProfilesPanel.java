@@ -43,8 +43,8 @@ public class ThemeProfilesPanel extends javax.swing.JPanel implements ProfileLis
 
     protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(ThemeProfilesPanel.class);
 
-    protected SettingsModifiedListener settingsModifiedListener;
-    protected Controller controller;
+    protected @Nullable SettingsModifiedListener settingsModifiedListener;
+    protected @Nullable Controller controller;
 
     public ThemeProfilesPanel() {
         initComponents();

@@ -54,6 +54,7 @@ import org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.jaguif.options.settings.api.SettingsComponentContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContribution;
 import org.exbin.jaguif.options.settings.api.SettingsPageContributionRule;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Binary editor data inspector module.
@@ -66,10 +67,10 @@ public class BinedInspectorModule implements Module {
 
     private static final String VIEW_PARSING_PANEL_MENU_GROUP_ID = MODULE_ID + ".viewParsingPanelMenuGroup";
 
-    private java.util.ResourceBundle resourceBundle = null;
+    private java.util.@Nullable ResourceBundle resourceBundle = null;
 
-    private BinEdInspectorManager binEdInspectorManager;
-    private BasicValuesPositionColorModifier basicValuesColorModifier;
+    private @Nullable BinEdInspectorManager binEdInspectorManager;
+    private @Nullable BasicValuesPositionColorModifier basicValuesColorModifier;
 
     public BinedInspectorModule() {
     }
