@@ -250,7 +250,5 @@ public class DiffToolbarPanel extends javax.swing.JPanel {
         boolean isShowNonprintables();
 
         void setShowNonprintables(boolean showNonprintables);
-
-        void repaint();
     }
 }

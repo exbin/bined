@@ -35,10 +35,10 @@ public class CompareFilesPanel extends javax.swing.JPanel {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(CompareFilesPanel.class);
 
-    private Controller controller;
-    private FileRecord leftCustomFile;
-    private FileRecord rightCustomFile;
-    private BinEdDiffPanel diffPanel;
+    protected @Nullable Controller controller;
+    protected @Nullable FileRecord leftCustomFile;
+    protected @Nullable FileRecord rightCustomFile;
+    protected BinEdDiffPanel diffPanel;
 
     public CompareFilesPanel() {
         initComponents();
@@ -252,11 +252,22 @@ public class CompareFilesPanel extends javax.swing.JPanel {
     private javax.swing.JButton rightOpenButton;
     // End of variables declaration//GEN-END:variables
 
+    @NullMarked
     public interface Controller {
 
-        @Nullable
-        FileRecord openFile();
+        /**
+         * Invokes opening file.
+         *
+         * @return record if file was selected
+         */
+        @Nullable FileRecord openFile();
 
+        /**
+         * Returns file data content.
+         *
+         * @param index index of file
+         * @return data
+         */
         BinaryData getFileData(int index);
     }
 

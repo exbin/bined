@@ -67,8 +67,8 @@ public class CompareFilesAction extends AbstractAction implements ActionContextC
     public static final String ACTION_ID = "compareFiles";
     public static final String HELP_ID = "compare-files";
 
-    private DocumentDocking documentDocking;
-    private DialogParentComponent dialogParentComponent;
+    protected DocumentDocking documentDocking;
+    protected DialogParentComponent dialogParentComponent;
 
     public CompareFilesAction() {
     }

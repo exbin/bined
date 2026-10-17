@@ -19,6 +19,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.jspecify.annotations.NullMarked;
 import javax.swing.JPanel;
@@ -76,6 +78,8 @@ import org.exbin.jaguif.statusbar.api.StatusBar;
 import org.exbin.jaguif.statusbar.api.StatusBarComponent;
 import org.exbin.jaguif.statusbar.api.StatusBarModuleApi;
 import org.exbin.jaguif.text.encoding.CharsetEncodingState;
+import org.exbin.jaguif.text.encoding.CharsetListEncodingState;
+import org.exbin.jaguif.text.encoding.ContextEncoding;
 import org.exbin.jaguif.text.encoding.settings.TextEncodingOptions;
 import org.exbin.jaguif.text.font.settings.TextFontOptions;
 
@@ -93,8 +97,8 @@ public class BinEdDiffPanel extends JPanel {
     protected final SectionCodeAreaThemeProfile defaultThemeProfile;
     protected final CodeAreaColorsProfile defaultColorProfile;
 
-    protected BinaryDataComponent leftContextComponent;
-    protected BinaryDataComponent rightContextComponent;
+    protected DiffContextComponent leftContextComponent;
+    protected DiffContextComponent rightContextComponent;
     protected ContextStateManagement leftContextManager;
     protected ContextStateManagement rightContextManager;
     protected final DiffToolbarPanel toolbarPanel;
@@ -169,11 +173,6 @@ public class BinEdDiffPanel extends JPanel {
                 NonprintablesCodeAreaAssessor rightNonprintablesCodeAreaAssessor = CodeAreaSwingUtils.findColorAssessor(rightPainter, NonprintablesCodeAreaAssessor.class);
                 CodeAreaUtils.requireNonNull(rightNonprintablesCodeAreaAssessor).setShowNonprintables(showNonprintables);
             }
-
-            @Override
-            public void repaint() {
-                diffPanel.repaint();
-            }
         });
 
         init();
@@ -183,45 +182,7 @@ public class BinEdDiffPanel extends JPanel {
         this.add(toolbarPanel, BorderLayout.NORTH);
         goToPositionAction.init(App.getModule(LanguageModuleApi.class).getBundle(BinedComponentModule.class));
 
-        // TODO registerBinaryStatus(leftStatusBar, diffPanel.getLeftCodeArea());
-        // TODO registerBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
-        initialLoadFromPreferences();
-        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
-        JPopupMenu codeAreaPopupMenu = binedComponentModule.createCodeAreaPopupMenu();
-        diffPanel.getLeftCodeArea().setComponentPopupMenu(codeAreaPopupMenu);
-        diffPanel.getRightCodeArea().setComponentPopupMenu(codeAreaPopupMenu);
-
-        diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
-        diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
-        this.add(diffPanel, BorderLayout.CENTER);
-        diffPanel.revalidate();
-        diffPanel.repaint();
-        revalidate();
-        repaint();
-    }
-
-    private static void attachContext(SectCodeArea codeArea, BinaryDataComponent contextComponent, ContextStateManagement contextManagement) {
-        contextManagement.changeActiveState(ContextComponent.class, contextComponent);
-        contextManagement.changeActiveState(ContextSearch.class, contextComponent.getSearchController().orElse(null));
-        codeArea.addDataChangedListener(() -> {
-            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.DATA_CONTENT);
-        });
-
-        ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
-            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.SELECTION);
-        });
-
-        ((CaretCapable) codeArea).addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
-            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.CURSOR_POSITION);
-        });
-
-        ((EditModeCapable) codeArea).addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
-            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.EDIT_MODE);
-        });
-    }
-
-    private void initialLoadFromPreferences() {
-        applyOptions(new BinEdApplyOptions() {
+        BinEdApplyOptions applyOptions = new BinEdApplyOptions() {
             @Override
             public CodeAreaOptions getCodeAreaOptions() {
                 return new CodeAreaOptions(optionsStorage);
@@ -261,7 +222,12 @@ public class BinEdDiffPanel extends JPanel {
             public CodeAreaThemeOptions getThemeOptions() {
                 return new CodeAreaThemeOptions(optionsStorage);
             }
-        });
+        };
+        applyOptions(applyOptions, diffPanel.getLeftCodeArea());
+        applyOptions(applyOptions, diffPanel.getRightCodeArea());
+        List<String> encodings = applyOptions.getEncodingOptions().getEncodings();
+        leftContextComponent.setEncodings(encodings);
+        rightContextComponent.setEncodings(encodings);
 
         // TODO encodingsManager.loadFromOptions(new TextEncodingOptions(optionsStorage));
         // TODO leftStatusBar.loadFromOptions(new CodeAreaStatusOptions(optionsStorage));
@@ -271,11 +237,42 @@ public class BinEdDiffPanel extends JPanel {
 //        BinaryStatusApi.MemoryMode memoryMode = BinaryStatusApi.MemoryMode.READ_ONLY;
 //        leftStatusBar.setMemoryMode(memoryMode);
 //        rightStatusBar.setMemoryMode(memoryMode);
+
+        // TODO registerBinaryStatus(leftStatusBar, diffPanel.getLeftCodeArea());
+        // TODO registerBinaryStatus(rightStatusBar, diffPanel.getRightCodeArea());
+        BinedComponentModule binedComponentModule = App.getModule(BinedComponentModule.class);
+        JPopupMenu codeAreaPopupMenu = binedComponentModule.createCodeAreaPopupMenu();
+        diffPanel.getLeftCodeArea().setComponentPopupMenu(codeAreaPopupMenu);
+        diffPanel.getRightCodeArea().setComponentPopupMenu(codeAreaPopupMenu);
+
+        diffPanel.getLeftPanel().add(leftStatusBar.getComponent(), BorderLayout.SOUTH);
+        diffPanel.getRightPanel().add(rightStatusBar.getComponent(), BorderLayout.SOUTH);
+        this.add(diffPanel, BorderLayout.CENTER);
+        diffPanel.revalidate();
+        diffPanel.repaint();
+        revalidate();
+        repaint();
     }
 
-    private void applyOptions(BinEdApplyOptions applyOptions) {
-        applyOptions(applyOptions, diffPanel.getLeftCodeArea());
-        applyOptions(applyOptions, diffPanel.getRightCodeArea());
+    private static void attachContext(SectCodeArea codeArea, DiffContextComponent contextComponent, ContextStateManagement contextManagement) {
+        contextManagement.changeActiveState(ContextComponent.class, contextComponent);
+        contextManagement.changeActiveState(ContextEncoding.class, contextComponent);
+        contextManagement.changeActiveState(ContextSearch.class, contextComponent.getSearchController().orElse(null));
+        codeArea.addDataChangedListener(() -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.DATA_CONTENT);
+        });
+
+        ((SelectionCapable) codeArea).addSelectionChangedListener(() -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.SELECTION);
+        });
+
+        ((CaretCapable) codeArea).addCaretMovedListener((CodeAreaCaretPosition caretPosition) -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.CURSOR_POSITION);
+        });
+
+        ((EditModeCapable) codeArea).addEditModeChangedListener((EditMode mode, EditOperation operation) -> {
+            contextManagement.updateActiveState(ContextComponent.class, contextComponent, UpdateType.EDIT_MODE);
+        });
     }
 
     private void applyOptions(BinEdApplyOptions applyOptions, SectCodeArea codeArea) {
@@ -334,6 +331,7 @@ public class BinEdDiffPanel extends JPanel {
         rightContextManager.updateActiveState(ContextComponent.class, rightContextComponent, BinaryDataComponent.UpdateType.ORIGINAL_SIZE);
     }
 
+    @NullMarked
     public interface BinEdApplyOptions {
 
         CodeAreaOptions getCodeAreaOptions();
@@ -353,9 +351,11 @@ public class BinEdDiffPanel extends JPanel {
         CodeAreaThemeOptions getThemeOptions();
     }
 
-    public static class DiffContextComponent implements BinaryDataComponent, CharsetEncodingState {
+    @NullMarked
+    public static class DiffContextComponent implements BinaryDataComponent, CharsetEncodingState, CharsetListEncodingState {
 
-        SectCodeArea codeArea;
+        protected SectCodeArea codeArea;
+        protected final List<String> encodings = new ArrayList<>();
 
         public DiffContextComponent(SectCodeArea codeArea) {
             this.codeArea = codeArea;
@@ -444,6 +444,17 @@ public class BinEdDiffPanel extends JPanel {
         @Override
         public void setEncoding(String encodingName) {
             ((CharsetCapable) getCodeArea()).setCharset(Charset.forName(encodingName));
+        }
+
+        @Override
+        public List<String> getEncodings() {
+            return encodings;
+        }
+
+        @Override
+        public void setEncodings(List<String> encodings) {
+            encodings.clear();
+            encodings.addAll(encodings);
         }
 
         @Override
