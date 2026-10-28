@@ -47,7 +47,7 @@ public class BinaryProcessingModeComponent extends AbstractStatusBarComponent {
 
     protected final JLabel component;
     protected final ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(BinaryProcessingModeComponent.class);
-    protected BinaryFileDocument binaryFileDocument;
+    protected @Nullable BinaryFileDocument binaryFileDocument;
 
     public BinaryProcessingModeComponent() {
         component = createLabel();

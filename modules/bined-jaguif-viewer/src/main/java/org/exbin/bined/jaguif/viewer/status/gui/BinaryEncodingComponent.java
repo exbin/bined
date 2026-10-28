@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
-import org.exbin.bined.jaguif.component.BinEdDataComponent;
 import org.exbin.bined.jaguif.component.BinaryDataComponent;
 import org.exbin.bined.jaguif.viewer.BinedViewerModule;
 import org.exbin.jaguif.App;
@@ -101,7 +100,7 @@ public class BinaryEncodingComponent extends AbstractStatusBarComponent {
                     popupStateManager.changeActiveState(BinaryEncodingComponent.class, BinaryEncodingComponent.this);
                     MenuModuleApi menuModule = App.getModule(MenuModuleApi.class);
                     JPopupMenu popupMenu = menuModule.getMenuBuilder().createPopupMenu();
-                    if (binaryDataComponent instanceof BinEdDataComponent) {
+                    if ((binaryDataComponent instanceof CharsetEncodingState) && (binaryDataComponent instanceof CharsetListEncodingState)) {
                         EncodingsManager encodingsManager = new EncodingsManager();
                         encodingsManager.init();
                         encodingsManager.setEncodingState((CharsetEncodingState) binaryDataComponent);

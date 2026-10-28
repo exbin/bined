@@ -72,7 +72,7 @@ public class BinEdDataComponent implements ContextComponent, BinaryDataComponent
     protected final @Nullable BinEdComponentPanel binaryComponent;
     protected final CodeAreaCore codeArea;
     protected final List<BinEdComponentExtension> componentExtensions = new ArrayList<>();
-    protected BinaryDataUndoRedo undoRedo;
+    protected @Nullable BinaryDataUndoRedo undoRedo;
     protected Font defaultFont;
     protected @Nullable ContextStateManagement stateManagement;
     protected List<String> encodings = new ArrayList<>();
