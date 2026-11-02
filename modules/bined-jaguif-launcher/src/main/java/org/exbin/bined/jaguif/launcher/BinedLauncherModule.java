@@ -42,6 +42,7 @@ import org.exbin.jaguif.license.api.LicenseModuleApi;
 import org.exbin.jaguif.action.api.ActionModuleApi;
 import org.exbin.jaguif.action.manager.ActionManagerModule;
 import org.exbin.jaguif.addon.catalog.AddonCatalogModule;
+import org.exbin.jaguif.addon.catalog.api.AddonCatalogModuleApi;
 import org.exbin.jaguif.addon.manager.AddonManagerModule;
 import org.exbin.jaguif.addon.manager.api.AddonManagerModuleApi;
 import org.exbin.jaguif.addon.packs.AddonPacksModule;
@@ -242,7 +243,7 @@ public class BinedLauncherModule implements LauncherModule {
             AddonManagerModule addonManagerModule = (AddonManagerModule) App.getModule(AddonManagerModuleApi.class);
             addonManagerModule.registerBasicCategories();
             addonManagerModule.registerBasicAddonManager();
-            AddonCatalogModule addonCatalogModule = App.getModule(AddonCatalogModule.class);
+            AddonCatalogModule addonCatalogModule = (AddonCatalogModule) App.getModule(AddonCatalogModuleApi.class);
             addonCatalogModule.setDevMode(devMode);
             addonCatalogModule.registerAddonManagerPages();
             AddonPacksModule addonPacksModule = App.getModule(AddonPacksModule.class);

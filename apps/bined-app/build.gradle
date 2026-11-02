@@ -111,6 +111,8 @@ dependencies {
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-update-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-manager')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-manager-api')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-catalog')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-addon-catalog-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-action-manager')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-help')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-help-online')
