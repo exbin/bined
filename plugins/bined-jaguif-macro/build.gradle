@@ -40,6 +40,7 @@ dependencies {
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-frame-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-window-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-document-api')
+    implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-help-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-docking-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-file-api')
     implementation moduleDep('Jaguif', 'org.exbin.jaguif', 'modules', 'jaguif-contribution-api')

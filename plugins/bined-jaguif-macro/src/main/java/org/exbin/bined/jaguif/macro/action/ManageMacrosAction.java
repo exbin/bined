@@ -33,6 +33,8 @@ import org.exbin.bined.jaguif.macro.BinedMacroModule;
 import org.exbin.bined.jaguif.macro.MacroManager;
 import org.exbin.bined.jaguif.macro.gui.MacrosManagerPanel;
 import org.exbin.bined.jaguif.macro.MacroRecord;
+import org.exbin.jaguif.help.api.HelpLink;
+import org.exbin.jaguif.help.api.HelpModuleApi;
 import org.exbin.jaguif.window.api.WindowModuleApi;
 import org.exbin.jaguif.window.api.WindowHandler;
 import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
@@ -44,6 +46,7 @@ import org.exbin.jaguif.window.api.gui.DefaultControlPanel;
 public class ManageMacrosAction extends AbstractAction implements ActionContextChange {
 
     public static final String ACTION_ID = "manageMacros";
+    public static final String HELP_ID = "macro";
 
     private DialogParentComponent dialogParentComponent;
 
@@ -70,6 +73,8 @@ public class ManageMacrosAction extends AbstractAction implements ActionContextC
         macrosPanel.setMacroRecords(records);
         ResourceBundle panelResourceBundle = macrosPanel.getResourceBundle();
         DefaultControlPanel controlPanel = new DefaultControlPanel(panelResourceBundle);
+        HelpModuleApi helpModule = App.getModule(HelpModuleApi.class);
+        helpModule.addLinkToControlPanel(controlPanel, new HelpLink(HELP_ID));
 
         WindowModuleApi windowModule = App.getModule(WindowModuleApi.class);
         final WindowHandler dialog = windowModule.createDialog(dialogParentComponent.getComponent(), Dialog.ModalityType.APPLICATION_MODAL, macrosPanel, controlPanel);
